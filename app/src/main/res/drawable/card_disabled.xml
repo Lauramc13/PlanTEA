@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color de fondo de la vista -->
+    <solid
+        android:color="#cfd8dc" >
+    </solid>
+
+    <corners
+        android:radius="8dp"   >
+    </corners>
+</shape>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.plantea">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PlanTEA">
+        <activity
+            android:name=".presentacion.actividades.planificador.CalendarioActivity"
+            android:label="Planificador"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.ConfiguracionActivity"
+            android:label="Preferencias"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.ManualActivity"
+            android:label="Manual de usuario"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.SplashActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentacion.actividades.ninio.CuadernoActivity"
+            android:label="Cuaderno de comunicación"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.ninio.PlanActivity"
+            android:label="Planificación"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.planificador.CrearPlanActivity"
+            android:label="Crear planificación"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.planificador.PasswordActivity"
+            android:label="Cambiar contraseña"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.MainActivity"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.MenuActivity"
+            android:label="Menu"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <receiver android:name=".dominio.onAlarmReceiver" />
+    </application>
+
+</manifest>

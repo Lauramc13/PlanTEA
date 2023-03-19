@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:paddingTop="6dp">
+
+    <RelativeLayout
+        android:layout_width="190dp"
+        android:layout_height="200dp">
+
+        <RelativeLayout
+
+            android:id="@+id/id_card"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/card_personalizado"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/id_Imagen"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="4dp"
+                android:contentDescription="@string/lbl_Consultas"
+                app:srcCompat="@drawable/categoria_consultas"></ImageView>
+
+            <TextView
+                android:id="@+id/id_Texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="150dp"
+                android:layout_marginBottom="2dp"
+                android:foregroundGravity="bottom|center_vertical"
+                android:fontFamily="@font/montserrat_regular"
+                android:maxLines="1"
+                android:text="@string/lbl_Consultas"
+                android:textColor="@color/black"
+                android:textSize="16sp"></TextView>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/id_recompensa"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-3dp"
+            android:layout_marginRight="-18dp"
+            android:contentDescription="@string/lbl_Consultas"
+            android:elevation="4dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/categoria_recompensa"></ImageView>
+    </RelativeLayout>
+</LinearLayout>

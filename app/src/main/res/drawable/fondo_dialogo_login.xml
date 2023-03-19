@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Color de fondo de la vista -->
+    <solid
+        android:color="#fafafa" >
+    </solid>
+
+    <!-- Aquí indicamos el radio a aplicar a las esquinas -->
+    <corners
+        android:radius="20dp"  >
+    </corners>
+</shape>
+
+
+<!--    android:color="#ffd740"-->
