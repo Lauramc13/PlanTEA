@@ -28,9 +28,6 @@ import android.widget.TextView;
 
 import com.example.plantea.dominio.Evento;
 import com.example.plantea.dominio.onAlarmReceiver;
-import com.example.plantea.presentacion.actividades.ConfiguracionActivity;
-import com.example.plantea.presentacion.actividades.MainActivity;
-import com.example.plantea.presentacion.actividades.ManualActivity;
 import com.example.plantea.presentacion.actividades.MenuActivity;
 import com.example.plantea.presentacion.fragmentos.EventosFragment;
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment;
@@ -139,24 +136,12 @@ public class CalendarioActivity extends AppCompatActivity implements AdaptadorCa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_principal, menu);
+        getMenuInflater().inflate(R.menu.menu_ayuda, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_ayuda:
-                Intent manual = new Intent(getApplicationContext(), ManualActivity.class);
-                startActivity(manual);
-                break;
-            case R.id.item_password:
-                Intent password = new Intent(getApplicationContext(), PasswordActivity.class);
-                startActivity(password);
-                break;
-            case R.id.item_perfil:
-                Intent perfil= new Intent(getApplicationContext(), ConfiguracionActivity.class);
-                startActivity(perfil);
-                break;
             case android.R.id.home:
                 Intent it = new Intent(getApplicationContext(), MenuActivity.class);
                 startActivity(it);

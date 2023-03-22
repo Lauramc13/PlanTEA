@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 
 import com.example.plantea.R;
+import com.example.plantea.dominio.Planificacion;
 import com.example.plantea.dominio.Usuario_Planificador;
 import com.example.plantea.persistencia.ConectorBD;
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity;
@@ -122,9 +123,17 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     boolean passCorrecta = usuario.comprobarPass(password.getText().toString(), MainActivity.this);
                     if(passCorrecta){
+                        //if(!info_usuario){
                         Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(intent);
                         dialogLogin.dismiss();
+                        //}
+                        // else{
+                        //     Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                        //     startActivity(intent);
+                        //     dialogLogin.dismiss();
+                        // }
+
                     }else{
                         Toast.makeText(getApplicationContext(), "Error en la contraseña", Toast.LENGTH_LONG).show();
                     }

@@ -96,12 +96,31 @@ public class ConfiguracionActivity extends AppCompatActivity {
             txt_UsuarioTEA.setText(prefs.getString("nombreUsuarioTEA","").toUpperCase());
             txt_objeto.setText(prefs.getString("nombreObjeto","").toUpperCase());
 
-            img_usuarioPlanificador.setBackground(null);
-            img_objeto.setBackground(null);
-            img_usuarioTEA.setBackground(null);
-            img_usuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA","")));
-            img_usuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador","")));
-            img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto","")));
+            img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128);
+
+            if (prefs.getString("imagenPlanificador","") == ""){
+                img_usuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128);
+            }
+            else{
+                img_usuarioPlanificador.setBackground(null);
+                img_usuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador","")));
+            }
+
+            if (prefs.getString("imagenUsuarioTEA","") == ""){
+                img_usuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128);
+            }
+            else{
+                img_usuarioTEA.setBackground(null);
+                img_usuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA","")));
+            }
+
+            if (prefs.getString("imagenObjeto","") == ""){
+                img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128);
+            }
+            else{
+                img_objeto.setBackground(null);
+                img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto","")));
+            }
 
             //Notificaciones
             notificacion_activa = prefs.getBoolean("notificaciones", false);
