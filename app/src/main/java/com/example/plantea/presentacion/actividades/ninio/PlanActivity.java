@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.plantea.R;
 import com.example.plantea.dominio.Pictograma;
@@ -47,7 +48,17 @@ public class PlanActivity extends AppCompatActivity implements AdaptadorPresenta
     Stack pasosCompletados;
     AdaptadorPresentacion adaptador;
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
 
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +86,7 @@ public class PlanActivity extends AppCompatActivity implements AdaptadorPresenta
             gridValueManager = 5; // set the number of columns to 3 for landscape mode
         }
 
-        recyclerPresentacionPlan.setLayoutManager(new GridLayoutManager(this, gridValueManager));
+        recyclerPresentacionPlan.setLayoutManager(new GridLayoutManager(this, 3));
 
         objetoAyuda = findViewById(R.id.layout_objetoAyuda);
 

@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.plantea.dominio.Evento;
 import com.example.plantea.dominio.onAlarmReceiver;
@@ -62,15 +63,28 @@ public class CalendarioActivity extends AppCompatActivity implements AdaptadorCa
     Evento evento = new Evento();
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.activity_calendario);
-        } else {
-            setContentView(R.layout.activity_calendario_portrait);
-        }
+        setContentView(R.layout.activity_calendario);
+        // int orientation = getResources().getConfiguration().orientation;
+        // if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        //     setContentView(R.layout.activity_calendario);
+        // } else {
+        //     setContentView(R.layout.activity_calendario_portrait);
+        // }
 
         //Activamos icono volver atrás
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

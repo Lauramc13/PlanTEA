@@ -55,15 +55,28 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private static final int REQUEST_GALERIA = 101;
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int orientation = getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setContentView(R.layout.activity_configuracion);
-        } else {
-            setContentView(R.layout.activity_configuracion_portrait);
-        }
+        setContentView(R.layout.activity_configuracion);
+        // int orientation = getResources().getConfiguration().orientation;
+        // if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        //     setContentView(R.layout.activity_configuracion);
+        // } else {
+        //     setContentView(R.layout.activity_configuracion_portrait);
+        // }
 
         //Activamos icono volver atrás
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

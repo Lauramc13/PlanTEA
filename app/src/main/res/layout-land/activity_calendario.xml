@@ -9,14 +9,17 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="687dp"
-        android:layout_height="475dp"
-
+        android:layout_width="630dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="39dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_calendario"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_calendario"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,8 +39,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="Noviembre 2021"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
@@ -56,8 +59,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp">
 
             <TextView
                 android:id="@+id/lbl_lunes"
@@ -74,8 +77,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_martes"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -85,8 +88,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_miercoles"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -96,8 +99,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_jueves"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -107,8 +110,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_viernes"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -118,8 +121,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_sabado"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -129,8 +132,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_domingo"
+                android:fontFamily="@font/montserrat_medium"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
@@ -139,24 +142,29 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calendario"
             android:layout_width="match_parent"
-            android:layout_height="389dp"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragment_calendario"
-        android:layout_width="538dp"
-        android:layout_height="587dp"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="60dp"
         android:background="@drawable/borde_calendario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.924">
+        app:layout_constraintVertical_bias="0.0">
 
     </FrameLayout>
 

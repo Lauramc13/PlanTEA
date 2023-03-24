@@ -14,21 +14,25 @@
         android:theme="@style/Theme.PlanTEA">
         <activity
             android:name=".presentacion.actividades.planificador.CalendarioActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Planificador"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ConfiguracionActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Preferencias"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ManualActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Manual de usuario"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.SplashActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -41,29 +45,35 @@
         <activity
             android:name=".presentacion.actividades.ninio.CuadernoActivity"
             android:label="Cuaderno de comunicación"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ninio.PlanActivity"
             android:label="Planificación"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.planificador.CrearPlanActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Crear planificación"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.planificador.PasswordActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Cambiar contraseña"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MenuActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Menu"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />

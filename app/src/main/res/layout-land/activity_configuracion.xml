@@ -6,28 +6,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fafafa"
+
     tools:context=".presentacion.actividades.ConfiguracionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight="0.7">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:background="@drawable/rounded_bg"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/rounded_bg"
-                android:elevation="4dp">
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:id="@+id/lbl_infoPlanificador"
@@ -79,11 +79,12 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:elevation="4dp"
                 android:background="@drawable/rounded_bg"
-                android:elevation="4dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp">
+
 
 
                 <ImageView
@@ -133,14 +134,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:elevation="4dp"
                 android:background="@drawable/rounded_bg"
-                android:elevation="4dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp">
 
 
                 <TextView
@@ -192,23 +195,20 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
         </LinearLayout>
-        <View
-            android:id="@+id/view1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="255dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/rounded_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.2"
             android:elevation="4dp"
-            android:orientation="vertical">
+            android:background="@drawable/rounded_bg"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp">
 
             <Switch
                 android:id="@+id/switch_notificacion"
@@ -255,7 +255,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="end"
         android:layout_marginStart="10dp">
 
         <Button
