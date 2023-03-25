@@ -1,0 +1,77 @@
+package com.example.plantea.presentacion.adaptadores
+
+import android.graphics.Color
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLongClickListener
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.plantea.R
+import com.example.plantea.dominio.Planificacion
+
+class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaPlanes.ViewHolder>() {
+    interface OnItemSelectedListener {
+        fun deleteClick(posicion: Int)
+        fun editClick(posicion: Int)
+        fun duplicateClick(posicion: Int)
+        fun planSeleccionado(posicion: Int)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_planificacion, null, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.titulo.text = planes!![position].titulo
+    }
+
+    override fun getItemCount(): Int {
+        return planes!!.size
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), OnLongClickListener {
+        var titulo: TextView
+        var eliminar: ImageView
+        var editar: ImageView
+        var duplicar: ImageView
+        var card: CardView
+
+        init {
+            titulo = itemView.findViewById(R.id.lbl_Planificacion)
+            eliminar = itemView.findViewById(R.id.icon_delete)
+            editar = itemView.findViewById(R.id.icon_edit)
+            duplicar = itemView.findViewById(R.id.icon_copy)
+            card = itemView.findViewById(R.id.card_plan)
+            itemView.setOnLongClickListener(this)
+            editar.setOnClickListener {
+                if (listener != null) {
+                    val position = adapterPosition
+                    listener.editClick(position)
+                }
+            }
+            eliminar.setOnClickListener {
+                if (listener != null) {
+                    val position = adapterPosition
+                    listener.deleteClick(position)
+                }
+            }
+            duplicar.setOnClickListener {
+                if (listener != null) {
+                    val position = adapterPosition
+                    listener.duplicateClick(position)
+                }
+            }
+        }
+
+        override fun onLongClick(view: View): Boolean {
+            val posicion = adapterPosition
+            listener?.planSeleccionado(posicion)
+            card.setCardBackgroundColor(Color.rgb(224, 224, 224))
+            return false
+        }
+    }
+}

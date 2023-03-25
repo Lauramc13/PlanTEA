@@ -72,7 +72,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Cuaderno de emociones"
+            android:text="Cuaderno de comunicación"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="24sp"
@@ -85,57 +85,58 @@
         android:layout_width="250dp"
         android:layout_height="340dp"
         android:layout_gravity="center"
+        android:orientation="vertical"
         app:cardBackgroundColor="#B5DFDE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/layout_Planificacion"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
+        >
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_Calendario"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_Calendario"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="300dp"
+            app:cardElevation="5dp">
+
+            <ImageView
+                android:id="@+id/imageView10"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginBottom="35dp"
+                android:background="@drawable/rounded_bg"
+                app:srcCompat="@drawable/calendar" />
 
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="300dp"
-                app:cardElevation="5dp">
+        </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/imageView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_bg"
-                    app:srcCompat="@drawable/calendar"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginRight="35dp"
-                    android:layout_marginBottom="35dp"/>
+        <TextView
+            android:id="@+id/lbl_calendario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="Calendario"
 
-            </androidx.cardview.widget.CardView>
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/lbl_calendario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/montserrat_regular"
-                android:text="Calendario"
-                android:gravity="center"
+    </LinearLayout>
 
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/layout_Planificacion"
             android:layout_width="250dp"
             android:layout_height="340dp"

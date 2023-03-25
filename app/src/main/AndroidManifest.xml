@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,25 +14,24 @@
         android:theme="@style/Theme.PlanTEA">
         <activity
             android:name=".presentacion.actividades.planificador.CalendarioActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Planificador"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ConfiguracionActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Preferencias"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ManualActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Manual de usuario"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.SplashActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -43,8 +43,8 @@
         </activity>
         <activity
             android:name=".presentacion.actividades.ninio.CuadernoActivity"
-            android:label="Cuaderno de comunicación"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:label="Cuaderno de comunicación"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
