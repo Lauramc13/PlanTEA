@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Evento
@@ -40,19 +41,19 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
         var hora: TextView
         var eliminarEvento: ImageView
         var visibilidad: ImageView
-        var verPlan: ImageView
+        var verPlan: CardView
 
         init {
             nombre = itemView.findViewById(R.id.txt_evento)
             hora = itemView.findViewById(R.id.txt_hora)
             eliminarEvento = itemView.findViewById(R.id.img_borrarEvento)
             visibilidad = itemView.findViewById(R.id.img_eventoVisible)
-            verPlan = itemView.findViewById(R.id.img_verEvento)
+            verPlan = itemView.findViewById(R.id.card_Evento)
             verPlan.setOnClickListener {
-                if (listener != null) {
-                    val position = adapterPosition
-                    listener.viewEventClick(position)
-                }
+               if (listener != null) {
+                   val position = adapterPosition
+                   listener.viewEventClick(position)
+               }
             }
             eliminarEvento.setOnClickListener {
                 if (listener != null) {

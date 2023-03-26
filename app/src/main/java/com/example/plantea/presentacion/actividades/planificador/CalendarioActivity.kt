@@ -74,8 +74,8 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
             fragment_crearEvento = NuevoEventoFragment()
             fragment_eventos = EventosFragment()
             transaction = supportFragmentManager.beginTransaction()
-            transaction!!.replace(R.id.fragment_calendario, fragment_eventos)
-            transaction!!.commitNow()
+            transaction.replace(R.id.fragment_calendario, fragment_eventos)
+            transaction.commitNow()
         } else {
             // Activity is being recreated, so retrieve the existing fragment from the FragmentManager
             val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_calendario)
@@ -120,12 +120,12 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     }
 
     private fun obtenerVistaMes() {
-        fechaActual!!.text = formatoMesAnio(CalendarioUtilidades.fechaSeleccionada!!).uppercase(Locale.getDefault())
+        fechaActual.text = formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         //Calcular días del mes y mostrar
         dias = obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
-        calendario!!.layoutManager = GridLayoutManager(this, 7)
-        adaptadorCalendario = AdaptadorCalendario(dias!!, this)
-        calendario!!.adapter = adaptadorCalendario
+        calendario.layoutManager = GridLayoutManager(this, 7)
+        adaptadorCalendario = AdaptadorCalendario(dias, this)
+        calendario.adapter = adaptadorCalendario
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.commit()
@@ -140,7 +140,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
 
     override fun crearEventoFragment() {
         val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_calendario, fragment_crearEvento!!)
+        ft.replace(R.id.fragment_calendario, fragment_crearEvento)
         ft.addToBackStack(null)
         ft.commit()
     }
@@ -151,7 +151,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
         ft.commit()
-        val notificacion = prefs!!.getBoolean("notificaciones", false)
+        val notificacion = prefs.getBoolean("notificaciones", false)
         if (notificacion) {
             crearNotificacion(cita.fecha, formatoHoraAviso(cita.hora), cita.nombre, id)
         }
@@ -170,12 +170,10 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     }
 
     private fun crearCanalNotificación() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val nombre: CharSequence = "Eventos"
-            val notificationChannel = NotificationChannel(CHANNEL_ID, nombre, NotificationManager.IMPORTANCE_DEFAULT)
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
+        val nombre: CharSequence = "Eventos"
+        val notificationChannel = NotificationChannel(CHANNEL_ID, nombre, NotificationManager.IMPORTANCE_DEFAULT)
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(notificationChannel)
     }
 
     private fun crearNotificacion(fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int) {
@@ -190,19 +188,19 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         alarmManager = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         val aviso = Calendar.getInstance()
         aviso.timeInMillis = System.currentTimeMillis()
-        if (prefs!!.getBoolean("notificacion_semana", false)) {
+        if (prefs.getBoolean("notificacion_semana", false)) {
             val nuevafecha = fecha.minusDays(7)
             aviso[nuevafecha.year, nuevafecha.month.value - 1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
-            alarmManager!![AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
         }
-        if (prefs!!.getBoolean("notificacion_dia", false)) {
+        if (prefs.getBoolean("notificacion_dia", false)) {
             val nuevafecha = fecha.minusDays(1)
             aviso[nuevafecha.year, nuevafecha.month.value - 1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
-            alarmManager!![AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
         }
-        if (prefs!!.getBoolean("notificacion_hora", false)) {
+        if (prefs.getBoolean("notificacion_hora", false)) {
             aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, hora.hour - 1, hora.minute] = 0
-            alarmManager!![AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
         }
     }
 
@@ -211,7 +209,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         intent.setClass(applicationContext, onAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(applicationContext, identificador, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmManager!!.cancel(pendingIntent)
+        alarmManager.cancel(pendingIntent)
     }
 
     companion object {

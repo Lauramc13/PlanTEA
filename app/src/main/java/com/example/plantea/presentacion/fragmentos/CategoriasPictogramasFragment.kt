@@ -28,13 +28,13 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_categorias_pictogramas, container, false)
         val bundle = this.arguments
-        listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
+        listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!! //TODO
         recyclerPictogramas = vista.findViewById(R.id.recycler_Pictogramas)
         val orientation = resources.configuration.orientation
         val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            3 // set the number of columns to 2 for portrait mode
+            3 // set the number of columns to 3 for portrait mode
         } else {
-            5 // set the number of columns to 3 for landscape mode
+            5 // set the number of columns to 5 for landscape mode
         }
         recyclerPictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
         image_Cerrar = vista.findViewById(R.id.image_Cerrar)

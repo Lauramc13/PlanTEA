@@ -1,27 +1,27 @@
 package com.example.plantea.presentacion.actividades.planificador
 
-import android.Manifest
-import android.app.*
-import android.content.*
-import android.content.pm.PackageManager
+import android.app.Dialog
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.FragmentManager
 import android.util.Log
-import android.view.*
+import android.view.DragEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.View.OnDragListener
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
@@ -44,7 +44,7 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlanificacion.OnItemSelectedListener {
     var identificadorCategoria = 0
@@ -118,7 +118,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         if (parametros != null) {
             opcionEditar = true
             txt_TituloPlan.text = intent.getStringExtra("titulo")
-            listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
+            listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!! //TODO
         }
 
         //Iniciar RecyclerView de planificaciones
@@ -295,9 +295,13 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         titulo_Dialogo = dialogNuevoPictograma.findViewById(R.id.txt_Titulo)
         spinner_Dialogo = dialogNuevoPictograma.findViewById(R.id.spinner_Categorias)
         val categorias = categoria.consultarCategorias(this)
-        spinner_Dialogo.adapter = ArrayAdapter<String>(applicationContext, android.R.layout.simple_spinner_dropdown_item,
-            categorias as ArrayList<Any>?
+        spinner_Dialogo
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            categorias  as ArrayList<String>
         )
+        spinner_Dialogo.adapter = adapter
         btn_Guardar.setOnClickListener {
             if (titulo_Dialogo.text.toString().isEmpty()) {
                 Toast.makeText(
@@ -350,19 +354,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         }
         img_Cerrar.setOnClickListener { dialogNuevoPictograma.dismiss() }
         img_Picto.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this@CrearPlanActivity,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                abrirGaleria()
-            } else {
-                ActivityCompat.requestPermissions(
-                    this@CrearPlanActivity,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_CODIGO_PERMISO
-                )
-            }
+            abrirGaleria()
+
         }
     }
 
@@ -413,14 +406,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         categoriaPicto = categoria
     }
 
-    override fun <T> ArrayAdapter(
-        applicationContext: Context?,
-        simpleSpinnerDropdownItem: Int,
-        categorias: ArrayList<Any>?
-    ): SpinnerAdapter? {
-        TODO("Not yet implemented")
-    }
-
     private inner class ChoiceDragListener : OnDragListener {
         override fun onDrag(view: View, dragEvent: DragEvent): Boolean {
             when (dragEvent.action) {
@@ -439,9 +424,4 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         }
     }
 
-    companion object {
-        //Variables codigo de permiso y acceso a galeria
-        private const val REQUEST_CODIGO_PERMISO = 100
-        private const val REQUEST_GALERIA = 101
-    }
 }

@@ -6,7 +6,7 @@
     android:configChanges="orientation|keyboardHidden"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fafafa"
+    android:background="#FFFFFF"
     tools:context=".presentacion.actividades.planificador.CrearPlanActivity"
     tools:layout_editor_absoluteY="89dp">
 
@@ -18,7 +18,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/pizarra_pictogramas"
+        android:background="@drawable/fragment_personalizado"
 
 
         app:layout_constraintTop_toBottomOf="@+id/btn_guardarPlan">

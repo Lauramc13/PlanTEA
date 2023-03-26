@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/card_Evento"
     android:layout_height="wrap_content"
     app:cardCornerRadius="15dp"
     app:cardElevation="4dp"
@@ -37,14 +38,14 @@
                 app:srcCompat="@drawable/svg_eye_off"
                 app:tint="#000000"/>
 
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/img_verEvento"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 app:srcCompat="@drawable/svg_view"
-                app:tint="#000000" />
+                app:tint="#000000" /> -->
 
             <ImageView
                 android:id="@+id/img_borrarEvento"

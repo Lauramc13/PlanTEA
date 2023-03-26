@@ -34,7 +34,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#CCE9F0">
 
                     <ImageView
                         android:id="@+id/img_Consultas"
@@ -49,7 +50,6 @@
                         android:id="@+id/lbl_Consultas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#ce93d8"
                         android:text="@string/lbl_Consultas"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
@@ -72,7 +72,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#CCE9F0">
 
                     <ImageView
                         android:id="@+id/img_Profesionales"
@@ -87,7 +88,6 @@
                         android:id="@+id/lbl_profesionales"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#fdd835"
                         android:text="@string/lbl_profesionales"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
@@ -110,7 +110,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#CCE9F0">
 
                     <ImageView
                         android:id="@+id/img_Lugares"
@@ -126,7 +127,6 @@
                         android:id="@+id/lbl_Lugares"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#81c784"
                         android:text="@string/lbl_Lugares"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
@@ -149,7 +149,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#CCE9F0">
 
                     <ImageView
                         android:id="@+id/img_Desplazamiento"
@@ -164,7 +165,6 @@
                         android:id="@+id/lbl_Desplazamiento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#ff7043"
                         android:text="@string/lbl_Desplazamiento"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
@@ -188,7 +188,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#CCE9F0">
 
                     <ImageView
                         android:id="@+id/img_Accion"
@@ -203,7 +204,6 @@
                         android:id="@+id/lbl_Accion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#81d4fa"
                         android:text="@string/lbl_Accion"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
@@ -227,7 +227,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#FEFFBE">
 
                     <ImageView
                         android:id="@+id/img_Entretenimiento"
@@ -242,12 +243,11 @@
                         android:id="@+id/lbl_Entretenimiento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#ff80ab"
                         android:text="@string/lbl_Entretenimiento"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="16sp">
+                        android:textSize="15sp">
 
                     </TextView>
                 </LinearLayout>
@@ -266,7 +266,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="#FEFFBE">
 
                     <ImageView
                         android:id="@+id/img_Recompensa"
@@ -281,7 +282,6 @@
                         android:id="@+id/lbl_Recompensa"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/holo_orange_light"
                         android:text="@string/lbl_Recompensa"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"

@@ -12,5 +12,4 @@ interface CrearPlanInterface {
     fun cerrarFragment()
     fun nuevoPictogramaDialogo()
     fun pictogramaSeleccionado(titulo: String?, imagen: String?, categoria: Int)
-    abstract fun <T> ArrayAdapter(applicationContext: Context?, simpleSpinnerDropdownItem: Int, categorias: ArrayList<Any>?): SpinnerAdapter?
 }

@@ -7,6 +7,7 @@ import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,7 +37,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     lateinit var btn_hora: Button
     lateinit var btn_guardar: Button
     lateinit var btn_planificar: Button
-    lateinit var btn_desplegarPlanes: Button
     lateinit var horaEvento: TextView
     lateinit var fechaEvento: TextView
     lateinit var mensajePlanes: TextView
@@ -62,7 +62,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         btn_hora = vista.findViewById(R.id.btn_horaEvento)
         btn_guardar = vista.findViewById(R.id.btn_guardarEvento)
         btn_planificar = vista.findViewById(R.id.btn_planificar)
-        btn_desplegarPlanes = vista.findViewById(R.id.button)
         horaEvento = vista.findViewById(R.id.lbl_horaEvento)
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
         mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
@@ -71,30 +70,33 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         layout_planificaciones = vista.findViewById(R.id.layout)
 
         //Componentes deshabilitados al principio
-        spinner_consultas.setEnabled(false)
-        btn_desplegarPlanes.setEnabled(false)
-        layout_planificaciones.setVisibility(View.GONE)
-        fechaEvento.setText(formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada!!))
+        spinner_consultas.isEnabled = false
+        layout_planificaciones.visibility = View.GONE
+        fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         consultas = pictograma.obtenerConsultas(actividad, 1) as ArrayList<String>
-        spinner_consultas.setAdapter(ArrayAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, consultas))
-        btn_desplegarPlanes.setOnClickListener(View.OnClickListener {
-            layout_planificaciones.setVisibility(View.VISIBLE)
-            iniciarListaPlanificaciones()
-        })
-        btn_hora.setOnClickListener(View.OnClickListener { mostrarReloj(horaEvento) })
-        btn_guardar.setOnClickListener(View.OnClickListener {
+        spinner_consultas.adapter =
+            ArrayAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, consultas)
+        btn_hora.setOnClickListener { mostrarReloj(horaEvento) }
+        btn_guardar.setOnClickListener {
             val rutaImagen = obtenerImagenEvento()
-            val evento = Evento(0, nombreEvento, CalendarioUtilidades.fechaSeleccionada, horaEvento.getText().toString(), planSeleccionado, rutaImagen)
+            val evento = Evento(
+                0,
+                nombreEvento,
+                CalendarioUtilidades.fechaSeleccionada,
+                horaEvento.text.toString(),
+                planSeleccionado,
+                rutaImagen
+            )
             eventoInterface!!.nuevoEvento(evento)
             Toast.makeText(context, "Evento creado", Toast.LENGTH_SHORT).show()
-        })
-        btn_planificar.setOnClickListener(View.OnClickListener { eventoInterface!!.planificar() })
-        cancelarEvento.setOnClickListener(View.OnClickListener { eventoInterface!!.cancelarEvento() })
+        }
+        btn_planificar.setOnClickListener(View.OnClickListener { eventoInterface.planificar() })
+        cancelarEvento.setOnClickListener(View.OnClickListener { eventoInterface.cancelarEvento() })
         return vista
     }
 
     fun obtenerImagenEvento(): String? {
-        return pictograma.obtenerImagenEvento(actividad, spinner_consultas!!.selectedItem.toString(), 1)
+        return pictograma.obtenerImagenEvento(actividad, spinner_consultas.selectedItem.toString(), 1)
     }
 
     override fun onResume() {
@@ -115,17 +117,17 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     private fun iniciarListaPlanificaciones() {
-        listaPlanificaciones!!.layoutManager = LinearLayoutManager(context)
+        listaPlanificaciones.layoutManager = LinearLayoutManager(context)
         planes = plan.mostrarPlanificacionesDisponibles(actividad) as ArrayList<Planificacion>
         adaptador = AdaptadorListaPlanes(planes, this)
-        listaPlanificaciones!!.adapter = adaptador
+        listaPlanificaciones.adapter = adaptador
         //Mostramos un mensaje informando si la lista está vacía
-        if (planes!!.isEmpty()) {
-            listaPlanificaciones!!.visibility = View.GONE
-            mensajePlanes!!.visibility = View.VISIBLE
+        if (planes.isEmpty()) {
+            listaPlanificaciones.visibility = View.GONE
+            mensajePlanes.visibility = View.VISIBLE
         } else {
-            listaPlanificaciones!!.visibility = View.VISIBLE
-            mensajePlanes!!.visibility = View.GONE
+            listaPlanificaciones.visibility = View.VISIBLE
+            mensajePlanes.visibility = View.GONE
         }
     }
 
@@ -133,17 +135,18 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
-        val onTimeSetListener = OnTimeSetListener { timePicker, horaSeleccionada, minutoSeleccionado ->
+        val onTimeSetListener = OnTimeSetListener { _, horaSeleccionada, minutoSeleccionado ->
             hora = horaSeleccionada
             minuto = minutoSeleccionado
             tiempo!!.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
             //Habilitamos el resto de componentes
-            spinner_consultas!!.isEnabled = true
-            btn_desplegarPlanes!!.isEnabled = true
+            spinner_consultas.isEnabled = true
+            horaEvento.setTextColor(Color.BLACK)
+            layout_planificaciones.visibility = View.VISIBLE
+            iniciarListaPlanificaciones()
         }
-        val style = android.R.style.Theme_Holo_Light_Dialog
-        val timePickerDialog = TimePickerDialog(context, style, onTimeSetListener, currentHour, currentMinute, true)
-        timePickerDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val timePickerDialog = TimePickerDialog(context, onTimeSetListener, currentHour, currentMinute, true)
+        timePickerDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         timePickerDialog.setTitle("Selecciona una hora")
         timePickerDialog.show()
     }
@@ -194,7 +197,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     override fun planSeleccionado(posicion: Int) {
-        val viewHolder = listaPlanificaciones!!.findViewHolderForAdapterPosition(posAnterior) as AdaptadorListaPlanes.ViewHolder?
+        val viewHolder = listaPlanificaciones.findViewHolderForAdapterPosition(posAnterior) as AdaptadorListaPlanes.ViewHolder?
         val card = viewHolder!!.itemView.findViewById<View>(R.id.card_plan) as CardView
         if (posicion != posAnterior) {
             card.setCardBackgroundColor(Color.WHITE)
@@ -204,8 +207,8 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         posAnterior = posicion
         planSeleccionado = 0
         nombreEvento = null.toString()
-        planSeleccionado = planes!![posicion].id
-        nombreEvento = planes!![posicion].titulo.toString()
-        btn_guardar!!.isEnabled = true
+        planSeleccionado = planes[posicion].id
+        nombreEvento = planes[posicion].titulo.toString()
+        btn_guardar.isEnabled = true
     }
 }

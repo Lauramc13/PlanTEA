@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fafafa"
+    android:background="#DDECEC"
     tools:context=".presentacion.actividades.planificador.CalendarioActivity">
 
     <LinearLayout
@@ -12,6 +12,7 @@
         android:layout_width="630dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
+        android:background="@drawable/rounded_bg"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="39dp"
         android:orientation="vertical"
@@ -24,6 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -157,7 +159,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="60dp"
-        android:background="@drawable/borde_calendario"
+        android:background="@drawable/rounded_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

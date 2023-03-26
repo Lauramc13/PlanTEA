@@ -2,17 +2,22 @@ package com.example.plantea.presentacion.adaptadores
 
 import android.graphics.Color
 import android.net.Uri
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.marginRight
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario.ViewHolderCalendario
 import java.time.LocalDate
+
 
 class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<ViewHolderCalendario>() {
     interface OnItemSelectedListener {
@@ -23,29 +28,39 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.calendario_celda, parent, false)
         val layoutParams = view.layoutParams
-        layoutParams.height = (parent.height * 0.166666666).toInt()
+        layoutParams.height = (parent.height * 0.14).toInt()
+        layoutParams.width = (parent.height * 0.14).toInt()
+        val layoutParams2 = view.layoutParams as ViewGroup.MarginLayoutParams
+        view.setBackgroundResource(R.drawable.round_bg)
+        view.foregroundGravity = Gravity.CENTER
+        layoutParams2.setMargins(18, 10, 0, 7)
         return ViewHolderCalendario(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolderCalendario, position: Int) {
         val fecha = diasMes[position]
-        if (fecha == null) {
-            holder.diaMes.text = ""
-            holder.vistaPrincipal.setBackgroundColor(Color.rgb(224, 224, 224))
-        } else {
-            holder.diaMes.text = fecha.dayOfMonth.toString()
-            if (fecha == CalendarioUtilidades.fechaSeleccionada) {
-                holder.vistaPrincipal.setBackgroundColor(Color.rgb(255, 238, 88))
-            }
-        }
+
 
         //Mostrar imagen del evento en el calendario
         for (i in Evento.listaEventos!!.indices) {
             if (Evento.listaEventos!![i].fecha == fecha) {
-                holder.imagenEvento.setImageURI(Uri.parse(Evento.listaEventos!![i].imagen))
-                holder.imagenEvento.visibility = View.VISIBLE
+                holder.vistaPrincipal.setBackgroundResource(R.drawable.round_bg_evento)
+                //holder.imagenEvento.setImageURI(Uri.parse(Evento.listaEventos!![i].imagen))
+                //holder.imagenEvento.visibility = View.VISIBLE
             }
         }
+
+        if (fecha == null) {
+            holder.diaMes.text = ""
+            holder.vistaPrincipal.setBackgroundResource(R.drawable.round_bg_none)
+        } else {
+            holder.diaMes.text = fecha.dayOfMonth.toString()
+            if (fecha == CalendarioUtilidades.fechaSeleccionada) {
+                holder.vistaPrincipal.setBackgroundResource(R.drawable.round_bg_selected)
+            }
+        }
+        holder.vistaPrincipal.foregroundGravity = Gravity.CENTER
+
     }
 
     override fun getItemCount(): Int {
@@ -59,6 +74,11 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
 
         init {
             diaMes = itemView.findViewById(R.id.lbl_celda_dia)
+            diaMes.gravity = Gravity.CENTER
+            diaMes.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            diaMes.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            diaMes.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            diaMes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             vistaPrincipal = itemView.findViewById(R.id.vistaPrincipal)
             imagenEvento = itemView.findViewById(R.id.img_evento)
             itemView.setOnClickListener(this)

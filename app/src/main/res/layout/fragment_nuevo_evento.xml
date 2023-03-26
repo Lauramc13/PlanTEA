@@ -90,10 +90,10 @@
                 android:id="@+id/lbl_horaEvento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="09:00"
+                android:text="No seleccionada"
+                android:textColor="#FF0000"
                 android:fontFamily="@font/montserrat_regular"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -130,14 +130,14 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray" />
 
-        <Button
+        <!-- <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Planificar"
             android:textColor="#203130"
-            app:cornerRadius="25dp" />
+            app:cornerRadius="25dp" /> -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout"
@@ -164,7 +164,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_planificaciones"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

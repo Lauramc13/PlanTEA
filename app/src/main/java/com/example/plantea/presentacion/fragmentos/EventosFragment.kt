@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.EventoInterface
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
+import java.time.LocalDate
 import java.util.*
 
 class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
@@ -64,15 +66,18 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     fun iniciarAdaptadorEvento() {
-        diaEvento!!.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada!!).uppercase(Locale.getDefault())
-        eventos = evento.obtenerEventos(actividad, CalendarioUtilidades.fechaSeleccionada!!) as ArrayList<Evento>
-        listaEventos!!.layoutManager = LinearLayoutManager(context)
-        adaptadorEvento = AdaptadorEvento(eventos!!, this)
-        if (eventos!!.isEmpty()) {
-            listaEventos!!.visibility = View.GONE
-            mensaje!!.visibility = View.VISIBLE
+        diaEvento.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
+        if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){
+            crearEvento.isEnabled = false
+        }
+        eventos = evento.obtenerEventos(actividad, CalendarioUtilidades.fechaSeleccionada) as ArrayList<Evento>
+        listaEventos.layoutManager = LinearLayoutManager(context)
+        adaptadorEvento = AdaptadorEvento(eventos, this)
+        if (eventos.isEmpty()) {
+            listaEventos.visibility = View.GONE
+            mensaje.visibility = View.VISIBLE
         } else {
-            listaEventos!!.visibility = View.VISIBLE
+            listaEventos.visibility = View.VISIBLE
             mensaje!!.visibility = View.GONE
         }
         listaEventos!!.adapter = adaptadorEvento
@@ -105,11 +110,11 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     override fun viewClick(posicion: Int) {
         contador = evento.comprobarEventosVisible(actividad)
         println(contador)
-        if (eventos!![posicion].visible == 1) {
-            evento.cambiarVisibilidad(actividad, 0, eventos!![posicion].id)
+        if (eventos[posicion].visible == 1) {
+            evento.cambiarVisibilidad(actividad, 0, eventos[posicion].id)
         } else {
             if (contador == 0) {
-                evento.cambiarVisibilidad(actividad, 1, eventos!![posicion].id)
+                evento.cambiarVisibilidad(actividad, 1, eventos[posicion].id)
             } else {
                 Toast.makeText(context, "Solo un evento puede ser visible", Toast.LENGTH_SHORT).show()
             }
@@ -119,9 +124,9 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
 
     override fun viewEventClick(posicion: Int) {
         pictogramas = ArrayList()
-        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, eventos!![posicion].id_plan) as ArrayList<Pictograma>
+        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, eventos[posicion].id_plan) as ArrayList<Pictograma>
         val intent = Intent(actividad, PlanActivity::class.java)
-        intent.putExtra("titulo", eventos!![posicion].nombre)
+        intent.putExtra("titulo", eventos[posicion].nombre)
         intent.putExtra("pictogramas", pictogramas)
         startActivity(intent)
     }
