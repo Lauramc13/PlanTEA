@@ -72,6 +72,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var btn_Guardar: Button
     lateinit var btn_GuardarPlanificacion: Button
     lateinit var txt_TituloPlan: TextView
+    var planCounter = 1
+    val planPrefix = "Planificación "
 
     private val KEY_FRAGMENT_ID = "fragment_id"
     private var fragmentId: Int = R.id.contenedor_fragments
@@ -108,6 +110,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         txt_TituloPlan = findViewById(R.id.txt_TituloPlan)
+        txt_TituloPlan.setText("$planPrefix$planCounter")
+        planCounter++
         labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         listaPictogramas = ArrayList()

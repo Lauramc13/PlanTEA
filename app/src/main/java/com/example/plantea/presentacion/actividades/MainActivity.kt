@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         conectorBD = ConectorBD(this)
-        conectorBD!!.abrir()
-        conectorBD!!.cerrar()
+        conectorBD.abrir()
+        conectorBD.cerrar()
         image_Planificador = findViewById(R.id.image_RolPlanificador)
         image_UsuarioTEA = findViewById(R.id.image_RolTEA)
         icono_ayuda = findViewById(R.id.image_Manual)
@@ -87,14 +87,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         //Este método se ejecutará al pinchar sobre la imagen del rol niño
-        cardUsuarioTEA.setOnClickListener(View.OnClickListener {
+        cardUsuarioTEA.setOnClickListener {
             val intent = Intent(applicationContext, PlanActivity::class.java)
             startActivity(intent)
-        })
-        icono_ayuda.setOnClickListener(View.OnClickListener {
+        }
+        icono_ayuda.setOnClickListener {
             val intent = Intent(applicationContext, ManualActivity::class.java)
             startActivity(intent)
-        })
+        }
     }
 
     fun crearDialogoLogin() {
@@ -104,11 +104,13 @@ class MainActivity : AppCompatActivity() {
         password = dialogLogin.findViewById(R.id.txt_Password)
         btn_acceder = dialogLogin.findViewById(R.id.btn_login)
         icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
-        btn_acceder.setOnClickListener(View.OnClickListener {
-            if (password.getText().toString() == "") {
-                Toast.makeText(applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG).show()
+        btn_acceder.setOnClickListener {
+            if (password.text.toString() == "") {
+                Toast.makeText(applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
+                    .show()
             } else {
-                val passCorrecta = usuario.comprobarPass(password.getText().toString(), this@MainActivity)
+                val passCorrecta =
+                    usuario.comprobarPass(password.text.toString(), this@MainActivity)
                 if (passCorrecta) {
                     //if(!info_usuario){
                     val intent = Intent(applicationContext, MenuActivity::class.java)
@@ -121,10 +123,11 @@ class MainActivity : AppCompatActivity() {
                     //     dialogLogin.dismiss();
                     // }
                 } else {
-                    Toast.makeText(applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Error en la contraseña", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
-        })
+        }
         icono_cerrar_login.setOnClickListener(View.OnClickListener { dialogLogin.dismiss() })
         dialogLogin.show()
     }

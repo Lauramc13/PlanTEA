@@ -19,7 +19,7 @@
     <string name="lblPass">Cambiar Contraseña</string>
     <string name="lbl_NuevoPicto">Añadir pictograma</string>
     <string name="lbl_Planes">Planificaciones Disponibles</string>
-    <string name="lbl_CrearPlanActividad">Título de la planificación:</string>
+    <string name="lbl_CrearPlanActividad">Título:</string>
     <string name="lbl_login">Introduce la contraseña</string>
     <string name="lbl_RepitePass">Repite la contraseña</string>
     <string name="lbl_CrearPass">Crear contraseña</string>

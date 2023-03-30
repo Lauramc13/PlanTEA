@@ -76,7 +76,18 @@
             android:label="Menu"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.PreLoginActivity"
+            android:label="Inicio"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.RegisterActivity"
+            android:label="Registrarse"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
         <receiver android:name=".dominio.onAlarmReceiver" />
+
     </application>
 
 </manifest>
