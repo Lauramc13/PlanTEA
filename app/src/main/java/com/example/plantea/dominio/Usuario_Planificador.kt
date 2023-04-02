@@ -17,6 +17,11 @@ class Usuario_Planificador {
         return resultado!!
     }
 
+    fun crearUsuario(name:String?, username: String?, password: String?, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.crearUsuario(name, username, password, actividad)
+        return resultado!!
+    }
+
     fun comprobarPass(password: String, actividad: Activity?): Boolean {
         resultado = gestorUsuario.comprobarPassword(password, actividad)
         return resultado!!

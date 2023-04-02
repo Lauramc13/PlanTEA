@@ -30,18 +30,18 @@ class MenuActivity : AppCompatActivity() {
 
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        cardCalendario.setOnClickListener(View.OnClickListener {
+        cardCalendario.setOnClickListener {
             val intent = Intent(applicationContext, PlanActivity::class.java)
             startActivity(intent)
-        })
-        cardEmociones.setOnClickListener(View.OnClickListener {
+        }
+        cardEmociones.setOnClickListener {
             val intent = Intent(applicationContext, CuadernoActivity::class.java)
             startActivity(intent)
-        })
-        cardPlanificacion.setOnClickListener(View.OnClickListener {
+        }
+        cardPlanificacion.setOnClickListener {
             val intent = Intent(applicationContext, CalendarioActivity::class.java)
             startActivity(intent)
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

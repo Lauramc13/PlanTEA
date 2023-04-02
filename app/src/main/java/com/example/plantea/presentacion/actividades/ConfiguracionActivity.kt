@@ -70,8 +70,8 @@ class ConfiguracionActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Recuperamos la información cuando no es la primera vez de acceso.
-        val accesoConfiguracion = prefs.getBoolean("configuracion", false)
-        if (accesoConfiguracion) {
+        val userAccount = prefs.getBoolean("userAccount", false)
+        if (userAccount) {
             //Imagenes y nombres
             txt_Planificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
             txt_UsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
@@ -153,15 +153,8 @@ class ConfiguracionActivity : AppCompatActivity() {
             }
         }
         lbl_infoUsuario.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                //ON
-                txt_UsuarioTEA.isEnabled = true
-                img_usuarioTEA.isEnabled = true
-            } else {
-                //OFF
-                txt_UsuarioTEA.isEnabled = false
-                img_usuarioTEA.isEnabled = false
-            }
+            txt_UsuarioTEA.isEnabled = isChecked
+            img_usuarioTEA.isEnabled = isChecked
         }
         btn_guardar.setOnClickListener {
             if (txt_Planificador.text.toString().isEmpty() || txt_UsuarioTEA.text.toString().isEmpty() && lbl_infoUsuario.isChecked
@@ -195,7 +188,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                     rutaUsuarioTEA = crearRuta(img_usuarioTEA, "Usuario")
                 }
                 val rutaObjeto = crearRuta(img_objeto, "Objeto")
-                if (accesoConfiguracion) {
+                if (userAccount) {
                     finish()
                 } else {
                     //Abre la pantalla inicio porque es la primera vez
@@ -205,7 +198,8 @@ class ConfiguracionActivity : AppCompatActivity() {
 
                 //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
                 val editor = prefs.edit()
-                editor.putBoolean("configuracion", true)
+                editor.putBoolean("userAccount", true)
+                editor.putBoolean("iniciadaSesion", true)
                 editor.putBoolean("notificaciones", btn_notificacion.isChecked)
                 editor.putBoolean("notificacion_semana", semana.isChecked)
                 editor.putBoolean("notificacion_dia", dia.isChecked)
@@ -216,7 +210,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.putString("imagenPlanificador", rutaPlanificador)
                 editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
                 editor.putString("imagenObjeto", rutaObjeto)
-                editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked())
+                editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked)
                 editor.commit()
             }
         }
@@ -278,14 +272,14 @@ class ConfiguracionActivity : AppCompatActivity() {
         // Handle the returned URI here
         if (uri != null) {
             if (es_planificador) {
-                img_usuarioPlanificador!!.background = null
-                img_usuarioPlanificador!!.setImageURI(uri)
+                img_usuarioPlanificador.background = null
+                img_usuarioPlanificador.setImageURI(uri)
             } else if (es_objeto) {
-                img_objeto!!.background = null
-                img_objeto!!.setImageURI(uri)
+                img_objeto.background = null
+                img_objeto.setImageURI(uri)
             } else {
-                img_usuarioTEA!!.background = null
-                img_usuarioTEA!!.setImageURI(uri)
+                img_usuarioTEA.background = null
+                img_usuarioTEA.setImageURI(uri)
             }
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()

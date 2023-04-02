@@ -67,24 +67,19 @@ class MainActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         info_usuario = prefs.getBoolean("info_usuario", false)
         if (!info_usuario) {
-            cardUsuarioTEA.setVisibility(View.GONE)
+            cardUsuarioTEA.visibility = View.GONE
         }
         val rutaUsuarioTEA = prefs.getString("imagenUsuarioTEA", "")
         val rutaPlanificador = prefs.getString("imagenPlanificador", "")
-        nombrePlanificador.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
-        nombreUsuarioTEA.setText(prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault()))
+        nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
+        nombreUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
         image_UsuarioTEA.setImageURI(Uri.parse(rutaUsuarioTEA))
         image_Planificador.setImageURI(Uri.parse(rutaPlanificador))
 
         //Este método se ejecutará al pinchar sobre la imagen del rol planificador
-        cardUsuarioPlanificador.setOnClickListener(View.OnClickListener {
-            val primerAcceso = prefs.getBoolean("password", false)
-            if (primerAcceso) { //No es la primera vez que se lanza la app
-                crearDialogoLogin()
-            } else {
-                crearDialogoPassword()
-            }
-        })
+        cardUsuarioPlanificador.setOnClickListener {
+            crearDialogoLogin()
+        }
 
         //Este método se ejecutará al pinchar sobre la imagen del rol niño
         cardUsuarioTEA.setOnClickListener {
@@ -142,10 +137,10 @@ class MainActivity : AppCompatActivity() {
         btn_guardar = dialogCrearPass.findViewById(R.id.btn_CrearPass)
         icono_cerrar = dialogCrearPass.findViewById(R.id.icono_CerrarDialogo)
         btn_guardar.setOnClickListener(View.OnClickListener {
-            if (password_nueva.getText().toString() == "" || password_repetida.getText().toString() == "") {
+            if (password_nueva.text.toString() == "" || password_repetida.text.toString() == "") {
                 Toast.makeText(applicationContext, "Debes completar todos los campos", Toast.LENGTH_LONG).show()
             } else {
-                if (password_nueva.getText().toString() == password_repetida.getText().toString()) {
+                if (password_nueva.text.toString() == password_repetida.text.toString()) {
                     val insertado = usuario.crearPass(password_nueva.getText().toString(), this@MainActivity)
                     if (insertado) {
                         dialogCrearPass.dismiss()

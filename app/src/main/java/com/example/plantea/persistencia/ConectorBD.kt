@@ -142,6 +142,20 @@ class ConectorBD(ctx: Context?) {
         }
     }
 
+    /*Insertamos el usuario*/
+    fun insertarUsuario(username:String?, name: String?, pass: String?): Boolean {
+        //Creamos el registro a insertar como objeto ContentValues
+        val nuevoUsuario = ContentValues()
+        nuevoUsuario.put("username", username)
+        nuevoUsuario.put("name", name)
+        nuevoUsuario.put("password", pass)
+
+        //Insertamos el registro en la base de datos
+        val resultado = db?.insert("Usuario_Planificador", null, nuevoUsuario) ?: -1
+
+        return resultado != -1L
+    }
+
     /*Verificar contraseña para login*/
     fun consultarPass(pass: String?): Boolean {
         var resultado = false

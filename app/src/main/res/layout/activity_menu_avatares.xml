@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#DDECEC"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,32 +14,16 @@
         android:layout_marginTop="48dp"
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
-        android:text="Selecciona el avatar del planificador:"
-        android:textColor="@color/black"
+        android:text="¡Selecciona el avatar del planificador!"
+        android:textColor="@color/teal_900"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_guardarFotoPlanificador"
-        android:layout_width="186dp"
-        android:layout_height="68dp"
-        android:fontFamily="@font/montserrat_semibold"
-        android:maxWidth="10dp"
-        android:text="@string/btn_Guardar"
-        android:textColor="#203130"
-        app:cornerRadius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.312"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948" />
-
-    <Button
         android:id="@+id/btn_galeria"
-        android:layout_width="300dp"
-        android:layout_height="68dp"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
         android:maxWidth="10dp"
         android:text="Seleccionar foto de la galeria"
@@ -46,10 +31,9 @@
         app:cornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.752"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948" />
+        app:layout_constraintVertical_bias="0.945" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -76,10 +60,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp">
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar1chica">
 
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -89,9 +74,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp">
+                android:layout_height="200dp"
+                android:id="@+id/avatar2chica"
+                app:cardCornerRadius="20dp">
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
+
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -101,9 +88,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar3chica"
+ >
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -113,9 +102,10 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar4chica" >
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -125,9 +115,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar5chica" >
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
+                    
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -137,9 +129,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar1chico" >
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
+                    
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -149,9 +143,10 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar2chico" >
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -161,9 +156,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar3chico" >
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
+                    
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -173,9 +170,10 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar4chico">
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
@@ -185,9 +183,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="200dp"
-                android:layout_height="200dp" >
+                android:layout_height="200dp"
+                app:cardCornerRadius="20dp"
+                android:id="@+id/avatar5chico">
                 <ImageView
-                    android:id="@+id/image_RolPlanificador"
+                    
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"

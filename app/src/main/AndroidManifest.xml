@@ -86,6 +86,22 @@
             android:label="Registrarse"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.MenuAvataresPlanActivity"
+            android:label="Elige avatar planificador"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.MenuObjetosActivity"
+            android:label="Elige avatar planificador"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.MenuAvataresTEActivity"
+            android:label="Elige avatar planificador"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+
         <receiver android:name=".dominio.onAlarmReceiver" />
 
     </application>

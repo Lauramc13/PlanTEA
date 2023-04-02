@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -44,19 +43,33 @@ class PasswordActivity : AppCompatActivity() {
         btn_guardar = findViewById(R.id.btn_Guardar)
 
         //Este método se ejecutará al seleccionar el boton guardar
-        btn_guardar.setOnClickListener(View.OnClickListener {
-            if (viejaPass.getText().toString() == "" || nuevaPass.getText().toString() == "" || confirmaPass.getText().toString() == "") {
-                Toast.makeText(applicationContext, "Debes completar todos los campos", Toast.LENGTH_LONG).show()
+        btn_guardar.setOnClickListener {
+            if (viejaPass.text.toString() == "" || nuevaPass.text.toString() == "" || confirmaPass.text.toString() == "") {
+                Toast.makeText(
+                    applicationContext,
+                    "Debes completar todos los campos",
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
-                actualizado = usuario.confirmarPass(viejaPass.getText().toString(), nuevaPass.getText().toString(), confirmaPass.getText().toString(), this@PasswordActivity)
-                if (actualizado!!) {
-                    Toast.makeText(applicationContext, "Contraseña actualizada", Toast.LENGTH_LONG).show()
+                actualizado = usuario.confirmarPass(
+                    viejaPass.text.toString(),
+                    nuevaPass.text.toString(),
+                    confirmaPass.text.toString(),
+                    this@PasswordActivity
+                )
+                if (actualizado) {
+                    Toast.makeText(applicationContext, "Contraseña actualizada", Toast.LENGTH_LONG)
+                        .show()
                     finish()
                 } else {
-                    Toast.makeText(applicationContext, "Error al actualizar. Introduce de nuevo los datos. ", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Error al actualizar. Introduce de nuevo los datos. ",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-        })
+        }
     }
 
     //Menu principal
