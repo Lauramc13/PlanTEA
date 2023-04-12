@@ -51,19 +51,19 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
             verPlan = itemView.findViewById(R.id.card_Evento)
             verPlan.setOnClickListener {
                if (listener != null) {
-                   val position = adapterPosition
+                   val position = bindingAdapterPosition
                    listener.viewEventClick(position)
                }
             }
             eliminarEvento.setOnClickListener {
                 if (listener != null) {
-                    val position = adapterPosition
+                    val position = bindingAdapterPosition
                     listener.deleteClick(position)
                 }
             }
             visibilidad.setOnClickListener {
                 if (listener != null) {
-                    val position = adapterPosition
+                    val position = bindingAdapterPosition
                     if (eventos[position].visible == 1) {
                         visibilidad.setImageResource(R.drawable.ic_baseline_visibility_off_40)
                     } else {

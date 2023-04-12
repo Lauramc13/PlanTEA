@@ -119,6 +119,24 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_password"
         app:layout_constraintVertical_bias="0.258" />
 
+    <EditText
+        android:id="@+id/txt_objeto"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:background="@drawable/fondo_texto_login"
+        android:ems="10"
+        android:layout_marginTop="17dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="Objeto tranquilizador"
+        android:inputType="text"
+        android:paddingStart="15dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/check_Plaificado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_password2"
+        app:layout_constraintVertical_bias="0.258" />
+
     <Switch
         android:id="@+id/check_Plaificado"
         android:layout_width="wrap_content"
@@ -130,7 +148,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_password2" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_objeto" />
 
     <EditText
         android:id="@+id/txt_nombreplanificado"

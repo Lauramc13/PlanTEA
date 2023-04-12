@@ -73,10 +73,6 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     override fun pictogramaCuaderno(posicion: Int) {
         val dialog = Dialog(context!!)
         dialog.setContentView(R.layout.dialogo_termometro)

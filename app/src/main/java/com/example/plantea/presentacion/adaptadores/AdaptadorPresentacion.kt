@@ -54,7 +54,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         }
 
         override fun onClick(view: View) {
-            val posicion = adapterPosition
+            val posicion = bindingAdapterPosition
             listener?.onItemSeleccionado(posicion)
             //Diseño item deshabilitado
             card.setBackgroundResource(R.drawable.card_disabled)

@@ -28,7 +28,6 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import java.util.*
 
 class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener {
-    lateinit var recyclerPresentacionPlan: RecyclerView
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
     lateinit var titulo: TextView
@@ -93,8 +92,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         titulo = findViewById(R.id.lbl_titulo)
         txt_objetoAyuda = findViewById(R.id.txt_objetoAyuda)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
-        recyclerPresentacionPlan = findViewById(R.id.recycler_plan)
-
         recyclerView = findViewById(R.id.recycler_plan)
         val orientation = resources.configuration.orientation
         val gridValueManager = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -107,7 +104,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
         // Restore the RecyclerView state if it was saved before
         if (savedInstanceState != null) {
-            recyclerViewState = savedInstanceState.getParcelable("recycler_view_state")
+            recyclerViewState = savedInstanceState.getParcelable("recycler_view_state") //TODO, QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
         objetoAyuda = findViewById(R.id.layout_objetoAyuda)
@@ -115,12 +112,12 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //Obtener preferencias objeto tranquilizador
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         img_objetoAyuda.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-        txt_objetoAyuda.setText(prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault()))
+        txt_objetoAyuda.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
 
         //Comprobar si hay parametros en caso de llamada desde el planificador
         val parametros = this.intent.extras
         if (parametros != null) {
-            titulo.setText(intent.getStringExtra("titulo"))
+            titulo.text = intent.getStringExtra("titulo")
             listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
         } else {
             //Mostrar la planificación a seguir para el niño
@@ -128,15 +125,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             listaPictogramas = plan.mostrarPlanificacion(this) as ArrayList<Pictograma>
             //Mostrar título de la planificación
             tituloObtenido = plan.obtenerTituloPlan(this)
-            titulo.setText(tituloObtenido)
+            titulo.text = tituloObtenido
         }
         adaptador = AdaptadorPresentacion(listaPictogramas, this)
-        recyclerPresentacionPlan.setAdapter(adaptador)
+        recyclerView.adapter = adaptador
         //Mostrar mensaje si no hay plan
         if (listaPictogramas.isEmpty()) {
-            lblMensaje.setVisibility(View.VISIBLE)
+            lblMensaje.visibility = View.VISIBLE
         } else {
-            lblMensaje.setVisibility(View.INVISIBLE)
+            lblMensaje.visibility = View.INVISIBLE
         }
 
         //Este método se ejecutará al seleccionar el icono cuaderno para acceder
@@ -150,7 +147,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             if (!pasosCompletados.empty()) {
                 val posicionUndo = pasosCompletados.pop() as Int
                 val viewHolderPictogramas =
-                    recyclerPresentacionPlan.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
+                    recyclerView.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
                 viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)

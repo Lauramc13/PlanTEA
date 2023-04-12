@@ -44,14 +44,14 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
         }
 
         override fun onLongClick(view: View): Boolean {
-            val posicion = adapterPosition
+            val posicion = bindingAdapterPosition
             listener?.onItemSeleccionado(posicion)
             if (listaPictogramas!![posicion].categoria == 1) {
                 Log.d("tag", "CONSULTAS")
             } else {
                 val data = ClipData.newPlainText("", "")
                 val shadowBuilder = DragShadowBuilder(view)
-                view.startDrag(data, shadowBuilder, view, 0)
+                view. startDragAndDrop(data, shadowBuilder, view, 0)
                 Log.d("tag", "Selecciona pictograma")
             }
             return false

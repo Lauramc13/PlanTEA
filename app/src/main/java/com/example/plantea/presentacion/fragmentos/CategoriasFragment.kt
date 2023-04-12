@@ -23,6 +23,7 @@ class CategoriasFragment : Fragment() {
     lateinit var cardRecompensa: CardView
     lateinit var cardEntretenimiento: CardView
     lateinit var interfaceCategorias: CrearPlanInterface
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val orientation = resources.configuration.orientation
         val layoutId = if (orientation == Configuration.ORIENTATION_LANDSCAPE) R.layout.fragment_categorias else R.layout.fragment_categorias_portrait
@@ -52,7 +53,4 @@ class CategoriasFragment : Fragment() {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
 }

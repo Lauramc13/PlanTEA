@@ -12,11 +12,6 @@ class Usuario_Planificador {
         password = pass
     }
 
-    fun crearPass(password: String?, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.crearPassword(password, actividad)
-        return resultado!!
-    }
-
     fun crearUsuario(name:String?, username: String?, password: String?, actividad: Activity?): Boolean {
         resultado = gestorUsuario.crearUsuario(name, username, password, actividad)
         return resultado!!

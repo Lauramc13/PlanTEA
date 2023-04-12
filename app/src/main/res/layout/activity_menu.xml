@@ -7,22 +7,6 @@
     android:background="#B5DFDE"
     tools:context=".presentacion.actividades.MenuActivity">
 
-
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="600dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_bg"
-        android:elevation="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/layout_Emociones"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.34">
-
-    </SearchView>
-
-
     <LinearLayout
         android:id="@+id/layout_Emociones"
         android:layout_width="250dp"

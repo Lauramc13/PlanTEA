@@ -60,10 +60,6 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     fun iniciarAdaptadorEvento() {
         diaEvento.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){

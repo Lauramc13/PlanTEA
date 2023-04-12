@@ -82,7 +82,7 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
         }
 
         override fun onClick(view: View) {
-            val fecha = diasMes[adapterPosition]
+            val fecha = diasMes[bindingAdapterPosition]
             listener?.diaSeleccionado(fecha)
         }
     }

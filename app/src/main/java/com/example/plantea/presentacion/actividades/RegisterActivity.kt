@@ -15,6 +15,7 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txt_password : EditText
     private lateinit var txt_password2 : EditText
     private lateinit var txt_nameplanificado : EditText
+    private lateinit var txt_objeto : EditText
     private lateinit var checkUserPlanificado : Switch
     private var creado: Boolean = false
 
@@ -37,6 +38,7 @@ class RegisterActivity : AppCompatActivity(){
         txt_username = findViewById(R.id.txt_UserName)
         txt_password = findViewById(R.id.txt_password)
         txt_password2 = findViewById(R.id.txt_password2)
+        txt_objeto = findViewById(R.id.txt_objeto)
         txt_nameplanificado = findViewById(R.id.txt_nombreplanificado)
         checkUserPlanificado = findViewById(R.id.check_Plaificado)
         txt_nameplanificado.isEnabled = false
@@ -49,7 +51,7 @@ class RegisterActivity : AppCompatActivity(){
 
         btnRegister.setOnClickListener {
           //  Handler().postDelayed({
-            if(txt_name.text.toString() == "" ||  txt_username.text.toString() == "" || txt_password.text.toString() == "" || txt_password2.text.toString() == "" || (checkUserPlanificado.isChecked && txt_nameplanificado.text.toString() == "")){
+            if(txt_name.text.toString() == "" ||  txt_username.text.toString() == "" || txt_password.text.toString() == "" || txt_objeto.text.toString() == "" || txt_password2.text.toString() == "" || (checkUserPlanificado.isChecked && txt_nameplanificado.text.toString() == "")){
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             }else{
                 if( txt_password.text.toString() != txt_password2.text.toString() ){
@@ -64,6 +66,7 @@ class RegisterActivity : AppCompatActivity(){
                         editor.putString("username", txt_username.text.toString())
                         editor.putString("password", txt_password.text.toString()) //TODO GUARDAR LA CONTRASEÑA ENCRIPTADA
                         editor.putString("nombreUsuarioTEA", txt_nameplanificado.text.toString())
+                        editor.putString("nombreObjeto", txt_objeto.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
                         editor.commit()
                         val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)

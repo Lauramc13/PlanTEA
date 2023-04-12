@@ -14,6 +14,7 @@ class PreLoginActivity : AppCompatActivity(){
     private lateinit var username: EditText
     private lateinit var password: EditText
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val userAccount = prefs.getBoolean("userAccount", false)

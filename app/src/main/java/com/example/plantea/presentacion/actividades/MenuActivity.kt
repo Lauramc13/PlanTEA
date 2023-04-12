@@ -2,13 +2,11 @@ package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -17,7 +15,6 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
-import com.example.plantea.presentacion.actividades.PreLoginActivity
 
 class MenuActivity : AppCompatActivity() {
     private lateinit var cardCalendario: CardView

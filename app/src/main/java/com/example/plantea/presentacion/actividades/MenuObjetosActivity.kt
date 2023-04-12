@@ -104,7 +104,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         val cw = ContextWrapper(context)
         val dirImages = cw.getDir("Imagenes", MODE_PRIVATE)
         val myPath = File(dirImages, "$nombre.png")
-        var fos: FileOutputStream?
+        val fos: FileOutputStream?
         try {
             fos = FileOutputStream(myPath)
             imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña

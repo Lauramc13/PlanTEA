@@ -43,7 +43,6 @@ class Pictograma : Serializable {
     }
 
     fun obtenerImagenEvento(actividad: Activity?, consulta: String?, idCategoria: Int): String? {
-        val ruta: String? = gestorPictogramas.obtenerImagenPictograma(actividad, consulta, idCategoria)
-        return ruta
+        return gestorPictogramas.obtenerImagenPictograma(actividad, consulta, idCategoria)
     }
 }

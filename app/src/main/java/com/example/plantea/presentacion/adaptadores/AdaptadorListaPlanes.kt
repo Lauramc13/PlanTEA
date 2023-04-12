@@ -49,26 +49,26 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
             itemView.setOnLongClickListener(this)
             editar.setOnClickListener {
                 if (listener != null) {
-                    val position = adapterPosition
+                    val position = bindingAdapterPosition
                     listener.editClick(position)
                 }
             }
             eliminar.setOnClickListener {
                 if (listener != null) {
-                    val position = adapterPosition
+                    val position = bindingAdapterPosition
                     listener.deleteClick(position)
                 }
             }
             duplicar.setOnClickListener {
                 if (listener != null) {
-                    val position = adapterPosition
+                    val position = bindingAdapterPosition
                     listener.duplicateClick(position)
                 }
             }
         }
 
         override fun onLongClick(view: View): Boolean {
-            val posicion = adapterPosition
+            val posicion = bindingAdapterPosition
             listener?.planSeleccionado(posicion)
             card.setCardBackgroundColor(Color.rgb(224, 224, 224))
             return false

@@ -14,7 +14,7 @@ class onAlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         builder.setSmallIcon(R.drawable.ic_baseline_notifications_24)
         builder.setContentTitle(intent.extras!!.getString("Evento"))
-        builder.setContentText(intent.extras!!["Dia"].toString() + " " + intent.extras!!["Mes"] + ", " + intent.extras!!["Hora"].toString())
+        builder.setContentText(intent.extras?.getString("Dia") + " " + intent.extras?.getString("Mes") + ", " + intent.extras?.getString("Hora"))
         builder.priority = NotificationCompat.PRIORITY_DEFAULT
         val notificationManagerCompat = NotificationManagerCompat.from(context)
         notificationManagerCompat.notify(intent.extras!!.getInt("Id"), builder.build())

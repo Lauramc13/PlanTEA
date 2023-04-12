@@ -22,7 +22,7 @@ class Planificacion : Serializable {
         return resultado
     }
 
-    fun mostrarPlanificacionesDisponibles(actividad: Activity?): ArrayList<*>? {
+    fun mostrarPlanificacionesDisponibles(actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
         listaPlanes = gestionPlan.listarPlanificaciones(actividad) as ArrayList<Planificacion>
         return listaPlanes
@@ -32,7 +32,7 @@ class Planificacion : Serializable {
         gestionPlan.eliminarPlanificacion(actividad, id_plan)
     }
 
-    fun obtenerPictogramasPlanificacion(actividad: Activity?, id_plan: Int): ArrayList<*>? {
+    fun obtenerPictogramasPlanificacion(actividad: Activity?, id_plan: Int): ArrayList<*> {
         listaPictogramas = ArrayList()
         listaPictogramas = gestionPlan.obtenerPictogramasPlanificacion(actividad, id_plan)
         return listaPictogramas

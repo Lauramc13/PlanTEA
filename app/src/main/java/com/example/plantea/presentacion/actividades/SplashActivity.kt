@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
@@ -27,7 +28,7 @@ class SplashActivity : AppCompatActivity() {
         //Preferencias
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val accesoConfiguracion = prefs.getBoolean("iniciadaSesion", false)
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             if (accesoConfiguracion) {
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)
                 startActivity(intent)

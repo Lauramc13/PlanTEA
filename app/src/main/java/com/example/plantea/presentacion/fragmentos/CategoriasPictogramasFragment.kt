@@ -58,10 +58,6 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     //Este método se ejecutará al seleccionar un pictograma para añadirlo en la planificacion
     override fun onItemSeleccionado(posicion: Int) {
         if (listaPictogramas[posicion].categoria == 1) {

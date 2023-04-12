@@ -191,15 +191,15 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     var simpleCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END, ItemTouchHelper.UP) {
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            val fromPosition = viewHolder.adapterPosition
-            val toPosition = target.adapterPosition
+            val fromPosition = viewHolder.getAbsoluteAdapterPosition()
+            val toPosition = target.getAbsoluteAdapterPosition()
             Collections.swap(listaPlanificacion, fromPosition, toPosition)
             recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
             return false
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.adapterPosition
+            val position = viewHolder.getAbsoluteAdapterPosition()
             listaPlanificacion.removeAt(position)
             recyclerView.adapter!!.notifyItemRemoved(position)
         }
@@ -247,7 +247,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_planificacion)
         recyclerView.layoutManager = layoutManager
-        adaptador = AdaptadorPlanificacion(listaPlanificacion, this)
+        adaptador = AdaptadorPlanificacion(listaPlanificacion)
         recyclerView.adapter = adaptador
 
         //Desplaza la lista para insertar un nuevo pictograma

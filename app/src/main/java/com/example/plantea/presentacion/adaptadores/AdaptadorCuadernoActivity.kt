@@ -40,7 +40,7 @@ class AdaptadorCuadernoActivity(var listaPictogramas: ArrayList<Pictograma>?, pr
         }
 
         override fun onClick(view: View) {
-            val posicion = adapterPosition
+            val posicion = bindingAdapterPosition
             listener?.pictogramaCuaderno(posicion)
         }
     }

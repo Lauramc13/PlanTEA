@@ -11,7 +11,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion.ViewHolderPlanificacion
 
-class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, private val listener: OnItemSelectedListener) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
+class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
     interface OnItemSelectedListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanificacion {

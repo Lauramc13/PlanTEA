@@ -112,10 +112,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
-
     private fun iniciarListaPlanificaciones() {
         listaPlanificaciones.layoutManager = LinearLayoutManager(context)
         planes = plan.mostrarPlanificacionesDisponibles(actividad) as ArrayList<Planificacion>
