@@ -3,11 +3,11 @@ package com.example.plantea.dominio
 import android.app.Activity
 
 class Usuario_Planificador {
-    var password: String? = null
-    var gestorUsuario = GestionUsuarios()
+    private var password: String? = null
+    private var gestorUsuario = GestionUsuarios()
     private var resultado: Boolean? = null
 
-    constructor() {}
+    constructor()
     constructor(pass: String?) {
         password = pass
     }

@@ -15,7 +15,7 @@ class Evento {
     private var identificador = 0
     var gestorEventos = GestionEventos()
 
-    constructor() {}
+    constructor()
     constructor(id: Int, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int, imagen: String?) {
         this.id = id
         this.nombre = nombre

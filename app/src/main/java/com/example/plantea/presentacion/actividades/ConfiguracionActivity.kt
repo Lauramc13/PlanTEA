@@ -4,7 +4,6 @@ import 	androidx.activity.result.contract.ActivityResultContracts.PickVisualMedi
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -12,19 +11,16 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
-import org.w3c.dom.Text
+import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-import kotlin.properties.Delegates
 
 class ConfiguracionActivity : AppCompatActivity() {
     private lateinit var img_usuarioPlanificador: ImageView
@@ -34,6 +30,7 @@ class ConfiguracionActivity : AppCompatActivity() {
     private lateinit var txt_UsuarioTEA: TextView
     private lateinit var txt_objeto: TextView
     private lateinit var btn_guardar: Button
+    private lateinit var btn_password: Button
     private lateinit var btn_notificacion: Switch
     private lateinit var lbl_infoUsuario: Switch
     private lateinit var semana: CheckBox
@@ -57,6 +54,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         txt_UsuarioTEA = findViewById(R.id.txt_nombreUsuarioTEA)
         txt_objeto = findViewById(R.id.txt_nombreObjeto)
         btn_guardar = findViewById(R.id.btn_guardarConfiguracion)
+        btn_password = findViewById(R.id.buttonContrasenia)
         btn_notificacion = findViewById(R.id.switch_notificacion)
         lbl_infoUsuario = findViewById(R.id.lbl_infoUsuarioTEA)
         semana = findViewById(R.id.checkBox_semana)
@@ -214,6 +212,11 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.commit()
             }
         }
+
+        btn_password.setOnClickListener{
+            val password = Intent(applicationContext, PasswordActivity::class.java)
+            startActivity(password)
+        }
     }
 
     //Menu principal
@@ -249,7 +252,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         val cw = ContextWrapper(context)
         val dirImages = cw.getDir("Imagenes", MODE_PRIVATE)
         val myPath = File(dirImages, "$nombre.png")
-        var fos: FileOutputStream? = null
+        var fos: FileOutputStream?
         try {
             fos = FileOutputStream(myPath)
             imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña

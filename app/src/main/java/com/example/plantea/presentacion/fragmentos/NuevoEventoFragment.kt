@@ -87,11 +87,11 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
                 planSeleccionado,
                 rutaImagen
             )
-            eventoInterface!!.nuevoEvento(evento)
+            eventoInterface.nuevoEvento(evento)
             Toast.makeText(context, "Evento creado", Toast.LENGTH_SHORT).show()
         }
-        btn_planificar.setOnClickListener(View.OnClickListener { eventoInterface.planificar() })
-        cancelarEvento.setOnClickListener(View.OnClickListener { eventoInterface.cancelarEvento() })
+        btn_planificar.setOnClickListener { eventoInterface.planificar() }
+        cancelarEvento.setOnClickListener { eventoInterface.cancelarEvento() }
         return vista
     }
 
@@ -158,16 +158,16 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         dialogoEliminar.setCancelable(false)
         dialogoEliminar.setPositiveButton("Confirmar") { dialogoEliminar, id ->
             Toast.makeText(context, "Planificación eliminada", Toast.LENGTH_SHORT).show()
-            plan.eliminarPlanificacion(actividad, planes!![posicion].id)
-            planes!!.removeAt(posicion)
-            adaptador!!.notifyDataSetChanged()
+            plan.eliminarPlanificacion(actividad, planes[posicion].id)
+            planes.removeAt(posicion)
+            adaptador.notifyDataSetChanged()
             //Mostramos un mensaje informando si la lista está vacía
-            if (planes!!.isEmpty()) {
-                listaPlanificaciones!!.visibility = View.GONE
-                mensajePlanes!!.visibility = View.VISIBLE
+            if (planes.isEmpty()) {
+                listaPlanificaciones.visibility = View.GONE
+                mensajePlanes.visibility = View.VISIBLE
             } else {
-                listaPlanificaciones!!.visibility = View.VISIBLE
-                mensajePlanes!!.visibility = View.GONE
+                listaPlanificaciones.visibility = View.VISIBLE
+                mensajePlanes.visibility = View.GONE
             }
         }
         dialogoEliminar.setNegativeButton("Cancelar") { dialogoEliminar, id -> dialogoEliminar.dismiss() }
@@ -176,18 +176,18 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
 
     override fun editClick(posicion: Int) {
         pictogramas = ArrayList()
-        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes!![posicion].id) as ArrayList<Pictograma>
+        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as ArrayList<Pictograma>
         val intent = Intent(actividad, CrearPlanActivity::class.java)
-        intent.putExtra("identificador", planes!![posicion].id)
-        intent.putExtra("titulo", planes!![posicion].titulo)
+        intent.putExtra("identificador", planes[posicion].id)
+        intent.putExtra("titulo", planes[posicion].titulo)
         intent.putExtra("pictogramas", pictogramas)
         startActivity(intent)
     }
 
     override fun duplicateClick(posicion: Int) {
         pictogramas = ArrayList()
-        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes!![posicion].id) as ArrayList<Pictograma>
-        val creada = plan.crearPlanificacion(actividad, pictogramas, planes!![posicion].titulo)
+        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as ArrayList<Pictograma>
+        val creada = plan.crearPlanificacion(actividad, pictogramas, planes[posicion].titulo)
         if (creada) {
             Toast.makeText(context, "Planificación duplicada", Toast.LENGTH_LONG).show()
             iniciarListaPlanificaciones()

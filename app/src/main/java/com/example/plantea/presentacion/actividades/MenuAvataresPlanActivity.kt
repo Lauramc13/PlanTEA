@@ -33,7 +33,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
             abrirGaleria() //TODO ARREGLAR EL CODIGO UN POQUITO MEJOR
-            if(imagenSeleccionada == true){
+            if(imagenSeleccionada){
                 val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
                 startActivity(intent)
             }else{
@@ -113,7 +113,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         val cw = ContextWrapper(context)
         val dirImages = cw.getDir("Imagenes", MODE_PRIVATE)
         val myPath = File(dirImages, "$nombre.png")
-        var fos: FileOutputStream? = null
+        var fos: FileOutputStream?
         try {
             fos = FileOutputStream(myPath)
             imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña

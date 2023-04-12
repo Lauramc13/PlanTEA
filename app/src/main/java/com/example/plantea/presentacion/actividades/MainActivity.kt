@@ -21,18 +21,14 @@ import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var icono_cerrar: ImageView
     private lateinit var icono_cerrar_login: ImageView
     private lateinit var icono_ayuda: ImageView
     private lateinit var image_Planificador: ImageView
     private lateinit var image_UsuarioTEA: ImageView
     private lateinit var conectorBD: ConectorBD
-    private lateinit var password_nueva: TextView
-    private lateinit var password_repetida: TextView
     private lateinit var password: TextView
     private lateinit var nombrePlanificador: TextView
     private lateinit var nombreUsuarioTEA: TextView
-    private lateinit var btn_guardar: Button
     private lateinit var btn_acceder: Button
     private lateinit var cardUsuarioTEA: CardView
     private lateinit var cardUsuarioPlanificador: CardView
@@ -123,43 +119,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        icono_cerrar_login.setOnClickListener(View.OnClickListener { dialogLogin.dismiss() })
+        icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
         dialogLogin.show()
     }
 
-    fun crearDialogoPassword() {
-        val dialogCrearPass = Dialog(this)
-        dialogCrearPass.setContentView(R.layout.dialogo_crear_password)
-        dialogCrearPass.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialogCrearPass.show()
-        password_nueva = dialogCrearPass.findViewById(R.id.txt_NewPass)
-        password_repetida = dialogCrearPass.findViewById(R.id.txt_RepitePass)
-        btn_guardar = dialogCrearPass.findViewById(R.id.btn_CrearPass)
-        icono_cerrar = dialogCrearPass.findViewById(R.id.icono_CerrarDialogo)
-        btn_guardar.setOnClickListener(View.OnClickListener {
-            if (password_nueva.text.toString() == "" || password_repetida.text.toString() == "") {
-                Toast.makeText(applicationContext, "Debes completar todos los campos", Toast.LENGTH_LONG).show()
-            } else {
-                if (password_nueva.text.toString() == password_repetida.text.toString()) {
-                    val insertado = usuario.crearPass(password_nueva.getText().toString(), this@MainActivity)
-                    if (insertado) {
-                        dialogCrearPass.dismiss()
-                        //Cambiamos el valor en preferencias ya que hemos creado contraseña
-                        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        val editor = prefs.edit()
-                        editor.putBoolean("password", true)
-                        editor.commit()
-                        Toast.makeText(applicationContext, "Contraseña creada con éxito", Toast.LENGTH_LONG).show()
-                        val intent = Intent(applicationContext, MenuActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(applicationContext, "No se ha podido crear la contraseña", Toast.LENGTH_LONG).show()
-                    }
-                } else {
-                    Toast.makeText(applicationContext, "La contraseña no coincide", Toast.LENGTH_LONG).show()
-                }
-            }
-        })
-        icono_cerrar.setOnClickListener(View.OnClickListener { dialogCrearPass.dismiss() })
-    }
 }

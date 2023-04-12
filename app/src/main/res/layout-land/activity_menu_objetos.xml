@@ -14,7 +14,7 @@
         android:layout_marginTop="48dp"
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
-        android:text="Selecciona el avatar del planificado"
+        android:text="Selecciona la actividad tranquilizadora"
         android:textColor="@color/teal_900"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,10 +47,10 @@
 
 
         <GridLayout
-            android:id="@+id/opcionesAvatarTEA"
+            android:id="@+id/opcionesObjetos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="3"
+            android:columnCount="4"
             android:gravity="center"
             android:horizontalSpacing="10dp"
             android:rowCount="2"
@@ -62,13 +62,13 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar1nina">
+                android:id="@+id/bici">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar1nina" />
+                    app:srcCompat="@drawable/bici" />
 
             </androidx.cardview.widget.CardView>
 
@@ -76,13 +76,13 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar2nina">
+                android:id="@+id/recompensa">
                 <ImageView
 
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar2nina" />
+                    app:srcCompat="@drawable/recompensa" />
 
             </androidx.cardview.widget.CardView>
 
@@ -90,13 +90,13 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar3nina"
+                android:id="@+id/juegos"
  >
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar3nina" />
+                    app:srcCompat="@drawable/juegos" />
 
             </androidx.cardview.widget.CardView>
 
@@ -104,12 +104,12 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar4nina" >
+                android:id="@+id/comida" >
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar4nina" />
+                    app:srcCompat="@drawable/comida" />
 
             </androidx.cardview.widget.CardView>
 
@@ -117,27 +117,13 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar5nina" >
-                <ImageView
-                    
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar5nina" />
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                app:cardCornerRadius="20dp"
-                android:id="@+id/avatar1nino" >
+                android:id="@+id/futbol" >
                 <ImageView
                     
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar1nino" />
+                    app:srcCompat="@drawable/futbol" />
 
             </androidx.cardview.widget.CardView>
 
@@ -145,13 +131,13 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar2nino" >
+                android:id="@+id/libros" >
                 <ImageView
                     
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar2nino" />
+                    app:srcCompat="@drawable/libros" />
 
             </androidx.cardview.widget.CardView>
 
@@ -159,13 +145,13 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar3nino" >
+                android:id="@+id/movil" >
                 <ImageView
                     
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar3nino" />
+                    app:srcCompat="@drawable/movil" />
 
             </androidx.cardview.widget.CardView>
 
@@ -173,28 +159,16 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
-                android:id="@+id/avatar4nino">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar4nino" />
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                app:cardCornerRadius="20dp"
-                android:id="@+id/avatar5nino">
+                android:id="@+id/musica" >
                 <ImageView
                     
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar5nino" />
+                    app:srcCompat="@drawable/musica" />
 
             </androidx.cardview.widget.CardView>
+
         </GridLayout>
 
     </LinearLayout>

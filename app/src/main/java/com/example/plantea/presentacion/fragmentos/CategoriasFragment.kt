@@ -34,13 +34,13 @@ class CategoriasFragment : Fragment() {
         cardEntretenimiento = vista.findViewById(R.id.categoria_entretenimiento)
         cardLugares = vista.findViewById(R.id.categoria_lugares)
         cardRecompensa = vista.findViewById(R.id.categoria_recompensa)
-        cardConsultas.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(1) })
-        cardProfesionales.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(2) })
-        cardLugares.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(3) })
-        cardDesplazamiento.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(4) })
-        cardAccion.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(5) })
-        cardEntretenimiento.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(6) })
-        cardRecompensa.setOnClickListener(View.OnClickListener { interfaceCategorias!!.mostrarCategoria(7) })
+        cardConsultas.setOnClickListener { interfaceCategorias.mostrarCategoria(1) }
+        cardProfesionales.setOnClickListener { interfaceCategorias.mostrarCategoria(2) }
+        cardLugares.setOnClickListener { interfaceCategorias.mostrarCategoria(3) }
+        cardDesplazamiento.setOnClickListener { interfaceCategorias.mostrarCategoria(4) }
+        cardAccion.setOnClickListener { interfaceCategorias.mostrarCategoria(5) }
+        cardEntretenimiento.setOnClickListener { interfaceCategorias.mostrarCategoria(6) }
+        cardRecompensa.setOnClickListener { interfaceCategorias.mostrarCategoria(7) }
         return vista
     }
 

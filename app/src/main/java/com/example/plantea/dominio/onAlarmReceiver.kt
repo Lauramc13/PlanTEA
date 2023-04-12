@@ -22,6 +22,5 @@ class onAlarmReceiver : BroadcastReceiver() {
 
     companion object {
         private const val CHANNEL_ID = "PlanTEA"
-        private const val NOTIFICATION_ID = 1
     }
 }

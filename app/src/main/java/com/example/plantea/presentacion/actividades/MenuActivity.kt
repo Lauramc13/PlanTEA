@@ -1,24 +1,30 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Dialog
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
-import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
+import com.example.plantea.presentacion.actividades.PreLoginActivity
 
 class MenuActivity : AppCompatActivity() {
     private lateinit var cardCalendario: CardView
     private lateinit var cardEmociones: CardView
     private lateinit var cardPlanificacion: CardView
+    lateinit var btn_logout: Button
+    lateinit var icono_cerrar_login : AppCompatImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,13 +62,26 @@ class MenuActivity : AppCompatActivity() {
                 val manual = Intent(applicationContext, ManualActivity::class.java)
                 startActivity(manual)
             }
-            R.id.item_password -> {
-                val password = Intent(applicationContext, PasswordActivity::class.java)
-                startActivity(password)
-            }
             R.id.item_perfil -> {
                 val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
                 startActivity(perfil)
+            }
+            R.id.item_logout -> {
+                val dialogLogout = Dialog(this)
+                dialogLogout.setContentView(R.layout.dialogo_logout)
+                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                btn_logout.setOnClickListener {
+                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                    val editor = prefs.edit()
+                    editor.putBoolean("userAccount", false)
+                    editor.commit()
+                    val intent = Intent(applicationContext, PreLoginActivity::class.java)
+                    startActivity(intent)
+                }
+                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                dialogLogout.show()
             }
             android.R.id.home -> {
                 val it = Intent(applicationContext, MainActivity::class.java)

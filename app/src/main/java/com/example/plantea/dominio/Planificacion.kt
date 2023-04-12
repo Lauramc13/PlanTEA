@@ -7,11 +7,11 @@ class Planificacion : Serializable {
     lateinit var titulo: String
     var id = 0
     private var resultado = false
-    lateinit var listaPlanes: ArrayList<Planificacion>
+    private lateinit var listaPlanes: ArrayList<Planificacion>
     lateinit var listaPictogramas: ArrayList<Pictograma>
-    var gestionPlan = GestionPlanificaciones()
+    private var gestionPlan = GestionPlanificaciones()
 
-    constructor() {}
+    constructor()
     constructor(titulo: String, id: Int) {
         this.titulo = titulo
         this.id = id

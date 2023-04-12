@@ -96,7 +96,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerPresentacionPlan = findViewById(R.id.recycler_plan)
 
         recyclerView = findViewById(R.id.recycler_plan)
-        var orientation = resources.configuration.orientation;
+        val orientation = resources.configuration.orientation
         val gridValueManager = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             3
         } else {
@@ -140,31 +140,34 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
 
         //Este método se ejecutará al seleccionar el icono cuaderno para acceder
-        iconoCuaderno.setOnClickListener(View.OnClickListener {
+        iconoCuaderno.setOnClickListener {
             val intent = Intent(applicationContext, CuadernoActivity::class.java)
             startActivity(intent)
-        })
+        }
 
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
-        iconoDeshacer.setOnClickListener(View.OnClickListener {
+        iconoDeshacer.setOnClickListener {
             if (!pasosCompletados.empty()) {
                 val posicionUndo = pasosCompletados.pop() as Int
-                val viewHolderPictogramas = recyclerPresentacionPlan.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
+                val viewHolderPictogramas =
+                    recyclerPresentacionPlan.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
                 viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
-                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card).setBackgroundResource(R.drawable.card_personalizado)
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                    .setBackgroundResource(R.drawable.card_personalizado)
             }
-        })
-        objetoAyuda.setOnClickListener(View.OnClickListener {
+        }
+        objetoAyuda.setOnClickListener {
             val dialog = Dialog(this@PlanActivity)
             dialog.setContentView(R.layout.dialogo_presentacion)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
             val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
             pictograma.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-            tituloPictograma.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+            tituloPictograma.text =
+                prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
             dialog.show()
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -198,28 +201,28 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
 
         //Si es recompensa mostramos el dialogo diferente
-        if (listaPictogramas!![posicion].categoria == 7) {
-            imagenConfeti.setVisibility(View.VISIBLE)
-            mensajePremio.setVisibility(View.VISIBLE)
-            imagenConfeti.setAnimation(animFondo)
-            card.setAnimation(animCard)
-            mensajePremio.setAnimation(animFondo)
-        } else if (listaPictogramas!![posicion].categoria == 6) {
-            imagenConfeti.setVisibility(View.VISIBLE)
-            mensajePremio.setVisibility(View.VISIBLE)
+        if (listaPictogramas[posicion].categoria == 7) {
+            imagenConfeti.visibility = View.VISIBLE
+            mensajePremio.visibility = View.VISIBLE
+            imagenConfeti.animation = animFondo
+            card.animation = animCard
+            mensajePremio.animation = animFondo
+        } else if (listaPictogramas[posicion].categoria == 6) {
+            imagenConfeti.visibility = View.VISIBLE
+            mensajePremio.visibility = View.VISIBLE
             imagenConfeti.setImageResource(R.drawable.espera)
-            mensajePremio.setText("¡Mientras esperamos!")
-            imagenConfeti.setAnimation(animCard)
-            card.setAnimation(animCard)
-            mensajePremio.setAnimation(animFondo)
+            mensajePremio.text = "¡Mientras esperamos!"
+            imagenConfeti.animation = animCard
+            card.animation = animCard
+            mensajePremio.animation = animFondo
         } else {
-            imagenConfeti.setVisibility(View.INVISIBLE)
-            mensajePremio.setVisibility(View.INVISIBLE)
+            imagenConfeti.visibility = View.INVISIBLE
+            mensajePremio.visibility = View.INVISIBLE
         }
         val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
-        pictograma.setImageURI(Uri.parse(listaPictogramas!![posicion].imagen))
-        tituloPictograma.text = listaPictogramas!![posicion].titulo
+        pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
+        tituloPictograma.text = listaPictogramas[posicion].titulo
         dialog.show()
     }
 }

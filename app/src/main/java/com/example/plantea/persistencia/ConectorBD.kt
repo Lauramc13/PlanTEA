@@ -53,11 +53,7 @@ class ConectorBD(ctx: Context?) {
         pictograma.put("id_plan", id_plan)
         //Insertamos el registro en la base de datos
         val resultado = db!!.insert("Pictograma_Plan", null, pictograma).toInt()
-        return if (resultado == -1) {
-            false
-        } else {
-            true
-        }
+        return resultado != -1
     }
 
     /*Insertar una nueva planificacion*/
@@ -135,11 +131,7 @@ class ConectorBD(ctx: Context?) {
         nuevaPass.put("password", pass)
         //Insertamos el registro en la base de datos
         val resultado = db!!.insert("Usuario_Planificador", null, nuevaPass).toInt()
-        return if (resultado == -1) {
-            false
-        } else {
-            true
-        }
+        return resultado != -1
     }
 
     /*Insertamos el usuario*/
@@ -161,19 +153,14 @@ class ConectorBD(ctx: Context?) {
         var resultado = false
         val c = db!!.rawQuery("SELECT password from Usuario_Planificador where Usuario_Planificador.id = 1", null)
         if (c.moveToFirst()) {
-            resultado = if (c.getString(0) == pass) {
-                true
-            } else {
-                false
-            }
+            resultado = c.getString(0) == pass
         }
         return resultado
     }
 
     /*Cambiar contraseña del usuario*/
     fun actualizarPass(passNueva: String, passVieja: String): Boolean {
-        val actualizado: Boolean
-        actualizado = if (consultarPass(passVieja)) {
+        val actualizado: Boolean = if (consultarPass(passVieja)) {
             db!!.execSQL("UPDATE Usuario_Planificador SET password ='$passNueva' WHERE Usuario_Planificador.id = 1")
             true
         } else {

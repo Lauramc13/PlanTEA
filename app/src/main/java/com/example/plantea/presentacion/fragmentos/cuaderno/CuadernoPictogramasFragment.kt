@@ -52,17 +52,16 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
         val orientation = resources.configuration.orientation
-        val gridValueManager: Int
-        gridValueManager = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             3 // set the number of columns to 3 for portrait mode
         } else {
             5 // set the number of columns to 5 for landscape mode
         }
-        lst_Pictogramas.setLayoutManager(GridLayoutManager(context, gridValueManager))
+        lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
         val adaptador = AdaptadorPictogramasCuaderno(listaPictogramas, this)
-        lst_Pictogramas.setAdapter(adaptador)
+        lst_Pictogramas.adapter = adaptador
         image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
-        image_Cerrar.setOnClickListener(View.OnClickListener { interfaceCuaderno!!.cerrarFragment() })
+        image_Cerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
         return vista
     }
 
@@ -85,33 +84,31 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
         seekbar = dialog.findViewById(R.id.seekBar_termometro)
-        pictograma.setImageURI(Uri.parse(listaPictogramas!![posicion].imagen))
-        tituloPictograma.text = listaPictogramas!![posicion].titulo
+        pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
+        tituloPictograma.text = listaPictogramas[posicion].titulo
 
         //Funcionalidad termómetro: cambio de color según el progreso
-        if (seekbar != null) {
-            seekbar!!.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    // Write code to perform some action when progress is changed.
-                    if (progress < 30) {
-                        seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(118, 255, 3))
-                    } else if (progress < 60) {
-                        seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 165, 0))
-                    } else if (progress < 100) {
-                        seekBar.progressTintList = ColorStateList.valueOf(Color.RED)
-                    }
+        seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                // Write code to perform some action when progress is changed.
+                if (progress < 30) {
+                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(118, 255, 3))
+                } else if (progress < 60) {
+                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 165, 0))
+                } else if (progress < 100) {
+                    seekBar.progressTintList = ColorStateList.valueOf(Color.RED)
                 }
+            }
 
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
-                    // Write code to perform some action when touch is started.
-                }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                // Write code to perform some action when touch is started.
+            }
 
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    // Write code to perform some action when touch is stopped.
-                    // Toast.makeText(getContext(), "Progress is " + seekBar.getProgress() + "%", Toast.LENGTH_SHORT).show();
-                }
-            })
-        }
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                // Write code to perform some action when touch is stopped.
+                // Toast.makeText(getContext(), "Progress is " + seekBar.getProgress() + "%", Toast.LENGTH_SHORT).show();
+            }
+        })
         dialog.show()
     }
 }

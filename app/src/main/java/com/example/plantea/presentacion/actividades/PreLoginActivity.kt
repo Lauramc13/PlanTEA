@@ -1,18 +1,12 @@
 package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import com.example.plantea.R
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-
 class PreLoginActivity : AppCompatActivity(){
 
     private lateinit var btnLogin: Button
@@ -72,10 +66,10 @@ class PreLoginActivity : AppCompatActivity(){
 
         }
 
-        btnRegister.setOnClickListener(View.OnClickListener {
+        btnRegister.setOnClickListener {
             val intent = Intent(applicationContext, RegisterActivity::class.java)
             startActivity(intent)
-        })
+        }
 
     }
 }

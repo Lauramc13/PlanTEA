@@ -22,7 +22,7 @@ object CalendarioUtilidades {
 
     @JvmStatic
     fun formatoFechaEvento(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("dd MMMM YYYY", Locale("es", "ES"))
+        val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("es", "ES"))
         return fecha.format(formato)
     }
 
@@ -34,7 +34,7 @@ object CalendarioUtilidades {
 
     @JvmStatic
     fun formatoMesAnio(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("MMMM YYYY", Locale("es", "ES"))
+        val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("es", "ES"))
         return fecha.format(formato)
     }
 
@@ -46,14 +46,14 @@ object CalendarioUtilidades {
         //Se obtiene el número de días de un mes
         val mesAnio = YearMonth.from(fecha)
         val maxDias = mesAnio.lengthOfMonth()
-        val primeroMes = fechaSeleccionada!!.withDayOfMonth(1)
+        val primeroMes = fechaSeleccionada.withDayOfMonth(1)
         val diaSemana = primeroMes.dayOfWeek.value
         var dia = 1
         for (i in 1..42) {
             if (i < diaSemana || i >= maxDias + diaSemana) {
                 diasMes.add(null)
             } else {
-                diasMes.add(LocalDate.of(fechaSeleccionada!!.year, fechaSeleccionada!!.month, dia++))
+                diasMes.add(LocalDate.of(fechaSeleccionada.year, fechaSeleccionada.month, dia++))
             }
         }
         return diasMes

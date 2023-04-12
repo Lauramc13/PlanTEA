@@ -20,17 +20,17 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
     }
 
     override fun onBindViewHolder(holder: ViewHolderPlanificacion, position: Int) {
-        holder.titulo.text = listaPlanificacion!![position]!!.titulo
-        holder.imagen.setImageURI(Uri.parse(listaPlanificacion!![position]!!.imagen))
+        holder.titulo.text = listaPlanificacion[position].titulo
+        holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
 
         //Normal
         holder.premio.visibility = View.INVISIBLE
         holder.premio.setImageResource(R.drawable.categoria_recompensa)
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
-        if (listaPlanificacion!![position]!!.categoria == 7) { //Premio
+        if (listaPlanificacion[position].categoria == 7) { //Premio
             holder.premio.visibility = View.VISIBLE
             holder.card.setBackgroundResource(R.drawable.card_premio)
-        } else if (listaPlanificacion!![position]!!.categoria == 6) { //Espera
+        } else if (listaPlanificacion[position].categoria == 6) { //Espera
             holder.premio.visibility = View.VISIBLE
             holder.premio.setImageResource(R.drawable.reloj)
             holder.card.setBackgroundResource(R.drawable.card_espera)
@@ -38,7 +38,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
     }
 
     override fun getItemCount(): Int {
-        return listaPlanificacion!!.size
+        return listaPlanificacion.size
     }
 
     inner class ViewHolderPlanificacion(itemView: View) : RecyclerView.ViewHolder(itemView) {

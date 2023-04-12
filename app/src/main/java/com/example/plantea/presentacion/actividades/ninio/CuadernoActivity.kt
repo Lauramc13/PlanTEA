@@ -26,15 +26,14 @@ import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasF
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
 
 class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuadernoActivity.OnItemSelectedListener {
-    var transaction: FragmentTransaction? = null
-    var fragmentPrincipal: Fragment? = null
-    var fragmentCuadernoPictogramas: Fragment? = null
+    private var transaction: FragmentTransaction? = null
+    private var fragmentPrincipal: Fragment? = null
+    private var fragmentCuadernoPictogramas: Fragment? = null
     var listaPictogramas: ArrayList<Pictograma>? = null
-    var listaEscala: ArrayList<Pictograma>? = null
-    var listaTiempo: ArrayList<Pictograma>? = null
-    var recyclerView: RecyclerView? = null
-    var adaptador: AdaptadorCuadernoActivity? = null
-    var picto = Pictograma()
+    private var listaEscala: ArrayList<Pictograma>? = null
+    private var recyclerView: RecyclerView? = null
+    private var adaptador: AdaptadorCuadernoActivity? = null
+    private var picto = Pictograma()
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -92,15 +91,15 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         return true
     }
 
-    fun iniciarListaEscala() {
+    private fun iniciarListaEscala() {
         picto = Pictograma()
         listaEscala = picto.obtenerPictogramasCuaderno(this, 1) as ArrayList<Pictograma>?
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_escala)
         if(recyclerView is RecyclerView){
-            recyclerView!!.setLayoutManager(layoutManager)
+            recyclerView!!.layoutManager = layoutManager
             adaptador = AdaptadorCuadernoActivity(listaEscala, this)
-            recyclerView!!.setAdapter(adaptador)
+            recyclerView!!.adapter = adaptador
         }
 
     }
@@ -119,7 +118,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         transaction!!.commit()
     }
 
-    fun iniciarFragment(pictogramas: ArrayList<*>?) {
+    private fun iniciarFragment(pictogramas: ArrayList<*>?) {
         val bundle = Bundle()
         bundle.putSerializable("key", pictogramas)
         fragmentCuadernoPictogramas!!.arguments = bundle

@@ -5,12 +5,10 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,7 +24,6 @@ class MenuAvataresTEActivity : AppCompatActivity() {
 
     private lateinit var btn_galeria: Button
     private var imagenSeleccionada : Boolean = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_avatarestea)
@@ -35,7 +32,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
             abrirGaleria() //TODO ARREGLAR EL CODIGO UN POQUITO MEJOR
-            if(imagenSeleccionada == true){
+            if(imagenSeleccionada){
                 val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
                 startActivity(intent)
             }else{

@@ -1,16 +1,13 @@
 package com.example.plantea.presentacion.adaptadores
 
-import android.graphics.Color
-import android.net.Uri
+
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginRight
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades

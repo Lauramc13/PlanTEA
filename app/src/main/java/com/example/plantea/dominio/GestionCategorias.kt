@@ -4,7 +4,7 @@ import android.app.Activity
 import com.example.plantea.persistencia.ConectorBD
 
 class GestionCategorias {
-    var listaCategorias: ArrayList<String>? = null
+    private var listaCategorias: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
     private var categoria = 0
     fun listarCategorias(actividad: Activity?): ArrayList<String> {

@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +48,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         mensaje = vista.findViewById(R.id.lbl_mensaje_evento)
         listaEventos = vista.findViewById(R.id.recycler_eventos)
         iniciarAdaptadorEvento()
-        crearEvento.setOnClickListener(View.OnClickListener { eventoInterface!!.crearEventoFragment() })
+        crearEvento.setOnClickListener( { eventoInterface.crearEventoFragment() })
         return vista
     }
 
@@ -78,9 +77,9 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
             mensaje.visibility = View.VISIBLE
         } else {
             listaEventos.visibility = View.VISIBLE
-            mensaje!!.visibility = View.GONE
+            mensaje.visibility = View.GONE
         }
-        listaEventos!!.adapter = adaptadorEvento
+        listaEventos.adapter = adaptadorEvento
     }
 
     override fun deleteClick(posicion: Int) {
@@ -90,17 +89,17 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         dialogoEliminar.setCancelable(false)
         dialogoEliminar.setPositiveButton("Confirmar") { dialogoEliminar, id ->
             Toast.makeText(context, "Evento eliminado", Toast.LENGTH_SHORT).show()
-            eventoInterface!!.cancelarNotificacion(eventos!![posicion].id)
-            evento.eliminarEvento(actividad, eventos!![posicion].id)
-            eventos!!.removeAt(posicion)
-            adaptadorEvento!!.notifyDataSetChanged()
+            eventoInterface.cancelarNotificacion(eventos[posicion].id)
+            evento.eliminarEvento(actividad, eventos[posicion].id)
+            eventos.removeAt(posicion)
+            adaptadorEvento.notifyDataSetChanged()
             //Mostramos un mensaje informando si la lista está vacía
-            if (eventos!!.isEmpty()) {
-                listaEventos!!.visibility = View.GONE
-                mensaje!!.visibility = View.VISIBLE
+            if (eventos.isEmpty()) {
+                listaEventos.visibility = View.GONE
+                mensaje.visibility = View.VISIBLE
             } else {
-                listaEventos!!.visibility = View.VISIBLE
-                mensaje!!.visibility = View.GONE
+                listaEventos.visibility = View.VISIBLE
+                mensaje.visibility = View.GONE
             }
         }
         dialogoEliminar.setNegativeButton("Cancelar") { dialogoEliminar, id -> dialogoEliminar.dismiss() }

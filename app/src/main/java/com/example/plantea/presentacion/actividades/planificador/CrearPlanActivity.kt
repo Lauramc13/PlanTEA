@@ -22,6 +22,7 @@ import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
@@ -36,6 +37,7 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.CrearPlanInterface
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
+import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
@@ -54,6 +56,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var fragmentCategorias: Fragment
     lateinit var fragmentPictogramas: Fragment
     lateinit var fragmentSubcategoria: Fragment
+    lateinit var btn_logout: Button
+    lateinit var icono_cerrar_login : AppCompatImageView
     lateinit var listaPlanificacion: ArrayList<Pictograma>
     lateinit var listaPictogramas: ArrayList<Pictograma>
     lateinit var tituloPicto: String
@@ -72,8 +76,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var btn_Guardar: Button
     lateinit var btn_GuardarPlanificacion: Button
     lateinit var txt_TituloPlan: TextView
-    var planCounter = 1
-    val planPrefix = "Planificación "
 
     private val KEY_FRAGMENT_ID = "fragment_id"
     private var fragmentId: Int = R.id.contenedor_fragments
@@ -98,9 +100,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         supportFragmentManager.commit {
             setReorderingAllowed(false)
             replace<CategoriasFragment>(R.id.contenedor_fragments)
-
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,8 +110,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         txt_TituloPlan = findViewById(R.id.txt_TituloPlan)
-        txt_TituloPlan.setText("$planPrefix$planCounter")
-        planCounter++
+        txt_TituloPlan.setText("PLANIFICACIÓN") //TODO
         labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         listaPictogramas = ArrayList()
@@ -208,7 +207,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     //Menu principal
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_principal, menu)
         return true
     }
@@ -219,13 +217,23 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 val i = Intent(applicationContext, ManualActivity::class.java)
                 startActivity(i)
             }
-            R.id.item_password -> {
-                val intent = Intent(applicationContext, PasswordActivity::class.java)
-                startActivity(intent)
-            }
             R.id.item_perfil -> {
                 val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
                 startActivity(perfil)
+            }
+            R.id.item_logout -> {
+                val dialogLogout = Dialog(this)
+                dialogLogout.setContentView(R.layout.dialogo_logout)
+                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                btn_logout.setOnClickListener {
+                    //TODO: HACER TODA LA PARTE DE CERRAR SESION EN LA BASE DE DATOS
+                    val login = Intent(applicationContext, PreLoginActivity::class.java)
+                    startActivity(login)
+                }
+                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                dialogLogout.show()
             }
             android.R.id.home -> finish()
         }

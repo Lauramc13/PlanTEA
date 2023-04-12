@@ -9,10 +9,10 @@ class Pictograma : Serializable {
     var categoria = 0
     var cuaderno = 0
     var listaPictogramas: ArrayList<Pictograma>? = null
-    var listaConsultas: ArrayList<String>? = null
-    var gestorPictogramas = GestionPictogramas()
+    private var listaConsultas: ArrayList<String>? = null
+    private var gestorPictogramas = GestionPictogramas()
 
-    constructor() {}
+    constructor()
     constructor(titulo: String?, imagen: String?, categoria: Int, cuaderno: Int) {
         this.titulo = titulo
         this.imagen = imagen
@@ -43,8 +43,7 @@ class Pictograma : Serializable {
     }
 
     fun obtenerImagenEvento(actividad: Activity?, consulta: String?, idCategoria: Int): String? {
-        val ruta: String?
-        ruta = gestorPictogramas.obtenerImagenPictograma(actividad, consulta, idCategoria)
+        val ruta: String? = gestorPictogramas.obtenerImagenPictograma(actividad, consulta, idCategoria)
         return ruta
     }
 }

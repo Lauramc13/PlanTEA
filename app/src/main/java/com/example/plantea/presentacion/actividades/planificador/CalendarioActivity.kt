@@ -6,15 +6,11 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -41,11 +37,11 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     lateinit var transaction: FragmentTransaction
     lateinit var fragment_eventos: Fragment
     lateinit var fragment_crearEvento: Fragment
-    lateinit private var calendario: RecyclerView
-    lateinit private var fechaActual: TextView
-    lateinit private var dias: ArrayList<LocalDate?>
-    lateinit private var btn_siguienteMes: ImageView
-    lateinit private var btn_anteriorMes: ImageView
+    private lateinit var calendario: RecyclerView
+    private lateinit var fechaActual: TextView
+    private lateinit var dias: ArrayList<LocalDate?>
+    private lateinit var btn_siguienteMes: ImageView
+    private lateinit var btn_anteriorMes: ImageView
     lateinit var adaptadorCalendario: AdaptadorCalendario
     lateinit var prefs: SharedPreferences
     lateinit var alarmManager: AlarmManager
@@ -62,7 +58,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Crear canal para las notificaciones
-        crearCanalNotificación()
+        crearCanalNotificacion()
         calendario = findViewById(R.id.recycler_calendario)
         fechaActual = findViewById(R.id.lbl_mes)
         btn_siguienteMes = findViewById(R.id.image_calendar_siguiente)
@@ -93,14 +89,16 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         }
         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
         obtenerVistaMes()
-        btn_anteriorMes.setOnClickListener(View.OnClickListener {
-            CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
+        btn_anteriorMes.setOnClickListener {
+            CalendarioUtilidades.fechaSeleccionada =
+                CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
             obtenerVistaMes()
-        })
-        btn_siguienteMes.setOnClickListener(View.OnClickListener {
-            CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
+        }
+        btn_siguienteMes.setOnClickListener {
+            CalendarioUtilidades.fechaSeleccionada =
+                CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
             obtenerVistaMes()
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -169,7 +167,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         ft.commit()
     }
 
-    private fun crearCanalNotificación() {
+    private fun crearCanalNotificacion() {
         val nombre: CharSequence = "Eventos"
         val notificationChannel = NotificationChannel(CHANNEL_ID, nombre, NotificationManager.IMPORTANCE_DEFAULT)
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager

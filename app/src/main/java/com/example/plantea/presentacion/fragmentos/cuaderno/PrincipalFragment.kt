@@ -23,8 +23,8 @@ class PrincipalFragment : Fragment() {
         vista = inflater.inflate(R.layout.fragment_cuaderno_principal, container, false)
         cardSintomas = vista.findViewById(R.id.card_sintomas)
         cardDolores = vista.findViewById(R.id.card_dolores)
-        cardSintomas.setOnClickListener(View.OnClickListener { interfaceCuaderno!!.mostrarPictogramas(2) })
-        cardDolores.setOnClickListener(View.OnClickListener { interfaceCuaderno!!.mostrarPictogramas(3) })
+        cardSintomas.setOnClickListener { interfaceCuaderno.mostrarPictogramas(2) }
+        cardDolores.setOnClickListener { interfaceCuaderno.mostrarPictogramas(3) }
         return vista
     }
 
@@ -34,9 +34,5 @@ class PrincipalFragment : Fragment() {
             actividad = context
             interfaceCuaderno = (actividad as CuadernoInterface?)!!
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
     }
 }

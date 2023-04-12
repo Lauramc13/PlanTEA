@@ -14,7 +14,7 @@
         android:layout_marginTop="48dp"
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
-        android:text="¡Selecciona el avatar del planificador!"
+        android:text="Selecciona el avatar del planificador"
         android:textColor="@color/teal_900"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,12 +47,12 @@
 
 
         <GridLayout
+            android:id="@+id/opcionesAvatarPlan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="5"
+            android:columnCount="3"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:numColumns="3"
             android:rowCount="2"
             android:stretchMode="spacingWidthUniform"
             android:useDefaultMargins="true"

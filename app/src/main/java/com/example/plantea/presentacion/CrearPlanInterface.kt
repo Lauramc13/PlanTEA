@@ -1,8 +1,5 @@
 package com.example.plantea.presentacion
 
-import android.content.Context
-import android.widget.SpinnerAdapter
-
 interface CrearPlanInterface {
     //CategoriasFragment
     fun mostrarCategoria(idCategoria: Int)

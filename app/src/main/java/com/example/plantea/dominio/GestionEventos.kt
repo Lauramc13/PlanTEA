@@ -8,7 +8,7 @@ class GestionEventos {
     private var conectorBD: ConectorBD? = null
     private var contador = 0
     private var identificador = 0
-    var eventos: ArrayList<Evento>? = null
+    private var eventos: ArrayList<Evento>? = null
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
