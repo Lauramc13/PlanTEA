@@ -1,6 +1,5 @@
 package com.example.plantea.presentacion.actividades
 
-import 	androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -8,12 +7,11 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
 import java.io.File
@@ -31,8 +29,8 @@ class ConfiguracionActivity : AppCompatActivity() {
     private lateinit var txt_objeto: TextView
     private lateinit var btn_guardar: Button
     private lateinit var btn_password: Button
-    private lateinit var btn_notificacion: Switch
-    private lateinit var lbl_infoUsuario: Switch
+    private lateinit var btn_notificacion: SwitchCompat
+    private lateinit var lbl_infoUsuario: SwitchCompat
     private lateinit var semana: CheckBox
     private lateinit var dia: CheckBox
     private lateinit var hora: CheckBox
@@ -40,6 +38,7 @@ class ConfiguracionActivity : AppCompatActivity() {
     private var es_objeto = false
     private var notificacion_activa = false
     private var info_usuario = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +68,7 @@ class ConfiguracionActivity : AppCompatActivity() {
 
         //Recuperamos la información cuando no es la primera vez de acceso.
         val userAccount = prefs.getBoolean("userAccount", false)
-        if (userAccount) {
+
             //Imagenes y nombres
             txt_Planificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
             txt_UsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
@@ -120,21 +119,33 @@ class ConfiguracionActivity : AppCompatActivity() {
                 txt_UsuarioTEA.isEnabled = false
                 img_usuarioTEA.isEnabled = false
             }
-        }
         img_usuarioPlanificador.setOnClickListener {
-            abrirGaleria()
             es_planificador = true
             es_objeto = false
+            val editor = prefs.edit()
+            editor.putBoolean("editPreferences", true)
+            editor.apply()
+            val password = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
+            startActivity(password)
         }
         img_usuarioTEA.setOnClickListener {
-            abrirGaleria()
             es_planificador = false
             es_objeto = false
+            val editor = prefs.edit()
+            editor.putBoolean("editPreferences", true)
+            editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked)
+            editor.apply()
+            val password = Intent(applicationContext, MenuAvataresTEActivity::class.java)
+            startActivity(password)
         }
         img_objeto.setOnClickListener {
-            abrirGaleria()
             es_objeto = true
             es_planificador = false
+            val editor = prefs.edit()
+            editor.putBoolean("editPreferences", true)
+            editor.apply()
+            val password = Intent(applicationContext, MenuObjetosActivity::class.java)
+            startActivity(password)
         }
         btn_notificacion.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -180,19 +191,16 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val nombreUsuarioPlanificador = txt_Planificador.text.toString()
                 val nombreUsuarioTEA = txt_UsuarioTEA.text.toString()
                 val nombreObjeto = txt_objeto.text.toString()
-                var rutaUsuarioTEA = ""
                 val rutaPlanificador = crearRuta(img_usuarioPlanificador, "Planificador")
+                var rutaUsuarioTEA= ""
                 if (lbl_infoUsuario.isChecked) {
                     rutaUsuarioTEA = crearRuta(img_usuarioTEA, "Usuario")
                 }
                 val rutaObjeto = crearRuta(img_objeto, "Objeto")
-                if (userAccount) {
-                    finish()
-                } else {
-                    //Abre la pantalla inicio porque es la primera vez
-                    val intent = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(intent)
-                }
+
+                val intent = Intent(applicationContext, MenuActivity::class.java)
+                startActivity(intent)
+
 
                 //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
                 val editor = prefs.edit()
@@ -265,27 +273,6 @@ class ConfiguracionActivity : AppCompatActivity() {
         return myPath.absolutePath
     }
 
-    private fun abrirGaleria() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-    }
 
-    private val pickMedia = registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
-        // Handle the returned URI here
-        if (uri != null) {
-            if (es_planificador) {
-                img_usuarioPlanificador.background = null
-                img_usuarioPlanificador.setImageURI(uri)
-            } else if (es_objeto) {
-                img_objeto.background = null
-                img_objeto.setImageURI(uri)
-            } else {
-                img_usuarioTEA.background = null
-                img_usuarioTEA.setImageURI(uri)
-            }
-        } else {
-            Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
-        }
-    }
+
 }

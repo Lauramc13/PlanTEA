@@ -6,17 +6,18 @@
     android:configChanges="orientation|keyboardHidden"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDECEC"
+    android:background="#FFFFFF"
     tools:context=".presentacion.actividades.planificador.CrearPlanActivity"
     tools:layout_editor_absoluteY="89dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
-        android:layout_width="863dp"
+        android:layout_width="920dp"
         android:layout_height="220dp"
-        android:background="@drawable/pizarra_pictogramas"
+        android:background="@drawable/fragment_personalizado"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_TituloPlan"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -42,13 +43,13 @@
 
     <FrameLayout
         android:id="@+id/contenedor_fragments"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/constraintLayout5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
@@ -99,17 +100,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_planificacionescreadas"
-        android:layout_width="297dp"
-        android:layout_height="556dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
-        app:layout_constraintTop_toBottomOf="@id/txt_TituloPlan">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout5"
+        android:layout_width="253dp"
+        android:layout_height="580dp"
+        android:background="@drawable/fragment_personalizado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_TituloPlan"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp">
+
+
+    <SearchView
+        android:id="@+id/searchViewPicto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_bg"
+        android:elevation="4dp"
+        android:queryHint="Buscar pictograma"
+        android:textColorHint="#000000"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.34">
+
+    </SearchView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_planificacionescreadas"
+            android:layout_width="match_parent"
+            android:layout_height="456dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

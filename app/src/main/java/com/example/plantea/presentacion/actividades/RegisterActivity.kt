@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 
@@ -16,7 +18,7 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txt_password2 : EditText
     private lateinit var txt_nameplanificado : EditText
     private lateinit var txt_objeto : EditText
-    private lateinit var checkUserPlanificado : Switch
+    private lateinit var checkUserPlanificado : SwitchCompat
     private var creado: Boolean = false
 
     var usuario = Usuario_Planificador()
@@ -68,7 +70,8 @@ class RegisterActivity : AppCompatActivity(){
                         editor.putString("nombreUsuarioTEA", txt_nameplanificado.text.toString())
                         editor.putString("nombreObjeto", txt_objeto.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
-                        editor.commit()
+                        editor.putBoolean("editPreferences", false)
+                        editor.apply()
                         val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
                         startActivity(intent)
                         finish()

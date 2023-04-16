@@ -31,10 +31,10 @@ class MenuObjetosActivity : AppCompatActivity() {
 
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
             abrirGaleria() //TODO: ARREGLAR EL CODIGO UN POQUITO MEJOR
             if(imagenSeleccionada){
-                val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
-                startActivity(intent)
+               next()
             }else{
                 Toast.makeText(this, "No se ha seleccionado ningun objeto", Toast.LENGTH_SHORT).show()
             }
@@ -55,9 +55,19 @@ class MenuObjetosActivity : AppCompatActivity() {
                 val editor = prefs.edit()
                 editor.putString("imagenObjeto", uri.toString())
                 editor.commit()
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                next()
             }
+        }
+    }
+
+    private fun next(){
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if(prefs.getBoolean("editPreferences", false) === true){
+            val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
+            startActivity(intent)
+        }else{
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

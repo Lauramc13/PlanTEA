@@ -34,8 +34,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         btn_galeria.setOnClickListener{
             abrirGaleria() //TODO ARREGLAR EL CODIGO UN POQUITO MEJOR
             if(imagenSeleccionada){
-                val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
-                startActivity(intent)
+                next()
             }else{
                 Toast.makeText(this, "No se ha seleccionado ningun avatar", Toast.LENGTH_SHORT).show()
             }
@@ -56,14 +55,24 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())
                 editor.commit()
-                if (prefs.getBoolean("info_usuario", false) === false){
-                    val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
-                    startActivity(intent)
+                next()
 
-                }else{
-                    val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
-                    startActivity(intent)
-                }
+            }
+        }
+    }
+
+    private fun next(){
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if(prefs.getBoolean("editPreferences", false) === true){
+            val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
+            startActivity(intent)
+        }else{
+            if (prefs.getBoolean("info_usuario", false) === false){
+                val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
+                startActivity(intent)
+            }else{
+                val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
+                startActivity(intent)
             }
         }
     }
