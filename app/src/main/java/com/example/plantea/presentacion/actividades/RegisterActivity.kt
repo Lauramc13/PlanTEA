@@ -23,7 +23,6 @@ class RegisterActivity : AppCompatActivity(){
 
     var usuario = Usuario_Planificador()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
@@ -59,16 +58,12 @@ class RegisterActivity : AppCompatActivity(){
                 if( txt_password.text.toString() != txt_password2.text.toString() ){
                     Toast.makeText(applicationContext, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
                 }else{
-                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), txt_password.text.toString(), this@RegisterActivity)
+                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), txt_password.text.toString(), txt_objeto.text.toString(), this@RegisterActivity)
                     if (creado) {
                         Toast.makeText(applicationContext,  "Cuenta creada con éxito", Toast.LENGTH_LONG).show()
                         val editor = prefs.edit()
                         editor.putBoolean("userAccount", true)
-                        editor.putString("nombrePlanificador", txt_name.text.toString())
                         editor.putString("username", txt_username.text.toString())
-                        editor.putString("password", txt_password.text.toString()) //TODO GUARDAR LA CONTRASEÑA ENCRIPTADA
-                        editor.putString("nombreUsuarioTEA", txt_nameplanificado.text.toString())
-                        editor.putString("nombreObjeto", txt_objeto.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
                         editor.putBoolean("editPreferences", false)
                         editor.apply()

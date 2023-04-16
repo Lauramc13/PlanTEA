@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
+import com.example.plantea.dominio.Usuario_Planificador
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -24,6 +25,8 @@ class MenuObjetosActivity : AppCompatActivity() {
 
     private lateinit var btn_galeria: Button
     private var imagenSeleccionada : Boolean = false
+    var usuario = Usuario_Planificador()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_objetos)
@@ -52,6 +55,10 @@ class MenuObjetosActivity : AppCompatActivity() {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val username = prefs.getString("username", true.toString())
+                if (username != null) {
+                    usuario.aniadirImagenObjeto(uri.toString(), username, this@MenuObjetosActivity)
+                }
                 val editor = prefs.edit()
                 editor.putString("imagenObjeto", uri.toString())
                 editor.commit()

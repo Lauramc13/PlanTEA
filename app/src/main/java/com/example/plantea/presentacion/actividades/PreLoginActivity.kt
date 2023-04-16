@@ -7,12 +7,18 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
+import com.example.plantea.dominio.Usuario_Planificador
+
 class PreLoginActivity : AppCompatActivity(){
 
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: Button
     private lateinit var username: EditText
     private lateinit var password: EditText
+
+    var usuario = Usuario_Planificador()
+    var user = Usuario_Planificador()
+
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -52,12 +58,17 @@ class PreLoginActivity : AppCompatActivity(){
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                val user_username = prefs.getString("username", "")
-                val user_password = prefs.getString("password", "")
-                if (user_username == username.text.toString() && user_password == password.text.toString()) {
+                if (usuario.comprobarUsuario(username.text.toString(), password.text.toString(), this@PreLoginActivity) == true) {
+                    user = usuario.obtenerUsuario(username.text.toString(), this@PreLoginActivity)
                     val editor = prefs.edit()
                     editor.putBoolean("userAccount", true)
-                    editor.commit()
+                    editor.putString("nombrePlanificador", user.getName())
+                    editor.putString("username", user.getUsername())
+                    editor.putString("nombreUsuarioTEA", user.getName())
+                    editor.putString("imagenPlanificado", user.getImagen())
+                    editor.putString("imagenUsuarioTEA", user.getImagen())
+                    editor.putString("nombreObjeto", user.getObjeto())
+                    editor.apply()
                     val intent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(intent)
                 } else {

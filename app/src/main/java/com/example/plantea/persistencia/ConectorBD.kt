@@ -1,10 +1,12 @@
 package com.example.plantea.persistencia
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
+import com.example.plantea.dominio.Usuario_Planificador
 
 class ConectorBD(ctx: Context?) {
     private val dbHelper: BDSQLiteHelper
@@ -135,12 +137,13 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertamos el usuario*/
-    fun insertarUsuario(username:String?, name: String?, pass: String?): Boolean {
+    fun insertarUsuario(username:String?, name: String?, pass: String?, objeto:String?): Boolean {
         //Creamos el registro a insertar como objeto ContentValues
         val nuevoUsuario = ContentValues()
         nuevoUsuario.put("username", username)
         nuevoUsuario.put("name", name)
         nuevoUsuario.put("password", pass)
+        nuevoUsuario.put("objeto", objeto)
 
         //Insertamos el registro en la base de datos
         val resultado = db?.insert("Usuario_Planificador", null, nuevoUsuario) ?: -1
@@ -149,9 +152,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Verificar contraseña para login*/
-    fun consultarPass(pass: String?): Boolean {
+    fun consultarPass(username:String?, pass: String?): Boolean {
         var resultado = false
-        val c = db!!.rawQuery("SELECT password from Usuario_Planificador where Usuario_Planificador.id = 1", null)
+        val c = db!!.rawQuery("SELECT password from Usuario_Planificador where Usuario_Planificador.username = '$username'", null)
         if (c.moveToFirst()) {
             resultado = c.getString(0) == pass
         }
@@ -159,9 +162,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Cambiar contraseña del usuario*/
-    fun actualizarPass(passNueva: String, passVieja: String): Boolean {
-        val actualizado: Boolean = if (consultarPass(passVieja)) {
-            db!!.execSQL("UPDATE Usuario_Planificador SET password ='$passNueva' WHERE Usuario_Planificador.id = 1")
+    fun actualizarPass(username:String, passNueva: String, passVieja: String): Boolean {
+        val actualizado: Boolean = if (consultarPass(username, passVieja)) {
+            db!!.execSQL("UPDATE Usuario_Planificador SET password ='$passNueva' WHERE Usuario_Planificador.username = '$username'")
             true
         } else {
             false
@@ -204,6 +207,42 @@ class ConectorBD(ctx: Context?) {
     fun obtenerRutaPictograma(consulta: String?, identificador: Int): Cursor {
         return db!!.rawQuery("SELECT imagen from Pictograma WHERE Pictograma.nombre = '$consulta' AND Pictograma.id_categoria = '$identificador'", null)
     }
+
+    fun consultarUsuario(username: String, password: String): Boolean {
+        val cursor = db!!.rawQuery("SELECT COUNT(*) FROM Usuario_Planificador WHERE username = ? AND password = ?", arrayOf(username, password))
+        cursor.moveToFirst()
+        val count = cursor.getInt(0)
+        cursor.close()
+        return count > 0
+    }
+
+    @SuppressLint("Range")
+    fun obtenerUsuarioExistente(username: String): Usuario_Planificador {
+        val cursor = db!!.rawQuery("SELECT name, username, password, objeto, imagen from Usuario_Planificador WHERE Usuario_Planificador.username = '$username'", null)
+        val usuario: Usuario_Planificador?
+        cursor.moveToFirst()
+
+        val username = cursor.getString(cursor.getColumnIndex("username"))
+        val name = cursor.getString(cursor.getColumnIndex("name"))
+        val password = cursor.getString(cursor.getColumnIndex("password"))
+        val objeto = cursor.getString(cursor.getColumnIndex("objeto"))
+        val imagen = cursor.getString(cursor.getColumnIndex("imagen"))
+        usuario = Usuario_Planificador(name, username, password, objeto, imagen)
+
+        cursor.close()
+        return usuario
+    }
+
+    fun addImagen(image: String, username: String ) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET imagen ='$image' WHERE Usuario_Planificador.username = '$username'")
+    }
+
+    fun addImagenObjeto(image: String, username: String ) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET imagenObjeto ='$image' WHERE Usuario_Planificador.username = '$username'")
+    }
+
+
+
 
     companion object {
         const val NOMBRE_BD = "PlanTEA"

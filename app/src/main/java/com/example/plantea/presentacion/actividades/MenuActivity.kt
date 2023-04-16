@@ -34,7 +34,7 @@ class MenuActivity : AppCompatActivity() {
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         cardCalendario.setOnClickListener {
-            val intent = Intent(applicationContext, PlanActivity::class.java)
+            val intent = Intent(applicationContext, CalendarioActivity::class.java)
             startActivity(intent)
         }
         cardEmociones.setOnClickListener {
@@ -42,7 +42,7 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
         cardPlanificacion.setOnClickListener {
-            val intent = Intent(applicationContext, CalendarioActivity::class.java)
+            val intent = Intent(applicationContext, PlanActivity::class.java)
             startActivity(intent)
         }
     }

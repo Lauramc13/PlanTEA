@@ -100,23 +100,20 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
                     .show()
             } else {
-                val passCorrecta =
-                    usuario.comprobarPass(password.text.toString(), this@MainActivity)
-                if (passCorrecta) {
-                    //if(!info_usuario){
-                    val intent = Intent(applicationContext, MenuActivity::class.java)
-                    startActivity(intent)
-                    dialogLogin.dismiss()
-                    //}
-                    // else{
-                    //     Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                    //     startActivity(intent);
-                    //     dialogLogin.dismiss();
-                    // }
-                } else {
-                    Toast.makeText(applicationContext, "Error en la contraseña", Toast.LENGTH_LONG)
-                        .show()
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val username = prefs.getString("username", "")
+                if(username != null){
+                    val passCorrecta = usuario.comprobarPass(username, password.text.toString(), this@MainActivity)
+                    if (passCorrecta) {
+                        val intent = Intent(applicationContext, MenuActivity::class.java)
+                        startActivity(intent)
+                        dialogLogin.dismiss()
+                    } else {
+                        Toast.makeText(applicationContext, "Error en la contraseña", Toast.LENGTH_LONG)
+                            .show()
+                    }
                 }
+
             }
         }
         icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }

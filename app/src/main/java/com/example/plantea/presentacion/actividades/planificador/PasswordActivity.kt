@@ -45,18 +45,13 @@ class PasswordActivity : AppCompatActivity() {
         //Este método se ejecutará al seleccionar el boton guardar
         btn_guardar.setOnClickListener {
             if (viejaPass.text.toString() == "" || nuevaPass.text.toString() == "" || confirmaPass.text.toString() == "") {
-                Toast.makeText(
-                    applicationContext,
-                    "Debes completar todos los campos",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(applicationContext, "Debes completar todos los campos",  Toast.LENGTH_LONG).show()
             } else {
-                actualizado = usuario.confirmarPass(
-                    viejaPass.text.toString(),
-                    nuevaPass.text.toString(),
-                    confirmaPass.text.toString(),
-                    this@PasswordActivity
-                )
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val username = prefs.getString("username", "")
+                if (username != null){
+                    actualizado = usuario.confirmarPass(username, viejaPass.text.toString(), nuevaPass.text.toString(), confirmaPass.text.toString(), this@PasswordActivity)
+                }
                 if (actualizado) {
                     Toast.makeText(applicationContext, "Contraseña actualizada", Toast.LENGTH_LONG)
                         .show()

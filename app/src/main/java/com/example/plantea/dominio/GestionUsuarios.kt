@@ -3,6 +3,7 @@ package com.example.plantea.dominio
 import android.app.Activity
 import com.example.plantea.persistencia.ConectorBD
 
+
 class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
     private var resultado = false
@@ -14,27 +15,64 @@ class GestionUsuarios {
         return resultado
     }
 
-    fun crearUsuario( username: String?, name: String?,password: String?, actividad: Activity?): Boolean {
+    fun crearUsuario( username: String?, name: String?,password: String?, objeto:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarUsuario(username, name, password)
+        resultado = conectorBD!!.insertarUsuario(username, name, password, objeto)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun comprobarPassword(password: String, actividad: Activity?): Boolean {
+    fun comprobarPassword(username:String, password: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.consultarPass(password)
+        resultado = conectorBD!!.consultarPass(username, password)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun cambiarPassword(passwordNueva: String, passwordVieja: String, actividad: Activity?): Boolean {
+    fun cambiarPassword(username:String, passwordNueva: String, passwordVieja: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.actualizarPass(passwordNueva, passwordVieja)
+        resultado = conectorBD!!.actualizarPass(username, passwordNueva, passwordVieja)
         conectorBD!!.cerrar()
         return resultado
     }
+
+    fun comprobarUsuario(username: String, password: String, actividad: Activity?): Boolean? {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        resultado = conectorBD!!.consultarUsuario(username, password)
+        conectorBD!!.cerrar()
+        return resultado
+    }
+
+    fun obtenerUsuario(username: String, actividad: Activity?): Usuario_Planificador {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        var usuario = conectorBD!!.obtenerUsuarioExistente(username)
+        conectorBD!!.cerrar()
+        return usuario
+    }
+
+    fun addImagen(imagen: String, username: String, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        var usuario = conectorBD!!.addImagen(imagen, username)
+        conectorBD!!.cerrar()
+        return usuario
+    }
+
+    fun addImagenObjeto(imagen: String, username: String, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        var usuario = conectorBD!!.addImagenObjeto(imagen, username)
+        conectorBD!!.cerrar()
+        return usuario
+    }
+
+
+
+
+
 }
