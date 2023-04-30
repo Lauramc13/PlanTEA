@@ -2,17 +2,20 @@ package com.example.plantea.presentacion.adaptadores
 
 import android.content.ClipData
 import android.net.Uri
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
-import android.view.View.DragShadowBuilder
-import android.view.View.OnLongClickListener
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.DragStartHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+
 
 class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramas.ViewHolderPictogramas>() {
     interface OnItemSelectedListener {
@@ -43,6 +46,7 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
             itemView.setOnLongClickListener(this)
         }
 
+
         override fun onLongClick(view: View): Boolean {
             val posicion = bindingAdapterPosition
             listener?.onItemSeleccionado(posicion)
@@ -56,5 +60,6 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
             }
             return false
         }
+
     }
 }

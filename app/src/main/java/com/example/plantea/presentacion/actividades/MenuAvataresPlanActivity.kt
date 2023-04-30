@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -24,6 +25,7 @@ import java.io.IOException
 
 class MenuAvataresPlanActivity : AppCompatActivity() {
     private lateinit var btn_galeria: Button
+    private lateinit var btn_saltar:Button
     private var imagenSeleccionada : Boolean = false
     var usuario = Usuario_Planificador()
 
@@ -40,6 +42,16 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "No se ha seleccionado ningun avatar", Toast.LENGTH_SHORT).show()
             }
+        }
+        btn_saltar = findViewById(R.id.btn_saltar)
+        btn_saltar.setOnClickListener{
+            val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
+            val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            val editor = prefs.edit()
+            editor.putString("imagenPlanificador", uri.toString())
+            editor.apply()
+            next()
         }
     }
 
@@ -62,7 +74,6 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 editor.putString("imagenPlanificador", uri.toString())
                 editor.commit()
                 next()
-
             }
         }
     }
@@ -104,6 +115,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             editor.commit()
             guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
             imagenSeleccionada = true
+            btn_galeria.performClick();
 
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()

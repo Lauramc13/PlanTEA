@@ -15,15 +15,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
+import com.example.plantea.dominio.Usuario_Planificador
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.properties.Delegates
 
 class MenuAvataresTEActivity : AppCompatActivity() {
 
     private lateinit var btn_galeria: Button
+    private lateinit var btn_saltar: Button
     private var imagenSeleccionada : Boolean = false
+    var usuario = Usuario_Planificador()
+    private var firstTime: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_avatarestea)
@@ -31,13 +37,23 @@ class MenuAvataresTEActivity : AppCompatActivity() {
 
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            abrirGaleria() //TODO ARREGLAR EL CODIGO UN POQUITO MEJOR
+            abrirGaleria()
             if(imagenSeleccionada){
                 next()
             }else{
-                Toast.makeText(this, "No se ha seleccionado ningun avatar", Toast.LENGTH_SHORT).show()
+               Toast.makeText(this, "No se ha seleccionado ningun avatar", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        btn_saltar = findViewById(R.id.btn_saltar)
+        btn_saltar.setOnClickListener{
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
+            val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
+            val editor = prefs.edit()
+            editor.putString("imagenUsuarioTEA", uri.toString())
+            editor.apply()
+            next()
         }
     }
 
@@ -52,9 +68,13 @@ class MenuAvataresTEActivity : AppCompatActivity() {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val username = prefs.getString("username", true.toString())
+                if (username != null) {
+                    usuario.aniadirImagenPlanificado(uri.toString(), username, this@MenuAvataresTEActivity)
+                }
                 val editor = prefs.edit()
                 editor.putString("imagenUsuarioTEA", uri.toString())
-                editor.commit()
+                editor.apply()
                 next()
             }
         }
@@ -79,7 +99,8 @@ class MenuAvataresTEActivity : AppCompatActivity() {
 
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         // Handle the returned URI here
-        if (uri != null) {
+        if (uri != null && firstTime) {
+            firstTime = false
             // Load the selected image from the URI
             val inputStream = contentResolver.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -89,12 +110,14 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
             val editor = prefs.edit()
             editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
-            editor.commit()
+            editor.apply()
             guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
             imagenSeleccionada = true
+            btn_galeria.performClick();
 
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+            firstTime = true
         }
     }
 

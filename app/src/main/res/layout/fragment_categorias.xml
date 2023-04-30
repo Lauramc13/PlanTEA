@@ -14,7 +14,7 @@
         <androidx.gridlayout.widget.GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:columnCount="4"
+            app:columnCount="5"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,18 +29,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#CCE9F0">
+                    android:background="#F2F2F2">
 
                     <ImageView
                         android:id="@+id/img_Consultas"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Consultas"
                         app:srcCompat="@drawable/categoria_consultas">
 
@@ -68,18 +68,18 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#CCE9F0">
+                    android:background="#F2F2F2">
 
                     <ImageView
                         android:id="@+id/img_Profesionales"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_profesionales"
                         app:srcCompat="@drawable/categoria_profesionales">
 
@@ -107,18 +107,18 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#CCE9F0">
+                    android:background="#F2F2F2">
 
                     <ImageView
                         android:id="@+id/img_Lugares"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Lugares"
 
                         app:srcCompat="@drawable/categoria_lugares">
@@ -147,18 +147,18 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#CCE9F0">
+                    android:background="#F2F2F2">
 
                     <ImageView
                         android:id="@+id/img_Desplazamiento"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Desplazamiento"
                         app:srcCompat="@drawable/categoria_desplazamiento">
 
@@ -185,18 +185,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                android:layout_marginStart="20dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#CCE9F0">
+                    android:background="#F2F2F2">
 
                     <ImageView
                         android:id="@+id/img_Accion"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Accion"
                         app:srcCompat="@drawable/categoria_accion">
 
@@ -221,10 +222,9 @@
                 android:id="@+id/categoria_entretenimiento"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginBottom="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -235,7 +235,7 @@
                     <ImageView
                         android:id="@+id/img_Entretenimiento"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Entretenimiento"
                         app:srcCompat="@drawable/categoria_entretenimiento">
 
@@ -263,7 +263,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginStart="20dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -274,7 +274,7 @@
                     <ImageView
                         android:id="@+id/img_Recompensa"
                         android:layout_width="match_parent"
-                        android:layout_height="122dp"
+                        android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Recompensa"
                         app:srcCompat="@drawable/categoria_recompensa">
 

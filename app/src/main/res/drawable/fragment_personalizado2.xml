@@ -3,7 +3,7 @@
 
     <!-- Color de fondo de la vista -->
     <solid
-        android:color="#F4F4F4" >
+        android:color="#FFFFFF" >
     </solid>
 
     <!-- Color y ancho del borde del elemento-->

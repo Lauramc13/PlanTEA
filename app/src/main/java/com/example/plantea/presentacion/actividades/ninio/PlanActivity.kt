@@ -88,9 +88,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         pasosCompletados = Stack<Int>()
         iconoCuaderno = findViewById(R.id.img_cuaderno)
         iconoDeshacer = findViewById(R.id.icon_deshacer)
-        img_objetoAyuda = findViewById(R.id.img_objetoAyuda)
+        //img_objetoAyuda = findViewById(R.id.img_objetoAyuda)
         titulo = findViewById(R.id.lbl_titulo)
-        txt_objetoAyuda = findViewById(R.id.txt_objetoAyuda)
+        //txt_objetoAyuda = findViewById(R.id.txt_objetoAyuda)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
         val orientation = resources.configuration.orientation
@@ -107,7 +107,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             recyclerViewState = savedInstanceState.getParcelable("recycler_view_state") //TODO, QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
-        objetoAyuda = findViewById(R.id.layout_objetoAyuda)
+       // objetoAyuda = findViewById(R.id.layout_objetoAyuda)
 
         //Obtener preferencias objeto tranquilizador
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)

@@ -58,18 +58,22 @@ class RegisterActivity : AppCompatActivity(){
                 if( txt_password.text.toString() != txt_password2.text.toString() ){
                     Toast.makeText(applicationContext, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
                 }else{
-                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), txt_password.text.toString(), txt_objeto.text.toString(), this@RegisterActivity)
+                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), txt_password.text.toString(), txt_objeto.text.toString(), txt_nameplanificado.toString(), this@RegisterActivity)
                     if (creado) {
-                        Toast.makeText(applicationContext,  "Cuenta creada con éxito", Toast.LENGTH_LONG).show()
                         val editor = prefs.edit()
-                        editor.putBoolean("userAccount", true)
                         editor.putString("username", txt_username.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
+                        editor.putString("nombrePlanificador", txt_name.text.toString())
+                        editor.putString("nombreUsuarioTEA", txt_nameplanificado.text.toString())
+                        editor.putString("nombreObjeto", txt_objeto.text.toString())
                         editor.putBoolean("editPreferences", false)
                         editor.apply()
                         val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
                         startActivity(intent)
                         finish()
+                    }else{
+                        Toast.makeText(applicationContext,  "El nombre de usuario introducido ya existe", Toast.LENGTH_LONG).show()
+
                     }
                 }
             }

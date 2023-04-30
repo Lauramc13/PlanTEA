@@ -15,10 +15,10 @@ class GestionUsuarios {
         return resultado
     }
 
-    fun crearUsuario( username: String?, name: String?,password: String?, objeto:String?, actividad: Activity?): Boolean {
+    fun crearUsuario( name: String?, username: String?,password: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarUsuario(username, name, password, objeto)
+        resultado = conectorBD!!.insertarUsuario(username, name, password, objeto, nameTEA)
         conectorBD!!.cerrar()
         return resultado
     }
@@ -59,6 +59,14 @@ class GestionUsuarios {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         var usuario = conectorBD!!.addImagen(imagen, username)
+        conectorBD!!.cerrar()
+        return usuario
+    }
+
+    fun addImagenTEA(imagen: String, username: String, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        var usuario = conectorBD!!.addImagenTEA(imagen, username)
         conectorBD!!.cerrar()
         return usuario
     }

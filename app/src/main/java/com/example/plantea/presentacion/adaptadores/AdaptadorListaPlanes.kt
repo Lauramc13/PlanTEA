@@ -3,7 +3,6 @@ package com.example.plantea.presentacion.adaptadores
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,7 +32,7 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
         return planes!!.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), OnLongClickListener {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView
         var eliminar: ImageView
         var editar: ImageView
@@ -46,7 +45,12 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
             editar = itemView.findViewById(R.id.icon_edit)
             duplicar = itemView.findViewById(R.id.icon_copy)
             card = itemView.findViewById(R.id.card_plan)
-            itemView.setOnLongClickListener(this)
+            itemView.setOnClickListener{
+                val posicion = bindingAdapterPosition
+                listener?.planSeleccionado(posicion)
+                card.setCardBackgroundColor(Color.rgb(224, 224, 224))
+            }
+
             editar.setOnClickListener {
                 if (listener != null) {
                     val position = bindingAdapterPosition
@@ -67,11 +71,6 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
             }
         }
 
-        override fun onLongClick(view: View): Boolean {
-            val posicion = bindingAdapterPosition
-            listener?.planSeleccionado(posicion)
-            card.setCardBackgroundColor(Color.rgb(224, 224, 224))
-            return false
-        }
+
     }
 }

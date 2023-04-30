@@ -9,6 +9,8 @@ class Usuario_Planificador {
     private var objeto: String?= null
     private var imagen: String?= null
     private var imagenObjeto: String?=null
+    private var imagenTEA: String?=null
+    private var nameTEA: String?=null
     private var gestorUsuario = GestionUsuarios()
     private var resultado: Boolean? = null
 
@@ -17,12 +19,15 @@ class Usuario_Planificador {
         password = pass
     }
 
-    constructor(nombre:String?, nombreUsuario:String?, pass: String, objet:String?, image:String? ){
+    constructor(nombre:String?, nombreUsuario:String?, pass: String, objet:String?, image:String?, nombreTEA:String?, imageTEA:String?, imageObjeto:String? ){
         name = nombre
         username = nombreUsuario
         password = pass
         imagen = image
         objeto = objet
+        nameTEA = nombreTEA
+        imagenTEA = imageTEA
+        imagenObjeto = imageObjeto
     }
 
     // Getters
@@ -42,8 +47,20 @@ class Usuario_Planificador {
         return objeto
     }
 
-    fun crearUsuario(name:String?, username: String?, password: String?, objeto: String?, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.crearUsuario(name, username, password, objeto, actividad)
+    fun getNameTEA(): String?{
+        return nameTEA
+    }
+
+    fun getImagenTEA(): String?{
+        return imagenTEA
+    }
+
+    fun getImagenObjeto(): String?{
+        return imagenObjeto
+    }
+
+    fun crearUsuario(name:String?, username: String?, password: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.crearUsuario(name, username, password, objeto, nameTEA, actividad)
         return resultado!!
     }
 
@@ -71,6 +88,10 @@ class Usuario_Planificador {
 
     fun aniadirImagenPlanificador(imagen: String, username: String, actividad: Activity?){
         return gestorUsuario.addImagen(imagen, username, actividad)
+    }
+
+    fun aniadirImagenPlanificado(imagen: String, username: String, actividad: Activity?){
+        return gestorUsuario.addImagenTEA(imagen, username, actividad)
     }
 
     fun aniadirImagenObjeto(imagen: String, username: String, actividad: Activity?){

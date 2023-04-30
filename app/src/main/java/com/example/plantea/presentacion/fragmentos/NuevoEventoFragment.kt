@@ -46,6 +46,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     lateinit var adaptador: AdaptadorListaPlanes
     lateinit var planes: ArrayList<Planificacion>
     lateinit var layout_planificaciones: ConstraintLayout
+    var counter: Int = 1
     private lateinit var pictogramas: ArrayList<Pictograma>
     private lateinit var consultas: ArrayList<String>
     var hora = 0
@@ -75,7 +76,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         consultas = pictograma.obtenerConsultas(actividad, 1) as ArrayList<String>
         spinner_consultas.adapter =
-            ArrayAdapter(context!!, android.R.layout.simple_spinner_dropdown_item, consultas)
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, consultas)
         btn_hora.setOnClickListener { mostrarReloj(horaEvento) }
         btn_guardar.setOnClickListener {
             val rutaImagen = obtenerImagenEvento()
@@ -183,7 +184,8 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     override fun duplicateClick(posicion: Int) {
         pictogramas = ArrayList()
         pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as ArrayList<Pictograma>
-        val creada = plan.crearPlanificacion(actividad, pictogramas, planes[posicion].titulo)
+        val creada = plan.crearPlanificacion(actividad, pictogramas, planes[posicion].titulo + " " + counter.toString())
+        counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
         if (creada) {
             Toast.makeText(context, "Planificación duplicada", Toast.LENGTH_LONG).show()
             iniciarListaPlanificaciones()

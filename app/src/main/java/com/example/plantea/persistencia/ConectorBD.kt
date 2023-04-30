@@ -137,13 +137,14 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertamos el usuario*/
-    fun insertarUsuario(username:String?, name: String?, pass: String?, objeto:String?): Boolean {
+    fun insertarUsuario(username:String?, name: String?, pass: String?, objeto:String?, nameTEA:String?): Boolean {
         //Creamos el registro a insertar como objeto ContentValues
         val nuevoUsuario = ContentValues()
         nuevoUsuario.put("username", username)
         nuevoUsuario.put("name", name)
         nuevoUsuario.put("password", pass)
         nuevoUsuario.put("objeto", objeto)
+        nuevoUsuario.put("nameTEA", nameTEA)
 
         //Insertamos el registro en la base de datos
         val resultado = db?.insert("Usuario_Planificador", null, nuevoUsuario) ?: -1
@@ -218,7 +219,7 @@ class ConectorBD(ctx: Context?) {
 
     @SuppressLint("Range")
     fun obtenerUsuarioExistente(username: String): Usuario_Planificador {
-        val cursor = db!!.rawQuery("SELECT name, username, password, objeto, imagen from Usuario_Planificador WHERE Usuario_Planificador.username = '$username'", null)
+        val cursor = db!!.rawQuery("SELECT * from Usuario_Planificador WHERE Usuario_Planificador.username = '$username'", null)
         val usuario: Usuario_Planificador?
         cursor.moveToFirst()
 
@@ -227,7 +228,10 @@ class ConectorBD(ctx: Context?) {
         val password = cursor.getString(cursor.getColumnIndex("password"))
         val objeto = cursor.getString(cursor.getColumnIndex("objeto"))
         val imagen = cursor.getString(cursor.getColumnIndex("imagen"))
-        usuario = Usuario_Planificador(name, username, password, objeto, imagen)
+        val nameTEA = cursor.getString(cursor.getColumnIndex("nameTEA"))
+        val imagenTEA = cursor.getString(cursor.getColumnIndex("imagenTEA"))
+        val imagenObjeto = cursor.getString(cursor.getColumnIndex("imagenObjeto"))
+        usuario = Usuario_Planificador(name, username, password, objeto, imagen, nameTEA, imagenTEA, imagenObjeto)
 
         cursor.close()
         return usuario
@@ -236,6 +240,11 @@ class ConectorBD(ctx: Context?) {
     fun addImagen(image: String, username: String ) {
         db!!.execSQL("UPDATE Usuario_Planificador SET imagen ='$image' WHERE Usuario_Planificador.username = '$username'")
     }
+
+    fun addImagenTEA(image: String, username: String ) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET imagenTEA ='$image' WHERE Usuario_Planificador.username = '$username'")
+    }
+
 
     fun addImagenObjeto(image: String, username: String ) {
         db!!.execSQL("UPDATE Usuario_Planificador SET imagenObjeto ='$image' WHERE Usuario_Planificador.username = '$username'")

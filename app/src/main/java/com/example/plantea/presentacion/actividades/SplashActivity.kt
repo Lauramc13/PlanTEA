@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
         //Preferencias
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val accesoConfiguracion = prefs.getBoolean("iniciadaSesion", false)
+        val accesoConfiguracion = prefs.getBoolean("userAccount", false)
         Handler(Looper.getMainLooper()).postDelayed({
             if (accesoConfiguracion) {
                 val intent = Intent(this@SplashActivity, MainActivity::class.java)

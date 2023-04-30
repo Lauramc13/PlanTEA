@@ -187,6 +187,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             } else {
+
                 //Obtener nombres de los usuarios y objeto
                 val nombreUsuarioPlanificador = txt_Planificador.text.toString()
                 val nombreUsuarioTEA = txt_UsuarioTEA.text.toString()

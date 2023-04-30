@@ -24,6 +24,7 @@ import java.io.IOException
 class MenuObjetosActivity : AppCompatActivity() {
 
     private lateinit var btn_galeria: Button
+    private lateinit var btn_saltar: Button
     private var imagenSeleccionada : Boolean = false
     var usuario = Usuario_Planificador()
 
@@ -41,6 +42,16 @@ class MenuObjetosActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "No se ha seleccionado ningun objeto", Toast.LENGTH_SHORT).show()
             }
+        }
+        btn_saltar = findViewById(R.id.btn_saltar)
+        btn_saltar.setOnClickListener{
+            val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
+            val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            val editor = prefs.edit()
+            editor.putString("imagenObjeto", uri.toString())
+            editor.apply()
+            next()
         }
     }
 
@@ -97,7 +108,7 @@ class MenuObjetosActivity : AppCompatActivity() {
             editor.commit()
             guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
             imagenSeleccionada = true
-
+            btn_galeria.performClick();
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
         }
