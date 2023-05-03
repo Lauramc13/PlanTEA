@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="400dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
@@ -83,7 +83,7 @@
 
 
     <LinearLayout
-        android:id="@+id/layout_Emociones"
+        android:id="@+id/img_cuaderno"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -105,7 +105,7 @@
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#C3D0FF"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            app:cardElevation="0dp">
 
 
             <ImageView
@@ -139,7 +139,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/img_cuaderno"
+        android:id="@+id/img_calendario"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -163,7 +163,7 @@
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#FFC3E4"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/imageView10"
@@ -217,7 +217,7 @@
             app:cardBackgroundColor="#FEFFB1"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            app:cardElevation="0dp">
 
 
             <ImageView

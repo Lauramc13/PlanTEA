@@ -32,15 +32,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     var plan = Planificacion()
     lateinit var titulo: TextView
     lateinit var mensajePremio: TextView
-    lateinit var txt_objetoAyuda: TextView
+    //lateinit var txt_objetoAyuda: TextView
     lateinit var lblMensaje: TextView
     lateinit var tituloObtenido: String
-    lateinit var iconoCuaderno: ImageView
+    lateinit var iconoCuaderno: LinearLayout
     lateinit var iconoDeshacer: ImageView
     lateinit var imagenConfeti: ImageView
-    lateinit var img_objetoAyuda: ImageView
+    //lateinit var img_objetoAyuda: ImageView
     lateinit var card: CardView
-    lateinit var objetoAyuda: LinearLayout
+    //lateinit var objetoAyuda: LinearLayout
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
 
@@ -111,8 +111,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
         //Obtener preferencias objeto tranquilizador
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        img_objetoAyuda.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-        txt_objetoAyuda.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+        //img_objetoAyuda.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
+        //txt_objetoAyuda.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
 
         //Comprobar si hay parametros en caso de llamada desde el planificador
         val parametros = this.intent.extras
@@ -154,17 +154,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                     .setBackgroundResource(R.drawable.card_personalizado)
             }
         }
-        objetoAyuda.setOnClickListener {
-            val dialog = Dialog(this@PlanActivity)
-            dialog.setContentView(R.layout.dialogo_presentacion)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
-            val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
-            pictograma.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-            tituloPictograma.text =
-                prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
-            dialog.show()
-        }
+        //objetoAyuda.setOnClickListener {
+          //  val dialog = Dialog(this@PlanActivity)
+          //  dialog.setContentView(R.layout.dialogo_presentacion)
+          //  dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+          //  val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
+        //  val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
+        //   pictograma.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
+        //   tituloPictograma.text =
+        //       prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+        //    dialog.show()
+        //    }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

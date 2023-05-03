@@ -10,24 +10,24 @@
 
     <RelativeLayout
         android:layout_width="190dp"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
 
             android:id="@+id/id_card"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/card_personalizado"
-            android:elevation="4dp">
+            android:elevation="0dp">
 
             <ImageView
                 android:id="@+id/id_Imagen"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="4dp"
                 android:contentDescription="@string/lbl_Consultas"
                 app:srcCompat="@drawable/categoria_consultas"></ImageView>
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:autoSizeTextType="uniform"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="105dp"
                 android:layout_marginBottom="2dp"
                 android:foregroundGravity="bottom|center_vertical"
                 android:fontFamily="@font/montserrat_regular"
