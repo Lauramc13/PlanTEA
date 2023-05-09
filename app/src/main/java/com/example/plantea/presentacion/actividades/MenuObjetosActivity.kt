@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -36,21 +37,31 @@ class MenuObjetosActivity : AppCompatActivity() {
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            abrirGaleria() //TODO: ARREGLAR EL CODIGO UN POQUITO MEJOR
+            abrirGaleria() 
             if(imagenSeleccionada){
                next()
             }else{
                 Toast.makeText(this, "No se ha seleccionado ningun objeto", Toast.LENGTH_SHORT).show()
             }
         }
+
         btn_saltar = findViewById(R.id.btn_saltar)
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if(prefs.getBoolean("editPreferences", false) === true){
+            btn_saltar.visibility = View.GONE
+        }else{
+            btn_saltar.visibility = View.VISIBLE
+        }
+
         btn_saltar.setOnClickListener{
-            val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-            val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putString("imagenObjeto", uri.toString())
-            editor.apply()
+            if(prefs.getBoolean("editPreferences", false) === false) {
+                val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
+                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val editor = prefs.edit()
+                editor.putString("imagenObjeto", uri.toString())
+                editor.apply()
+            }
             next()
         }
     }

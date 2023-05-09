@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 class Evento {
     var id = 0
+    var idUsuario: String? = null
     var nombre: String? = null
     var fecha: LocalDate? = null
     var hora: String? = null
@@ -16,8 +17,9 @@ class Evento {
     var gestorEventos = GestionEventos()
 
     constructor()
-    constructor(id: Int, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int, imagen: String?) {
+    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int, imagen: String?) {
         this.id = id
+        this.idUsuario = idUsuario
         this.nombre = nombre
         this.fecha = fecha
         this.hora = hora
@@ -25,8 +27,8 @@ class Evento {
         this.imagen = imagen
     }
 
-    fun obtenerEventos(actividad: Activity?, fechaSeleccionada: LocalDate): ArrayList<*> {
-        listaEventos = gestorEventos.listarEventos(actividad)
+    fun obtenerEventos(idUsuario: String, actividad: Activity?, fechaSeleccionada: LocalDate): ArrayList<*> {
+        listaEventos = gestorEventos.listarEventos(actividad, idUsuario)
         //obtener eventos para una fecha determinada
         val eventos = ArrayList<Evento>()
         for (evento in listaEventos!!) {
@@ -51,9 +53,9 @@ class Evento {
     }
 
     //Comprobar el numero de eventos visibles
-    fun comprobarEventosVisible(actividad: Activity?): Int {
+    fun comprobarEventosVisible(userId: String, actividad: Activity?): Int {
         contador = 0
-        contador = gestorEventos.comprobarEventosVisible(actividad)
+        contador = gestorEventos.comprobarEventosVisible(userId, actividad)
         return contador
     }
 

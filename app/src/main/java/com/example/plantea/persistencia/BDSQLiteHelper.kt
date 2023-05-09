@@ -13,9 +13,9 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     var sqlCategorias = "CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
     var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_cuaderno INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id))"
     var sqlPictograma_Plan = "CREATE TABLE Pictograma_Plan(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, categoria INTEGER, id_plan INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
-    var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
+    var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
-    var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, fecha TEXT, hora TEXT, id_plan INTEGER, imagen TEXT,visible INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
+    var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, id_plan INTEGER, imagen TEXT,visible INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/

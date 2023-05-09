@@ -49,7 +49,7 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_principal, menu)
+        menuInflater.inflate(R.menu.menu_ayuda, menu)
         return true
     }
 
@@ -58,27 +58,6 @@ class MenuActivity : AppCompatActivity() {
             R.id.item_ayuda -> {
                 val manual = Intent(applicationContext, ManualActivity::class.java)
                 startActivity(manual)
-            }
-            R.id.item_perfil -> {
-                val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                startActivity(perfil)
-            }
-            R.id.item_logout -> {
-                val dialogLogout = Dialog(this)
-                dialogLogout.setContentView(R.layout.dialogo_logout)
-                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                btn_logout.setOnClickListener {
-                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                    val editor = prefs.edit()
-                    editor.putBoolean("userAccount", false)
-                    editor.commit()
-                    val intent = Intent(applicationContext, PreLoginActivity::class.java)
-                    startActivity(intent)
-                }
-                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                dialogLogout.show()
             }
             android.R.id.home -> {
                 val it = Intent(applicationContext, MainActivity::class.java)

@@ -6,6 +6,8 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
@@ -18,33 +20,28 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnDragListener
+import android.view.View.VISIBLE
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.fragment.app.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.Categoria
-import com.example.plantea.dominio.Pictograma
-import com.example.plantea.dominio.Planificacion
+import com.example.plantea.dominio.*
+import com.example.plantea.presentacion.ApiInterface
 import com.example.plantea.presentacion.CrearPlanInterface
-import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
-import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import kotlinx.coroutines.*
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.*
 import java.util.*
 
 
@@ -52,16 +49,20 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     var identificadorCategoria = 0
     var subcategoriaOpen = false
     private lateinit var labelTitulo: TextView
+    //lateinit var labelBuscando: TextView
     lateinit var transaction: FragmentTransaction
     lateinit var fragmentCategorias: Fragment
     lateinit var fragmentPictogramas: Fragment
     lateinit var fragmentSubcategoria: Fragment
+    lateinit var fragmentBusqueda: Fragment
     lateinit var btn_logout: Button
     lateinit var icono_cerrar_login : AppCompatImageView
     lateinit var listaPlanificacion: ArrayList<Pictograma>
+    lateinit var listaBusqueda: ArrayList<Pictograma>
     lateinit var listaPictogramas: ArrayList<Pictograma>
     lateinit var tituloPicto: String
     lateinit var imagenPicto: String
+    lateinit var searchBar: SearchView
     var categoriaPicto = 0
 
     //Opcion para indicar funcionalidad editar o crear
@@ -76,9 +77,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var btn_Guardar: Button
     lateinit var btn_GuardarPlanificacion: Button
     lateinit var txt_TituloPlan: TextView
-
-    private val KEY_FRAGMENT_ID = "fragment_id"
-    private var fragmentId: Int = R.id.contenedor_fragments
 
     //RecyclerView Planificacion
     lateinit var recyclerView: RecyclerView
@@ -103,6 +101,138 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         }
     }
 
+    private fun getPictogramas(query: String) {
+        Log.d("TAG", "1")
+
+        val retrofitBuilder = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://api.arasaac.org/api/")
+            .build()
+            .create(ApiInterface::class.java)
+
+        val retrofitBuilderImg = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://static.arasaac.org/pictograms/")
+            .build()
+            .create(ApiInterface::class.java)
+
+        val dict = mutableMapOf<Bitmap, String>()
+        var listaIds = mutableListOf<Int>()
+        var listaTitulos = mutableListOf<String>()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val job: Job = CoroutineScope(Dispatchers.IO).async {
+                val retrofitData = retrofitBuilder.getData(query)
+                Log.d("TAG", "2")
+                try {
+                    val response = retrofitData.execute()
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            for (jsonData in responseBody) {
+                                val id = jsonData._id
+                                listaIds.add(id)
+                                val keyword = jsonData.keywords[0].keyword
+                                listaTitulos.add(keyword)
+                            }
+                        }
+                    }
+                } catch (e: IOException) {
+                    // Handle exception
+                }
+
+                val imageJobs = listaIds.map { id ->
+                    val keyword = listaTitulos[listaIds.indexOf(id)]
+                    CoroutineScope(Dispatchers.IO).async {
+                        val retrofitImage = retrofitBuilderImg.getImage(id.toString())
+                        try {
+                            val response = retrofitImage.execute()
+                            if (response.isSuccessful) {
+                                val bitmap = BitmapFactory.decodeStream(
+                                    response.body()!!.byteStream()
+                                )
+                                dict[bitmap] = keyword
+                            } else {
+                                Log.d("TAG", "Error de la llamada a las imagenes")
+                            }
+                        } catch (e: IOException) {
+                            // Handle exception
+                        }
+                    }
+                }
+
+                imageJobs.awaitAll()
+                Log.d("TAG", "3")
+            }
+
+            job.join()
+            Log.d("TAG", "4")
+
+
+
+
+            dict.keys.forEachIndexed { index, key ->
+                val asf = dict.keys.size
+                Log.d("TAG", "$index size: $asf")
+
+
+                val value = dict[key]
+                if (value != null) {
+                    crearPictoBusqueda(key, value)
+                    //mostrarBusqueda() //TODO: SE QUEDA AQUI DE PRUEBA POR AHORA
+                }
+                if (index == dict.keys.size - 1) {
+                    mostrarBusqueda()
+                }
+            }
+        //     if(dict.keys.size == 0){
+        //         labelBuscando.text = "No se han encontrado pictogramas"
+        //     }else{
+        //         labelBuscando.visibility = View.GONE
+        //     }
+         }
+
+
+    }
+
+    fun mostrarBusqueda() {
+        Log.d("TAG", "SE EJECUTA MOSTRAR BUSQUEDA")
+        //labelBuscando.visibility = View.GONE
+        subcategoriaOpen = false
+        val bundle = Bundle()
+        bundle.putSerializable("key", listaBusqueda)
+        fragmentBusqueda.arguments = bundle
+        transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.contenedor_fragments, fragmentBusqueda)
+        transaction.addToBackStack(null) // Se añade a la pila para poder navegar hacia atrás
+        transaction.commit()
+    }
+
+    fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?) {
+        val width = bitmap.width
+        val height = bitmap.height
+        val outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(outputBitmap)
+        canvas.drawColor(Color.WHITE)
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+        val numero = UUID.randomUUID()
+
+        val filename = "$titulo$numero.jpg"
+        val outputStream: FileOutputStream
+        try {
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE)
+            outputBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+            outputStream.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        val tituloMayus = titulo?.uppercase()
+        val archivo = getFileStreamPath(filename).absolutePath
+        listaBusqueda.add(Pictograma(tituloMayus, archivo, 0, 0))
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_plan)
@@ -110,11 +240,33 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         txt_TituloPlan = findViewById(R.id.txt_TituloPlan)
-        txt_TituloPlan.setText("PLANIFICACIÓN") //TODO
+        txt_TituloPlan.text = "PLANIFICACIÓN" //TODO
         labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
+        searchBar = findViewById(R.id.searchViewPicto)
         listaPictogramas = ArrayList()
         listaPlanificacion = ArrayList()
+        listaBusqueda = ArrayList()
+        //labelBuscando = findViewById(R.id.lbl_buscando)
+
+        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                getPictogramas(query)
+                listaBusqueda.clear()
+                val container = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)
+                container?.let {
+                    supportFragmentManager.beginTransaction()
+                        .remove(it)
+                        .commit()
+                }
+                //labelBuscando.visibility = VISIBLE
+                return true
+            }
+            override fun onQueryTextChange(newText: String): Boolean {
+                newText.trim()
+                return true
+            }
+        })
 
         //Comprobar si hay parametros en caso de llamada desde editar
         val parametros = this.intent.extras
@@ -129,6 +281,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         fragmentCategorias = CategoriasFragment()
         fragmentPictogramas = CategoriasPictogramasFragment()
         fragmentSubcategoria = CategoriasPictogramasFragment()
+        fragmentBusqueda = CategoriasPictogramasFragment()
 
         transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.contenedor_fragments, fragmentCategorias)
@@ -162,13 +315,19 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
+                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                    val idUsuario = prefs.getString("idUsuario", "")
+
                     val plan = Planificacion()
-                    val creada = plan.crearPlanificacion(
-                        this@CrearPlanActivity,
-                        listaPlanificacion,
-                        txt_TituloPlan.text.toString().uppercase(Locale.getDefault())
-                    )
-                    if (creada) {
+                    val creada = idUsuario?.let { it1 ->
+                        plan.crearPlanificacion(
+                            it1,
+                            this@CrearPlanActivity,
+                            listaPlanificacion,
+                            txt_TituloPlan.text.toString().uppercase(Locale.getDefault())
+                        )
+                    }
+                    if (creada == true) {
                         Toast.makeText(
                             applicationContext,
                             "Planificación " + txt_TituloPlan.text.toString() + " creada",
@@ -190,24 +349,26 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     }
 
     var simpleCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END, ItemTouchHelper.UP) {
+
         override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            val fromPosition = viewHolder.getAbsoluteAdapterPosition()
-            val toPosition = target.getAbsoluteAdapterPosition()
+            val fromPosition = viewHolder.absoluteAdapterPosition
+            val toPosition = target.absoluteAdapterPosition
             Collections.swap(listaPlanificacion, fromPosition, toPosition)
             recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
             return false
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.getAbsoluteAdapterPosition()
+            Log.d("TAG",  "se toca el pictograma")
+            val position = viewHolder.absoluteAdapterPosition
             listaPlanificacion.removeAt(position)
             recyclerView.adapter!!.notifyItemRemoved(position)
         }
     }
 
-    //Menu principal
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_ayuda, menu)
         return true
     }
 
@@ -217,24 +378,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 val i = Intent(applicationContext, ManualActivity::class.java)
                 startActivity(i)
             }
-            R.id.item_perfil -> {
-                val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                startActivity(perfil)
-            }
-            R.id.item_logout -> {
-                val dialogLogout = Dialog(this)
-                dialogLogout.setContentView(R.layout.dialogo_logout)
-                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                btn_logout.setOnClickListener {
-                    //TODO: HACER TODA LA PARTE DE CERRAR SESION EN LA BASE DE DATOS
-                    val login = Intent(applicationContext, PreLoginActivity::class.java)
-                    startActivity(login)
-                }
-                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                dialogLogout.show()
-            }
             android.R.id.home -> finish()
         }
         return true
@@ -242,9 +385,9 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     //Creando lista horizontal para la planificacion
     private fun initRecyclerViewPlan() {
-        val layoutManager: LinearLayoutManager
 
-        layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager: LinearLayoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_planificacion)
         recyclerView.layoutManager = layoutManager
         adaptador = AdaptadorPlanificacion(listaPlanificacion)
@@ -257,6 +400,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     //Método para mostrar categoria correspondiente
     override fun mostrarCategoria(idCategoria: Int) {
+        //labelBuscando.visibility = View.GONE
         identificadorCategoria = idCategoria
         listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria) as ArrayList<Pictograma>
         val bundle = Bundle()
@@ -270,6 +414,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     //Método para mostrar los pictogramas correspondientes a las categorias de consultas
     override fun mostrarsubCategoria(tituloCategoria: String?) {
+        //labelBuscando.visibility = View.GONE
         subcategoriaOpen = true
         identificadorCategoria = categoria.obtenerCategoria(this, tituloCategoria)
         listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria) as ArrayList<Pictograma>

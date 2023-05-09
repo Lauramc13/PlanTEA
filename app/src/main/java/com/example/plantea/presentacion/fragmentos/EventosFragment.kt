@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import java.time.LocalDate
 import java.util.*
 
+
 class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var vista: View
     lateinit var diaEvento: TextView
@@ -40,6 +42,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     var contador = 0
     var evento = Evento()
     var plan = Planificacion()
+    
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_eventos, container, false)
@@ -48,7 +51,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         mensaje = vista.findViewById(R.id.lbl_mensaje_evento)
         listaEventos = vista.findViewById(R.id.recycler_eventos)
         iniciarAdaptadorEvento()
-        crearEvento.setOnClickListener( { eventoInterface.crearEventoFragment() })
+        crearEvento.setOnClickListener { eventoInterface.crearEventoFragment() }
         return vista
     }
 
@@ -65,7 +68,10 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){
             crearEvento.isEnabled = false
         }
-        eventos = evento.obtenerEventos(actividad, CalendarioUtilidades.fechaSeleccionada) as ArrayList<Evento>
+        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val userId = prefs.getString("idUsuario", "")
+        Log.d("EVENTOS USUARIO", "$userId")
+        eventos = userId?.let { evento.obtenerEventos(it, actividad, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
         listaEventos.layoutManager = LinearLayoutManager(context)
         adaptadorEvento = AdaptadorEvento(eventos, this)
         if (eventos.isEmpty()) {
@@ -103,7 +109,10 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     override fun viewClick(posicion: Int) {
-        contador = evento.comprobarEventosVisible(actividad)
+        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val userId = prefs.getString("idUsuario", "")
+
+        contador = userId?.let { evento.comprobarEventosVisible(it, actividad) }!!
         println(contador)
         if (eventos[posicion].visible == 1) {
             evento.cambiarVisibilidad(actividad, 0, eventos[posicion].id)

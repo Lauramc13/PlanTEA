@@ -13,15 +13,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="170dp"
         android:background="@drawable/fragment_personalizado"
-
-
-        app:layout_constraintTop_toBottomOf="@+id/btn_guardarPlan">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_TituloPlan"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lst_planificacion"
@@ -29,6 +27,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginEnd="10dp"
             android:clipToPadding="false"
             android:paddingRight="190dp"
@@ -41,19 +40,21 @@
             app:layout_constraintVertical_bias="1.0">
             <!--  quitar efecto lista  android:overScrollMode="never"-->
         </androidx.recyclerview.widget.RecyclerView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/contenedor_fragments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="800dp"
+        android:orientation="vertical"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+        app:layout_constraintTop_toBottomOf="@+id/searchViewPicto" />
 
     <TextView
         android:id="@+id/lbl_CrearPlanActividad"
@@ -75,12 +76,12 @@
     <EditText
         android:id="@+id/txt_TituloPlan"
         android:fontFamily="@font/montserrat_medium"
-        android:layout_width="370dp"
+        android:layout_width="230dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:maxLength="25"
+        android:maxLength="14"
         android:inputType="textPersonName"
         android:textSize="22sp"
         app:layout_constraintStart_toEndOf="@+id/lbl_CrearPlanActividad"
@@ -100,6 +101,39 @@
         app:icon="@drawable/ic_baseline_save_24"
         app:iconTint="#203130"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <SearchView
+        android:id="@+id/searchViewPicto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/fragment_personalizado2"
+        android:elevation="0dp"
+        android:queryHint="Buscar pictograma"
+        android:textColorHint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+    </SearchView>
+
+    <TextView
+        android:id="@+id/lbl_buscando"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="Buscando pictogramas..."
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchViewPicto"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -199,7 +199,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                 }
                 val rutaObjeto = crearRuta(img_objeto, "Objeto")
 
-                val intent = Intent(applicationContext, MenuActivity::class.java)
+                val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
 
 
@@ -273,7 +273,5 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
         return myPath.absolutePath
     }
-
-
 
 }

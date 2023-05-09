@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import java.time.LocalDate
 
@@ -12,26 +13,26 @@ class GestionEventos {
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        identificador = conectorBD!!.insertarCita(evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan, evento.imagen)
+        identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan, evento.imagen)
         conectorBD!!.cerrar()
         return identificador
     }
 
-    fun listarEventos(actividad: Activity?): ArrayList<Evento> {
+    fun listarEventos(actividad: Activity?, idUsuario: String): ArrayList<Evento> {
         eventos = ArrayList()
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarEventos()
+        val c = conectorBD!!.listarEventosPorUsuario(idUsuario)
         if (c.moveToFirst()) {
             do {
                 val evento = Evento()
                 evento.id = c.getInt(0)
-                evento.nombre = c.getString(1)
-                evento.fecha = LocalDate.parse(c.getString(2))
-                evento.hora = c.getString(3)
-                evento.id_plan = c.getInt(4)
-                evento.imagen = c.getString(5)
-                evento.visible = c.getInt(6)
+                evento.nombre = c.getString(2)
+                evento.fecha = LocalDate.parse(c.getString(3))
+                evento.hora = c.getString(4)
+                evento.id_plan = c.getInt(5)
+                evento.imagen = c.getString(6)
+                evento.visible = c.getInt(7)
                 eventos!!.add(evento)
             } while (c.moveToNext())
         }
@@ -55,13 +56,16 @@ class GestionEventos {
     }
 
     //Comprobar el numero de eventos visibles
-    fun comprobarEventosVisible(actividad: Activity?): Int {
+    fun comprobarEventosVisible(userId: String, actividad: Activity?): Int {
         contador = 0
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val c = conectorBD!!.contarEventoVisible()
+        val c = conectorBD!!.contarEventoVisible(userId)
         if (c.moveToFirst()) {
             contador = c.getInt(0)
+            Log.d("Tag", contador.toString())
+            Log.d("Tag", userId)
+
         }
         conectorBD!!.cerrar()
         return contador

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_marginRight="60dp"
-    android:layout_marginTop="70dp"
+    android:layout_marginTop="150dp"
     android:layout_marginBottom="150dp"
     android:layout_marginLeft="60dp"
-    android:layout_height="706dp"
+    android:layout_height="306dp"
     android:background="@drawable/fragment_personalizado2"
     tools:context=".presentacion.fragmentos.CategoriasPictogramasFragment">
 

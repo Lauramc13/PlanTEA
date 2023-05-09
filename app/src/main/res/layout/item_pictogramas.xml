@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="vertical"
@@ -45,8 +45,22 @@
                 android:maxLines="1"
                 android:text="@string/lbl_Consultas"
                 android:textColor="@color/black"
-                android:textSize="16sp"></TextView>
-        </RelativeLayout>
+                android:textSize="16sp">
+            </TextView>
+
+            <ImageView
+                android:id="@+id/btn_borrarPicto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_alignParentRight="true"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/svg_trash2">
+        </ImageView>
+
+    </RelativeLayout>
 
         <ImageView
             android:id="@+id/id_recompensa"
@@ -58,6 +72,9 @@
             android:contentDescription="@string/lbl_Consultas"
             android:elevation="4dp"
             android:visibility="invisible"
-            app:srcCompat="@drawable/categoria_recompensa"></ImageView>
+            app:srcCompat="@drawable/categoria_recompensa">
+        </ImageView>
+
+
     </RelativeLayout>
 </LinearLayout>

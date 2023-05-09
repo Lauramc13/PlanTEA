@@ -79,8 +79,13 @@ class GestionUsuarios {
         return usuario
     }
 
-
-
+    fun consultarId(username: String,  actividad: Activity?): String {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        var usuarioId = conectorBD!!.consultarId(username)
+        conectorBD!!.cerrar()
+        return usuarioId
+    }
 
 
 }

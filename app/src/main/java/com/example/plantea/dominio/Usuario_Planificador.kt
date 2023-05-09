@@ -98,4 +98,9 @@ class Usuario_Planificador {
         return gestorUsuario.addImagenObjeto(imagen, username, actividad)
     }
 
+    fun consultarId(username: String, actividad: Activity?): String {
+        return gestorUsuario.consultarId(username, actividad)
+
+    }
+
 }

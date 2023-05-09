@@ -24,6 +24,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ManualActivity
+import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import java.util.*
 
@@ -40,6 +41,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var imagenConfeti: ImageView
     //lateinit var img_objetoAyuda: ImageView
     lateinit var card: CardView
+    lateinit var card_calendario : CardView
+    lateinit var card_historias: CardView
+    lateinit var card_actividades: CardView
     //lateinit var objetoAyuda: LinearLayout
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
@@ -47,6 +51,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
     private var recyclerViewState: Parcelable? = null
+
 
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -80,6 +85,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan)
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
 
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -99,18 +106,18 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         } else {
             5
         }
+        card_calendario = findViewById(R.id.card_Calendario)
         layoutManager = GridLayoutManager(this, gridValueManager)
         recyclerView.layoutManager = layoutManager
 
         // Restore the RecyclerView state if it was saved before
         if (savedInstanceState != null) {
-            recyclerViewState = savedInstanceState.getParcelable("recycler_view_state") //TODO, QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
+            recyclerViewState = savedInstanceState.getParcelable("recycler_view_state") //TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
        // objetoAyuda = findViewById(R.id.layout_objetoAyuda)
 
         //Obtener preferencias objeto tranquilizador
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         //img_objetoAyuda.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
         //txt_objetoAyuda.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
 
@@ -118,13 +125,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val parametros = this.intent.extras
         if (parametros != null) {
             titulo.text = intent.getStringExtra("titulo")
+
             listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
         } else {
+            val idUsuario = prefs.getString("idUsuario", "")
             //Mostrar la planificación a seguir para el niño
             listaPictogramas = ArrayList()
-            listaPictogramas = plan.mostrarPlanificacion(this) as ArrayList<Pictograma>
+            listaPictogramas = idUsuario?.let { plan.mostrarPlanificacion(it, this) } as ArrayList<Pictograma>
             //Mostrar título de la planificación
-            tituloObtenido = plan.obtenerTituloPlan(this)
+            tituloObtenido = plan.obtenerTituloPlan(idUsuario, this)
             titulo.text = tituloObtenido
         }
         adaptador = AdaptadorPresentacion(listaPictogramas, this)
@@ -139,6 +148,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //Este método se ejecutará al seleccionar el icono cuaderno para acceder
         iconoCuaderno.setOnClickListener {
             val intent = Intent(applicationContext, CuadernoActivity::class.java)
+            startActivity(intent)
+        }
+
+        card_calendario.setOnClickListener{
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            val editor = prefs.edit()
+            editor.putBoolean("calendarioNinio", true)
+            val intent = Intent(applicationContext, CalendarioActivity::class.java)
             startActivity(intent)
         }
 

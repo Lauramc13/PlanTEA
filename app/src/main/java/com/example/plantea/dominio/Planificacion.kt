@@ -17,14 +17,14 @@ class Planificacion : Serializable {
         this.id = id
     }
 
-    fun crearPlanificacion(actividad: Activity?, pictogramas: java.util.ArrayList<Pictograma>, titulo: String?): Boolean {
-        resultado = gestionPlan.insertarPictogramaPlan(actividad, pictogramas, titulo)
+    fun crearPlanificacion(idUsuario: String, actividad: Activity?, pictogramas: java.util.ArrayList<Pictograma>, titulo: String?): Boolean {
+        resultado = gestionPlan.insertarPictogramaPlan(idUsuario, actividad, pictogramas, titulo)
         return resultado
     }
 
-    fun mostrarPlanificacionesDisponibles(actividad: Activity?): ArrayList<*> {
+    fun mostrarPlanificacionesDisponibles(idUsuario: String, actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.listarPlanificaciones(actividad) as ArrayList<Planificacion>
+        listaPlanes = gestionPlan.listarPlanificaciones(idUsuario, actividad) as ArrayList<Planificacion>
         return listaPlanes
     }
 
@@ -43,17 +43,15 @@ class Planificacion : Serializable {
     }
 
     //Mostrar la planificacion a seguir
-    fun mostrarPlanificacion(actividad: Activity?): ArrayList<*> {
+    fun mostrarPlanificacion(idUsuario: String, actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
-
-
-        listaPlanes = gestionPlan.obtenerPictogramas(actividad) as ArrayList<Planificacion>
+        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, actividad) as ArrayList<Planificacion>
         return listaPlanes
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(actividad: Activity?): String {
-        titulo = gestionPlan.obtenerTituloPlan(actividad)
+    fun obtenerTituloPlan(idUsuario: String, actividad: Activity?): String {
+        titulo = gestionPlan.obtenerTituloPlan(idUsuario, actividad)
         return titulo
     }
 }

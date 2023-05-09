@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,17 +79,27 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         spinner_consultas.adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, consultas)
         btn_hora.setOnClickListener { mostrarReloj(horaEvento) }
+
+
         btn_guardar.setOnClickListener {
+            val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+            val userId = prefs.getString("idUsuario", "")
+            Log.d("NUEVOS EVENTOS USUARIO", "$userId")
             val rutaImagen = obtenerImagenEvento()
-            val evento = Evento(
-                0,
-                nombreEvento,
-                CalendarioUtilidades.fechaSeleccionada,
-                horaEvento.text.toString(),
-                planSeleccionado,
-                rutaImagen
-            )
-            eventoInterface.nuevoEvento(evento)
+            val evento = userId?.let { it1 ->
+                Evento(
+                    0,
+                    it1,
+                    nombreEvento,
+                    CalendarioUtilidades.fechaSeleccionada,
+                    horaEvento.text.toString(),
+                    planSeleccionado,
+                    rutaImagen
+                )
+            }
+            if (evento != null) {
+                eventoInterface.nuevoEvento(evento)
+            }
             Toast.makeText(context, "Evento creado", Toast.LENGTH_SHORT).show()
         }
         btn_planificar.setOnClickListener { eventoInterface.planificar() }
@@ -114,8 +125,10 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     private fun iniciarListaPlanificaciones() {
+        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val userId = prefs.getString("idUsuario", "")
         listaPlanificaciones.layoutManager = LinearLayoutManager(context)
-        planes = plan.mostrarPlanificacionesDisponibles(actividad) as ArrayList<Planificacion>
+        planes = userId?.let { plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>
         adaptador = AdaptadorListaPlanes(planes, this)
         listaPlanificaciones.adapter = adaptador
         //Mostramos un mensaje informando si la lista está vacía
@@ -182,11 +195,13 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     override fun duplicateClick(posicion: Int) {
+        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val userId = prefs.getString("idUsuario", "")
         pictogramas = ArrayList()
         pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as ArrayList<Pictograma>
-        val creada = plan.crearPlanificacion(actividad, pictogramas, planes[posicion].titulo + " " + counter.toString())
+        val creada = userId?.let { plan.crearPlanificacion(it, actividad, pictogramas, planes[posicion].titulo + " " + counter.toString()) }
         counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
-        if (creada) {
+        if (creada == true) {
             Toast.makeText(context, "Planificación duplicada", Toast.LENGTH_LONG).show()
             iniciarListaPlanificaciones()
         } else {

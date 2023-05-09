@@ -29,6 +29,10 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         holder.titulo.text = listaPictogramas!![position].titulo
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+
+        if(listaPictogramas!![position].categoria == 1){
+            holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -38,10 +42,13 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener {
         var titulo: TextView
         var imagen: ImageView
+        var card: View
+
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
+            card = itemView.findViewById(R.id.id_card) as View
             itemView.setOnTouchListener(this)
         }
 

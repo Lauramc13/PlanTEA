@@ -9,10 +9,10 @@ class GestionPlanificaciones : Serializable {
     private var resultado: Boolean = false
     private lateinit var listaPlanes: ArrayList<Planificacion>
     private lateinit var listaPictogramas: ArrayList<Pictograma>
-    fun insertarPictogramaPlan(actividad: Activity?, pictogramas: java.util.ArrayList<Pictograma>, titulo: String?): Boolean {
+    fun insertarPictogramaPlan(idUsuario: String, actividad: Activity?, pictogramas: java.util.ArrayList<Pictograma>, titulo: String?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        val id_plan: Int = conectorBD.insertarPlanificacion(titulo)
+        val id_plan: Int = conectorBD.insertarPlanificacion(idUsuario, titulo)
         for (i in pictogramas.indices) {
             resultado = conectorBD.insertarPictogramaPlan(pictogramas[i].titulo,
                 pictogramas[i].imagen, pictogramas[i].categoria, id_plan)
@@ -21,11 +21,11 @@ class GestionPlanificaciones : Serializable {
         return resultado
     }
 
-    fun listarPlanificaciones(actividad: Activity?): ArrayList<*> {
+    fun listarPlanificaciones(idUsuario: String, actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        val c = conectorBD.listarPlanificaciones()
+        val c = conectorBD.listarPlanificaciones(idUsuario)
         if (c.moveToFirst()) {
             do {
                 val plan = Planificacion()
@@ -76,12 +76,12 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramas(actividad: Activity?): ArrayList<*> {
+    fun obtenerPictogramas(idUsuario: String, actividad: Activity?): ArrayList<*> {
 
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
-        val c = conectorBD.obtenerPlanficacion()
+        val c = conectorBD.obtenerPlanficacion(idUsuario)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -97,12 +97,12 @@ class GestionPlanificaciones : Serializable {
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(actividad: Activity?): String {
+    fun obtenerTituloPlan(idUsuario: String, actividad: Activity?): String {
         conectorBD = ConectorBD(actividad)
 
         conectorBD.abrir()
         var titulo = " " // set a default value
-        val c = conectorBD.listarTituloPlan()
+        val c = conectorBD.listarTituloPlan(idUsuario)
         if (c.moveToFirst()) {
             titulo = c.getString(0)
         }

@@ -2,12 +2,14 @@ package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
+import java.security.MessageDigest
 
 class RegisterActivity : AppCompatActivity(){
 
@@ -58,9 +60,13 @@ class RegisterActivity : AppCompatActivity(){
                 if( txt_password.text.toString() != txt_password2.text.toString() ){
                     Toast.makeText(applicationContext, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
                 }else{
-                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), txt_password.text.toString(), txt_objeto.text.toString(), txt_nameplanificado.toString(), this@RegisterActivity)
+                    val passCifrada = hashPassword(txt_password.text.toString())
+                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), passCifrada, txt_objeto.text.toString(), txt_nameplanificado.toString(), this@RegisterActivity)
                     if (creado) {
+                        val id = usuario.consultarId(txt_username.text.toString(), this@RegisterActivity)
                         val editor = prefs.edit()
+                        editor.putString("idUsuario", id)
+                        Log.d("USUARIO", "$id")
                         editor.putString("username", txt_username.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
                         editor.putString("nombrePlanificador", txt_name.text.toString())
@@ -79,10 +85,17 @@ class RegisterActivity : AppCompatActivity(){
             }
         }
 
+
+
         checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
             txt_nameplanificado.isEnabled = isChecked
         }
     }
-
+    private fun hashPassword(password: String): String {
+        val bytes = password.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
 
 }

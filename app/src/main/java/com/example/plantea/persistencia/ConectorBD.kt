@@ -59,9 +59,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar una nueva planificacion*/
-    fun insertarPlanificacion(titulo: String?): Int {
+    fun insertarPlanificacion(id_usuario: String, titulo: String?): Int {
         var id = 0
-        db!!.execSQL("INSERT INTO Planificacion (titulo) VALUES ('$titulo')")
+        db!!.execSQL("INSERT INTO Planificacion (titulo, id_usuario) VALUES ('$titulo', '$id_usuario')")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
         if (c.moveToFirst()) {
             id = c.getInt(0)
@@ -70,8 +70,8 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar planificaciones disponibles*/
-    fun listarPlanificaciones(): Cursor {
-        return db!!.rawQuery("SELECT titulo,id from Planificacion", null)
+    fun listarPlanificaciones(id_usuario: String): Cursor {
+        return db!!.rawQuery("SELECT titulo, id from Planificacion WHERE id_usuario = '$id_usuario'", null)
     }
 
     /*Modificar la visibilidad de un evento para mostrar o no al niño un plan*/
@@ -97,18 +97,19 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar pictogramas de un plan a seguir*/
-    fun obtenerPlanficacion(): Cursor {
-        return db!!.rawQuery("SELECT Pictograma_Plan.nombre,Pictograma_Plan.imagen,categoria from Pictograma_Plan Inner JOIN Evento where Evento.id_plan = Pictograma_Plan.id_plan AND Evento.visible = 1 ORDER BY Pictograma_Plan.id", null)
+    fun obtenerPlanficacion(id_usuario: String): Cursor {
+        return db!!.rawQuery("SELECT Pictograma_Plan.nombre,Pictograma_Plan.imagen,categoria from Pictograma_Plan Inner JOIN Evento where Evento.id_plan = Pictograma_Plan.id_plan AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario' ORDER BY Pictograma_Plan.id", null)
     }
 
     /*Obtener el numero de planficaciones visibles*/
-    fun contarEventoVisible(): Cursor {
-        return db!!.rawQuery("SELECT count(visible) from Evento where visible = 1", null)
+    fun contarEventoVisible(id_usuario: String): Cursor {
+        return db!!.rawQuery("SELECT count(visible) FROM Evento WHERE visible = 1 AND id_usuario = '$id_usuario'", null)
     }
 
+
     /*Obtener el titulo de la planificacion a seguir*/
-    fun listarTituloPlan(): Cursor {
-        return db!!.rawQuery("SELECT titulo from Planificacion Inner JOIN Evento where Evento.id_plan = Planificacion.id AND Evento.visible = 1", null)
+    fun listarTituloPlan(id_usuario: String): Cursor {
+        return db!!.rawQuery("SELECT titulo from Planificacion Inner JOIN Evento where Evento.id_plan = Planificacion.id AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario'", null)
     }
 
     /*Insertar una nueva subcategoria*/
@@ -161,7 +162,6 @@ class ConectorBD(ctx: Context?) {
         }
         return resultado
     }
-
     /*Cambiar contraseña del usuario*/
     fun actualizarPass(username:String, passNueva: String, passVieja: String): Boolean {
         val actualizado: Boolean = if (consultarPass(username, passVieja)) {
@@ -179,9 +179,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar nueva cita en la tabla eventos*/
-    fun insertarCita(nombre: String?, fecha: String, hora: String?, id_plan: Int, imagen: String?): Int {
+    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, id_plan: Int, imagen: String?): Int {
         var id = 0
-        db!!.execSQL("INSERT INTO Evento (nombre,fecha,hora,id_plan,imagen,visible) VALUES ('$nombre','$fecha','$hora', '$id_plan', '$imagen',0)")
+        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora,id_plan,imagen,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$id_plan', '$imagen',0)")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
         if (c.moveToFirst()) {
             id = c.getInt(0)
@@ -190,9 +190,22 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar eventos*/
-    fun listarEventos(): Cursor {
-        return db!!.rawQuery("SELECT id,nombre,fecha,hora, id_plan, imagen,visible from Evento", null)
+    // fun listarEventos(): Cursor {
+    //     return db!!.rawQuery("SELECT id, id_usuario, nombre,fecha,hora, id_plan, imagen,visible from Evento", null)
+    // }
+
+    fun listarEventosPorUsuario(idUsuario: String): Cursor {
+        val selectionArgs = arrayOf(idUsuario)
+        return db!!.rawQuery(
+            "SELECT id, id_usuario, nombre, fecha, hora, id_plan, imagen, visible " +
+            "FROM Evento " +
+            "WHERE id_usuario = ?",
+            selectionArgs
+        )
     }
+    
+
+
 
     /*Eliminar evento*/
     fun eliminarEvento(id: Int) {
@@ -250,6 +263,14 @@ class ConectorBD(ctx: Context?) {
         db!!.execSQL("UPDATE Usuario_Planificador SET imagenObjeto ='$image' WHERE Usuario_Planificador.username = '$username'")
     }
 
+    @SuppressLint("Range")
+    fun consultarId(username: String): String {
+        val cursor = db!!.rawQuery("SELECT id FROM Usuario_Planificador WHERE username = ?", arrayOf(username))
+        cursor.moveToFirst()
+        val id = cursor.getString(cursor.getColumnIndex("id"))
+        cursor.close()
+        return id
+    }
 
 
 

@@ -9,6 +9,8 @@ import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -22,6 +24,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
+import java.security.MessageDigest
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var image_UsuarioTEA: ImageView
     private lateinit var conectorBD: ConectorBD
     private lateinit var password: TextView
+    lateinit var btn_logout: Button
     private lateinit var nombrePlanificador: TextView
     private lateinit var nombreUsuarioTEA: TextView
     private lateinit var btn_acceder: Button
@@ -107,7 +111,8 @@ class MainActivity : AppCompatActivity() {
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 val username = prefs.getString("username", "")
                 if(username != null){
-                    val passCorrecta = usuario.comprobarPass(username, password.text.toString(), this@MainActivity)
+                    val passCifrada = hashPassword(password.text.toString())
+                    val passCorrecta = usuario.comprobarPass(username, passCifrada, this@MainActivity)
                     if (passCorrecta) {
                         val intent = Intent(applicationContext, MenuActivity::class.java)
                         startActivity(intent)
@@ -123,5 +128,51 @@ class MainActivity : AppCompatActivity() {
         icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
         dialogLogin.show()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_principal, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_ayuda -> {
+                val i = Intent(applicationContext, ManualActivity::class.java)
+                startActivity(i)
+            }
+            R.id.item_perfil -> {
+                val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
+                startActivity(perfil)
+            }
+            R.id.item_logout -> {
+                val dialogLogout = Dialog(this)
+                dialogLogout.setContentView(R.layout.dialogo_logout)
+                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                btn_logout.setOnClickListener {
+                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                    val editor = prefs.edit()
+                    editor.putBoolean("userAccount", false)
+                    //TODO: HACER TODA LA PARTE DE CERRAR SESION EN LA BASE DE DATOS
+                    val login = Intent(applicationContext, PreLoginActivity::class.java)
+                    startActivity(login)
+                }
+                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                dialogLogout.show()
+            }
+            android.R.id.home -> finish()
+        }
+        return true
+    }
+
+    private fun hashPassword(password: String): String {
+        val bytes = password.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
+
+
 
 }

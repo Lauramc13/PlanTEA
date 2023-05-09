@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.presentacion.actividades.ManualActivity
+import java.security.MessageDigest
 
 class PasswordActivity : AppCompatActivity() {
     private lateinit var viejaPass: TextView
@@ -50,7 +51,9 @@ class PasswordActivity : AppCompatActivity() {
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 val username = prefs.getString("username", "")
                 if (username != null){
-                    actualizado = usuario.confirmarPass(username, viejaPass.text.toString(), nuevaPass.text.toString(), confirmaPass.text.toString(), this@PasswordActivity)
+                    val passCifrada = hashPassword(confirmaPass.text.toString())
+                    val nuevaPassCifrada = hashPassword(nuevaPass.text.toString())
+                    actualizado = usuario.confirmarPass(username, viejaPass.text.toString(), nuevaPassCifrada, passCifrada, this@PasswordActivity)
                 }
                 if (actualizado) {
                     Toast.makeText(applicationContext, "Contraseña actualizada", Toast.LENGTH_LONG)
@@ -84,4 +87,11 @@ class PasswordActivity : AppCompatActivity() {
         }
         return true
     }
+    private fun hashPassword(password: String): String {
+        val bytes = password.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
+
 }

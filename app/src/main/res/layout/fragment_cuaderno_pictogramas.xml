@@ -10,7 +10,7 @@
     android:layout_marginLeft="60dp"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/fragment_personalizado"
+    android:background="@drawable/fragment_personalizado2"
     tools:context=".presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment">
 
     <ImageView

@@ -2,12 +2,14 @@ package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
+import java.security.MessageDigest
 
 class PreLoginActivity : AppCompatActivity(){
 
@@ -20,28 +22,28 @@ class PreLoginActivity : AppCompatActivity(){
     var user = Usuario_Planificador()
 
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val userAccount = prefs.getBoolean("userAccount", false)
+    //@Deprecated("Deprecated in Java")
+    //override fun onBackPressed() {
+      //  val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+      //  val userAccount = prefs.getBoolean("userAccount", false)
 
-        if(userAccount){
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            startActivity(intent)
-        }
+      //  if(userAccount){
+        //    val intent = Intent(applicationContext, MainActivity::class.java)
+          //  startActivity(intent)
+       // }
 
-        super.onSupportNavigateUp()
-    }
+        //super.onSupportNavigateUp()
+    // }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val userAccount = prefs.getBoolean("userAccount", false)
 
-        if(userAccount){
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            startActivity(intent)
-        }
+     //   if(userAccount){
+           // val intent = Intent(applicationContext, MainActivity::class.java)
+         //   startActivity(intent)
+       // }
 
         setContentView(R.layout.activity_prelogin)
         username = findViewById(R.id.txt_UserName)
@@ -58,9 +60,13 @@ class PreLoginActivity : AppCompatActivity(){
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                if (usuario.comprobarUsuario(username.text.toString(), password.text.toString(), this@PreLoginActivity) == true) {
+                val passCifrada = hashPassword(password.text.toString())
+                if (usuario.comprobarUsuario(username.text.toString(), passCifrada, this@PreLoginActivity) == true) {
                     user = usuario.obtenerUsuario(username.text.toString(), this@PreLoginActivity)
+                    val id = usuario.consultarId(username.text.toString(), this@PreLoginActivity)
                     val editor = prefs.edit()
+                    editor.putString("idUsuario", id)
+                    Log.d("USUARIO", "$id")
                     editor.putBoolean("userAccount", true)
                     editor.putString("nombrePlanificador", user.getName())
                     editor.putString("username", user.getUsername())
@@ -84,5 +90,11 @@ class PreLoginActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
+    }
+    fun hashPassword(password: String): String {
+        val bytes = password.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
     }
 }

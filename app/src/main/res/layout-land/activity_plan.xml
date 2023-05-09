@@ -11,10 +11,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="800dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +32,7 @@
             android:fontFamily="@font/montserrat_semibold"
             android:text="Titulo"
             android:textColor="@color/black"
-            android:textSize="50dp"
+            android:textSize="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +77,8 @@
             app:layout_constraintStart_toEndOf="@+id/lbl_titulo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_baseline_undo_64" />
+            app:srcCompat="@drawable/ic_baseline_undo_64"
+             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -88,7 +90,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginRight="100dp"
+        android:layout_marginRight="300dp"
         app:cardBackgroundColor="#B5DFDE"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,9 +108,9 @@
             app:cardBackgroundColor="#C3D0FF"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp">
+<!-- 
 
-
-            <!-- <ImageView
+            <ImageView
                 android:id="@+id/imageView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,7 +147,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="300dp"
         app:cardBackgroundColor="#B5DFDE"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toStartOf="@+id/layout_Planificacion"

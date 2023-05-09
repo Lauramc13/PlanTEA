@@ -27,14 +27,16 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
         holder.premio.visibility = View.INVISIBLE
         holder.premio.setImageResource(R.drawable.categoria_recompensa)
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
+        holder.borrar.visibility = View.VISIBLE
         if (listaPlanificacion[position].categoria == 7) { //Premio
-            holder.premio.visibility = View.VISIBLE
+            //holder.premio.visibility = View.VISIBLE
             holder.card.setBackgroundResource(R.drawable.card_premio)
         } else if (listaPlanificacion[position].categoria == 6) { //Espera
-            holder.premio.visibility = View.VISIBLE
-            holder.premio.setImageResource(R.drawable.reloj)
+            //holder.premio.visibility = View.VISIBLE
+            //holder.premio.setImageResource(R.drawable.reloj)
             holder.card.setBackgroundResource(R.drawable.card_espera)
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -45,13 +47,28 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
         var titulo: TextView
         var imagen: ImageView
         var premio: ImageView
+        var borrar: ImageView
         var card: View
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
+            borrar = itemView.findViewById<View>(R.id.btn_borrarPicto) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
+
+            borrar.setOnClickListener {
+                val position = bindingAdapterPosition
+
+                if (position != RecyclerView.NO_POSITION) {
+                    listaPlanificacion.removeAt(position)
+                    notifyItemRemoved(position)
+                }
+            }
+
+
         }
+
+
     }
 }

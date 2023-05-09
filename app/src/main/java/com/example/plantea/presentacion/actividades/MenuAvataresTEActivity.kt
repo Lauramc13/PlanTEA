@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -46,13 +47,22 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         }
 
         btn_saltar = findViewById(R.id.btn_saltar)
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if(prefs.getBoolean("editPreferences", false) === true){
+            btn_saltar.visibility = View.GONE
+        }else{
+            btn_saltar.visibility = View.VISIBLE
+        }
+
         btn_saltar.setOnClickListener{
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-            val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-            val editor = prefs.edit()
-            editor.putString("imagenUsuarioTEA", uri.toString())
-            editor.apply()
+            if(prefs.getBoolean("editPreferences", false) === false) {
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
+                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
+                val editor = prefs.edit()
+                editor.putString("imagenUsuarioTEA", uri.toString())
+                editor.apply()
+            }
             next()
         }
     }

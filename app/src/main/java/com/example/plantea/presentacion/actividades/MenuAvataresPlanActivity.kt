@@ -36,21 +36,31 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
 
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
-            abrirGaleria() //TODO ARREGLAR EL CODIGO UN POQUITO MEJOR
+            abrirGaleria() 
             if(imagenSeleccionada){
                 next()
             }else{
                 Toast.makeText(this, "No se ha seleccionado ningun avatar", Toast.LENGTH_SHORT).show()
             }
         }
+
         btn_saltar = findViewById(R.id.btn_saltar)
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if(prefs.getBoolean("editPreferences", false) === true){
+            btn_saltar.text = "Cancelar"
+        }else{
+            btn_saltar.text = "Saltar"
+        }
+
         btn_saltar.setOnClickListener{
-            val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-            val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putString("imagenPlanificador", uri.toString())
-            editor.apply()
+            if(prefs.getBoolean("editPreferences", false) === false) {
+                val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
+                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val editor = prefs.edit()
+                editor.putString("imagenPlanificador", uri.toString())
+                editor.apply()
+            }
             next()
         }
     }
