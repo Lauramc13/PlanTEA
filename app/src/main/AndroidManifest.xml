@@ -11,8 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:enableOnBackInvokedCallback="true"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.PlanTEA">
+        android:theme="@style/AppTheme"
+        android:supportsRtl="true">
         <activity
             android:name=".presentacion.actividades.planificador.CalendarioActivity"
             android:label="Planificador"
@@ -35,7 +35,7 @@
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+        android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -102,13 +102,6 @@
             android:label="Elige avatar planificador"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".presentacion.actividades.ninio.CalendarioNinioActivity"
-            android:label="Calendario"
-            android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustPan" />
-
-
         <receiver android:name=".dominio.onAlarmReceiver" />
 
     </application>

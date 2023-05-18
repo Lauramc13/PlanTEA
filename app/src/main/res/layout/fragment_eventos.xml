@@ -31,7 +31,7 @@
                 android:layout_marginStart="10dp"
                 android:text="TextView"
                 android:fontFamily="@font/montserrat_semibold"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_nuevo_evento"
@@ -65,7 +65,7 @@
             android:layout_margin="10dp"
             android:text="@string/lbl_mensaje_evento"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?colorOnSurface"
             android:textSize="18sp"
             android:visibility="invisible" />
 

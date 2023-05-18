@@ -24,7 +24,7 @@
         android:layout_marginTop="45dp"
         android:fontFamily="@font/montserrat_semibold"
         android:text="Registrarse"
-        android:textColor="@color/teal_900"
+        android:textColor="@color/md_theme_dark_onPrimary"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
         android:layout_marginTop="25dp"
         android:fontFamily="@font/montserrat_medium"
         android:text="Datos del planificador"
-        android:textColor="@color/teal_900"
+        android:textColor="@color/md_theme_dark_onPrimary"
 
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -15,7 +15,7 @@
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
         android:text="Selecciona la actividad tranquilizadora"
-        android:textColor="@color/teal_900"
+        android:textColor="@color/md_theme_dark_onPrimary"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

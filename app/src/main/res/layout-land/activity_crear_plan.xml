@@ -6,7 +6,7 @@
     android:configChanges="orientation|keyboardHidden"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?colorSurfaceVariant"
     tools:context=".presentacion.actividades.planificador.CrearPlanActivity"
     tools:layout_editor_absoluteY="89dp">
 
@@ -122,6 +122,7 @@
 
     <SearchView
         android:id="@+id/searchViewPicto"
+        style="@style/Widget.Material3.SearchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
