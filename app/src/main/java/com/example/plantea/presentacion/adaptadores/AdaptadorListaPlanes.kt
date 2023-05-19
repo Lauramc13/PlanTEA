@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +49,15 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
             itemView.setOnClickListener{
                 val posicion = bindingAdapterPosition
                 listener?.planSeleccionado(posicion)
-                card.setCardBackgroundColor(Color.rgb(224, 224, 224))
+                val currentNightMode = itemView.context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+
+                if (isDarkMode) {
+                    card.setCardBackgroundColor(Color.rgb(32, 42, 50)) // Set the desired background color for dark mode
+                } else {
+                    card.setCardBackgroundColor(Color.rgb(224, 224, 224)) // Set the desired background color for light mode
+                }
+
             }
 
             editar.setOnClickListener {

@@ -2,10 +2,12 @@
 
 <resources>
     <color name="seed">#238382</color>
-    <color name="seedLight">#84CBC5</color>
-    <color name="white">#F5F7FA</color>
+    <color name="seedLight">#72C7C4</color>
+    <color name="white">#FFFFFF</color>
     <color name="black">#212121</color>
-    <color name="md_theme_light_primary">#018786</color>
+    <color name="background2">#DDECEC</color>
+    <color name="md_theme_light_primary">#60C2C2</color>
+    <color name="md_theme_light_primary2">#A6DDDD</color>
     <color name="md_theme_light_onPrimary">#F5F7FA</color>
     <color name="md_theme_light_primaryContainer">#9CE2DC</color>
     <color name="md_theme_light_onPrimaryContainer">#1F2933</color>
@@ -25,7 +27,7 @@
     <color name="md_theme_light_onBackground">#181F25</color>
     <color name="md_theme_light_surface">#DDECEC</color>
     <color name="md_theme_light_onSurface">#181F25</color>
-    <color name="md_theme_light_surfaceVariant">#DCE4E9</color>
+    <color name="md_theme_light_surfaceVariant">#E0E0E0</color>
     <color name="md_theme_light_onSurfaceVariant">#3B4854</color>
     <color name="md_theme_light_outline">#607180</color>
     <color name="md_theme_light_inverseOnSurface">#EFF1F3</color>
@@ -51,12 +53,15 @@
     <color name="md_theme_dark_errorContainer">#93000A</color>
     <color name="md_theme_dark_onError">#690005</color>
     <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
-
+    <color name="md_theme_dark_backgroundDark">#101519</color>
     <color name="md_theme_dark_background">#181F25</color>
+    <color name="md_theme_dark_background2">#252F38</color>
     <color name="md_theme_dark_onBackground">#CBD2D9</color>
     <color name="md_theme_dark_surface">#181F25</color>
     <color name="md_theme_dark_onSurface">#E4E7EB</color>
     <color name="md_theme_dark_surfaceVariant">#323F4B</color>
+    <color name="md_theme_dark_surfaceVariant2">#52606D</color>
+    <color name="md_theme_dark_surfaceVariant3">#7F909F</color>
     <color name="md_theme_dark_onSurfaceVariant">#DCE0E5</color>
     <color name="md_theme_dark_outline">#7B8794</color>
     <color name="md_theme_dark_inverseOnSurface">#181F25</color>
@@ -66,4 +71,11 @@
     <color name="md_theme_dark_surfaceTint">#DCE0E5</color>
     <color name="md_theme_dark_outlineVariant">#323F4B</color>
     <color name="md_theme_dark_scrim">#000000</color>
+
+    <color name="pizarraBorde">#C1C1C1</color>
+    <color name="pizarraContenido">#F4F4F4</color>
+
+    <color name="pizarraContenido2">#8051EEE9</color>
+
+
 </resources>

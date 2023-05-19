@@ -4,8 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
+
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -16,14 +15,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
+import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 import java.util.*
 
@@ -33,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var image_Planificador: ImageView
     private lateinit var image_UsuarioTEA: ImageView
     private lateinit var conectorBD: ConectorBD
-    private lateinit var password: TextView
+    private lateinit var password: TextInputLayout
     lateinit var btn_logout: Button
     private lateinit var nombrePlanificador: TextView
     private lateinit var nombreUsuarioTEA: TextView
@@ -104,14 +102,14 @@ class MainActivity : AppCompatActivity() {
         btn_acceder = dialogLogin.findViewById(R.id.btn_login)
         icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
         btn_acceder.setOnClickListener {
-            if (password.text.toString() == "") {
+            if (password.editText?.text.toString() == "") {
                 Toast.makeText(applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
                     .show()
             } else {
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 val username = prefs.getString("username", "")
                 if(username != null){
-                    val passCifrada = hashPassword(password.text.toString())
+                    val passCifrada = hashPassword(password.editText?.text.toString())
                     val passCorrecta = usuario.comprobarPass(username, passCifrada, this@MainActivity)
                     if (passCorrecta) {
                         val intent = Intent(applicationContext, MenuActivity::class.java)

@@ -29,6 +29,8 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.EventoInterface
 import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.util.*
 
 class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListener {
@@ -141,25 +143,57 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         }
     }
 
+    // private fun mostrarReloj(tiempo: TextView?) {
+    //     val currentTime = Calendar.getInstance()
+    //     val currentHour = currentTime[Calendar.HOUR_OF_DAY]
+    //     val currentMinute = currentTime[Calendar.MINUTE]
+    //     val onTimeSetListener = OnTimeSetListener { _, horaSeleccionada, minutoSeleccionado ->
+    //         hora = horaSeleccionada
+    //         minuto = minutoSeleccionado
+    //         tiempo!!.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
+    //         //Habilitamos el resto de componentes
+    //         spinner_consultas.isEnabled = true
+    //         horaEvento.setTextColor(Color.BLACK)
+    //         layout_planificaciones.visibility = View.VISIBLE
+    //         iniciarListaPlanificaciones()
+    //     }
+    //     val timePickerDialog = TimePickerDialog(context, onTimeSetListener, currentHour, currentMinute, true)
+    //     timePickerDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+    //     timePickerDialog.setTitle("Selecciona una hora")
+    //     timePickerDialog.show()
+    // }
+
     private fun mostrarReloj(tiempo: TextView?) {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
-        val onTimeSetListener = OnTimeSetListener { _, horaSeleccionada, minutoSeleccionado ->
+
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(currentHour)
+            .setMinute(currentMinute)
+            .setTitleText("Selecciona una hora")
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            val horaSeleccionada = picker.hour
+            val minutoSeleccionado = picker.minute
+
             hora = horaSeleccionada
             minuto = minutoSeleccionado
-            tiempo!!.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
-            //Habilitamos el resto de componentes
+
+            tiempo?.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
+
+            // Habilitamos el resto de componentes
             spinner_consultas.isEnabled = true
             horaEvento.setTextColor(Color.BLACK)
             layout_planificaciones.visibility = View.VISIBLE
             iniciarListaPlanificaciones()
         }
-        val timePickerDialog = TimePickerDialog(context, onTimeSetListener, currentHour, currentMinute, true)
-        timePickerDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-        timePickerDialog.setTitle("Selecciona una hora")
-        timePickerDialog.show()
+
+        picker.show(fragmentManager!!, "TimePicker")
     }
+
 
     override fun deleteClick(posicion: Int) {
         val dialogoEliminar = AlertDialog.Builder(context)

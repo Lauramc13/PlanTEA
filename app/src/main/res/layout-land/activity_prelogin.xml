@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="?backgroundSplit"
     tools:context=".presentacion.actividades.PreLoginActivity">
 
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/tiltneon"
         android:text="PlanTEA"
-        android:textColor="@color/md_theme_dark_onPrimary"
+        android:textColor="?colorOnSurface"
         android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
         android:text="Iniciar Sesion"
-        android:textColor="@color/md_theme_dark_onPrimary"
+        android:textColor="?colorOnSurface"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,7 @@
         android:id="@+id/btn_registrar"
         android:layout_width="450dp"
         android:layout_height="42dp"
-        android:backgroundTint="#B1E0DC"
+        android:backgroundTint="?colorPrimaryContainer"
         android:fontFamily="@font/montserrat_semibold"
         android:text="¿No tienes una cuenta? Registrate aqui"
         android:textColor="#203130"

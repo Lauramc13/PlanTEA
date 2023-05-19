@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#DDECEC"
+    android:background="?backgroundStacked"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,7 +15,7 @@
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
         android:text="Selecciona el avatar del planificado"
-        android:textColor="@color/md_theme_dark_onPrimary"
+        android:textColor="?colorOnSurface"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,7 +77,7 @@
             android:useDefaultMargins="true"
             android:verticalSpacing="10dp">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -89,9 +89,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar1nina" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -103,9 +103,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar2nina" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -117,9 +117,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar3nina" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -130,9 +130,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar4nina" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -144,9 +144,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar5nina" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -158,9 +158,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar1nino" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -172,9 +172,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar2nino" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -186,9 +186,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar3nino" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -199,9 +199,9 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar4nino" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 app:cardCornerRadius="20dp"
@@ -213,7 +213,7 @@
                     android:layout_gravity="center"
                     app:srcCompat="@drawable/avatar5nino" />
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </GridLayout>
 
     </LinearLayout>

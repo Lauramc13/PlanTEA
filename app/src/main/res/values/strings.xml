@@ -6,7 +6,7 @@
     <string name="lbl_Pass">Contraseña actual</string>
     <string name="lbl_RepPass">Confirma la contraseña</string>
     <string name="lbl_NuevaPass">Nueva contraseña</string>
-    <string name="btn_Guardar">Guardar</string>
+    <string name="btn_Guardar">GUARDAR</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lbl_profesionales">PROFESIONALES</string>

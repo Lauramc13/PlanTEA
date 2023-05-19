@@ -2,13 +2,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Color de fondo de la vista -->
     <solid
-        android:color="#FFFFFF"  >
+        android:color="?colorControlHighlight"  >
     </solid>
 
     <!-- Color y ancho del borde del elemento -->
     <stroke
         android:width="3dp"
-        android:color="#bdbdbd">
+        android:color="?colorPrimary">
     </stroke>
 
     <!-- Aquí indicamos el radio a aplicar a las esquinas -->

@@ -44,7 +44,7 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:maxLines="1"
                 android:text="@string/lbl_Consultas"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="16sp">
             </TextView>
 
@@ -53,11 +53,11 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="7dp"
-                android:layout_marginRight="7dp"
+                android:layout_marginRight="5dp"
                 android:layout_alignParentRight="true"
                 android:elevation="4dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/svg_trash2">
+                app:srcCompat="@drawable/svg_trash">
         </ImageView>
 
     </RelativeLayout>

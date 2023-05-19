@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_plan"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     app:cardCornerRadius="15dp"
     app:cardElevation="4dp"
+    style="@style/items"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -27,17 +27,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
+                android:fontFamily="@font/montserrat_semibold"
                 android:maxLines="1"
                 android:text="Ejemplo plan"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="18sp"
-                android:fontFamily="@font/montserrat_semibold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/icon_copy"
-                app:layout_constraintHorizontal_bias="0.053"
+                app:layout_constraintHorizontal_bias="0.061"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/icon_delete"
@@ -49,7 +48,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.481"
                 app:srcCompat="@drawable/svg_trash"
-                app:tint="#000000" />
+                 />
 
             <ImageView
                 android:id="@+id/icon_edit"
@@ -60,7 +59,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/icon_delete"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/svg_edit"
-                app:tint="#000000" />
+                 />
 
             <ImageView
                 android:id="@+id/icon_copy"
@@ -71,9 +70,9 @@
                 app:layout_constraintEnd_toStartOf="@+id/icon_edit"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/svg_files"
-                app:tint="#000000" />
+                 />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

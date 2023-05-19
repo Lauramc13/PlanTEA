@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?cardBackgroundColor"
+    android:background="?background"
     tools:context=".presentacion.actividades.MainActivity">
 
     <TextView
@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
         android:gravity="center"
+        app:cardBackgroundColor="?cardBackgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
@@ -63,6 +64,7 @@
         android:clickable="true"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="?cardBackgroundColor"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/card_Evento"
     android:layout_height="wrap_content"
     app:cardCornerRadius="15dp"
     app:cardElevation="4dp"
+    style="@style/items"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -27,7 +28,7 @@
                 android:text="Cita"
                 android:fontFamily="@font/montserrat_regular"
                 android:textAlignment="viewStart"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -36,7 +37,7 @@
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
                 app:srcCompat="@drawable/svg_eye_off"
-                app:tint="#000000"/>
+                />
 
             <!-- <ImageView
                 android:id="@+id/img_verEvento"
@@ -54,7 +55,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="10dp"
                 app:srcCompat="@drawable/svg_trash"
-                app:tint="#000000" />
+                 />
         </LinearLayout>
 
         <LinearLayout
@@ -70,10 +71,10 @@
                 android:layout_marginStart="10dp"
                 android:text="Hora"
                 android:fontFamily="@font/montserrat_regular"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="18sp" />
 
         </LinearLayout>
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

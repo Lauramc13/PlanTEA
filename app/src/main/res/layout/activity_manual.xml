@@ -238,14 +238,14 @@
                 android:id="@+id/lbl_parrafo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -259,7 +259,7 @@
                 android:id="@+id/lbl_parrafo3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -272,7 +272,7 @@
                 android:id="@+id/lbl_parrafo4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -285,7 +285,7 @@
                 android:id="@+id/lbl_parrafo5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -298,7 +298,7 @@
                 android:id="@+id/lbl_parrafo6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -311,7 +311,7 @@
                 android:id="@+id/lbl_parrafo7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -324,7 +324,7 @@
                 android:id="@+id/lbl_parrafo8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -337,14 +337,14 @@
                 android:id="@+id/lbl_parrafo9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -357,7 +357,7 @@
                 android:id="@+id/lbl_parrafo11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -370,7 +370,7 @@
                 android:id="@+id/lbl_parrafo12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -383,7 +383,7 @@
                 android:id="@+id/lbl_parrafo13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -396,7 +396,7 @@
                 android:id="@+id/lbl_parrafo14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -409,7 +409,7 @@
                 android:id="@+id/lbl_parrafo15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -422,7 +422,7 @@
                 android:id="@+id/lbl_parrafo16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -435,7 +435,7 @@
                 android:id="@+id/lbl_parrafo17"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -448,7 +448,7 @@
                 android:id="@+id/lbl_parrafo18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -461,7 +461,7 @@
                 android:id="@+id/lbl_parrafo19"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -474,7 +474,7 @@
                 android:id="@+id/lbl_parrafo20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -487,7 +487,7 @@
                 android:id="@+id/lbl_parrafo21"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -500,7 +500,7 @@
                 android:id="@+id/lbl_parrafo22"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -513,7 +513,7 @@
                 android:id="@+id/lbl_parrafo23"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -526,7 +526,7 @@
                 android:id="@+id/lbl_parrafo24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -546,7 +546,7 @@
                 android:id="@+id/lbl_parrafo25"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -566,7 +566,7 @@
                 android:id="@+id/lbl_parrafo26"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -579,7 +579,7 @@
                 android:id="@+id/lbl_parrafo27"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -599,7 +599,7 @@
                 android:id="@+id/lbl_parrafo28"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -612,7 +612,7 @@
                 android:id="@+id/lbl_parrafo29"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -625,7 +625,7 @@
                 android:id="@+id/lbl_parrafo30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -638,7 +638,7 @@
                 android:id="@+id/lbl_parrafo31"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -658,14 +658,14 @@
                 android:id="@+id/lbl_parrafo32"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo33"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -678,7 +678,7 @@
                 android:id="@+id/lbl_parrafo34"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -691,7 +691,7 @@
                 android:id="@+id/lbl_parrafo35"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -704,7 +704,7 @@
                 android:id="@+id/lbl_parrafo36"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -724,7 +724,7 @@
                 android:id="@+id/lbl_parrafo37"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -737,7 +737,7 @@
                 android:id="@+id/lbl_parrafo38"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -757,14 +757,14 @@
                 android:id="@+id/lbl_parrafo39"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo40"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -777,7 +777,7 @@
                 android:id="@+id/lbl_parrafo41"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -790,7 +790,7 @@
                 android:id="@+id/lbl_parrafo42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView
@@ -803,7 +803,7 @@
                 android:id="@+id/lbl_parrafo43"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
             <ImageView

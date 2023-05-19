@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorSurface"
+    android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.PlanActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Titulo"
-            android:textColor="@color/black"
+            android:textColor="?colorOnSurface"
             android:textSize="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/lbl_mensajeNinio"
-            android:textColor="@color/black"
+            android:textColor="?colorOnSurface"
             android:textSize="24sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/recycler_plan"

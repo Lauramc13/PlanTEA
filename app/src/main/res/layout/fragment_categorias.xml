@@ -35,7 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#F2F2F2">
+                    android:background="?color"
+                    >
 
                     <ImageView
                         android:id="@+id/img_Consultas"
@@ -53,7 +54,7 @@
                         android:text="@string/lbl_Consultas"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="?colorOnSurface"
                         android:textSize="16sp">
 
                     </TextView>
@@ -74,7 +75,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#F2F2F2">
+                    android:background="?color"
+                    >
 
                     <ImageView
                         android:id="@+id/img_Profesionales"
@@ -92,7 +94,7 @@
                         android:text="@string/lbl_profesionales"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="?colorOnSurface"
                         android:textSize="16sp">
 
                     </TextView>
@@ -113,7 +115,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#F2F2F2">
+                    android:background="?color"
+                    >
 
                     <ImageView
                         android:id="@+id/img_Lugares"
@@ -132,7 +135,7 @@
                         android:text="@string/lbl_Lugares"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="?colorOnSurface"
                         android:textSize="16sp">
 
                     </TextView>
@@ -153,7 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#F2F2F2">
+                    android:background="?color"
+                    >
 
                     <ImageView
                         android:id="@+id/img_Desplazamiento"
@@ -171,7 +175,7 @@
                         android:text="@string/lbl_Desplazamiento"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="?colorOnSurface"
                         android:textSize="16sp">
 
                     </TextView>
@@ -192,7 +196,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="#F2F2F2">
+                    android:background="?color"
+                    >
 
                     <ImageView
                         android:id="@+id/img_Accion"
@@ -210,7 +215,7 @@
                         android:text="@string/lbl_Accion"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
-                        android:textColor="@color/black"
+                        android:textColor="?colorOnSurface"
                         android:textSize="16sp">
 
                     </TextView>
