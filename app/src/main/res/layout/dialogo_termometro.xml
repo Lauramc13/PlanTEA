@@ -16,16 +16,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:background="?colorAccent">
+
+            <ImageView
+                android:id="@+id/icono_CerrarDialogoEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.961"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.031"
+                app:srcCompat="@drawable/ic_baseline_close_24" />
 
             <ImageView
                 android:id="@+id/img_pictograma"
                 android:layout_width="297dp"
                 android:layout_height="286dp"
+                android:layout_marginTop="45dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
@@ -40,7 +54,7 @@
                 android:foregroundGravity="center"
                 android:text="Pictograma"
                 android:fontFamily="@font/montserrat_medium"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="36sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

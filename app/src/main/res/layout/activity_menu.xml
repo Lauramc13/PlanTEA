@@ -41,7 +41,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="30dp"
-                android:background="@color/white"
+                android:backgroundTint="@color/white"
                 android:gravity="center"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
@@ -98,7 +98,7 @@
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="35dp"
                 android:layout_marginBottom="35dp"
-                android:background="@color/white"
+                android:backgroundTint="@color/white"
                 app:srcCompat="@drawable/calendar" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -154,7 +154,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="30dp"
-                    android:background="@color/white"
+                    android:backgroundTint="@color/white"
                     android:gravity="center"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="5dp"

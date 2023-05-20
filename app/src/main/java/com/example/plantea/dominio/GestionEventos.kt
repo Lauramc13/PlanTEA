@@ -13,7 +13,7 @@ class GestionEventos {
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan, evento.imagen)
+        identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan)
         conectorBD!!.cerrar()
         return identificador
     }
@@ -31,8 +31,7 @@ class GestionEventos {
                 evento.fecha = LocalDate.parse(c.getString(3))
                 evento.hora = c.getString(4)
                 evento.id_plan = c.getInt(5)
-                evento.imagen = c.getString(6)
-                evento.visible = c.getInt(7)
+                evento.visible = c.getInt(6)
                 eventos!!.add(evento)
             } while (c.moveToNext())
         }

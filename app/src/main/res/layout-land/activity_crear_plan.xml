@@ -81,6 +81,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:ems="10"
+        android:textColor="?colorOnSurface"
         android:maxLength="14"
         android:inputType="textPersonName"
         android:textSize="22sp"
@@ -119,22 +120,23 @@
         app:layout_constraintTop_toBottomOf="@+id/searchViewPicto"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <SearchView
         android:id="@+id/searchViewPicto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/fragment_personalizado2"
         android:elevation="0dp"
         android:queryHint="Buscar pictograma"
+        android:textColor="?colorOnSurface"
         android:textColorHint="?colorOnSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        tools:ignore="NotSibling">
     </SearchView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

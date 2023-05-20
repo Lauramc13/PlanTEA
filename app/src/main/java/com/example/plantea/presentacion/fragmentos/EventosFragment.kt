@@ -2,14 +2,18 @@ package com.example.plantea.presentacion.fragmentos
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -39,6 +43,9 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var eventos: ArrayList<Evento>
     lateinit var pictogramas: ArrayList<Pictograma>
     lateinit var adaptadorEvento: AdaptadorEvento
+    lateinit var btn_eliminar: Button
+    lateinit var btn_cancelar: Button
+    lateinit var icono_cerrar_login : ImageView
     var contador = 0
     var evento = Evento()
     var plan = Planificacion()
@@ -83,29 +90,34 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         }
         listaEventos.adapter = adaptadorEvento
     }
-
     override fun deleteClick(posicion: Int) {
-        val dialogoEliminar = AlertDialog.Builder(context)
-        dialogoEliminar.setTitle("Eliminar Evento")
-        dialogoEliminar.setMessage("¿Seguro que deseas eliminar el evento seleccionado?")
-        dialogoEliminar.setCancelable(false)
-        dialogoEliminar.setPositiveButton("Confirmar") { dialogoEliminar, id ->
+        val dialogEvento = Dialog(actividad)
+        dialogEvento.setContentView(R.layout.dialogo_eliminar_evento)
+        dialogEvento.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        btn_eliminar = dialogEvento.findViewById(R.id.btn_eliminarEvento)
+        icono_cerrar_login = dialogEvento.findViewById(R.id.icono_CerrarDialogoEvento)
+        btn_cancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
+        btn_eliminar.setOnClickListener {
             Toast.makeText(context, "Evento eliminado", Toast.LENGTH_SHORT).show()
-            eventoInterface.cancelarNotificacion(eventos[posicion].id)
-            evento.eliminarEvento(actividad, eventos[posicion].id)
-            eventos.removeAt(posicion)
-            adaptadorEvento.notifyDataSetChanged()
-            //Mostramos un mensaje informando si la lista está vacía
-            if (eventos.isEmpty()) {
-                listaEventos.visibility = View.GONE
-                mensaje.visibility = View.VISIBLE
-            } else {
-                listaEventos.visibility = View.VISIBLE
-                mensaje.visibility = View.GONE
+                    eventoInterface.cancelarNotificacion(eventos[posicion].id)
+                    evento.eliminarEvento(actividad, eventos[posicion].id)
+                    eventos.removeAt(posicion)
+                    adaptadorEvento.notifyDataSetChanged()
+                    //Mostramos un mensaje informando si la lista está vacía
+                    if (eventos.isEmpty()) {
+                        listaEventos.visibility = View.GONE
+                        mensaje.visibility = View.VISIBLE
+                    } else {
+                        listaEventos.visibility = View.VISIBLE
+                        mensaje.visibility = View.GONE
+                    }
+            dialogEvento.dismiss()
             }
+        btn_cancelar.setOnClickListener {
+            dialogEvento.dismiss()
         }
-        dialogoEliminar.setNegativeButton("Cancelar") { dialogoEliminar, id -> dialogoEliminar.dismiss() }
-        dialogoEliminar.show()
+        icono_cerrar_login.setOnClickListener { dialogEvento.dismiss() }
+        dialogEvento.show()
     }
 
     override fun viewClick(posicion: Int) {

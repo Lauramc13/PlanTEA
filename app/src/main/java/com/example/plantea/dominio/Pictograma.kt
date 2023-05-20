@@ -8,6 +8,7 @@ class Pictograma : Serializable {
     var imagen: String? = null
     var categoria = 0
     var cuaderno = 0
+    var historia: String? = null
     var listaPictogramas: ArrayList<Pictograma>? = null
     private var listaConsultas: ArrayList<String>? = null
     private var gestorPictogramas = GestionPictogramas()
@@ -42,7 +43,7 @@ class Pictograma : Serializable {
         return listaConsultas
     }
 
-    fun obtenerImagenEvento(actividad: Activity?, consulta: String?, idCategoria: Int): String? {
-        return gestorPictogramas.obtenerImagenPictograma(actividad, consulta, idCategoria)
+    fun obtenerImagenEvento(actividad: Activity?, idCategoria: Int): String? {
+        return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }
 }

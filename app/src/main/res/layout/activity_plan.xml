@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DDECEC"
+    android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.PlanActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Titulo"
-            android:textColor="@color/black"
+            android:textColor="?colorOnSurface"
             android:textSize="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

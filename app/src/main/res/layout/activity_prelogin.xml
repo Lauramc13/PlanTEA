@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="?backgroundSplit"
     tools:context=".presentacion.actividades.PreLoginActivity">
 
     <ImageView
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/tiltneon"
         android:text="PlanTEA"
-        android:textColor="@color/md_theme_dark_onPrimary"
+        android:textColor="?colorOnSurface"
         android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
         android:text="Iniciar Sesion"
-        android:textColor="@color/md_theme_dark_onPrimary"
+        android:textColor="?colorOnSurface"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.625" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txt_UserName"
         android:layout_width="350dp"
         android:layout_height="50dp"
@@ -70,14 +70,20 @@
         android:hint="Nombre de usuario"
         android:inputType="text"
         android:paddingStart="15dp"
-        android:textColor="@color/black"
+        android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.71" />
+        app:layout_constraintVertical_bias="0.71">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="text"
+            android:textColor="?colorOnSurface"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txt_Password"
         android:layout_width="350dp"
         android:layout_height="50dp"
@@ -88,11 +94,18 @@
         android:fontFamily="@font/montserrat_regular"
         android:inputType="textPassword"
         android:paddingStart="15dp"
-        android:textColor="@color/black"
+        android:textColor="?colorOnSurface"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txt_UserName"
-        app:layout_constraintTop_toBottomOf="@+id/txt_UserName" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_UserName">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:textColor="?colorOnSurface"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_login"
@@ -117,9 +130,9 @@
         android:layout_height="42dp"
         android:fontFamily="@font/montserrat_semibold"
         android:text="¿No tienes una cuenta? Registrate aqui"
-        android:textColor="#203130"
+        android:textColor="?colorOnSurface"
         app:cornerRadius="20dp"
-        android:backgroundTint="#B1E0DC"
+        android:backgroundTint="?colorPrimaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

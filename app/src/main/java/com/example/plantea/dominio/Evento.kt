@@ -9,7 +9,6 @@ class Evento {
     var nombre: String? = null
     var fecha: LocalDate? = null
     var hora: String? = null
-    var imagen: String? = null
     var id_plan = 0
     var visible = 0
     private var contador = 0
@@ -17,14 +16,13 @@ class Evento {
     var gestorEventos = GestionEventos()
 
     constructor()
-    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int, imagen: String?) {
+    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int) {
         this.id = id
         this.idUsuario = idUsuario
         this.nombre = nombre
         this.fecha = fecha
         this.hora = hora
         this.id_plan = id_plan
-        this.imagen = imagen
     }
 
     fun obtenerEventos(idUsuario: String, actividad: Activity?, fechaSeleccionada: LocalDate): ArrayList<*> {

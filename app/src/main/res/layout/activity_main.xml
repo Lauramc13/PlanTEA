@@ -40,6 +40,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_RolPlanificador"
+                style="@style/editText"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
@@ -78,6 +79,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_RolTEA"
+                style="@style/editText"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_gravity="center"

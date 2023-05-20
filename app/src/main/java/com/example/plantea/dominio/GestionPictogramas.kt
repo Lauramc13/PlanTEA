@@ -71,11 +71,11 @@ class GestionPictogramas : Serializable {
         return listaConsultas!!
     }
 
-    fun obtenerImagenPictograma(actividad: Activity?, consulta: String?, idCategoria: Int): String? {
+    fun obtenerImagenPictograma(actividad: Activity?, idCategoria: Int): String? {
         conectorBD = ConectorBD(actividad)
         var ruta: String? = null
         conectorBD!!.abrir()
-        val c = conectorBD!!.obtenerRutaPictograma(consulta, idCategoria)
+        val c = conectorBD!!.obtenerRutaPictograma(idCategoria)
         if (c.moveToFirst()) {
             do {
                 ruta = c.getString(0)

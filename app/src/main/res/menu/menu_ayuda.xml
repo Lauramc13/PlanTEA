@@ -4,8 +4,7 @@
 
     <item
         android:id="@+id/item_ayuda_menu"
-        android:icon="@drawable/question"
-        app:iconTint="#203130"
+        android:icon="@drawable/questionbar"
         android:title="@string/item_ayuda"
         app:showAsAction="always" />
 </menu>

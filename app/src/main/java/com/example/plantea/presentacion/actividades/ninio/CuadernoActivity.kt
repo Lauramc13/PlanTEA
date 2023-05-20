@@ -34,6 +34,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     private var recyclerView: RecyclerView? = null
     private var adaptador: AdaptadorCuadernoActivity? = null
     private var picto = Pictograma()
+    lateinit var btn_cerrar : ImageView
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -136,6 +137,11 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
         pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
         tituloPictograma.text = listaEscala!![posicion].titulo
+
+        //Botón cerrar
+        btn_cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+        btn_cerrar.setOnClickListener { dialog.dismiss() }
         dialog.show()
+
     }
 }

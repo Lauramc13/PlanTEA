@@ -48,6 +48,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
 
+    lateinit var btn_cerrar : ImageView
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
     private var recyclerViewState: Parcelable? = null
@@ -212,6 +214,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         card = dialog.findViewById(R.id.card_presentacion)
         val animFondo = AnimationUtils.loadAnimation(applicationContext, R.anim.confeti)
         val animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
+
+        //Botón cerrar
+        btn_cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+        btn_cerrar.setOnClickListener { dialog.dismiss() }
+        dialog.show()
 
 
         //Si es recompensa mostramos el dialogo diferente

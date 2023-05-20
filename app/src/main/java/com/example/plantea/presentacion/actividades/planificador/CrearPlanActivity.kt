@@ -21,6 +21,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.OnDragListener
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -232,6 +233,11 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         listaBusqueda.add(Pictograma(tituloMayus, archivo, 0, 0))
     }
 
+    private fun hideKeyboard() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(searchBar.windowToken, 0)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -259,6 +265,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                         .remove(it)
                         .commit()
                 }
+                hideKeyboard()
                 //labelBuscando.visibility = VISIBLE
                 return true
             }
@@ -267,6 +274,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 return true
             }
         })
+
+
 
         //Comprobar si hay parametros en caso de llamada desde editar
         val parametros = this.intent.extras

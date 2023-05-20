@@ -9,17 +9,19 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
 class RegisterActivity : AppCompatActivity(){
 
     private lateinit var btnRegister: Button
-    private lateinit var txt_name : EditText
-    private lateinit var txt_username : EditText
-    private lateinit var txt_password : EditText
-    private lateinit var txt_password2 : EditText
-    private lateinit var txt_nameplanificado : EditText
-    private lateinit var txt_objeto : EditText
+    private lateinit var txt_name : TextInputLayout
+    private lateinit var txt_username : TextInputLayout
+    private lateinit var txt_password : TextInputLayout
+    private lateinit var txt_password2 : TextInputLayout
+    private lateinit var txt_nameplanificado : TextInputLayout
+    private lateinit var txt_objeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
     private var creado: Boolean = false
 
@@ -54,24 +56,24 @@ class RegisterActivity : AppCompatActivity(){
 
         btnRegister.setOnClickListener {
           //  Handler().postDelayed({
-            if(txt_name.text.toString() == "" ||  txt_username.text.toString() == "" || txt_password.text.toString() == "" || txt_objeto.text.toString() == "" || txt_password2.text.toString() == "" || (checkUserPlanificado.isChecked && txt_nameplanificado.text.toString() == "")){
+            if(txt_name.editText?.text.toString() == "" ||  txt_username.editText?.text.toString() == "" || txt_password.editText?.text.toString() == "" || txt_objeto.editText?.text.toString() == "" || txt_password2.editText?.text.toString() == "" || (checkUserPlanificado.isChecked && txt_nameplanificado.editText?.text.toString() == "")){
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             }else{
-                if( txt_password.text.toString() != txt_password2.text.toString() ){
+                if( txt_password.editText?.text.toString() != txt_password2.editText?.text.toString() ){
                     Toast.makeText(applicationContext, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
                 }else{
-                    val passCifrada = hashPassword(txt_password.text.toString())
-                    creado = usuario.crearUsuario(txt_name.text.toString(), txt_username.text.toString(), passCifrada, txt_objeto.text.toString(), txt_nameplanificado.toString(), this@RegisterActivity)
+                    val passCifrada = hashPassword(txt_password.editText?.text.toString())
+                    creado = usuario.crearUsuario(txt_name.editText?.text.toString(), txt_username.editText?.text.toString(), passCifrada, txt_objeto.editText?.text.toString(), txt_nameplanificado.toString(), this@RegisterActivity)
                     if (creado) {
-                        val id = usuario.consultarId(txt_username.text.toString(), this@RegisterActivity)
+                        val id = usuario.consultarId(txt_username.editText?.text.toString(), this@RegisterActivity)
                         val editor = prefs.edit()
                         editor.putString("idUsuario", id)
                         Log.d("USUARIO", "$id")
-                        editor.putString("username", txt_username.text.toString())
+                        editor.putString("username", txt_username.editText?.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
-                        editor.putString("nombrePlanificador", txt_name.text.toString())
-                        editor.putString("nombreUsuarioTEA", txt_nameplanificado.text.toString())
-                        editor.putString("nombreObjeto", txt_objeto.text.toString())
+                        editor.putString("nombrePlanificador", txt_name.editText?.text.toString())
+                        editor.putString("nombreUsuarioTEA", txt_nameplanificado.editText?.text.toString())
+                        editor.putString("nombreObjeto", txt_objeto.editText?.text.toString())
                         editor.putBoolean("editPreferences", false)
                         editor.apply()
                         val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
@@ -84,8 +86,6 @@ class RegisterActivity : AppCompatActivity(){
                 }
             }
         }
-
-
 
         checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
             txt_nameplanificado.isEnabled = isChecked

@@ -38,7 +38,7 @@
                 android:layout_marginTop="300dp"
                 android:text="@string/lbl_sintomas"
                 android:fontFamily="@font/montserrat_medium"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="25sp" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -70,7 +70,7 @@
                 android:layout_marginTop="300dp"
                 android:text="@string/lbl_dolores"
                 android:fontFamily="@font/montserrat_medium"
-                android:textColor="@color/black"
+                android:textColor="?colorOnSurface"
                 android:textSize="25sp" />
         </com.google.android.material.card.MaterialCardView>
 

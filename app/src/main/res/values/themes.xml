@@ -30,7 +30,7 @@
 
         <item name="cardBackgroundColor">@color/white</item>
         <item name="background">@color/seedLight</item>
-        <item name="backgroundTint">@color/white</item>
+        <item name="backgroundTint">@color/background2</item>
 
         <item name="backgroundColor">@color/background2</item>
         <item name="backgroundSplit">@color/white</item>
@@ -47,10 +47,16 @@
 
         <item name="colorControlHighlight">@color/md_theme_light_surfaceVariant</item>
 
-        <!-- PIZARRA -->
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+
+
+        <!-- PIZARRA
+        <item name="android:colorControlNormal">@color/pizarraBorde</item>
+        <item name="android:solidColor">@color/pizarraContenido</item>-->
         <item name="android:colorControlNormal">@color/pizarraBorde</item>
         <item name="android:solidColor">@color/pizarraContenido</item>
 
+        <item name="boxBackgroundColor">@color/md_theme_light_primary</item>
 
     </style>
     <style name="Switches">
@@ -91,6 +97,22 @@
 
     <style name="items">
         <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="editText" parent="">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="colorNewPhoto" parent="">
+        <item name="backgroundTint">@color/md_theme_light_onSurfaceVariant</item>
+    </style>
+
+    <style name="colorSpinner" parent="">
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+        <item name="android:textColorHint">@color/md_theme_light_onSurface</item>
+        <item name="android:editTextColor">@color/md_theme_light_onSurface</item>
+        <item name="background">@color/md_theme_light_primary</item>
+
     </style>
 
 </resources>

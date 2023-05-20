@@ -6,7 +6,7 @@
     android:configChanges="orientation|keyboardHidden"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?backgroundSplit"
     tools:context=".presentacion.actividades.planificador.CrearPlanActivity"
     tools:layout_editor_absoluteY="89dp">
 
@@ -64,7 +64,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:text="@string/lbl_CrearPlanActividad"
-        android:textColor="@color/black"
+        android:textColor="?colorOnSurface"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
         app:layout_constraintEnd_toStartOf="@+id/txt_TituloPlan"

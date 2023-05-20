@@ -1,22 +1,27 @@
 package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
+import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
 class PreLoginActivity : AppCompatActivity(){
 
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: Button
-    private lateinit var username: EditText
-    private lateinit var password: EditText
+    private lateinit var username: TextInputLayout
+    private lateinit var password: TextInputLayout
+    private lateinit var background: ImageView
 
     var usuario = Usuario_Planificador()
     var user = Usuario_Planificador()
@@ -45,7 +50,19 @@ class PreLoginActivity : AppCompatActivity(){
          //   startActivity(intent)
        // }
 
+
+
         setContentView(R.layout.activity_prelogin)
+        background = findViewById(R.id.imageView6)
+
+        val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        if (isDarkMode) {
+            background.setImageResource(R.drawable.backgroundlogindark)
+        } else {
+            background.setImageResource(R.drawable.backgroundlogin)
+        }
+
+
         username = findViewById(R.id.txt_UserName)
         password = findViewById(R.id.txt_Password)
 
@@ -53,17 +70,17 @@ class PreLoginActivity : AppCompatActivity(){
         btnRegister = findViewById(R.id.btn_registrar)
 
         btnLogin.setOnClickListener {
-            if (username.text.toString() == "" || password.text.toString() == "") {
+            if (username.editText?.text.toString() == "" || password.editText?.text.toString() == "") {
                 Toast.makeText(
                     applicationContext,
                     "Tienes que rellenar todos los campos",
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                val passCifrada = hashPassword(password.text.toString())
-                if (usuario.comprobarUsuario(username.text.toString(), passCifrada, this@PreLoginActivity) == true) {
-                    user = usuario.obtenerUsuario(username.text.toString(), this@PreLoginActivity)
-                    val id = usuario.consultarId(username.text.toString(), this@PreLoginActivity)
+                val passCifrada = hashPassword(password.editText?.text.toString())
+                if (usuario.comprobarUsuario(username.editText?.text.toString(), passCifrada, this@PreLoginActivity) == true) {
+                    user = usuario.obtenerUsuario(username.editText?.text.toString(), this@PreLoginActivity)
+                    val id = usuario.consultarId(username.editText?.text.toString(), this@PreLoginActivity)
                     val editor = prefs.edit()
                     editor.putString("idUsuario", id)
                     Log.d("USUARIO", "$id")

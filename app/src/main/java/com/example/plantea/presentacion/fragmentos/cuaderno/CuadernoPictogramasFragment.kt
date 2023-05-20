@@ -74,7 +74,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
     }
 
     override fun pictogramaCuaderno(posicion: Int) {
-        val dialog = Dialog(context!!)
+        val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialogo_termometro)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
@@ -82,6 +82,11 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         seekbar = dialog.findViewById(R.id.seekBar_termometro)
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
         tituloPictograma.text = listaPictogramas[posicion].titulo
+
+        //Botón cerrar
+        image_Cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+        image_Cerrar.setOnClickListener { dialog.dismiss() }
+        dialog.show()
 
         //Funcionalidad termómetro: cambio de color según el progreso
         seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {

@@ -21,6 +21,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 import java.util.*

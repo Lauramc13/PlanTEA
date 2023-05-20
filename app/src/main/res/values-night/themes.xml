@@ -1,4 +1,3 @@
-
 <resources>
     <style name="AppTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
@@ -30,7 +29,7 @@
 
         <item name="cardBackgroundColor">@color/md_theme_dark_surfaceVariant2</item>
         <item name="background">@color/md_theme_dark_background2</item>
-        <item name="backgroundTint">@color/white</item>
+        <item name="backgroundTint">@color/md_theme_dark_background2</item>
 
         <item name="colorAccent">@color/md_theme_dark_surfaceVariant</item>
         <item name="backgroundColor">@color/md_theme_dark_backgroundDark</item>
@@ -47,6 +46,9 @@
         <!-- PIZARRA -->
         <item name="android:colorControlNormal">@color/md_theme_dark_primary</item>
         <item name="android:solidColor">@color/pizarraContenido2</item>
+
+        <item name="boxBackgroundColor">@color/md_theme_light_primary</item>
+
 
     </style>
 
@@ -84,5 +86,13 @@
 
     <style name="items">
         <item name="cardBackgroundColor">@color/md_theme_light_inverseSurface</item>
+    </style>
+
+    <style name="editText" parent="">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="colorNewPhoto" parent="">
+        <item name="backgroundTint">@color/md_theme_dark_onSurface</item>
     </style>
 </resources>

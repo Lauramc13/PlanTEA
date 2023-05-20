@@ -2,13 +2,16 @@ package com.example.plantea.presentacion.fragmentos
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,10 +48,12 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     lateinit var mensajePlanes: TextView
     lateinit var cancelarEvento: ImageView
     lateinit var listaPlanificaciones: RecyclerView
-    lateinit var spinner_consultas: Spinner
     lateinit var adaptador: AdaptadorListaPlanes
     lateinit var planes: ArrayList<Planificacion>
     lateinit var layout_planificaciones: ConstraintLayout
+    lateinit var btn_eliminar: Button
+    lateinit var icono_cerrar_login: ImageView
+    lateinit var btn_cancelar: Button
     var counter: Int = 1
     private lateinit var pictogramas: ArrayList<Pictograma>
     private lateinit var consultas: ArrayList<String>
@@ -70,16 +75,12 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
         mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
         listaPlanificaciones = vista.findViewById(R.id.recycler_planificaciones)
-        spinner_consultas = vista.findViewById(R.id.spinner_consultas)
         layout_planificaciones = vista.findViewById(R.id.layout)
 
         //Componentes deshabilitados al principio
-        spinner_consultas.isEnabled = false
         layout_planificaciones.visibility = View.GONE
         fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         consultas = pictograma.obtenerConsultas(actividad, 1) as ArrayList<String>
-        spinner_consultas.adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, consultas)
         btn_hora.setOnClickListener { mostrarReloj(horaEvento) }
 
 
@@ -87,7 +88,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
             val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
             val userId = prefs.getString("idUsuario", "")
             Log.d("NUEVOS EVENTOS USUARIO", "$userId")
-            val rutaImagen = obtenerImagenEvento()
             val evento = userId?.let { it1 ->
                 Evento(
                     0,
@@ -96,7 +96,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
                     CalendarioUtilidades.fechaSeleccionada,
                     horaEvento.text.toString(),
                     planSeleccionado,
-                    rutaImagen
                 )
             }
             if (evento != null) {
@@ -110,7 +109,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     fun obtenerImagenEvento(): String? {
-        return pictograma.obtenerImagenEvento(actividad, spinner_consultas.selectedItem.toString(), 1)
+        return pictograma.obtenerImagenEvento(actividad, 1)
     }
 
     override fun onResume() {
@@ -185,22 +184,30 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
             tiempo?.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
 
             // Habilitamos el resto de componentes
-            spinner_consultas.isEnabled = true
-            horaEvento.setTextColor(Color.BLACK)
+            val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+            if (isDarkMode) {
+                horaEvento.setTextColor(Color.rgb(228, 231, 235))
+
+            } else {
+                horaEvento.setTextColor(Color.rgb(24, 31, 37))
+            }
+
             layout_planificaciones.visibility = View.VISIBLE
             iniciarListaPlanificaciones()
         }
 
-        picker.show(fragmentManager!!, "TimePicker")
+        picker.show(requireFragmentManager(), "TimePicker")
     }
 
 
     override fun deleteClick(posicion: Int) {
-        val dialogoEliminar = AlertDialog.Builder(context)
-        dialogoEliminar.setTitle("Eliminar Planificación")
-        dialogoEliminar.setMessage("¿Seguro que deseas eliminar la planificación seleccionada?")
-        dialogoEliminar.setCancelable(false)
-        dialogoEliminar.setPositiveButton("Confirmar") { dialogoEliminar, id ->
+        val dialogPlan = Dialog(actividad)
+        dialogPlan.setContentView(R.layout.dialogo_eliminar_planificacion)
+        dialogPlan.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        btn_eliminar = dialogPlan.findViewById(R.id.btn_eliminarPlan)
+        icono_cerrar_login = dialogPlan.findViewById(R.id.icono_CerrarDialogoEvento)
+        btn_cancelar = dialogPlan.findViewById(R.id.btn_cancelarPlan)
+        btn_eliminar.setOnClickListener {
             Toast.makeText(context, "Planificación eliminada", Toast.LENGTH_SHORT).show()
             plan.eliminarPlanificacion(actividad, planes[posicion].id)
             planes.removeAt(posicion)
@@ -213,10 +220,15 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
                 listaPlanificaciones.visibility = View.VISIBLE
                 mensajePlanes.visibility = View.GONE
             }
+            dialogPlan.dismiss()
         }
-        dialogoEliminar.setNegativeButton("Cancelar") { dialogoEliminar, id -> dialogoEliminar.dismiss() }
-        dialogoEliminar.show()
+        btn_cancelar.setOnClickListener {
+            dialogPlan.dismiss()
+        }
+        icono_cerrar_login.setOnClickListener { dialogPlan.dismiss() }
+        dialogPlan.show()
     }
+
 
     override fun editClick(posicion: Int) {
         pictogramas = ArrayList()

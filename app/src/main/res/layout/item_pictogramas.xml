@@ -24,13 +24,16 @@
             android:background="@drawable/card_personalizado"
             android:elevation="0dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/id_Imagen"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="4dp"
+                app:shapeAppearance="@style/cornerRadius"
                 android:contentDescription="@string/lbl_Consultas"
-                app:srcCompat="@drawable/categoria_consultas"></ImageView>
+                app:srcCompat="@drawable/categoria_consultas">
+            </com.google.android.material.imageview.ShapeableImageView>
+
 
             <TextView
                 android:id="@+id/id_Texto"
@@ -59,6 +62,18 @@
                 android:visibility="invisible"
                 app:srcCompat="@drawable/svg_trash">
         </ImageView>
+
+            <ImageView
+                android:id="@+id/btn_historiaPicto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="136dp"
+                android:layout_alignParentRight="true"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/bocadillo_historia_off">
+            </ImageView>
 
     </RelativeLayout>
 

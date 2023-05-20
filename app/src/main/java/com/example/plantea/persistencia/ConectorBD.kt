@@ -83,6 +83,7 @@ class ConectorBD(ctx: Context?) {
     fun borrarPlanificacion(id: Int) {
         db!!.execSQL("DELETE FROM Planificacion WHERE id='$id'")
         db!!.execSQL("DELETE FROM Pictograma_Plan WHERE id_plan='$id'")
+        db!!.execSQL("DELETE FROM Evento WHERE id_plan='$id'")
     }
 
     /*Listar pictogramas de una categoria*/
@@ -179,9 +180,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar nueva cita en la tabla eventos*/
-    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, id_plan: Int, imagen: String?): Int {
+    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, id_plan: Int): Int {
         var id = 0
-        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora,id_plan,imagen,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$id_plan', '$imagen',0)")
+        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora,id_plan,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$id_plan',0)")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
         if (c.moveToFirst()) {
             id = c.getInt(0)
@@ -197,7 +198,7 @@ class ConectorBD(ctx: Context?) {
     fun listarEventosPorUsuario(idUsuario: String): Cursor {
         val selectionArgs = arrayOf(idUsuario)
         return db!!.rawQuery(
-            "SELECT id, id_usuario, nombre, fecha, hora, id_plan, imagen, visible " +
+            "SELECT id, id_usuario, nombre, fecha, hora, id_plan, visible " +
             "FROM Evento " +
             "WHERE id_usuario = ?",
             selectionArgs
@@ -218,8 +219,8 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar categorias de consulta*/
-    fun obtenerRutaPictograma(consulta: String?, identificador: Int): Cursor {
-        return db!!.rawQuery("SELECT imagen from Pictograma WHERE Pictograma.nombre = '$consulta' AND Pictograma.id_categoria = '$identificador'", null)
+    fun obtenerRutaPictograma(identificador: Int): Cursor {
+        return db!!.rawQuery("SELECT imagen from Pictograma WHERE Pictograma.id_categoria = '$identificador'", null)
     }
 
     fun consultarUsuario(username: String, password: String): Boolean {

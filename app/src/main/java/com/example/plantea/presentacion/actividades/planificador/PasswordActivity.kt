@@ -12,12 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.presentacion.actividades.ManualActivity
+import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
 class PasswordActivity : AppCompatActivity() {
-    private lateinit var viejaPass: TextView
-    private lateinit var nuevaPass: TextView
-    private lateinit var confirmaPass: TextView
+    private lateinit var viejaPass: TextInputLayout
+    private lateinit var nuevaPass: TextInputLayout
+    private lateinit var confirmaPass: TextInputLayout
     private lateinit var btn_guardar: Button
     private var actualizado: Boolean = false
     var usuario = Usuario_Planificador()
@@ -45,15 +46,15 @@ class PasswordActivity : AppCompatActivity() {
 
         //Este método se ejecutará al seleccionar el boton guardar
         btn_guardar.setOnClickListener {
-            if (viejaPass.text.toString() == "" || nuevaPass.text.toString() == "" || confirmaPass.text.toString() == "") {
+            if (viejaPass.editText?.text.toString() == "" || nuevaPass.editText?.text.toString() == "" || confirmaPass.editText?.text.toString() == "") {
                 Toast.makeText(applicationContext, "Debes completar todos los campos",  Toast.LENGTH_LONG).show()
             } else {
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 val username = prefs.getString("username", "")
                 if (username != null){
-                    val passCifrada = hashPassword(confirmaPass.text.toString())
-                    val nuevaPassCifrada = hashPassword(nuevaPass.text.toString())
-                    actualizado = usuario.confirmarPass(username, viejaPass.text.toString(), nuevaPassCifrada, passCifrada, this@PasswordActivity)
+                    val passCifrada = hashPassword(confirmaPass.editText?.text.toString())
+                    val nuevaPassCifrada = hashPassword(nuevaPass.editText?.text.toString())
+                    actualizado = usuario.confirmarPass(username, viejaPass.editText?.text.toString(), nuevaPassCifrada, passCifrada, this@PasswordActivity)
                 }
                 if (actualizado) {
                     Toast.makeText(applicationContext, "Contraseña actualizada", Toast.LENGTH_LONG)
