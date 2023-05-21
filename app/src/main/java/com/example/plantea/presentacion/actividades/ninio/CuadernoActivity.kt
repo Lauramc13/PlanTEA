@@ -24,6 +24,7 @@ import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCuadernoActivity
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
+import com.google.android.material.imageview.ShapeableImageView
 
 class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuadernoActivity.OnItemSelectedListener {
     private var transaction: FragmentTransaction? = null
@@ -133,7 +134,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialogo_presentacion)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
+        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
         pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
         tituloPictograma.text = listaEscala!![posicion].titulo

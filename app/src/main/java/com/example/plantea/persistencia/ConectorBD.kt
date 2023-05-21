@@ -46,12 +46,13 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar pictogramas de una planificacion*/
-    fun insertarPictogramaPlan(nombre: String?, imagen: String?, categoria: Int, id_plan: Int): Boolean {
+    fun insertarPictogramaPlan(nombre: String?, imagen: String?, categoria: Int, historia: String?, id_plan: Int): Boolean {
         //Creamos el registro a insertar como objeto ContentValues
         val pictograma = ContentValues()
         pictograma.put("nombre", nombre)
         pictograma.put("imagen", imagen)
         pictograma.put("categoria", categoria)
+        pictograma.put("historia", historia)
         pictograma.put("id_plan", id_plan)
         //Insertamos el registro en la base de datos
         val resultado = db!!.insert("Pictograma_Plan", null, pictograma).toInt()
@@ -88,7 +89,7 @@ class ConectorBD(ctx: Context?) {
 
     /*Listar pictogramas de una categoria*/
     fun listarPictogramasPlanificacion(id: Int): Cursor {
-        return db!!.rawQuery("SELECT nombre,imagen,categoria from Pictograma_Plan Inner JOIN Planificacion where Planificacion.id = Pictograma_Plan.id_plan AND Planificacion.id = $id", null)
+        return db!!.rawQuery("SELECT nombre,imagen,categoria,historia from Pictograma_Plan Inner JOIN Planificacion where Planificacion.id = Pictograma_Plan.id_plan AND Planificacion.id = $id", null)
     }
 
     /*Actualizar una planificacion*/
@@ -99,7 +100,7 @@ class ConectorBD(ctx: Context?) {
 
     /*Listar pictogramas de un plan a seguir*/
     fun obtenerPlanficacion(id_usuario: String): Cursor {
-        return db!!.rawQuery("SELECT Pictograma_Plan.nombre,Pictograma_Plan.imagen,categoria from Pictograma_Plan Inner JOIN Evento where Evento.id_plan = Pictograma_Plan.id_plan AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario' ORDER BY Pictograma_Plan.id", null)
+        return db!!.rawQuery("SELECT Pictograma_Plan.nombre,Pictograma_Plan.imagen,categoria, Pictograma_Plan.historia from Pictograma_Plan Inner JOIN Evento where Evento.id_plan = Pictograma_Plan.id_plan AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario' ORDER BY Pictograma_Plan.id", null)
     }
 
     /*Obtener el numero de planficaciones visibles*/
@@ -273,6 +274,9 @@ class ConectorBD(ctx: Context?) {
         return id
     }
 
+    fun nuevaHistoria(nombre: String?, historia: String?) {
+        db!!.execSQL("UPDATE Pictograma_Plan SET historia ='$historia' WHERE Pictograma_Plan.nombre = '$nombre'")
+    }
 
 
     companion object {

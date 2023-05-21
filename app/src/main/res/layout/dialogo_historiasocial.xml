@@ -6,7 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="700dp"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         android:layout_margin="15dp"
         android:background="@drawable/fondo_dialogo_login"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +22,7 @@
             android:gravity="center"
             android:paddingStart="70dp"
             android:paddingEnd="70dp"
-            android:text="¿Que historia quieres escribir en:"
+            android:text="Historial social para:"
             android:textColor="?colorOnSurface"
             android:textSize="22sp"
             app:layout_constraintBottom_toTopOf="@+id/cardName"
@@ -68,8 +68,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="600dp"
-                android:layout_height="200dp"
-                android:inputType="textPassword"
+                android:layout_height="100dp"
+                android:inputType="textMultiLine"
                 android:textColor="?colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,8 +77,7 @@
             android:id="@+id/btn_eliminarEvento"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Guardar"
             android:textColor="#203130"
@@ -87,7 +86,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardName"
+            app:layout_constraintTop_toBottomOf="@+id/historiaText"
             app:layout_constraintVertical_bias="0.011" />
 
 

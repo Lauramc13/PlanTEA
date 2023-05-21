@@ -63,7 +63,7 @@ class RegisterActivity : AppCompatActivity(){
                     Toast.makeText(applicationContext, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
                 }else{
                     val passCifrada = hashPassword(txt_password.editText?.text.toString())
-                    creado = usuario.crearUsuario(txt_name.editText?.text.toString(), txt_username.editText?.text.toString(), passCifrada, txt_objeto.editText?.text.toString(), txt_nameplanificado.toString(), this@RegisterActivity)
+                    creado = usuario.crearUsuario(txt_name.editText?.text.toString(), txt_username.editText?.text.toString(), passCifrada, txt_objeto.editText?.text.toString(), txt_nameplanificado.editText?.text.toString(), this@RegisterActivity)
                     if (creado) {
                         val id = usuario.consultarId(txt_username.editText?.text.toString(), this@RegisterActivity)
                         val editor = prefs.edit()

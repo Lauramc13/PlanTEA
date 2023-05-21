@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import com.example.plantea.persistencia.ConectorBD
 import java.io.Serializable
 
@@ -85,4 +86,11 @@ class GestionPictogramas : Serializable {
         conectorBD!!.cerrar()
         return ruta
     }
+
+    //fun nuevaHistoria(actividad: Context, nombre: String?, historia: String?) {
+      //  conectorBD = ConectorBD(actividad)
+      //  conectorBD!!.abrir()
+    //   conectorBD!!.nuevaHistoria(nombre, historia)
+    //  conectorBD!!.cerrar()
+    //  }
 }

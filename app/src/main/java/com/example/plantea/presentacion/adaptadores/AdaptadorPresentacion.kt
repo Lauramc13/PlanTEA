@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.adaptadores
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,14 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             holder.premio.visibility = View.INVISIBLE
             holder.card.setBackgroundResource(R.drawable.card_personalizado)
         }
+
+        Log.d("asfasf", listaPictogramas!![position].historia.toString())
+
+        if(listaPictogramas!![position].historia.toString() == "null"){
+           holder.historia.visibility = View.INVISIBLE
+        }else{
+            holder.historia.visibility = View.VISIBLE
+        }
     }
 
     override fun getItemCount(): Int {
@@ -44,12 +53,14 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var imagen: ImageView
         var premio: ImageView
         var card: View
+        var historia: ImageView
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
+            historia = itemView.findViewById(R.id.btn_historiaPictoOn)
             itemView.setOnClickListener(this)
         }
 
@@ -60,6 +71,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             card.setBackgroundResource(R.drawable.card_disabled)
             imagen.alpha = 0.7f
             titulo.alpha = 0.7f
+            historia.alpha = 0.7f
         }
     }
 }

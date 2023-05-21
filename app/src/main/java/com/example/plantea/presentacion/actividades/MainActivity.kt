@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                     val editor = prefs.edit()
                     editor.putBoolean("userAccount", false)
-                    //TODO: HACER TODA LA PARTE DE CERRAR SESION EN LA BASE DE DATOS
+                    editor.apply()
                     val login = Intent(applicationContext, PreLoginActivity::class.java)
                     startActivity(login)
                 }

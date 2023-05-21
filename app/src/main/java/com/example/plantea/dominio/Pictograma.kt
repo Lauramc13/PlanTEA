@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import java.io.Serializable
 
 class Pictograma : Serializable {
@@ -46,4 +47,9 @@ class Pictograma : Serializable {
     fun obtenerImagenEvento(actividad: Activity?, idCategoria: Int): String? {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }
+
+    //fun nuevaHistoria(actividad: Context, nombre: String?, historia: String?){
+      //  return gestorPictogramas.nuevaHistoria(actividad, nombre, historia)
+    //}
+
 }

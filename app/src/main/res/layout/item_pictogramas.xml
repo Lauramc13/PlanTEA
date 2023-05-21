@@ -67,15 +67,25 @@
                 android:id="@+id/btn_historiaPicto"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="7dp"
                 android:layout_marginRight="136dp"
-                android:layout_alignParentRight="true"
                 android:elevation="4dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/bocadillo_historia_off">
-            </ImageView>
+                app:srcCompat="@drawable/bocadillo_historia_off"></ImageView>
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/btn_historiaPictoOn"
+                android:layout_width="40dp"
+                android:layout_height="37dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="126dp"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/bocadillo_historia_on"></ImageView>
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/id_recompensa"

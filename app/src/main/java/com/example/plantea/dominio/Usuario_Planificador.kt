@@ -47,7 +47,7 @@ class Usuario_Planificador {
         return objeto
     }
 
-    fun getNameTEA(): String?{
+    fun getNameTEA(): String? {
         return nameTEA
     }
 

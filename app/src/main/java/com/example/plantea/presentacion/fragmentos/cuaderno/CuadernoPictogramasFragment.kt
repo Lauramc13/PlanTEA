@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
+import com.google.android.material.imageview.ShapeableImageView
 
 class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener {
     lateinit var vista: View
@@ -77,7 +79,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialogo_termometro)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
+        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
         seekbar = dialog.findViewById(R.id.seekBar_termometro)
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))

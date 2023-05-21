@@ -26,6 +26,7 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
+import com.google.android.material.imageview.ShapeableImageView
 import java.util.*
 
 class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener {
@@ -137,6 +138,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             //Mostrar título de la planificación
             tituloObtenido = plan.obtenerTituloPlan(idUsuario, this)
             titulo.text = tituloObtenido
+
         }
         adaptador = AdaptadorPresentacion(listaPictogramas, this)
         recyclerView.adapter = adaptador
@@ -240,8 +242,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             imagenConfeti.visibility = View.INVISIBLE
             mensajePremio.visibility = View.INVISIBLE
         }
-        val pictograma = dialog.findViewById<ImageView>(R.id.img_pictograma)
+        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
+        val historia = dialog.findViewById<TextView>(R.id.lbl_historia)
+        if (listaPictogramas[posicion].historia != "null") {
+            historia.text = listaPictogramas[posicion].historia
+            historia.visibility = View.VISIBLE
+        }
+
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
         tituloPictograma.text = listaPictogramas[posicion].titulo
         dialog.show()

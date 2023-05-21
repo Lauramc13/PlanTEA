@@ -87,7 +87,7 @@ class PreLoginActivity : AppCompatActivity(){
                     editor.putBoolean("userAccount", true)
                     editor.putString("nombrePlanificador", user.getName())
                     editor.putString("username", user.getUsername())
-                    editor.putString("nombreUsuarioTEA", user.getName())
+                    editor.putString("nombreUsuarioTEA", user.getNameTEA())
                     editor.putString("imagenPlanificador", user.getImagen())
                     editor.putString("imagenUsuarioTEA", user.getImagenTEA())
                     editor.putString("nombreObjeto", user.getObjeto())

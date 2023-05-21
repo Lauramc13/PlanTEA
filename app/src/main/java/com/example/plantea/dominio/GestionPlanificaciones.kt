@@ -15,7 +15,7 @@ class GestionPlanificaciones : Serializable {
         val id_plan: Int = conectorBD.insertarPlanificacion(idUsuario, titulo)
         for (i in pictogramas.indices) {
             resultado = conectorBD.insertarPictogramaPlan(pictogramas[i].titulo,
-                pictogramas[i].imagen, pictogramas[i].categoria, id_plan)
+                pictogramas[i].imagen, pictogramas[i].categoria, pictogramas[i].historia, id_plan)
         }
         conectorBD.cerrar()
         return resultado
@@ -57,6 +57,7 @@ class GestionPlanificaciones : Serializable {
                 pictograma.titulo = c.getString(0)
                 pictograma.imagen = c.getString(1)
                 pictograma.categoria = c.getInt(2)
+                pictograma.historia = c.getString(3)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }
@@ -71,7 +72,7 @@ class GestionPlanificaciones : Serializable {
         conectorBD.actualizarPlanificacion(id_plan, nombre)
         for (i in pictogramas.indices) {
             conectorBD.insertarPictogramaPlan(pictogramas[i].titulo,
-                pictogramas[i].imagen, pictogramas[i].categoria, id_plan)
+                pictogramas[i].imagen, pictogramas[i].categoria, pictogramas[i].historia, id_plan)
         }
         conectorBD.cerrar()
     }
@@ -88,6 +89,7 @@ class GestionPlanificaciones : Serializable {
                 pictograma.titulo = c.getString(0)
                 pictograma.imagen = c.getString(1)
                 pictograma.categoria = c.getInt(2)
+                pictograma.historia = c.getString(3)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }
