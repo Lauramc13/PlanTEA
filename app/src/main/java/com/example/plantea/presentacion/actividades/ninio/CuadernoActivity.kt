@@ -9,10 +9,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -138,6 +140,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
         pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
         tituloPictograma.text = listaEscala!![posicion].titulo
+
+        val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
+        historia.visibility = View.GONE
+
 
         //Botón cerrar
         btn_cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)

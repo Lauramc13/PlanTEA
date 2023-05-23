@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -8,6 +9,8 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,6 +21,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -27,6 +31,7 @@ import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
+import org.w3c.dom.Text
 import java.util.*
 
 class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener {
@@ -55,19 +60,29 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var layoutManager: GridLayoutManager
     private var recyclerViewState: Parcelable? = null
 
+    private var dialog: Dialog? = null
+
+
 
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
+        val layoutParams = historia.layoutParams as ConstraintLayout.LayoutParams
+
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
+            layoutParams.width = 350.dpToPx(this)
+            historia.layoutParams = layoutParams
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
+
+            layoutParams.width = 250.dpToPx(this)
+            historia.layoutParams = layoutParams
         }
 
-        super.onConfigurationChanged(newConfig)
         // Update the number of columns in the GridLayoutManager dynamically
         val gridValueManager = if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             3
@@ -75,8 +90,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             5
         }
         layoutManager.spanCount = gridValueManager
-
     }
+
+    fun Int.dpToPx(context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -208,19 +231,19 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     override fun onItemSeleccionado(posicion: Int) {
         //Añade a la pila el paso completado
         pasosCompletados.push(posicion)
-        val dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialogo_presentacion)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        imagenConfeti = dialog.findViewById(R.id.img_confeti)
-        mensajePremio = dialog.findViewById(R.id.txt_premio)
-        card = dialog.findViewById(R.id.card_presentacion)
+        dialog = Dialog(this)
+        dialog!!.setContentView(R.layout.dialogo_presentacion)
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        imagenConfeti = dialog!!.findViewById(R.id.img_confeti)
+        mensajePremio = dialog!!.findViewById(R.id.txt_premio)
+        card = dialog!!.findViewById(R.id.card_presentacion)
         val animFondo = AnimationUtils.loadAnimation(applicationContext, R.anim.confeti)
         val animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
 
         //Botón cerrar
-        btn_cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-        btn_cerrar.setOnClickListener { dialog.dismiss() }
-        dialog.show()
+        btn_cerrar = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
+        btn_cerrar.setOnClickListener { dialog!!.dismiss() }
+        dialog!!.show()
 
 
         //Si es recompensa mostramos el dialogo diferente
@@ -242,16 +265,42 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             imagenConfeti.visibility = View.INVISIBLE
             mensajePremio.visibility = View.INVISIBLE
         }
-        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
-        val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
-        val historia = dialog.findViewById<TextView>(R.id.lbl_historia)
-        if (listaPictogramas[posicion].historia != "null") {
-            historia.text = listaPictogramas[posicion].historia
+        val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
+        val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
+        val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
+        val textoHistoria = dialog!!.findViewById<TextView>(R.id.lblBubble)
+        val avatarHistoria = dialog!!.findViewById<ShapeableImageView>(R.id.avatarBubble)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if (prefs.getString("imagenPlanificador", "") === "") {
+            avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+        } else {
+            avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+        }
+
+        val orientation = resources.configuration.orientation
+        val layoutParams = historia.layoutParams as ConstraintLayout.LayoutParams
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
+            layoutParams.width = 350.dpToPx(this)
+            historia.layoutParams = layoutParams
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
+            layoutParams.width = 250.dpToPx(this)
+            historia.layoutParams = layoutParams
+        }
+
+
+        if (listaPictogramas[posicion].historia != null) {
+            textoHistoria.text = listaPictogramas[posicion].historia
             historia.visibility = View.VISIBLE
+            //TODO : PONER AQUI EL AVATAR DEL USUARIO
+        }else{
+            historia.visibility = View.GONE
         }
 
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
         tituloPictograma.text = listaPictogramas[posicion].titulo
-        dialog.show()
+        dialog!!.show()
     }
 }

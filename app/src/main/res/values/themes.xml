@@ -8,7 +8,7 @@
         <item name="colorSecondary">@color/md_theme_light_secondary</item>
         <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
         <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
         <item name="colorTertiary">@color/md_theme_light_tertiary</item>
         <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
         <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
@@ -114,5 +114,11 @@
         <item name="background">@color/md_theme_light_primary</item>
 
     </style>
+
+    <style name="ShapeableImageViewStyle">
+        <item name="cornerFamily">rounded</item> <!-- Use 'rounded' for rounded corners -->
+        <item name="cornerSize">50dp</item> <!-- Adjust the corner radius value as needed -->
+    </style>
+
 
 </resources>

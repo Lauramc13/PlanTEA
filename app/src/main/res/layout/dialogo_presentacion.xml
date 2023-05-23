@@ -2,9 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="50dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/img_confeti"
@@ -32,6 +31,67 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Bubble"
+        android:layout_width="370dp"
+        android:layout_height="189dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="-80dp"
+        app:layout_constraintStart_toEndOf="@+id/card_presentacion"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialogue"
+            android:layout_marginLeft="50dp"
+            android:elevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.45">
+
+            <TextView
+                android:id="@+id/lblBubble"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Historia"
+                android:textColor="#181F25"
+                android:visibility="visible"
+                app:autoSizeMaxTextSize="16sp"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="5sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avatarBubble"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:elevation="5dp"
+            android:src="@drawable/avatar1chica"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearance="@style/ShapeableImageViewStyle">
+
+        </com.google.android.material.imageview.ShapeableImageView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_presentacion"
         android:layout_width="450dp"
@@ -42,6 +102,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -95,27 +157,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/img_pictograma"
                 app:layout_constraintVertical_bias="0.024" />
 
-            <TextView
-                android:id="@+id/lbl_historia"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="65dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="5dp"
-                android:foregroundGravity="center"
-                android:text="Historia"
-                android:textColor="?colorOnSurface"
-                android:fontFamily="@font/montserrat_medium"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.478"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_pictograma"
-                app:layout_constraintVertical_bias="0.024" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
