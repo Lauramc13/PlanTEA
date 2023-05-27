@@ -27,8 +27,8 @@
             app:rowCount="4">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/categoria_consultas"
-                android:layout_width="175dp"
+                android:id="@+id/categoria_medico"
+                android:layout_width="180dp"
                 android:paddingLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/img_Consultas"
+                        android:id="@+id/img_Medico"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
                         android:contentDescription="@string/lbl_Consultas"
@@ -52,11 +52,55 @@
                     </ImageView>
 
                     <TextView
-                        android:id="@+id/lbl_Consultas"
+                        android:id="@+id/lbl_Medico"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="@string/lbl_Consultas"
+                        android:text="IR AL MEDICO"
+                        android:textAlignment="center"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp">
+
+                    </TextView>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/categoria_peluqueria"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?color"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_Peluqueria"
+                        android:layout_width="match_parent"
+                        android:layout_height="87dp"
+                        android:contentDescription="@string/lbl_Lugares"
+                        app:srcCompat="@drawable/categoria_peluqueria"
+                        >
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/lbl_Peluqueria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CORTARSE EL PELO"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp">
@@ -67,8 +111,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/categoria_profesionales"
-                android:layout_width="175dp"
+                android:id="@+id/categoria_compra"
+                android:layout_width="180dp"
                 android:paddingRight="20dp"
 
                 android:layout_height="wrap_content"
@@ -83,20 +127,61 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/img_Profesionales"
+                        android:id="@+id/img_Compra"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_profesionales"
-                        app:srcCompat="@drawable/categoria_profesionales">
+                        android:contentDescription="HACER LA COMPRA"
+                        app:srcCompat="@drawable/categoria_hacer_la_compra"
+                        >
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/lbl_Compra"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="HACER LA COMPRA"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textAlignment="center"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp">
+
+                    </TextView>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/categoria_colegio"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?color"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_Colegio"
+                        android:layout_width="match_parent"
+                        android:layout_height="87dp"
+                        android:contentDescription="IR AL COLEGIO"
+                        app:srcCompat="@drawable/categoria_colegio"
+                        >
 
                     </ImageView>
 
                     <TextView
-                        android:id="@+id/lbl_profesionales"
+                        android:id="@+id/lbl_Colegio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="IR AL COLEGIO"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="@string/lbl_profesionales"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp">
@@ -108,10 +193,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/categoria_lugares"
-                android:layout_width="175dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
                 android:paddingRight="20dp"
                 android:paddingLeft="20dp"
                 app:cardCornerRadius="8dp"
@@ -137,12 +222,11 @@
                         android:id="@+id/lbl_Lugares"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
                         android:text="@string/lbl_Lugares"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp">
-
                     </TextView>
                 </LinearLayout>
 
@@ -150,7 +234,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/categoria_desplazamiento"
-                android:layout_width="175dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:paddingRight="20dp"
@@ -163,6 +247,7 @@
                     android:layout_height="wrap_content"
                     android:background="?color"
                     android:orientation="vertical">
+
 
                     <ImageView
                         android:id="@+id/img_Desplazamiento"
@@ -177,8 +262,8 @@
                         android:id="@+id/lbl_Desplazamiento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
                         android:text="@string/lbl_Desplazamiento"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp">
@@ -190,7 +275,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/categoria_accion"
-                android:layout_width="175dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="20dp"
@@ -218,8 +303,8 @@
                         android:id="@+id/lbl_Accion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
                         android:text="@string/lbl_Accion"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp">
@@ -231,9 +316,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/categoria_entretenimiento"
-                android:layout_width="175dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
                 android:paddingRight="20dp"
                 android:paddingLeft="20dp"
                 app:cardCornerRadius="8dp"
@@ -242,7 +328,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FEFFBE"
+                    android:background="#CDEDFF"
                     android:orientation="vertical">
 
                     <ImageView
@@ -258,12 +344,11 @@
                         android:id="@+id/lbl_Entretenimiento"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
                         android:text="@string/lbl_Entretenimiento"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="@color/black"
-                        android:textSize="16sp">
-
+                        android:textSize="15sp">
                     </TextView>
                 </LinearLayout>
 
@@ -271,7 +356,46 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/categoria_recompensa"
-                android:layout_width="175dp"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CDEDFF"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/img_Recompensa"
+                        android:layout_width="match_parent"
+                        android:layout_height="87dp"
+                        android:contentDescription="@string/lbl_Recompensa"
+                        app:srcCompat="@drawable/categoria_recompensa">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/lbl_Recompensa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_Recompensa"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp">
+                    </TextView>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/categoria_favoritos"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="20dp"
@@ -287,20 +411,21 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/img_Recompensa"
+                        android:id="@+id/img_Favoritos"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Recompensa"
-                        app:srcCompat="@drawable/categoria_recompensa">
+                        android:contentDescription="Favoritos"
+                        app:srcCompat="@drawable/categoria_favorito"
+                        >
 
                     </ImageView>
 
                     <TextView
-                        android:id="@+id/lbl_Recompensa"
+                        android:id="@+id/lbl_Favoritos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="FAVORITOS"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="@string/lbl_Recompensa"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="16sp">

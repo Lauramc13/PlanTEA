@@ -38,13 +38,12 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         val orientation = newConfig.orientation
-        val gridValueManager: Int
-        gridValueManager = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             3 // set the number of columns to 3 for portrait mode
         } else {
             5 // set the number of columns to 5 for landscape mode
         }
-        lst_Pictogramas.setLayoutManager(GridLayoutManager(context, gridValueManager))
+        lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -95,11 +94,11 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 // Write code to perform some action when progress is changed.
                 if (progress < 30) {
-                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(118, 255, 3))
+                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(138, 255, 126))
                 } else if (progress < 60) {
-                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 165, 0))
+                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 193, 79))
                 } else if (progress < 100) {
-                    seekBar.progressTintList = ColorStateList.valueOf(Color.RED)
+                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(239, 35, 60))
                 }
             }
 

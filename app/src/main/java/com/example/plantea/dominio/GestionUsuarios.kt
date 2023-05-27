@@ -7,13 +7,7 @@ import com.example.plantea.persistencia.ConectorBD
 class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
     private var resultado = false
-    fun crearPassword(password: String?, actividad: Activity?): Boolean { //borrar esto TODO
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarPass(password)
-        conectorBD!!.cerrar()
-        return resultado
-    }
+
 
     fun crearUsuario( name: String?, username: String?,password: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)

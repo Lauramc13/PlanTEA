@@ -56,7 +56,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.planificador.CrearPlanActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="Crear planificación"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />

@@ -1,22 +1,24 @@
 package com.example.plantea.presentacion.adaptadores
 
-import android.content.ClipData
+import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 
 
 class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramas.ViewHolderPictogramas>() {
 
+    lateinit var context: Context
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
     }
@@ -27,11 +29,19 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
     }
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
+        context = holder.itemView.context
+
         holder.titulo.text = listaPictogramas!![position].titulo
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
 
-        if(listaPictogramas!![position].categoria == 1){
+        if(listaPictogramas!![position].categoria in 1..4){
             holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)
+            holder.imagen.setBackgroundColor(Color.rgb(100, 100, 50))
+        }else{
+            holder.heart!!.visibility = View.VISIBLE
+            if(listaPictogramas!![position].favorito){
+                holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
+            }
         }
     }
 
@@ -39,50 +49,39 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
         return listaPictogramas!!.size
     }
 
-    inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener {
+    inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), OnClickListener {
         var titulo: TextView
         var imagen: ImageView
         var card: View
+        var heart: ImageView? = null
 
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
-            itemView.setOnTouchListener(this)
+            heart = itemView.findViewById(R.id.btn_favoritosOff) as ImageView
+            itemView.setOnClickListener(this)
+
+            heart!!.setOnClickListener {
+
+                //AÑADIR PICTOGRAMA A LOS FAVORITOS
+                //TODO
+
+                val posicion = bindingAdapterPosition
+                if(listaPictogramas!![posicion].favorito){
+                    heart!!.setImageResource(R.drawable.svg_heart)
+                    listaPictogramas!![posicion].favorito = false
+                }else{
+                    heart!!.setImageResource(R.drawable.svg_heart_filled)
+                    listaPictogramas!![posicion].favorito = true
+                }
+            }
         }
 
-        // override fun onClick(view: View) {
-        //     val posicion = bindingAdapterPosition
-        //     listener?.onItemSeleccionado(posicion)
-        //     if (listaPictogramas!![posicion].categoria == 1) {
-        //         Log.d("tag", "CONSULTAS")
-        //     } else {
-        //         val data = ClipData.newPlainText("", "")
-        //         val shadowBuilder = View.DragShadowBuilder(view)
-        //         val pictograma = listaPictogramas!![posicion]
-        //         var planActivity = CrearPlanActivity()
-        //         planActivity.aniadirPicto()
-        //         //.add(pictograma)
-        //         //adaptador.notifyDataSetChanged()
-        //         Log.d("tag", "Selecciona pictograma")
-        //     }
-        // }
-
-        override fun onTouch(view: View?, p1: MotionEvent?): Boolean {
+        override fun onClick(view: View?) {
             val posicion = bindingAdapterPosition
             listener?.onItemSeleccionado(posicion)
-            if (listaPictogramas!![posicion].categoria == 1) {
-                Log.d("tag", "CONSULTAS")
-            } else {
-                val data = ClipData.newPlainText("", "")
-                val shadowBuilder = View.DragShadowBuilder(view)
-                if (view != null) {
-                    view. startDragAndDrop(data, shadowBuilder, view, 0)
-                }
-                Log.d("tag", "Selecciona pictograma")
-            }
-            return false
         }
     }
 }

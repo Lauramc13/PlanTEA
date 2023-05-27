@@ -20,13 +20,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnDragListener
-import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +35,9 @@ import com.example.plantea.R
 import com.example.plantea.dominio.*
 import com.example.plantea.presentacion.ApiInterface
 import com.example.plantea.presentacion.CrearPlanInterface
+import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
+import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
@@ -93,13 +95,13 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
         }
-
         fragmentCategorias = CategoriasFragment()
         transaction = supportFragmentManager.beginTransaction()
         supportFragmentManager.commit {
             setReorderingAllowed(false)
             replace<CategoriasFragment>(R.id.contenedor_fragments)
         }
+        recreate()
     }
 
     private fun getPictogramas(query: String) {
@@ -250,10 +252,12 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
+
         listaPictogramas = ArrayList()
         listaPlanificacion = ArrayList()
         listaBusqueda = ArrayList()
         //labelBuscando = findViewById(R.id.lbl_buscando)
+
 
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -295,6 +299,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.contenedor_fragments, fragmentCategorias)
         transaction.commit()
+
 
 
         //Dialogo para la creación de un nuevo pictograma
@@ -376,8 +381,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_ayuda, menu)
+        menuInflater.inflate(R.menu.menu_principal, menu)
         return true
     }
 
@@ -386,6 +390,54 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             R.id.item_ayuda -> {
                 val i = Intent(applicationContext, ManualActivity::class.java)
                 startActivity(i)
+            }
+            R.id.item_perfil -> {
+                val popupMenu = PopupMenu(this@CrearPlanActivity, findViewById(R.id.item_ayuda) )
+                popupMenu.inflate(R.menu.popup_menu)
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.option_1 -> {
+                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
+                            startActivity(perfil)
+                            true
+                        }
+                        // R.id.option_2 -> {
+                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
+                        //     if(isPlanificadorLogged){
+                        //         val editor = prefs.edit()
+                        //         editor.putBoolean("PlanificadorLogged", false)
+                        //         editor.commit()
+                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
+                        //         startActivity(plan)
+                        //     }else{
+                        //         crearDialogoLogin()
+                        //     }
+                        //     true
+                        // }
+                        R.id.option_3 -> {
+                            val dialogLogout = Dialog(this)
+                            dialogLogout.setContentView(R.layout.dialogo_logout)
+                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                            btn_logout.setOnClickListener {
+                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                                val editor = prefs.edit()
+                                editor.putBoolean("userAccount", false)
+                                editor.apply()
+                                val login = Intent(applicationContext, PreLoginActivity::class.java)
+                                startActivity(login)
+                            }
+                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                            dialogLogout.show()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
             }
             android.R.id.home -> finish()
         }
@@ -404,7 +456,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
         //Desplaza la lista para insertar un nuevo pictograma
         recyclerView.scrollToPosition(adaptador.itemCount - 1)
-        recyclerView.setOnDragListener(ChoiceDragListener())
+        //recyclerView.setOnDragListener(ChoiceDragListener())
     }
 
     //Método para mostrar categoria correspondiente
@@ -424,8 +476,11 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     //Método para mostrar los pictogramas correspondientes a las categorias de consultas
     override fun mostrarsubCategoria(tituloCategoria: String?) {
         //labelBuscando.visibility = View.GONE
+        Log.d("TAG", tituloCategoria.toString())
         subcategoriaOpen = true
         identificadorCategoria = categoria.obtenerCategoria(this, tituloCategoria)
+        Log.d("TAG", identificadorCategoria.toString())
+
         listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria) as ArrayList<Pictograma>
         val bundle = Bundle()
         bundle.putSerializable("key", listaPictogramas)
@@ -572,22 +627,27 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         categoriaPicto = categoria
     }
 
-    private inner class ChoiceDragListener : OnDragListener {
-        override fun onDrag(view: View, dragEvent: DragEvent): Boolean {
-            when (dragEvent.action) {
-                DragEvent.ACTION_DRAG_STARTED -> Log.i("TAG", "started")
-                DragEvent.ACTION_DRAG_ENTERED -> Log.i("TAG", "entered")
-                DragEvent.ACTION_DRAG_EXITED -> Log.i("TAG", "exited")
-                DragEvent.ACTION_DROP -> {
-                    //imagenPicto="android.resource://com.example.plantea/"+R.drawable.categoria_recompensa;
-                    listaPlanificacion.add(Pictograma(tituloPicto, imagenPicto, categoriaPicto, 0))
-                    adaptador.notifyDataSetChanged()
-                    Log.i("TAG", "drop ")
-                }
-                DragEvent.ACTION_DRAG_ENDED -> Log.i("TAG", "ended")
-            }
-            return true
-        }
+    // private inner class ChoiceDragListener : OnDragListener {
+    //     override fun onDrag(view: View, dragEvent: DragEvent): Boolean {
+    //         when (dragEvent.action) {
+    //             DragEvent.ACTION_DRAG_STARTED -> Log.i("TAG", "started")
+    //             DragEvent.ACTION_DRAG_ENTERED -> Log.i("TAG", "entered")
+    //             DragEvent.ACTION_DRAG_EXITED -> Log.i("TAG", "exited")
+    //             DragEvent.ACTION_DROP -> {
+    //                 //imagenPicto="android.resource://com.example.plantea/"+R.drawable.categoria_recompensa;
+    //                 listaPlanificacion.add(Pictograma(tituloPicto, imagenPicto, categoriaPicto, 0))
+    //                 adaptador.notifyDataSetChanged()
+    //                 Log.i("TAG", "drop ")
+    //             }
+    //             DragEvent.ACTION_DRAG_ENDED -> Log.i("TAG", "ended")
+    //         }
+    //         return true
+    //     }
+    // }
+
+    fun addPictogram(pictogram: Pictograma) {
+        listaPlanificacion.add(pictogram)
+        adaptador!!.notifyDataSetChanged()
     }
 
 }

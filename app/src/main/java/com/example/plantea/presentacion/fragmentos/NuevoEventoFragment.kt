@@ -256,18 +256,23 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     override fun planSeleccionado(posicion: Int) {
-        val viewHolder = listaPlanificaciones.findViewHolderForAdapterPosition(posAnterior) as AdaptadorListaPlanes.ViewHolder?
+        val viewHolder = listaPlanificaciones.findViewHolderForAdapterPosition(posAnterior) as AdaptadorListaPlanes.ViewHolder? // TODO: NULL POINTER EXCEPTION
         val card = viewHolder!!.itemView.findViewById<View>(R.id.card_plan) as CardView
-        if (posicion != posAnterior) {
-            card.setCardBackgroundColor(Color.WHITE)
+        val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        if (isDarkMode) {
+            if (posicion != posAnterior) {
+                card.setCardBackgroundColor(Color.rgb(37, 47, 56))
+            }
         } else {
-            card.setCardBackgroundColor(Color.rgb(224, 224, 224))
+            if (posicion != posAnterior) {
+                card.setCardBackgroundColor(Color.WHITE)
+            }
         }
         posAnterior = posicion
         planSeleccionado = 0
         nombreEvento = null.toString()
         planSeleccionado = planes[posicion].id
-        nombreEvento = planes[posicion].titulo.toString()
+        nombreEvento = planes[posicion].titulo
         btn_guardar.isEnabled = true
     }
 }

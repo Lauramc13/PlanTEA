@@ -6,10 +6,8 @@ import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
@@ -55,12 +53,51 @@ class RegisterActivity : AppCompatActivity(){
         }
 
         btnRegister.setOnClickListener {
+
+            // Clear previous errors
+            txt_name.error = null
+            txt_username.error = null
+            txt_password.error = null
+            txt_objeto.error = null
+            txt_password2.error = null
+            txt_nameplanificado.error = null
+
+
+            val emptyTextViews = mutableListOf<TextView>()
+
+            if (txt_name.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(txt_name.editText!!)
+                txt_name.error = "ESTO ES UN ERROR"
+            }
+            if (txt_username.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(txt_username.editText!!)
+                txt_username.error = "ESTO ES UN ERROR"
+            }
+            if (txt_password.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(txt_password.editText!!)
+                txt_password.error = "ESTO ES UN ERROR"
+            }
+            if (txt_password2.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(txt_password2.editText!!)
+                txt_password2.error = "ESTO ES UN ERROR"
+            }
+            if (txt_objeto.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(txt_objeto.editText!!)
+                txt_objeto.error = "ESTO ES UN ERROR"
+            }
+            if (txt_nameplanificado.editText?.text.toString().isEmpty() && checkUserPlanificado.isChecked) {
+                emptyTextViews.add(txt_objeto.editText!!)
+                txt_nameplanificado.error = "ESTO ES UN ERROR"
+            }
+
           //  Handler().postDelayed({
-            if(txt_name.editText?.text.toString() == "" ||  txt_username.editText?.text.toString() == "" || txt_password.editText?.text.toString() == "" || txt_objeto.editText?.text.toString() == "" || txt_password2.editText?.text.toString() == "" || (checkUserPlanificado.isChecked && txt_nameplanificado.editText?.text.toString() == "")){
+            if (emptyTextViews.isNotEmpty()) {
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
-            }else{
+            } else {
                 if( txt_password.editText?.text.toString() != txt_password2.editText?.text.toString() ){
                     Toast.makeText(applicationContext, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
+                    txt_password.error = "ESTO ES UN ERROR"
+                    txt_password2.error = "ESTO ES UN ERROR"
                 }else{
                     val passCifrada = hashPassword(txt_password.editText?.text.toString())
                     creado = usuario.crearUsuario(txt_name.editText?.text.toString(), txt_username.editText?.text.toString(), passCifrada, txt_objeto.editText?.text.toString(), txt_nameplanificado.editText?.text.toString(), this@RegisterActivity)
@@ -80,8 +117,8 @@ class RegisterActivity : AppCompatActivity(){
                         startActivity(intent)
                         finish()
                     }else{
+                        txt_username.error = "ESTO ES UN ERROR"
                         Toast.makeText(applicationContext,  "El nombre de usuario introducido ya existe", Toast.LENGTH_LONG).show()
-
                     }
                 }
             }

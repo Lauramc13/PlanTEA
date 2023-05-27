@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
@@ -22,7 +23,6 @@ class MenuActivity : AppCompatActivity() {
     private lateinit var cardPlanificacion: CardView
     lateinit var btn_logout: Button
     lateinit var icono_cerrar_login : AppCompatImageView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,22 +48,67 @@ class MenuActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_ayuda, menu)
+        menuInflater.inflate(R.menu.menu_principal, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_ayuda -> {
-                val manual = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(manual)
+                val i = Intent(applicationContext, ManualActivity::class.java)
+                startActivity(i)
             }
-            android.R.id.home -> {
-                val it = Intent(applicationContext, MainActivity::class.java)
-                startActivity(it)
+            R.id.item_perfil -> {
+                val popupMenu = PopupMenu(this@MenuActivity, findViewById(R.id.item_ayuda) )
+                popupMenu.inflate(R.menu.popup_menu)
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.option_1 -> {
+                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
+                            startActivity(perfil)
+                            true
+                        }
+                        // R.id.option_2 -> {
+                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
+                        //     if(isPlanificadorLogged){
+                        //         val editor = prefs.edit()
+                        //         editor.putBoolean("PlanificadorLogged", false)
+                        //         editor.commit()
+                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
+                        //         startActivity(plan)
+                        //     }else{
+                        //         crearDialogoLogin()
+                        //     }
+                        //     true
+                        // }
+                        R.id.option_3 -> {
+                            val dialogLogout = Dialog(this)
+                            dialogLogout.setContentView(R.layout.dialogo_logout)
+                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                            btn_logout.setOnClickListener {
+                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                                val editor = prefs.edit()
+                                editor.putBoolean("userAccount", false)
+                                editor.apply()
+                                val login = Intent(applicationContext, PreLoginActivity::class.java)
+                                startActivity(login)
+                            }
+                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                            dialogLogout.show()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
             }
+            android.R.id.home -> finish()
         }
         return true
     }
+
 }

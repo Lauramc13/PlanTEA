@@ -10,6 +10,7 @@ class Pictograma : Serializable {
     var categoria = 0
     var cuaderno = 0
     var historia: String? = null
+    var favorito: Boolean = false
     var listaPictogramas: ArrayList<Pictograma>? = null
     private var listaConsultas: ArrayList<String>? = null
     private var gestorPictogramas = GestionPictogramas()

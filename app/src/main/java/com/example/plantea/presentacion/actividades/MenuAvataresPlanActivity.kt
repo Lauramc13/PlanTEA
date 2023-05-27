@@ -8,8 +8,10 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -59,6 +61,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())
+                editor.putString("imagenPlanificadorDraw", drawableId.toString())
                 editor.apply()
             }
             next()
@@ -74,6 +77,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             avatar.setOnClickListener {
                 val resources = applicationContext.resources
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+
                 val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 val username = prefs.getString("username", true.toString())
@@ -82,6 +86,8 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 }
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())
+                editor.putString("imagenPlanificadorDraw", avatarId)
+
                 editor.commit()
                 next()
             }

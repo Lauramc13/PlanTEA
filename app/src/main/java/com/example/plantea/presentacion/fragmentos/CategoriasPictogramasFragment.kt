@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CrearPlanInterface
+import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramas
 
 class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSelectedListener {
@@ -36,7 +38,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         } else {
             5 // set the number of columns to 5 for landscape mode
         }
-        recyclerPictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
+        recyclerPictogramas.layoutManager = GridLayoutManager(context, gridValueManager, GridLayoutManager.VERTICAL, false)
         image_Cerrar = vista.findViewById(R.id.image_Cerrar)
         image_add = vista.findViewById(R.id.image_add)
         val adaptador = AdaptadorPictogramas(listaPictogramas, this)
@@ -60,10 +62,13 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
 
     //Este método se ejecutará al seleccionar un pictograma para añadirlo en la planificacion
     override fun onItemSeleccionado(posicion: Int) {
-        if (listaPictogramas[posicion].categoria == 1) {
+        if (listaPictogramas[posicion].categoria in 1..4) {
             interfaceCategorias.mostrarsubCategoria(listaPictogramas[posicion].titulo)
         } else {
             interfaceCategorias.pictogramaSeleccionado(listaPictogramas[posicion].titulo, listaPictogramas[posicion].imagen, listaPictogramas[posicion].categoria)
+            val planActivity = activity as? CrearPlanActivity
+            planActivity?.addPictogram(listaPictogramas[posicion])
         }
     }
+
 }

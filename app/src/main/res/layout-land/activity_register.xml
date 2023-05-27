@@ -87,12 +87,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_Name"
-                app:shapeAppearance="@style/cornerRadiusLogin"
                 android:layout_width="350dp"
                 android:layout_height="60dp"
-                android:background="@drawable/fondo_texto_login"
                 android:ems="10"
                 android:fontFamily="@font/montserrat_regular"
+                android:background="@drawable/fondo_texto_login"
+                app:shapeAppearance="@style/cornerRadiusLogin"
                 android:hint="Nombre"
                 android:layout_marginTop="17dp"
                 android:inputType="text"

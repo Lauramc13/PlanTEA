@@ -8,13 +8,14 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.PlanActivity">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="310dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginTop="100dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/lbl_titulo"
@@ -59,7 +60,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            android:overScrollMode="never"
+            android:scrollbars="horizontal"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -77,11 +79,8 @@
             app:layout_constraintStart_toEndOf="@+id/lbl_titulo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_baseline_undo_64"
-             />
+            app:srcCompat="@drawable/ic_baseline_undo_64" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <LinearLayout
         android:id="@+id/img_cuaderno"

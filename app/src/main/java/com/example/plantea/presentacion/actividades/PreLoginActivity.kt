@@ -5,11 +5,9 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.google.android.material.textfield.TextInputLayout
@@ -71,6 +69,8 @@ class PreLoginActivity : AppCompatActivity(){
 
         btnLogin.setOnClickListener {
             if (username.editText?.text.toString() == "" || password.editText?.text.toString() == "") {
+                username.error = "ESTO ES UN ERROR"
+                password.error = "ESTO ES UN ERROR"
                 Toast.makeText(
                     applicationContext,
                     "Tienes que rellenar todos los campos",
@@ -96,6 +96,8 @@ class PreLoginActivity : AppCompatActivity(){
                     val intent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(intent)
                 } else {
+                    username.error = "ESTO ES UN ERROR"
+                    password.error = "ESTO ES UN ERROR"
                     Toast.makeText(applicationContext, "Las credenciales son incorrectas", Toast.LENGTH_LONG).show()
                 }
             }

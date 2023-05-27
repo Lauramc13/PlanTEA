@@ -1,39 +1,35 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
-
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 import java.util.*
 
+
 class MainActivity : AppCompatActivity() {
-    private lateinit var icono_cerrar_login: ImageView
     private lateinit var icono_ayuda: ImageView
     private lateinit var image_Planificador: ImageView
     private lateinit var image_UsuarioTEA: ImageView
     private lateinit var conectorBD: ConectorBD
     private lateinit var password: TextInputLayout
-    lateinit var btn_logout: Button
     private lateinit var nombrePlanificador: TextView
     private lateinit var nombreUsuarioTEA: TextView
     private lateinit var btn_acceder: Button
@@ -41,6 +37,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardUsuarioPlanificador: CardView
     var usuario = Usuario_Planificador()
     private var info_usuario = false
+
+    lateinit var btn_logout: Button
+    private lateinit var icono_cerrar_login: ImageView
+
+    private lateinit var menu: Menu
+
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -81,7 +84,12 @@ class MainActivity : AppCompatActivity() {
 
         //Este método se ejecutará al pinchar sobre la imagen del rol planificador
         cardUsuarioPlanificador.setOnClickListener {
-            crearDialogoLogin()
+            if (!info_usuario) {
+                val intent = Intent(applicationContext, MenuActivity::class.java)
+                startActivity(intent)
+            }else{
+                crearDialogoLogin()
+            }
         }
 
         //Este método se ejecutará al pinchar sobre la imagen del rol niño
@@ -113,6 +121,9 @@ class MainActivity : AppCompatActivity() {
                     val passCifrada = hashPassword(password.editText?.text.toString())
                     val passCorrecta = usuario.comprobarPass(username, passCifrada, this@MainActivity)
                     if (passCorrecta) {
+                        val editor = prefs.edit()
+                        editor.putBoolean("PlanificadorLogged", true)
+                        editor.commit()
                         val intent = Intent(applicationContext, MenuActivity::class.java)
                         startActivity(intent)
                         dialogLogin.dismiss()
@@ -130,6 +141,26 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
+        val m = menu as MenuBuilder
+        // val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        // val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
+        // var rutaIcon: String
+        // if(isPlanificadorLogged){
+        //     rutaIcon = prefs.getString("imagenPlanificadorDraw", "").toString()
+        // }else{
+        //     rutaIcon = prefs.getString("imagenUsuarioTEA", "").toString()
+        // }
+        // Log.d("sdf", rutaIcon)
+        // rutaIcon = prefs.getString("imagenPlanificadorDraw", "").toString()
+
+        // val resourceId = resources.getIdentifier(rutaIcon, "drawable", packageName)
+        // if (resourceId != 0) {
+        //     val drawable = resources.getDrawable(resourceId)
+        //     val menuItem = menu.findItem(R.id.item_perfil)
+        //     menuItem.icon = drawable
+        // }
+        // Log.d("sdf", resourceId.toString())
+
         return true
     }
 
@@ -140,25 +171,52 @@ class MainActivity : AppCompatActivity() {
                 startActivity(i)
             }
             R.id.item_perfil -> {
-                val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                startActivity(perfil)
-            }
-            R.id.item_logout -> {
-                val dialogLogout = Dialog(this)
-                dialogLogout.setContentView(R.layout.dialogo_logout)
-                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                btn_logout.setOnClickListener {
-                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                    val editor = prefs.edit()
-                    editor.putBoolean("userAccount", false)
-                    editor.apply()
-                    val login = Intent(applicationContext, PreLoginActivity::class.java)
-                    startActivity(login)
+                val popupMenu = PopupMenu(this@MainActivity, findViewById(R.id.item_ayuda) )
+                popupMenu.inflate(R.menu.popup_menu)
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.option_1 -> {
+                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
+                            startActivity(perfil)
+                            true
+                        }
+                        // R.id.option_2 -> {
+                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
+                        //     if(isPlanificadorLogged){
+                        //         val editor = prefs.edit()
+                        //         editor.putBoolean("PlanificadorLogged", false)
+                        //         editor.commit()
+                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
+                        //         startActivity(plan)
+                        //     }else{
+                        //         crearDialogoLogin()
+                        //     }
+                        //     true
+                        // }
+                        R.id.option_3 -> {
+                            val dialogLogout = Dialog(this)
+                            dialogLogout.setContentView(R.layout.dialogo_logout)
+                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                            btn_logout.setOnClickListener {
+                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                                val editor = prefs.edit()
+                                editor.putBoolean("userAccount", false)
+                                editor.apply()
+                                val login = Intent(applicationContext, PreLoginActivity::class.java)
+                                startActivity(login)
+                            }
+                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                            dialogLogout.show()
+                            true
+                        }
+                        else -> false
+                    }
                 }
-                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                dialogLogout.show()
+                popupMenu.show()
             }
             android.R.id.home -> finish()
         }
@@ -169,9 +227,6 @@ class MainActivity : AppCompatActivity() {
         val bytes = password.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
-        return digest.fold("", { str, it -> str + "%02x".format(it) })
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
-
-
-
 }

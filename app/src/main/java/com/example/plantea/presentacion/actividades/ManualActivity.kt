@@ -1,16 +1,18 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Dialog
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ScrollView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
@@ -64,6 +66,9 @@ class ManualActivity : AppCompatActivity() {
     lateinit var vista: ScrollView
     private lateinit var indice: View
     private lateinit var btn_subir: FloatingActionButton
+
+    lateinit var btn_logout: Button
+    private lateinit var icono_cerrar_login: ImageView
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -280,13 +285,6 @@ class ManualActivity : AppCompatActivity() {
         return textoIcono
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> finish()
-        }
-        return true
-    }
-
     fun onclick_punto_1() {
         vista.scrollTo(0, parrafo1.top)
     }
@@ -378,4 +376,69 @@ class ManualActivity : AppCompatActivity() {
     fun onclick_punto_5_4() {
         vista.scrollTo(0, parrafo40.top)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_principal, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_ayuda -> {
+                val i = Intent(applicationContext, ManualActivity::class.java)
+                startActivity(i)
+            }
+            R.id.item_perfil -> {
+                val popupMenu = PopupMenu(this@ManualActivity, findViewById(R.id.item_ayuda) )
+                popupMenu.inflate(R.menu.popup_menu)
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.option_1 -> {
+                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
+                            startActivity(perfil)
+                            true
+                        }
+                        // R.id.option_2 -> {
+                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
+                        //     if(isPlanificadorLogged){
+                        //         val editor = prefs.edit()
+                        //         editor.putBoolean("PlanificadorLogged", false)
+                        //         editor.commit()
+                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
+                        //         startActivity(plan)
+                        //     }else{
+                        //         crearDialogoLogin()
+                        //     }
+                        //     true
+                        // }
+                        R.id.option_3 -> {
+                            val dialogLogout = Dialog(this)
+                            dialogLogout.setContentView(R.layout.dialogo_logout)
+                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                            btn_logout.setOnClickListener {
+                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                                val editor = prefs.edit()
+                                editor.putBoolean("userAccount", false)
+                                editor.apply()
+                                val login = Intent(applicationContext, PreLoginActivity::class.java)
+                                startActivity(login)
+                            }
+                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                            dialogLogout.show()
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popupMenu.show()
+            }
+            android.R.id.home -> finish()
+        }
+        return true
+    }
+
 }

@@ -12,6 +12,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 
 class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPresentacion.ViewHolderPictogramas>() {
+    private var lastClickedPosition: Int = -1
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
     }
@@ -35,8 +36,6 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             holder.card.setBackgroundResource(R.drawable.card_personalizado)
         }
 
-        Log.d("asfasf", listaPictogramas!![position].historia.toString())
-
         if(listaPictogramas!![position].historia.toString() == "null"){
            holder.historia.visibility = View.INVISIBLE
         }else{
@@ -55,6 +54,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var card: View
         var historia: ImageView
 
+
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
@@ -65,13 +65,32 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         }
 
         override fun onClick(view: View) {
-            val posicion = bindingAdapterPosition
-            listener?.onItemSeleccionado(posicion)
-            //Diseño item deshabilitado
-            card.setBackgroundResource(R.drawable.card_disabled)
-            imagen.alpha = 0.7f
-            titulo.alpha = 0.7f
-            historia.alpha = 0.7f
+            val position = bindingAdapterPosition
+
+            if (position == lastClickedPosition + 1) {
+                listener?.onItemSeleccionado(position)
+
+                // Reset the appearance of the previously clicked item
+                if (lastClickedPosition != -1) {
+                    notifyItemChanged(lastClickedPosition)
+                }
+
+                // Update the last clicked position
+                lastClickedPosition = position
+
+                // Perform click action and update UI for the current item
+                card.setBackgroundResource(R.drawable.card_disabled)
+                imagen.alpha = 0.3f
+                titulo.alpha = 0.3f
+                historia.alpha = 0.3f
+                notifyDataSetChanged()
+
+            }
         }
+
+        fun popListClicked(){
+            lastClickedPosition -= 1
+        }
+
     }
 }

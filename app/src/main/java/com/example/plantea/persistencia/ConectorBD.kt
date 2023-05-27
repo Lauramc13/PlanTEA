@@ -5,7 +5,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.SQLException
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import com.example.plantea.dominio.Usuario_Planificador
 
 class ConectorBD(ctx: Context?) {
@@ -149,8 +151,13 @@ class ConectorBD(ctx: Context?) {
         nuevoUsuario.put("objeto", objeto)
         nuevoUsuario.put("nameTEA", nameTEA)
 
+        var resultado : Long? = null
         //Insertamos el registro en la base de datos
-        val resultado = db?.insert("Usuario_Planificador", null, nuevoUsuario) ?: -1
+        try{
+            resultado = db?.insert("Usuario_Planificador", null, nuevoUsuario) ?: -1
+        }catch (e: SQLiteConstraintException){
+            Log.d("TAG", "El usuario ya existe")
+        }
 
         return resultado != -1L
     }

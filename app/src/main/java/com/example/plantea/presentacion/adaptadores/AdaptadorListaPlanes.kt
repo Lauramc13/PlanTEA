@@ -53,7 +53,7 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
                 val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
                 if (isDarkMode) {
-                    card.setCardBackgroundColor(Color.rgb(32, 42, 50)) // Set the desired background color for dark mode
+                    card.setCardBackgroundColor(Color.rgb(64, 83, 100)) // Set the desired background color for dark mode
                 } else {
                     card.setCardBackgroundColor(Color.rgb(224, 224, 224)) // Set the desired background color for light mode
                 }
