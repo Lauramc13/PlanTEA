@@ -10,13 +10,16 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
+import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 
 
-class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramas.ViewHolderPictogramas>() {
+class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?, private val favourites: CategoriasPictogramasFragment) : RecyclerView.Adapter<AdaptadorPictogramas.ViewHolderPictogramas>() {
 
     lateinit var context: Context
     interface OnItemSelectedListener {
@@ -43,6 +46,18 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
                 holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
             }
         }
+
+        holder.heart!!.setOnClickListener {
+            if(listaPictogramas!![position].favorito){
+                holder.heart!!.setImageResource(R.drawable.svg_heart)
+                listaPictogramas!![position].favorito = false
+                favourites.removeFavorite(listaPictogramas!![position], position)
+            }else{
+                holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
+                listaPictogramas!![position].favorito = true
+                favourites.markAsFavorite(listaPictogramas!![position])
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -54,29 +69,17 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
         var imagen: ImageView
         var card: View
         var heart: ImageView? = null
-
+        var historia: ImageView
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
             heart = itemView.findViewById(R.id.btn_favoritosOff) as ImageView
+            historia = itemView.findViewById(R.id.btn_historiaPictoOn)
             itemView.setOnClickListener(this)
 
-            heart!!.setOnClickListener {
 
-                //AÑADIR PICTOGRAMA A LOS FAVORITOS
-                //TODO
-
-                val posicion = bindingAdapterPosition
-                if(listaPictogramas!![posicion].favorito){
-                    heart!!.setImageResource(R.drawable.svg_heart)
-                    listaPictogramas!![posicion].favorito = false
-                }else{
-                    heart!!.setImageResource(R.drawable.svg_heart_filled)
-                    listaPictogramas!![posicion].favorito = true
-                }
-            }
         }
 
         override fun onClick(view: View?) {

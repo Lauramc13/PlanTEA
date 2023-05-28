@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 
+
 class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPresentacion.ViewHolderPictogramas>() {
     private var lastClickedPosition: Int = -1
+    lateinit var context: Context
+
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
     }
@@ -23,12 +28,17 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     }
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
+        context = holder.itemView.context
+
+        Log.d("asf", "SE PASA POR AQUI TAMBIEN tambien")
+
+
         holder.titulo.text = listaPictogramas!![position].titulo
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-        if (listaPictogramas!![position].categoria == 7) {
+        if (listaPictogramas!![position].categoria == 9) {
             holder.premio.visibility = View.INVISIBLE
             holder.card.setBackgroundResource(R.drawable.card_premio)
-        } else if (listaPictogramas!![position].categoria == 6) {
+        } else if (listaPictogramas!![position].categoria == 8) {
             holder.premio.visibility = View.INVISIBLE
             holder.card.setBackgroundResource(R.drawable.card_espera)
         } else {
@@ -66,25 +76,24 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
         override fun onClick(view: View) {
             val position = bindingAdapterPosition
+            Log.d("asf", "SE PASA POR AQUI")
 
             if (position == lastClickedPosition + 1) {
                 listener?.onItemSeleccionado(position)
-
-                // Reset the appearance of the previously clicked item
-                if (lastClickedPosition != -1) {
-                    notifyItemChanged(lastClickedPosition)
-                }
 
                 // Update the last clicked position
                 lastClickedPosition = position
 
                 // Perform click action and update UI for the current item
                 card.setBackgroundResource(R.drawable.card_disabled)
-                imagen.alpha = 0.3f
-                titulo.alpha = 0.3f
-                historia.alpha = 0.3f
-                notifyDataSetChanged()
+                imagen.alpha = 0.7f
+                titulo.alpha = 0.7f
+                historia.alpha = 0.7f
+                Log.d("asf", "SE PASA POR AQUI TAMBIEN")
 
+
+            }else{
+                Toast.makeText(context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()
             }
         }
 

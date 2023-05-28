@@ -1,32 +1,57 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
-import android.content.Context
 import com.example.plantea.persistencia.ConectorBD
+import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import java.io.Serializable
 
 class GestionPictogramas : Serializable {
     private var listaPictogramas: ArrayList<Pictograma>? = null
     private var listaConsultas: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
-    fun listarPictogramas(actividad: Activity?, idcategoria: Int): ArrayList<Pictograma> {
+
+    // fun listarPictogramas(actividad: Activity?, idcategoria: Int): ArrayList<Pictograma> {
+    //     conectorBD = ConectorBD(actividad)
+    //     listaPictogramas = ArrayList()
+    //     conectorBD!!.abrir()
+    //     val c = conectorBD!!.listarPictogramas(idcategoria)
+    //     if (c.moveToFirst()) {
+    //         do {
+    //             val pictograma = Pictograma()
+    //             pictograma.titulo = c.getString(0)
+    //             pictograma.imagen = c.getString(1)
+    //             pictograma.categoria = c.getInt(2)
+    //             listaPictogramas!!.add(pictograma)
+    //         } while (c.moveToNext())
+    //     }
+    //     c.close()
+    //     conectorBD!!.cerrar()
+    //     return listaPictogramas!!
+    // }
+
+    fun listarPictogramas(actividad: Activity?, idcategoria: Int, userId: String?): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarPictogramas(idcategoria)
+    
+        val c = conectorBD!!.listarPictogramas(idcategoria, userId)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
-                pictograma.titulo = c.getString(0)
-                pictograma.imagen = c.getString(1)
-                pictograma.categoria = c.getInt(2)
+                pictograma.id = c.getString(0)
+                pictograma.titulo = c.getString(1)
+                pictograma.imagen = c.getString(2)
+                pictograma.categoria = c.getInt(3)
+                pictograma.favorito = c.getInt(4) == 1 // Convert favorito value to Boolean
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
         }
         c.close()
         conectorBD!!.cerrar()
+    
         return listaPictogramas!!
     }
+    
 
     fun insertarPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?) {
         conectorBD = ConectorBD(actividad)
@@ -87,10 +112,38 @@ class GestionPictogramas : Serializable {
         return ruta
     }
 
-    //fun nuevaHistoria(actividad: Context, nombre: String?, historia: String?) {
-      //  conectorBD = ConectorBD(actividad)
-      //  conectorBD!!.abrir()
-    //   conectorBD!!.nuevaHistoria(nombre, historia)
-    //  conectorBD!!.cerrar()
-    //  }
+    fun obtenerFavoritos(actividad: Activity?, idUsuario: String?): ArrayList<Pictograma> {
+        conectorBD = ConectorBD(actividad)
+        listaPictogramas = ArrayList()
+        conectorBD!!.abrir()
+        val c = conectorBD!!.obtenerFavoritos(idUsuario)
+        if (c.moveToFirst()) {
+            do {
+                val pictograma = Pictograma()
+                pictograma.id = c.getString(0)
+                pictograma.titulo = c.getString(1)
+                pictograma.imagen = c.getString(2)
+                pictograma.categoria = c.getInt(3)
+                pictograma.favorito = true
+                listaPictogramas!!.add(pictograma)
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD!!.cerrar()
+        return listaPictogramas!!
+    }
+
+    fun insertarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?){
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.insertarFavorito(idUsuario, idPicto)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?){
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarFavorito(idUsuario, idPicto)
+        conectorBD!!.cerrar()
+    }
 }

@@ -32,8 +32,17 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar pictogramas de una categoria*/
-    fun listarPictogramas(categoria: Int): Cursor {
-        return db!!.rawQuery("SELECT nombre,imagen,id_categoria from Pictograma Inner JOIN Categorias where Categorias.id = Pictograma.id_categoria AND Categorias.id = $categoria", null)
+    // fun listarPictogramas(categoria: Int): Cursor {
+    //     return db!!.rawQuery("SELECT nombre,imagen,id_categoria from Pictograma Inner JOIN Categorias where Categorias.id = Pictograma.id_categoria AND Categorias.id = $categoria", null)
+    // }
+
+    /*Listar pictogramas de una categoria*/
+    fun listarPictogramas(categoria: Int, userId: String?): Cursor {
+        return db!!.rawQuery("SELECT Pictograma.id, Pictograma.nombre, Pictograma.imagen, Pictograma.id_categoria, \n" +
+                "                   CASE WHEN Favorito.id IS NULL THEN 0 ELSE 1 END AS favorito\n" +
+                "                   FROM Pictograma\n" +
+                "                   LEFT JOIN Favorito ON Pictograma.id = Favorito.id_picto AND Favorito.id_usuario = '$userId'\n" +
+                "                   WHERE Pictograma.id_categoria = $categoria", null)
     }
 
     /*Insertar un pictograma nuevo*/
@@ -285,6 +294,18 @@ class ConectorBD(ctx: Context?) {
         db!!.execSQL("UPDATE Pictograma_Plan SET historia ='$historia' WHERE Pictograma_Plan.nombre = '$nombre'")
     }
 
+    fun insertarFavorito(id_usuario: String?, id_picto: String?) {
+        db!!.execSQL("INSERT INTO Favorito (id_usuario, id_picto) VALUES ('$id_usuario', '$id_picto')")
+    }
+
+
+    fun borrarFavorito(id_usuario: String?, id_picto: String?) {
+        db!!.execSQL("DELETE FROM Favorito WHERE id_usuario ='$id_usuario' AND id_picto ='$id_picto'")
+    }
+
+    fun obtenerFavoritos(id_usuario: String?): Cursor {
+        return db!!.rawQuery("SELECT Pictograma.id,Pictograma.nombre,Pictograma.imagen,Pictograma.id_categoria from Pictograma Inner JOIN Favorito where Favorito.id_picto = Pictograma.id AND Favorito.id_usuario = '$id_usuario'", null)
+    }
 
     companion object {
         const val NOMBRE_BD = "PlanTEA"

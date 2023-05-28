@@ -96,4 +96,9 @@
         <item name="backgroundTint">@color/md_theme_dark_onSurface</item>
     </style>
 
+    <style name="addPhotoBackground">
+        <item name="backgroundTint">@color/md_theme_dark_primary</item>
+    </style>
+
+
 </resources>

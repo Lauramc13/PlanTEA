@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -236,7 +237,8 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         intent.putExtra("Mes", formatoMesEvento(fecha))
         intent.putExtra("Hora", hora)
         intent.putExtra("Id", id)
-        val pendingIntent = PendingIntent.getBroadcast(applicationContext, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val pendingIntent = PendingIntent.getBroadcast(applicationContext, id, intent, PendingIntent.FLAG_MUTABLE)
         alarmManager = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         val aviso = Calendar.getInstance()
         aviso.timeInMillis = System.currentTimeMillis()

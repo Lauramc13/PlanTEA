@@ -16,6 +16,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
     var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, id_plan INTEGER,visible INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+    var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_picto INTEGER, FOREIGN KEY (id_picto) REFERENCES Pictograma(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/
@@ -26,6 +27,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlPlanificacion)
             db.execSQL(sqlCuaderno)
             db.execSQL(sqlEvento)
+            db.execSQL(sqlFavorito)
             meterDatos(db)
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -42,6 +44,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS Planificacion")
             db.execSQL("DROP TABLE IF EXISTS Cuaderno")
             db.execSQL("DROP TABLE IF EXISTS Evento")
+            db.execSQL("DROP TABLE IF EXISTS Favorito")
+
             /*Se crea la nueva versión de la table*/onCreate(db)
         } catch (e: SQLException) {
             e.printStackTrace()

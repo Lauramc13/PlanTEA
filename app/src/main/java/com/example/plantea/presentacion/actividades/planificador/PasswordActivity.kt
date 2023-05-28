@@ -52,7 +52,29 @@ class PasswordActivity : AppCompatActivity() {
 
         //Este método se ejecutará al seleccionar el boton guardar
         btn_guardar.setOnClickListener {
-            if (viejaPass.editText?.text.toString() == "" || nuevaPass.editText?.text.toString() == "" || confirmaPass.editText?.text.toString() == "") {
+
+            viejaPass.error = null
+            nuevaPass.error = null
+            confirmaPass.error = null
+
+            val emptyTextViews = mutableListOf<TextView>()
+
+            if (viejaPass.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(viejaPass.editText!!)
+                viejaPass.error = "ESTO ES UN ERROR"
+            }
+
+            if (nuevaPass.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(nuevaPass.editText!!)
+                nuevaPass.error = "ESTO ES UN ERROR"
+            }
+
+            if (confirmaPass.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(confirmaPass.editText!!)
+                confirmaPass.error = "ESTO ES UN ERROR"
+            }
+
+            if (emptyTextViews.isNotEmpty()) {
                 Toast.makeText(applicationContext, "Debes completar todos los campos",  Toast.LENGTH_LONG).show()
             } else {
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)

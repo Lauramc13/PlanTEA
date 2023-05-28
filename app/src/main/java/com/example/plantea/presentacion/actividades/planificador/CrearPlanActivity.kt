@@ -463,7 +463,13 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     override fun mostrarCategoria(idCategoria: Int) {
         //labelBuscando.visibility = View.GONE
         identificadorCategoria = idCategoria
-        listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria) as ArrayList<Pictograma>
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val idUsuario = prefs.getString("idUsuario", "")
+        if (idCategoria == 10) {
+            listaPictogramas = picto.obtenerFavoritos(this, idUsuario) as ArrayList<Pictograma>
+        } else {
+            listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria, idUsuario) as ArrayList<Pictograma>
+        }
         val bundle = Bundle()
         bundle.putSerializable("key", listaPictogramas)
         fragmentPictogramas.arguments = bundle
@@ -476,12 +482,16 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     //Método para mostrar los pictogramas correspondientes a las categorias de consultas
     override fun mostrarsubCategoria(tituloCategoria: String?) {
         //labelBuscando.visibility = View.GONE
-        Log.d("TAG", tituloCategoria.toString())
         subcategoriaOpen = true
         identificadorCategoria = categoria.obtenerCategoria(this, tituloCategoria)
-        Log.d("TAG", identificadorCategoria.toString())
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val idUsuario = prefs.getString("idUsuario", "")
+        listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria, idUsuario) as ArrayList<Pictograma>
+        //get favourite for each pictogram
+        for (pictograma in listaPictogramas) {
+            Log.d("asf", "listaPictogramas: ${pictograma.favorito}")
+        }
 
-        listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria) as ArrayList<Pictograma>
         val bundle = Bundle()
         bundle.putSerializable("key", listaPictogramas)
         fragmentSubcategoria.arguments = bundle

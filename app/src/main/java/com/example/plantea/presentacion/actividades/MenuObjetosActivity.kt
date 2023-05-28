@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -44,14 +45,15 @@ class MenuObjetosActivity : AppCompatActivity() {
                 Toast.makeText(this, "No se ha seleccionado ningun objeto", Toast.LENGTH_SHORT).show()
             }
         }
-
+        
         btn_saltar = findViewById(R.id.btn_saltar)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if(prefs.getBoolean("editPreferences", false) === true){
-            btn_saltar.visibility = View.GONE
+            btn_saltar.text = "Cancelar"
         }else{
-            btn_saltar.visibility = View.VISIBLE
+            btn_saltar.text = "Saltar"
         }
+
 
         btn_saltar.setOnClickListener{
             if(prefs.getBoolean("editPreferences", false) === false) {

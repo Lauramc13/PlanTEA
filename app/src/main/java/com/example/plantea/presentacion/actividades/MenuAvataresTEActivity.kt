@@ -49,10 +49,11 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         btn_saltar = findViewById(R.id.btn_saltar)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if(prefs.getBoolean("editPreferences", false) === true){
-            btn_saltar.visibility = View.GONE
+            btn_saltar.text = "Cancelar"
         }else{
-            btn_saltar.visibility = View.VISIBLE
+            btn_saltar.text = "Saltar"
         }
+
 
         btn_saltar.setOnClickListener{
             if(prefs.getBoolean("editPreferences", false) === false) {

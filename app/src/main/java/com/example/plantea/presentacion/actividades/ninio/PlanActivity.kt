@@ -183,6 +183,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                     recyclerView.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
                 viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
                     .setBackgroundResource(R.drawable.card_personalizado)
                 viewHolderPictogramas.popListClicked()
@@ -255,11 +256,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             val orientation = resources.configuration.orientation
             val layoutParams = historia.layoutParams as ConstraintLayout.LayoutParams
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
                 layoutParams.width = 350.dpToPx(this)
                 historia.layoutParams = layoutParams
             } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
                 layoutParams.width = 250.dpToPx(this)
                 historia.layoutParams = layoutParams
             }

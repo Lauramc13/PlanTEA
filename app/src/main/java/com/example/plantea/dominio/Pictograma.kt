@@ -1,10 +1,11 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
-import android.content.Context
+import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import java.io.Serializable
 
 class Pictograma : Serializable {
+    var id: String? = null
     var titulo: String? = null
     var imagen: String? = null
     var categoria = 0
@@ -23,10 +24,16 @@ class Pictograma : Serializable {
         this.cuaderno = cuaderno
     }
 
-    fun obtenerPictogramas(actividad: Activity, idcategoria: Int): ArrayList<*> {
+    fun obtenerPictogramas(actividad: Activity, idcategoria: Int, userId: String?): ArrayList<*> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.listarPictogramas(actividad, idcategoria)
+        listaPictogramas = gestorPictogramas.listarPictogramas(actividad, idcategoria, userId)
         return listaPictogramas as ArrayList<Pictograma>
+    }
+
+    fun obtenerFavoritos(actividad: Activity?, idUsuario: String?): ArrayList<Pictograma> {
+        listaPictogramas = ArrayList()
+        listaPictogramas = gestorPictogramas.obtenerFavoritos(actividad, idUsuario)
+        return listaPictogramas!!
     }
 
     fun nuevoPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?) {
@@ -49,8 +56,14 @@ class Pictograma : Serializable {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }
 
-    //fun nuevaHistoria(actividad: Context, nombre: String?, historia: String?){
-      //  return gestorPictogramas.nuevaHistoria(actividad, nombre, historia)
-    //}
+
+
+    fun insertarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {
+        gestorPictogramas.insertarFavorito(actividad, idUsuario, idPicto)
+    }
+
+    fun borrarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {
+        gestorPictogramas.borrarFavorito(actividad, idUsuario, idPicto)
+    }
 
 }

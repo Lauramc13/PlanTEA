@@ -42,10 +42,10 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
         holder.borrar.visibility = View.VISIBLE
         holder.historia.visibility = View.VISIBLE
-        if (listaPlanificacion[position].categoria == 7) { //Premio
+        if (listaPlanificacion[position].categoria == 9) { //Premio
             //holder.premio.visibility = View.VISIBLE
             holder.card.setBackgroundResource(R.drawable.card_premio)
-        } else if (listaPlanificacion[position].categoria == 6) { //Espera
+        } else if (listaPlanificacion[position].categoria == 8) { //Espera
             //holder.premio.visibility = View.VISIBLE
             //holder.premio.setImageResource(R.drawable.reloj)
             holder.card.setBackgroundResource(R.drawable.card_espera)

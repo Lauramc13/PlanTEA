@@ -100,6 +100,10 @@
 
     </style>
 
+    <style name="addPhotoBackground">
+        <item name="backgroundTint">@color/md_theme_light_primary</item>
+    </style>
+
     <style name="backgroundEditText" parent="">
         <item name="background">@color/background2</item>
     </style>
