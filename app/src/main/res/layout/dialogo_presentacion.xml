@@ -7,14 +7,14 @@
 
     <ImageView
         android:id="@+id/img_confeti"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_width="600dp"
+        android:layout_height="600dp"
+        android:layout_marginTop="50dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/confeti" />
+        app:srcCompat="@drawable/confeti2" />
 
     <TextView
         android:id="@+id/txt_premio"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:text="¡Conseguido!"
-        android:fontFamily="@font/montserrat_medium"
-        android:textColor="#ffd740"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="#E4E7EB"
         android:textSize="50dp"
         android:textStyle="bold"
         android:visibility="invisible"

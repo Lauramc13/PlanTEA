@@ -120,7 +120,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         // } else {
         //     5
         // }
-        card_calendario = findViewById(R.id.card_Calendario)
+        card_calendario = findViewById(R.id.card_actividad)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         recyclerView.layoutManager = layoutManagerLinear
@@ -168,10 +168,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
 
         card_calendario.setOnClickListener{
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putBoolean("calendarioNinio", true)
-            val intent = Intent(applicationContext, CalendarioActivity::class.java)
+            val intent = Intent(applicationContext, ActividadActivity::class.java)
             startActivity(intent)
         }
 
@@ -222,16 +219,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
 
             //Si es recompensa mostramos el dialogo diferente
-            if (listaPictogramas[posicion].categoria == 7) {
+            if (listaPictogramas[posicion].categoria == 9) {
                 imagenConfeti.visibility = View.VISIBLE
                 mensajePremio.visibility = View.VISIBLE
                 imagenConfeti.animation = animFondo
                 card.animation = animCard
                 mensajePremio.animation = animFondo
-            } else if (listaPictogramas[posicion].categoria == 6) {
+            } else if (listaPictogramas[posicion].categoria == 8) {
                 imagenConfeti.visibility = View.VISIBLE
                 mensajePremio.visibility = View.VISIBLE
-                imagenConfeti.setImageResource(R.drawable.espera)
+                imagenConfeti.setImageResource(R.drawable.svg_espera)
                 mensajePremio.text = "¡Mientras esperamos!"
                 imagenConfeti.animation = animCard
                 card.animation = animCard

@@ -16,6 +16,7 @@ class PrincipalFragment : Fragment() {
     lateinit var actividad: Activity
     lateinit var cardSintomas: CardView
     lateinit var cardDolores: CardView
+    lateinit var cardSentimientos: CardView
     lateinit var interfaceCuaderno: CuadernoInterface
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -23,8 +24,10 @@ class PrincipalFragment : Fragment() {
         vista = inflater.inflate(R.layout.fragment_cuaderno_principal, container, false)
         cardSintomas = vista.findViewById(R.id.card_sintomas)
         cardDolores = vista.findViewById(R.id.card_dolores)
+        cardSentimientos = vista.findViewById(R.id.card_sentimientos)
         cardSintomas.setOnClickListener { interfaceCuaderno.mostrarPictogramas(2) }
         cardDolores.setOnClickListener { interfaceCuaderno.mostrarPictogramas(3) }
+        cardSentimientos.setOnClickListener { interfaceCuaderno.mostrarPictogramas(4) }
         return vista
     }
 

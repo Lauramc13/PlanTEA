@@ -81,7 +81,7 @@ class MenuActivity : AppCompatActivity() {
                         //     }else{
                         //         crearDialogoLogin()
                         //     }
-                        //     true
+                        //     true 
                         // }
                         R.id.option_3 -> {
                             val dialogLogout = Dialog(this)

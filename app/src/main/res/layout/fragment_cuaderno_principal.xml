@@ -13,21 +13,23 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_sintomas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/cardCuaderno"
+            android:layout_width="250dp"
+            android:layout_height="370dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="3dp"
+            app:cardElevation="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/card_dolores"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/card_sentimientos"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/img_sintomas"
-                android:layout_width="300dp"
+                android:layout_width="200dp"
                 android:layout_height="300dp"
+                android:layout_gravity="center"
                 android:src="@drawable/cuaderno_sintomas" />
 
             <TextView
@@ -45,12 +47,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_dolores"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="370dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="3dp"
+            app:cardElevation="1dp"
+            style="@style/cardCuaderno"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/card_sintomas"
@@ -58,8 +61,9 @@
 
             <ImageView
                 android:id="@+id/img_dolores"
-                android:layout_width="300dp"
+                android:layout_width="200dp"
                 android:layout_height="300dp"
+                android:layout_gravity="center"
                 android:src="@drawable/cuaderno_dolores" />
 
             <TextView
@@ -69,9 +73,45 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="300dp"
                 android:text="@string/lbl_dolores"
+                android:gravity="center"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="?colorOnSurface"
                 android:textSize="25sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_sentimientos"
+            android:layout_width="250dp"
+            android:layout_height="370dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="1dp"
+            style="@style/cardCuaderno"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/card_sintomas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_sentimientos"
+                android:layout_width="200dp"
+                android:layout_gravity="center"
+                android:layout_height="300dp"
+                android:src="@drawable/card_sentimientos" />
+
+            <TextView
+                android:id="@+id/lbl_sentimientos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="300dp"
+                android:gravity="center"
+                android:text="¿COMO TE SIENTES?"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="?colorOnSurface"
+                android:textSize="25sp" />
+
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

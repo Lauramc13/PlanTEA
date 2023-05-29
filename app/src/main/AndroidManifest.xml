@@ -103,10 +103,18 @@
             android:label="Elige avatar planificador"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.ninio.ActividadActivity"
+            android:label="Actividades"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
         <receiver android:name=".dominio.onAlarmReceiver" />
 
     </application>
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
 </manifest>

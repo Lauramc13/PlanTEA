@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -40,6 +41,8 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     lateinit var btn_cerrar : ImageView
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
+    lateinit var termometro: View
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -127,9 +130,9 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
         tituloPictograma.text = listaEscala!![posicion].titulo
 
+
         val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
         historia.visibility = View.GONE
-
 
         //Botón cerrar
         btn_cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)

@@ -138,5 +138,10 @@
         <item name="cornerSize">50dp</item> <!-- Adjust the corner radius value as needed -->
     </style>
 
+    <style name="cardCuaderno">
+        <item name="strokeColor">@color/md_theme_light_inverseSurface</item>
+        <item name="cardBackgroundColor">@color/background2</item>
+    </style>
+
 
 </resources>

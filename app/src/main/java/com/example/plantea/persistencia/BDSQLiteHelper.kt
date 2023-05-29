@@ -85,6 +85,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('SINTOMAS')")
         db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('DOLOR')")
         db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('ESCALA')")
+        db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('SENTIMIENTOS')")
 
         //Pictograma
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('REVISIÓN', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_consultas + "', 1)")
@@ -351,5 +352,33 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('GARGANTA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_garganta + "',3)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRIPA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_estomago + "',3)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('PIERNA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_pierna + "',3)")
+
+
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ABURRIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_aburrir + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ALEGRE', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_alegrar + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('AMADA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_amada + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('AMADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_amado + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ANSIOSO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_ansioso + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ASQUEADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_asco + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ASUSTADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_asustar + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('AUTOESTIMA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_autoestima + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('AVERGONZADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_avergonzar + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('CANSADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_cansar + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('CONDICION', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_condicion + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('CONFUNDIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_confundir + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('DISTRAIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_distraer + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ENAMORADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_enamorado + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ENFADADO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_enfadar + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ENTRISTECIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_entristecer + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ENVIDIOSO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_envidia + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('NOSTALGICO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_nostalgico + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('REGOCIJAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_regocijar + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('SERIO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_serio + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('SORPRENDIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_sorprender + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TENER MIEDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tener_miedo + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRANQUILO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tranquilo + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRANQUILO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tranquilo1 + "',4)")
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('VERGUENZA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_verguenza + "',4)")
+
     }
 }
