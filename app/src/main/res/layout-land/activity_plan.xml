@@ -16,7 +16,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginBottom="305dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,6 +24,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo">
+
+            <Button
+                android:id="@+id/icon_deshacer"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:text="Deshacer"
+                android:layout_marginRight="10dp"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_baseline_undo_64"
+                app:iconSize="32dp"
+                app:iconTint="#203130" />
+
+            <Button
+                android:id="@+id/icon_reproducir"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:text="Reproducir"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/svg_play"
+                app:iconSize="20dp"
+                app:iconTint="#203130" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/lbl_titulo"
@@ -58,6 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
             android:scrollbars="horizontal"
@@ -66,20 +100,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/icon_deshacer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.943"
-            app:layout_constraintStart_toEndOf="@+id/lbl_titulo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_baseline_undo_64" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -148,7 +173,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/img_calendario"
+            android:id="@+id/img_actividad"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

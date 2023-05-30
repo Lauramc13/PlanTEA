@@ -30,8 +30,6 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         context = holder.itemView.context
 
-        Log.d("asf", "SE PASA POR AQUI TAMBIEN tambien")
-
 
         holder.titulo.text = listaPictogramas!![position].titulo
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))

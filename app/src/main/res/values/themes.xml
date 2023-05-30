@@ -143,5 +143,8 @@
         <item name="cardBackgroundColor">@color/background2</item>
     </style>
 
+    <style name="DialogNoAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
 
 </resources>

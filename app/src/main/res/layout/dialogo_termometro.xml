@@ -37,13 +37,15 @@
                 android:id="@+id/img_pictograma"
                 android:layout_width="297dp"
                 android:layout_height="286dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="55dp"
+                app:shapeAppearance="@style/cornerRadius"
+                android:background="@color/white"
+                style="@style/pictogramas"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:shapeAppearance="@style/cornerRadius"
                 app:srcCompat="@drawable/cuaderno_dolor_oido" />
 
             <TextView

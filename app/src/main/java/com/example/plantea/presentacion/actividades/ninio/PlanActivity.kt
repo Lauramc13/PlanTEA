@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.actividades.ninio
 
+import android.animation.AnimatorSet
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -8,17 +9,19 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
+import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -27,7 +30,6 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
 import java.util.*
@@ -37,31 +39,36 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     var plan = Planificacion()
     lateinit var titulo: TextView
     lateinit var mensajePremio: TextView
-    //lateinit var txt_objetoAyuda: TextView
     lateinit var lblMensaje: TextView
     lateinit var tituloObtenido: String
     lateinit var iconoCuaderno: LinearLayout
-    lateinit var iconoDeshacer: ImageView
+    lateinit var iconoActividad: LinearLayout
+    lateinit var iconoDeshacer: Button
+    lateinit var iconoReproducir: Button
     lateinit var imagenConfeti: ImageView
-    //lateinit var img_objetoAyuda: ImageView
     lateinit var card: CardView
-    lateinit var card_calendario : CardView
-    lateinit var card_historias: CardView
+    lateinit var card_cuaderno : CardView
     lateinit var card_actividades: CardView
-    //lateinit var objetoAyuda: LinearLayout
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
 
     lateinit var btn_cerrar : ImageView
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var layoutManager: GridLayoutManager
     private var recyclerViewState: Parcelable? = null
 
     private var dialog: Dialog? = null
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
+
+    val handler = Handler()
+    private var currentDialog: Dialog? = null
+    var runnable: Runnable? = null
+    var reproductor: Boolean = false
+    private var isRunning = false
+
+
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -101,26 +108,22 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         setContentView(R.layout.activity_plan)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
-
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //Pila de los pasos completados en el seguimiento de un plan
         pasosCompletados = Stack<Int>()
         iconoCuaderno = findViewById(R.id.img_cuaderno)
+        iconoActividad = findViewById(R.id.img_actividad)
+        card_cuaderno = findViewById(R.id.card_cuaderno)
         iconoDeshacer = findViewById(R.id.icon_deshacer)
-        //img_objetoAyuda = findViewById(R.id.img_objetoAyuda)
+        iconoReproducir = findViewById(R.id.icon_reproducir)
+
         titulo = findViewById(R.id.lbl_titulo)
-        //txt_objetoAyuda = findViewById(R.id.txt_objetoAyuda)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
-        // val orientation = resources.configuration.orientation
-        // val gridValueManager = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-        //     3
-        // } else {
-        //     5
-        // }
-        card_calendario = findViewById(R.id.card_actividad)
+
+        card_actividades = findViewById(R.id.card_actividad)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         recyclerView.layoutManager = layoutManagerLinear
@@ -140,8 +143,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val parametros = this.intent.extras
         if (parametros != null) {
             titulo.text = intent.getStringExtra("titulo")
-
             listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
+            iconoDeshacer.visibility = View.INVISIBLE
+            iconoReproducir.visibility = View.INVISIBLE
         } else {
             val idUsuario = prefs.getString("idUsuario", "")
             //Mostrar la planificación a seguir para el niño
@@ -157,17 +161,19 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //Mostrar mensaje si no hay plan
         if (listaPictogramas.isEmpty()) {
             lblMensaje.visibility = View.VISIBLE
+            iconoDeshacer.visibility = View.INVISIBLE
+            iconoReproducir.visibility = View.INVISIBLE
         } else {
             lblMensaje.visibility = View.INVISIBLE
         }
 
         //Este método se ejecutará al seleccionar el icono cuaderno para acceder
-        iconoCuaderno.setOnClickListener {
+        card_cuaderno.setOnClickListener {
             val intent = Intent(applicationContext, CuadernoActivity::class.java)
             startActivity(intent)
         }
 
-        card_calendario.setOnClickListener{
+        card_actividades.setOnClickListener{
             val intent = Intent(applicationContext, ActividadActivity::class.java)
             startActivity(intent)
         }
@@ -186,6 +192,28 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 viewHolderPictogramas.popListClicked()
             }
         }
+
+        iconoReproducir.setOnClickListener{
+            var currentPosition = 0
+            currentDialog?.dismiss()
+
+            runnable = object : Runnable {
+                override fun run() {
+                    if (isRunning) {
+                        reproductor = true
+                        onItemSeleccionado(currentPosition)
+                        currentPosition++
+
+                        if (currentPosition < listaPictogramas.size) {
+                            handler.postDelayed(this, 4000L)
+                        }
+                    }
+                }
+            }
+
+            isRunning = true
+            handler.post(runnable!!)
+        }
         //objetoAyuda.setOnClickListener {
           //  val dialog = Dialog(this@PlanActivity)
           //  dialog.setContentView(R.layout.dialogo_presentacion)
@@ -201,22 +229,31 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
 
     override fun onItemSeleccionado(posicion: Int) {
+        currentDialog?.dismiss()
+        dialog = Dialog(this)
+        dialog!!.setContentView(R.layout.dialogo_presentacion)
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        btn_cerrar = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
+        val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
+        val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
+        val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
+
+
         //Añade a la pila el paso completado
-            pasosCompletados.push(posicion)
-            dialog = Dialog(this)
-            dialog!!.setContentView(R.layout.dialogo_presentacion)
-            dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        pasosCompletados.push(posicion)
+        if (!reproductor){
+
             imagenConfeti = dialog!!.findViewById(R.id.img_confeti)
             mensajePremio = dialog!!.findViewById(R.id.txt_premio)
             card = dialog!!.findViewById(R.id.card_presentacion)
             val animFondo = AnimationUtils.loadAnimation(applicationContext, R.anim.confeti)
             val animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
 
+            currentDialog = dialog
+
             //Botón cerrar
-            btn_cerrar = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
             btn_cerrar.setOnClickListener { dialog!!.dismiss() }
             dialog!!.show()
-
 
             //Si es recompensa mostramos el dialogo diferente
             if (listaPictogramas[posicion].categoria == 9) {
@@ -237,9 +274,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 imagenConfeti.visibility = View.INVISIBLE
                 mensajePremio.visibility = View.INVISIBLE
             }
-            val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
-            val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
-            val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
+
             val textoHistoria = dialog!!.findViewById<TextView>(R.id.lblBubble)
             val avatarHistoria = dialog!!.findViewById<ShapeableImageView>(R.id.avatarBubble)
 
@@ -269,8 +304,46 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
             pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
             tituloPictograma.text = listaPictogramas[posicion].titulo
-            dialog!!.show()
+            
+        }else{
+            card = dialog!!.findViewById(R.id.card_presentacion)
+
+            val showAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side)
+            val dismissAnimation = AnimationUtils.makeOutAnimation(this, false)
+
+            card.visibility = View.VISIBLE
+            card.startAnimation(showAnimation)
+
+            val handler = Handler()
+            val delayBeforeDismiss = 2000L // Delay before starting the dismiss animation in milliseconds
+            val totalDuration = showAnimation.duration + delayBeforeDismiss + dismissAnimation.duration
+
+            handler.postDelayed({
+                card.clearAnimation()
+                card.startAnimation(dismissAnimation)
+            }, showAnimation.duration + delayBeforeDismiss)
+
+            if(posicion != listaPictogramas.size-1){
+                handler.postDelayed({
+                    card.visibility = View.GONE
+                }, totalDuration)
+            }
+
+            pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
+            tituloPictograma.text = listaPictogramas[posicion].titulo
+            historia.visibility = View.GONE
+
+            currentDialog = dialog
+
+            //Botón cerrar
+            btn_cerrar.setOnClickListener {
+                dialog!!.dismiss()
+                isRunning = false
+                reproductor = false
+            }
         }
+        dialog!!.show()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
