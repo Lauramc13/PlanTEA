@@ -100,11 +100,14 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
             startActivity(intent)
         }else{
-            if (prefs.getBoolean("info_usuario", false) === false){
+            if (prefs.getBoolean("info_usuario", false) === true){ 
+                val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
+                startActivity(intent)
+            }else if(prefs.getBoolean("info_objeto", false) === true){
                 val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
                 startActivity(intent)
             }else{
-                val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
+                val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
             }
         }

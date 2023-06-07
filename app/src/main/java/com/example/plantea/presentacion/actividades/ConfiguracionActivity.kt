@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
@@ -34,6 +35,7 @@ class ConfiguracionActivity : AppCompatActivity() {
     private lateinit var btn_password: Button
     private lateinit var btn_notificacion: SwitchCompat
     private lateinit var lbl_infoUsuario: SwitchCompat
+    private lateinit var lbl_objeto: SwitchCompat
     private lateinit var semana: CheckBox
     private lateinit var dia: CheckBox
     private lateinit var hora: CheckBox
@@ -41,6 +43,7 @@ class ConfiguracionActivity : AppCompatActivity() {
     private var es_objeto = false
     private var notificacion_activa = false
     private var info_usuario = false
+    private var info_objeto = false
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
@@ -62,12 +65,14 @@ class ConfiguracionActivity : AppCompatActivity() {
         btn_password = findViewById(R.id.buttonContrasenia)
         btn_notificacion = findViewById(R.id.switch_notificacion)
         lbl_infoUsuario = findViewById(R.id.lbl_infoUsuarioTEA)
+        lbl_objeto = findViewById(R.id.lbl_objeto)
         semana = findViewById(R.id.checkBox_semana)
         dia = findViewById(R.id.checkBox_dia)
         hora = findViewById(R.id.checkBox_hora)
         txt_UsuarioTEA.isEnabled = false
         img_usuarioTEA.isEnabled = false
         lbl_infoUsuario.isChecked = false
+        lbl_objeto.isChecked = false
 
         //Preferencias
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
@@ -124,6 +129,17 @@ class ConfiguracionActivity : AppCompatActivity() {
                 lbl_infoUsuario.isChecked = false
                 txt_UsuarioTEA.isEnabled = false
                 img_usuarioTEA.isEnabled = false
+            }
+            info_objeto = prefs.getBoolean("info_objeto", false)
+            Log.d("asf", info_objeto.toString())
+            if(info_objeto){
+                lbl_objeto.isChecked = true
+                txt_objeto.isEnabled = true
+                img_objeto.isEnabled = true
+            }else{
+                lbl_objeto.isChecked = false
+                txt_objeto.isEnabled = false
+                img_objeto.isEnabled = false
             }
         img_usuarioPlanificador.setOnClickListener {
             es_planificador = true
@@ -185,8 +201,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                     "Se necesita una imagen para cada usuario",
                     Toast.LENGTH_LONG
                 ).show()
-            } else if (txt_objeto.text.toString().isEmpty() || img_objeto.drawable == null
-            ) {
+            } else if ((txt_objeto.text.toString().isEmpty() || img_objeto.drawable == null) && lbl_objeto.isChecked) {
                 Toast.makeText(
                     applicationContext,
                     "Se necesita una imagen y nombre del objeto tranquilizador",
@@ -200,10 +215,13 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val nombreObjeto = txt_objeto.text.toString()
                 val rutaPlanificador = crearRuta(img_usuarioPlanificador, "Planificador")
                 var rutaUsuarioTEA= ""
+                var rutaObjeto = ""
                 if (lbl_infoUsuario.isChecked) {
                     rutaUsuarioTEA = crearRuta(img_usuarioTEA, "Usuario")
                 }
-                val rutaObjeto = crearRuta(img_objeto, "Objeto")
+                if (lbl_objeto.isChecked) {
+                    rutaObjeto = crearRuta(img_objeto, "Objeto")
+                }
 
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
@@ -279,9 +297,10 @@ class ConfiguracionActivity : AppCompatActivity() {
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                val editor = prefs.edit()
-                                editor.putBoolean("userAccount", false)
-                                editor.apply()
+                                prefs.edit().clear().commit()
+                                // val editor = prefs.edit()
+                                // editor.putBoolean("userAccount", false)
+                                // editor.apply()
                                 val login = Intent(applicationContext, PreLoginActivity::class.java)
                                 startActivity(login)
                             }

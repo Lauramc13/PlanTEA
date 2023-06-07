@@ -72,18 +72,10 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        //  val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
-        //  val layoutParams = historia.layoutParams as ConstraintLayout.LayoutParams
-
-        // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-           // layoutParams.width = 350.dpToPx(this)
-            //   historia.layoutParams = layoutParams
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
-            //  layoutParams.width = 250.dpToPx(this)
-            //  historia.layoutParams = layoutParams
         }
     }
 
@@ -144,8 +136,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         if (parametros != null) {
             titulo.text = intent.getStringExtra("titulo")
             listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-            iconoDeshacer.visibility = View.INVISIBLE
-            iconoReproducir.visibility = View.INVISIBLE
+
         } else {
             val idUsuario = prefs.getString("idUsuario", "")
             //Mostrar la planificación a seguir para el niño
@@ -389,9 +380,10 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                val editor = prefs.edit()
-                                editor.putBoolean("userAccount", false)
-                                editor.apply()
+                                prefs.edit().clear().commit()
+                                // val editor = prefs.edit()
+                                // editor.putBoolean("userAccount", false)
+                                // editor.apply()
                                 val login = Intent(applicationContext, PreLoginActivity::class.java)
                                 startActivity(login)
                             }

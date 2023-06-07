@@ -88,9 +88,15 @@ class PreLoginActivity : AppCompatActivity(){
                     editor.putString("nombrePlanificador", user.getName())
                     editor.putString("username", user.getUsername())
                     editor.putString("nombreUsuarioTEA", user.getNameTEA())
+                    if (user.getNameTEA() != "") {
+                        editor.putBoolean("info_usuario", true)
+                    }
                     editor.putString("imagenPlanificador", user.getImagen())
                     editor.putString("imagenUsuarioTEA", user.getImagenTEA())
                     editor.putString("nombreObjeto", user.getObjeto())
+                    if(user.getObjeto() != "") {
+                        editor.putBoolean("info_objeto", true)
+                    }
                     editor.putString("imagenObjeto", user.getImagenObjeto())
                     editor.apply()
                     val intent = Intent(applicationContext, MainActivity::class.java)

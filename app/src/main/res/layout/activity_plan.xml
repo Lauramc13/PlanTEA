@@ -11,9 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="340dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +21,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo">
+
+            <Button
+                android:id="@+id/icon_deshacer"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/lbl_deshacer"
+                android:contentDescription="Botón deshacer acción"
+                android:layout_marginRight="10dp"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_baseline_undo_64"
+                app:iconSize="32dp"
+                app:iconTint="#203130" />
+
+            <Button
+                android:id="@+id/icon_reproducir"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="@string/lbl_reproducir"
+                android:contentDescription="Botón reproducir lista"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/svg_play"
+                app:iconSize="20dp"
+                app:iconTint="#203130" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/lbl_titulo"
@@ -30,7 +65,7 @@
             android:fontFamily="@font/montserrat_semibold"
             android:text="Titulo"
             android:textColor="?colorOnSurface"
-            android:textSize="50dp"
+            android:textSize="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +77,7 @@
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/lbl_mensajeNinio"
+            android:contentDescription="@string/lbl_mensajeNinio"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:visibility="invisible"
@@ -54,184 +90,128 @@
             android:id="@+id/recycler_plan"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="Lista con la planificación actual"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/icon_deshacer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.943"
-            app:layout_constraintStart_toEndOf="@+id/lbl_titulo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:srcCompat="@drawable/ic_baseline_undo_64" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
-        android:id="@+id/img_cuaderno"
-        android:layout_width="170dp"
+        android:id="@+id/img_video"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_marginRight="100dp"
-        app:cardBackgroundColor="#B5DFDE"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/layout_Planificacion"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_actividades"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="#C3D0FF"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/lbl_cuaderno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="Actividades"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/img_calendario"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_marginLeft="100dp"
-        app:cardBackgroundColor="#B5DFDE"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toStartOf="@+id/layout_Planificacion"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_Calendario"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+        <LinearLayout
+            android:id="@+id/img_cuaderno"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:cardBackgroundColor="#B5DFDE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/img_calendario"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="#FFC3E4"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
-
-            <ImageView
-                android:id="@+id/imageView10"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_cuaderno"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginRight="35dp"
-                android:layout_marginBottom="35dp"
-                android:background="@drawable/rounded_bg"
-                app:srcCompat="@drawable/calendar" />
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="Boton cuaderno de comunicación"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="?cardBackgroundColor"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="1dp">
 
-        </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="5dp"
+                    app:srcCompat="@drawable/cuaderno" />
 
-        <TextView
-            android:id="@+id/lbl_calendario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_regular"
-            android:gravity="center"
-            android:text="Calendario"
+            </com.google.android.material.card.MaterialCardView>
 
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_Planificacion"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:cardBackgroundColor="#B5DFDE"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_historias"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            app:cardBackgroundColor="#FEFFB1"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
-
-<!-- 
-            <ImageView
-                android:id="@+id/imageView9"
+            <TextView
+                android:id="@+id/lbl_cuaderno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/rounded_bg"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="5dp"
-                app:srcCompat="@drawable/checklist" /> -->
+                android:text="@string/lbl_cuaderno"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/lbl_planificacion"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/img_actividad"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="Historias sociales"
-            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="#B5DFDE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_cuaderno"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_actividad"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="?cardBackgroundColor"
+                android:contentDescription="Boton actividades"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="1dp">
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/lbl_actividad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:text="@string/lbl_actividades"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
     </LinearLayout>
-    
 </androidx.constraintlayout.widget.ConstraintLayout>

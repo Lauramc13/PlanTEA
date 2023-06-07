@@ -185,9 +185,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                val editor = prefs.edit()
-                                editor.putBoolean("userAccount", false)
-                                editor.apply()
+                                prefs.edit().clear().commit()
+                                // val editor = prefs.edit()
+                                // editor.putBoolean("userAccount", false)
+                                // editor.apply()
                                 val login = Intent(applicationContext, PreLoginActivity::class.java)
                                 startActivity(login)
                             }

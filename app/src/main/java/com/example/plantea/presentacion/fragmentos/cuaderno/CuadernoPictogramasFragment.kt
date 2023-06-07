@@ -40,9 +40,9 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         super.onConfigurationChanged(newConfig)
         val orientation = newConfig.orientation
         val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            3 // set the number of columns to 3 for portrait mode
+            3
         } else {
-            5 // set the number of columns to 5 for landscape mode
+            5
         }
         lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
     }

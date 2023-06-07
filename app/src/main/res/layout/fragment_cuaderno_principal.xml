@@ -13,7 +13,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_sintomas"
-            style="@style/cardCuaderno"
+            android:background="@drawable/fondo_cuaderno_tiempo"
+            android:contentDescription="Opción que te pasa"
             android:layout_width="250dp"
             android:layout_height="370dp"
             android:layout_marginTop="10dp"
@@ -53,7 +54,8 @@
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="1dp"
-            style="@style/cardCuaderno"
+            android:contentDescription="Opción donde te duele"
+            android:background="@drawable/fondo_cuaderno_tiempo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/card_sintomas"
@@ -87,7 +89,8 @@
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="1dp"
-            style="@style/cardCuaderno"
+            android:contentDescription="Opción Como te sientes"
+            android:background="@drawable/fondo_cuaderno_tiempo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/card_sintomas"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +110,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="300dp"
                 android:gravity="center"
-                android:text="¿COMO TE SIENTES?"
+                android:text="@string/lbl_sentimientos"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="?colorOnSurface"
                 android:textSize="25sp" />

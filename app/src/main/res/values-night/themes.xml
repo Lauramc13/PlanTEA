@@ -49,7 +49,8 @@
 
         <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
 
-        <item name="android:popupBackground">@color/md_theme_dark_surfaceVariant</item>
+        P
+        <item name="android:popupBackground">@color/transparent</item>
 
     </style>
 
@@ -103,6 +104,53 @@
     <style name="cardCuaderno">
         <item name="strokeColor">@color/md_theme_light_inverseSurface</item>
         <item name="cardBackgroundColor">@color/md_theme_dark_surfaceVariant2</item>
+    </style>
+
+    <style name="cursorBubble">
+        <item name="backgroundTint">@color/md_theme_dark_primary</item>
+    </style>
+
+    <style name="backgroundEventos">
+        <item name="background">@color/md_theme_dark_background2</item>
+    </style>
+
+    <style name="TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+        <item name="colorPrimary">@color/background2</item>
+        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="materialClockStyle">@style/TimePicker.Clock</item>
+        <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
+        <item name="chipStyle">@style/TimePicker.Chip</item>
+        <item name="imageButtonStyle">@style/TimePicker.ImageButton</item>
+    </style>
+
+    <style name="TimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
+        <item name="clockFaceBackgroundColor">@color/md_theme_dark_surfaceVariant</item>
+        <item name="clockHandColor">@color/md_theme_dark_primaryContainer</item>
+        <item name="clockNumberTextColor">@color/background2</item>
+    </style>
+
+    <style name="TimePicker.Button" parent="Widget.MaterialComponents.TimePicker.Button">
+        <item name="backgroundTint">@color/md_theme_dark_surfaceVariant</item>
+        <item name="android:textColor">@color/background2</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="TimePicker.Chip" parent="Widget.MaterialComponents.TimePicker.Display">
+        <item name="chipBackgroundColor">@color/md_theme_dark_surfaceVariant</item>
+        <item name="android:textColor">@color/background2</item>
+    </style>
+
+    <style name="TimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
+        <item name="iconTint">@color/md_theme_dark_surfaceVariant</item>
+    </style>
+
+    <style name="colorSpinner" parent="">
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+        <item name="android:textColorHint">@color/md_theme_light_onSurface</item>
+        <item name="android:editTextColor">@color/md_theme_light_onSurface</item>
+        <item name="queryHint">@color/md_theme_light_onSurface</item>
+        <item name="background">@color/md_theme_dark_primary</item>
+        <item name="android:popupBackground">@color/md_theme_dark_background2</item>
     </style>
 
 

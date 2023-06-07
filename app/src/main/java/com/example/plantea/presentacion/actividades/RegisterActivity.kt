@@ -21,6 +21,7 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txt_nameplanificado : TextInputLayout
     private lateinit var txt_objeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
+    private lateinit var checkObjeto: SwitchCompat
     private var creado: Boolean = false
 
     var usuario = Usuario_Planificador()
@@ -44,12 +45,19 @@ class RegisterActivity : AppCompatActivity(){
         txt_objeto = findViewById(R.id.txt_objeto)
         txt_nameplanificado = findViewById(R.id.txt_nombreplanificado)
         checkUserPlanificado = findViewById(R.id.check_Plaificado)
+        checkObjeto = findViewById(R.id.check_Objeto)
         txt_nameplanificado.isEnabled = false
+        txt_objeto.isEnabled = false
         checkUserPlanificado.isChecked = false
+        checkObjeto.isChecked = false
 
 
         checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
             txt_nameplanificado.isEnabled = isChecked
+        }
+
+        checkObjeto.setOnCheckedChangeListener{_, isChecked ->
+            txt_objeto.isEnabled = isChecked
         }
 
         btnRegister.setOnClickListener {
@@ -81,7 +89,7 @@ class RegisterActivity : AppCompatActivity(){
                 emptyTextViews.add(txt_password2.editText!!)
                 txt_password2.error = "ESTO ES UN ERROR"
             }
-            if (txt_objeto.editText?.text.toString().isEmpty()) {
+            if (txt_objeto.editText?.text.toString().isEmpty() && checkObjeto.isChecked) {
                 emptyTextViews.add(txt_objeto.editText!!)
                 txt_objeto.error = "ESTO ES UN ERROR"
             }
@@ -108,6 +116,8 @@ class RegisterActivity : AppCompatActivity(){
                         Log.d("USUARIO", "$id")
                         editor.putString("username", txt_username.editText?.text.toString())
                         editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
+                        editor.putBoolean("info_objeto", checkObjeto.isChecked)
+                        Log.d("asf", checkObjeto.isChecked.toString())
                         editor.putString("nombrePlanificador", txt_name.editText?.text.toString())
                         editor.putString("nombreUsuarioTEA", txt_nameplanificado.editText?.text.toString())
                         editor.putString("nombreObjeto", txt_objeto.editText?.text.toString())
@@ -124,9 +134,6 @@ class RegisterActivity : AppCompatActivity(){
             }
         }
 
-        checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
-            txt_nameplanificado.isEnabled = isChecked
-        }
     }
     private fun hashPassword(password: String): String {
         val bytes = password.toByteArray()

@@ -16,7 +16,7 @@
         android:supportsRtl="true">
         <activity
             android:name=".presentacion.actividades.planificador.CalendarioActivity"
-            android:label="Planificador"
+            android:label="Calendario"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -52,7 +52,6 @@
         <activity
             android:name=".presentacion.actividades.ninio.PlanActivity"
             android:label="Planificación"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -108,6 +107,13 @@
             android:label="Actividades"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".presentacion.actividades.TutorialActivity"
+            android:label="Tutorial"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+
         <receiver android:name=".dominio.onAlarmReceiver" />
 
     </application>

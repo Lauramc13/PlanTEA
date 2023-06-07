@@ -66,6 +66,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var tituloPicto: String
     lateinit var imagenPicto: String
     lateinit var searchBar: SearchView
+    lateinit var btn_salir: Button
+    lateinit var btn_cancelar: Button
     var categoriaPicto = 0
 
     //Opcion para indicar funcionalidad editar o crear
@@ -248,7 +250,9 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         txt_TituloPlan = findViewById(R.id.txt_TituloPlan)
-        txt_TituloPlan.text = "PLANIFICACIÓN" //TODO
+        if(!opcionEditar) {
+            txt_TituloPlan.text = "PLANIFICACIÓN"
+        }
         labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
@@ -286,6 +290,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         if (parametros != null) {
             opcionEditar = true
             txt_TituloPlan.text = intent.getStringExtra("titulo")
+            Log.d("asf", "PASO POR AQIO")
             listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!! //TODO
         }
 
@@ -424,9 +429,10 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                val editor = prefs.edit()
-                                editor.putBoolean("userAccount", false)
-                                editor.apply()
+                                prefs.edit().clear().commit()
+                                // val editor = prefs.edit()
+                                // editor.putBoolean("userAccount", false)
+                                // editor.apply()
                                 val login = Intent(applicationContext, PreLoginActivity::class.java)
                                 startActivity(login)
                             }
@@ -439,7 +445,28 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 }
                 popupMenu.show()
             }
-            android.R.id.home -> finish()
+            android.R.id.home -> {
+                if (listaPlanificacion.isEmpty()) {
+                    finish()
+                } else {
+                    val dialogSalir = Dialog(this)
+                    dialogSalir.setContentView(R.layout.dialogo_salir_planificacion)
+                    dialogSalir.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    btn_salir = dialogSalir.findViewById(R.id.btn_salir)
+                    icono_cerrar_login = dialogSalir.findViewById(R.id.icono_CerrarDialogoSalir)
+                    btn_cancelar = dialogSalir.findViewById(R.id.btn_cancelarSalir)
+                    btn_salir.setOnClickListener {
+                        dialogSalir.dismiss()
+                        finish()
+                    }
+                    btn_cancelar.setOnClickListener { dialogSalir.dismiss() }
+                    icono_cerrar_login.setOnClickListener { dialogSalir.dismiss() }
+
+                    dialogSalir.show()
+                }
+                true
+            }
+
         }
         return true
     }

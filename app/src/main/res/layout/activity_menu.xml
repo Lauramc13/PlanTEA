@@ -13,7 +13,6 @@
         android:layout_height="340dp"
         android:layout_gravity="center"
         android:orientation="vertical"
-
         app:cardBackgroundColor="#B5DFDE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,11 +26,11 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:contentDescription="Opción cuaderno de emociones"
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="300dp"
             app:cardElevation="5dp">
-
 
             <ImageView
                 android:id="@+id/imageView8"
@@ -42,6 +41,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="30dp"
                 android:backgroundTint="@color/white"
+                android:contentDescription="Icono cuaderno de emociones"
                 android:gravity="center"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
@@ -71,6 +71,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         app:cardBackgroundColor="#B5DFDE"
+        android:contentDescription="Contenedor de la opción calendario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/layout_Planificacion"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +85,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-
+            android:contentDescription="Opción de calendario"
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="300dp"
@@ -99,6 +100,7 @@
                 android:layout_marginRight="35dp"
                 android:layout_marginBottom="35dp"
                 android:backgroundTint="@color/white"
+                android:contentDescription="Icono de calendario"
                 app:srcCompat="@drawable/calendar" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -112,7 +114,6 @@
             android:fontFamily="@font/montserrat_regular"
             android:gravity="center"
             android:text="Calendario"
-
             android:textColor="?colorOnSurface"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +127,7 @@
             android:layout_height="340dp"
             android:layout_gravity="center"
             app:cardBackgroundColor="#B5DFDE"
-
+            android:contentDescription="Contenedor de la opción planificación"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -141,10 +142,10 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 app:cardBackgroundColor="#FFFFFF"
+                android:contentDescription="Opción planificación"
                 android:layout_marginBottom="10dp"
                 app:cardCornerRadius="300dp"
                 app:cardElevation="5dp">
-
 
                 <ImageView
                     android:id="@+id/imageView9"
@@ -155,6 +156,7 @@
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="30dp"
                     android:backgroundTint="@color/white"
+                    android:contentDescription="Icono de planificación"
                     android:gravity="center"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="5dp"

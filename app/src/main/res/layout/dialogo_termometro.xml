@@ -72,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:contentDescription="Simulación termometro"
                 android:background="@drawable/termometro_fondo"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -89,6 +90,7 @@
                         android:id="@+id/imageView"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
+                        android:contentDescription="Me encuentro bien"
                         app:srcCompat="@drawable/termometro_bien" />
 
                     <ImageView
@@ -96,6 +98,7 @@
                         android:layout_width="65dp"
                         android:layout_height="65dp"
                         android:layout_marginStart="30dp"
+                        android:contentDescription="Me encuentro algo mal"
                         app:srcCompat="@drawable/termometro_regular" />
 
                     <ImageView
@@ -103,6 +106,7 @@
                         android:layout_width="65dp"
                         android:layout_height="65dp"
                         android:layout_marginStart="30dp"
+                        android:contentDescription="Me encuentro muy mal"
                         app:srcCompat="@drawable/termometro_mal" />
                 </LinearLayout>
 

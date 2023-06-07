@@ -13,6 +13,7 @@
         android:layout_height="520dp"
         android:background="@drawable/bg_calendario"
         android:orientation="vertical"
+        android:contentDescription="Contenedor de calendario"
         app:layout_constraintBottom_toTopOf="@+id/fragment_calendario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:contentDescription="Mes y flechas de navegación atras/delante"
             android:orientation="horizontal">
 
             <ImageView
@@ -29,6 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:contentDescription="Flecha mes anterior"
                 app:srcCompat="@drawable/ic_baseline_arrow_back_32"
                 app:tint="?colorOnSurface" />
 
@@ -39,6 +42,7 @@
                 android:layout_weight="2"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Noviembre 2021"
+                android:contentDescription="Mes"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
@@ -49,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:contentDescription="Flecha mes siguiente"
                 app:srcCompat="@drawable/ic_baseline_arrow_forward_32"
                 app:tint="?colorOnSurface" />
 
@@ -58,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:contentDescription="Columna con los dias de la semana"
             android:orientation="horizontal">
 
             <TextView
@@ -66,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/lbl_lunes"
+                android:contentDescription="Lunes"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -77,6 +84,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_martes"
+                android:contentDescription="Martes"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -88,6 +96,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_miercoles"
+                android:contentDescription="Miércoles"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -99,6 +108,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_jueves"
+                android:contentDescription="Jueves"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -110,6 +120,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_viernes"
+                android:contentDescription="Viernes"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -121,6 +132,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_sabado"
+                android:contentDescription="Sábado"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -132,6 +144,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_domingo"
+                android:contentDescription="Domingo"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />
@@ -141,6 +154,7 @@
             android:id="@+id/recycler_calendario"
             android:layout_width="match_parent"
             android:layout_height="389dp"
+            android:contentDescription="Contenedor con los días del mes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,6 +167,7 @@
         android:layout_height="557dp"
         android:background="@drawable/bg_calendario"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="Contenedor con elementos de configuración de nuevo evento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"

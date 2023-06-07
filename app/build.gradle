@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.plantea"
-        minSdkVersion 26
+        minSdkVersion 31
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 33
         versionCode 1
@@ -47,6 +47,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.draganddrop:draganddrop:1.0.0-alpha02'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -60,5 +61,9 @@ dependencies {
 
     //Material3
     implementation 'com.google.android.material:material:1.9.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
 
 }

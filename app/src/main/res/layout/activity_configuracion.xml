@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
+            android:contentDescription="Contenedor con la configuración del usuario"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,6 +27,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:contentDescription="Contenedor del planificador"
                 android:background="@drawable/bg_generalcards"
                 android:elevation="4dp">
 
@@ -35,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
+                    android:contentDescription="Titulo, información del planificador"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="@string/lbl_infoPlanificador"
                     android:textColor="?colorOnSurface"
@@ -51,6 +54,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
                     app:shapeAppearance="@style/cornerRadius"
+                    android:contentDescription="Añadir imagen del planificador"
                     android:background="@drawable/ic_baseline_add_photo_alternate_128"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txt_nombrePlanificador"
@@ -68,7 +72,12 @@
                     android:ems="10"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Nombre"
+                    android:contentDescription="Campo de texto con nombre del planificador"
+                    style="@style/cursorBubble"
+                    android:textCursorDrawable="@null"
                     android:textColor="?colorOnSurface"
+                    android:maxLength="14"
+                    android:textSize="22sp"
                     android:inputType="textPersonName"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/img_FotoPlanificador"
@@ -84,11 +93,11 @@
                     android:textColor="#203130"
                     android:textSize="12sp"
                     app:cornerRadius="25dp"
+                    android:contentDescription="Boton para cambiar contraseña del usuario"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,9 +107,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:contentDescription="Contenedor del planificado"
                 android:background="@drawable/bg_generalcards"
                 android:elevation="4dp">
-
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/img_FotoUsuarioTEA"
@@ -111,6 +120,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
                     app:shapeAppearance="@style/cornerRadius"
+                    android:contentDescription="Añadir imagen del planificado"
                     android:background="@drawable/ic_baseline_add_photo_alternate_128"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txt_nombreUsuarioTEA"
@@ -127,6 +137,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/montserrat_regular"
+                    android:contentDescription="Interruptor, información del planificado"
                     android:text="@string/lbl_infoUsuarioTEA"
                     android:textColor="?colorOnSurface"
                     android:textSize="24sp"
@@ -142,6 +153,12 @@
                     android:ems="10"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Nombre"
+                    style="@style/cursorBubble"
+                    android:textCursorDrawable="@null"
+                    android:textColor="?colorOnSurface"
+                    android:maxLength="14"
+                    android:textSize="22sp"
+                    android:contentDescription="Campo de texto con nombre del planificado"
                     android:inputType="textPersonName"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/img_FotoUsuarioTEA"
@@ -157,18 +174,20 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:contentDescription="Contenedor de la actividad tranquilizadora"
                 android:background="@drawable/bg_generalcards"
                 android:elevation="4dp">
 
-
-                <TextView
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/lbl_objeto"
+                    app:theme="@style/Switches"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/montserrat_regular"
-                    android:text="Objeto para tranquilizar"
+                    android:contentDescription="Interruptor, información de la actividad tranquilizadora"
+                    android:text="@string/lbl_configuracion_objeto"
                     android:textColor="?colorOnSurface"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -183,6 +202,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
                     app:shapeAppearance="@style/cornerRadius"
+                    android:contentDescription="Añadir imagen de la actividad tranquilizadora"
                     android:background="@drawable/ic_baseline_add_photo_alternate_128"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txt_nombreObjeto"
@@ -202,7 +222,12 @@
                     android:ems="10"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Nombre objeto"
+                    android:contentDescription="Campo de texto con nombre de la actividad tranquilizadora"
+                    style="@style/cursorBubble"
+                    android:textCursorDrawable="@null"
+                    android:textColor="?colorOnSurface"
                     android:inputType="textPersonName"
+                    android:textSize="22sp"
                     android:maxLength="10"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/img_objeto"
@@ -225,6 +250,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
+            android:contentDescription="Contenedor de la configuración de las notificaciones"
             android:background="@drawable/bg_generalcards"
             android:elevation="4dp"
             android:orientation="vertical">
@@ -238,7 +264,8 @@
                 app:theme="@style/Switches"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_regular"
-                android:text="Notificaciones de las citas médicas"
+                android:text="@string/lbl_configuracion_notificaciones"
+                android:contentDescription="Notificaciones de las citas médicas"
                 android:textSize="24sp" />
 
             <CheckBox
@@ -248,9 +275,10 @@
                 android:layout_marginStart="20dp"
                 app:buttonTint="?colorPrimary"
                 android:textColor="?colorOnSurface"
+                android:contentDescription="Casilla de 1 hora antes"
                 android:enabled="false"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="1 hora antes" />
+                android:text="@string/lbl_configuracion_notificaciones_1" />
 
             <CheckBox
                 android:id="@+id/checkBox_dia"
@@ -261,7 +289,8 @@
                 android:textColor="?colorOnSurface"
                 android:enabled="false"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="1 día antes" />
+                android:contentDescription="Casilla de 1 día antes"
+                android:text="@string/lbl_configuracion_notificaciones_2" />
 
             <CheckBox
                 android:id="@+id/checkBox_semana"
@@ -273,7 +302,8 @@
                 android:checked="false"
                 android:enabled="false"
                 android:fontFamily="@font/montserrat_medium"
-                android:text="1 semana antes" />
+                android:contentDescription="Casilla de 1 sesmana antes"
+                android:text="@string/lbl_configuracion_notificaciones_3" />
 
         </LinearLayout>
 
@@ -293,6 +323,7 @@
             android:maxWidth="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/btn_Guardar"
+            android:contentDescription="Boton guardar configuración"
             android:textColor="#203130"
             app:cornerRadius="25dp"
             />

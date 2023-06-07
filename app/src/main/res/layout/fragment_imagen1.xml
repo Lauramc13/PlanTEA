@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/frame_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/frame1"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/frame_night"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/frame1_night"
+        android:visibility="gone" />
+
+
+</LinearLayout>

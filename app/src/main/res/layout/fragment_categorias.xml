@@ -35,14 +35,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="?color"
-                    >
+                    android:background="?color">
 
                     <ImageView
                         android:id="@+id/img_Medico"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Consultas"
                         app:srcCompat="@drawable/categoria_consultas">
 
                     </ImageView>
@@ -51,7 +49,7 @@
                         android:id="@+id/lbl_Medico"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="IR AL MEDICO"
+                        android:text="@string/lbl_IrMedico"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
@@ -84,7 +82,6 @@
                         android:id="@+id/img_Peluqueria"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Lugares"
                         app:srcCompat="@drawable/categoria_peluqueria"
                         >
 
@@ -94,7 +91,7 @@
                         android:id="@+id/lbl_Peluqueria"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="CORTARSE EL PELO"
+                        android:text="@string/lbl_CortarsePelo"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
@@ -125,16 +122,14 @@
                         android:id="@+id/img_Compra"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="HACER LA COMPRA"
-                        app:srcCompat="@drawable/categoria_hacer_la_compra"
-                        >
+                        app:srcCompat="@drawable/categoria_hacer_la_compra">
                     </ImageView>
 
                     <TextView
                         android:id="@+id/lbl_Compra"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="HACER LA COMPRA"
+                        android:text="@string/lbl_Comprar"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
@@ -158,16 +153,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="?color"
-                    >
+                    android:background="?color">
 
                     <ImageView
                         android:id="@+id/img_Colegio"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="IR AL COLEGIO"
-                        app:srcCompat="@drawable/categoria_colegio"
-                        >
+                        app:srcCompat="@drawable/categoria_colegio">
 
                     </ImageView>
 
@@ -175,7 +167,7 @@
                         android:id="@+id/lbl_Colegio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="IR AL COLEGIO"
+                        android:text="@string/lbl_IrColegio"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
@@ -206,8 +198,6 @@
                         android:id="@+id/img_Lugares"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Lugares"
-
                         app:srcCompat="@drawable/categoria_lugares">
 
                     </ImageView>
@@ -246,7 +236,6 @@
                         android:id="@+id/img_Desplazamiento"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Desplazamiento"
                         app:srcCompat="@drawable/categoria_desplazamiento">
 
                     </ImageView>
@@ -286,7 +275,6 @@
                         android:id="@+id/img_Accion"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Accion"
                         app:srcCompat="@drawable/categoria_accion">
 
                     </ImageView>
@@ -325,7 +313,6 @@
                         android:id="@+id/img_Entretenimiento"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Entretenimiento"
                         app:srcCompat="@drawable/categoria_entretenimiento">
 
                     </ImageView>
@@ -364,7 +351,6 @@
                         android:id="@+id/img_Recompensa"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="@string/lbl_Recompensa"
                         app:srcCompat="@drawable/categoria_recompensa">
 
                     </ImageView>
@@ -401,9 +387,7 @@
                         android:id="@+id/img_Favoritos"
                         android:layout_width="match_parent"
                         android:layout_height="87dp"
-                        android:contentDescription="Favoritos"
-                        app:srcCompat="@drawable/categoria_favorito"
-                        >
+                        app:srcCompat="@drawable/categoria_favorito">
 
                     </ImageView>
 
@@ -411,7 +395,7 @@
                         android:id="@+id/lbl_Favoritos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="FAVORITOS"
+                        android:text="@string/lbl_Favoritos"
                         android:fontFamily="@font/montserrat_regular"
                         android:textAlignment="center"
                         android:textColor="@color/black"

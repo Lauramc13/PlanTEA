@@ -12,8 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Actividades"
+        android:text="@string/lbl_actividades"
         android:textSize="30sp"
+        android:contentDescription="Actividades"
         app:layout_constraintBottom_toTopOf="@+id/img_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +28,7 @@
         android:orientation="horizontal"
         android:visibility="visible"
         app:cardBackgroundColor="#B5DFDE"
+        android:contentDescription="Contenedor con actividades"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +39,7 @@
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="?cardBackgroundColor"
-
+            android:contentDescription="Tarjeta de actividad tranquilizadora"
             android:layout_marginRight="80dp"
             android:elevation="1dp"
             app:cardCornerRadius="20dp"
@@ -55,7 +57,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="294dp"
                     android:layout_marginTop="30dp"
-                    android:contentDescription="content_description_media"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/svg_happy" />
 
@@ -65,7 +66,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_marginTop="30dp"
-                    android:text="ACTIVIDAD TRANQUILIZADORA"
+                    android:text="@string/lbl_actividades_objeto"
                     android:textSize="20sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -77,6 +78,7 @@
             android:layout_marginLeft="20dp"
             android:elevation="1dp"
             app:cardCornerRadius="20dp"
+            android:contentDescription="Tarjeta de youtube"
             app:cardBackgroundColor="?cardBackgroundColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +94,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="294dp"
                     android:layout_marginTop="30dp"
-                    android:contentDescription="content_description_media"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/svg_video" />
 
@@ -101,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
-                    android:text="YOUTUBE"
+                    android:text="@string/lbl_actividades_youtube"
                     android:textSize="20sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

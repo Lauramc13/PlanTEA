@@ -8,7 +8,6 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.PlanActivity">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="305dp"
+        android:layout_marginBottom="295dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,8 +36,9 @@
             <Button
                 android:id="@+id/icon_deshacer"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:text="Deshacer"
+                android:layout_height="48dp"
+                android:text="@string/lbl_deshacer"
+                android:contentDescription="Botón deshacer acción"
                 android:layout_marginRight="10dp"
                 android:textColor="#203130"
                 app:cornerRadius="25dp"
@@ -49,8 +49,9 @@
             <Button
                 android:id="@+id/icon_reproducir"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:text="Reproducir"
+                android:layout_height="48dp"
+                android:text="@string/lbl_reproducir"
+                android:contentDescription="Botón reproducir lista"
                 android:textColor="#203130"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_play"
@@ -78,6 +79,7 @@
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/lbl_mensajeNinio"
+            android:contentDescription="@string/lbl_mensajeNinio"
             android:textColor="?colorOnSurface"
             android:textSize="24sp"
             android:visibility="invisible"
@@ -90,20 +92,19 @@
             android:id="@+id/recycler_plan"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:scrollbars="horizontal"
             android:clipToPadding="false"
+            android:contentDescription="Lista con la planificación actual"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
             app:layout_constraintVertical_bias="0.0" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -137,6 +138,7 @@
                 android:layout_height="150dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
+                android:contentDescription="Boton cuaderno de comunicación"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 app:cardBackgroundColor="?cardBackgroundColor"
@@ -165,7 +167,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
-                android:text="Cuaderno de comunicación"
+                android:text="@string/lbl_cuaderno"
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -195,6 +197,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 app:cardBackgroundColor="?cardBackgroundColor"
+                android:contentDescription="Boton actividades"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="1dp">
 
@@ -207,7 +210,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/montserrat_regular"
                 android:gravity="center"
-                android:text="Actividades"
+                android:text="@string/lbl_actividades"
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"

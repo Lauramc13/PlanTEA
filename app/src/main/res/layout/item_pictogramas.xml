@@ -9,7 +9,7 @@
     android:paddingTop="6dp">
 
     <RelativeLayout
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content">
 
         <RelativeLayout
@@ -25,16 +25,16 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/id_Imagen"
+                style="@style/pictogramas"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="40dp"
-                app:shapeAppearance="@style/cornerRadius"
+                android:layout_marginEnd="50dp"
                 android:background="@color/white"
-                style="@style/pictogramas"
                 android:contentDescription="@string/lbl_Consultas"
-                app:srcCompat="@drawable/categoria_consultas">
-            </com.google.android.material.imageview.ShapeableImageView>
+                app:shapeAppearance="@style/cornerRadius"
+                app:srcCompat="@drawable/categoria_consultas"></com.google.android.material.imageview.ShapeableImageView>
 
             <TextView
                 android:id="@+id/id_Texto"
@@ -55,11 +55,12 @@
 
             <ImageView
                 android:id="@+id/btn_borrarPicto"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="5dp"
-                android:layout_alignParentRight="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="6dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentLeft="true"
                 android:elevation="4dp"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/svg_trash">
@@ -67,36 +68,34 @@
 
             <ImageView
                 android:id="@+id/btn_favoritosOff"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="6dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="2dp"
                 android:elevation="4dp"
-                android:background="@drawable/svg_heart"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/svg_heart">
             </ImageView>
 
             <ImageView
                 android:id="@+id/btn_favoritosOn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="6dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="2dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/svg_heart_filled">
-            </ImageView>
+                app:srcCompat="@drawable/svg_heart_filled"></ImageView>
 
             <ImageView
                 android:id="@+id/btn_historiaPicto"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="7dp"
-                android:layout_marginRight="144dp"
+                android:layout_marginRight="7dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/bocadillo_historia_off"></ImageView>
@@ -104,10 +103,10 @@
             <ImageView
                 android:id="@+id/btn_historiaPictoOn"
                 android:layout_width="40dp"
-                android:layout_height="37dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="7dp"
-                android:layout_marginRight="140dp"
+                android:layout_marginRight="7dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/bocadillo_historia_on"></ImageView>

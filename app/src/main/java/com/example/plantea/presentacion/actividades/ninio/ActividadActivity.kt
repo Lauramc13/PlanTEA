@@ -52,6 +52,8 @@ class ActividadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
 
         cardVideo = findViewById(R.id.card_video)
         cardObjeto = findViewById(R.id.card_objeto)
@@ -112,7 +114,7 @@ class ActividadActivity : AppCompatActivity() {
                 startActivity(i)
             }
             R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@ActividadActivity, findViewById(R.id.item_ayuda))
+                val popupMenu = PopupMenu(this@ActividadActivity, findViewById(R.id.item_ayuda) )
                 popupMenu.inflate(R.menu.popup_menu)
 
                 popupMenu.setOnMenuItemClickListener { item ->
@@ -122,6 +124,20 @@ class ActividadActivity : AppCompatActivity() {
                             startActivity(perfil)
                             true
                         }
+                        // R.id.option_2 -> {
+                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
+                        //     if(isPlanificadorLogged){
+                        //         val editor = prefs.edit()
+                        //         editor.putBoolean("PlanificadorLogged", false)
+                        //         editor.commit()
+                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
+                        //         startActivity(plan)
+                        //     }else{
+                        //         crearDialogoLogin()
+                        //     }
+                        //     true
+                        // }
                         R.id.option_3 -> {
                             val dialogLogout = Dialog(this)
                             dialogLogout.setContentView(R.layout.dialogo_logout)
@@ -130,9 +146,10 @@ class ActividadActivity : AppCompatActivity() {
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                val editor = prefs.edit()
-                                editor.putBoolean("userAccount", false)
-                                editor.apply()
+                                prefs.edit().clear().commit()
+                                // val editor = prefs.edit()
+                                // editor.putBoolean("userAccount", false)
+                                // editor.apply()
                                 val login = Intent(applicationContext, PreLoginActivity::class.java)
                                 startActivity(login)
                             }
@@ -145,10 +162,7 @@ class ActividadActivity : AppCompatActivity() {
                 }
                 popupMenu.show()
             }
-            android.R.id.home -> {
-                finish() // Go back to the previous screen
-                return true
-            }
+            android.R.id.home -> finish()
         }
         return true
     }

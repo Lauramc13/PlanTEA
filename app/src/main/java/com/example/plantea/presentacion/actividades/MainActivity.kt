@@ -1,6 +1,5 @@
 package com.example.plantea.presentacion.actividades
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.content.res.Configuration
@@ -85,7 +84,8 @@ class MainActivity : AppCompatActivity() {
         //Este método se ejecutará al pinchar sobre la imagen del rol planificador
         cardUsuarioPlanificador.setOnClickListener {
             if (!info_usuario) {
-                val intent = Intent(applicationContext, MenuActivity::class.java)
+                //val intent = Intent(applicationContext, MenuActivity::class.java)
+                val intent = Intent(applicationContext, TutorialActivity::class.java)
                 startActivity(intent)
             }else{
                 crearDialogoLogin()
@@ -123,8 +123,9 @@ class MainActivity : AppCompatActivity() {
                     if (passCorrecta) {
                         val editor = prefs.edit()
                         editor.putBoolean("PlanificadorLogged", true)
-                        editor.commit()
-                        val intent = Intent(applicationContext, MenuActivity::class.java)
+                        editor.apply()
+                        val intent = Intent(applicationContext, TutorialActivity::class.java)
+                        //val intent = Intent(applicationContext, MenuActivity::class.java)
                         startActivity(intent)
                         dialogLogin.dismiss()
                     } else {
@@ -203,9 +204,10 @@ class MainActivity : AppCompatActivity() {
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                val editor = prefs.edit()
-                                editor.putBoolean("userAccount", false)
-                                editor.apply()
+                                prefs.edit().clear().apply()
+                                // val editor = prefs.edit()
+                                // editor.putBoolean("userAccount", false)
+                                // editor.apply()
                                 val login = Intent(applicationContext, PreLoginActivity::class.java)
                                 startActivity(login)
                             }

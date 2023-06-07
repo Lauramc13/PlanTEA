@@ -171,6 +171,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setHour(currentHour)
             .setMinute(currentMinute)
+            .setTheme(R.style.TimePicker)
             .setTitleText("Selecciona una hora")
             .build()
 

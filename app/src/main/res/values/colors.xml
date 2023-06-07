@@ -6,7 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#212121</color>
     <color name="background2">#DDECEC</color>
-    <color name="md_theme_light_primary">#60C2C2</color>
+    <color name="md_theme_light_primary">#67D2D2</color>
     <color name="md_theme_light_primary2">#A6DDDD</color>
     <color name="md_theme_light_onPrimary">#F5F7FA</color>
     <color name="md_theme_light_primaryContainer">#9CE2DC</color>
@@ -71,6 +71,7 @@
     <color name="md_theme_dark_surfaceTint">#DCE0E5</color>
     <color name="md_theme_dark_outlineVariant">#323F4B</color>
     <color name="md_theme_dark_scrim">#000000</color>
+    <color name="transparent">#00000000</color>
 
     <color name="pizarraBorde">#C1C1C1</color>
     <color name="pizarraContenido">#F4F4F4</color>

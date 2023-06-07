@@ -14,7 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="65dp"
@@ -30,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
-            android:text="¿Estas segur@ que quieres cerrar la sesión?"
+            android:text="@string/lbl_cerrarSesion"
             android:textColor="?colorOnSurface"
             android:textSize="22sp"
             android:gravity="center"
@@ -50,7 +49,7 @@
             android:textColor="#203130"
             app:cornerRadius="25dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="Cerrar sesión"
+            android:text="@string/lbl_cerrarSesionBotton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:contentDescription="Cerrar dialogo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.961"

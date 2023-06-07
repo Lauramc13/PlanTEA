@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundSplit"
+    android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.CuadernoActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/fondo_cuaderno_tiempo"
+        android:contentDescription="Contenedor de pictogramas"
         app:layout_constraintBottom_toTopOf="@+id/layout_fragments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +25,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
+            android:contentDescription="Lista de pictogramas"
             android:layout_marginBottom="5dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
