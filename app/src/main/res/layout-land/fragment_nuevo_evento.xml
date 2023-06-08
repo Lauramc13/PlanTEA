@@ -10,7 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -149,6 +152,7 @@
                 android:id="@+id/recycler_planificaciones"
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -166,6 +170,7 @@
                 android:drawableLeft="@drawable/ic_baseline_add_24"
                 style="@style/Widget.Material3.Button.IconButton.Outlined"
                 android:textSize="16dp"
+                android:layout_marginTop="20dp"
                 android:contentDescription="Boton nueva planificación"
                 android:drawableTint="?colorOnSurface"
                 android:textColor="?colorOnSurface"
@@ -181,7 +186,7 @@
         <Button
             android:id="@+id/btn_guardarEvento"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:enabled="false"
             android:contentDescription="Boton guardar nuevo evento"
             android:fontFamily="@font/montserrat_semibold"

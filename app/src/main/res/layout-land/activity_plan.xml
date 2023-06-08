@@ -149,14 +149,11 @@
                     android:id="@+id/imageView8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="5dp"
-                    app:srcCompat="@drawable/cuaderno" />
+                    app:srcCompat="@drawable/svg_cuaderno" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -200,6 +197,15 @@
                 android:contentDescription="Boton actividades"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="1dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    app:cardCornerRadius="20dp"
+                    android:layout_marginTop="20dp"
+                    app:cardElevation="5dp"
+                    app:srcCompat="@drawable/svg_ball" />
 
             </com.google.android.material.card.MaterialCardView>
 

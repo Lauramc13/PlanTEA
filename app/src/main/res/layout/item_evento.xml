@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:id="@+id/card_Evento"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="15dp"
+    app:cardCornerRadius="18dp"
     app:cardElevation="1dp"
-    style="@style/items"
+
     app:cardUseCompatPadding="true">
 
     <RelativeLayout

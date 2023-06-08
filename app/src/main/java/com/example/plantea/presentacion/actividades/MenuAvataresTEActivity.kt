@@ -98,7 +98,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             startActivity(intent)
         }else{
             if(prefs.getBoolean("info_objeto", false) === false){
-                val intent = Intent(applicationContext, MainActivity::class.java)
+                val intent = Intent(applicationContext, TutorialActivity::class.java)
                 startActivity(intent)
             }else{
             val intent = Intent(applicationContext, MenuObjetosActivity::class.java)

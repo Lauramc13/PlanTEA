@@ -4,21 +4,19 @@
     android:gravity="center"
     android:orientation="vertical">
 
-        <ImageView
+    <ImageView
         android:id="@+id/frame_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/frame2_portrait"
+        android:src="@drawable/frame3"
         android:visibility="gone"/>
 
-    
     <ImageView
         android:id="@+id/frame_night"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/frame2_night_portrait"
-        android:visibility="gone" />
-
+        android:src="@drawable/frame3_night"
+        android:visibility="gone"/>
 
 
 </LinearLayout>

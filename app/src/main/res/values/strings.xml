@@ -4,7 +4,8 @@
     <string name="btn_Acceder">Acceder</string>
     <string name="btn_CambiarPass">Cambiar Contraseña</string>
     <string name="lbl_Pass">Contraseña actual</string>
-    <string name="lbl_RepPass">Repetir la contraseña nueva</string>
+    <string name="lbl_NewPass">Contraseña nueva</string>
+    <string name="lbl_RepPass">Volver a introducir la contraseña</string>
     <string name="lbl_NuevaPass">Nueva contraseña</string>
     <string name="btn_Guardar">GUARDAR</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -46,7 +47,7 @@
     <string name="lbl_sentimientos">¿COMO TE SIENTES?</string>
     <string name="lbl_configuracion">Configuración</string>
     <string name="lbl_infoPlanificador">Información del planificador</string>
-    <string name="lbl_infoUsuarioTEA">Información del planificado</string>
+    <string name="lbl_infoUsuarioTEA">Información del planificado </string>
     <string name="btn_add">Planificación</string>
     <string name="lbl_mensaje">No hay planificaciones disponibles</string>
     <string name="lbl_lunes">Lunes</string>
@@ -90,7 +91,7 @@
     <string name="lbl_actividades_objeto">ACTIVIDAD TRANQUILIZADORA</string>
     <string name="lbl_actividades_youtube">YOUTUBE</string>
     <string name="lbl_configuracion_objeto">Objeto para tranquilizar</string>
-    <string name="lbl_configuracion_notificaciones">Notificaciones de las citas médicas</string>
+    <string name="lbl_configuracion_notificaciones">Notificaciones de las citas médicas </string>
     <string name="lbl_configuracion_notificaciones_1">1 hora antes</string>
     <string name="lbl_configuracion_notificaciones_2">1 día antes</string>
     <string name="lbl_configuracion_notificaciones_3">1 semana antes</string>
@@ -113,7 +114,7 @@
     <string name="lbl_datosPlanificador">Datos del planificador </string>
     <string name="lbl_datosPlanificado">Datos del planificado</string>
     <string name="lbl_datosNombre">Nombre</string>
-    <string name="lbl_datosContraseña">Vuelve a repetir la contraseña</string>
+    <string name="lbl_datosContraseña">Volver a introducir la contraseña</string>
     <string name="lbl_crearCuenta">Crear cuenta</string>
 
     <string name="lbl_eliminarEvento">Eliminar evento</string>

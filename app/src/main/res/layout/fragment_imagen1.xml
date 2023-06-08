@@ -8,15 +8,14 @@
         android:id="@+id/frame_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/frame1"
+        android:src="@drawable/frame1_portrait"
         android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/frame_night"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/frame1_night"
+        android:src="@drawable/frame1_night_portrait"
         android:visibility="gone" />
-
 
 </LinearLayout>

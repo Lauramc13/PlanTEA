@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -34,6 +35,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
     lateinit var lst_Pictogramas: RecyclerView
     lateinit var image_Cerrar: ImageView
     lateinit var seekbar: SeekBar
+    lateinit var termometro: LinearLayout
 
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -82,8 +84,12 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
         seekbar = dialog.findViewById(R.id.seekBar_termometro)
+        termometro = dialog.findViewById(R.id.termometro)
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
         tituloPictograma.text = listaPictogramas[posicion].titulo
+        if(listaPictogramas[posicion].cuaderno == 4){
+            termometro.visibility = View.GONE
+        }
 
         //Botón cerrar
         image_Cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)

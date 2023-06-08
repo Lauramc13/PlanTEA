@@ -21,7 +21,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp">
 
             <TextView
                 android:id="@+id/txt_dia_eventos"
@@ -72,6 +73,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_eventos"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

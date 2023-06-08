@@ -107,7 +107,6 @@
             android:label="Actividades"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".presentacion.actividades.TutorialActivity"
             android:label="Tutorial"

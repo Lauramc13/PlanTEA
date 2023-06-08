@@ -33,7 +33,7 @@ class ActividadActivity : AppCompatActivity() {
     lateinit var cardObjeto: CardView
 
     lateinit var img_objeto: ImageView
-    lateinit var img_animacion: ImageView
+    // lateinit var img_animacion: ImageView
     lateinit var txt_objeto: TextView
 
     lateinit var btn_logout: Button
@@ -68,11 +68,11 @@ class ActividadActivity : AppCompatActivity() {
             dialogLogout.setContentView(R.layout.dialogo_actividad)
             dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             img_objeto = dialogLogout.findViewById(R.id.imageObjeto)
-            img_animacion = dialogLogout.findViewById(R.id.img_animacion)
+            // img_animacion = dialogLogout.findViewById(R.id.img_animacion)
             txt_objeto = dialogLogout.findViewById(R.id.lbl_nombreObjeto)
 
 
-            rotateImageWithAnimation(img_animacion, 260f, 6000)
+            // rotateImageWithAnimation(img_animacion, 260f, 6000)
 
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 

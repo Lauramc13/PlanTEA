@@ -30,22 +30,22 @@
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="300dp"
-            app:cardElevation="5dp">
+            app:cardElevation="1dp">
 
             <ImageView
                 android:id="@+id/imageView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="30dp"
+                android:paddingTop="50dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="10dp"
                 android:backgroundTint="@color/white"
                 android:contentDescription="Icono cuaderno de emociones"
                 android:gravity="center"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="5dp"
-                app:srcCompat="@drawable/cuaderno" />
+                app:srcCompat="@drawable/svg_cuaderno" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -89,19 +89,17 @@
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="300dp"
-            app:cardElevation="5dp">
+            app:cardElevation="1dp">
 
             <ImageView
                 android:id="@+id/imageView10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="35dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginRight="35dp"
-                android:layout_marginBottom="35dp"
+                android:paddingTop="40dp"
+                android:paddingBottom="10dp"
                 android:backgroundTint="@color/white"
                 android:contentDescription="Icono de calendario"
-                app:srcCompat="@drawable/calendar" />
+                app:srcCompat="@drawable/svg_calendar" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -145,22 +143,19 @@
                 android:contentDescription="Opción planificación"
                 android:layout_marginBottom="10dp"
                 app:cardCornerRadius="300dp"
-                app:cardElevation="5dp">
+                app:cardElevation="1dp">
 
                 <ImageView
                     android:id="@+id/imageView9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="30dp"
+                    android:paddingTop="40dp"
                     android:backgroundTint="@color/white"
                     android:contentDescription="Icono de planificación"
                     android:gravity="center"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="5dp"
-                    app:srcCompat="@drawable/checklist" />
+                    app:srcCompat="@drawable/svg_checklist" />
                 
             </com.google.android.material.card.MaterialCardView>
 

@@ -107,7 +107,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
                 startActivity(intent)
             }else{
-                val intent = Intent(applicationContext, MainActivity::class.java)
+                val intent = Intent(applicationContext, TutorialActivity::class.java)
                 startActivity(intent)
             }
         }
