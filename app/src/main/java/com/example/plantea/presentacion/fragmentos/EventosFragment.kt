@@ -124,8 +124,11 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
 
-        contador = userId?.let { evento.comprobarEventosVisible(it, actividad) }!!
-        println(contador)
+        val fecha = CalendarioUtilidades.fechaSeleccionada.toString()
+
+        Log.d("asf", CalendarioUtilidades.fechaSeleccionada.toString())
+
+        contador = userId?.let { evento.comprobarEventosVisible(it, fecha, actividad) }!!
         if (eventos[posicion].visible == 1) {
             evento.cambiarVisibilidad(actividad, 0, eventos[posicion].id)
         } else {

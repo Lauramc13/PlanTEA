@@ -77,12 +77,12 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramas(idUsuario: String, actividad: Activity?): ArrayList<*> {
+    fun obtenerPictogramas(idUsuario: String, fecha: String, actividad: Activity?): ArrayList<*> {
 
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
-        val c = conectorBD.obtenerPlanficacion(idUsuario)
+        val c = conectorBD.obtenerPlanficacion(idUsuario, fecha)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -99,12 +99,12 @@ class GestionPlanificaciones : Serializable {
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(idUsuario: String, actividad: Activity?): String {
+    fun obtenerTituloPlan(idUsuario: String, fecha: String, actividad: Activity?): String {
         conectorBD = ConectorBD(actividad)
 
         conectorBD.abrir()
         var titulo = " " // set a default value
-        val c = conectorBD.listarTituloPlan(idUsuario)
+        val c = conectorBD.listarTituloPlan(idUsuario, fecha)
         if (c.moveToFirst()) {
             titulo = c.getString(0)
         }

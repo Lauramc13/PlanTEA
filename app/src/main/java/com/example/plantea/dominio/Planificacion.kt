@@ -43,15 +43,15 @@ class Planificacion : Serializable {
     }
 
     //Mostrar la planificacion a seguir
-    fun mostrarPlanificacion(idUsuario: String, actividad: Activity?): ArrayList<*> {
+    fun mostrarPlanificacion(idUsuario: String, fecha: String, actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, actividad) as ArrayList<Planificacion>
+        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, fecha, actividad) as ArrayList<Planificacion>
         return listaPlanes
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(idUsuario: String, actividad: Activity?): String {
-        titulo = gestionPlan.obtenerTituloPlan(idUsuario, actividad)
+    fun obtenerTituloPlan(idUsuario: String, fecha: String, actividad: Activity?): String {
+        titulo = gestionPlan.obtenerTituloPlan(idUsuario, fecha, actividad)
         return titulo
     }
 }

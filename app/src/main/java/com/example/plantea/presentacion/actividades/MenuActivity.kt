@@ -2,13 +2,14 @@ package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.PopupMenu
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
@@ -21,6 +22,7 @@ class MenuActivity : AppCompatActivity() {
     private lateinit var cardCalendario: CardView
     private lateinit var cardEmociones: CardView
     private lateinit var cardPlanificacion: CardView
+    private lateinit var layoutEmociones : LinearLayout
     lateinit var btn_logout: Button
     lateinit var icono_cerrar_login : AppCompatImageView
 
@@ -30,6 +32,13 @@ class MenuActivity : AppCompatActivity() {
         cardCalendario = findViewById(R.id.card_Calendario)
         cardEmociones = findViewById(R.id.card_Emociones)
         cardPlanificacion = findViewById(R.id.card_Planificacion)
+        layoutEmociones = findViewById(R.id.layout_Emociones)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val info_usuario = prefs.getBoolean("info_usuario", false)
+        if (info_usuario) {
+            layoutEmociones.visibility = View.GONE
+        }
 
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

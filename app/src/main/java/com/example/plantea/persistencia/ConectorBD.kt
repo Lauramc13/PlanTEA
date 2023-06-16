@@ -110,19 +110,18 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar pictogramas de un plan a seguir*/
-    fun obtenerPlanficacion(id_usuario: String): Cursor {
-        return db!!.rawQuery("SELECT Pictograma_Plan.nombre,Pictograma_Plan.imagen,categoria, Pictograma_Plan.historia from Pictograma_Plan Inner JOIN Evento where Evento.id_plan = Pictograma_Plan.id_plan AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario' ORDER BY Pictograma_Plan.id", null)
+    fun obtenerPlanficacion(id_usuario: String, fecha: String): Cursor {
+        return db!!.rawQuery("SELECT Pictograma_Plan.nombre,Pictograma_Plan.imagen,categoria, Pictograma_Plan.historia from Pictograma_Plan Inner JOIN Evento where Evento.id_plan = Pictograma_Plan.id_plan AND Evento.fecha = '$fecha' AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario' ORDER BY Pictograma_Plan.id", null)
     }
 
     /*Obtener el numero de planficaciones visibles*/
-    fun contarEventoVisible(id_usuario: String): Cursor {
-        return db!!.rawQuery("SELECT count(visible) FROM Evento WHERE visible = 1 AND id_usuario = '$id_usuario'", null)
+    fun contarEventoVisible(id_usuario: String, fecha: String): Cursor {
+        return db!!.rawQuery("SELECT count(visible) FROM Evento WHERE visible = 1 AND id_usuario = '$id_usuario' AND fecha = '$fecha'", null)
     }
 
-
     /*Obtener el titulo de la planificacion a seguir*/
-    fun listarTituloPlan(id_usuario: String): Cursor {
-        return db!!.rawQuery("SELECT titulo from Planificacion Inner JOIN Evento where Evento.id_plan = Planificacion.id AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario'", null)
+    fun listarTituloPlan(id_usuario: String, fecha: String): Cursor {
+        return db!!.rawQuery("SELECT titulo from Planificacion Inner JOIN Evento where Evento.id_plan = Planificacion.id AND Evento.visible = 1 AND Evento.id_usuario = '$id_usuario' AND Evento.fecha = '$fecha'", null)
     }
 
     /*Insertar una nueva subcategoria*/

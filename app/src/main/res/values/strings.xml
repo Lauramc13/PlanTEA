@@ -62,7 +62,7 @@
     <string name="lbl_mensaje_evento">No hay eventos para este día</string>
     <string name="btn_horaEvento">HORA</string>
     <string name="item_perfil">preferencias</string>
-    <string name="lbl_mensajeNinio">No hay planificación para seguir</string>
+    <string name="lbl_mensajeNinio">No hay planificación para seguir este dia</string>
     <string name="lbl_indice1">1. Descripción de la aplicación PlanTEA</string>
     <string name="lbl_indice2">2. Ajuste de las preferencias</string>
     <string name="lbl_indice2_1">- Información de los usuarios</string>

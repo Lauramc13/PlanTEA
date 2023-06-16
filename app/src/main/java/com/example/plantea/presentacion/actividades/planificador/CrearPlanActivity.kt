@@ -515,9 +515,9 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         val idUsuario = prefs.getString("idUsuario", "")
         listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria, idUsuario) as ArrayList<Pictograma>
         //get favourite for each pictogram
-        for (pictograma in listaPictogramas) {
-            Log.d("asf", "listaPictogramas: ${pictograma.favorito}")
-        }
+        // for (pictograma in listaPictogramas) {
+        //     Log.d("asf", "listaPictogramas: ${pictograma.favorito}")
+        // }
 
         val bundle = Bundle()
         bundle.putSerializable("key", listaPictogramas)

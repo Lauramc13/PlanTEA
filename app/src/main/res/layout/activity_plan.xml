@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="380dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
@@ -22,12 +22,64 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
+
+        <LinearLayout
+            android:id="@+id/layout_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Mes y flechas de navegación atras/delante"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            app:cornerRadius="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/lbl_titulo">
+
+            <TextView
+                android:id="@+id/lbl_dia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Mes"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/montserrat_alternates"
+                android:textFontWeight="900"
+                android:text="Viernes, 9 de septiembre"
+                android:textColor="?colorTertiary"
+                android:textSize="22sp" />
+
+            <ImageView
+                android:id="@+id/btn_anterior"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                android:background="@drawable/background_flechas"
+                android:contentDescription="Flecha mes anterior"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_32" />
+
+            <ImageView
+                android:id="@+id/btn_siguiente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:background="@drawable/background_flechas"
+                android:contentDescription="Flecha mes siguiente"
+                app:srcCompat="@drawable/ic_baseline_arrow_forward_32" />
+
+        </LinearLayout>
+
+
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
             app:layout_constraintTop_toBottomOf="@+id/lbl_titulo">
 
@@ -62,29 +114,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Titulo"
-            android:textColor="?colorOnSurface"
-            android:textSize="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
 
         <TextView
             android:id="@+id/lbl_mensajeNinio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+            android:contentDescription="@string/lbl_mensajeNinio"
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/lbl_mensajeNinio"
-            android:contentDescription="@string/lbl_mensajeNinio"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_plan"
@@ -92,7 +142,6 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             android:contentDescription="Lista con la planificación actual"
@@ -144,14 +193,10 @@
                     android:id="@+id/imageView8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     app:cardCornerRadius="20dp"
-                    app:cardElevation="5dp"
-                    app:srcCompat="@drawable/cuaderno" />
+                    app:srcCompat="@drawable/svg_cuaderno" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -195,6 +240,14 @@
                 android:contentDescription="Boton actividades"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="1dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    app:cardCornerRadius="20dp"
+                    android:layout_marginTop="20dp"
+                    app:srcCompat="@drawable/svg_ball" />
 
             </com.google.android.material.card.MaterialCardView>
 

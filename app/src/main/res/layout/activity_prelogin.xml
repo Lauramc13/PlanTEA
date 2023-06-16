@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/tiltneon"
         android:text="@string/app_name"
-        android:textColor="?colorOnSurface"
+        android:textColor="#203130"
         android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

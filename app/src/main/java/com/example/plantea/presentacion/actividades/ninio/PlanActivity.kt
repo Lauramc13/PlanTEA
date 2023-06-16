@@ -25,13 +25,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
+import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
+import java.text.SimpleDateFormat
 import java.util.*
 
 class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener {
@@ -51,6 +54,10 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var card_actividades: CardView
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
+    lateinit var dia: TextView
+    lateinit var btnAnterior : ImageView
+    lateinit var btnSiguiente : ImageView
+    lateinit var selectedDate: String
 
     lateinit var btn_cerrar : ImageView
 
@@ -95,10 +102,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         outState.putParcelable("recycler_view_state", recyclerViewState)
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan)
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -114,6 +122,41 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
+
+        dia = findViewById(R.id.lbl_dia)
+        btnAnterior = findViewById(R.id.btn_anterior)
+        btnSiguiente = findViewById(R.id.btn_siguiente)
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+        val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
+        val dayOfWeek = dateFormat.format(calendar.time)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toString()
+        val month = monthFormat.format(calendar.time)
+        selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+
+        dia.text = dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + ", " + dayOfMonth + " de " + month
+
+        btnAnterior.setOnClickListener{
+            calendar.add(Calendar.DAY_OF_MONTH, -1)
+            selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val previousDayOfWeek = dateFormat.format(calendar.time)
+            val previousDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            val previousMonth = monthFormat.format(calendar.time)
+
+            dia.text = previousDayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + ", " + previousDayOfMonth + " de " + previousMonth
+            mostrarPlan()
+        }
+
+        btnSiguiente.setOnClickListener{
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            val nextDayOfWeek = dateFormat.format(calendar.time)
+            val nextDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            val nextMonth = monthFormat.format(calendar.time)
+
+            dia.text = nextDayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + ", " + nextDayOfMonth + " de " + nextMonth
+            mostrarPlan()
+        }
 
         card_actividades = findViewById(R.id.card_actividad)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -134,29 +177,18 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //Comprobar si hay parametros en caso de llamada desde el planificador
         val parametros = this.intent.extras
         if (parametros != null) {
+            Log.d("asf", "paso por aqui")
             titulo.text = intent.getStringExtra("titulo")
             listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-
-        } else {
-            val idUsuario = prefs.getString("idUsuario", "")
-            //Mostrar la planificación a seguir para el niño
-            listaPictogramas = ArrayList()
-            listaPictogramas = idUsuario?.let { plan.mostrarPlanificacion(it, this) } as ArrayList<Pictograma>
-            //Mostrar título de la planificación
-            tituloObtenido = plan.obtenerTituloPlan(idUsuario, this)
-            titulo.text = tituloObtenido
-
-        }
-        adaptador = AdaptadorPresentacion(listaPictogramas, this)
-        recyclerView.adapter = adaptador
-        //Mostrar mensaje si no hay plan
-        if (listaPictogramas.isEmpty()) {
-            lblMensaje.visibility = View.VISIBLE
-            iconoDeshacer.visibility = View.INVISIBLE
-            iconoReproducir.visibility = View.INVISIBLE
-        } else {
+            adaptador = AdaptadorPresentacion(listaPictogramas, this)
+            recyclerView.adapter = adaptador
             lblMensaje.visibility = View.INVISIBLE
+            iconoDeshacer.visibility = View.VISIBLE
+            iconoReproducir.visibility = View.VISIBLE
+        } else {
+            mostrarPlan()
         }
+
 
         //Este método se ejecutará al seleccionar el icono cuaderno para acceder
         card_cuaderno.setOnClickListener {
@@ -216,6 +248,30 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //       prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
         //    dialog.show()
         //    }
+    }
+
+    fun mostrarPlan() {
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val idUsuario = prefs.getString("idUsuario", "")
+        //Mostrar la planificación a seguir para el niño
+        listaPictogramas = ArrayList()
+        listaPictogramas = idUsuario?.let { plan.mostrarPlanificacion(it, selectedDate, this) } as ArrayList<Pictograma>
+        //Mostrar título de la planificación
+        tituloObtenido = plan.obtenerTituloPlan(idUsuario, selectedDate, this)
+        titulo.text = tituloObtenido
+
+        adaptador = AdaptadorPresentacion(listaPictogramas, this)
+        recyclerView.adapter = adaptador
+        //Mostrar mensaje si no hay plan
+        if (listaPictogramas.isEmpty()) {
+            lblMensaje.visibility = View.VISIBLE
+            iconoDeshacer.visibility = View.INVISIBLE
+            iconoReproducir.visibility = View.INVISIBLE
+        } else {
+            lblMensaje.visibility = View.INVISIBLE
+            iconoDeshacer.visibility = View.VISIBLE
+            iconoReproducir.visibility = View.VISIBLE
+        }
     }
 
 

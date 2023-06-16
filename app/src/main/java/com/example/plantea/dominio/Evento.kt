@@ -51,9 +51,9 @@ class Evento {
     }
 
     //Comprobar el numero de eventos visibles
-    fun comprobarEventosVisible(userId: String, actividad: Activity?): Int {
+    fun comprobarEventosVisible(userId: String, fecha: String, actividad: Activity?): Int {
         contador = 0
-        contador = gestorEventos.comprobarEventosVisible(userId, actividad)
+        contador = gestorEventos.comprobarEventosVisible(userId, fecha, actividad)
         return contador
     }
 
