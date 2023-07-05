@@ -1,7 +1,6 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
-import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import java.io.Serializable
 
 class Pictograma : Serializable {
@@ -18,6 +17,14 @@ class Pictograma : Serializable {
 
     constructor()
     constructor(titulo: String?, imagen: String?, categoria: Int, cuaderno: Int) {
+        this.titulo = titulo
+        this.imagen = imagen
+        this.categoria = categoria
+        this.cuaderno = cuaderno
+    }
+
+    constructor(id: String?, titulo: String?, imagen: String?, categoria: Int, cuaderno: Int) {
+        this.id = id
         this.titulo = titulo
         this.imagen = imagen
         this.categoria = categoria
@@ -56,10 +63,8 @@ class Pictograma : Serializable {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }
 
-
-
-    fun insertarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {
-        gestorPictogramas.insertarFavorito(actividad, idUsuario, idPicto)
+    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id: String?, titulo: String?, imagen: String?, categoria: Int) {
+        gestorPictogramas.insertarFavorito(actividad, idUsuario, id, titulo, imagen, categoria)
     }
 
     fun borrarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {

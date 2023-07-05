@@ -242,85 +242,6 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/lbl_parrafo2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/img_manual1"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/manual_preferencias_1" />
-
-            <TextView
-                android:id="@+id/lbl_parrafo3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/img_manual2"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_preferencias_2" />
-
-            <TextView
-                android:id="@+id/lbl_parrafo4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/img_manual3"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_preferencias_3" />
-
-            <TextView
-                android:id="@+id/lbl_parrafo5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/img_manual4"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_preferencias_4" />
-
-            <TextView
-                android:id="@+id/lbl_parrafo6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/img_manual5"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_preferencias_5" />
-
-            <TextView
-                android:id="@+id/lbl_parrafo7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/img_manual6"
-                android:layout_width="match_parent"
-                android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_preferencias_6" />
-
-            <TextView
                 android:id="@+id/lbl_parrafo8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -347,11 +268,11 @@
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/img_manual8"
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_planificador_1" />
+                app:srcCompat="@drawable/manual_planificador_1" /> -->
 
             <TextView
                 android:id="@+id/lbl_parrafo11"
@@ -437,12 +358,12 @@
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
-
+<!-- 
             <ImageView
                 android:id="@+id/img_manual15"
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
-                app:srcCompat="@drawable/manual_planificador_8" />
+                app:srcCompat="@drawable/manual_planificador_8" /> -->
 
             <TextView
                 android:id="@+id/lbl_parrafo18"
@@ -541,6 +462,21 @@
                 android:layout_height="600dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_planificador_16" />
+
+            <TextView
+                android:id="@+id/lbl_parrafo241"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual221"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:srcCompat="@drawable/capturamanual241" />
+
+
 
             <TextView
                 android:id="@+id/lbl_parrafo25"
@@ -686,6 +622,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
                 app:srcCompat="@drawable/manual_usuario_4" />
+            
+            <TextView
+                android:id="@+id/lbl_parrafo341"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual351"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:srcCompat="@drawable/manualreproduccion" />
 
             <TextView
                 android:id="@+id/lbl_parrafo35"
@@ -806,12 +755,91 @@
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/img_manual45"
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
                 android:layout_marginBottom="5dp"
-                app:srcCompat="@drawable/manual_usuario_14" />
+                app:srcCompat="@drawable/manual_usuario_14" /> -->
+
+             <TextView
+                android:id="@+id/lbl_parrafo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual1"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/manual_preferencias_1" />
+
+            <TextView
+                android:id="@+id/lbl_parrafo3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual2"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:srcCompat="@drawable/manual_preferencias_2" />
+
+            <TextView
+                android:id="@+id/lbl_parrafo4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <!-- <ImageView
+                android:id="@+id/img_manual3"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:srcCompat="@drawable/manual_preferencias_3" /> -->
+
+            <TextView
+                android:id="@+id/lbl_parrafo5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual4"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:srcCompat="@drawable/manual_preferencias_4" />
+
+            <TextView
+                android:id="@+id/lbl_parrafo6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual5"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:srcCompat="@drawable/manual_preferencias_5" />
+
+            <TextView
+                android:id="@+id/lbl_parrafo7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/img_manual6"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:srcCompat="@drawable/manual_preferencias_6" />
 
         </LinearLayout>
     </ScrollView>

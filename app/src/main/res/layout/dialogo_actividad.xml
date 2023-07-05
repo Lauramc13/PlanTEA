@@ -51,8 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
-            android:text="actividad"
+            android:text="Actividad"
             android:layout_marginTop="10dp"
+            android:gravity="center"
             android:textColor="?colorOnSurface"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,10 +71,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="30dp"
-            android:tint="?colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_nombreObjeto"
-            app:srcCompat="@drawable/question" />
+            app:srcCompat="@drawable/question2" />
 
 
 

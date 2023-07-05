@@ -10,18 +10,16 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 
 
 class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?, private val favourites: CategoriasPictogramasFragment) : RecyclerView.Adapter<AdaptadorPictogramas.ViewHolderPictogramas>() {
 
     lateinit var context: Context
+    var picto = Pictograma()
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
     }
@@ -52,10 +50,13 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
                 holder.heart!!.setImageResource(R.drawable.svg_heart)
                 listaPictogramas!![position].favorito = false
                 favourites.removeFavorite(listaPictogramas!![position], position)
+                //favourites.nuevoPictoFavorito(listaPictogramas!![position])
             }else{
                 holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
                 listaPictogramas!![position].favorito = true
                 favourites.markAsFavorite(listaPictogramas!![position])
+
+                Log.d("asf", listaPictogramas!![position].toString())
             }
         }
     }

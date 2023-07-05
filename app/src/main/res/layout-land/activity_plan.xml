@@ -74,6 +74,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/lbl_titulo">
 
+           <!-- <Button
+               android:id="@+id/CalendarDate"
+               android:layout_width="70dp"
+               android:layout_height="40dp">
+
+           </Button> -->
+
             <TextView
                 android:id="@+id/lbl_dia"
                 android:layout_width="wrap_content"

@@ -66,7 +66,7 @@
     <string name="lbl_indice1">1. Descripción de la aplicación PlanTEA</string>
     <string name="lbl_indice2">2. Ajuste de las preferencias</string>
     <string name="lbl_indice2_1">- Información de los usuarios</string>
-    <string name="lbl_indice2_2">- Objeto Tranquilizador</string>
+    <string name="lbl_indice2_2">- Actividad Tranquilizadora</string>
     <string name="lbl_indice2_3">- Notificaciones</string>
     <string name="lbl_indice3">3. Descripción de la Pantalla inicial</string>
     <string name="lbl_indice4">4. Usuario Planificador</string>
@@ -90,7 +90,7 @@
     <string name="lbl_actividades">Actividades</string>
     <string name="lbl_actividades_objeto">ACTIVIDAD TRANQUILIZADORA</string>
     <string name="lbl_actividades_youtube">YOUTUBE</string>
-    <string name="lbl_configuracion_objeto">Objeto para tranquilizar</string>
+    <string name="lbl_configuracion_objeto">Actividad tranquilizadora</string>
     <string name="lbl_configuracion_notificaciones">Notificaciones de las citas médicas </string>
     <string name="lbl_configuracion_notificaciones_1">1 hora antes</string>
     <string name="lbl_configuracion_notificaciones_2">1 día antes</string>

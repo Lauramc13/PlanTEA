@@ -80,7 +80,8 @@ class ActividadActivity : AppCompatActivity() {
 
 
             if (prefs.getString("imagenObjeto", "") === "") {
-                img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+                img_objeto.setBackgroundResource(R.drawable.question2)
+                txt_objeto.text = "No hay una actividad configurada"
             } else {
                 img_objeto.background = null
                 img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
@@ -92,14 +93,6 @@ class ActividadActivity : AppCompatActivity() {
         }
 
 
-    }
-
-    fun rotateImageWithAnimation(imageView: ImageView, degrees: Float, duration: Long) {
-        val rotateAnimation = RotateAnimation(0f, degrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotateAnimation.duration = duration
-        rotateAnimation.fillAfter = true
-
-        imageView.startAnimation(rotateAnimation)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

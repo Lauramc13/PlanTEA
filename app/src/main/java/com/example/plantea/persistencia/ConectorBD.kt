@@ -289,21 +289,24 @@ class ConectorBD(ctx: Context?) {
         return id
     }
 
-    fun nuevaHistoria(nombre: String?, historia: String?) {
-        db!!.execSQL("UPDATE Pictograma_Plan SET historia ='$historia' WHERE Pictograma_Plan.nombre = '$nombre'")
-    }
+    //fun nuevaHistoria(nombre: String?, historia: String?) {
+      //  db!!.execSQL("UPDATE Pictograma_Plan SET historia ='$historia' WHERE Pictograma_Plan.nombre = '$nombre'")
+    //}
 
-    fun insertarFavorito(id_usuario: String?, id_picto: String?) {
-        db!!.execSQL("INSERT INTO Favorito (id_usuario, id_picto) VALUES ('$id_usuario', '$id_picto')")
+    fun insertarFavorito(id_usuario: String?, id:String?,  nombre: String?, imagen: String?, id_categoria:Int?) {
+        db!!.execSQL("INSERT INTO Favorito (id_usuario, id_picto, nombre, imagen, id_categoria) VALUES ('$id_usuario', '$id','$nombre','$imagen','$id_categoria')")
     }
-
 
     fun borrarFavorito(id_usuario: String?, id_picto: String?) {
-        db!!.execSQL("DELETE FROM Favorito WHERE id_usuario ='$id_usuario' AND id_picto ='$id_picto'")
+        db!!.execSQL("DELETE FROM Favorito WHERE id_usuario ='$id_usuario' AND id ='$id_picto'")
     }
 
     fun obtenerFavoritos(id_usuario: String?): Cursor {
-        return db!!.rawQuery("SELECT Pictograma.id,Pictograma.nombre,Pictograma.imagen,Pictograma.id_categoria from Pictograma Inner JOIN Favorito where Favorito.id_picto = Pictograma.id AND Favorito.id_usuario = '$id_usuario'", null)
+        return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Favorito where Favorito.id_usuario = '$id_usuario'", null)
+    }
+
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, idUsuario: String?) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET name = '$nombreUsuarioPlanificador', nameTEA = '$nombreUsuarioTEA', objeto = '$nombreObjeto' WHERE Usuario_Planificador.id = '$idUsuario'")
     }
 
     companion object {

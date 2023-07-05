@@ -103,4 +103,8 @@ class Usuario_Planificador {
 
     }
 
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, idUsuario:String?, actividad: Activity?) {
+        return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario, actividad)
+    }
+
 }

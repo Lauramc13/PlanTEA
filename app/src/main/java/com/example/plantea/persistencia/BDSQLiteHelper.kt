@@ -16,7 +16,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
     var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, id_plan INTEGER,visible INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_picto INTEGER, FOREIGN KEY (id_picto) REFERENCES Pictograma(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+    var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_picto INTEGER, nombre TEXT, imagen TEXT, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/
@@ -379,6 +379,5 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRANQUILO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tranquilo + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRANQUILO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tranquilo1 + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('VERGUENZA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_verguenza + "',4)")
-
     }
 }

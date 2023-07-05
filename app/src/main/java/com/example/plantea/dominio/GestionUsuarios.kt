@@ -81,5 +81,12 @@ class GestionUsuarios {
         return usuarioId
     }
 
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, idUsuario: String?, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario)
+        conectorBD!!.cerrar()
+    }
+
 
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +28,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     private lateinit var image_Cerrar: ImageView
     private lateinit var image_add: ImageView
     var pictograma = Pictograma()
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -78,7 +78,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     fun markAsFavorite(pictogram: Pictograma) {
         val prefs = requireContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
-        pictograma.insertarFavorito(actividad, idUsuario, pictogram.id)
+        pictograma.insertarFavorito(actividad, idUsuario, pictogram.id, pictogram.titulo, pictogram.imagen, pictogram.categoria)
     }
 
     fun removeFavorite(pictogram: Pictograma, posicion: Int) {
@@ -95,5 +95,4 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         //     recyclerPictogramas.adapter!!.notifyItemRangeChanged(posicion, listaPictogramas.size)
         // }
     }
-
 }

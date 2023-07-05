@@ -1,9 +1,16 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.view.MenuItem
+import android.widget.Button
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
@@ -37,6 +44,7 @@ class RegisterActivity : AppCompatActivity(){
       //  }
 
         setContentView(R.layout.activity_register)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         btnRegister = findViewById(R.id.btn_register)
         txt_name = findViewById(R.id.txt_Name)
         txt_username = findViewById(R.id.txt_UserName)
@@ -140,6 +148,13 @@ class RegisterActivity : AppCompatActivity(){
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return true
     }
 
 }

@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
+import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
 import java.io.File
 import java.io.FileNotFoundException
@@ -47,6 +48,9 @@ class ConfiguracionActivity : AppCompatActivity() {
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
+
+    var usuario = Usuario_Planificador()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,7 +135,6 @@ class ConfiguracionActivity : AppCompatActivity() {
                 img_usuarioTEA.isEnabled = false
             }
             info_objeto = prefs.getBoolean("info_objeto", false)
-            Log.d("asf", info_objeto.toString())
             if(info_objeto){
                 lbl_objeto.isChecked = true
                 txt_objeto.isEnabled = true
@@ -165,6 +168,7 @@ class ConfiguracionActivity : AppCompatActivity() {
             es_planificador = false
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
+            editor.putBoolean("info_objeto", lbl_objeto.isChecked)
             editor.apply()
             val password = Intent(applicationContext, MenuObjetosActivity::class.java)
             startActivity(password)
@@ -186,6 +190,11 @@ class ConfiguracionActivity : AppCompatActivity() {
         lbl_infoUsuario.setOnCheckedChangeListener { _, isChecked ->
             txt_UsuarioTEA.isEnabled = isChecked
             img_usuarioTEA.isEnabled = isChecked
+        }
+
+        lbl_objeto.setOnCheckedChangeListener { _, isChecked ->
+            txt_objeto.isEnabled = isChecked
+            img_objeto.isEnabled = isChecked
         }
         btn_guardar.setOnClickListener {
             if (txt_Planificador.text.toString().isEmpty() || txt_UsuarioTEA.text.toString().isEmpty() && lbl_infoUsuario.isChecked
@@ -226,7 +235,6 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
 
-
                 //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
                 val editor = prefs.edit()
                 editor.putBoolean("userAccount", true)
@@ -241,8 +249,12 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.putString("imagenPlanificador", rutaPlanificador)
                 editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
                 editor.putString("imagenObjeto", rutaObjeto)
+                editor.putBoolean("info_objeto", lbl_objeto.isChecked)
                 editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked)
-                editor.commit()
+                editor.apply()
+
+                val idUsuario = prefs.getString("idUsuario", "")
+                usuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario, this)
             }
         }
 

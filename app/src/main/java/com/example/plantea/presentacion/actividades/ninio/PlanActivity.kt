@@ -58,6 +58,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var btnAnterior : ImageView
     lateinit var btnSiguiente : ImageView
     lateinit var selectedDate: String
+    lateinit var calendarButton: Button
 
     lateinit var btn_cerrar : ImageView
 
@@ -101,7 +102,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         outState.putParcelable("recycler_view_state", recyclerViewState)
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

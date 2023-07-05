@@ -61,7 +61,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var btn_logout: Button
     lateinit var icono_cerrar_login : AppCompatImageView
     lateinit var listaPlanificacion: ArrayList<Pictograma>
-    lateinit var listaBusqueda: ArrayList<Pictograma>
+    //lateinit var listaBusqueda: ArrayList<Pictograma>
     lateinit var listaPictogramas: ArrayList<Pictograma>
     lateinit var tituloPicto: String
     lateinit var imagenPicto: String
@@ -142,6 +142,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                                 listaTitulos.add(keyword)
                             }
                         }
+                        Log.d("TAG", listaTitulos.toString())
                     }
                 } catch (e: IOException) {
                     // Handle exception
@@ -174,39 +175,23 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             job.join()
             Log.d("TAG", "4")
 
-
-
-
             dict.keys.forEachIndexed { index, key ->
-                val asf = dict.keys.size
-                Log.d("TAG", "$index size: $asf")
-
-
+                //val asf = dict.keys.size
                 val value = dict[key]
-                if (value != null) {
-                    crearPictoBusqueda(key, value)
-                    //mostrarBusqueda() //TODO: SE QUEDA AQUI DE PRUEBA POR AHORA
-                }
-                if (index == dict.keys.size - 1) {
-                    mostrarBusqueda()
-                }
+
+                //Log.d("TAG", "$value $key - $index $asf")
+                crearPictoBusqueda(key, value)
+                mostrarBusqueda()
             }
-        //     if(dict.keys.size == 0){
-        //         labelBuscando.text = "No se han encontrado pictogramas"
-        //     }else{
-        //         labelBuscando.visibility = View.GONE
-        //     }
+
          }
-
-
     }
 
     fun mostrarBusqueda() {
-        Log.d("TAG", "SE EJECUTA MOSTRAR BUSQUEDA")
         //labelBuscando.visibility = View.GONE
         subcategoriaOpen = false
         val bundle = Bundle()
-        bundle.putSerializable("key", listaBusqueda)
+        bundle.putSerializable("key", listaPictogramas)
         fragmentBusqueda.arguments = bundle
         transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.contenedor_fragments, fragmentBusqueda)
@@ -234,7 +219,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         }
         val tituloMayus = titulo?.uppercase()
         val archivo = getFileStreamPath(filename).absolutePath
-        listaBusqueda.add(Pictograma(tituloMayus, archivo, 0, 0))
+        listaPictogramas.add(Pictograma(tituloMayus, archivo, 0, 0))
     }
 
     private fun hideKeyboard() {
@@ -259,14 +244,14 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
         listaPictogramas = ArrayList()
         listaPlanificacion = ArrayList()
-        listaBusqueda = ArrayList()
+        //listaBusqueda = ArrayList()
         //labelBuscando = findViewById(R.id.lbl_buscando)
 
 
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 getPictogramas(query)
-                listaBusqueda.clear()
+                listaPictogramas.clear()
                 val container = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)
                 container?.let {
                     supportFragmentManager.beginTransaction()

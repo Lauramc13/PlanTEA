@@ -133,10 +133,10 @@ class GestionPictogramas : Serializable {
         return listaPictogramas!!
     }
 
-    fun insertarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?){
+    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id:String?, titulo: String?, imagen: String?, categoria: Int?){
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarFavorito(idUsuario, idPicto)
+        conectorBD!!.insertarFavorito(idUsuario, id, titulo, imagen, categoria)
         conectorBD!!.cerrar()
     }
 
