@@ -15,18 +15,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.DragEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnDragListener
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,11 +45,11 @@ import java.io.*
 import java.util.*
 
 
-class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlanificacion.OnItemSelectedListener {
+class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlanificacion.OnItemSelectedListener{
     var identificadorCategoria = 0
     var subcategoriaOpen = false
     private lateinit var labelTitulo: TextView
-    //lateinit var labelBuscando: TextView
+    lateinit var busquedaNula: TextView
     lateinit var transaction: FragmentTransaction
     lateinit var fragmentCategorias: Fragment
     lateinit var fragmentPictogramas: Fragment
@@ -61,7 +58,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var btn_logout: Button
     lateinit var icono_cerrar_login : AppCompatImageView
     lateinit var listaPlanificacion: ArrayList<Pictograma>
-    //lateinit var listaBusqueda: ArrayList<Pictograma>
     lateinit var listaPictogramas: ArrayList<Pictograma>
     lateinit var tituloPicto: String
     lateinit var imagenPicto: String
@@ -69,6 +65,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var btn_salir: Button
     lateinit var btn_cancelar: Button
     var categoriaPicto = 0
+    var isEdited = false
+    var pictograma = Pictograma()
 
     //Opcion para indicar funcionalidad editar o crear
     var opcionEditar = false
@@ -104,6 +102,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             replace<CategoriasFragment>(R.id.contenedor_fragments)
         }
         recreate()
+
     }
 
     private fun getPictogramas(query: String) {
@@ -121,9 +120,9 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             .build()
             .create(ApiInterface::class.java)
 
-        val dict = mutableMapOf<Bitmap, String>()
-        var listaIds = mutableListOf<Int>()
-        var listaTitulos = mutableListOf<String>()
+        val dict = mutableMapOf<Bitmap, Pair<String, Int>>()
+        val listaIds = mutableListOf<Int>()
+        val listaTitulos = mutableListOf<String>()
 
         CoroutineScope(Dispatchers.IO).launch {
             val job: Job = CoroutineScope(Dispatchers.IO).async {
@@ -143,6 +142,9 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                             }
                         }
                         Log.d("TAG", listaTitulos.toString())
+                    }else{
+                        Log.d("asf", "NO SE HA ENCONTRADO NADA")
+                       // busquedaNula.visibility = View.VISIBLE
                     }
                 } catch (e: IOException) {
                     // Handle exception
@@ -158,7 +160,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                                 val bitmap = BitmapFactory.decodeStream(
                                     response.body()!!.byteStream()
                                 )
-                                dict[bitmap] = keyword
+                                dict[bitmap] = Pair(keyword, id)
                             } else {
                                 Log.d("TAG", "Error de la llamada a las imagenes")
                             }
@@ -175,13 +177,11 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             job.join()
             Log.d("TAG", "4")
 
-            dict.keys.forEachIndexed { index, key ->
-                //val asf = dict.keys.size
-                val value = dict[key]
-
-                //Log.d("TAG", "$value $key - $index $asf")
-                crearPictoBusqueda(key, value)
-                mostrarBusqueda()
+            dict.keys.forEach{ key ->
+                dict[key]?.let { (value, id) ->
+                    crearPictoBusqueda(key, value, id)
+                    mostrarBusqueda()
+                }
             }
 
          }
@@ -199,7 +199,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         transaction.commit()
     }
 
-    fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?) {
+    fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
         val width = bitmap.width
         val height = bitmap.height
         val outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -219,14 +219,18 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         }
         val tituloMayus = titulo?.uppercase()
         val archivo = getFileStreamPath(filename).absolutePath
-        listaPictogramas.add(Pictograma(tituloMayus, archivo, 0, 0))
+
+        val prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val userId = prefs.getString("idUsuario", "")
+        val favorito = pictograma.getFavorito(this, id.toString() + 'b', userId)
+
+        listaPictogramas.add(Pictograma(id.toString() + 'b', tituloMayus, archivo, 0, 0, favorito))
     }
 
     private fun hideKeyboard() {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(searchBar.windowToken, 0)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -241,11 +245,11 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
+        busquedaNula = findViewById(R.id.busquedaNula)
 
         listaPictogramas = ArrayList()
         listaPlanificacion = ArrayList()
-        //listaBusqueda = ArrayList()
-        //labelBuscando = findViewById(R.id.lbl_buscando)
+
 
 
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -275,7 +279,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         if (parametros != null) {
             opcionEditar = true
             txt_TituloPlan.text = intent.getStringExtra("titulo")
-            Log.d("asf", "PASO POR AQIO")
             listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!! //TODO
         }
 
@@ -289,8 +292,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.contenedor_fragments, fragmentCategorias)
         transaction.commit()
-
-
 
         //Dialogo para la creación de un nuevo pictograma
         dialogNuevoPictograma = Dialog(this)
@@ -358,14 +359,15 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             val fromPosition = viewHolder.absoluteAdapterPosition
             val toPosition = target.absoluteAdapterPosition
             Collections.swap(listaPlanificacion, fromPosition, toPosition)
+            isEdited = true
             recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
             return false
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            Log.d("TAG",  "se toca el pictograma")
             val position = viewHolder.absoluteAdapterPosition
             listaPlanificacion.removeAt(position)
+            isEdited = true
             recyclerView.adapter!!.notifyItemRemoved(position)
         }
     }
@@ -392,20 +394,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                             startActivity(perfil)
                             true
                         }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
                         R.id.option_3 -> {
                             val dialogLogout = Dialog(this)
                             dialogLogout.setContentView(R.layout.dialogo_logout)
@@ -414,7 +402,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                             btn_logout.setOnClickListener {
                                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
+                                prefs.edit().clear().apply()
                                 // val editor = prefs.edit()
                                 // editor.putBoolean("userAccount", false)
                                 // editor.apply()
@@ -431,7 +419,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 popupMenu.show()
             }
             android.R.id.home -> {
-                if (listaPlanificacion.isEmpty()) {
+                if (!isEdited) {
                     finish()
                 } else {
                     val dialogSalir = Dialog(this)
@@ -449,7 +437,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
                     dialogSalir.show()
                 }
-                true
             }
 
         }
@@ -478,7 +465,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
         if (idCategoria == 10) {
-            listaPictogramas = picto.obtenerFavoritos(this, idUsuario) as ArrayList<Pictograma>
+            listaPictogramas = picto.obtenerFavoritos(this, idUsuario)
         } else {
             listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria, idUsuario) as ArrayList<Pictograma>
         }
@@ -577,12 +564,15 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                     .show()
                 dialogNuevoPictograma.dismiss() //Cerrar dialogo
 
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val idUsuario = prefs.getString("idUsuario", "")
                 //Añadir pictograma
                 picto.nuevoPictograma(
                     this@CrearPlanActivity,
                     titulo_Dialogo.text.toString().uppercase(Locale.getDefault()),
                     ruta,
-                    spinner_Dialogo.selectedItem.toString()
+                    spinner_Dialogo.selectedItem.toString(),
+                    idUsuario
                 )
                 //Si la categoria es consultas, estaremos creando una nueva subcategoria
                 if (spinner_Dialogo.selectedItem.toString() == "CONSULTAS") {
@@ -669,7 +659,9 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     fun addPictogram(pictogram: Pictograma) {
         listaPlanificacion.add(pictogram)
+        isEdited = true
         adaptador!!.notifyDataSetChanged()
     }
+
 
 }

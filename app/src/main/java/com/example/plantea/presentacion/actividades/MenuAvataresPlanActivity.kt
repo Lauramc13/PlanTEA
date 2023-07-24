@@ -97,8 +97,8 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     private fun next(){
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if(prefs.getBoolean("editPreferences", false) === true){
-            val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
-            startActivity(intent)
+
+            finish()
         }else{
             if (prefs.getBoolean("info_usuario", false) === true){ 
                 val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)

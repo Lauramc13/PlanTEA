@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="370dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
@@ -42,72 +42,99 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="Mes"
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:fontFamily="@font/montserrat_alternates"
                 android:textFontWeight="900"
                 android:text="Viernes, 9 de septiembre"
                 android:textColor="?colorTertiary"
                 android:textSize="22sp" />
 
-            <ImageView
-                android:id="@+id/btn_anterior"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:padding="5dp"
-                android:background="@drawable/background_flechas"
-                android:contentDescription="Flecha mes anterior"
-                app:srcCompat="@drawable/ic_baseline_arrow_back_32" />
+            <Button
+                android:id="@+id/CalendarDate"
+                android:layout_width="62dp"
+                android:layout_height="50dp"
+                android:contentDescription="Botón calendario"
+                android:gravity="center"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                app:iconSize="31dp"
+                app:iconTint="#203130"
+                app:icon="@drawable/svg_calendardate">
 
-            <ImageView
-                android:id="@+id/btn_siguiente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:background="@drawable/background_flechas"
-                android:contentDescription="Flecha mes siguiente"
-                app:srcCompat="@drawable/ic_baseline_arrow_forward_32" />
+            </Button>
 
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_plan">
 
             <Button
-                android:id="@+id/icon_deshacer"
+                android:id="@+id/icon_reproducir_lento"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:text="@string/lbl_deshacer"
-                android:contentDescription="Botón deshacer acción"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
+                android:contentDescription="Botón reproducir lista"
+                android:text="0.5"
                 android:textColor="#203130"
+                android:textSize="20dp"
+                app:icon="@drawable/svg_rewind"
+                app:iconSize="28dp"
+                app:iconGravity="textEnd"
+                app:iconTint="#203130"
+                android:theme="@style/botonesSecundarios"
                 app:cornerRadius="25dp"
-                app:icon="@drawable/ic_baseline_undo_64"
-                app:iconSize="32dp"
-                app:iconTint="#203130" />
+                app:elevation="0dp" />
 
             <Button
                 android:id="@+id/icon_reproducir"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:text="@string/lbl_reproducir"
+                android:layout_width="57dp"
+                android:layout_height="67dp"
                 android:contentDescription="Botón reproducir lista"
                 android:textColor="#203130"
-                app:cornerRadius="25dp"
+                app:cornerRadius="100dp"
                 app:icon="@drawable/svg_play"
-                app:iconSize="20dp"
+                app:iconSize="28dp"
                 app:iconTint="#203130" />
+
+            <Button
+                android:id="@+id/icon_reproducir_rapido"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="15dp"
+                android:contentDescription="Botón reproducir lista"
+                android:text="1.5"
+                android:theme="@style/botonesSecundarios"
+                android:textColor="#203130"
+                android:textSize="20dp"
+                app:icon="@drawable/svg_foward"
+                app:iconSize="28dp"
+                app:iconTint="#203130"
+                app:cornerRadius="25dp" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/icon_deshacer"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:contentDescription="Botón deshacer acción"
+            android:text="@string/lbl_deshacer"
+            android:textColor="#203130"
+            app:cornerRadius="25dp"
+            android:layout_marginRight="30dp"
+            app:icon="@drawable/ic_baseline_undo_64"
+            app:iconSize="32dp"
+            app:iconTint="#203130"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
 
         <TextView
             android:id="@+id/lbl_titulo"
@@ -117,6 +144,7 @@
             android:layout_marginStart="20dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="Titulo"
+            android:textColor="?colorOnSurface"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
@@ -142,13 +170,14 @@
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="75dp"
+            android:contentDescription="Lista con la planificación actual"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:contentDescription="Lista con la planificación actual"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

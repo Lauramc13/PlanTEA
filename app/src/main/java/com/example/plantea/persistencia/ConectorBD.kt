@@ -42,18 +42,18 @@ class ConectorBD(ctx: Context?) {
                 "                   CASE WHEN Favorito.id IS NULL THEN 0 ELSE 1 END AS favorito\n" +
                 "                   FROM Pictograma\n" +
                 "                   LEFT JOIN Favorito ON Pictograma.id = Favorito.id_picto AND Favorito.id_usuario = '$userId'\n" +
-                "                   WHERE Pictograma.id_categoria = $categoria", null)
+                "                   WHERE Pictograma.id_categoria = $categoria AND (Pictograma.id_usuario IS NULL OR Pictograma.id_usuario = $userId)", null)
     }
 
     /*Insertar un pictograma nuevo*/
-    fun insertarPictograma(nombre: String?, imagen: String?, categoria: String?) {
+    fun insertarPictograma(nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
         var categoria = categoria
         val c = db!!.rawQuery("SELECT id from Categorias where Categorias.titulo = '$categoria'", null)
         if (c.moveToFirst()) {
             categoria = c.getString(0)
         }
         c.close()
-        db!!.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES ('$nombre', '$imagen','$categoria')")
+        db!!.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria, id_usuario) VALUES ('$nombre', '$imagen','$categoria', '$idUsuario')")
     }
 
     /*Insertar pictogramas de una planificacion*/
@@ -220,8 +220,6 @@ class ConectorBD(ctx: Context?) {
             selectionArgs
         )
     }
-    
-
 
 
     /*Eliminar evento*/
@@ -308,6 +306,21 @@ class ConectorBD(ctx: Context?) {
     fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, idUsuario: String?) {
         db!!.execSQL("UPDATE Usuario_Planificador SET name = '$nombreUsuarioPlanificador', nameTEA = '$nombreUsuarioTEA', objeto = '$nombreObjeto' WHERE Usuario_Planificador.id = '$idUsuario'")
     }
+
+    @SuppressLint("Range")
+    fun getFavorito(idPicto: String?, idUsuario: String?): Boolean {
+        val cursor = db!!.rawQuery("SELECT id_picto FROM Favorito WHERE id_picto = '$idPicto' AND id_usuario = '$idUsuario'", null)
+        val exists = if (cursor.moveToFirst()) {
+            val id = cursor.getString(cursor.getColumnIndex("id_picto"))
+            cursor.close()
+            id != null
+        } else {
+            cursor.close()
+            false
+        }
+        return exists
+    }
+
 
     companion object {
         const val NOMBRE_BD = "PlanTEA"

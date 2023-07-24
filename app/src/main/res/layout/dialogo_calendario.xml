@@ -3,64 +3,72 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?backgroundColor"
-    tools:context=".presentacion.actividades.planificador.CalendarioActivity">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="630dp"
-        android:layout_height="match_parent"
+        android:layout_height="550dp"
+        android:padding="10dp"
         android:layout_marginLeft="10dp"
         android:background="@drawable/bg_calendario"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="40dp"
         android:orientation="vertical"
         android:contentDescription="Contenedor de calendario"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_calendario"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <ImageView
+            android:id="@+id/icono_CerrarDialogoEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:contentDescription="Cerrar dialogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.051"
+            app:srcCompat="@drawable/ic_baseline_close_24" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:contentDescription="Mes y flechas de navegación atras/delante"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/image_calendar_anterior"
+                android:id="@+id/image_calendar_anterior2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:contentDescription="Flecha mes anterior"
                 app:srcCompat="@drawable/ic_baseline_arrow_back_32"
-                 />
+                />
 
             <TextView
-                android:id="@+id/lbl_mes"
+                android:id="@+id/lbl_mes2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Noviembre 2021"
-                android:contentDescription="Mes"
                 android:layout_gravity="center"
+                android:contentDescription="Mes"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="?colorOnSurface"
                 android:textAlignment="center"
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/image_calendar_siguiente"
+                android:id="@+id/image_calendar_siguiente2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="Flecha mes siguiente"
                 app:srcCompat="@drawable/ic_baseline_arrow_forward_32"
-                 />
+                />
 
         </LinearLayout>
 
@@ -69,14 +77,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:contentDescription="Columna con los dias de la semana"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="17dp">
 
             <TextView
                 android:id="@+id/lbl_lunes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_lunes"
+                android:text="L"
                 android:contentDescription="Lunes"
                 android:textColor="?colorOnSurface"
                 android:textAlignment="center"
@@ -87,7 +95,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_martes"
+                android:text="M"
                 android:contentDescription="Martes"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_medium"
@@ -99,7 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_miercoles"
+                android:text="X"
                 android:contentDescription="Miércoles"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_medium"
@@ -111,7 +119,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_jueves"
+                android:text="J"
                 android:contentDescription="Jueves"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_medium"
@@ -123,7 +131,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_viernes"
+                android:text="V"
                 android:contentDescription="Viernes"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_medium"
@@ -135,7 +143,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_sabado"
+                android:text="S"
                 android:contentDescription="Sábado"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_medium"
@@ -147,7 +155,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lbl_domingo"
+                android:text="D"
                 android:contentDescription="Domingo"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_medium"
@@ -165,24 +173,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/fragment_calendario"
-        android:layout_width="450dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginRight="60dp"
-        android:contentDescription="Contenedor con elementos de configuración de nuevo evento"
-        android:background="@drawable/bg_calendario"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

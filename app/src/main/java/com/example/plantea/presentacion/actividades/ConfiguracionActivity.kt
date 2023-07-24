@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -46,12 +47,44 @@ class ConfiguracionActivity : AppCompatActivity() {
     private var info_usuario = false
     private var info_objeto = false
 
+    private lateinit var iconEditUsuarioTEA : ImageView
+    private lateinit var iconEditObjeto : ImageView
+
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
-
     var usuario = Usuario_Planificador()
 
 
+    override fun onResume() {
+        super.onResume()
+        configurarDatos()
+    }
+
+    fun configurarDatos(){
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        if (prefs.getString("imagenPlanificador", "") === "") {
+            img_usuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+        } else {
+            img_usuarioPlanificador.background = null
+            img_usuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+        }
+        if (prefs.getString("imagenUsuarioTEA", "") === "") {
+            img_usuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            iconEditUsuarioTEA.visibility = View.GONE
+        } else {
+            img_usuarioTEA.background = null
+            img_usuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+            iconEditUsuarioTEA.visibility = View.VISIBLE
+        }
+        if (prefs.getString("imagenObjeto", "") === "") {
+            img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            iconEditObjeto.visibility = View.GONE
+        } else {
+            img_objeto.background = null
+            img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
+            iconEditObjeto.visibility = View.VISIBLE
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,75 +111,60 @@ class ConfiguracionActivity : AppCompatActivity() {
         lbl_infoUsuario.isChecked = false
         lbl_objeto.isChecked = false
 
+        iconEditUsuarioTEA = findViewById(R.id.id_editIconUsuario)
+        iconEditObjeto = findViewById(R.id.id_editIconObjeto)
+
         //Preferencias
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
+
         //Recuperamos la información cuando no es la primera vez de acceso.
-        val userAccount = prefs.getBoolean("userAccount", false)
+        //val userAccount = prefs.getBoolean("userAccount", false)
 
-            //Imagenes y nombres
-            txt_Planificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-            txt_UsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-            txt_objeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
-            img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            if (prefs.getString("imagenPlanificador", "") === "") {
-                img_usuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            } else {
-                img_usuarioPlanificador.background = null
-                img_usuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
-            }
-            if (prefs.getString("imagenUsuarioTEA", "") === "") {
-                img_usuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            } else {
-                img_usuarioTEA.background = null
-                img_usuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
-            }
-            if (prefs.getString("imagenObjeto", "") === "") {
-                img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            } else {
-                img_objeto.background = null
-                img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-            }
+        //Imagenes y nombres
+        txt_Planificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
+        txt_UsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
+        txt_objeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+        img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+        configurarDatos()
 
-            //Notificaciones
-            notificacion_activa = prefs.getBoolean("notificaciones", false)
-            semana.isChecked = prefs.getBoolean("notificacion_semana", false)
-            dia.isChecked = prefs.getBoolean("notificacion_dia", false)
-            hora.isChecked = prefs.getBoolean("notificacion_hora", false)
-            if (notificacion_activa) {
-                btn_notificacion.isChecked = true
-                semana.isEnabled = true
-                dia.isEnabled = true
-                hora.isEnabled = true
-            } else {
-                btn_notificacion.isChecked = false
-                semana.isEnabled = false
-                dia.isEnabled = false
-                hora.isEnabled = false
-            }
-            info_usuario = prefs.getBoolean("info_usuario", false)
-            if (info_usuario) {
-                lbl_infoUsuario.isChecked = true
-                txt_UsuarioTEA.isEnabled = true
-                img_usuarioTEA.isEnabled = true
-            } else {
-                lbl_infoUsuario.isChecked = false
-                txt_UsuarioTEA.isEnabled = false
-                img_usuarioTEA.isEnabled = false
-            }
-            info_objeto = prefs.getBoolean("info_objeto", false)
-            if(info_objeto){
-                lbl_objeto.isChecked = true
-                txt_objeto.isEnabled = true
-                img_objeto.isEnabled = true
-            }else{
-                lbl_objeto.isChecked = false
-                txt_objeto.isEnabled = false
-                img_objeto.isEnabled = false
-            }
+        //Notificaciones
+        notificacion_activa = prefs.getBoolean("notificaciones", false)
+        semana.isChecked = prefs.getBoolean("notificacion_semana", false)
+        dia.isChecked = prefs.getBoolean("notificacion_dia", false)
+        hora.isChecked = prefs.getBoolean("notificacion_hora", false)
+        if (notificacion_activa) {
+            btn_notificacion.isChecked = true
+            semana.isEnabled = true
+            dia.isEnabled = true
+            hora.isEnabled = true
+        } else {
+            btn_notificacion.isChecked = false
+            semana.isEnabled = false
+            dia.isEnabled = false
+            hora.isEnabled = false
+        }
+        info_usuario = prefs.getBoolean("info_usuario", false)
+        if (info_usuario) {
+            lbl_infoUsuario.isChecked = true
+            txt_UsuarioTEA.isEnabled = true
+            img_usuarioTEA.isEnabled = true
+        } else {
+            lbl_infoUsuario.isChecked = false
+            txt_UsuarioTEA.isEnabled = false
+            img_usuarioTEA.isEnabled = false
+        }
+        info_objeto = prefs.getBoolean("info_objeto", false)
+        if(info_objeto){
+            lbl_objeto.isChecked = true
+            txt_objeto.isEnabled = true
+            img_objeto.isEnabled = true
+        }else{
+            lbl_objeto.isChecked = false
+            txt_objeto.isEnabled = false
+            img_objeto.isEnabled = false
+        }
         img_usuarioPlanificador.setOnClickListener {
-            es_planificador = true
-            es_objeto = false
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
             editor.apply()
@@ -154,21 +172,15 @@ class ConfiguracionActivity : AppCompatActivity() {
             startActivity(password)
         }
         img_usuarioTEA.setOnClickListener {
-            es_planificador = false
-            es_objeto = false
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
-            editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked)
             editor.apply()
             val password = Intent(applicationContext, MenuAvataresTEActivity::class.java)
             startActivity(password)
         }
         img_objeto.setOnClickListener {
-            es_objeto = true
-            es_planificador = false
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
-            editor.putBoolean("info_objeto", lbl_objeto.isChecked)
             editor.apply()
             val password = Intent(applicationContext, MenuObjetosActivity::class.java)
             startActivity(password)
@@ -232,8 +244,8 @@ class ConfiguracionActivity : AppCompatActivity() {
                     rutaObjeto = crearRuta(img_objeto, "Objeto")
                 }
 
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                //val intent = Intent(applicationContext, MainActivity::class.java)
+               // startActivity(intent)
 
                 //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
                 val editor = prefs.edit()
@@ -245,16 +257,27 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.putBoolean("notificacion_hora", hora.isChecked)
                 editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
                 editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
-                editor.putString("nombreObjeto", nombreObjeto)
                 editor.putString("imagenPlanificador", rutaPlanificador)
                 editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
                 editor.putString("imagenObjeto", rutaObjeto)
                 editor.putBoolean("info_objeto", lbl_objeto.isChecked)
                 editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked)
+                if(lbl_objeto.isChecked){
+                    editor.putString("nombreObjeto", nombreObjeto)
+                }else{
+                    editor.putString("nombreObjeto", "")
+                }
+                if(lbl_infoUsuario.isChecked){
+                    editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
+                }else{
+                    editor.putString("nombreUsuarioTEA", "")
+                }
                 editor.apply()
 
                 val idUsuario = prefs.getString("idUsuario", "")
                 usuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario, this)
+
+                finish()
             }
         }
 

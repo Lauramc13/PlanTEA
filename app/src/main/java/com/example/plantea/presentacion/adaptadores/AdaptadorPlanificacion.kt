@@ -20,12 +20,15 @@ import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+
 class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
     interface OnItemSelectedListener
     lateinit var btn_guardar : Button
     lateinit var icono_cerrar_login : ImageView
     lateinit var cardtitulo: TextView
     lateinit var historiaText: TextInputLayout
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanificacion {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas, null, false)

@@ -85,7 +85,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:ems="10"
-        style="@style/cursorBubble"
+        android:theme="@style/AppTheme.CursorBubble"
         android:contentDescription="Campo de texto de la planificación"
         android:textCursorDrawable="@null"
         android:textColor="?colorOnSurface"
@@ -121,7 +121,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:elevation="0dp"
-        style="@style/colorSpinner"
+        android:theme="@style/AppTheme.SearchBar"
         android:queryHint="Buscar pictograma"
         android:contentDescription="Barra de busqueda de pictogramas por nombre"
         android:textColorHint="#000000"
@@ -134,19 +134,21 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
     </SearchView>
 
+
     <TextView
-        android:id="@+id/lbl_buscando"
+        android:id="@+id/busquedaNula"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="Título de la planificación"
         android:fontFamily="@font/montserrat_regular"
-        android:text="Buscando pictogramas..."
-        android:textColor="@color/black"
+        android:text="No se ha encontrado nada"
+        android:textColor="?colorOnSurface"
         android:textSize="24sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchViewPicto"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/searchViewPicto" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

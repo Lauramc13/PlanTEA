@@ -51,6 +51,7 @@
             android:layout_marginTop="95dp"
             android:background="@drawable/fondo_texto_login"
             android:ems="10"
+            android:theme="@style/AppTheme.CursorBubble"
             android:textColorHint="?colorOnSurface"
             android:textColor="?colorOnSurface"
             android:hint="Introduce un título "

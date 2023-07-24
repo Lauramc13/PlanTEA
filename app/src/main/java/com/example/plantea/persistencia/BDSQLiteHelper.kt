@@ -11,7 +11,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     /*Sentencia SQL para crear las tablas*/
     var sqlUsuario_Planificador = "CREATE TABLE Usuario_Planificador(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, name TEXT, password TEXT, objeto TEXT, imagen TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
     var sqlCategorias = "CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
-    var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_cuaderno INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id))"
+    var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_cuaderno INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     var sqlPictograma_Plan = "CREATE TABLE Pictograma_Plan(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, categoria INTEGER, historia TEXT, id_plan INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"

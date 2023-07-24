@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -40,8 +41,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
 
-    private lateinit var menu: Menu
-
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -52,6 +51,29 @@ class MainActivity : AppCompatActivity() {
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("asf", "HOLAA")
+        configurarDatos()
+    }
+
+    fun configurarDatos(){
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        info_usuario = prefs.getBoolean("info_usuario", false)
+        Log.d("asf", info_usuario.toString())
+        if (!info_usuario) {
+            cardUsuarioTEA.visibility = View.GONE
+        }else{
+            cardUsuarioTEA.visibility = View.VISIBLE
+        }
+        nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
+        nombreUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
+        image_UsuarioTEA.setImageDrawable(null)
+        image_UsuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+        image_Planificador.setImageDrawable(null)
+        image_Planificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,23 +91,12 @@ class MainActivity : AppCompatActivity() {
         cardUsuarioTEA = findViewById(R.id.cardViewUsuarioTEA)
 
         //Preferencias
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        info_usuario = prefs.getBoolean("info_usuario", false)
-        if (!info_usuario) {
-            cardUsuarioTEA.visibility = View.GONE
-        }
-        val rutaUsuarioTEA = prefs.getString("imagenUsuarioTEA", "")
-        val rutaPlanificador = prefs.getString("imagenPlanificador", "")
-        nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-        nombreUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-        image_UsuarioTEA.setImageURI(Uri.parse(rutaUsuarioTEA))
-        image_Planificador.setImageURI(Uri.parse(rutaPlanificador))
+        configurarDatos()
 
         //Este método se ejecutará al pinchar sobre la imagen del rol planificador
         cardUsuarioPlanificador.setOnClickListener {
             if (!info_usuario) {
                 val intent = Intent(applicationContext, MenuActivity::class.java)
-                //val intent = Intent(applicationContext, TutorialActivity::class.java)
                 startActivity(intent)
             }else{
                 crearDialogoLogin()
@@ -142,26 +153,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
-        val m = menu as MenuBuilder
-        // val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        // val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-        // var rutaIcon: String
-        // if(isPlanificadorLogged){
-        //     rutaIcon = prefs.getString("imagenPlanificadorDraw", "").toString()
-        // }else{
-        //     rutaIcon = prefs.getString("imagenUsuarioTEA", "").toString()
-        // }
-        // Log.d("sdf", rutaIcon)
-        // rutaIcon = prefs.getString("imagenPlanificadorDraw", "").toString()
-
-        // val resourceId = resources.getIdentifier(rutaIcon, "drawable", packageName)
-        // if (resourceId != 0) {
-        //     val drawable = resources.getDrawable(resourceId)
-        //     val menuItem = menu.findItem(R.id.item_perfil)
-        //     menuItem.icon = drawable
-        // }
-        // Log.d("sdf", resourceId.toString())
-
         return true
     }
 
@@ -182,20 +173,6 @@ class MainActivity : AppCompatActivity() {
                             startActivity(perfil)
                             true
                         }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
                         R.id.option_3 -> {
                             val dialogLogout = Dialog(this)
                             dialogLogout.setContentView(R.layout.dialogo_logout)

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,13 +44,16 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
             5 // set the number of columns to 5 for landscape mode
         }
         recyclerPictogramas.layoutManager = GridLayoutManager(context, gridValueManager, GridLayoutManager.VERTICAL, false)
-        image_Cerrar = vista.findViewById(R.id.image_Cerrar)
+        image_Cerrar = vista.findViewById(R.id.image_CerrarContenedor)
         image_add = vista.findViewById(R.id.image_add)
         val adaptador = AdaptadorPictogramas(listaPictogramas, this, this)
         recyclerPictogramas.adapter = adaptador
 
         //Este método se ejecutará al pinchar sobre la imagen de cerrar
-        image_Cerrar.setOnClickListener { interfaceCategorias.cerrarFragment() }
+        image_Cerrar.setOnClickListener {
+            interfaceCategorias.cerrarFragment()
+            Log.d("TAG", "image_Cerrar.setOnClickListener")
+        }
 
         //Este método se ejecutará al seleccionar añadir nuevo pictograma.
         image_add.setOnClickListener { interfaceCategorias.nuevoPictogramaDialogo() }

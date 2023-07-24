@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.util.Log
 import java.io.Serializable
 
 class Pictograma : Serializable {
@@ -23,12 +24,13 @@ class Pictograma : Serializable {
         this.cuaderno = cuaderno
     }
 
-    constructor(id: String?, titulo: String?, imagen: String?, categoria: Int, cuaderno: Int) {
+    constructor(id: String?, titulo: String?, imagen: String?, categoria: Int, cuaderno: Int, favorito: Boolean) {
         this.id = id
         this.titulo = titulo
         this.imagen = imagen
         this.categoria = categoria
         this.cuaderno = cuaderno
+        this.favorito = favorito
     }
 
     fun obtenerPictogramas(actividad: Activity, idcategoria: Int, userId: String?): ArrayList<*> {
@@ -43,8 +45,8 @@ class Pictograma : Serializable {
         return listaPictogramas!!
     }
 
-    fun nuevoPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?) {
-        gestorPictogramas.insertarPictograma(actividad, nombre, imagen, categoria)
+    fun nuevoPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
+        gestorPictogramas.insertarPictograma(actividad, nombre, imagen, categoria, idUsuario)
     }
 
     fun obtenerPictogramasCuaderno(actividad: Activity?, identificador: Int): ArrayList<*>? {
@@ -69,6 +71,11 @@ class Pictograma : Serializable {
 
     fun borrarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {
         gestorPictogramas.borrarFavorito(actividad, idUsuario, idPicto)
+    }
+
+    fun getFavorito(actividad: Activity?, idPicto: String?, idUsuario: String?): Boolean {
+        Log.d("asf", idPicto.toString())
+        return gestorPictogramas.getFavorito(actividad, idPicto, idUsuario)
     }
 
 }

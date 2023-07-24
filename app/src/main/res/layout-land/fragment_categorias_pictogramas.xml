@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="1180dp"
     android:layout_marginRight="42dp"
     android:layout_marginTop="150dp"
     android:layout_marginBottom="150dp"
-    android:layout_marginLeft="42dp"
+    android:layout_marginLeft="22dp"
     android:layout_height="306dp"
     android:background="@drawable/fragment_personalizado2"
     tools:context=".presentacion.fragmentos.CategoriasPictogramasFragment">
@@ -28,7 +28,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
-        android:id="@+id/image_Cerrar"
+        android:id="@+id/image_CerrarContenedor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"

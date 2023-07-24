@@ -94,8 +94,7 @@ class MenuObjetosActivity : AppCompatActivity() {
     private fun next(){
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if(prefs.getBoolean("editPreferences", false) === true){
-            val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
-            startActivity(intent)
+            finish()
         }else{
             val intent = Intent(applicationContext, TutorialActivity::class.java)
             startActivity(intent)

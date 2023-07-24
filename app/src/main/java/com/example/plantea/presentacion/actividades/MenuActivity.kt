@@ -26,6 +26,21 @@ class MenuActivity : AppCompatActivity() {
     lateinit var btn_logout: Button
     lateinit var icono_cerrar_login : AppCompatImageView
 
+    override fun onResume(){
+        super.onResume()
+        configurarOpciones()
+    }
+
+    fun configurarOpciones(){
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val info_usuario = prefs.getBoolean("info_usuario", false)
+        if (info_usuario) {
+            layoutEmociones.visibility = View.GONE
+        }else{
+            layoutEmociones.visibility = View.VISIBLE
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
@@ -34,11 +49,7 @@ class MenuActivity : AppCompatActivity() {
         cardPlanificacion = findViewById(R.id.card_Planificacion)
         layoutEmociones = findViewById(R.id.layout_Emociones)
 
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val info_usuario = prefs.getBoolean("info_usuario", false)
-        if (info_usuario) {
-            layoutEmociones.visibility = View.GONE
-        }
+        configurarOpciones()
 
         //Activamos icono volver atrás
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

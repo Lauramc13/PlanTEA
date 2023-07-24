@@ -100,9 +100,9 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 // Write code to perform some action when progress is changed.
-                if (progress < 30) {
+                if (progress < 45) {
                     seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(138, 255, 126))
-                } else if (progress < 60) {
+                } else if (progress < 90) {
                     seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 193, 79))
                 } else if (progress < 100) {
                     seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(239, 35, 60))

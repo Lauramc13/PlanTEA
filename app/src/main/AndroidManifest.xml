@@ -70,6 +70,7 @@
             android:name=".presentacion.actividades.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
+
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MenuActivity"

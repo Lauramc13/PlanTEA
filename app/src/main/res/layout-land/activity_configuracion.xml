@@ -44,24 +44,48 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/img_FotoPlanificador"
+
+                <RelativeLayout
+                    android:id="@+id/id_card_Planificador"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
-                    style="@style/addPhotoBackground"
-                    android:contentDescription="Añadir imagen del planificador"
-                    app:shapeAppearance="@style/cornerRadius"
-                    android:background="@drawable/ic_baseline_add_photo_alternate_128"
+                    android:background="@drawable/card_personalizado"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txt_nombrePlanificador"
                     app:layout_constraintHorizontal_bias="0.135"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="0.0"
+                    android:elevation="0dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_FotoPlanificador"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    style="@style/addPhotoBackground"
+                    android:contentDescription="Añadir imagen del planificador"
+                    app:shapeAppearance="@style/cornerRadius"
+                    android:background="@drawable/ic_baseline_add_photo_alternate_128" />
+
+                    <ImageView
+                        android:id="@+id/id_editIcon"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg"></ImageView>
+                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/txt_nombrePlanificador"
@@ -74,13 +98,13 @@
                     android:hint="Nombre"
                     android:contentDescription="Campo de texto con nombre del planificador"
                     android:textColor="?colorOnSurface"
-                    style="@style/cursorBubble"
+                    android:theme="@style/AppTheme.CursorBubble"
                     android:textCursorDrawable="@null"
                     android:maxLength="14"
                     android:inputType="textPersonName"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/img_FotoPlanificador"
+                    app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
                     app:layout_constraintVertical_bias="0.214" />
 
@@ -112,24 +136,46 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/img_FotoUsuarioTEA"
+                <RelativeLayout
+                    android:id="@+id/id_card_UsuarioTEA"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
-                    app:shapeAppearance="@style/cornerRadius"
-                    android:background="@drawable/svg_add_photo"
-                    style="@style/addPhotoBackground"
-                    android:contentDescription="Añadir imagen del planificado"
+                    android:background="@drawable/card_personalizado"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txt_nombreUsuarioTEA"
                     app:layout_constraintHorizontal_bias="0.135"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_infoUsuarioTEA"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="0.0"
+                    android:elevation="0dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_FotoUsuarioTEA"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    app:shapeAppearance="@style/cornerRadius"
+                    android:background="@drawable/svg_add_photo"
+                    style="@style/addPhotoBackground"
+                    android:contentDescription="Añadir imagen del planificado" />
+                    <ImageView
+                        android:id="@+id/id_editIconUsuario"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg"></ImageView>
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/lbl_infoUsuarioTEA"
@@ -155,7 +201,7 @@
                     android:ems="10"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Nombre"
-                    style="@style/cursorBubble"
+                    android:theme="@style/AppTheme.CursorBubble"
                     android:textCursorDrawable="@null"
                     android:maxLength="14"
                     android:textSize="22sp"
@@ -163,7 +209,7 @@
                     android:inputType="textPersonName"
                     android:textColor="?colorOnSurface"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/img_FotoUsuarioTEA"
+                    app:layout_constraintStart_toEndOf="@+id/id_card_UsuarioTEA"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_infoUsuarioTEA"
                     app:layout_constraintVertical_bias="0.214" />
 
@@ -195,24 +241,46 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/img_objeto"
+                <RelativeLayout
+                    android:id="@+id/id_card_Objeto"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
-                    app:shapeAppearance="@style/cornerRadius"
-                    android:background="@drawable/svg_add_photo"
-                    style="@style/addPhotoBackground"
-                    android:contentDescription="Añadir imagen de la actividad tranquilizadora"
+                    android:background="@drawable/card_personalizado"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/txt_nombreObjeto"
                     app:layout_constraintHorizontal_bias="0.135"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_objeto"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="0.0"
+                    android:elevation="0dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_objeto"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    app:shapeAppearance="@style/cornerRadius"
+                    android:background="@drawable/svg_add_photo"
+                    style="@style/addPhotoBackground"
+                    android:contentDescription="Añadir imagen de la actividad tranquilizadora" />
+                    <ImageView
+                        android:id="@+id/id_editIconObjeto"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg"></ImageView>
+                </RelativeLayout>
 
 
                 <EditText
@@ -226,14 +294,14 @@
                     android:contentDescription="Campo de texto con nombre de la actividad tranquilizadora"
                     android:fontFamily="@font/montserrat_medium"
                     android:hint="Nombre objeto"
-                    style="@style/cursorBubble"
+                    android:theme="@style/AppTheme.CursorBubble"
                     android:textCursorDrawable="@null"
                     android:inputType="textPersonName"
                     android:textSize="22sp"
                     android:maxLength="10"
                     android:textColor="?colorOnSurface"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/img_objeto"
+                    app:layout_constraintStart_toEndOf="@+id/id_card_Objeto"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_objeto"
                     app:layout_constraintVertical_bias="0.214" />
             </androidx.constraintlayout.widget.ConstraintLayout>

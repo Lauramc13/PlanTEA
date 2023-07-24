@@ -49,7 +49,7 @@
 
         <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
 
-        P
+
         <item name="android:popupBackground">@color/transparent</item>
 
     </style>
@@ -152,5 +152,23 @@
         <item name="background">@color/md_theme_dark_primary</item>
         <item name="android:popupBackground">@color/md_theme_dark_background2</item>
     </style>
+
+    <style name="AppTheme.SearchBar" parent="AppTheme">
+        <item name="android:textColor">@color/md_theme_dark_onSurface</item>
+        <item name="android:textColorHint">@color/md_theme_dark_onSurface</item>
+        <item name="android:editTextColor">@color/md_theme_dark_onSurface</item>
+        <item name="queryHint">@color/md_theme_dark_onSurface</item>
+        <item name="colorAccent">@color/md_theme_dark_primary</item>
+        <item name="backgroundColor">@color/md_theme_dark_background2</item>
+    </style>
+
+    <style name="botonesSecundarios" parent="@style/Widget.Material3.Button">
+        <item name="colorPrimary">@color/md_theme_dark_onSecondaryContainer</item>
+    </style>
+
+    <style name="cards" parent="AppTheme">
+        <item name="android:solidColor">@color/pizarraContenido2</item>
+    </style>
+
 
 </resources>

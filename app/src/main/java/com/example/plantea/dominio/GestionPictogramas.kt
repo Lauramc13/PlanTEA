@@ -53,10 +53,10 @@ class GestionPictogramas : Serializable {
     }
     
 
-    fun insertarPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?) {
+    fun insertarPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarPictograma(nombre, imagen, categoria)
+        conectorBD!!.insertarPictograma(nombre, imagen, categoria, idUsuario)
         conectorBD!!.cerrar()
     }
 
@@ -145,5 +145,12 @@ class GestionPictogramas : Serializable {
         conectorBD!!.abrir()
         conectorBD!!.borrarFavorito(idUsuario, idPicto)
         conectorBD!!.cerrar()
+    }
+    fun getFavorito(actividad: Activity?, idPicto: String?, idUsuario: String?): Boolean {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        val exists = conectorBD!!.getFavorito(idPicto, idUsuario)
+        conectorBD!!.cerrar()
+        return exists
     }
 }

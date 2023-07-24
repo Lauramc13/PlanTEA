@@ -128,7 +128,13 @@
         <item name="backgroundTint">@color/md_theme_light_onSurfaceVariant</item>
     </style>
 
-    <style name="colorSpinner" parent="">
+    <style name="Theme.MyTheme.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:textColorHint">@android:color/black</item>
+        <!-- your other custom widget styles -->
+    </style>
+
+    <style name="colorSpinner" parent="Widget.AppCompat.SearchView">
+        <item name="android:actionBarWidgetTheme">@style/Theme.MyTheme.Widget</item>
         <item name="android:textColor">@color/md_theme_light_onSurface</item>
         <item name="android:textColorHint">@color/md_theme_light_onSurface</item>
         <item name="android:editTextColor">@color/md_theme_light_onSurface</item>
@@ -151,8 +157,19 @@
         <item name="android:windowExitAnimation">@null</item>
     </style>
 
-    <style name="cursorBubble">
-        <item name="backgroundTint">@color/md_theme_light_primary</item>
+    <style name="AppTheme.CursorBubble" parent="AppTheme">
+    <item name="backgroundTint">@color/md_theme_light_primary</item>
+        <item name="colorAccent">@color/md_theme_light_primary</item>
+    </style>
+
+    <style name="AppTheme.SearchBar" parent="AppTheme">
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+        <item name="android:textColorHint">@color/md_theme_light_onSurface</item>
+        <item name="android:editTextColor">@color/md_theme_light_onSurface</item>
+        <item name="queryHint">@color/md_theme_light_onSurface</item>
+        <item name="colorAccent">@color/md_theme_light_primary</item>
+        <item name="backgroundColor">@color/white</item>
+
     </style>
 
     <style name="backgroundEventos">
@@ -189,5 +206,27 @@
         <item name="iconTint">@color/background2</item>
     </style>
 
+
+    <style name="calendarTheme" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:background">@color/md_theme_light_primary</item>
+        <item name="android:textColor">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="android:colorControlActivated">@color/md_theme_dark_primaryContainer</item> <!--selected day-->
+        <item name="android:textColorPrimary">@color/md_theme_light_onPrimaryContainer</item> <!--days of the month-->
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+        <item name="backgroundColor">@color/md_theme_dark_primaryContainer</item>
+        <item name="backgroundStacked">@color/md_theme_dark_primaryContainer</item>
+    </style>
+
+    <style name="botonesSecundarios" parent="@style/Widget.Material3.Button">
+        <item name="colorPrimary">@color/md_theme_light_primary3</item>
+    </style>
+
+    <style name="cards" parent="AppTheme">
+        <item name="android:solidColor">@color/white</item>
+    </style>
 
 </resources>
