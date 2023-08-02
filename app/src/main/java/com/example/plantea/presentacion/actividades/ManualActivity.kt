@@ -68,6 +68,7 @@ class ManualActivity : AppCompatActivity() {
     lateinit var vista: ScrollView
     private lateinit var indice: View
     private lateinit var btn_subir: FloatingActionButton
+    private lateinit var backButton: Button
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
@@ -86,8 +87,12 @@ class ManualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual)
 
-        //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        backButton = findViewById(R.id.goBackButton)
+
+        backButton.setOnClickListener{
+            finish()
+        }
+
         indice = findViewById(R.id.layout_indice)
         vista = findViewById(R.id.scrollview)
         btn_subir = findViewById(R.id.floatingActionButton)

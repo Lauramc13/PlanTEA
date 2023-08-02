@@ -6,14 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/goBackButton"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/svg_go_back"
+        app:iconSize="35dp"
+        app:iconTint="?colorOnSurface"
+        app:backgroundTint="@color/transparent" />
+
+    <TextView
+        android:id="@+id/titleManual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Manual de usuario"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleManual"
         tools:context=".presentacion.actividades.ManualActivity">
 
 
@@ -358,7 +384,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
-<!-- 
+            <!--
             <ImageView
                 android:id="@+id/img_manual15"
                 android:layout_width="match_parent"
@@ -475,7 +501,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
                 app:srcCompat="@drawable/capturamanual241" />
-
 
 
             <TextView
@@ -622,7 +647,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="600dp"
                 app:srcCompat="@drawable/manual_usuario_4" />
-            
+
             <TextView
                 android:id="@+id/lbl_parrafo341"
                 android:layout_width="match_parent"
@@ -762,7 +787,7 @@
                 android:layout_marginBottom="5dp"
                 app:srcCompat="@drawable/manual_usuario_14" /> -->
 
-             <TextView
+            <TextView
                 android:id="@+id/lbl_parrafo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

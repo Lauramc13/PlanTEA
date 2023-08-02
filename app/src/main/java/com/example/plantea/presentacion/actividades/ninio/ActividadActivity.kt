@@ -31,9 +31,8 @@ class ActividadActivity : AppCompatActivity() {
     lateinit var titulo: TextView
     lateinit var cardVideo: CardView
     lateinit var cardObjeto: CardView
-
+    private lateinit var backButton: Button
     lateinit var img_objeto: ImageView
-    // lateinit var img_animacion: ImageView
     lateinit var txt_objeto: TextView
 
     lateinit var btn_logout: Button
@@ -52,11 +51,16 @@ class ActividadActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+       // supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
 
         cardVideo = findViewById(R.id.card_video)
         cardObjeto = findViewById(R.id.card_objeto)
+        backButton = findViewById(R.id.goBackButton)
+
+        backButton.setOnClickListener{
+            finish()
+        }
 
         cardVideo.setOnClickListener{
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"));

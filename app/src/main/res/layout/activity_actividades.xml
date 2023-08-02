@@ -13,8 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/lbl_actividades"
-        android:textSize="30sp"
+        android:textSize="35sp"
         android:contentDescription="Actividades"
+        android:fontFamily="@font/montserrat_bold"
         app:layout_constraintBottom_toTopOf="@+id/img_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -125,5 +126,19 @@
         app:srcCompat="@drawable/svg_blob"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="356dp" />
+
+
+    <Button
+        android:id="@+id/goBackButton"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/svg_go_back"
+        app:iconSize="35dp"
+        app:iconTint="?colorOnSurface"
+        app:backgroundTint="@color/transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

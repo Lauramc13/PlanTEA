@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/montserrat_semibold"
         android:gravity="center"
         android:text="@string/lbl_seleccionaAvatar"
@@ -20,6 +20,22 @@
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbl_planificacion2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:gravity="center"
+        android:text="Elige un avatar para la persona que va a crear y gestionar las planificaciones"
+        android:contentDescription="Titulo de la pantalla selección del avatar del planificado"
+        android:textColor="?colorOnSurface"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_planificacion" />
 
     <Button
         android:id="@+id/btn_galeria"

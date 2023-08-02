@@ -72,7 +72,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.326"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            app:shapeAppearance="@style/cornerRadiusLogin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -97,7 +98,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_Name"
             app:layout_constraintVertical_bias="0.004"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            app:shapeAppearance="@style/cornerRadiusLogin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -118,6 +120,7 @@
             android:inputType="textPassword"
             android:textColor="?colorOnSurface"
             app:endIconMode="password_toggle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,6 +147,7 @@
             android:inputType="textPassword"
             android:textColor="?colorOnSurface"
             app:endIconMode="password_toggle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,6 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="47dp"
+            android:layout_marginBottom="17dp"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/lbl_configuracion_objeto"
@@ -172,30 +177,70 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_objeto"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/fondo_texto_login"
-            android:ems="10"
-            android:fontFamily="@font/montserrat_regular"
-            android:hint="@string/lbl_configuracion_objeto"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txt_password"
-            app:layout_constraintVertical_bias="0.258"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="68dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_objeto"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/fondo_texto_login"
+                android:enabled="false"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/lbl_configuracion_objeto"
                 android:inputType="text"
-                android:textColor="?colorOnSurface" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textColor="?colorOnSurface"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:shapeAppearance="@style/cornerRadiusLogin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:textColor="?colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAyudaActividad"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/txt_objeto"
+                android:gravity="center"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/question_simple"
+                app:iconSize="20dp"
+                app:iconTint="#181F25" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutTooltip"
+                android:layout_width="430dp"
+                android:layout_height="68dp">
+
+                <TextView
+                    android:id="@+id/tooltipText"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="106dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/fragment_personalizado"
+                    android:padding="13dp"
+                    android:text="La actividad tranquilizadora representa el objeto que calma a la persona con TEA"
+                    android:textColor="?colorOnSurface"
+                    android:theme="@style/cards2"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/check_Plaificado"
@@ -227,6 +272,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView9"
             app:layout_constraintVertical_bias="0.258"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:shapeAppearance="@style/cornerRadiusLogin">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -254,4 +300,16 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/goBackButton"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/svg_go_back"
+        app:iconSize="35dp"
+        app:iconTint="?colorOnSurface"
+        app:backgroundTint="@color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

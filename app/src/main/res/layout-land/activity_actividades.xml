@@ -13,12 +13,27 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/lbl_actividades"
-        android:textSize="30sp"
+        android:textSize="35sp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/montserrat_bold"
         android:contentDescription="Actividades"
         app:layout_constraintBottom_toTopOf="@+id/img_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/goBackButton"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/svg_go_back"
+        app:iconSize="35dp"
+        app:iconTint="?colorOnSurface"
+        app:backgroundTint="@color/transparent" />
 
     <LinearLayout
         android:id="@+id/img_video"
@@ -28,6 +43,7 @@
         android:orientation="horizontal"
         android:visibility="visible"
         app:cardBackgroundColor="#B5DFDE"
+        android:layout_marginTop="50dp"
         android:contentDescription="Contenedor con actividades"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

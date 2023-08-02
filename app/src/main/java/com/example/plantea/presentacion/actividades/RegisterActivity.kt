@@ -1,20 +1,23 @@
 package com.example.plantea.presentacion.actividades
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.transition.Slide
+import android.transition.TransitionManager
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.PopupMenu
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.view.animation.PathInterpolator
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
@@ -29,6 +32,11 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txt_objeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
     private lateinit var checkObjeto: SwitchCompat
+    private lateinit var botonAyuda: MaterialButton
+    private lateinit var tooltipText: TextView
+    private lateinit var backButton: Button
+    private var isClicked = true
+
     private var creado: Boolean = false
 
     var usuario = Usuario_Planificador()
@@ -42,9 +50,9 @@ class RegisterActivity : AppCompatActivity(){
           //  val intent = Intent(applicationContext, MainActivity::class.java)
           //  startActivity(intent)
       //  }
-
         setContentView(R.layout.activity_register)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         btnRegister = findViewById(R.id.btn_register)
         txt_name = findViewById(R.id.txt_Name)
         txt_username = findViewById(R.id.txt_UserName)
@@ -54,11 +62,31 @@ class RegisterActivity : AppCompatActivity(){
         txt_nameplanificado = findViewById(R.id.txt_nombreplanificado)
         checkUserPlanificado = findViewById(R.id.check_Plaificado)
         checkObjeto = findViewById(R.id.check_Objeto)
+        botonAyuda = findViewById(R.id.buttonAyudaActividad)
+        tooltipText = findViewById(R.id.tooltipText)
+        backButton = findViewById(R.id.goBackButton)
+
         txt_nameplanificado.isEnabled = false
         txt_objeto.isEnabled = false
         checkUserPlanificado.isChecked = false
         checkObjeto.isChecked = false
 
+        botonAyuda.setOnClickListener{
+            val slideTransition = Slide(Gravity.END)
+            slideTransition.duration = 800
+            val parentView = findViewById<RelativeLayout>(R.id.relativeLayoutTooltip)
+            val pathInterpolator = PathInterpolator(0.2f, 0f, 0f, 1f)
+            slideTransition.interpolator = pathInterpolator
+            TransitionManager.beginDelayedTransition(parentView, slideTransition)
+
+            isClicked = !isClicked
+            updateButtonIcon()
+            if (isClicked) tooltipText.visibility = View.GONE else tooltipText.visibility = View.VISIBLE
+        }
+
+        backButton.setOnClickListener{
+            finish()
+        }
 
         checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
             txt_nameplanificado.isEnabled = isChecked
@@ -150,11 +178,13 @@ class RegisterActivity : AppCompatActivity(){
         return digest.fold("", { str, it -> str + "%02x".format(it) })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> finish()
-        }
-        return true
+    private fun updateButtonIcon() {
+        // Update the button's background based on the state
+        val iconResource = if (isClicked) R.drawable.question_simple else R.drawable.svg_close
+        val iconDrawable = ContextCompat.getDrawable(this, iconResource)
+        botonAyuda.icon = iconDrawable
+
+
     }
 
 }

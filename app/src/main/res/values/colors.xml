@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="seed">#238382</color>
     <color name="seedLight">#72C7C4</color>
     <color name="white">#FFFFFF</color>
@@ -30,6 +30,7 @@
     <color name="md_theme_light_onSurface">#181F25</color>
     <color name="md_theme_light_surfaceVariant">#E0E0E0</color>
     <color name="md_theme_light_onSurfaceVariant">#3B4854</color>
+    <color name="semitransparent">#33000000</color>
     <color name="md_theme_light_outline">#607180</color>
     <color name="md_theme_light_inverseOnSurface">#EFF1F3</color>
     <color name="md_theme_light_inverseSurface">#28343E</color>
@@ -80,6 +81,4 @@
     <color name="pizarraContenido2">#8051EEE9</color>
 
     <color name="veryLight">#C1EBEB</color>
-
-
 </resources>

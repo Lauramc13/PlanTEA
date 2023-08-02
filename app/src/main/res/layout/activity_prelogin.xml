@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
-        android:text="@string/lbl_iniciarSesion"
+        android:text="¡Bienvenido de nuevo!"
         android:textColor="?colorOnSurface"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,6 +70,7 @@
         android:hint="@string/lbl_nombreUsuario"
         android:contentDescription="Campo de texto nombre de usuario"
         android:inputType="text"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,13 +90,14 @@
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/fondo_texto_login"
+        app:shapeAppearance="@style/cornerRadiusLogin"
         android:ems="10"
         android:hint="@string/lbl_contrasena"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:contentDescription="Campo de texto contraseña"
         android:fontFamily="@font/montserrat_regular"
         android:inputType="textPassword"
         android:textColor="?colorOnSurface"
-        app:shapeAppearance="@style/cornerRadiusLogin"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -110,7 +112,7 @@
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="186dp"
+        android:layout_width="350dp"
         android:layout_height="58dp"
         android:fontFamily="@font/montserrat_semibold"
         android:contentDescription="Boton iniciar sesion"
@@ -122,7 +124,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_Password"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <Button
         android:id="@+id/btn_registrar"
@@ -140,7 +142,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.908"/>
+        app:layout_constraintVertical_bias="0.93"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

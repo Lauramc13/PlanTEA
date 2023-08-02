@@ -13,15 +13,17 @@ import android.os.Parcelable
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.util.TypedValue
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,18 +33,20 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.ManualActivity
+import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
+import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener {
+class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener{
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
     lateinit var titulo: TextView
@@ -57,20 +61,23 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var iconoReproducirLento: Button
     lateinit var iconoReproducirRapido: Button
     lateinit var imagenConfeti: ImageView
-    lateinit var card: CardView
-    lateinit var card_cuaderno : CardView
-    lateinit var card_actividades: CardView
+    //lateinit var card_cuaderno: CardView
+    //lateinit var card_actividades: CardView
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
     lateinit var dia: TextView
     lateinit var dialogo_presentacion: ConstraintLayout
-    var textToSpeech: TextToSpeech? = null
-
+   // private lateinit var backButton: Button
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var navigationView2: NavigationView
+    private lateinit var buttonMenu : ImageView
+    //private lateinit var buttonAyuda: LinearLayout
 
     private lateinit var btn_siguienteMes: ImageView
     private lateinit var btn_anteriorMes: ImageView
     private lateinit var calendario: RecyclerView
-    private lateinit var cerrarDialog : ImageView
+    private lateinit var cerrarDialog: ImageView
     private lateinit var fechaActual: TextView
     private lateinit var dias: ArrayList<LocalDate?>
     lateinit var adaptadorCalendario: AdaptadorCalendario
@@ -83,7 +90,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var selectedDate: String
     lateinit var calendarButton: Button
 
-    lateinit var btn_cerrar : ImageView
+    lateinit var btn_cerrar: ImageView
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerViewState: Parcelable? = null
@@ -95,10 +102,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
     val handler = Handler()
     private var currentDialog: Dialog? = null
-    var reproductor : Boolean = false
     private var isRunning = false
     private var currentRunnable: Runnable? = null
     private var currentPosition: Int = 0
+    private lateinit var animFondo: Animation
+    private lateinit var animCard: Animation
+    lateinit var historia: ConstraintLayout
+    //private lateinit var itemMenuBinding: ItemMenuBinding // Replace with your binding class name
+
 
     override fun diaSeleccionado(fecha: LocalDate?) {
         if (fecha != null) {
@@ -118,13 +129,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
     }
 
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        val layoutParams = historia?.layoutParams as? ConstraintLayout.LayoutParams
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
+            layoutParams?.width = 350.dpToPx(this)
+            historia?.layoutParams = layoutParams
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
+            layoutParams?.width = 250.dpToPx(this)
+            historia?.layoutParams = layoutParams
         }
     }
 
@@ -151,8 +166,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     private fun obtenerVistaMes() {
-        fechaActual.text = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada)
-            .uppercase(Locale.getDefault())
+        fechaActual.text =
+            CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada)
+                .uppercase(Locale.getDefault())
         //Calcular días del mes y mostrar
         dias = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
         calendario.layoutManager = GridLayoutManager(this, 7)
@@ -161,8 +177,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        navigationView2.setCheckedItem(R.id.planificacion)
+        navigationView.setCheckedItem(R.id.planificacion)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+       // itemMenuBinding = ItemMenuBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_plan)
 
         //Activamos icono volver atrás
@@ -170,15 +194,178 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
         //Pila de los pasos completados en el seguimiento de un plan
         pasosCompletados = Stack<Int>()
-        iconoCuaderno = findViewById(R.id.img_cuaderno)
-        iconoActividad = findViewById(R.id.img_actividad)
-        card_cuaderno = findViewById(R.id.card_cuaderno)
         iconoDeshacer = findViewById(R.id.icon_deshacer)
         iconoEscuchar = findViewById(R.id.icon_escuchar)
         iconoReproducir = findViewById(R.id.icon_reproducir)
         iconoReproducirLento = findViewById(R.id.icon_reproducir_lento)
         iconoReproducirRapido = findViewById(R.id.icon_reproducir_rapido)
         calendarButton = findViewById(R.id.CalendarDate)
+        buttonMenu = findViewById(R.id.item_menu)
+        //buttonAyuda = findViewById(R.id.ayudaButton)
+
+        drawerLayout = findViewById(R.id.drawerLayout)
+        drawerLayout.setScrimColor(resources.getColor(R.color.semitransparent))
+
+
+        navigationView = findViewById(R.id.navigationView)
+        navigationView2 = findViewById(R.id.navigationView2)
+
+        navigationView2.setCheckedItem(R.id.planificacion)
+        navigationView.setCheckedItem(R.id.planificacion)
+
+
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener {
+                when(it.itemId){
+                    R.id.home -> {
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                        true
+                    }
+
+                    R.id.calendar ->{
+                        startActivity(Intent(applicationContext, CalendarioActivity::class.java))
+                        true
+                    }
+                    R.id.planificacion ->{
+                        true
+                    }
+                    R.id.actividades ->{
+                        startActivity(Intent(applicationContext, ActividadActivity::class.java))
+                        true
+                    }
+                    R.id.cuaderno ->{
+                        startActivity(Intent(applicationContext, CuadernoActivity::class.java))
+                        true
+                    }
+                    R.id.user ->{
+                        startActivity(Intent(applicationContext, ConfiguracionActivity::class.java))
+                        true
+                    }
+
+                    R.id.user ->{
+                        startActivity(Intent(applicationContext, ConfiguracionActivity::class.java))
+                        true
+                    }
+                    R.id.close -> {
+                        val dialogLogout = Dialog(this)
+                        dialogLogout.setContentView(R.layout.dialogo_logout)
+                        dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                        icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                        btn_logout.setOnClickListener {
+                            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                            prefs.edit().clear().apply()
+                            // val editor = prefs.edit()
+                            // editor.putBoolean("userAccount", false)
+                            // editor.apply()
+                            val login = Intent(applicationContext, PreLoginActivity::class.java)
+                            startActivity(login)
+                        }
+                        icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                        dialogLogout.show()
+                        true
+                    }
+                    else -> {true}
+                }
+            }
+        }
+
+        if (navigationView2 != null) {
+            navigationView2.setNavigationItemSelectedListener {
+                when(it.itemId){
+                    R.id.home -> {
+                        startActivity(Intent(applicationContext, MainActivity::class.java))
+                        true
+                    }
+                    R.id.calendar ->{
+                        startActivity(Intent(applicationContext, CalendarioActivity::class.java))
+                        true
+                    }
+                    R.id.planificacion ->{
+                        true
+                    }
+                    R.id.actividades ->{
+                        startActivity(Intent(applicationContext, ActividadActivity::class.java))
+                        true
+                    }
+                    R.id.cuaderno ->{
+                        startActivity(Intent(applicationContext, CuadernoActivity::class.java))
+                        true
+                    }
+                    R.id.user ->{
+                        startActivity(Intent(applicationContext, ConfiguracionActivity::class.java))
+                        true
+                    }
+
+                    R.id.user ->{
+                        startActivity(Intent(applicationContext, ConfiguracionActivity::class.java))
+                        true
+                    }
+                    R.id.close -> {
+                        val dialogLogout = Dialog(this)
+                        dialogLogout.setContentView(R.layout.dialogo_logout)
+                        dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+                        icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+                        btn_logout.setOnClickListener {
+                            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                            prefs.edit().clear().apply()
+                            // val editor = prefs.edit()
+                            // editor.putBoolean("userAccount", false)
+                            // editor.apply()
+                            val login = Intent(applicationContext, PreLoginActivity::class.java)
+                            startActivity(login)
+                        }
+                        icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+                        dialogLogout.show()
+                        true
+                    }
+                    else -> {true}
+                }
+            }
+        }
+
+        /******************************************/
+        // Set up the Navigation Drawer toggle
+        val drawerToggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            R.string.open_drawer,
+            R.string.close_drawer
+        )
+        drawerLayout.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+
+        buttonMenu.setOnClickListener {
+            if(drawerLayout.isDrawerOpen(navigationView)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+                navigationView2.visibility = View.VISIBLE
+                buttonMenu.setImageResource(R.drawable.svg_menu)
+            }else{
+                drawerLayout.openDrawer(GravityCompat.START)
+                buttonMenu.setImageResource(R.drawable.svg_close)
+
+            }
+        }
+
+        drawerLayout.addDrawerListener(object : DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+                navigationView2.visibility = View.INVISIBLE
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                buttonMenu.setImageResource(R.drawable.svg_menu)
+                navigationView2.visibility = View.VISIBLE
+
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+        })
+
 
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
@@ -193,10 +380,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val month = monthFormat.format(calendar.time)
         selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
 
-        dia.text = dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + ", " + dayOfMonth + " de " + month
+        dia.text =
+            dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + ", " + dayOfMonth + " de " + month
 
-       // CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
-       // obtenerVistaMes()
+        initializeAnimations()
+
+       /* backButton.setOnClickListener {
+            finish()
+        }*/
 
         calendarButton.setOnClickListener {
             dialog = Dialog(this)
@@ -212,7 +403,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             obtenerVistaMes()
             val prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
             val userId = prefs.getString("idUsuario", "")
-            eventos = userId?.let { evento.obtenerEventos(it, this, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
+            eventos = userId?.let {
+                evento.obtenerEventos(
+                    it,
+                    this,
+                    CalendarioUtilidades.fechaSeleccionada
+                )
+            } as ArrayList<Evento>
 
             btn_anteriorMes.setOnClickListener {
                 CalendarioUtilidades.fechaSeleccionada =
@@ -229,7 +426,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             dialog!!.show()
         }
 
-        card_actividades = findViewById(R.id.card_actividad)
+
+        //card_actividades = findViewById(R.id.card_actividad)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         recyclerView.layoutManager = layoutManagerLinear
@@ -246,7 +444,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         if (parametros != null) {
             Log.d("asf", "paso por aqui")
             titulo.text = intent.getStringExtra("titulo")
-            listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
+            listaPictogramas =
+                (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
             adaptador = AdaptadorPresentacion(listaPictogramas, this)
             recyclerView.adapter = adaptador
             lblMensaje.visibility = View.INVISIBLE
@@ -260,15 +459,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
 
         //Este método se ejecutará al seleccionar el icono cuaderno para acceder
-        card_cuaderno.setOnClickListener {
-            val intent = Intent(applicationContext, CuadernoActivity::class.java)
-            startActivity(intent)
-        }
+        // card_cuaderno.setOnClickListener {
+        //     val intent = Intent(applicationContext, CuadernoActivity::class.java)
+        //     startActivity(intent)
+        // }
 
-        card_actividades.setOnClickListener{
-            val intent = Intent(applicationContext, ActividadActivity::class.java)
-            startActivity(intent)
-        }
+        // card_actividades.setOnClickListener {
+        //     val intent = Intent(applicationContext, ActividadActivity::class.java)
+        //     startActivity(intent)
+        // }
 
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
         iconoDeshacer.setOnClickListener {
@@ -278,32 +477,30 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                     recyclerView.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
                 viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
-                viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 1f
-                if(listaPictogramas[posicionUndo].categoria == 9){
-                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card).setBackgroundResource(R.drawable.card_premio)
-                }else if(listaPictogramas[posicionUndo].categoria == 8){
-                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card).setBackgroundResource(R.drawable.card_espera)
-                }else{
-                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card).setBackgroundResource(R.drawable.card_personalizado)
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha =
+                    1f
+                if (listaPictogramas[posicionUndo].categoria == 9) {
+                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                        .setBackgroundResource(R.drawable.card_premio)
+                } else if (listaPictogramas[posicionUndo].categoria == 8) {
+                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                        .setBackgroundResource(R.drawable.card_espera)
+                } else {
+                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                        .setBackgroundResource(R.drawable.card_personalizado)
                 }
                 viewHolderPictogramas.popListClicked()
-                if(pasosCompletados.isEmpty()){
+                if (pasosCompletados.isEmpty()) {
                     iconoDeshacer.isEnabled = false
                 }
             }
         }
         // create an object textToSpeech and adding features into it
-        val textToSpeech = TextToSpeech(this) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                // TextToSpeech is ready to use
-            } else {
-                // Handle initialization failure if needed
-            }
-        }
+        val textToSpeech = TextToSpeech(this) {}
         val delayedSpeechRunnables = mutableListOf<Runnable>()
         var speechInProgress = false
 
-        iconoEscuchar.setOnClickListener{
+        iconoEscuchar.setOnClickListener {
             if (!speechInProgress) {
                 iconoEscuchar.text = "Parar"
                 val delayBetweenSpeech = 2000
@@ -324,19 +521,19 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             }
         }
 
-        iconoReproducir.setOnClickListener{
+        iconoReproducir.setOnClickListener {
             reproduccionLenta = false
             reproduccionRapida = false
             reproducirEvento(4000L)
         }
 
-        iconoReproducirLento.setOnClickListener{
+        iconoReproducirLento.setOnClickListener {
             reproduccionLenta = true
             reproduccionRapida = false
             reproducirEvento(7000L)
         }
 
-        iconoReproducirRapido.setOnClickListener{
+        iconoReproducirRapido.setOnClickListener {
             reproduccionRapida = true
             reproduccionLenta = false
             reproducirEvento(2500L)
@@ -355,7 +552,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         currentRunnable = object : Runnable {
             override fun run() {
                 if (isRunning) {
-                    reproductor = true
                     onItemSeleccionado(currentPosition)
                     currentPosition++
 
@@ -372,12 +568,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     fun stopReproductor() {
-        Log.d("asf", "PASO POR AQUI")
         isRunning = false
-        reproductor = false
         currentRunnable?.let {
             handler.removeCallbacksAndMessages(null)
-            currentRunnable = null}
+            currentRunnable = null
+        }
         currentRunnable = null
         currentPosition = 0
         currentDialog?.dismiss()
@@ -389,7 +584,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val idUsuario = prefs.getString("idUsuario", "")
         //Mostrar la planificación a seguir para el niño
         listaPictogramas = ArrayList()
-        listaPictogramas = idUsuario?.let { plan.mostrarPlanificacion(it, selectedDate, this) } as ArrayList<Pictograma>
+        listaPictogramas = idUsuario?.let {
+            plan.mostrarPlanificacion(
+                it,
+                selectedDate,
+                this
+            )
+        } as ArrayList<Pictograma>
         //Mostrar título de la planificación
         tituloObtenido = plan.obtenerTituloPlan(idUsuario, selectedDate, this)
         titulo.text = tituloObtenido
@@ -411,8 +612,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoReproducir.visibility = View.VISIBLE
             iconoReproducirLento.visibility = View.VISIBLE
             iconoReproducirRapido.visibility = View.VISIBLE
-
-
         }
     }
 
@@ -420,107 +619,94 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         if (currentDialog != null && currentDialog!!.isShowing) {
             currentDialog!!.dismiss()
         }
+
+
         dialog = Dialog(this)
         dialog!!.setContentView(R.layout.dialogo_presentacion)
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         btn_cerrar = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
         val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
-        val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
+        historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
         imagenConfeti = dialog!!.findViewById(R.id.img_confeti)
         mensajePremio = dialog!!.findViewById(R.id.txt_premio)
-        val animFondo = AnimationUtils.loadAnimation(applicationContext, R.anim.confeti)
-        val animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
-
-        //Si es recompensa mostramos el dialogo diferente
-        if (listaPictogramas[posicion].categoria == 9) {
-            imagenConfeti.visibility = View.VISIBLE
-            mensajePremio.visibility = View.VISIBLE
-            imagenConfeti.animation = animFondo
-            card.animation = animCard
-            mensajePremio.animation = animFondo
-        } else if (listaPictogramas[posicion].categoria == 8) {
-            imagenConfeti.visibility = View.VISIBLE
-            mensajePremio.visibility = View.VISIBLE
-            imagenConfeti.setImageResource(R.drawable.svg_espera)
-            mensajePremio.text = "¡Mientras esperamos!"
-            imagenConfeti.animation = animCard
-            card.animation = animCard
-            mensajePremio.animation = animFondo
-        } else {
-            imagenConfeti.visibility = View.INVISIBLE
-            mensajePremio.visibility = View.INVISIBLE
-        }
-
+        dialogo_presentacion = dialog!!.findViewById(R.id.dialogo_presentacion_2)
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
         tituloPictograma.text = listaPictogramas[posicion].titulo
+
+        dialogo_presentacion.clearAnimation()
+        imagenConfeti.clearAnimation()
+        mensajePremio.clearAnimation()
+        imagenConfeti.visibility = View.INVISIBLE
+        mensajePremio.visibility = View.INVISIBLE
+
+
         val textoHistoria = dialog!!.findViewById<TextView>(R.id.lblBubble)
         val avatarHistoria = dialog!!.findViewById<ShapeableImageView>(R.id.avatarBubble)
 
+        // Si tenemos historias
         if (listaPictogramas[posicion].historia != null) {
             textoHistoria.text = listaPictogramas[posicion].historia
             historia.visibility = View.VISIBLE
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            if (prefs.getString("imagenPlanificador", "") === "") {
+                avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            } else {
+                avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+            }
         } else {
             historia.visibility = View.GONE
         }
 
-
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        if (prefs.getString("imagenPlanificador", "") === "") {
-            avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-        } else {
-            avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
-        }
-
         //Añade a la pila el paso completado
-        if (!reproductor){
+        if (!isRunning) {
+            if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
+                animacionesConfeti(listaPictogramas[posicion].categoria)
+            }
+
             pasosCompletados.push(posicion)
-            if(posicion == 0){
+            if (posicion == 0) {
                 iconoDeshacer.isEnabled = true
             }
-            card = dialog!!.findViewById(R.id.card_presentacion)
             currentDialog = dialog
 
             //Botón cerrar
             btn_cerrar.setOnClickListener { dialog!!.dismiss() }
             dialog!!.show()
 
-            val orientation = resources.configuration.orientation
-            val layoutParams = historia.layoutParams as ConstraintLayout.LayoutParams
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                layoutParams.width = 350.dpToPx(this)
-                historia.layoutParams = layoutParams
-            } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                layoutParams.width = 250.dpToPx(this)
-                historia.layoutParams = layoutParams
-            }
-            
-        }else{
-            card = dialog!!.findViewById(R.id.card_presentacion)
-            dialogo_presentacion = dialog!!.findViewById(R.id.dialogo_presentacion_reproductor)
-
-            var showAnimation: Animation
-            var delayBeforeDismiss : Long
+        } else {
+            val showAnimation: Animation
+            val delayBeforeDismiss: Long
             val dismissAnimation = AnimationUtils.makeOutAnimation(this, false)
 
-            if(reproduccionLenta){
-                showAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side_slow)
+            if (reproduccionLenta) {
+                showAnimation =
+                    AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side_slow)
                 delayBeforeDismiss = 3000L
                 dismissAnimation.duration = 1000L
-            }else if(reproduccionRapida){
-                showAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side_fast)
+            } else if (reproduccionRapida) {
+                showAnimation =
+                    AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side_fast)
                 delayBeforeDismiss = 1000L
                 dismissAnimation.duration = 500L
-            }else{
-                showAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side)
+            } else {
+                showAnimation =
+                    AnimationUtils.loadAnimation(applicationContext, R.anim.slide_from_side)
                 delayBeforeDismiss = 2000L
                 dismissAnimation.duration = 500L
             }
 
             dialogo_presentacion.visibility = View.VISIBLE
             dialogo_presentacion.startAnimation(showAnimation)
+            val totalDuration =
+                showAnimation.duration + delayBeforeDismiss + dismissAnimation.duration
 
-            val totalDuration = showAnimation.duration + delayBeforeDismiss + dismissAnimation.duration
+            //Comienza la animacion de los premios
+            if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
+                handler.postDelayed({
+                    animacionesConfeti(listaPictogramas[posicion].categoria)
+                }, showAnimation.duration)
+            }
 
             //Comienza la animación de esconder el pictograma
             handler.postDelayed({
@@ -529,13 +715,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             }, showAnimation.duration + delayBeforeDismiss)
 
             //Cuando se ha terminado la animación pone el pictograma invisible
-            if(posicion != listaPictogramas.size-1){
+            if (posicion != listaPictogramas.size - 1) {
                 handler.postDelayed({
                     dialogo_presentacion.visibility = View.GONE
                 }, totalDuration)
             }
-
-            currentDialog = dialog
 
             //Botón cerrar
             btn_cerrar.setOnClickListener {
@@ -546,54 +730,32 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         dialog!!.show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return true
+    private fun initializeAnimations() {
+        animFondo = AnimationUtils.loadAnimation(applicationContext, R.anim.confeti)
+        animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_ayuda -> {
-                val i = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(i)
-            }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@PlanActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
+    fun animacionesConfeti(categoria: Int) {
 
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> finish()
+        imagenConfeti.visibility = View.VISIBLE
+        mensajePremio.visibility = View.VISIBLE
+
+        imagenConfeti.clearAnimation()
+        mensajePremio.clearAnimation()
+
+        if (categoria == 9) {
+            imagenConfeti.animation = animFondo
+            animFondo.start()
+            mensajePremio.animation = animFondo
+            animFondo.start()
+        } else if (categoria == 8) {
+            imagenConfeti.setImageResource(R.drawable.svg_espera)
+            mensajePremio.text = "¡Mientras esperamos!"
+            imagenConfeti.animation = animCard
+            animCard.start()
+            mensajePremio.animation = animCard
+            animCard.start()
         }
-        return true
     }
+
 }

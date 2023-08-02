@@ -52,7 +52,6 @@ class MenuActivity : AppCompatActivity() {
         configurarOpciones()
 
         //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         cardCalendario.setOnClickListener {
             val intent = Intent(applicationContext, CalendarioActivity::class.java)
             startActivity(intent)

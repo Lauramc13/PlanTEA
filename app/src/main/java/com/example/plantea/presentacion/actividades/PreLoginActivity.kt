@@ -4,8 +4,10 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
@@ -24,30 +26,9 @@ class PreLoginActivity : AppCompatActivity(){
     var usuario = Usuario_Planificador()
     var user = Usuario_Planificador()
 
-
-    //@Deprecated("Deprecated in Java")
-    //override fun onBackPressed() {
-      //  val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-      //  val userAccount = prefs.getBoolean("userAccount", false)
-
-      //  if(userAccount){
-        //    val intent = Intent(applicationContext, MainActivity::class.java)
-          //  startActivity(intent)
-       // }
-
-        //super.onSupportNavigateUp()
-    // }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val userAccount = prefs.getBoolean("userAccount", false)
-
-     //   if(userAccount){
-           // val intent = Intent(applicationContext, MainActivity::class.java)
-         //   startActivity(intent)
-       // }
-
 
 
         setContentView(R.layout.activity_prelogin)
@@ -68,14 +49,23 @@ class PreLoginActivity : AppCompatActivity(){
         btnRegister = findViewById(R.id.btn_registrar)
 
         btnLogin.setOnClickListener {
-            if (username.editText?.text.toString() == "" || password.editText?.text.toString() == "") {
+            username.error = null
+            password.error = null
+            
+            val emptyTextViews = mutableListOf<TextView>()
+
+            if (username.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(username.editText!!)
                 username.error = "ESTO ES UN ERROR"
+            }
+
+            if (password.editText?.text.toString().isEmpty()) {
+                emptyTextViews.add(password.editText!!)
                 password.error = "ESTO ES UN ERROR"
-                Toast.makeText(
-                    applicationContext,
-                    "Tienes que rellenar todos los campos",
-                    Toast.LENGTH_LONG
-                ).show()
+            }
+
+            if (emptyTextViews.isNotEmpty()) {
+                Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             } else {
                 val passCifrada = hashPassword(password.editText?.text.toString())
                 if (usuario.comprobarUsuario(username.editText?.text.toString(), passCifrada, this@PreLoginActivity) == true) {
