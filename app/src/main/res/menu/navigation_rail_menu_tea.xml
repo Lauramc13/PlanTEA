@@ -1,4 +1,3 @@
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
@@ -8,17 +7,10 @@
         android:title="Inicio"/>
 
     <item
-        android:id="@+id/calendar"
-        android:enabled="true"
-        android:checkable="true"
-        android:icon="@drawable/svg_calendardate"
-        android:title="Calendario"/>
-
-    <item
         android:id="@+id/planificacion"
         android:enabled="true"
         android:checkable="true"
-        android:icon="@drawable/svg_heart_filled"
+        android:icon="@drawable/svg_plan"
         android:title="Planificaciones"/>
     <item
         android:id="@+id/actividades"
@@ -33,23 +25,5 @@
         android:icon="@drawable/svg_cuadernocomunicacion"
         android:title="Cuaderno de comunicacion"/>
 
-    <item
-        android:id="@+id/labels_item"
-        android:title="">
-        <menu>
-            <item
-                android:id="@+id/user"
-                android:icon="@drawable/svg_user3"
-                android:title="Preferencias"
-                android:checkable="true" />
-
-            <item
-                android:id="@+id/close"
-                android:icon="@drawable/svg_logout"
-                android:title="Cerrar sesión"
-                android:checkable="true" />
-
-        </menu>
-    </item>
 
 </menu>

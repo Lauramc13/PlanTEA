@@ -91,6 +91,7 @@ class PreLoginActivity : AppCompatActivity(){
                     editor.apply()
                     val intent = Intent(applicationContext, MainActivity::class.java)
                     startActivity(intent)
+                    finish()
                 } else {
                     username.error = "ESTO ES UN ERROR"
                     password.error = "ESTO ES UN ERROR"

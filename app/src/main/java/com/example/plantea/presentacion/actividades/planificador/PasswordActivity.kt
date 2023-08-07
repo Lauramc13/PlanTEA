@@ -25,6 +25,7 @@ class PasswordActivity : AppCompatActivity() {
     private lateinit var btn_guardar: Button
     private var actualizado: Boolean = false
     var usuario = Usuario_Planificador()
+    private lateinit var backButton: Button
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
@@ -43,12 +44,16 @@ class PasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password)
 
-        //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         viejaPass = findViewById(R.id.txt_PassActual)
         nuevaPass = findViewById(R.id.txt_NuevaPass)
         confirmaPass = findViewById(R.id.txt_RepPass)
         btn_guardar = findViewById(R.id.btn_Guardar)
+        backButton = findViewById(R.id.goBackButton)
+
+
+        backButton.setOnClickListener{
+            finish()
+        }
 
         //Este método se ejecutará al seleccionar el boton guardar
         btn_guardar.setOnClickListener {

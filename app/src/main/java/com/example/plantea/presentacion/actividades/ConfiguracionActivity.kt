@@ -46,6 +46,8 @@ class ConfiguracionActivity : AppCompatActivity() {
     private var notificacion_activa = false
     private var info_usuario = false
     private var info_objeto = false
+    private lateinit var backButton: Button
+
 
     private lateinit var iconEditUsuarioTEA : ImageView
     private lateinit var iconEditObjeto : ImageView
@@ -89,9 +91,7 @@ class ConfiguracionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion)
-
-        //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        
         img_usuarioPlanificador = findViewById(R.id.img_FotoPlanificador)
         img_usuarioTEA = findViewById(R.id.img_FotoUsuarioTEA)
         img_objeto = findViewById(R.id.img_objeto)
@@ -106,6 +106,8 @@ class ConfiguracionActivity : AppCompatActivity() {
         semana = findViewById(R.id.checkBox_semana)
         dia = findViewById(R.id.checkBox_dia)
         hora = findViewById(R.id.checkBox_hora)
+        backButton = findViewById(R.id.goBackButton)
+
         txt_UsuarioTEA.isEnabled = false
         img_usuarioTEA.isEnabled = false
         lbl_infoUsuario.isChecked = false
@@ -284,6 +286,10 @@ class ConfiguracionActivity : AppCompatActivity() {
         btn_password.setOnClickListener{
             val password = Intent(applicationContext, PasswordActivity::class.java)
             startActivity(password)
+        }
+
+        backButton.setOnClickListener {
+            finish()
         }
     }
 

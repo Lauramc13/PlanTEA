@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
@@ -34,6 +35,7 @@ class ActividadActivity : AppCompatActivity() {
     private lateinit var backButton: Button
     lateinit var img_objeto: ImageView
     lateinit var txt_objeto: TextView
+    private var navigationHandler = GestionNavegacion()
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
@@ -48,11 +50,17 @@ class ActividadActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        navigationHandler.configurarDatos(this, R.id.actividades)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
        // supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        navigationHandler.inicializarVariables(this, R.id.actividades)
 
         cardVideo = findViewById(R.id.card_video)
         cardObjeto = findViewById(R.id.card_objeto)
@@ -162,6 +170,11 @@ class ActividadActivity : AppCompatActivity() {
             android.R.id.home -> finish()
         }
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationHandler.destroyPopup()
     }
 
 }

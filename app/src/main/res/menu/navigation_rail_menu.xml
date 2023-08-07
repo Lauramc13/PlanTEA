@@ -17,7 +17,7 @@
         android:id="@+id/planificacion"
         android:enabled="true"
         android:checkable="true"
-        android:icon="@drawable/svg_heart_filled"
+        android:icon="@drawable/svg_plan"
         android:title="Planificaciones"/>
     <item
         android:id="@+id/actividades"
@@ -32,21 +32,20 @@
         android:icon="@drawable/svg_cuadernocomunicacion"
         android:title="Cuaderno de comunicacion"/>
 
-
    <item
         android:id="@+id/labels_item"
-        android:title="Cuenta">
+        android:title="">
         <menu>
             <item
                 android:id="@+id/user"
-                android:icon="@drawable/svg_user3"
+                android:icon="@drawable/svg_gear"
                 android:title="Preferencias"
                 android:checkable="true" />
 
             <item
-                android:id="@+id/close"
-                android:icon="@drawable/svg_logout"
-                android:title="Cerrar sesión"
+                android:id="@+id/help"
+                android:icon="@drawable/svg_question"
+                android:title="Ayuda"
                 android:checkable="true" />
 
         </menu>

@@ -64,6 +64,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     lateinit var searchBar: SearchView
     lateinit var btn_salir: Button
     lateinit var btn_cancelar: Button
+    private lateinit var backButton: Button
     var categoriaPicto = 0
     var isEdited = false
     var pictograma = Pictograma()
@@ -236,8 +237,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_plan)
 
-        //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         txt_TituloPlan = findViewById(R.id.txt_TituloPlan)
         if(!opcionEditar) {
             txt_TituloPlan.text = "PLANIFICACIÓN"
@@ -246,11 +245,14 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         btn_GuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
         busquedaNula = findViewById(R.id.busquedaNula)
+        backButton = findViewById(R.id.goBackButton)
 
         listaPictogramas = ArrayList()
         listaPlanificacion = ArrayList()
 
-
+        backButton.setOnClickListener{
+            finish()
+        }
 
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

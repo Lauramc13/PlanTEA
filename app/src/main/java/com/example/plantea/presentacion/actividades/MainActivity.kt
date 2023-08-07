@@ -5,23 +5,21 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuBuilder
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
+import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.google.android.material.textfield.TextInputLayout
-import java.security.MessageDigest
 import java.util.*
 
 
@@ -37,6 +35,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardUsuarioPlanificador: CardView
     private lateinit var preferencias: Button
     private lateinit var buttonLogout : Button
+    private lateinit var dialogLogout : Dialog
+    private var navigationHandler = GestionNavegacion()
+
     var usuario = Usuario_Planificador()
     private var info_usuario = false
 
@@ -91,6 +92,7 @@ class MainActivity : AppCompatActivity() {
         cardUsuarioTEA = findViewById(R.id.cardViewUsuarioTEA)
         preferencias = findViewById(R.id.image_RolPlanificador2)
         buttonLogout = findViewById(R.id.btn_logout)
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Preferencias
         configurarDatos()
@@ -98,15 +100,22 @@ class MainActivity : AppCompatActivity() {
         //Este método se ejecutará al pinchar sobre la imagen del rol planificador
         cardUsuarioPlanificador.setOnClickListener {
             if (!info_usuario) {
-                val intent = Intent(applicationContext, MenuActivity::class.java)
+                val editor = prefs.edit()
+                editor.putBoolean("PlanificadorLogged", true)
+                editor.apply()
+                //val intent = Intent(applicationContext, MenuActivity::class.java)
+                val intent = Intent(applicationContext, PlanActivity::class.java)
                 startActivity(intent)
             }else{
-                crearDialogoLogin()
+                navigationHandler.crearDialogoLogin(this)
             }
         }
 
         //Este método se ejecutará al pinchar sobre la imagen del rol niño
         cardUsuarioTEA.setOnClickListener {
+            val editor = prefs.edit()
+            editor.putBoolean("PlanificadorLogged", false)
+            editor.apply()
             val intent = Intent(applicationContext, PlanActivity::class.java)
             startActivity(intent)
         }
@@ -115,64 +124,29 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(applicationContext, ConfiguracionActivity::class.java))
         }
 
+        dialogLogout = Dialog(this)
         buttonLogout.setOnClickListener{
-            val dialogLogout = Dialog(this)
             dialogLogout.setContentView(R.layout.dialogo_logout)
             dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             btn_logout = dialogLogout.findViewById(R.id.btn_logout)
             icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
             btn_logout.setOnClickListener {
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 prefs.edit().clear().apply()
-                startActivity(Intent(applicationContext, PreLoginActivity::class.java))
+                val intent = Intent(this, PreLoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                finishAffinity()
             }
             icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
             dialogLogout.show()
         }
-
-        /*ayuda.setOnClickListener{
-            startActivity(Intent(applicationContext, ManualActivity::class.java))
-        }*/
     }
 
-    fun crearDialogoLogin() {
-        val dialogLogin = Dialog(this)
-        dialogLogin.setContentView(R.layout.dialogo_login)
-        dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        password = dialogLogin.findViewById(R.id.txt_Password)
-        btn_acceder = dialogLogin.findViewById(R.id.btn_login)
-        icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
-        btn_acceder.setOnClickListener {
-            if (password.editText?.text.toString() == "") {
-                Toast.makeText(applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
-                    .show()
-            } else {
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                val username = prefs.getString("username", "")
-                if(username != null){
-                    val passCifrada = hashPassword(password.editText?.text.toString())
-                    val passCorrecta = usuario.comprobarPass(username, passCifrada, this@MainActivity)
-                    if (passCorrecta) {
-                        val editor = prefs.edit()
-                        editor.putBoolean("PlanificadorLogged", true)
-                        editor.apply()
-                        //val intent = Intent(applicationContext, TutorialActivity::class.java)
-                        startActivity(Intent(applicationContext, MenuActivity::class.java))
-                        dialogLogin.dismiss()
-                    } else {
-                        Toast.makeText(applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
+    override fun onDestroy() {
+        super.onDestroy()
+        if (dialogLogout.isShowing) {
+            dialogLogout.dismiss()
         }
-        icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
-        dialogLogin.show()
     }
 
-    private fun hashPassword(password: String): String {
-        val bytes = password.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.fold("") { str, it -> str + "%02x".format(it) }
-    }
 }

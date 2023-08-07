@@ -2,4 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="design_navigation_separator_vertical_padding">1dp</dimen>
 
+    <dimen name="new_navigation_width"> 300dp</dimen>
+    <dimen name="old_navigation_width"> 80dp</dimen>
+
 </resources>

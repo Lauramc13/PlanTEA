@@ -25,6 +25,7 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoMesAnio
 import com.example.plantea.dominio.CalendarioUtilidades.formatoMesEvento
 import com.example.plantea.dominio.CalendarioUtilidades.obtenerDiasMes
 import com.example.plantea.dominio.Evento
+import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.onAlarmReceiver
 import com.example.plantea.presentacion.EventoInterface
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
@@ -51,19 +52,27 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     lateinit var prefs: SharedPreferences
     lateinit var alarmManager: AlarmManager
     var evento = Evento()
+    private var navigationHandler = GestionNavegacion()
+    private lateinit var backButton: Button
+
 
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
+
+    override fun onResume() {
+        super.onResume()
+        navigationHandler.configurarDatos(this, R.id.calendar)
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario)
 
-        //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
         //Recuperamos la informacion sobre notificación
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
+        navigationHandler.inicializarVariables(this, R.id.calendar)
 
         //Crear canal para las notificaciones
         crearCanalNotificacion()
@@ -71,6 +80,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         fechaActual = findViewById(R.id.lbl_mes)
         btn_siguienteMes = findViewById(R.id.image_calendar_siguiente)
         btn_anteriorMes = findViewById(R.id.image_calendar_anterior)
+        backButton = findViewById(R.id.goBackButton)
 
         //Iniciamos con el fragment principal
         if (savedInstanceState == null) {
@@ -95,6 +105,11 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
                 NuevoEventoFragment()
             }
         }
+
+        backButton.setOnClickListener{
+            finish()
+        }
+
         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
         obtenerVistaMes()
         btn_anteriorMes.setOnClickListener {
@@ -270,4 +285,10 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     companion object {
         private const val CHANNEL_ID = "PlanTEA"
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationHandler.destroyPopup()
+    }
+
 }

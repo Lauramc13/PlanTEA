@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
@@ -42,6 +44,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login: ImageView
     lateinit var termometro: View
+    private var navigationHandler = GestionNavegacion()
+    private lateinit var backButton: Button
+
+
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -54,12 +60,18 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        navigationHandler.configurarDatos(this, R.id.cuaderno)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cuaderno)
+        navigationHandler.inicializarVariables(this, R.id.cuaderno)
+        backButton = findViewById(R.id.goBackButton)
 
-        //Activamos icono volver atrás
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         listaPictogramas = ArrayList()
         listaEscala = ArrayList()
         fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
@@ -80,6 +92,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         }
         //Pictogramas en la parte de arriba del cuaderno
         iniciarListaEscala()
+
+        backButton.setOnClickListener{
+            finish()
+        }
     }
 
     //Menu principal
@@ -204,5 +220,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
             android.R.id.home -> finish()
         }
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationHandler.destroyPopup()
     }
 }

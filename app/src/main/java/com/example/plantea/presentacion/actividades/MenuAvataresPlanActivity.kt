@@ -97,7 +97,6 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     private fun next(){
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if(prefs.getBoolean("editPreferences", false) === true){
-
             finish()
         }else{
             if (prefs.getBoolean("info_usuario", false) === true){ 
