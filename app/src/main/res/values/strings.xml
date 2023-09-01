@@ -108,16 +108,17 @@
     <string name="lbl_reproducir">Reproducir</string>
 
     <string name="lbl_cuaderno">Cuaderno de comunicación</string>
-    <string name="lbl_iniciarSesion">Iniciar sesión</string>
+    <string name="lbl_iniciarSesion">INICIAR SESIÓN</string>
     <string name="lbl_noCuenta">¿No tienes cuenta? Regístrate aquí</string>
     <string name="lbl_nombreUsuario">Nombre de usuario</string>
+    <string name="lbl_email">Correo electónico</string>
     <string name="lbl_contrasena">Contraseña</string>
     <string name="lbl_registrarse">Registrarse</string>
     <string name="lbl_datosPlanificador">Datos del planificador </string>
     <string name="lbl_datosPlanificado">Datos del planificado</string>
     <string name="lbl_datosNombre">Nombre</string>
     <string name="lbl_datosContraseña">Volver a introducir la contraseña</string>
-    <string name="lbl_crearCuenta">Crear cuenta</string>
+    <string name="lbl_crearCuenta">CREAR CUENTA</string>
 
     <string name="lbl_eliminarEvento">Eliminar evento</string>
     <string name="lbl_eliminarEventoMensaje">¿Seguro que deseas eliminar el evento seleccionado?</string>
@@ -144,4 +145,6 @@
     <string name="lbl_mientras_esperamos">¡Mientras esperamos!</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="client_id_google">221708139178-82tutq1j1ptrvdpl1ru5hkl9vltp0t90.apps.googleusercontent.com</string>
 </resources>

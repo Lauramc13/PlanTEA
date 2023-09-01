@@ -37,8 +37,7 @@ class MenuObjetosActivity : AppCompatActivity() {
 
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            abrirGaleria() 
+            abrirGaleria()
             if(imagenSeleccionada){
                next()
             }else{
@@ -98,6 +97,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         }else{
             val intent = Intent(applicationContext, TutorialActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

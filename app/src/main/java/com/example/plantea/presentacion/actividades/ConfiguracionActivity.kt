@@ -64,13 +64,13 @@ class ConfiguracionActivity : AppCompatActivity() {
 
     fun configurarDatos(){
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        if (prefs.getString("imagenPlanificador", "") === "") {
+        if (prefs.getString("imagenPlanificador", "") == "") {
             img_usuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
         } else {
             img_usuarioPlanificador.background = null
             img_usuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
         }
-        if (prefs.getString("imagenUsuarioTEA", "") === "") {
+        if (prefs.getString("imagenUsuarioTEA", "") == "") {
             img_usuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
             iconEditUsuarioTEA.visibility = View.GONE
         } else {
@@ -78,7 +78,7 @@ class ConfiguracionActivity : AppCompatActivity() {
             img_usuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
             iconEditUsuarioTEA.visibility = View.VISIBLE
         }
-        if (prefs.getString("imagenObjeto", "") === "") {
+        if (prefs.getString("imagenObjeto", "") == "") {
             img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
             iconEditObjeto.visibility = View.GONE
         } else {
@@ -118,7 +118,6 @@ class ConfiguracionActivity : AppCompatActivity() {
 
         //Preferencias
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-
 
         //Recuperamos la información cuando no es la primera vez de acceso.
         //val userAccount = prefs.getBoolean("userAccount", false)
@@ -277,7 +276,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.apply()
 
                 val idUsuario = prefs.getString("idUsuario", "")
-                usuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario, this)
+                usuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
 
                 finish()
             }

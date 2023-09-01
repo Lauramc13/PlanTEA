@@ -82,23 +82,39 @@ class PasswordActivity : AppCompatActivity() {
             if (emptyTextViews.isNotEmpty()) {
                 Toast.makeText(applicationContext, "Debes completar todos los campos",  Toast.LENGTH_LONG).show()
             } else {
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                val username = prefs.getString("username", "")
-                if (username != null){
-                    val passCifrada = hashPassword(confirmaPass.editText?.text.toString())
-                    val nuevaPassCifrada = hashPassword(nuevaPass.editText?.text.toString())
-                    actualizado = usuario.confirmarPass(username, viejaPass.editText?.text.toString(), nuevaPassCifrada, passCifrada, this@PasswordActivity)
+                if(nuevaPass.editText?.text.toString() != confirmaPass.editText?.text.toString()){
+                    Toast.makeText(applicationContext, "Las contraseñas no coinciden",  Toast.LENGTH_LONG).show()
+                    nuevaPass.error = "ESTO ES UN ERROR"
+                    confirmaPass.error = "ESTO ES UN ERROR"
                 }
-                if (actualizado) {
-                    Toast.makeText(applicationContext, "Contraseña actualizada", Toast.LENGTH_LONG)
-                        .show()
-                    finish()
-                } else {
-                    Toast.makeText(
-                        applicationContext,
-                        "Error al actualizar. Introduce de nuevo los datos. ",
-                        Toast.LENGTH_LONG
-                    ).show()
+                else {
+                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                    val email = prefs.getString("email", "")
+                    if (email != null) {
+                        val passCifrada = hashPassword(viejaPass.editText?.text.toString())
+                        val nuevaPassCifrada = hashPassword(nuevaPass.editText?.text.toString())
+                        actualizado = usuario.confirmarPass(
+                            email,
+                            passCifrada,
+                            nuevaPassCifrada,
+                            this@PasswordActivity
+                        )
+                    }
+                    if (actualizado) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Contraseña actualizada",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            "Error al actualizar. Introduce de nuevo los datos. ",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }

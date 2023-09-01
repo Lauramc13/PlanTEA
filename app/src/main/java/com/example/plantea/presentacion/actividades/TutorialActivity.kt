@@ -46,6 +46,7 @@ class TutorialActivity : AppCompatActivity() {
                 btnNext.text = "Finalizar"
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             }else{
                 btnNext.text = "Siguiente"
             }
@@ -55,6 +56,7 @@ class TutorialActivity : AppCompatActivity() {
         btnSkip.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

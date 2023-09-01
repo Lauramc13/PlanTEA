@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var image_UsuarioTEA: ImageView
     private lateinit var conectorBD: ConectorBD
     private lateinit var password: TextInputLayout
+    private lateinit var password2: TextInputLayout
     private lateinit var nombrePlanificador: TextView
     private lateinit var nombreUsuarioTEA: TextView
     private lateinit var btn_acceder: Button
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferencias: Button
     private lateinit var buttonLogout : Button
     private lateinit var dialogLogout : Dialog
+    lateinit var prefs: SharedPreferences
     private var navigationHandler = GestionNavegacion()
 
     var usuario = Usuario_Planificador()
@@ -92,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         cardUsuarioTEA = findViewById(R.id.cardViewUsuarioTEA)
         preferencias = findViewById(R.id.image_RolPlanificador2)
         buttonLogout = findViewById(R.id.btn_logout)
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Preferencias
         configurarDatos()
@@ -107,7 +110,12 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, PlanActivity::class.java)
                 startActivity(intent)
             }else{
-                navigationHandler.crearDialogoLogin(this)
+                val email: String = prefs.getString("email", "") ?: ""
+                if(usuario.comprobarPass(email, "", this)){
+                    crearDialogoNewPass()
+                }else{
+                    navigationHandler.crearDialogoLogin(this)
+                }
             }
         }
 
@@ -147,6 +155,51 @@ class MainActivity : AppCompatActivity() {
         if (dialogLogout.isShowing) {
             dialogLogout.dismiss()
         }
+    }
+
+    fun crearDialogoNewPass() {
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
+        val dialogLogin = Dialog(this)
+        dialogLogin.setContentView(R.layout.dialogo_crear_password)
+        dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        password = dialogLogin.findViewById(R.id.txt_Password)
+        password2 = dialogLogin.findViewById(R.id.txt_Password2)
+        btn_acceder = dialogLogin.findViewById(R.id.btn_login)
+        icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
+        btn_acceder.setOnClickListener {
+            var isValid = true
+            if (password.editText?.text.toString() == "" && password2.editText?.text.toString() == "") {
+                Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
+                isValid = false
+            }
+            if (password.editText?.text.toString() != password2.editText?.text.toString()) {
+                Toast.makeText(
+                    applicationContext,
+                    "Las contraseñas no coinciden",
+                    Toast.LENGTH_LONG
+                ).show()
+                password.error = "ESTO ES UN ERROR"
+                password2.error = "ESTO ES UN ERROR"
+                isValid = false
+            }
+            if(isValid){
+                val email = prefs.getString("email", "")
+                if(email != null){
+                    val passCifrada = navigationHandler.hashPassword(password.editText?.text.toString())
+                    usuario.crearPassword(email, passCifrada, this)
+                    val editor = prefs.edit()
+                    editor.putBoolean("PlanificadorLogged", true)
+                    editor.apply()
+                    startActivity(Intent(baseContext, PlanActivity::class.java))
+                    finish()
+                    finishAffinity()
+                    dialogLogin.dismiss()
+                }
+            }
+        }
+        icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
+        dialogLogin.show()
     }
 
 }

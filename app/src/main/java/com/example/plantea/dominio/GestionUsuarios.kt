@@ -9,42 +9,42 @@ class GestionUsuarios {
     private var resultado = false
 
 
-    fun crearUsuario( name: String?, username: String?,password: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
+    fun crearUsuario( name: String?, email: String?, username: String?,password: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarUsuario(username, name, password, objeto, nameTEA)
+        resultado = conectorBD!!.insertarUsuario(email, username, name, password, objeto, nameTEA)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun comprobarPassword(username:String, password: String, actividad: Activity?): Boolean {
+    fun comprobarPassword(email:String, password: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.consultarPass(username, password)
+        resultado = conectorBD!!.consultarPass(email, password)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun cambiarPassword(username:String, passwordNueva: String, passwordVieja: String, actividad: Activity?): Boolean {
+    fun cambiarPassword(email:String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.actualizarPass(username, passwordNueva, passwordVieja)
+        resultado = conectorBD!!.actualizarPass(email, passwordVieja, passwordNueva)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun comprobarUsuario(username: String, password: String, actividad: Activity?): Boolean? {
+    fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.consultarUsuario(username, password)
+        resultado = conectorBD!!.consultarUsuario(email, password)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun obtenerUsuario(username: String, actividad: Activity?): Usuario_Planificador {
+    fun obtenerUsuario(email: String, actividad: Activity?): Usuario_Planificador {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.obtenerUsuarioExistente(username)
+        var usuario = conectorBD!!.obtenerUsuarioExistente(email)
         conectorBD!!.cerrar()
         return usuario
     }
@@ -73,20 +73,26 @@ class GestionUsuarios {
         return usuario
     }
 
-    fun consultarId(username: String,  actividad: Activity?): String {
+    fun consultarId(email: String,  actividad: Activity?): String? {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuarioId = conectorBD!!.consultarId(username)
+        var usuarioId = conectorBD!!.consultarId(email)
         conectorBD!!.cerrar()
         return usuarioId
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, idUsuario: String?, actividad: Activity?) {
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario)
+        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario)
         conectorBD!!.cerrar()
     }
 
+    fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.crearPassword(email, passCifrada)
+        conectorBD!!.cerrar()
+    }
 
 }

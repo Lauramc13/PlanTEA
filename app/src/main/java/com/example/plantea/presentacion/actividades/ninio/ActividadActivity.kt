@@ -7,15 +7,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
@@ -23,7 +19,6 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
-import org.w3c.dom.Text
 import java.util.*
 
 class ActividadActivity : AppCompatActivity() {
@@ -60,7 +55,7 @@ class ActividadActivity : AppCompatActivity() {
         setContentView(R.layout.activity_actividades)
        // supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        navigationHandler.inicializarVariables(this, R.id.actividades)
+        navigationHandler.inicializarVariables(this, R.id.actividades, ActividadActivity::class.java)
 
         cardVideo = findViewById(R.id.card_video)
         cardObjeto = findViewById(R.id.card_objeto)

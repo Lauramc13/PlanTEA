@@ -3,15 +3,10 @@ package com.example.plantea.presentacion.actividades.planificador
 import android.app.*
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -28,10 +23,6 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.onAlarmReceiver
 import com.example.plantea.presentacion.EventoInterface
-import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.ManualActivity
-import com.example.plantea.presentacion.actividades.MenuActivity
-import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
@@ -72,7 +63,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         //Recuperamos la informacion sobre notificación
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
-        navigationHandler.inicializarVariables(this, R.id.calendar)
+        navigationHandler.inicializarVariables(this, R.id.calendar, CalendarioActivity::class.java)
 
         //Crear canal para las notificaciones
         crearCanalNotificacion()
@@ -128,7 +119,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         menuInflater.inflate(R.menu.menu_principal, menu)
         return true
     }
-
+/*
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_ayuda -> {
@@ -187,7 +178,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
             android.R.id.home -> finish()
         }
         return true
-    }
+    }*/
     private fun obtenerVistaMes() {
         fechaActual.text = formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         //Calcular días del mes y mostrar

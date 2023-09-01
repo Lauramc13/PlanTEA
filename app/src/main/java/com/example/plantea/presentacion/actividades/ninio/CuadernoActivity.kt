@@ -2,13 +2,11 @@ package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -51,13 +49,19 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        val orientation = newConfig.orientation
+        var gridValueManager : Int
 
         // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridValueManager = 5
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
+            gridValueManager = 3
         }
+
+        //lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
     }
 
     override fun onResume() {
@@ -68,7 +72,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cuaderno)
-        navigationHandler.inicializarVariables(this, R.id.cuaderno)
+        navigationHandler.inicializarVariables(this, R.id.cuaderno, CuadernoActivity::class::java)
         backButton = findViewById(R.id.goBackButton)
 
 

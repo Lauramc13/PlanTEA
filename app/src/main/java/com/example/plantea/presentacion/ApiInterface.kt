@@ -1,6 +1,5 @@
 package com.example.plantea.presentacion
 
-import com.example.plantea.dominio.JsonPictograma
 import com.example.plantea.dominio.JsonPictogramaItem
 import okhttp3.ResponseBody
 import retrofit2.Call

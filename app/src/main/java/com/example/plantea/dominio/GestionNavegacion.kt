@@ -16,8 +16,12 @@ import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
 import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import java.security.MessageDigest
 import java.util.*
 
@@ -34,6 +38,9 @@ class GestionNavegacion {
     lateinit var buttonAccount: LinearLayout
     lateinit var prefs: SharedPreferences
     private var isExpanded = true
+    private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+
 
     lateinit var btn_logout : Button
     var popupView : View? = null
@@ -42,43 +49,43 @@ class GestionNavegacion {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
 
         val dialogLogin = Dialog(context)
-            dialogLogin.setContentView(R.layout.dialogo_login)
-            dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            password = dialogLogin.findViewById(R.id.txt_Password)
-            btn_acceder = dialogLogin.findViewById(R.id.btn_login)
-            icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
-            btn_acceder.setOnClickListener {
-                if (password.editText?.text.toString() == "") {
-                    Toast.makeText(context.applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    val username = prefs.getString("username", "")
-                    if(username != null){
-                        val passCifrada = hashPassword(password.editText?.text.toString())
-                        val passCorrecta = usuario.comprobarPass(username, passCifrada, context)
-                        if (passCorrecta) {
-                            val editor = prefs.edit()
-                            editor.putBoolean("PlanificadorLogged", true)
-                            editor.apply()
-                            context.startActivity(Intent(context.baseContext, PlanActivity::class.java))
-                            context.finish()
-                            context.finishAffinity()
-                            dialogLogin.dismiss()
-                        } else {
-                            Toast.makeText(context.applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
-                        }
+        dialogLogin.setContentView(R.layout.dialogo_login)
+        dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        password = dialogLogin.findViewById(R.id.txt_Password)
+        btn_acceder = dialogLogin.findViewById(R.id.btn_login)
+        icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
+        btn_acceder.setOnClickListener {
+            if (password.editText?.text.toString() == "") {
+                Toast.makeText(context.applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
+                    .show()
+            } else {
+                val email = prefs.getString("email", "")
+                if(email != null){
+                    val passCifrada = hashPassword(password.editText?.text.toString())
+                    val passCorrecta = usuario.comprobarPass(email, passCifrada, context)
+                    if (passCorrecta) {
+                        val editor = prefs.edit()
+                        editor.putBoolean("PlanificadorLogged", true)
+                        editor.apply()
+                        context.startActivity(Intent(context.baseContext, PlanActivity::class.java))
+                        context.finish()
+                        context.finishAffinity()
+                        dialogLogin.dismiss()
+                    } else {
+                        Toast.makeText(context.applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
                     }
                 }
             }
-            icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
-            dialogLogin.show()
         }
+        icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
+        dialogLogin.show()
+    }
 
-        private fun hashPassword(password: String): String {
+        fun hashPassword(password: String): String {
             val bytes = password.toByteArray()
             val md = MessageDigest.getInstance("SHA-256")
             val digest = md.digest(bytes)
-            return digest.fold("") { str, it -> str + "%02x".format(it) }
+            return digest.fold("", { str, it -> str + "%02x".format(it) })
         }
 
         fun buttonAccountNavigation(context: AppCompatActivity, it: View, buttonAccount: LinearLayout){
@@ -125,13 +132,23 @@ class GestionNavegacion {
                 btn_logout = dialogLogout.findViewById(R.id.btn_logout)
                 icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                 btn_logout.setOnClickListener {
+                    firebaseAuth = FirebaseAuth.getInstance()
+                    firebaseAuth.signOut()
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .build()
+
+                    val googleSignInClient: GoogleSignInClient =
+                        GoogleSignIn.getClient(context, gso)
+                    googleSignInClient.signOut()
                     prefs.edit().clear().apply()
+                    dialogLogout.dismiss()
                     context.startActivity(Intent(context.baseContext, PreLoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK))
                     context.finish()
                     context.finishAffinity()
                 }
                 icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
                 dialogLogout.show()
+
             }
         }
 
@@ -169,41 +186,45 @@ class GestionNavegacion {
 
     }
 
-    fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity): Boolean {
+    fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity, currentActivity: Class<AppCompatActivity>): Boolean {
         when (itemId) {
             R.id.home -> {
-                context.startActivity(Intent(context.applicationContext, MainActivity::class.java))
-                popupWindow?.dismiss()
+                if (currentActivity != MainActivity::class.java) {
+                    context.startActivity(Intent(context.applicationContext, MainActivity::class.java))
+                    popupWindow.dismiss()
+                }
                 return true
             }
             R.id.calendar -> {
-                context.startActivity(Intent(context.applicationContext, CalendarioActivity::class.java))
-                popupWindow?.dismiss()
+                if (currentActivity != CalendarioActivity::class.java) {
+                    context.startActivity(Intent(context.applicationContext, CalendarioActivity::class.java))
+                    popupWindow.dismiss()
+                }
                 return true
             }
             R.id.planificacion -> {
                 context.startActivity(Intent(context.applicationContext, PlanActivity::class.java))
-                popupWindow?.dismiss()
+                popupWindow.dismiss()
                 return true
             }
             R.id.actividades -> {
                 context.startActivity(Intent(context.applicationContext, ActividadActivity::class.java))
-                popupWindow?.dismiss()
+                popupWindow.dismiss()
                 return true
             }
             R.id.cuaderno -> {
                 context.startActivity(Intent(context.applicationContext, CuadernoActivity::class.java))
-                popupWindow?.dismiss()
+                popupWindow.dismiss()
                 return true
             }
             R.id.user -> {
                 context.startActivity(Intent(context.applicationContext, ConfiguracionActivity::class.java))
-                popupWindow?.dismiss()
+                popupWindow.dismiss()
                 return true
             }
             R.id.help -> {
                 context.startActivity(Intent(context.applicationContext, ManualActivity::class.java))
-                popupWindow?.dismiss()
+                popupWindow.dismiss()
                 return true
             }
 
@@ -230,7 +251,7 @@ class GestionNavegacion {
         navigationView.layoutParams = layoutParams
     }
 
-    fun inicializarVariables(context: AppCompatActivity, id:Int){
+    fun inicializarVariables(context: AppCompatActivity, id:Int, currentActivity: Class<AppCompatActivity>){
         buttonMenu = context.findViewById(R.id.item_menu)
         navigationView = context.findViewById(R.id.navigationView)
         buttonAccount = navigationView.findViewById(R.id.accountButton)
@@ -238,7 +259,7 @@ class GestionNavegacion {
 
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener { item ->
-                onNavigationItemSelected(item.itemId, context)
+                onNavigationItemSelected(item.itemId, context, currentActivity)
             }
         }
 

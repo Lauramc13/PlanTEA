@@ -8,18 +8,6 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.ActividadActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/lbl_actividades"
-        android:textSize="35sp"
-        android:contentDescription="Actividades"
-        android:fontFamily="@font/montserrat_bold"
-        app:layout_constraintBottom_toTopOf="@+id/img_video"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/img_video"

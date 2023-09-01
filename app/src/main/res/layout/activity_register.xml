@@ -83,6 +83,32 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Email"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/fondo_texto_login"
+            android:ems="10"
+            android:fontFamily="@font/montserrat_regular"
+            android:hint="@string/lbl_email"
+            android:inputType="text"
+            android:textColor="?colorOnSurface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_Name"
+            app:layout_constraintVertical_bias="0.004"
+            app:shapeAppearance="@style/cornerRadiusLogin"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:textColor="?colorOnSurface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_UserName"
             android:layout_width="350dp"
             android:layout_height="60dp"
@@ -284,14 +310,16 @@
 
         <Button
             android:id="@+id/btn_register"
-            android:layout_width="186dp"
+            android:layout_width="350dp"
             android:layout_height="52dp"
             android:layout_marginTop="35dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="@string/lbl_crearCuenta"
+            style="@style/Widget.Material3.Button"
+            android:textSize="14sp"
             android:textColor="#203130"
-            app:cornerRadius="25dp"
+            app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

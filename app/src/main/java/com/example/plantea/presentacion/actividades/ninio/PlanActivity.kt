@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
@@ -27,6 +26,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.*
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
+import com.example.plantea.presentacion.adaptadores.AdaptadorNotificaciones
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
@@ -52,6 +52,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var imagenConfeti: ImageView
     lateinit var pasosCompletados: Stack<Int>
     lateinit var adaptador: AdaptadorPresentacion
+    lateinit var adaptadorNot : AdaptadorNotificaciones
     lateinit var dia: TextView
     lateinit var dialogo_presentacion: ConstraintLayout
     private lateinit var backButton: Button
@@ -60,6 +61,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var btn_siguienteMes: ImageView
     private lateinit var btn_anteriorMes: ImageView
     private lateinit var calendario: RecyclerView
+    private lateinit var notificaciones: RecyclerView
     private lateinit var cerrarDialog: ImageView
     private lateinit var fechaActual: TextView
     private lateinit var dias: ArrayList<LocalDate?>
@@ -157,9 +159,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         super.onResume()
         navigationHandler.configurarDatos(this, R.id.planificacion)
         val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
-        if(info_usuario){
+        /*if(info_usuario){
             buttonPlanNuevo.visibility = View.VISIBLE
-        }
+        }*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -177,13 +179,22 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         buttonPlanNuevo = findViewById(R.id.crearPlan)
         backButton = findViewById(R.id.goBackButton)
 
-
-        navigationHandler.inicializarVariables(this, R.id.planificacion)
+        navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity.class)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
+        notificaciones = findViewById(R.id.recycler_notificaciones)
+
+        val dataset = arrayOf("January", "February", "March")
+
+
+        adaptadorNot = AdaptadorNotificaciones(dataset)
+        notificaciones.adapter = adaptadorNot
+
+
+
 
         dia = findViewById(R.id.lbl_dia)
         val calendar = Calendar.getInstance()
@@ -250,7 +261,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         // Restore the RecyclerView state if it was saved before
         if (savedInstanceState != null) {
             recyclerViewState =
-                savedInstanceState.getParcelable("recycler_view_state") //TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
+                savedInstanceState.getParcelable("recycler_view_state") // TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
@@ -258,8 +269,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val parametros = this.intent.extras
         if (parametros != null) {
             titulo.text = intent.getStringExtra("titulo")
-            listaPictogramas =
-                (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
+            listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
             adaptador = AdaptadorPresentacion(listaPictogramas, this)
             recyclerView.adapter = adaptador
             lblMensaje.visibility = View.INVISIBLE
@@ -575,9 +585,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             animCard.start()
         }
     }
+
+
+
     override fun onDestroy() {
         super.onDestroy()
         navigationHandler.destroyPopup()
     }
 
 }
+

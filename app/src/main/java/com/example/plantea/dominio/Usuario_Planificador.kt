@@ -4,6 +4,7 @@ import android.app.Activity
 
 class Usuario_Planificador {
     private var name: String? = null
+    private var email: String? = null
     private var username:String? = null
     private var password: String? = null
     private var objeto: String?= null
@@ -19,8 +20,9 @@ class Usuario_Planificador {
         password = pass
     }
 
-    constructor(nombre:String?, nombreUsuario:String?, pass: String, objet:String?, image:String?, nombreTEA:String?, imageTEA:String?, imageObjeto:String? ){
+    constructor(nombre:String?, correo: String?, nombreUsuario:String?, pass: String, objet:String?, image:String?, nombreTEA:String?, imageTEA:String?, imageObjeto:String? ){
         name = nombre
+        email = correo
         username = nombreUsuario
         password = pass
         imagen = image
@@ -33,6 +35,14 @@ class Usuario_Planificador {
     // Getters
     fun getName(): String? {
         return name
+    }
+
+    fun getEmail(): String? {
+        return email
+    }
+
+    fun getPassword(): String?{
+        return password
     }
 
     fun getUsername(): String? {
@@ -59,31 +69,27 @@ class Usuario_Planificador {
         return imagenObjeto
     }
 
-    fun crearUsuario(name:String?, username: String?, password: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.crearUsuario(name, username, password, objeto, nameTEA, actividad)
+    fun crearUsuario(name:String?, email: String?, username: String?, password: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.crearUsuario(name, email, username, password, objeto, nameTEA, actividad)
         return resultado!!
     }
 
-    fun comprobarPass(username: String, password: String, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.comprobarPassword(username, password, actividad)
+    fun comprobarPass(email: String, password: String, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.comprobarPassword(email, password, actividad)
         return resultado!!
     }
 
-    fun confirmarPass(username: String, passwordVieja: String, passwordNueva: String, passwordConfirma: String, actividad: Activity?): Boolean {
-        resultado = if (passwordNueva == passwordConfirma) {
-            gestorUsuario.cambiarPassword(username, passwordNueva, passwordVieja, actividad)
-        } else {
-            false
-        }
+    fun confirmarPass(email: String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.cambiarPassword(email, passwordVieja, passwordNueva, actividad)
         return resultado!!
     }
 
-    fun comprobarUsuario(username: String, password: String, actividad: Activity?): Boolean? {
-        return gestorUsuario.comprobarUsuario(username, password, actividad)
+    fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
+        return gestorUsuario.comprobarUsuario(email, password, actividad)
     }
 
-    fun obtenerUsuario(username: String, actividad: Activity?): Usuario_Planificador{
-        return gestorUsuario.obtenerUsuario(username, actividad)
+    fun obtenerUsuario(email: String, actividad: Activity?): Usuario_Planificador{
+        return gestorUsuario.obtenerUsuario(email, actividad)
     }
 
     fun aniadirImagenPlanificador(imagen: String, username: String, actividad: Activity?){
@@ -98,13 +104,18 @@ class Usuario_Planificador {
         return gestorUsuario.addImagenObjeto(imagen, username, actividad)
     }
 
-    fun consultarId(username: String, actividad: Activity?): String {
-        return gestorUsuario.consultarId(username, actividad)
+    fun consultarId(email: String, actividad: Activity?): String? {
+        return gestorUsuario.consultarId(email, actividad)
 
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, idUsuario:String?, actividad: Activity?) {
-        return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, idUsuario, actividad)
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario:String?, actividad: Activity?) {
+        return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, actividad)
+    }
+
+    fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
+        return gestorUsuario.crearPassword(email, passCifrada, actividad)
+
     }
 
 }
