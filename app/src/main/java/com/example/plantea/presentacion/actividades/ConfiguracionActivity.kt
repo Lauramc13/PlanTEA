@@ -1,18 +1,13 @@
 package com.example.plantea.presentacion.actividades
 
-import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -27,35 +22,15 @@ import java.io.IOException
 import java.util.*
 
 class ConfiguracionActivity : AppCompatActivity() {
-    private lateinit var img_usuarioPlanificador: ImageView
-    private lateinit var img_usuarioTEA: ImageView
-    private lateinit var img_objeto: ImageView
-    private lateinit var txt_Planificador: TextView
-    private lateinit var txt_UsuarioTEA: TextView
-    private lateinit var txt_objeto: TextView
-    private lateinit var btn_guardar: Button
-    private lateinit var btn_password: Button
-    private lateinit var btn_notificacion: SwitchCompat
-    private lateinit var lbl_infoUsuario: SwitchCompat
-    private lateinit var lbl_objeto: SwitchCompat
-    private lateinit var semana: CheckBox
-    private lateinit var dia: CheckBox
-    private lateinit var hora: CheckBox
-    private var es_planificador = false
-    private var es_objeto = false
-    private var notificacion_activa = false
-    private var info_usuario = false
-    private var info_objeto = false
-    private lateinit var backButton: Button
-
+    lateinit var prefs: SharedPreferences
+    private lateinit var imgUsuarioPlanificador: ImageView
+    private lateinit var imgUsuarioTEA: ImageView
+    private lateinit var imgObjeto: ImageView
 
     private lateinit var iconEditUsuarioTEA : ImageView
     private lateinit var iconEditObjeto : ImageView
 
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
     var usuario = Usuario_Planificador()
-
 
     override fun onResume() {
         super.onResume()
@@ -63,27 +38,27 @@ class ConfiguracionActivity : AppCompatActivity() {
     }
 
     fun configurarDatos(){
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if (prefs.getString("imagenPlanificador", "") == "") {
-            img_usuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            imgUsuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
         } else {
-            img_usuarioPlanificador.background = null
-            img_usuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+            imgUsuarioPlanificador.background = null
+            imgUsuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
         }
         if (prefs.getString("imagenUsuarioTEA", "") == "") {
-            img_usuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            imgUsuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
             iconEditUsuarioTEA.visibility = View.GONE
         } else {
-            img_usuarioTEA.background = null
-            img_usuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+            imgUsuarioTEA.background = null
+            imgUsuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
             iconEditUsuarioTEA.visibility = View.VISIBLE
         }
         if (prefs.getString("imagenObjeto", "") == "") {
-            img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            imgObjeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
             iconEditObjeto.visibility = View.GONE
         } else {
-            img_objeto.background = null
-            img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
+            imgObjeto.background = null
+            imgObjeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
             iconEditObjeto.visibility = View.VISIBLE
         }
     }
@@ -91,158 +66,130 @@ class ConfiguracionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion)
-        
-        img_usuarioPlanificador = findViewById(R.id.img_FotoPlanificador)
-        img_usuarioTEA = findViewById(R.id.img_FotoUsuarioTEA)
-        img_objeto = findViewById(R.id.img_objeto)
-        txt_Planificador = findViewById(R.id.txt_nombrePlanificador)
-        txt_UsuarioTEA = findViewById(R.id.txt_nombreUsuarioTEA)
-        txt_objeto = findViewById(R.id.txt_nombreObjeto)
-        btn_guardar = findViewById(R.id.btn_guardarConfiguracion)
-        btn_password = findViewById(R.id.buttonContrasenia)
-        btn_notificacion = findViewById(R.id.switch_notificacion)
-        lbl_infoUsuario = findViewById(R.id.lbl_infoUsuarioTEA)
-        lbl_objeto = findViewById(R.id.lbl_objeto)
-        semana = findViewById(R.id.checkBox_semana)
-        dia = findViewById(R.id.checkBox_dia)
-        hora = findViewById(R.id.checkBox_hora)
-        backButton = findViewById(R.id.goBackButton)
 
-        txt_UsuarioTEA.isEnabled = false
-        img_usuarioTEA.isEnabled = false
-        lbl_infoUsuario.isChecked = false
-        lbl_objeto.isChecked = false
+        imgUsuarioPlanificador = findViewById(R.id.img_FotoPlanificador)
+        imgUsuarioTEA = findViewById(R.id.img_FotoUsuarioTEA)
+        imgObjeto = findViewById(R.id.img_objeto)
+
+        val txtPlanificador : TextView = findViewById(R.id.txt_nombrePlanificador)
+        val txtUsuarioTEA : TextView  = findViewById(R.id.txt_nombreUsuarioTEA)
+        val txtObjeto: TextView = findViewById(R.id.txt_nombreObjeto)
+        val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
+        val btnPassword : Button= findViewById(R.id.buttonContrasenia)
+        val btnNotificacion : SwitchCompat = findViewById(R.id.switch_notificacion)
+        val lblInfoUsuario : SwitchCompat = findViewById(R.id.lbl_infoUsuarioTEA)
+        val lblObjeto : SwitchCompat = findViewById(R.id.lbl_objeto)
+        val semana : CheckBox = findViewById(R.id.checkBox_semana)
+        val dia : CheckBox = findViewById(R.id.checkBox_dia)
+        val hora : CheckBox = findViewById(R.id.checkBox_hora)
+        val backButton : Button = findViewById(R.id.goBackButton)
+
+        txtUsuarioTEA.isEnabled = false
+        imgUsuarioTEA.isEnabled = false
+        lblInfoUsuario.isChecked = false
+        lblObjeto.isChecked = false
 
         iconEditUsuarioTEA = findViewById(R.id.id_editIconUsuario)
         iconEditObjeto = findViewById(R.id.id_editIconObjeto)
 
         //Preferencias
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Recuperamos la información cuando no es la primera vez de acceso.
         //val userAccount = prefs.getBoolean("userAccount", false)
 
         //Imagenes y nombres
-        txt_Planificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-        txt_UsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-        txt_objeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
-        img_objeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+        txtPlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
+        txtUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
+        txtObjeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+        imgObjeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
         configurarDatos()
 
         //Notificaciones
-        notificacion_activa = prefs.getBoolean("notificaciones", false)
+        val notificacionActiva = prefs.getBoolean("notificaciones", false)
         semana.isChecked = prefs.getBoolean("notificacion_semana", false)
         dia.isChecked = prefs.getBoolean("notificacion_dia", false)
         hora.isChecked = prefs.getBoolean("notificacion_hora", false)
-        if (notificacion_activa) {
-            btn_notificacion.isChecked = true
-            semana.isEnabled = true
-            dia.isEnabled = true
-            hora.isEnabled = true
-        } else {
-            btn_notificacion.isChecked = false
-            semana.isEnabled = false
-            dia.isEnabled = false
-            hora.isEnabled = false
-        }
-        info_usuario = prefs.getBoolean("info_usuario", false)
-        if (info_usuario) {
-            lbl_infoUsuario.isChecked = true
-            txt_UsuarioTEA.isEnabled = true
-            img_usuarioTEA.isEnabled = true
-        } else {
-            lbl_infoUsuario.isChecked = false
-            txt_UsuarioTEA.isEnabled = false
-            img_usuarioTEA.isEnabled = false
-        }
-        info_objeto = prefs.getBoolean("info_objeto", false)
-        if(info_objeto){
-            lbl_objeto.isChecked = true
-            txt_objeto.isEnabled = true
-            img_objeto.isEnabled = true
-        }else{
-            lbl_objeto.isChecked = false
-            txt_objeto.isEnabled = false
-            img_objeto.isEnabled = false
-        }
-        img_usuarioPlanificador.setOnClickListener {
+
+        btnNotificacion.isChecked = notificacionActiva
+        semana.isEnabled = notificacionActiva
+        dia.isEnabled = notificacionActiva
+        hora.isEnabled = notificacionActiva
+
+        val infoUsuario = prefs.getBoolean("info_usuario", false)
+        lblInfoUsuario.isChecked = infoUsuario
+        txtUsuarioTEA.isEnabled = infoUsuario
+        imgUsuarioTEA.isEnabled = infoUsuario
+
+        val infoObjeto = prefs.getBoolean("info_objeto", false)
+        lblObjeto.isChecked = infoObjeto
+        txtObjeto.isEnabled = infoObjeto
+        imgObjeto.isEnabled = infoObjeto
+
+
+        imgUsuarioPlanificador.setOnClickListener {
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
             editor.apply()
             val password = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
             startActivity(password)
         }
-        img_usuarioTEA.setOnClickListener {
+
+        imgUsuarioTEA.setOnClickListener {
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
             editor.apply()
             val password = Intent(applicationContext, MenuAvataresTEActivity::class.java)
             startActivity(password)
         }
-        img_objeto.setOnClickListener {
+
+        imgObjeto.setOnClickListener {
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)
             editor.apply()
             val password = Intent(applicationContext, MenuObjetosActivity::class.java)
             startActivity(password)
         }
-        btn_notificacion.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                //ON
-                semana.isChecked = true
-                semana.isEnabled = true
-                dia.isEnabled = true
-                hora.isEnabled = true
-            } else {
-                //OFF
-                semana.isEnabled = false
-                dia.isEnabled = false
-                hora.isEnabled = false
-            }
-        }
-        lbl_infoUsuario.setOnCheckedChangeListener { _, isChecked ->
-            txt_UsuarioTEA.isEnabled = isChecked
-            img_usuarioTEA.isEnabled = isChecked
+
+        btnNotificacion.setOnCheckedChangeListener { _, isChecked ->
+            semana.isChecked = isChecked
+            semana.isEnabled = isChecked
+            dia.isEnabled = isChecked
+            hora.isEnabled = isChecked
         }
 
-        lbl_objeto.setOnCheckedChangeListener { _, isChecked ->
-            txt_objeto.isEnabled = isChecked
-            img_objeto.isEnabled = isChecked
+        lblInfoUsuario.setOnCheckedChangeListener { _, isChecked ->
+            txtUsuarioTEA.isEnabled = isChecked
+            imgUsuarioTEA.isEnabled = isChecked
         }
-        btn_guardar.setOnClickListener {
-            if (txt_Planificador.text.toString().isEmpty() || txt_UsuarioTEA.text.toString().isEmpty() && lbl_infoUsuario.isChecked
+
+        lblObjeto.setOnCheckedChangeListener { _, isChecked ->
+            txtObjeto.isEnabled = isChecked
+            imgObjeto.isEnabled = isChecked
+        }
+
+        btnGuardar.setOnClickListener {
+            if (txtPlanificador.text.toString().isEmpty() || txtUsuarioTEA.text.toString().isEmpty() && lblInfoUsuario.isChecked
             ) {
-                Toast.makeText(
-                    applicationContext,
-                    "Se necesita un nombre para cada usuario",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else if (img_usuarioPlanificador.drawable == null || img_usuarioTEA.drawable == null && lbl_infoUsuario.isChecked) {
-                Toast.makeText(
-                    applicationContext,
-                    "Se necesita una imagen para cada usuario",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else if ((txt_objeto.text.toString().isEmpty() || img_objeto.drawable == null) && lbl_objeto.isChecked) {
-                Toast.makeText(
-                    applicationContext,
-                    "Se necesita una imagen y nombre del objeto tranquilizador",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(applicationContext, "Se necesita un nombre para cada usuario", Toast.LENGTH_LONG).show()
+            } else if (imgUsuarioPlanificador.drawable == null || imgUsuarioTEA.drawable == null && lblInfoUsuario.isChecked) {
+                Toast.makeText(applicationContext, "Se necesita una imagen para cada usuario", Toast.LENGTH_LONG).show()
+            } else if ((txtObjeto.text.toString().isEmpty() || imgObjeto.drawable == null) && lblObjeto.isChecked) {
+                Toast.makeText(applicationContext, "Se necesita una imagen y nombre del objeto tranquilizador", Toast.LENGTH_LONG).show()
             } else {
 
                 //Obtener nombres de los usuarios y objeto
-                val nombreUsuarioPlanificador = txt_Planificador.text.toString()
-                val nombreUsuarioTEA = txt_UsuarioTEA.text.toString()
-                val nombreObjeto = txt_objeto.text.toString()
-                val rutaPlanificador = crearRuta(img_usuarioPlanificador, "Planificador")
+                val nombreUsuarioPlanificador = txtPlanificador.text.toString()
+                val nombreUsuarioTEA = txtUsuarioTEA.text.toString()
+                val nombreObjeto = txtObjeto.text.toString()
+                val rutaPlanificador = crearRuta(imgUsuarioPlanificador, "Planificador")
                 var rutaUsuarioTEA= ""
                 var rutaObjeto = ""
-                if (lbl_infoUsuario.isChecked) {
-                    rutaUsuarioTEA = crearRuta(img_usuarioTEA, "Usuario")
+                if (lblInfoUsuario.isChecked) {
+                    rutaUsuarioTEA = crearRuta(imgUsuarioTEA, "Usuario")
                 }
-                if (lbl_objeto.isChecked) {
-                    rutaObjeto = crearRuta(img_objeto, "Objeto")
+                if (lblObjeto.isChecked) {
+                    rutaObjeto = crearRuta(imgObjeto, "Objeto")
                 }
 
                 //val intent = Intent(applicationContext, MainActivity::class.java)
@@ -252,7 +199,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val editor = prefs.edit()
                 editor.putBoolean("userAccount", true)
                 editor.putBoolean("iniciadaSesion", true)
-                editor.putBoolean("notificaciones", btn_notificacion.isChecked)
+                editor.putBoolean("notificaciones", btnNotificacion.isChecked)
                 editor.putBoolean("notificacion_semana", semana.isChecked)
                 editor.putBoolean("notificacion_dia", dia.isChecked)
                 editor.putBoolean("notificacion_hora", hora.isChecked)
@@ -261,14 +208,14 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.putString("imagenPlanificador", rutaPlanificador)
                 editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
                 editor.putString("imagenObjeto", rutaObjeto)
-                editor.putBoolean("info_objeto", lbl_objeto.isChecked)
-                editor.putBoolean("info_usuario", lbl_infoUsuario.isChecked)
-                if(lbl_objeto.isChecked){
+                editor.putBoolean("info_objeto", lblObjeto.isChecked)
+                editor.putBoolean("info_usuario", lblInfoUsuario.isChecked)
+                if(lblObjeto.isChecked){
                     editor.putString("nombreObjeto", nombreObjeto)
                 }else{
                     editor.putString("nombreObjeto", "")
                 }
-                if(lbl_infoUsuario.isChecked){
+                if(lblInfoUsuario.isChecked){
                     editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
                 }else{
                     editor.putString("nombreUsuarioTEA", "")
@@ -277,12 +224,11 @@ class ConfiguracionActivity : AppCompatActivity() {
 
                 val idUsuario = prefs.getString("idUsuario", "")
                 usuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
-
                 finish()
             }
         }
 
-        btn_password.setOnClickListener{
+        btnPassword.setOnClickListener{
             val password = Intent(applicationContext, PasswordActivity::class.java)
             startActivity(password)
         }
@@ -290,72 +236,6 @@ class ConfiguracionActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-    }
-
-    //Menu principal
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_ayuda -> {
-                val i = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(i)
-            }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@ConfiguracionActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> finish()
-        }
-        return true
     }
 
     private fun crearRuta(imagen: ImageView?, nombreImagen: String): String {

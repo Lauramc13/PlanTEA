@@ -212,6 +212,7 @@ class ConectorBD(ctx: Context?) {
     //     return db!!.rawQuery("SELECT id, id_usuario, nombre,fecha,hora, id_plan, imagen,visible from Evento", null)
     // }
 
+    /*Listar eventos por usuario*/
     fun listarEventosPorUsuario(idUsuario: String): Cursor {
         val selectionArgs = arrayOf(idUsuario)
         return db!!.rawQuery(
@@ -238,6 +239,7 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT imagen from Pictograma WHERE Pictograma.id_categoria = '$identificador'", null)
     }
 
+    /*Vemos si existe un usuario con el email y contraseña introducida*/
     fun consultarUsuario(email: String, password: String): Boolean {
         val cursor = db!!.rawQuery("SELECT COUNT(*) FROM Usuario_Planificador WHERE email = ? AND password = ?", arrayOf(email, password))
         cursor.moveToFirst()
@@ -247,6 +249,7 @@ class ConectorBD(ctx: Context?) {
     }
 
     @SuppressLint("Range")
+    /*Obtenemos los usuarios existentes con el email que tenemos*/
     fun obtenerUsuarioExistente(email: String): Usuario_Planificador {
         val cursor = db!!.rawQuery("SELECT * from Usuario_Planificador WHERE Usuario_Planificador.email = '$email'", null)
         val usuario: Usuario_Planificador?
@@ -266,6 +269,7 @@ class ConectorBD(ctx: Context?) {
         return usuario
     }
 
+    
     fun addImagen(image: String, username: String ) {
         db!!.execSQL("UPDATE Usuario_Planificador SET imagen ='$image' WHERE Usuario_Planificador.username = '$username'")
     }

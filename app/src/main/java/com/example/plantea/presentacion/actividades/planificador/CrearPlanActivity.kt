@@ -90,7 +90,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Checks the orientation of the screen
+        // Comprobamos la orientacion de la pantalla
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {

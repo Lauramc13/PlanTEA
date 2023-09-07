@@ -40,50 +40,36 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
     lateinit var titulo: TextView
-    lateinit var mensajePremio: TextView
-    lateinit var lblMensaje: TextView
-    lateinit var tituloObtenido: String
-    lateinit var buttonPlanNuevo : Button
-    lateinit var iconoDeshacer: Button
-    lateinit var iconoEscuchar: Button
-    lateinit var iconoReproducir: Button
-    lateinit var iconoReproducirLento: Button
-    lateinit var iconoReproducirRapido: Button
-    lateinit var imagenConfeti: ImageView
-    lateinit var pasosCompletados: Stack<Int>
-    lateinit var adaptador: AdaptadorPresentacion
-    lateinit var adaptadorNot : AdaptadorNotificaciones
-    lateinit var dia: TextView
-    lateinit var dialogo_presentacion: ConstraintLayout
-    private lateinit var backButton: Button
-
+    private lateinit var mensajePremio: TextView
+    private lateinit var lblMensaje: TextView
+    private lateinit var tituloObtenido: String
+    private lateinit var buttonPlanNuevo : Button
+    private lateinit var iconoDeshacer: Button
+    private lateinit var iconoEscuchar: Button
+    private lateinit var iconoReproducir: Button
+    private lateinit var iconoReproducirLento: Button
+    private lateinit var iconoReproducirRapido: Button
+    private lateinit var imagenConfeti: ImageView
+    private lateinit var pasosCompletados: Stack<Int>
+    private lateinit var adaptador: AdaptadorPresentacion
+    private lateinit var adaptadorNot : AdaptadorNotificaciones
+    private lateinit var dia: TextView
+    private lateinit var dialogoPresentacion: ConstraintLayout
     private var navigationHandler = GestionNavegacion()
-    private lateinit var btn_siguienteMes: ImageView
-    private lateinit var btn_anteriorMes: ImageView
     private lateinit var calendario: RecyclerView
     private lateinit var notificaciones: RecyclerView
-    private lateinit var cerrarDialog: ImageView
+    private lateinit var selectedDate: String
+
     private lateinit var fechaActual: TextView
-    private lateinit var dias: ArrayList<LocalDate?>
     lateinit var adaptadorCalendario: AdaptadorCalendario
-    lateinit var eventos: ArrayList<Evento>
-    var evento = Evento()
 
     var reproduccionLenta = false
     var reproduccionRapida = false
-
-    lateinit var selectedDate: String
-    lateinit var calendarButton: Button
-
-    lateinit var btn_cerrar: ImageView
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerViewState: Parcelable? = null
 
     private var dialog: Dialog? = null
-
-    lateinit var btn_logout: Button
-
     val handler = Handler()
     private var currentDialog: Dialog? = null
     private var isRunning = false
@@ -105,7 +91,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault())
             val month = monthFormatter.format(fecha)
 
-            dia.text = dayOfWeek.replaceFirstChar { it.titlecase() } + ", $dayOfMonth de $month"
+            dia.text =  getString(R.string.formatted_date, dayOfWeek, dayOfMonth, month)
             mostrarPlan()
             dialog?.dismiss()
         }
@@ -142,7 +128,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        // Save the RecyclerView state before the activity is destroyed
+        // Guarda el estado del RecyclerView antes de que se destruya la actividad
         recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         outState.putParcelable("recycler_view_state", recyclerViewState)
     }
@@ -150,7 +136,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private fun obtenerVistaMes() {
         fechaActual.text = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         //Calcular días del mes y mostrar
-        dias = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+        val dias : ArrayList<LocalDate?> = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
         calendario.layoutManager = GridLayoutManager(this, 7)
         adaptadorCalendario = AdaptadorCalendario(dias, this)
         calendario.adapter = adaptadorCalendario
@@ -158,8 +144,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     override fun onResume() {
         super.onResume()
         navigationHandler.configurarDatos(this, R.id.planificacion)
-        val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
-        /*if(info_usuario){
+        /*val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
+        if(info_usuario){
             buttonPlanNuevo.visibility = View.VISIBLE
         }*/
     }
@@ -175,11 +161,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         iconoReproducir = findViewById(R.id.icon_reproducir)
         iconoReproducirLento = findViewById(R.id.icon_reproducir_lento)
         iconoReproducirRapido = findViewById(R.id.icon_reproducir_rapido)
-        calendarButton = findViewById(R.id.CalendarDate)
+        val calendarButton : Button = findViewById(R.id.CalendarDate)
+        val backButton : Button = findViewById(R.id.goBackButton)
         buttonPlanNuevo = findViewById(R.id.crearPlan)
-        backButton = findViewById(R.id.goBackButton)
 
-        navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity.class)
+        navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity::class.java)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         titulo = findViewById(R.id.lbl_titulo)
@@ -187,14 +173,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerView = findViewById(R.id.recycler_plan)
         notificaciones = findViewById(R.id.recycler_notificaciones)
 
-        val dataset = arrayOf("January", "February", "March")
 
+        //Haciendo... ******************//
+        val dataset = arrayOf("January", "February", "March")
 
         adaptadorNot = AdaptadorNotificaciones(dataset)
         notificaciones.adapter = adaptadorNot
-
-
-
+        //******************************//
 
         dia = findViewById(R.id.lbl_dia)
         val calendar = Calendar.getInstance()
@@ -205,7 +190,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val month = monthFormat.format(calendar.time)
         selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
 
-        dia.text = dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } + ", " + dayOfMonth + " de " + month
+        dia.text =  getString(R.string.formatted_date, dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, dayOfMonth, month)
 
         initializeAnimations()
 
@@ -219,27 +204,28 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             fechaActual = dialog!!.findViewById(R.id.lbl_mes2)
-            btn_siguienteMes = dialog!!.findViewById(R.id.image_calendar_siguiente2)
-            btn_anteriorMes = dialog!!.findViewById(R.id.image_calendar_anterior2)
+            val btnSiguienteMes: ImageView = dialog!!.findViewById(R.id.image_calendar_siguiente2)
+            val btnAnteriorMes: ImageView = dialog!!.findViewById(R.id.image_calendar_anterior2)
             calendario = dialog!!.findViewById(R.id.recycler_calendario)
-            cerrarDialog = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
+            val cerrarDialog : ImageView = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
             CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
             obtenerVistaMes()
             val userId = prefs.getString("idUsuario", "")
-            eventos = userId?.let {
+            val evento = Evento()
+             userId?.let {
                 evento.obtenerEventos(
                     it,
                     this,
                     CalendarioUtilidades.fechaSeleccionada
                 )
-            } as ArrayList<Evento>
+            }
 
-            btn_anteriorMes.setOnClickListener {
+            btnAnteriorMes.setOnClickListener {
                 CalendarioUtilidades.fechaSeleccionada =
                     CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
                 obtenerVistaMes()
             }
-            btn_siguienteMes.setOnClickListener {
+            btnSiguienteMes.setOnClickListener {
                 CalendarioUtilidades.fechaSeleccionada =
                     CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
                 obtenerVistaMes()
@@ -259,9 +245,10 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerView.layoutManager = layoutManagerLinear
 
         // Restore the RecyclerView state if it was saved before
+        // Restaura el estado del RecyclerView si se guardó antes
         if (savedInstanceState != null) {
             recyclerViewState =
-                savedInstanceState.getParcelable("recycler_view_state") // TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
+                savedInstanceState.getParcelable("recycler_view_state")
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
@@ -319,14 +306,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 }
             }
         }
-        // create an object textToSpeech and adding features into it
+
+        // Crea un objeto textToSpeech y le añade características
         val textToSpeech = TextToSpeech(this) {}
         val delayedSpeechRunnables = mutableListOf<Runnable>()
         var speechInProgress = false
 
         iconoEscuchar.setOnClickListener {
             if (!speechInProgress) {
-                iconoEscuchar.text = "Parar"
+                iconoEscuchar.text = getString(R.string.str_parar)
                 val delayBetweenSpeech = 2000
                 listaPictogramas.forEachIndexed { index, pictograma ->
                     val runnable = Runnable {
@@ -338,7 +326,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 }
                 speechInProgress = true
             } else {
-                iconoEscuchar.text = "Escuchar"
+                iconoEscuchar.text = getString(R.string.str_escuchar)
                 handler.removeCallbacksAndMessages(null)
                 delayedSpeechRunnables.clear()
                 speechInProgress = false
@@ -420,7 +408,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
         adaptador = AdaptadorPresentacion(listaPictogramas, this)
         recyclerView.adapter = adaptador
-        val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
+        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
 
         //Mostrar mensaje si no hay plan
         if (listaPictogramas.isEmpty()) {
@@ -430,7 +418,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoReproducir.visibility = View.INVISIBLE
             iconoReproducirLento.visibility = View.INVISIBLE
             iconoReproducirRapido.visibility = View.INVISIBLE
-            if(info_usuario) {
+            if(infoUsuario) {
                 buttonPlanNuevo.visibility = View.VISIBLE
             }
         } else {
@@ -449,21 +437,20 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             currentDialog!!.dismiss()
         }
 
-
         dialog = Dialog(this)
         dialog!!.setContentView(R.layout.dialogo_presentacion)
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        btn_cerrar = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
+        val btnCerrar : Button = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
         val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
-        historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
+        historia = dialog!!.findViewById(R.id.Bubble)
         imagenConfeti = dialog!!.findViewById(R.id.img_confeti)
         mensajePremio = dialog!!.findViewById(R.id.txt_premio)
-        dialogo_presentacion = dialog!!.findViewById(R.id.dialogo_presentacion_2)
+        dialogoPresentacion = dialog!!.findViewById(R.id.dialogo_presentacion_2)
         pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
         tituloPictograma.text = listaPictogramas[posicion].titulo
 
-        dialogo_presentacion.clearAnimation()
+        dialogoPresentacion.clearAnimation()
         imagenConfeti.clearAnimation()
         mensajePremio.clearAnimation()
         imagenConfeti.visibility = View.INVISIBLE
@@ -499,7 +486,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             currentDialog = dialog
 
             //Botón cerrar
-            btn_cerrar.setOnClickListener { dialog!!.dismiss() }
+            btnCerrar.setOnClickListener { dialog!!.dismiss() }
             dialog!!.show()
 
         } else {
@@ -524,8 +511,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 dismissAnimation.duration = 500L
             }
 
-            dialogo_presentacion.visibility = View.VISIBLE
-            dialogo_presentacion.startAnimation(showAnimation)
+            dialogoPresentacion.visibility = View.VISIBLE
+            dialogoPresentacion.startAnimation(showAnimation)
             val totalDuration =
                 showAnimation.duration + delayBeforeDismiss + dismissAnimation.duration
 
@@ -538,19 +525,19 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
             //Comienza la animación de esconder el pictograma
             handler.postDelayed({
-                dialogo_presentacion.clearAnimation()
-                dialogo_presentacion.startAnimation(dismissAnimation)
+                dialogoPresentacion.clearAnimation()
+                dialogoPresentacion.startAnimation(dismissAnimation)
             }, showAnimation.duration + delayBeforeDismiss)
 
             //Cuando se ha terminado la animación pone el pictograma invisible
             if (posicion != listaPictogramas.size - 1) {
                 handler.postDelayed({
-                    dialogo_presentacion.visibility = View.GONE
+                    dialogoPresentacion.visibility = View.GONE
                 }, totalDuration)
             }
 
             //Botón cerrar
-            btn_cerrar.setOnClickListener {
+            btnCerrar.setOnClickListener {
                 dialog!!.dismiss()
                 stopReproductor()
             }
@@ -564,7 +551,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     fun animacionesConfeti(categoria: Int) {
-
         imagenConfeti.visibility = View.VISIBLE
         mensajePremio.visibility = View.VISIBLE
 
@@ -578,15 +564,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             animFondo.start()
         } else if (categoria == 8) {
             imagenConfeti.setImageResource(R.drawable.svg_espera)
-            mensajePremio.text = "¡Mientras esperamos!"
+            mensajePremio.text = getString(R.string.str_esperar)
             imagenConfeti.animation = animCard
             animCard.start()
             mensajePremio.animation = animCard
             animCard.start()
         }
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()

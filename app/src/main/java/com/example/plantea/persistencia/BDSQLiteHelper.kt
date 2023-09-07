@@ -95,6 +95,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('OFTALMOLOGÍA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_consultas_oftalmologa + "', 1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('ODONTOLOGÍA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_consultas_dentista + "', 1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('LOGOPEDIA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_consultas_logopedia + "', 1)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('KIT DE PELUQUERIA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_kit_peine_tijeras + "', 2)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('CORTES DE PELO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_cortes_pelo + "', 2)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('TRABAJADORES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_trabajadores + "', 2)")
@@ -102,7 +103,6 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('OBJETOS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_objetos_dinero + "', 3)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('EMPLEADOS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_empleados_cajero + "', 3)")
 
-        // COLEGIO = 4
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('UTILES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_utiles_crayones + "', 4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PROFESORES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesores_maestra + "', 4)")
 
@@ -173,10 +173,10 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
 
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('JUGAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_entretenimiento_jugar + "', 8)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('LEER', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_entretenimiento_leer + "', 8)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('JUGAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_recompensa_jugar + "', 9)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('IR AL PARQUE', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_recompensa_parque + "', 9)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('VER LA TELEVISIÓN', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_recompensa_tele + "', 9)")
-        // FAVORITOS = 10
 
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('RECONOCIMIENTO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_revision_reconocimiento + "', 11)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('AUSCULTAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_revision_auscultar + "', 11)")
@@ -185,30 +185,36 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('MIRAR OÍDOS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_revision_miraroidos + "', 11)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PESAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_revision_pesar + "', 11)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('MEDIR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_revision_medir + "', 11)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('MÉDICO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesionales_medico + "', 12)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('LOGOPEDA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesionales_logopeda + "', 12)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('ENFERMERA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesionales_enfermera + "', 12)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('OFTALMÓLOGO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesionales_oculista + "', 12)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('DENTISTA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesionales_dentista + "', 12)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('CELADOR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_profesionales_celador + "', 12)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('DESINFECTAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_vacunacion_desinfectar + "', 13)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('VACUNAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_vacunacion_vacunar + "', 13)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PONER PARCHE', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_vacunacion_parche + "', 13)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PRUEBA ALERGIA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_pruebas_alergia + "', 14)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PRUEBA DE SANGRE', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_pruebas_sangre + "', 14)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('FROTIS GARGANTA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_pruebas_frotisgarganta + "', 14)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('FROTIS NASAL', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_pruebas_frotisnasal + "', 14)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('EXAMEN VISTA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_oculista_examenvista + "', 15)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('GRADUAR VISTA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_oculista_graduarvista + "', 15)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('OFTALMOSCOPIA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_oculista_oftalmoscopia + "', 15)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('OPTOMETRÍA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_oculista_optometria + "', 15)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PONER PARCHE', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_oculista_ponerparche + "', 15)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('REVISIÓN', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_dentista_revisiondentista + "', 16)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('DIENTES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_dentista_dientes + "', 16)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('CARIES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_dentista_caries + "', 16)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('BRACKETS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_dentista_brackets + "', 16)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('ABRIR LA BOCA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_dentista_boca + "', 16)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('SILLÓN', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_dentista_sillon + "', 16)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('ARTICULACIÓN', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_logopeda_articulacion + "', 17)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('SOPLO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_logopedia_soplo + "', 17)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('PRAXIAS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_logopeda_praxias + "', 17)")
@@ -322,6 +328,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('SEMANAS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_semana + "',1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('MESES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_mes + "',1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('AÑO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_anio + "',1)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('MAREO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas_mareo + "',2)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('CANSANCIO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas_cansancio + "',2)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ESCALOFRIOS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas_escalofrios + "',2)")
@@ -337,6 +344,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TAQUICARDIA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas_taquicardia + "',2)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('DIARREA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas_diarrea + "',2)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ESTREÑIMIENTO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas_estrenimiento + "',2)")
+
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('CUELLO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_cuello + "',3)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ESPALDA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_espalda + "',3)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('PECHO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_pecho + "',3)")

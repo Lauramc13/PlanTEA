@@ -3,13 +3,12 @@ package com.example.plantea.presentacion.actividades
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -24,9 +23,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MenuObjetosActivity : AppCompatActivity() {
-
+    lateinit var prefs: SharedPreferences
     private lateinit var btn_galeria: Button
-    private lateinit var btn_saltar: Button
     private var imagenSeleccionada : Boolean = false
     var usuario = Usuario_Planificador()
 
@@ -34,6 +32,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_objetos)
         setAvatarOnClickListeners(listOf("bici", "comida", "futbol","juegos", "libros", "movil", "musica", "recompensa"))
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
@@ -44,21 +43,18 @@ class MenuObjetosActivity : AppCompatActivity() {
                 Toast.makeText(this, "No se ha seleccionado ningun objeto", Toast.LENGTH_SHORT).show()
             }
         }
-        
-        btn_saltar = findViewById(R.id.btn_saltar)
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        if(prefs.getBoolean("editPreferences", false) === true){
-            btn_saltar.text = "Cancelar"
+
+        val btnSaltar : Button = findViewById(R.id.btn_saltar)
+        if(prefs.getBoolean("editPreferences", false)){
+            btnSaltar.text = getString(R.string.str_cancelar)
         }else{
-            btn_saltar.text = "Saltar"
+            btnSaltar.text = getString(R.string.str_saltar)
         }
 
-
-        btn_saltar.setOnClickListener{
-            if(prefs.getBoolean("editPreferences", false) === false) {
+        btnSaltar.setOnClickListener{
+            if(!prefs.getBoolean("editPreferences", false)) {
                 val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val editor = prefs.edit()
                 editor.putString("imagenObjeto", uri.toString())
                 editor.apply()
@@ -74,25 +70,22 @@ class MenuObjetosActivity : AppCompatActivity() {
             val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
             val avatar = findViewById<CardView>(cardViewId)
             avatar.setOnClickListener {
-                val resources = applicationContext.resources
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
-                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val username = prefs.getString("username", true.toString())
                 if (username != null) {
                     usuario.aniadirImagenObjeto(uri.toString(), username, this@MenuObjetosActivity)
                 }
                 val editor = prefs.edit()
                 editor.putString("imagenObjeto", uri.toString())
-                editor.commit()
+                editor.apply()
                 next()
             }
         }
     }
 
     private fun next(){
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        if(prefs.getBoolean("editPreferences", false) === true){
+        if(prefs.getBoolean("editPreferences", false)){
             finish()
         }else{
             val intent = Intent(applicationContext, TutorialActivity::class.java)
@@ -114,7 +107,6 @@ class MenuObjetosActivity : AppCompatActivity() {
             val bitmap = BitmapFactory.decodeStream(inputStream)
 
             val rutaUsuarioTEA = getPathFromUri(this, uri)
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
             val editor = prefs.edit()
             editor.putString("imagenObjeto", rutaUsuarioTEA)
             editor.commit()

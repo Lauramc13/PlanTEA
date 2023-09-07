@@ -39,7 +39,6 @@ class GestionNavegacion {
     lateinit var prefs: SharedPreferences
     private var isExpanded = true
     private lateinit var firebaseAuth: FirebaseAuth
-    lateinit var mGoogleSignInClient: GoogleSignInClient
 
 
     lateinit var btn_logout : Button
@@ -186,52 +185,22 @@ class GestionNavegacion {
 
     }
 
-    fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity, currentActivity: Class<AppCompatActivity>): Boolean {
-        when (itemId) {
-            R.id.home -> {
-                if (currentActivity != MainActivity::class.java) {
-                    context.startActivity(Intent(context.applicationContext, MainActivity::class.java))
-                    popupWindow.dismiss()
-                }
-                return true
-            }
-            R.id.calendar -> {
-                if (currentActivity != CalendarioActivity::class.java) {
-                    context.startActivity(Intent(context.applicationContext, CalendarioActivity::class.java))
-                    popupWindow.dismiss()
-                }
-                return true
-            }
-            R.id.planificacion -> {
-                context.startActivity(Intent(context.applicationContext, PlanActivity::class.java))
-                popupWindow.dismiss()
-                return true
-            }
-            R.id.actividades -> {
-                context.startActivity(Intent(context.applicationContext, ActividadActivity::class.java))
-                popupWindow.dismiss()
-                return true
-            }
-            R.id.cuaderno -> {
-                context.startActivity(Intent(context.applicationContext, CuadernoActivity::class.java))
-                popupWindow.dismiss()
-                return true
-            }
-            R.id.user -> {
-                context.startActivity(Intent(context.applicationContext, ConfiguracionActivity::class.java))
-                popupWindow.dismiss()
-                return true
-            }
-            R.id.help -> {
-                context.startActivity(Intent(context.applicationContext, ManualActivity::class.java))
-                popupWindow.dismiss()
-                return true
-            }
-
-            else -> {
-                return true
-            }
+    fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity, currentActivity: Class<*>): Boolean {
+        val targetActivityClass = when (itemId) {
+            R.id.home -> MainActivity::class.java
+            R.id.calendar -> CalendarioActivity::class.java
+            R.id.planificacion -> PlanActivity::class.java
+            R.id.actividades -> ActividadActivity::class.java
+            R.id.cuaderno -> CuadernoActivity::class.java
+            R.id.user -> ConfiguracionActivity::class.java
+            R.id.help -> ManualActivity::class.java
+            else -> return true
         }
+        if (currentActivity == targetActivityClass) {
+            return true
+        }
+        context.startActivity(Intent(context.applicationContext, targetActivityClass))
+        return true
     }
 
     fun animateNavigationViewWidth(targetWidth: Int) {
@@ -251,7 +220,7 @@ class GestionNavegacion {
         navigationView.layoutParams = layoutParams
     }
 
-    fun inicializarVariables(context: AppCompatActivity, id:Int, currentActivity: Class<AppCompatActivity>){
+    fun inicializarVariables(context: AppCompatActivity, id:Int, currentActivity: Class<*>){
         buttonMenu = context.findViewById(R.id.item_menu)
         navigationView = context.findViewById(R.id.navigationView)
         buttonAccount = navigationView.findViewById(R.id.accountButton)

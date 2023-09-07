@@ -20,51 +20,7 @@ import com.example.plantea.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ManualActivity : AppCompatActivity() {
-    private lateinit var parrafo1: TextView
-    private lateinit var parrafo2: TextView
-    private lateinit var parrafo3: TextView
-    private lateinit var parrafo4: TextView
-    private lateinit var parrafo5: TextView
-    private lateinit var parrafo6: TextView
-    private lateinit var parrafo7: TextView
-    private lateinit var parrafo8: TextView
-    private lateinit var parrafo9: TextView
-    private lateinit var parrafo10: TextView
-    private lateinit var parrafo11: TextView
-    private lateinit var parrafo12: TextView
-    private lateinit var parrafo13: TextView
-    private lateinit var parrafo14: TextView
-    private lateinit var parrafo15: TextView
-    private lateinit var parrafo16: TextView
-    //private lateinit var parrafo17: TextView
-    private lateinit var parrafo18: TextView
-    private lateinit var parrafo19: TextView
-    private lateinit var parrafo20: TextView
-    private lateinit var parrafo21: TextView
-    private lateinit var parrafo22: TextView
-    private lateinit var parrafo23: TextView
-    private lateinit var parrafo24: TextView
-    private lateinit var parrafo241: TextView
-    private lateinit var parrafo25: TextView
-    private lateinit var parrafo26: TextView
-    private lateinit var parrafo27: TextView
-    private lateinit var parrafo28: TextView
-    private lateinit var parrafo29: TextView
-    private lateinit var parrafo30: TextView
-    private lateinit var parrafo31: TextView
-    private lateinit var parrafo32: TextView
-    private lateinit var parrafo33: TextView
-    private lateinit var parrafo34: TextView
-    private lateinit var parrafo341: TextView
-    private lateinit var parrafo35: TextView
-    private lateinit var parrafo36: TextView
-    private lateinit var parrafo37: TextView
-    private lateinit var parrafo38: TextView
-    private lateinit var parrafo39: TextView
-    private lateinit var parrafo40: TextView
-    private lateinit var parrafo41: TextView
-    private lateinit var parrafo42: TextView
-    private lateinit var parrafo43: TextView
+
     lateinit var vista: ScrollView
     private lateinit var indice: View
     private lateinit var btn_subir: FloatingActionButton
@@ -75,7 +31,7 @@ class ManualActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
-        // Checks the orientation of the screen
+        // Comprobamos la orientacion de la pantalla
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -96,53 +52,51 @@ class ManualActivity : AppCompatActivity() {
         indice = findViewById(R.id.layout_indice)
         vista = findViewById(R.id.scrollview)
         btn_subir = findViewById(R.id.floatingActionButton)
-        parrafo1 = findViewById(R.id.lbl_parrafo1)
-        parrafo2 = findViewById(R.id.lbl_parrafo2)
-        parrafo3 = findViewById(R.id.lbl_parrafo3)
-        parrafo4 = findViewById(R.id.lbl_parrafo4)
-        parrafo5 = findViewById(R.id.lbl_parrafo5)
-        parrafo6 = findViewById(R.id.lbl_parrafo6)
-        parrafo7 = findViewById(R.id.lbl_parrafo7)
-        parrafo8 = findViewById(R.id.lbl_parrafo8)
-        parrafo9 = findViewById(R.id.lbl_parrafo9)
-        parrafo10 = findViewById(R.id.lbl_parrafo10)
-        parrafo11 = findViewById(R.id.lbl_parrafo11)
-        parrafo12 = findViewById(R.id.lbl_parrafo12)
-        parrafo13 = findViewById(R.id.lbl_parrafo13)
-        parrafo14 = findViewById(R.id.lbl_parrafo14)
-        parrafo15 = findViewById(R.id.lbl_parrafo15)
-        parrafo16 = findViewById(R.id.lbl_parrafo16)
-        //parrafo17 = findViewById(R.id.lbl_parrafo17)
-        parrafo18 = findViewById(R.id.lbl_parrafo18)
-        parrafo19 = findViewById(R.id.lbl_parrafo19)
-        parrafo20 = findViewById(R.id.lbl_parrafo20)
-        parrafo21 = findViewById(R.id.lbl_parrafo21)
-        parrafo22 = findViewById(R.id.lbl_parrafo22)
-        parrafo23 = findViewById(R.id.lbl_parrafo23)
-        parrafo24 = findViewById(R.id.lbl_parrafo24)
-        parrafo241 = findViewById(R.id.lbl_parrafo241)
-        parrafo25 = findViewById(R.id.lbl_parrafo25)
-        parrafo26 = findViewById(R.id.lbl_parrafo26)
-        parrafo27 = findViewById(R.id.lbl_parrafo27)
-        parrafo28 = findViewById(R.id.lbl_parrafo28)
-        parrafo29 = findViewById(R.id.lbl_parrafo29)
-        parrafo30 = findViewById(R.id.lbl_parrafo30)
-        parrafo31 = findViewById(R.id.lbl_parrafo31)
-        parrafo32 = findViewById(R.id.lbl_parrafo32)
-        parrafo33 = findViewById(R.id.lbl_parrafo33)
-        parrafo34 = findViewById(R.id.lbl_parrafo34)
-        parrafo341 = findViewById(R.id.lbl_parrafo341)
-
-        parrafo35 = findViewById(R.id.lbl_parrafo35)
-        parrafo36 = findViewById(R.id.lbl_parrafo36)
-        parrafo37 = findViewById(R.id.lbl_parrafo37)
-        parrafo38 = findViewById(R.id.lbl_parrafo38)
-        parrafo39 = findViewById(R.id.lbl_parrafo39)
-        parrafo40 = findViewById(R.id.lbl_parrafo40)
-        parrafo41 = findViewById(R.id.lbl_parrafo41)
-        parrafo42 = findViewById(R.id.lbl_parrafo42)
-        parrafo43 = findViewById(R.id.lbl_parrafo43)
-
+        val parrafo1 : TextView = findViewById(R.id.lbl_parrafo1)
+        val parrafo2 : TextView = findViewById(R.id.lbl_parrafo2)
+        val parrafo3 : TextView = findViewById(R.id.lbl_parrafo3)
+        //val parrafo4 : TextView = findViewById(R.id.lbl_parrafo4)
+        val parrafo5 : TextView = findViewById(R.id.lbl_parrafo5)
+        val parrafo6 : TextView = findViewById(R.id.lbl_parrafo6)
+        val parrafo7 : TextView = findViewById(R.id.lbl_parrafo7)
+        val parrafo8 : TextView = findViewById(R.id.lbl_parrafo8)
+        val parrafo9 : TextView = findViewById(R.id.lbl_parrafo9)
+        val parrafo10 : TextView = findViewById(R.id.lbl_parrafo10)
+        val parrafo11 : TextView = findViewById(R.id.lbl_parrafo11)
+        val parrafo12 : TextView = findViewById(R.id.lbl_parrafo12)
+        val parrafo13 : TextView = findViewById(R.id.lbl_parrafo13)
+        val parrafo14 : TextView = findViewById(R.id.lbl_parrafo14)
+        val parrafo15 : TextView = findViewById(R.id.lbl_parrafo15)
+        val parrafo16 : TextView = findViewById(R.id.lbl_parrafo16)
+       // val parrafo17 : TextView = findViewById(R.id.lbl_parrafo17)
+        val parrafo18 : TextView = findViewById(R.id.lbl_parrafo18)
+        val parrafo19 : TextView = findViewById(R.id.lbl_parrafo19)
+        val parrafo20 : TextView = findViewById(R.id.lbl_parrafo20)
+        val parrafo21 : TextView = findViewById(R.id.lbl_parrafo21)
+        val parrafo22 : TextView = findViewById(R.id.lbl_parrafo22)
+        val parrafo23 : TextView = findViewById(R.id.lbl_parrafo23)
+        val parrafo24 : TextView = findViewById(R.id.lbl_parrafo24)
+        val parrafo241 : TextView = findViewById(R.id.lbl_parrafo241)
+        val parrafo25 : TextView = findViewById(R.id.lbl_parrafo25)
+        val parrafo26 : TextView = findViewById(R.id.lbl_parrafo26)
+        val parrafo27 : TextView = findViewById(R.id.lbl_parrafo27)
+        val parrafo28 : TextView = findViewById(R.id.lbl_parrafo28)
+        val parrafo29 : TextView = findViewById(R.id.lbl_parrafo29)
+        val parrafo30 : TextView = findViewById(R.id.lbl_parrafo30)
+        val parrafo31 : TextView = findViewById(R.id.lbl_parrafo31)
+        val parrafo32 : TextView = findViewById(R.id.lbl_parrafo32)
+        val parrafo33 : TextView = findViewById(R.id.lbl_parrafo33)
+        val parrafo34 : TextView = findViewById(R.id.lbl_parrafo34)
+        val parrafo341 : TextView = findViewById(R.id.lbl_parrafo341)
+        val parrafo35 : TextView = findViewById(R.id.lbl_parrafo35)
+        val parrafo36 : TextView = findViewById(R.id.lbl_parrafo36)
+        val parrafo37 : TextView = findViewById(R.id.lbl_parrafo37)
+        val parrafo38 : TextView = findViewById(R.id.lbl_parrafo38)
+        val parrafo39 : TextView = findViewById(R.id.lbl_parrafo39)
+        val parrafo40 : TextView = findViewById(R.id.lbl_parrafo40)
+        val parrafo41 : TextView = findViewById(R.id.lbl_parrafo41)
+        val parrafo42 : TextView = findViewById(R.id.lbl_parrafo42)
+        val parrafo43 : TextView = findViewById(R.id.lbl_parrafo43)
 
         /*1. Descripción de la aplicación PlanTEA*/parrafo1.text = HtmlCompat.fromHtml("<h1>1. Descripción de la aplicación PlanTEA</h1>  PlanTEA es una aplicación móvil que permite planificar y anticipar la asistencia a niños o adultos con Trastorno del Espectro Autista (TEA) a las consultas médicas, así como facilitar la comunicación con los especialistas mediante un cuaderno de comunicación aumentativa y alternativa. <br><br> La aplicación da soporte a dos roles:<br><br>" +
                 "<b>-Planificador:</b> Usuario dirigido a familiares, personal de apoyo o persona con altas capacidades. Este usuario podrá crear planificaciones y gestionarlas mediante un calendario con la posibilidad de recibir notificaciones.<br><br>" +
@@ -287,7 +241,7 @@ class ManualActivity : AppCompatActivity() {
         //textoIcono.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         return textoIcono
     }
-
+/*
     fun onclick_punto_1() {
         vista.scrollTo(0, parrafo1.top)
     }
@@ -380,70 +334,6 @@ class ManualActivity : AppCompatActivity() {
         vista.scrollTo(0, parrafo40.top)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_sin_ayuda, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-
-            //R.id.item_ayuda -> {
-              //  val i = Intent(applicationContext, ManualActivity::class.java)
-              //  startActivity(i)
-            // }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@ManualActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> finish()
-        }
-        return true
-    }
+   */
 
 }

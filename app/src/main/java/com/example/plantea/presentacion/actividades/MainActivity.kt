@@ -25,31 +25,24 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var image_Planificador: ImageView
-    private lateinit var image_UsuarioTEA: ImageView
-    private lateinit var conectorBD: ConectorBD
-    private lateinit var password: TextInputLayout
-    private lateinit var password2: TextInputLayout
+    lateinit var prefs: SharedPreferences
+    private lateinit var imagePlanificador: ImageView
+    private lateinit var imageUsuarioTEA: ImageView
     private lateinit var nombrePlanificador: TextView
     private lateinit var nombreUsuarioTEA: TextView
-    private lateinit var btn_acceder: Button
     private lateinit var cardUsuarioTEA: CardView
     private lateinit var cardUsuarioPlanificador: CardView
-    private lateinit var preferencias: Button
-    private lateinit var buttonLogout : Button
+
     private lateinit var dialogLogout : Dialog
-    lateinit var prefs: SharedPreferences
+    private lateinit var iconoCerrar: ImageView
     private var navigationHandler = GestionNavegacion()
 
     var usuario = Usuario_Planificador()
-    private var info_usuario = false
+    private var infoUsuario = false
 
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
-        // Checks the orientation of the screen
+        // Comprobamos la orientacion de la pantalla
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -63,19 +56,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun configurarDatos(){
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        info_usuario = prefs.getBoolean("info_usuario", false)
-        if (!info_usuario) {
+        infoUsuario = prefs.getBoolean("info_usuario", false)
+        if (!infoUsuario) {
             cardUsuarioTEA.visibility = View.GONE
         }else{
             cardUsuarioTEA.visibility = View.VISIBLE
         }
         nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
         nombreUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-        image_UsuarioTEA.setImageDrawable(null)
-        image_UsuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
-        image_Planificador.setImageDrawable(null)
-        image_Planificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+        imageUsuarioTEA.setImageDrawable(null)
+        imageUsuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+        imagePlanificador.setImageDrawable(null)
+        imagePlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
 
         //val imageUri = Uri.parse(prefs.getString("imagenPlanificador", ""))
         //preferencias.background = Drawable.createFromPath(imageUri.path)
@@ -84,17 +76,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        conectorBD = ConectorBD(this)
+        val conectorBD = ConectorBD(this)
         conectorBD.abrir()
         conectorBD.cerrar()
-        image_Planificador = findViewById(R.id.image_RolPlanificador)
-        image_UsuarioTEA = findViewById(R.id.image_RolTEA)
+        imagePlanificador = findViewById(R.id.image_RolPlanificador)
+        imageUsuarioTEA = findViewById(R.id.image_RolTEA)
         nombrePlanificador = findViewById(R.id.lbl_nombrePlanificador)
         nombreUsuarioTEA = findViewById(R.id.lbl_nombreUsuarioTEA)
         cardUsuarioPlanificador = findViewById(R.id.cardViewPlanificador)
         cardUsuarioTEA = findViewById(R.id.cardViewUsuarioTEA)
-        preferencias = findViewById(R.id.image_RolPlanificador2)
-        buttonLogout = findViewById(R.id.btn_logout)
+        val preferencias: Button = findViewById(R.id.image_RolPlanificador2)
+        val buttonLogout: Button = findViewById(R.id.btn_logout)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Preferencias
@@ -102,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
         //Este método se ejecutará al pinchar sobre la imagen del rol planificador
         cardUsuarioPlanificador.setOnClickListener {
-            if (!info_usuario) {
+            if (!infoUsuario) {
                 val editor = prefs.edit()
                 editor.putBoolean("PlanificadorLogged", true)
                 editor.apply()
@@ -136,16 +128,16 @@ class MainActivity : AppCompatActivity() {
         buttonLogout.setOnClickListener{
             dialogLogout.setContentView(R.layout.dialogo_logout)
             dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-            btn_logout.setOnClickListener {
+            val btnLogout: Button = dialogLogout.findViewById(R.id.btn_logout)
+            iconoCerrar = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+            btnLogout.setOnClickListener {
                 prefs.edit().clear().apply()
                 val intent = Intent(this, PreLoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finishAffinity()
             }
-            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+            iconoCerrar.setOnClickListener { dialogLogout.dismiss() }
             dialogLogout.show()
         }
     }
@@ -163,11 +155,11 @@ class MainActivity : AppCompatActivity() {
         val dialogLogin = Dialog(this)
         dialogLogin.setContentView(R.layout.dialogo_crear_password)
         dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        password = dialogLogin.findViewById(R.id.txt_Password)
-        password2 = dialogLogin.findViewById(R.id.txt_Password2)
-        btn_acceder = dialogLogin.findViewById(R.id.btn_login)
-        icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
-        btn_acceder.setOnClickListener {
+        val password : TextInputLayout = dialogLogin.findViewById(R.id.txt_Password)
+        val password2 :TextInputLayout = dialogLogin.findViewById(R.id.txt_Password2)
+        val btnAcceder : Button = dialogLogin.findViewById(R.id.btn_login)
+        iconoCerrar = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
+        btnAcceder.setOnClickListener {
             var isValid = true
             if (password.editText?.text.toString() == "" && password2.editText?.text.toString() == "") {
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
@@ -198,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
+        iconoCerrar.setOnClickListener { dialogLogin.dismiss() }
         dialogLogin.show()
     }
 

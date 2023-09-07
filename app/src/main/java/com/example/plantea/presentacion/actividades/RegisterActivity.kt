@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.transition.Slide
 import android.transition.TransitionManager
@@ -23,15 +24,15 @@ import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
 class RegisterActivity : AppCompatActivity(){
-
+    lateinit var prefs: SharedPreferences
     private lateinit var btnRegister: Button
-    private lateinit var txt_name : TextInputLayout
-    private lateinit var txt_email: TextInputLayout
-    private lateinit var txt_username : TextInputLayout
-    private lateinit var txt_password : TextInputLayout
-    private lateinit var txt_password2 : TextInputLayout
-    private lateinit var txt_nameplanificado : TextInputLayout
-    private lateinit var txt_objeto : TextInputLayout
+    private lateinit var txtName : TextInputLayout
+    private lateinit var txtEmail: TextInputLayout
+    private lateinit var txtUsername : TextInputLayout
+    private lateinit var txtPassword : TextInputLayout
+    private lateinit var txtPassword2 : TextInputLayout
+    private lateinit var txtNameplanificado : TextInputLayout
+    private lateinit var txtObjeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
     private lateinit var checkObjeto: SwitchCompat
     private lateinit var botonAyuda: MaterialButton
@@ -39,8 +40,9 @@ class RegisterActivity : AppCompatActivity(){
     private var isGoogleUser: Boolean = false
     private lateinit var backButton: Button
     private var isClicked = true
-
     private var creado: Boolean = false
+
+    val emptyTextViews = mutableListOf<TextView>()
 
     var usuario = Usuario_Planificador()
 
@@ -48,33 +50,33 @@ class RegisterActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         btnRegister = findViewById(R.id.btn_register)
-        txt_name = findViewById(R.id.txt_Name)
-        txt_email = findViewById(R.id.txt_Email)
-        txt_username = findViewById(R.id.txt_UserName)
-        txt_password = findViewById(R.id.txt_password)
-        txt_password2 = findViewById(R.id.txt_password2)
-        txt_objeto = findViewById(R.id.txt_objeto)
-        txt_nameplanificado = findViewById(R.id.txt_nombreplanificado)
+        txtName = findViewById(R.id.txt_Name)
+        txtEmail = findViewById(R.id.txt_Email)
+        txtUsername = findViewById(R.id.txt_UserName)
+        txtPassword = findViewById(R.id.txt_password)
+        txtPassword2 = findViewById(R.id.txt_password2)
+        txtObjeto = findViewById(R.id.txt_objeto)
+        txtNameplanificado = findViewById(R.id.txt_nombreplanificado)
         checkUserPlanificado = findViewById(R.id.check_Plaificado)
         checkObjeto = findViewById(R.id.check_Objeto)
         botonAyuda = findViewById(R.id.buttonAyudaActividad)
         tooltipText = findViewById(R.id.tooltipText)
         backButton = findViewById(R.id.goBackButton)
 
-        txt_nameplanificado.isEnabled = false
-        txt_objeto.isEnabled = false
+        txtNameplanificado.isEnabled = false
+        txtObjeto.isEnabled = false
         checkUserPlanificado.isChecked = false
         checkObjeto.isChecked = false
 
         val intent = intent
         isGoogleUser = intent.getBooleanExtra("IS_GOOGLE_USER", false)
         if (isGoogleUser) {
-            txt_email.editText?.setText(intent.getStringExtra("EMAIL"))
-            txt_name.editText?.setText(intent.getStringExtra("NAME"))
-            txt_password.visibility = View.GONE
-            txt_password2.visibility = View.GONE
+            txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
+            txtName.editText?.setText(intent.getStringExtra("NAME"))
+            txtPassword.visibility = View.GONE
+            txtPassword2.visibility = View.GONE
         }
 
         botonAyuda.setOnClickListener {
@@ -96,133 +98,129 @@ class RegisterActivity : AppCompatActivity(){
         }
 
         checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
-            txt_nameplanificado.isEnabled = isChecked
+            txtNameplanificado.isEnabled = isChecked
         }
 
         checkObjeto.setOnCheckedChangeListener { _, isChecked ->
-            txt_objeto.isEnabled = isChecked
+            txtObjeto.isEnabled = isChecked
         }
 
         btnRegister.setOnClickListener {
-
             // Clear previous errors
-            txt_name.error = null
-            txt_email.error = null
-            txt_username.error = null
-            txt_password.error = null
-            txt_objeto.error = null
-            txt_password2.error = null
-            txt_nameplanificado.error = null
+            txtName.error = null
+            txtEmail.error = null
+            txtUsername.error = null
+            txtPassword.error = null
+            txtObjeto.error = null
+            txtPassword2.error = null
+            txtNameplanificado.error = null
 
-
-            val emptyTextViews = mutableListOf<TextView>()
-
-            if (txt_name.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(txt_name.editText!!)
-                txt_name.error = "ESTO ES UN ERROR"
-            }
-            if (txt_email.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(txt_email.editText!!)
-                txt_email.error = "ESTO ES UN ERROR"
-            }
-            if (txt_username.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(txt_username.editText!!)
-                txt_username.error = "ESTO ES UN ERROR"
-            }
-            if (txt_password.editText?.text.toString().isEmpty() && !isGoogleUser) {
-                emptyTextViews.add(txt_password.editText!!)
-                txt_password.error = "ESTO ES UN ERROR"
-            }
-            if (txt_password2.editText?.text.toString().isEmpty() && !isGoogleUser) {
-                emptyTextViews.add(txt_password2.editText!!)
-                txt_password2.error = "ESTO ES UN ERROR"
-            }
-            if (txt_objeto.editText?.text.toString().isEmpty() && checkObjeto.isChecked) {
-                emptyTextViews.add(txt_objeto.editText!!)
-                txt_objeto.error = "ESTO ES UN ERROR"
-            }
-            if (txt_nameplanificado.editText?.text.toString()
-                    .isEmpty() && checkUserPlanificado.isChecked
-            ) {
-                emptyTextViews.add(txt_objeto.editText!!)
-                txt_nameplanificado.error = "ESTO ES UN ERROR"
-            }
-
-            var isAccountValid = true
-            var error = ""
-
-            //  Handler().postDelayed({
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(txt_email.editText?.text.toString()).matches()) {
-                error = "La dirección de correo electrónico no es válida"
-                txt_email.error = "ESTO ES UN ERROR"
-                isAccountValid = false
-            }
-
-            if (txt_password.editText?.text.toString() != txt_password2.editText?.text.toString()) {
-                error = "Las contraseñas no coinciden"
-                txt_password.error = "ESTO ES UN ERROR"
-                txt_password2.error = "ESTO ES UN ERROR"
-                isAccountValid = false
-            }
-
-            if (emptyTextViews.isNotEmpty()) {
-                error = "Tienes que rellenar todos los campos"
-                isAccountValid = false
-            }
-
-            if (isAccountValid) {
-                var passCifrada = ""
-                if (!isGoogleUser) {
-                    passCifrada = hashPassword(txt_password.editText?.text.toString())
-                }
-                creado = usuario.crearUsuario(
-                    txt_name.editText?.text.toString(),
-                    txt_email.editText?.text.toString(),
-                    txt_username.editText?.text.toString(),
-                    passCifrada,
-                    txt_objeto.editText?.text.toString(),
-                    txt_nameplanificado.editText?.text.toString(),
-                    this@RegisterActivity
-                )
-                if (creado) {
-                    val id = usuario.consultarId(
-                        txt_email.editText?.text.toString(),
-                        this@RegisterActivity
-                    )
-                    val editor = prefs.edit()
-                    editor.putString("idUsuario", id)
-                    Log.d("USUARIO", "$id")
-                    editor.putString("username", txt_username.editText?.text.toString())
-                    editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
-                    editor.putBoolean("info_objeto", checkObjeto.isChecked)
-                    editor.putString("email", txt_email.editText?.text.toString())
-                    editor.putString("nombrePlanificador", txt_name.editText?.text.toString())
-                    editor.putString(
-                        "nombreUsuarioTEA",
-                        txt_nameplanificado.editText?.text.toString()
-                    )
-                    editor.putString("nombreObjeto", txt_objeto.editText?.text.toString())
-                    editor.putBoolean("isGoogleUser", isGoogleUser)
-                    editor.putBoolean("editPreferences", false)
-                    editor.apply()
-                    val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    txt_username.error = "ESTO ES UN ERROR"
-                    txt_email.error = "ESTO ES UN ERROR"
-                    Toast.makeText(
-                        applicationContext,
-                        "El nombre de usuario o correo introducido ya existe",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }else{
-                Toast.makeText(applicationContext, error, Toast.LENGTH_LONG).show()
+            comprobarTextViews()
+            val errorMessage = createAccount()
+            if (errorMessage.isNotEmpty()) {
+                Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
     }
+
+    private fun comprobarTextViews() {
+        if (txtName.editText?.text.toString().isEmpty()) {
+            emptyTextViews.add(txtName.editText!!)
+            txtName.error = "ESTO ES UN ERROR"
+        }
+        if (txtEmail.editText?.text.toString().isEmpty()) {
+            emptyTextViews.add(txtEmail.editText!!)
+            txtEmail.error = "ESTO ES UN ERROR"
+        }
+        if (txtUsername.editText?.text.toString().isEmpty()) {
+            emptyTextViews.add(txtUsername.editText!!)
+            txtUsername.error = "ESTO ES UN ERROR"
+        }
+        if (txtPassword.editText?.text.toString().isEmpty() && !isGoogleUser) {
+            emptyTextViews.add(txtPassword.editText!!)
+            txtPassword.error = "ESTO ES UN ERROR"
+        }
+        if (txtPassword2.editText?.text.toString().isEmpty() && !isGoogleUser) {
+            emptyTextViews.add(txtPassword2.editText!!)
+            txtPassword2.error = "ESTO ES UN ERROR"
+        }
+        if (txtObjeto.editText?.text.toString().isEmpty() && checkObjeto.isChecked) {
+            emptyTextViews.add(txtObjeto.editText!!)
+            txtObjeto.error = "ESTO ES UN ERROR"
+        }
+        if (txtNameplanificado.editText?.text.toString().isEmpty() && checkUserPlanificado.isChecked) {
+            emptyTextViews.add(txtObjeto.editText!!)
+            txtNameplanificado.error = "ESTO ES UN ERROR"
+        }
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun showError(editText: TextInputLayout?) {
+        editText?.error = "ESTO ES UN ERROR"
+    }
+
+    private fun createAccount(): String {
+        val email = txtEmail.editText?.text.toString()
+        val password = txtPassword.editText?.text.toString()
+        val password2 = txtPassword2.editText?.text.toString()
+        val name = txtName.editText?.text.toString()
+        val username = txtUsername.editText?.text.toString()
+        val objeto = txtObjeto.editText?.text.toString()
+        val namePlanificado = txtNameplanificado.editText?.text.toString()
+
+        var error = ""
+        var isAccountValid = true
+
+        if (!isValidEmail(email)) {
+            error = "La dirección de correo electrónico no es válida"
+            showError(txtEmail)
+            isAccountValid = false
+        }
+
+        if (password != password2) {
+            error = "Las contraseñas no coinciden"
+            showError(txtPassword)
+            showError(txtPassword2)
+            isAccountValid = false
+        }
+
+        if (emptyTextViews.isNotEmpty()) {
+            error = "Tienes que rellenar todos los campos"
+            isAccountValid = false
+        }
+
+        if (isAccountValid) {
+            val passCifrada = if (!isGoogleUser) hashPassword(password) else ""
+            creado = usuario.crearUsuario(name, email, username, passCifrada, objeto, namePlanificado, this@RegisterActivity)
+            if (creado) {
+                val id = usuario.consultarId(email, this@RegisterActivity)
+                val editor = prefs.edit()
+                editor.putString("idUsuario", id)
+                editor.putString("username", username)
+                editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
+                editor.putBoolean("info_objeto", checkObjeto.isChecked)
+                editor.putString("email", email)
+                editor.putString("nombrePlanificador", name)
+                editor.putString("nombreUsuarioTEA", namePlanificado)
+                editor.putString("nombreObjeto", objeto)
+                editor.putBoolean("isGoogleUser", isGoogleUser)
+                editor.putBoolean("editPreferences", false)
+                editor.apply()
+                val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                error = "El nombre de usuario o correo introducido ya existe"
+                showError(txtUsername)
+                showError(txtEmail)
+            }
+        }
+        return error
+    }
+
     private fun hashPassword(password: String): String {
         val bytes = password.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
@@ -235,8 +233,6 @@ class RegisterActivity : AppCompatActivity(){
         val iconResource = if (isClicked) R.drawable.question_simple else R.drawable.svg_close
         val iconDrawable = ContextCompat.getDrawable(this, iconResource)
         botonAyuda.icon = iconDrawable
-
-
     }
 
 }

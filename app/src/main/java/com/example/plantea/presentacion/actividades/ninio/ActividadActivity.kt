@@ -7,8 +7,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -16,28 +14,17 @@ import com.example.plantea.R
 import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
-import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.ManualActivity
-import com.example.plantea.presentacion.actividades.PreLoginActivity
 import java.util.*
 
 class ActividadActivity : AppCompatActivity() {
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
-    lateinit var titulo: TextView
-    lateinit var cardVideo: CardView
-    lateinit var cardObjeto: CardView
-    private lateinit var backButton: Button
-    lateinit var img_objeto: ImageView
-    lateinit var txt_objeto: TextView
     private var navigationHandler = GestionNavegacion()
 
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Checks the orientation of the screen
+        // Comprobamos la orientacion de la pantalla
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -50,126 +37,55 @@ class ActividadActivity : AppCompatActivity() {
         navigationHandler.configurarDatos(this, R.id.actividades)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationHandler.destroyPopup()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
-       // supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         navigationHandler.inicializarVariables(this, R.id.actividades, ActividadActivity::class.java)
 
-        cardVideo = findViewById(R.id.card_video)
-        cardObjeto = findViewById(R.id.card_objeto)
-        backButton = findViewById(R.id.goBackButton)
+        val cardVideo : CardView = findViewById(R.id.card_video)
+        val cardObjeto : CardView = findViewById(R.id.card_objeto)
+        val backButton : Button = findViewById(R.id.goBackButton)
 
         backButton.setOnClickListener{
             finish()
         }
 
         cardVideo.setOnClickListener{
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"));
-            startActivity(intent);
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"))
+            startActivity(intent)
         }
 
         cardObjeto.setOnClickListener{
             val dialogLogout = Dialog(this)
             dialogLogout.setContentView(R.layout.dialogo_actividad)
             dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            img_objeto = dialogLogout.findViewById(R.id.imageObjeto)
-            // img_animacion = dialogLogout.findViewById(R.id.img_animacion)
-            txt_objeto = dialogLogout.findViewById(R.id.lbl_nombreObjeto)
 
-
-            // rotateImageWithAnimation(img_animacion, 260f, 6000)
+            val imgObjeto : ImageView = dialogLogout.findViewById(R.id.imageObjeto)
+            val txtObjeto : TextView = dialogLogout.findViewById(R.id.lbl_nombreObjeto)
+            // imgAnimacion = dialogLogout.findViewById(R.id.img_animacion)
+            // rotateImageWithAnimation(imgAnimacion, 260f, 6000)
 
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-
-            txt_objeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+            txtObjeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
 
 
             if (prefs.getString("imagenObjeto", "") === "") {
-                img_objeto.setBackgroundResource(R.drawable.question2)
-                txt_objeto.text = "No hay una actividad configurada"
+                imgObjeto.setBackgroundResource(R.drawable.question2)
+                txtObjeto.text = getString(R.string.noConfigurationActivity)
             } else {
-                img_objeto.background = null
-                img_objeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
+                imgObjeto.background = null
+                imgObjeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
             }
 
-            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+            val iconoCerrarLogin :ImageView = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+            iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
             dialogLogout.show()
         }
-
-
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_ayuda -> {
-                val i = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(i)
-            }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@ActividadActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> finish()
-        }
-        return true
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationHandler.destroyPopup()
-    }
-
 }

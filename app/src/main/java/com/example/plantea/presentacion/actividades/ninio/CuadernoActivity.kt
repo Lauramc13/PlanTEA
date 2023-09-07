@@ -1,14 +1,11 @@
 package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -21,9 +18,6 @@ import com.example.plantea.R
 import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
-import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.ManualActivity
-import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCuadernoActivity
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
@@ -38,30 +32,17 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     private var recyclerView: RecyclerView? = null
     private var adaptador: AdaptadorCuadernoActivity? = null
     private var picto = Pictograma()
-    lateinit var btn_cerrar : ImageView
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
-    lateinit var termometro: View
     private var navigationHandler = GestionNavegacion()
-    private lateinit var backButton: Button
-
-
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         val orientation = newConfig.orientation
-        var gridValueManager : Int
-
-        // Checks the orientation of the screen
+        // Comprobamos la orientacion de la pantalla
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-            gridValueManager = 5
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
-            gridValueManager = 3
         }
-
-        //lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
     }
 
     override fun onResume() {
@@ -69,24 +50,28 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         navigationHandler.configurarDatos(this, R.id.cuaderno)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationHandler.destroyPopup()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cuaderno)
-        navigationHandler.inicializarVariables(this, R.id.cuaderno, CuadernoActivity::class::java)
-        backButton = findViewById(R.id.goBackButton)
-
+        navigationHandler.inicializarVariables(this, R.id.cuaderno, CuadernoActivity::class.java)
+        val backButton: Button = findViewById(R.id.goBackButton)
 
         listaPictogramas = ArrayList()
         listaEscala = ArrayList()
         fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
         if (savedInstanceState == null) {
-            // Activity is not being recreated, so create a new instance of PrincipalFragment
+            // La primera vez que se crea la actividad, se añade el fragmento principal
             fragmentPrincipal = PrincipalFragment()
             transaction = supportFragmentManager.beginTransaction()
             transaction!!.add(R.id.layout_fragments, fragmentPrincipal as PrincipalFragment)
             transaction!!.commit()
         } else {
-            // Activity is being recreated, so retrieve the existing fragment from the FragmentManager
+            // La actividad se está recreando, por lo que se recupera el fragmento existente del FragmentManager
             val existingFragment = supportFragmentManager.findFragmentById(R.id.layout_fragments)
             fragmentPrincipal = if (existingFragment is PrincipalFragment) {
                 existingFragment
@@ -94,6 +79,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
                 PrincipalFragment()
             }
         }
+
         //Pictogramas en la parte de arriba del cuaderno
         iniciarListaEscala()
 
@@ -105,7 +91,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     //Menu principal
 
     private fun iniciarListaEscala() {
-        picto = Pictograma()
+        //picto = Pictograma()
         listaEscala = picto.obtenerPictogramasCuaderno(this, 1) as ArrayList<Pictograma>?
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_escala)
@@ -118,7 +104,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     }
 
     override fun mostrarPictogramas(identificador: Int) {
-        picto = Pictograma()
+       // picto = Pictograma()
         listaPictogramas = picto.obtenerPictogramasCuaderno(this, identificador) as ArrayList<Pictograma>?
         iniciarFragment(listaPictogramas)
     }
@@ -150,84 +136,13 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
         tituloPictograma.text = listaEscala!![posicion].titulo
 
-
         val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
         historia.visibility = View.GONE
 
         //Botón cerrar
-        btn_cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-        btn_cerrar.setOnClickListener { dialog.dismiss() }
+        val btnCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+        btnCerrar.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_ayuda -> {
-                val i = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(i)
-            }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@CuadernoActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> finish()
-        }
-        return true
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationHandler.destroyPopup()
     }
 }

@@ -3,15 +3,13 @@ package com.example.plantea.presentacion.actividades
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -26,8 +24,8 @@ import java.io.IOException
 
 
 class MenuAvataresPlanActivity : AppCompatActivity() {
-    private lateinit var btn_galeria: Button
-    private lateinit var btn_saltar:Button
+    lateinit var prefs: SharedPreferences
+    private lateinit var btnGaleria: Button
     private var imagenSeleccionada : Boolean = false
     var usuario = Usuario_Planificador()
 
@@ -35,9 +33,10 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_avatares)
         setAvatarOnClickListeners(listOf("avatar1chica", "avatar2chica", "avatar3chica","avatar4chica", "avatar5chica", "avatar1chico", "avatar2chico", "avatar3chico", "avatar4chico", "avatar5chico"))
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
-        btn_galeria = findViewById(R.id.btn_galeria)
-        btn_galeria.setOnClickListener{
+        btnGaleria = findViewById(R.id.btn_galeria)
+        btnGaleria.setOnClickListener{
             abrirGaleria() 
             if(imagenSeleccionada){
                 next()
@@ -46,19 +45,17 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             }
         }
 
-        btn_saltar = findViewById(R.id.btn_saltar)
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        if(prefs.getBoolean("editPreferences", false) === true){
-            btn_saltar.text = "Cancelar"
+        val btnSaltar : Button = findViewById(R.id.btn_saltar)
+        if(prefs.getBoolean("editPreferences", false)){
+            btnSaltar.text = getString(R.string.str_cancelar)
         }else{
-            btn_saltar.text = "Saltar"
+            btnSaltar.text = getString(R.string.str_saltar)
         }
 
-        btn_saltar.setOnClickListener{
-            if(prefs.getBoolean("editPreferences", false) === false) {
+        btnSaltar.setOnClickListener{
+            if(!prefs.getBoolean("editPreferences", false)) {
                 val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())
                 editor.putString("imagenPlanificadorDraw", drawableId.toString())
@@ -74,12 +71,10 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             val packageName = applicationContext.packageName
             val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
             val avatar = findViewById<CardView>(cardViewId)
-            avatar.setOnClickListener {
-                val resources = applicationContext.resources
-                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+            val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
 
-                val uri = Uri.parse("android.resource://" + packageName + "/" + drawableId)
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            avatar.setOnClickListener {
+                val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val username = prefs.getString("username", true.toString())
                 if (username != null) {
                     usuario.aniadirImagenPlanificador(uri.toString(), username, this@MenuAvataresPlanActivity)
@@ -88,21 +83,20 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 editor.putString("imagenPlanificador", uri.toString())
                 editor.putString("imagenPlanificadorDraw", avatarId)
 
-                editor.commit()
+                editor.apply()
                 next()
             }
         }
     }
 
     private fun next(){
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        if(prefs.getBoolean("editPreferences", false) === true){
+        if(prefs.getBoolean("editPreferences", false)){
             finish()
         }else{
-            if (prefs.getBoolean("info_usuario", false) === true){ 
+            if (prefs.getBoolean("info_usuario", false)){
                 val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
                 startActivity(intent)
-            }else if(prefs.getBoolean("info_objeto", false) === true){
+            }else if(prefs.getBoolean("info_objeto", false)){
                 val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
                 startActivity(intent)
             }else{
@@ -128,13 +122,12 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
 
             // Save the image to rutaUsuarioTEA
             val rutaUsuarioTEA = getPathFromUri(this, uri)
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
             val editor = prefs.edit()
             editor.putString("imagenPlanificador", rutaUsuarioTEA)
             editor.commit()
             guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
             imagenSeleccionada = true
-            btn_galeria.performClick();
+            btnGaleria.performClick()
 
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
