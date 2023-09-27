@@ -33,7 +33,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_avatarestea)
         setAvatarOnClickListeners(listOf("avatar1nina", "avatar2nina", "avatar3nina","avatar4nina", "avatar5nina", "avatar1nino", "avatar2nino", "avatar3nino", "avatar4nino", "avatar5nino"))
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         btnGaleria = findViewById(R.id.btn_galeria)
         btnGaleria.setOnClickListener{
@@ -122,7 +122,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             editor.apply()
             guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
             imagenSeleccionada = true
-            btnGaleria.performClick();
+            btnGaleria.performClick()
 
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
@@ -148,7 +148,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         val cw = ContextWrapper(context)
         val dirImages = cw.getDir("Imagenes", MODE_PRIVATE)
         val myPath = File(dirImages, "$nombre.png")
-        var fos: FileOutputStream? = null
+        var fos: FileOutputStream?
         try {
             fos = FileOutputStream(myPath)
             imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña

@@ -1,10 +1,13 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -24,20 +27,22 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import java.security.MessageDigest
 
+
 class PreLoginActivity : AppCompatActivity(){
 
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: TextView
+    private lateinit var btnOlvidarPass: TextView
     private lateinit var email: TextInputLayout
     private lateinit var password: TextInputLayout
     private lateinit var background: ImageView
-    private lateinit var Signin : Button
+    private lateinit var signin : Button
     private lateinit var prefs : SharedPreferences
 
     var usuario = Usuario_Planificador()
     var user = Usuario_Planificador()
 
-    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +50,7 @@ class PreLoginActivity : AppCompatActivity(){
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         setContentView(R.layout.activity_prelogin)
         background = findViewById(R.id.imageView6)
-        Signin = findViewById(R.id.Signin)
+        signin = findViewById(R.id.Signin)
 
         FirebaseApp.initializeApp(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -56,7 +61,7 @@ class PreLoginActivity : AppCompatActivity(){
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        Signin.setOnClickListener {
+        signin.setOnClickListener {
             Toast.makeText(this, "Iniciando sesión", Toast.LENGTH_SHORT).show()
             signInGoogle()
         }
@@ -73,12 +78,14 @@ class PreLoginActivity : AppCompatActivity(){
 
         btnLogin = findViewById(R.id.btn_login)
         btnRegister = findViewById(R.id.btn_registrar)
+        btnOlvidarPass = findViewById(R.id.btn_olvidar)
         btnRegister.paintFlags = btnRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        btnOlvidarPass.paintFlags = btnRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         btnLogin.setOnClickListener {
             email.error = null
             password.error = null
-            
+
             val emptyTextViews = mutableListOf<TextView>()
 
             if (email.editText?.text.toString().isEmpty()) {
@@ -96,7 +103,7 @@ class PreLoginActivity : AppCompatActivity(){
             } else {
                 val passCifrada = hashPassword(password.editText?.text.toString())
                 if (usuario.comprobarUsuario(email.editText?.text.toString(), passCifrada, this@PreLoginActivity) == true) {
-                   configurarDatos(email.editText?.text.toString())
+                    configurarDatos(email.editText?.text.toString())
                 } else {
                     email.error = "ESTO ES UN ERROR"
                     password.error = "ESTO ES UN ERROR"
@@ -111,12 +118,62 @@ class PreLoginActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
+        btnOlvidarPass.setOnClickListener{
+            //dialog of dialogo_olvidar_password
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialogo_olvidar_password)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val correo : TextInputLayout = dialog.findViewById(R.id.txt_Email)
+            val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
+            val btnEnviar : Button = dialog.findViewById(R.id.btn_enviar)
+
+            //coger el correo y hacer cositas
+
+            btnEnviar.setOnClickListener{
+                Log.d("pruebas", "enviar correo a $correo.editText?.text.toString()")
+                /*
+                                val retrofit = Retrofit.Builder()
+                                    .baseUrl("http://192.168.10.8")
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build()
+
+                                val emailService = retrofit.create(ApiInterface::class.java)
+
+
+                                runBlocking {
+                                    launch(Dispatchers.IO) {
+                                        val emailRequest = EmailRequest("Laura.morales@uclm.es", "Confirmation Subject", "Confirmation Body")
+                                        EmailSender.sendEmail(emailService, emailRequest)
+                                    }
+                                }
+
+
+
+                                val correoObtenido = correo.editText?.text.toString()
+                                val email = emailBuilder {
+                                    from("PlanTEA.asistencia@gmail.com")
+                                    to(correoObtenido)
+
+                                    withSubject("Important question")
+                                    withPlainText("Hey, how are you today?")
+                                }
+
+                */
+            }
+
+            iconoCerrar.setOnClickListener { dialog.dismiss() }
+            dialog.show()
+
+        }
+
     }
-    fun hashPassword(password: String): String {
+
+
+    private fun hashPassword(password: String): String {
         val bytes = password.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
-        return digest.fold("", { str, it -> str + "%02x".format(it) })
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
     private fun signInGoogle() {
@@ -160,7 +217,7 @@ class PreLoginActivity : AppCompatActivity(){
         }
     }*/
 
-    fun configurarDatos(email: String){
+    private fun configurarDatos(email: String){
         user = usuario.obtenerUsuario(email, this@PreLoginActivity)
         val id = usuario.consultarId(email, this@PreLoginActivity)
         val editor = prefs.edit()
@@ -169,9 +226,9 @@ class PreLoginActivity : AppCompatActivity(){
         editor.putString("nombrePlanificador", user.getName())
         editor.putString("email", user.getEmail())
         editor.putString("nombreUsuarioTEA", user.getNameTEA())
-       //  if(user.getPassword() == ""){
-       //      editor.putBoolean("isGoogleUser", true)
-       //  }
+        //  if(user.getPassword() == ""){
+        //      editor.putBoolean("isGoogleUser", true)
+        //  }
         if (user.getNameTEA() != "") {
             editor.putBoolean("info_usuario", true)
         }

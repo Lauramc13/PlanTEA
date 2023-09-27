@@ -2,17 +2,12 @@ package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.plantea.R
 import com.google.android.material.tabs.TabLayout
 import com.example.plantea.presentacion.adaptadores.AdaptadorPaginas
-
-import java.util.*
-
 
 class TutorialActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
@@ -38,17 +33,17 @@ class TutorialActivity : AppCompatActivity() {
 
         btnPrevious.setOnClickListener {
             viewPager.currentItem = viewPager.currentItem - 1
-            btnNext.text = "Siguiente"
+            btnNext.text = getString(R.string.str_siguiente)
         }
 
         btnNext.setOnClickListener {
             if(viewPager.currentItem == 2){
-                btnNext.text = "Finalizar"
+                btnNext.text = getString(R.string.str_finalizar)
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }else{
-                btnNext.text = "Siguiente"
+                btnNext.text = getString(R.string.str_siguiente)
             }
             viewPager.currentItem = viewPager.currentItem + 1
         }
@@ -80,9 +75,9 @@ class TutorialActivity : AppCompatActivity() {
 
     private fun updateButtonText(currentItem: Int) {
         if (currentItem == 2) {
-            btnNext.text = "Finalizar"
+            btnNext.text = getString(R.string.str_finalizar)
         } else {
-            btnNext.text = "Siguiente"
+            btnNext.text = getString(R.string.str_siguiente)
         }
     }
 }

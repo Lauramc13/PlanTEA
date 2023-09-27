@@ -32,7 +32,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_objetos)
         setAvatarOnClickListeners(listOf("bici", "comida", "futbol","juegos", "libros", "movil", "musica", "recompensa"))
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         btn_galeria = findViewById(R.id.btn_galeria)
         btn_galeria.setOnClickListener{
@@ -112,7 +112,7 @@ class MenuObjetosActivity : AppCompatActivity() {
             editor.commit()
             guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
             imagenSeleccionada = true
-            btn_galeria.performClick();
+            btn_galeria.performClick()
         } else {
             Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
         }

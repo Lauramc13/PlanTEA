@@ -136,6 +136,7 @@
     <string name="lbl_salirPlanificacion2">¿Estas segur@ que quieres salir de la planificación?</string>
     <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>
     <string name="lbl_salirPlanificacionBotton">Salir de la planificación</string>
+    <string name="lbl_contraseniaOlvidada">¿Has olvidado la contraseña?</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -155,8 +156,7 @@
     <string name="str_esperar">¡Mientras esperamos!</string>
     <string name="str_cancelar">Cancelar</string>
     <string name="str_saltar">Saltar</string>
-
-
-
+    <string name="str_finalizar">Finalizar</string>
+    <string name="str_siguiente">Siguiente</string>
 
 </resources>

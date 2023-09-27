@@ -1,16 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
-import android.app.Dialog
-import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity

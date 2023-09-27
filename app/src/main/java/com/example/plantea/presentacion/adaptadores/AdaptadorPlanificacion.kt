@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,15 +16,14 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion.ViewHolderPlanificacion
 import com.google.android.material.textfield.TextInputLayout
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 
 class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
     interface OnItemSelectedListener
-    lateinit var btn_guardar : Button
-    lateinit var icono_cerrar_login : ImageView
+    private lateinit var btnGuardar : Button
+    private lateinit var iconoCerrarLogin : ImageView
     lateinit var cardtitulo: TextView
     lateinit var historiaText: TextInputLayout
 
@@ -93,18 +91,18 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
                 val dialogLogout = Dialog(context)
                 dialogLogout.setContentView(R.layout.dialogo_historiasocial)
                 dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                btn_guardar = dialogLogout.findViewById(R.id.btn_eliminarEvento)
+                btnGuardar = dialogLogout.findViewById(R.id.btn_eliminarEvento)
                 cardtitulo = dialogLogout.findViewById(R.id.cardName)
                 cardtitulo.text = tituloCard
-                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogoEvento)
+                iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogoEvento)
                 historiaText = dialogLogout.findViewById(R.id.historiaText)
                 if(listaPlanificacion[position].historia.toString() == "null"){
                     historiaText.editText?.setText("")
                 }else{
                     historiaText.editText?.setText(listaPlanificacion[position].historia.toString())
                 }
-                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                btn_guardar.setOnClickListener{
+                iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
+                btnGuardar.setOnClickListener{
                     if(historiaText.editText?.text.toString() == ""){
                         Toast.makeText(
                             context,

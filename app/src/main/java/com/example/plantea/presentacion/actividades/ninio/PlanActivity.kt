@@ -12,18 +12,29 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.*
+import com.example.plantea.dominio.CalendarioUtilidades
+import com.example.plantea.dominio.Evento
+import com.example.plantea.dominio.GestionNavegacion
+import com.example.plantea.dominio.Pictograma
+import com.example.plantea.dominio.Planificacion
+import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorNotificaciones
@@ -32,10 +43,12 @@ import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
+import java.util.Stack
 
 
-class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener{
+class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener, TextToSpeech.OnInitListener {
     lateinit var prefs: SharedPreferences
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
@@ -55,21 +68,35 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var adaptadorNot : AdaptadorNotificaciones
     private lateinit var dia: TextView
     private lateinit var dialogoPresentacion: ConstraintLayout
+    private lateinit var backButton: Button
+
     private var navigationHandler = GestionNavegacion()
+    private lateinit var btnSiguienteMes: ImageView
+    private lateinit var btnAnteriorMes: ImageView
     private lateinit var calendario: RecyclerView
     private lateinit var notificaciones: RecyclerView
-    private lateinit var selectedDate: String
-
+    private lateinit var cerrarDialog: ImageView
     private lateinit var fechaActual: TextView
-    lateinit var adaptadorCalendario: AdaptadorCalendario
+    private lateinit var dias: ArrayList<LocalDate?>
+    private lateinit var adaptadorCalendario: AdaptadorCalendario
+    lateinit var eventos: ArrayList<Evento>
+    var evento = Evento()
+    private lateinit var textToSpeech: TextToSpeech
+    private var lastIndex = false
 
-    var reproduccionLenta = false
-    var reproduccionRapida = false
+    private var reproduccionLenta = false
+    private var reproduccionRapida = false
+
+    private lateinit var selectedDate: String
+    private lateinit var calendarButton: Button
+
+    private lateinit var btnCerrar: ImageView
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerViewState: Parcelable? = null
 
     private var dialog: Dialog? = null
+
     val handler = Handler()
     private var currentDialog: Dialog? = null
     private var isRunning = false
@@ -117,7 +144,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         handler.removeCallbacksAndMessages(null)
     }
 
-    fun Int.dpToPx(context: Context): Int {
+    private fun Int.dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             this.toFloat(),
@@ -128,7 +155,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        // Guarda el estado del RecyclerView antes de que se destruya la actividad
+        // Save the RecyclerView state before the activity is destroyed
         recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         outState.putParcelable("recycler_view_state", recyclerViewState)
     }
@@ -136,7 +163,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private fun obtenerVistaMes() {
         fechaActual.text = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         //Calcular días del mes y mostrar
-        val dias : ArrayList<LocalDate?> = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+        dias = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
         calendario.layoutManager = GridLayoutManager(this, 7)
         adaptadorCalendario = AdaptadorCalendario(dias, this)
         calendario.adapter = adaptadorCalendario
@@ -150,9 +177,27 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }*/
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan)
+
+        val callback = object : OnBackPressedCallback(
+            true
+        ){
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount == 0) {
+                    startActivity(Intent(this@PlanActivity, MainActivity::class.java))
+                } else {
+                    // otherwise, pop back stack
+                    supportFragmentManager.popBackStack()
+                }
+                finish()
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this, callback)
 
         //Pila de los pasos completados en el seguimiento de un plan
         pasosCompletados = Stack<Int>()
@@ -161,9 +206,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         iconoReproducir = findViewById(R.id.icon_reproducir)
         iconoReproducirLento = findViewById(R.id.icon_reproducir_lento)
         iconoReproducirRapido = findViewById(R.id.icon_reproducir_rapido)
-        val calendarButton : Button = findViewById(R.id.CalendarDate)
-        val backButton : Button = findViewById(R.id.goBackButton)
+        calendarButton = findViewById(R.id.CalendarDate)
         buttonPlanNuevo = findViewById(R.id.crearPlan)
+        backButton = findViewById(R.id.goBackButton)
 
         navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity::class.java)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
@@ -173,13 +218,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerView = findViewById(R.id.recycler_plan)
         notificaciones = findViewById(R.id.recycler_notificaciones)
 
-
-        //Haciendo... ******************//
         val dataset = arrayOf("January", "February", "March")
 
         adaptadorNot = AdaptadorNotificaciones(dataset)
         notificaciones.adapter = adaptadorNot
-        //******************************//
+
 
         dia = findViewById(R.id.lbl_dia)
         val calendar = Calendar.getInstance()
@@ -190,11 +233,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val month = monthFormat.format(calendar.time)
         selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
 
-        dia.text =  getString(R.string.formatted_date, dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, dayOfMonth, month)
+        dia.text = getString(R.string.formatted_date, dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, dayOfMonth, month)
 
         initializeAnimations()
 
         backButton.setOnClickListener{
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                // otherwise, pop back stack
+                supportFragmentManager.popBackStack()
+            }
             finish()
         }
 
@@ -204,21 +253,20 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             fechaActual = dialog!!.findViewById(R.id.lbl_mes2)
-            val btnSiguienteMes: ImageView = dialog!!.findViewById(R.id.image_calendar_siguiente2)
-            val btnAnteriorMes: ImageView = dialog!!.findViewById(R.id.image_calendar_anterior2)
+            btnSiguienteMes = dialog!!.findViewById(R.id.image_calendar_siguiente2)
+            btnAnteriorMes = dialog!!.findViewById(R.id.image_calendar_anterior2)
             calendario = dialog!!.findViewById(R.id.recycler_calendario)
-            val cerrarDialog : ImageView = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
+            cerrarDialog = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
             CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
             obtenerVistaMes()
             val userId = prefs.getString("idUsuario", "")
-            val evento = Evento()
-             userId?.let {
+            eventos = userId?.let {
                 evento.obtenerEventos(
                     it,
                     this,
                     CalendarioUtilidades.fechaSeleccionada
                 )
-            }
+            } as ArrayList<Evento>
 
             btnAnteriorMes.setOnClickListener {
                 CalendarioUtilidades.fechaSeleccionada =
@@ -245,10 +293,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerView.layoutManager = layoutManagerLinear
 
         // Restore the RecyclerView state if it was saved before
-        // Restaura el estado del RecyclerView si se guardó antes
         if (savedInstanceState != null) {
             recyclerViewState =
-                savedInstanceState.getParcelable("recycler_view_state")
+                savedInstanceState.getParcelable("recycler_view_state") // TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
         }
 
@@ -290,15 +337,19 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 1f
-                if (listaPictogramas[posicionUndo].categoria == 9) {
-                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
-                        .setBackgroundResource(R.drawable.card_premio)
-                } else if (listaPictogramas[posicionUndo].categoria == 8) {
-                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
-                        .setBackgroundResource(R.drawable.card_espera)
-                } else {
-                    viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
-                        .setBackgroundResource(R.drawable.card_personalizado)
+                when (listaPictogramas[posicionUndo].categoria) {
+                    9 -> {
+                        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                            .setBackgroundResource(R.drawable.card_premio)
+                    }
+                    8 -> {
+                        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                            .setBackgroundResource(R.drawable.card_espera)
+                    }
+                    else -> {
+                        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                            .setBackgroundResource(R.drawable.card_personalizado)
+                    }
                 }
                 viewHolderPictogramas.popListClicked()
                 if (pasosCompletados.isEmpty()) {
@@ -307,22 +358,33 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             }
         }
 
-        // Crea un objeto textToSpeech y le añade características
-        val textToSpeech = TextToSpeech(this) {}
+        textToSpeech = TextToSpeech(this, this)
+
+        //set language to spanish
+        textToSpeech.language = Locale("es", "ES")
         val delayedSpeechRunnables = mutableListOf<Runnable>()
         var speechInProgress = false
+
 
         iconoEscuchar.setOnClickListener {
             if (!speechInProgress) {
                 iconoEscuchar.text = getString(R.string.str_parar)
                 val delayBetweenSpeech = 2000
+
                 listaPictogramas.forEachIndexed { index, pictograma ->
                     val runnable = Runnable {
-                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, null)
+                        if (index == listaPictogramas.lastIndex) {
+                            textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+                        }else{
+                            textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, null)
+
+                        }
                     }
 
                     delayedSpeechRunnables.add(runnable)
                     handler.postDelayed(runnable, index * delayBetweenSpeech.toLong())
+
+
                 }
                 speechInProgress = true
             } else {
@@ -331,6 +393,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 delayedSpeechRunnables.clear()
                 speechInProgress = false
             }
+
         }
 
         iconoReproducir.setOnClickListener {
@@ -352,7 +415,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
     }
 
-    fun reproducirEvento(tiempo: Long) {
+    private fun reproducirEvento(tiempo: Long) {
         if (currentDialog != null) {
             currentDialog?.dismiss()
             currentDialog = null
@@ -391,7 +454,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         currentDialog = null
     }
 
-    fun mostrarPlan() {
+    private fun mostrarPlan() {
         val idUsuario = prefs.getString("idUsuario", "")
         //Mostrar la planificación a seguir para el niño
         listaPictogramas = ArrayList()
@@ -437,10 +500,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             currentDialog!!.dismiss()
         }
 
+
         dialog = Dialog(this)
         dialog!!.setContentView(R.layout.dialogo_presentacion)
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val btnCerrar : Button = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
+        btnCerrar = dialog!!.findViewById(R.id.icono_CerrarDialogoEvento)
         val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
         val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
         historia = dialog!!.findViewById(R.id.Bubble)
@@ -550,7 +614,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
     }
 
-    fun animacionesConfeti(categoria: Int) {
+    private fun animacionesConfeti(categoria: Int) {
+
         imagenConfeti.visibility = View.VISIBLE
         mensajePremio.visibility = View.VISIBLE
 
@@ -577,5 +642,24 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         navigationHandler.destroyPopup()
     }
 
-}
 
+
+    override fun onInit(status : Int) {
+
+        textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+            override fun onStart(utteranceId: String) {
+                //Not implemented
+            }
+
+            override fun onDone(utteranceId: String) {
+                Log.d("TextToSpeech", "On Done")
+                runOnUiThread { iconoEscuchar.text = getString(R.string.str_escuchar) }
+            }
+
+            override fun onError(utteranceId: String) {
+                //Not implemented
+            }
+        })
+    }
+
+}

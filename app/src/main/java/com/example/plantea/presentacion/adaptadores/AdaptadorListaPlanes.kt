@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Planificacion
 
-class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaPlanes.ViewHolder>() {
+class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaPlanes.ViewHolder>() {
     interface OnItemSelectedListener {
         fun deleteClick(posicion: Int)
         fun editClick(posicion: Int)
@@ -35,9 +35,9 @@ class AdaptadorListaPlanes(var planes: ArrayList<Planificacion>?, private val li
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView
-        var eliminar: ImageView
-        var editar: ImageView
-        var duplicar: ImageView
+        private var eliminar: ImageView
+        private var editar: ImageView
+        private var duplicar: ImageView
         var card: CardView
 
         init {

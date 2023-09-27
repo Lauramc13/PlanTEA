@@ -67,7 +67,7 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
     inner class ViewHolderCalendario(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var diaMes: TextView
         var vistaPrincipal: View
-        var imagenEvento: ImageView
+        private var imagenEvento: ImageView
 
         init {
             diaMes = itemView.findViewById(R.id.lbl_celda_dia)

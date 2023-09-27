@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
@@ -20,7 +19,7 @@ class MenuActivity : AppCompatActivity() {
         configurarOpciones()
     }
 
-    fun configurarOpciones(){
+    private fun configurarOpciones(){
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val infoUsuario = prefs.getBoolean("info_usuario", false)
         if (infoUsuario) {

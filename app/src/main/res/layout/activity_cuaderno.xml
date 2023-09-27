@@ -38,43 +38,39 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_escala"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="80dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         android:contentDescription="Contenedor de pictogramas"
-        android:scrollbars="horizontal"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lst_escala"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
             android:contentDescription="Lista de pictogramas"
+            android:layout_marginBottom="5dp"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/layout_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="90dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="220dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

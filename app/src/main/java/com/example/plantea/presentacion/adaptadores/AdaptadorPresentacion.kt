@@ -33,15 +33,19 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
         holder.titulo.text = listaPictogramas!![position].titulo
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-        if (listaPictogramas!![position].categoria == 9) {
-            holder.premio.visibility = View.INVISIBLE
-            holder.card.setBackgroundResource(R.drawable.card_premio)
-        } else if (listaPictogramas!![position].categoria == 8) {
-            holder.premio.visibility = View.INVISIBLE
-            holder.card.setBackgroundResource(R.drawable.card_espera)
-        } else {
-            holder.premio.visibility = View.INVISIBLE
-            holder.card.setBackgroundResource(R.drawable.card_personalizado)
+        when (listaPictogramas!![position].categoria) {
+            9 -> {
+                holder.premio.visibility = View.INVISIBLE
+                holder.card.setBackgroundResource(R.drawable.card_premio)
+            }
+            8 -> {
+                holder.premio.visibility = View.INVISIBLE
+                holder.card.setBackgroundResource(R.drawable.card_espera)
+            }
+            else -> {
+                holder.premio.visibility = View.INVISIBLE
+                holder.card.setBackgroundResource(R.drawable.card_personalizado)
+            }
         }
 
         if(listaPictogramas!![position].historia.toString() == "null"){

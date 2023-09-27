@@ -39,9 +39,9 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
     inner class ViewHolderEvento(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nombre: TextView
         var hora: TextView
-        var eliminarEvento: ImageView
+        private var eliminarEvento: ImageView
         var visibilidad: ImageView
-        var verPlan: CardView
+        private var verPlan: CardView
 
         init {
             nombre = itemView.findViewById(R.id.txt_evento)

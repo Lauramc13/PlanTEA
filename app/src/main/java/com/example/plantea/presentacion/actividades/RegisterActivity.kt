@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
 import android.view.View
@@ -42,7 +41,7 @@ class RegisterActivity : AppCompatActivity(){
     private var isClicked = true
     private var creado: Boolean = false
 
-    val emptyTextViews = mutableListOf<TextView>()
+    private val emptyTextViews = mutableListOf<TextView>()
 
     var usuario = Usuario_Planificador()
 
@@ -225,7 +224,7 @@ class RegisterActivity : AppCompatActivity(){
         val bytes = password.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
-        return digest.fold("", { str, it -> str + "%02x".format(it) })
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
     private fun updateButtonIcon() {

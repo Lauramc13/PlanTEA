@@ -19,7 +19,6 @@ import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?, private val favourites: CategoriasPictogramasFragment) : RecyclerView.Adapter<AdaptadorPictogramas.ViewHolderPictogramas>() {
 
     lateinit var context: Context
-    var picto = Pictograma()
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
     }
