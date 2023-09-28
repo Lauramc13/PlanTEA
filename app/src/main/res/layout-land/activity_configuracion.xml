@@ -140,7 +140,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
                     app:layout_constraintVertical_bias="0.214" />
 
-                <Button
+                <!--<Button
                     android:id="@+id/buttonContrasenia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

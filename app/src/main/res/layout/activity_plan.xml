@@ -41,9 +41,9 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="390dp"
-        android:layout_marginStart="130dp"
+        android:layout_marginStart="110dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/fondo_cuaderno_tiempo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -152,7 +152,7 @@
             android:id="@+id/icon_escuchar"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="15dp"
             android:contentDescription="Botón deshacer acción"
             android:text="Escuchar"
             android:textColor="#203130"
@@ -248,11 +248,12 @@
 
     <LinearLayout
         android:id="@+id/img_video"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:orientation="vertical"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="110dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -260,104 +261,66 @@
 
         <LinearLayout
             android:id="@+id/img_cuaderno"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:visibility="visible"
             app:cardBackgroundColor="#B5DFDE"
+            android:background="@drawable/fondo_cuaderno_tiempo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/img_calendario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_cuaderno"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:contentDescription="Boton cuaderno de comunicación"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="?cardBackgroundColor"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp">
-
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    app:cardCornerRadius="20dp"
-                    app:srcCompat="@drawable/svg_cuaderno" />
-
-            </com.google.android.material.card.MaterialCardView>
-
             <TextView
-                android:id="@+id/lbl_cuaderno"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_regular"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/lbl_cuaderno"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Grafico de proceso"
+                android:textSize="40sp"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/img_actividad"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="35dp"
             android:orientation="vertical"
             android:visibility="visible"
-            android:layout_marginTop="30dp"
-            app:cardBackgroundColor="#B5DFDE"
+            android:background="@drawable/fondo_cuaderno_tiempo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_cuaderno"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_actividad"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="?cardBackgroundColor"
-                android:contentDescription="Boton actividades"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="1dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    app:cardCornerRadius="20dp"
-                    android:layout_marginTop="20dp"
-                    app:srcCompat="@drawable/svg_ball" />
-
-            </com.google.android.material.card.MaterialCardView>
-
             <TextView
-                android:id="@+id/lbl_actividad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/montserrat_regular"
-                android:gravity="center"
-                android:text="@string/lbl_actividades"
-                android:textColor="?colorOnSurface"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center_horizontal"
+                android:text="Planificaciones futuras"
+                android:textSize="22sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/planificacionRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:clipToPadding="false"
+                    android:contentDescription="Lista con la planificación actual"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
+
 
         </LinearLayout>
 

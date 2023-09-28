@@ -46,6 +46,8 @@ class GestionNavegacion {
 
     fun crearDialogoLogin(context: AppCompatActivity) {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+        firebaseAuth = FirebaseAuth.getInstance()
+
 
         val dialogLogin = Dialog(context)
         dialogLogin.setContentView(R.layout.dialogo_login)
@@ -60,19 +62,24 @@ class GestionNavegacion {
             } else {
                 val email = prefs.getString("email", "")
                 if(email != null){
-                    val passCifrada = hashPassword(password.editText?.text.toString())
-                    val passCorrecta = usuario.comprobarPass(email, passCifrada, context)
-                    if (passCorrecta) {
-                        val editor = prefs.edit()
-                        editor.putBoolean("PlanificadorLogged", true)
-                        editor.apply()
-                        context.startActivity(Intent(context.baseContext, PlanActivity::class.java))
-                        context.finish()
-                        context.finishAffinity()
-                        dialogLogin.dismiss()
-                    } else {
-                        Toast.makeText(context.applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
+                   // val passCifrada = hashPassword(password.editText?.text.toString())
+                    //val passCorrecta = usuario.comprobarPass(email, passCifrada, context)
+                    firebaseAuth.signInWithEmailAndPassword(email, password.editText?.text.toString())
+                        .addOnCompleteListener { task ->
+                        if(task.isSuccessful){
+                            val editor = prefs.edit()
+                            editor.putBoolean("PlanificadorLogged", true)
+                            editor.apply()
+                            context.startActivity(Intent(context.baseContext, PlanActivity::class.java))
+                            context.finish()
+                            context.finishAffinity()
+                            dialogLogin.dismiss()
+                        }else{
+                            Toast.makeText(context.applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
+
+                        }
                     }
+
                 }
             }
         }
@@ -108,8 +115,8 @@ class GestionNavegacion {
             if(isUsuarioTEA){
                 val rol = popupView?.findViewById<LinearLayout>(R.id.cambiarRol)
                 rol?.setOnClickListener{
-                    val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
-                    if(info_usuario){
+                    val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
+                    if(infoUsuario){
                         val editor = prefs.edit()
                         editor.putBoolean("PlanificadorLogged", false)
                         editor.apply()

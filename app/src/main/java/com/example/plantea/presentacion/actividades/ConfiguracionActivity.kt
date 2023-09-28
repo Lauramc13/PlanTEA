@@ -75,7 +75,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         val txtUsuarioTEA : TextView  = findViewById(R.id.txt_nombreUsuarioTEA)
         val txtObjeto: TextView = findViewById(R.id.txt_nombreObjeto)
         val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
-        val btnPassword : Button= findViewById(R.id.buttonContrasenia)
+        //val btnPassword : Button= findViewById(R.id.buttonContrasenia)
         val btnNotificacion : SwitchCompat = findViewById(R.id.switch_notificacion)
         val lblInfoUsuario : SwitchCompat = findViewById(R.id.lbl_infoUsuarioTEA)
         val lblObjeto : SwitchCompat = findViewById(R.id.lbl_objeto)
@@ -228,10 +228,10 @@ class ConfiguracionActivity : AppCompatActivity() {
             }
         }
 
-        btnPassword.setOnClickListener{
+       /* btnPassword.setOnClickListener{
             val password = Intent(applicationContext, PasswordActivity::class.java)
             startActivity(password)
-        }
+        }*/
 
         backButton.setOnClickListener {
             finish()

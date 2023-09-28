@@ -34,10 +34,11 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
+import com.example.plantea.dominio.PlanificacionItem
 import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
-import com.example.plantea.presentacion.adaptadores.AdaptadorNotificaciones
+import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
@@ -65,7 +66,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var imagenConfeti: ImageView
     private lateinit var pasosCompletados: Stack<Int>
     private lateinit var adaptador: AdaptadorPresentacion
-    private lateinit var adaptadorNot : AdaptadorNotificaciones
     private lateinit var dia: TextView
     private lateinit var dialogoPresentacion: ConstraintLayout
     private lateinit var backButton: Button
@@ -152,7 +152,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         ).toInt()
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save the RecyclerView state before the activity is destroyed
@@ -176,8 +175,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             buttonPlanNuevo.visibility = View.VISIBLE
         }*/
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -216,11 +213,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
-        notificaciones = findViewById(R.id.recycler_notificaciones)
+        notificaciones = findViewById(R.id.planificacionRecyclerView)
 
-        val dataset = arrayOf("January", "February", "March")
 
-        adaptadorNot = AdaptadorNotificaciones(dataset)
+        val userId = prefs.getString("idUsuario", "")
+        val planificaciones = userId?.let { evento.obtenerTodosEventos(it, this) } as ArrayList<Evento>
+
+        val notificationList : ArrayList<PlanificacionItem> = mostrarPlanificaciones(planificaciones)
+
+        notificaciones.layoutManager = LinearLayoutManager(this)
+        val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList)
         notificaciones.adapter = adaptadorNot
 
 
@@ -495,6 +497,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
     }
 
+
     override fun onItemSeleccionado(posicion: Int) {
         if (currentDialog != null && currentDialog!!.isShowing) {
             currentDialog!!.dismiss()
@@ -660,6 +663,24 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 //Not implemented
             }
         })
+    }
+
+    private fun mostrarPlanificaciones(planificaciones: ArrayList<Evento>) : ArrayList<PlanificacionItem>{
+        val lista : ArrayList<PlanificacionItem> = ArrayList()
+        for (planificacion in planificaciones) {
+            planificacion.nombre?.let { PlanificacionItem(it, planificacion.fecha.toString()) }
+                ?.let { lista.add(it) }
+        }
+
+        //format notificationList.date to dd-MM-yyyy and sort it
+        lista.sortBy { it.date }
+        for (notification in lista) {
+            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val dateFormatted = formatter.parse(notification.date)
+            val formatter2 = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            notification.date = formatter2.format(dateFormatted!!)
+        }
+        return lista
     }
 
 }

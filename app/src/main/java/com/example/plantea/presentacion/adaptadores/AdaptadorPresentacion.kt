@@ -78,7 +78,6 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
         override fun onClick(view: View) {
             val position = bindingAdapterPosition
-            Log.d("asf", "SE PASA POR AQUI")
 
             if (position == lastClickedPosition + 1) {
                 listener?.onItemSeleccionado(position)
@@ -91,8 +90,6 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 imagen.alpha = 0.7f
                 titulo.alpha = 0.7f
                 historia.alpha = 0.7f
-                Log.d("asf", "SE PASA POR AQUI TAMBIEN")
-
 
             }else{
                 Toast.makeText(context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()

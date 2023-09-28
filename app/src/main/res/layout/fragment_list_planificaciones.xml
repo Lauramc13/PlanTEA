@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/background_planificaciones_futuras"
+    android:layout_marginTop="15dp"
+    app:layout_gravity="center">
+
+
+    <TextView
+        android:id="@+id/titleNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="prueba del medico"/>
+
+    <TextView
+        android:id="@+id/dateNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:fontFamily="@font/montserrat_medium"
+        android:padding="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="2-04-2020"
+        android:textSize="15sp" />
+
+</RelativeLayout>

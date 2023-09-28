@@ -239,79 +239,49 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <LinearLayout
-                android:id="@+id/img_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:layout_marginStart="80dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
                 <LinearLayout
-                    android:id="@+id/img_cuaderno"
-                    android:layout_width="470dp"
-                    android:layout_height="220dp"
+                    android:id="@+id/img_actividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="110dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    app:cardBackgroundColor="#B5DFDE"
                     android:background="@drawable/fondo_cuaderno_tiempo"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/img_calendario"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Grafico de proceso"
-                        android:textSize="40sp"/>
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:gravity="center_horizontal"
+                        android:text="Planificaciones futuras"
+                        android:textSize="22sp" />
 
-                <LinearLayout
-                    android:id="@+id/img_actividad"
-                    android:layout_width="470dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="150dp"
-                    android:orientation="horizontal"
-                    android:visibility="visible"
-                    android:background="@drawable/fondo_cuaderno_tiempo"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/img_cuaderno"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="Notificaciones"
-                        android:textSize="40sp"/>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_notificaciones"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="80dp"
-                        android:visibility="gone"
-                        android:clipToPadding="false"
-                        android:contentDescription="Lista con la planificación actual"
-                        android:scrollbars="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"
-                        app:layout_constraintVertical_bias="0.0" />
-                </LinearLayout>
+                        android:orientation="horizontal">
 
-            </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/planificacionRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:clipToPadding="false"
+                            android:contentDescription="Lista con la planificación actual"
+                            android:scrollbars="horizontal" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"

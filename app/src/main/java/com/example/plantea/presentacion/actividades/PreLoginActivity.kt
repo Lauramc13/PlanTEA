@@ -25,7 +25,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import java.security.MessageDigest
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class PreLoginActivity : AppCompatActivity(){
@@ -38,6 +39,7 @@ class PreLoginActivity : AppCompatActivity(){
     private lateinit var background: ImageView
     private lateinit var signin : Button
     private lateinit var prefs : SharedPreferences
+    private lateinit var auth: FirebaseAuth
 
     var usuario = Usuario_Planificador()
     var user = Usuario_Planificador()
@@ -51,6 +53,7 @@ class PreLoginActivity : AppCompatActivity(){
         setContentView(R.layout.activity_prelogin)
         background = findViewById(R.id.imageView6)
         signin = findViewById(R.id.Signin)
+        auth = Firebase.auth
 
         FirebaseApp.initializeApp(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -60,6 +63,9 @@ class PreLoginActivity : AppCompatActivity(){
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         firebaseAuth = FirebaseAuth.getInstance()
+
+        email = findViewById(R.id.txt_Email)
+        password = findViewById(R.id.txt_Password)
 
         signin.setOnClickListener {
             Toast.makeText(this, "Iniciando sesión", Toast.LENGTH_SHORT).show()
@@ -72,9 +78,6 @@ class PreLoginActivity : AppCompatActivity(){
         } else {
             background.setImageResource(R.drawable.backgroundlogin)
         }
-
-        email = findViewById(R.id.txt_Email)
-        password = findViewById(R.id.txt_Password)
 
         btnLogin = findViewById(R.id.btn_login)
         btnRegister = findViewById(R.id.btn_registrar)
@@ -101,16 +104,30 @@ class PreLoginActivity : AppCompatActivity(){
             if (emptyTextViews.isNotEmpty()) {
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             } else {
-                val passCifrada = hashPassword(password.editText?.text.toString())
-                if (usuario.comprobarUsuario(email.editText?.text.toString(), passCifrada, this@PreLoginActivity) == true) {
-                    configurarDatos(email.editText?.text.toString())
-                } else {
-                    email.error = "ESTO ES UN ERROR"
-                    password.error = "ESTO ES UN ERROR"
-                    Toast.makeText(applicationContext, "Las credenciales son incorrectas", Toast.LENGTH_LONG).show()
-                }
-            }
 
+                /*  val passCifrada = hashPassword(password.editText?.text.toString())
+                if (usuario.comprobarUsuario(email.editText?.text.toString(), passCifrada, this@PreLoginActivity) == true) {
+                     configurarDatos(email.editText?.text.toString())
+                 } else {
+                     email.error = "ESTO ES UN ERROR"
+                     password.error = "ESTO ES UN ERROR"
+                     Toast.makeText(applicationContext, "Las credenciales son incorrectas", Toast.LENGTH_LONG).show()
+                 }*/
+                val emailText = email.editText?.text.toString().lowercase()
+                val passwordText = password.editText?.text.toString()
+                auth.signInWithEmailAndPassword(emailText, passwordText)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            Log.d("TAG", "signInWithEmail:success")
+                            configurarDatos(emailText)
+                        } else {
+                            Log.w("TAG", "signInWithEmail:failure", task.exception)
+                            email.error = "ESTO ES UN ERROR"
+                            password.error = "ESTO ES UN ERROR"
+                            Toast.makeText(baseContext, "Las credenciales son incorrectas", Toast.LENGTH_SHORT,).show()
+                        }
+                    }
+            }
         }
 
         btnRegister.setOnClickListener {
@@ -130,56 +147,35 @@ class PreLoginActivity : AppCompatActivity(){
             //coger el correo y hacer cositas
 
             btnEnviar.setOnClickListener{
-                Log.d("pruebas", "enviar correo a $correo.editText?.text.toString()")
-                /*
-                                val retrofit = Retrofit.Builder()
-                                    .baseUrl("http://192.168.10.8")
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build()
+                val email = correo.editText?.text.toString()
 
-                                val emailService = retrofit.create(ApiInterface::class.java)
-
-
-                                runBlocking {
-                                    launch(Dispatchers.IO) {
-                                        val emailRequest = EmailRequest("Laura.morales@uclm.es", "Confirmation Subject", "Confirmation Body")
-                                        EmailSender.sendEmail(emailService, emailRequest)
-                                    }
-                                }
-
-
-
-                                val correoObtenido = correo.editText?.text.toString()
-                                val email = emailBuilder {
-                                    from("PlanTEA.asistencia@gmail.com")
-                                    to(correoObtenido)
-
-                                    withSubject("Important question")
-                                    withPlainText("Hey, how are you today?")
-                                }
-
-                */
+                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                    .addOnCompleteListener{task ->
+                        if(task.isSuccessful){
+                            Toast.makeText(this, "Si el usuario existe se enviará un correo para restablecer la contraseña", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }else{
+                            Log.w("pruebas", task.exception!!.message.toString())
+                        }
+                    }
             }
-
             iconoCerrar.setOnClickListener { dialog.dismiss() }
             dialog.show()
-
         }
-
     }
 
-
-    private fun hashPassword(password: String): String {
-        val bytes = password.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.fold("") { str, it -> str + "%02x".format(it) }
-    }
+  /*
+          private fun hashPassword(password: String): String {
+              val bytes = password.toByteArray()
+              val md = MessageDigest.getInstance("SHA-256")
+              val digest = md.digest(bytes)
+              return digest.fold("") { str, it -> str + "%02x".format(it) }
+          }
+      */
 
     private fun signInGoogle() {
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
         launcher.launch(signInIntent)
-
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
@@ -195,7 +191,6 @@ class PreLoginActivity : AppCompatActivity(){
                 }else{
                     //IR A REGISTER PERO CON ALGUNOS DATOS YA COMPLETOS
                     val intent = Intent(applicationContext, RegisterActivity::class.java)
-                    intent.putExtra("IS_GOOGLE_USER", true)
                     intent.putExtra("EMAIL", account?.email.toString())
                     intent.putExtra("NAME", account?.givenName.toString())
                     startActivity(intent)
@@ -240,6 +235,7 @@ class PreLoginActivity : AppCompatActivity(){
         }
         editor.putString("imagenObjeto", user.getImagenObjeto())
         editor.apply()
+
         val intent = Intent(applicationContext, MainActivity::class.java)
         startActivity(intent)
         finish()

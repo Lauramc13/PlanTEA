@@ -1,6 +1,6 @@
 package com.example.plantea.dominio
 
-data class NotificationItem(
+data class PlanificacionItem(
     val title: String,
-    val date: String,
+    var date: String
     )

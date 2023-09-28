@@ -37,6 +37,11 @@ class Evento {
         return eventos
     }
 
+    fun obtenerTodosEventos(idUsuario: String, actividad: Activity?): ArrayList<*> {
+        listaEventos = gestorEventos.listarEventos(actividad, idUsuario)
+        return listaEventos as ArrayList<Evento>
+    }
+
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         identificador = gestorEventos.crearEvento(actividad, evento)
         return identificador

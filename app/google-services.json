@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "221708139178",
-    "project_id": "plantea-9b958",
-    "storage_bucket": "plantea-9b958.appspot.com"
+    "project_number": "554770088401",
+    "project_id": "plantea-3",
+    "storage_bucket": "plantea-3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:221708139178:android:afc104f1fe91ce5d8aeed3",
+        "mobilesdk_app_id": "1:554770088401:android:305817723d28fcc34820f0",
         "android_client_info": {
           "package_name": "com.example.plantea"
         }
       },
       "oauth_client": [
         {
-          "client_id": "221708139178-82tutq1j1ptrvdpl1ru5hkl9vltp0t90.apps.googleusercontent.com",
+          "client_id": "554770088401-6kcbele1k48l73bh22ins82iqrd3ejpk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJsMrJuetykVwtOBX8Wi2zqM3UByke9u4"
+          "current_key": "AIzaSyAMWkUQ1cniqsMiTeSX_Jf76FZ4tEN1PRg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "221708139178-82tutq1j1ptrvdpl1ru5hkl9vltp0t90.apps.googleusercontent.com",
+              "client_id": "554770088401-6kcbele1k48l73bh22ins82iqrd3ejpk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
 import android.view.View
@@ -20,6 +21,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import java.security.MessageDigest
 
 class RegisterActivity : AppCompatActivity(){
@@ -36,10 +38,10 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var checkObjeto: SwitchCompat
     private lateinit var botonAyuda: MaterialButton
     private lateinit var tooltipText: TextView
-    private var isGoogleUser: Boolean = false
     private lateinit var backButton: Button
     private var isClicked = true
     private var creado: Boolean = false
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     private val emptyTextViews = mutableListOf<TextView>()
 
@@ -70,13 +72,10 @@ class RegisterActivity : AppCompatActivity(){
         checkObjeto.isChecked = false
 
         val intent = intent
-        isGoogleUser = intent.getBooleanExtra("IS_GOOGLE_USER", false)
-        if (isGoogleUser) {
-            txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
-            txtName.editText?.setText(intent.getStringExtra("NAME"))
-            txtPassword.visibility = View.GONE
-            txtPassword2.visibility = View.GONE
-        }
+
+        txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
+        txtName.editText?.setText(intent.getStringExtra("NAME"))
+
 
         botonAyuda.setOnClickListener {
             val slideTransition = Slide(Gravity.END)
@@ -135,11 +134,11 @@ class RegisterActivity : AppCompatActivity(){
             emptyTextViews.add(txtUsername.editText!!)
             txtUsername.error = "ESTO ES UN ERROR"
         }
-        if (txtPassword.editText?.text.toString().isEmpty() && !isGoogleUser) {
+        if (txtPassword.editText?.text.toString().isEmpty()) {
             emptyTextViews.add(txtPassword.editText!!)
             txtPassword.error = "ESTO ES UN ERROR"
         }
-        if (txtPassword2.editText?.text.toString().isEmpty() && !isGoogleUser) {
+        if (txtPassword2.editText?.text.toString().isEmpty()) {
             emptyTextViews.add(txtPassword2.editText!!)
             txtPassword2.error = "ESTO ES UN ERROR"
         }
@@ -162,7 +161,7 @@ class RegisterActivity : AppCompatActivity(){
     }
 
     private fun createAccount(): String {
-        val email = txtEmail.editText?.text.toString()
+        val email = txtEmail.editText?.text.toString().lowercase()
         val password = txtPassword.editText?.text.toString()
         val password2 = txtPassword2.editText?.text.toString()
         val name = txtName.editText?.text.toString()
@@ -186,13 +185,21 @@ class RegisterActivity : AppCompatActivity(){
             isAccountValid = false
         }
 
+        //la contraseña tiene que tener minimo 6 caracteres
+        if (password.length < 6) {
+            error = "La contraseña tiene que tener mínimo 6 caracteres"
+            showError(txtPassword)
+            isAccountValid = false
+        }
+
         if (emptyTextViews.isNotEmpty()) {
             error = "Tienes que rellenar todos los campos"
             isAccountValid = false
         }
 
+        // TODO: ORGANIZAR ESTO
         if (isAccountValid) {
-            val passCifrada = if (!isGoogleUser) hashPassword(password) else ""
+            val passCifrada = hashPassword(password)
             creado = usuario.crearUsuario(name, email, username, passCifrada, objeto, namePlanificado, this@RegisterActivity)
             if (creado) {
                 val id = usuario.consultarId(email, this@RegisterActivity)
@@ -205,9 +212,21 @@ class RegisterActivity : AppCompatActivity(){
                 editor.putString("nombrePlanificador", name)
                 editor.putString("nombreUsuarioTEA", namePlanificado)
                 editor.putString("nombreObjeto", objeto)
-                editor.putBoolean("isGoogleUser", isGoogleUser)
                 editor.putBoolean("editPreferences", false)
                 editor.apply()
+
+                val user = auth.currentUser
+                Log.d("algo", user.toString())
+                //Guardamos los datos en firebase
+                auth.createUserWithEmailAndPassword(email, "123456")
+                    .addOnCompleteListener { task ->
+                        Log.w("Registration", "ha petado")
+
+                        if (!task.isSuccessful) {
+                            // El registro ha fallado
+                            Log.w("Registration", "createUserWithEmail:failure", task.exception)
+                        }
+                    }
                 val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
                 startActivity(intent)
                 finish()

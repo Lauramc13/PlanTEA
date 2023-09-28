@@ -102,12 +102,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, PlanActivity::class.java)
                 startActivity(intent)
             }else{
-                val email: String = prefs.getString("email", "") ?: ""
-                if(usuario.comprobarPass(email, "", this)){
-                    crearDialogoNewPass()
-                }else{
-                    navigationHandler.crearDialogoLogin(this)
-                }
+                navigationHandler.crearDialogoLogin(this)
             }
         }
 
