@@ -70,24 +70,25 @@
     <string name="lbl_indice2_1">- Información de los usuarios</string>
     <string name="lbl_indice2_2">- Actividad Tranquilizadora</string>
     <string name="lbl_indice2_3">- Notificaciones</string>
-    <string name="lbl_indice3">3. Descripción de la Pantalla inicial</string>
-    <string name="lbl_indice4">4. Usuario Planificador</string>
-    <string name="lbl_indice4_1">4.1 Inicio de la aplicación por primera vez: Creación de contraseña</string>
-    <string name="lbl_indice4_2">4.2 Uso seguro de la aplicación: Autenticación</string>
-    <string name="lbl_indice4_3">4.3 Cambio de contraseña</string>
-    <string name="lbl_indice4_4">4.4 Descripción de la pantalla inicial</string>
-    <string name="lbl_indice4_5">4.5 Creación de un evento/cita médica</string>
-    <string name="lbl_indice4_6">- Opciones de los eventos/citas médicas</string>
-    <string name="lbl_indice4_7">4.6 Creación de una planificación</string>
+    <string name="lbl_indice3">2. Descripción de la pantalla inicial</string>
+    <string name="lbl_indice4">3. Usuario Planificador</string>
+    <string name="lbl_indice4_1">3.1 Inicio de la aplicación por primera vez: Creación de contraseña</string>
+    <string name="lbl_indice4_2">3.1 Uso seguro de la aplicación: Autenticación</string>
+    <string name="lbl_indice4_3">3.2 Cambio de contraseña</string>
+    <string name="lbl_indice4_4">3.3 Descripción de la pantalla inicial</string>
+    <string name="lbl_indice4_5">3.4 Creación de un evento</string>
+    <string name="lbl_indice4_6">- Opciones de los eventos</string>
+    <string name="lbl_indice4_7">3.5 Creación de una planificación</string>
     <string name="lbl_indice4_8">- Pictogramas</string>
     <string name="lbl_indice4_9">- Creación de un nuevo pictograma</string>
     <string name="lbl_indice4_10">- Pasos para crear planificación</string>
     <string name="lbl_indice4_11">- Opciones de las planificaciones</string>
-    <string name="lbl_indice5">5. Usuario TEA</string>
-    <string name="lbl_indice5_1">5.1 Descripción de la Pantalla inicial</string>
-    <string name="lbl_indice5_2">5.2 Seguimiento de una planificación</string>
-    <string name="lbl_indice5_3">5.3 Cuaderno de comunicación</string>
+    <string name="lbl_indice5">4. Usuario TEA</string>
+    <string name="lbl_indice5_1">4.1 Descripción de la Pantalla inicial</string>
+    <string name="lbl_indice5_2">4.2 Seguimiento de una planificación</string>
+    <string name="lbl_indice5_3">4.3 Cuaderno de comunicación</string>
     <string name="lbl_indice5_4">- Categorías del cuaderno de comunicación</string>
+    <string name="lbl_indice6">5. Ajuste de las preferencias</string>
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="lbl_actividades">Actividades</string>
     <string name="lbl_actividades_objeto">ACTIVIDAD TRANQUILIZADORA</string>
@@ -137,6 +138,7 @@
     <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>
     <string name="lbl_salirPlanificacionBotton">Salir de la planificación</string>
     <string name="lbl_contraseniaOlvidada">¿Has olvidado la contraseña?</string>
+    <string name="lbl_manual">Manual de usuario</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -147,7 +149,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
-    <string name="client_id_google">221708139178-82tutq1j1ptrvdpl1ru5hkl9vltp0t90.apps.googleusercontent.com</string>
+    <string name="client_id_google">554770088401-6kcbele1k48l73bh22ins82iqrd3ejpk.apps.googleusercontent.com</string>
 
     <string name="noConfigurationActivity">No hay una actividad configurada</string>
     <string name="formatted_date">%1$s, %2$s de %3$s</string>

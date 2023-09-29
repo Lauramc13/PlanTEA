@@ -45,7 +45,6 @@
         </activity>
         <activity
             android:name=".presentacion.actividades.ninio.CuadernoActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Cuaderno de comunicación"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />

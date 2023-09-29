@@ -7,6 +7,24 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.planificador.CalendarioActivity">
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3"
+        app:tint="#F6FBF7" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -280,5 +298,8 @@
         android:layout_marginTop="15dp"
         android:src="@drawable/svg_menu"
         android:layout_marginStart="15dp"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

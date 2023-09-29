@@ -6,6 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/iconPlanTEA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/svg_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/tiltneon"
+            android:text="@string/app_name"
+            android:textSize="38sp" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/goBackButton"
         style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -24,18 +49,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Manual de usuario"
+        android:text="@string/lbl_manual"
         android:textSize="25sp"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/iconPlanTEA" />
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,16 +85,18 @@
                     android:id="@+id/lbl_indice1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:text="@string/lbl_indice1"
-                    android:textColor="@color/md_theme_light_primary"
                     android:textSize="20sp" />
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/lbl_indice2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice2"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -78,8 +104,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice2_1"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -87,8 +115,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice2_2"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -96,16 +126,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice2_3"
-                    android:textColor="@color/md_theme_light_primary"
-                    android:textSize="20sp" />
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
+                    android:textSize="20sp" /> -->
 
                 <TextView
                     android:id="@+id/lbl_indice3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice3"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -113,25 +146,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice4"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
+                <!--
                 <TextView
                     android:id="@+id/lbl_indice4_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_1"
-                    android:textColor="@color/md_theme_light_primary"
-                    android:textSize="20sp" />
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
+                    android:textSize="20sp" /> -->
 
                 <TextView
                     android:id="@+id/lbl_indice4_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_2"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -139,8 +178,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_3"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -148,8 +189,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_4"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -157,8 +200,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_5"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -166,8 +211,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_6"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -175,8 +222,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_7"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -184,8 +233,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_8"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -193,8 +244,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_9"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -202,8 +255,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_10"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -211,8 +266,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_11"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -220,7 +277,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice5"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -228,8 +286,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice5_1"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -237,8 +297,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice5_2"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -246,8 +308,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@string/lbl_indice5_3"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
                 <TextView
@@ -255,44 +319,59 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="45dp"
+                    android:paddingEnd="45dp"
                     android:text="@string/lbl_indice5_4"
-                    android:textColor="@color/md_theme_light_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/lbl_indice6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_indice6"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/lbl_parrafo1"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo8"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual7"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_principal_1" />
 
             <TextView
                 android:id="@+id/lbl_parrafo9"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo10"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <!-- <ImageView
                 android:id="@+id/img_manual8"
@@ -302,88 +381,95 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo11"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual9"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_2" />
 
             <TextView
                 android:id="@+id/lbl_parrafo12"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual10"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_3" />
 
             <TextView
                 android:id="@+id/lbl_parrafo13"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual11"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_4" />
 
             <TextView
                 android:id="@+id/lbl_parrafo14"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual12"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_5" />
 
             <TextView
                 android:id="@+id/lbl_parrafo15"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual13"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_6" />
 
             <TextView
                 android:id="@+id/lbl_parrafo16"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual14"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_7" />
 
             <TextView
                 android:id="@+id/lbl_parrafo17"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
             <!--
             <ImageView
                 android:id="@+id/img_manual15"
@@ -393,267 +479,286 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo18"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual_16"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_9" />
 
             <TextView
                 android:id="@+id/lbl_parrafo19"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual17"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_10" />
 
             <TextView
                 android:id="@+id/lbl_parrafo20"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual18"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_11" />
 
             <TextView
                 android:id="@+id/lbl_parrafo21"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual19"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_12" />
 
             <TextView
                 android:id="@+id/lbl_parrafo22"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual20"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_13" />
 
             <TextView
                 android:id="@+id/lbl_parrafo23"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual21"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_14" />
 
             <TextView
                 android:id="@+id/lbl_parrafo24"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual22"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_15" />
 
             <ImageView
                 android:id="@+id/img_manual23"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_planificador_16" />
 
             <TextView
                 android:id="@+id/lbl_parrafo241"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual221"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/capturamanual241" />
 
 
             <TextView
                 android:id="@+id/lbl_parrafo25"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual24"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_17" />
 
             <ImageView
                 android:id="@+id/img_manual25"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_planificador_18" />
 
             <TextView
                 android:id="@+id/lbl_parrafo26"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual26"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_19" />
 
             <TextView
                 android:id="@+id/lbl_parrafo27"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual27"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_20" />
 
             <ImageView
                 android:id="@+id/img_manual28"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_planificador_21" />
 
             <TextView
                 android:id="@+id/lbl_parrafo28"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual29"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_22" />
 
             <TextView
                 android:id="@+id/lbl_parrafo29"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual30"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_23" />
 
             <TextView
                 android:id="@+id/lbl_parrafo30"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual31"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_planificador_24" />
 
             <TextView
                 android:id="@+id/lbl_parrafo31"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual32"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_1" />
 
             <ImageView
                 android:id="@+id/img_manual33"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_usuario_2" />
 
             <TextView
                 android:id="@+id/lbl_parrafo32"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo33"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual34"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_3" />
 
             <TextView
                 android:id="@+id/lbl_parrafo34"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual35"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_4" />
 
             <TextView
                 android:id="@+id/lbl_parrafo341"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual351"
@@ -663,122 +768,131 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo35"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual36"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_5" />
 
             <TextView
                 android:id="@+id/lbl_parrafo36"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual37"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_6" />
 
             <ImageView
                 android:id="@+id/img_manual38"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_usuario_7" />
 
             <TextView
                 android:id="@+id/lbl_parrafo37"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual39"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_8" />
 
             <TextView
                 android:id="@+id/lbl_parrafo38"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual40"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_9" />
 
             <ImageView
                 android:id="@+id/img_manual41"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_marginTop="5dp"
                 app:srcCompat="@drawable/manual_usuario_10" />
 
             <TextView
                 android:id="@+id/lbl_parrafo39"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/lbl_parrafo40"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual42"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_11" />
 
             <TextView
                 android:id="@+id/lbl_parrafo41"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual43"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_12" />
 
             <TextView
                 android:id="@+id/lbl_parrafo42"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual44"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_usuario_13" />
 
             <TextView
                 android:id="@+id/lbl_parrafo43"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <!-- <ImageView
                 android:id="@+id/img_manual45"
@@ -789,37 +903,40 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo2"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual1"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/manual_preferencias_1" />
 
             <TextView
                 android:id="@+id/lbl_parrafo3"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual2"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_preferencias_2" />
 
             <TextView
                 android:id="@+id/lbl_parrafo4"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <!-- <ImageView
                 android:id="@+id/img_manual3"
@@ -829,41 +946,44 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo5"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual4"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_preferencias_4" />
 
             <TextView
                 android:id="@+id/lbl_parrafo6"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual5"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_preferencias_5" />
 
             <TextView
                 android:id="@+id/lbl_parrafo7"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/img_manual6"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 app:srcCompat="@drawable/manual_preferencias_6" />
 
         </LinearLayout>
@@ -872,10 +992,11 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="?colorPrimary"
         android:layout_gravity="end|bottom"
-        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.98"

@@ -7,6 +7,24 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.planificador.CalendarioActivity">
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3"
+        app:tint="#F6FBF7" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,9 +56,10 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="580dp"
+        android:layout_width="650dp"
         android:layout_marginStart="80dp"
         android:layout_height="520dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/bg_calendario"
         android:orientation="vertical"
         android:contentDescription="Contenedor de calendario"
@@ -184,7 +203,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calendario"
             android:layout_width="match_parent"
-            android:layout_height="389dp"
+            android:layout_height="400dp"
+            android:overScrollMode="never"
             android:contentDescription="Contenedor con los días del mes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -194,9 +214,10 @@
 
     <FrameLayout
         android:id="@+id/fragment_calendario"
-        android:layout_width="520dp"
-        android:layout_height="557dp"
+        android:layout_width="650dp"
+        android:layout_height="527dp"
         android:layout_marginStart="80dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/bg_calendario"
         app:layout_constraintBottom_toBottomOf="parent"
         android:contentDescription="Contenedor con elementos de configuración de nuevo evento"

@@ -19,8 +19,6 @@ class ManualActivity : AppCompatActivity() {
     private lateinit var btn_subir: FloatingActionButton
     private lateinit var backButton: Button
 
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -91,45 +89,169 @@ class ManualActivity : AppCompatActivity() {
         val parrafo42 : TextView = findViewById(R.id.lbl_parrafo42)
         val parrafo43 : TextView = findViewById(R.id.lbl_parrafo43)
 
-        /*1. Descripción de la aplicación PlanTEA*/parrafo1.text = HtmlCompat.fromHtml("<h1>1. Descripción de la aplicación PlanTEA</h1>  PlanTEA es una aplicación móvil que permite planificar y anticipar la asistencia a niños o adultos con Trastorno del Espectro Autista (TEA) a las consultas médicas, así como facilitar la comunicación con los especialistas mediante un cuaderno de comunicación aumentativa y alternativa. <br><br> La aplicación da soporte a dos roles:<br><br>" +
-                "<b>-Planificador:</b> Usuario dirigido a familiares, personal de apoyo o persona con altas capacidades. Este usuario podrá crear planificaciones y gestionarlas mediante un calendario con la posibilidad de recibir notificaciones.<br><br>" +
-                "<b>-Usuario:</b> Usuario dirigido a niños o adultos que sólo podrá seguir la planificación relacionada con el evento elegido por el planificador y hacer uso del cuaderno de comunicación.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        /*3. Descripción de la Pantalla inicial*/parrafo8.text = HtmlCompat.fromHtml("<br><h1>2. Descripción de la Pantalla inicial</h1> Al acceder a la aplicación aparecerá la pantalla principal. Desde esta pantalla se podrá acceder a dos usuarios diferenciados por la imagen y nombre elegido en la pantalla de preferencias.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val indice1 : TextView = findViewById(R.id.lbl_indice1) 
+        // val indice2 : TextView = findViewById(R.id.lbl_indice2)
+        // val indice21 : TextView = findViewById(R.id.lbl_indice2_1)
+        // val indice22 : TextView = findViewById(R.id.lbl_indice2_2)
+        // val indice23 : TextView = findViewById(R.id.lbl_indice2_3)
+        val indice3 : TextView = findViewById(R.id.lbl_indice3)
+        val indice4 : TextView = findViewById(R.id.lbl_indice4)
+        //  val indice41 : TextView = findViewById(R.id.lbl_indice4_1)
+        val indice42 : TextView = findViewById(R.id.lbl_indice4_2)
+        val indice43 : TextView = findViewById(R.id.lbl_indice4_3)
+        val indice44 : TextView = findViewById(R.id.lbl_indice4_4)
+        val indice45 : TextView = findViewById(R.id.lbl_indice4_5)
+        val indice46 : TextView = findViewById(R.id.lbl_indice4_6)
+        val indice47 : TextView = findViewById(R.id.lbl_indice4_7)
+        val indice48 : TextView = findViewById(R.id.lbl_indice4_8)
+        val indice49 : TextView = findViewById(R.id.lbl_indice4_9)
+        val indice410 : TextView = findViewById(R.id.lbl_indice4_10)
+        val indice411 : TextView = findViewById(R.id.lbl_indice4_11)
+        val indice5 : TextView = findViewById(R.id.lbl_indice5)
+        val indice51 : TextView = findViewById(R.id.lbl_indice5_1)
+        val indice52 : TextView = findViewById(R.id.lbl_indice5_2)
+        val indice53 : TextView = findViewById(R.id.lbl_indice5_3)
+        val indice54 : TextView = findViewById(R.id.lbl_indice5_4)
+        val indice6 : TextView = findViewById(R.id.lbl_indice6)
+
+
+
+        indice1.setOnClickListener {
+            vista.scrollTo(0, parrafo1.top)
+        }
+/*
+        indice2.setOnClickListener {
+            vista.scrollTo(0, parrafo8.top)
+        }
+
+        indice21.setOnClickListener {
+            vista.scrollTo(0, parrafo3.top)
+        }
+
+        indice22.setOnClickListener {
+            vista.scrollTo(0, parrafo5.top)
+        }
+
+        indice23.setOnClickListener {
+            vista.scrollTo(0, parrafo6.top)
+        }
+
+        indice41.setOnClickListener {
+            vista.scrollTo(0, parrafo11.top)
+        }
+*/
+        indice3.setOnClickListener {
+            vista.scrollTo(0, parrafo8.top)
+        }
+
+        indice4.setOnClickListener {
+            vista.scrollTo(0, parrafo10.top)
+        }
+
+        indice42.setOnClickListener {
+            vista.scrollTo(0, parrafo11.top)
+        }
+
+        indice43.setOnClickListener {
+            vista.scrollTo(0, parrafo12.top)
+        }
+
+        indice44.setOnClickListener {
+            vista.scrollTo(0, parrafo13.top)
+        }
+
+        indice45.setOnClickListener {
+            vista.scrollTo(0, parrafo16.top)
+        }
+
+        indice46.setOnClickListener {
+            vista.scrollTo(0, parrafo21.top)
+        }
+
+        indice47.setOnClickListener {
+            vista.scrollTo(0, parrafo22.top)
+        }
+
+        indice48.setOnClickListener {
+            vista.scrollTo(0, parrafo23.top)
+        }
+
+        indice49.setOnClickListener {
+            vista.scrollTo(0, parrafo26.top)
+        }
+
+        indice410.setOnClickListener {
+            vista.scrollTo(0, parrafo28.top)
+        }
+
+        indice411.setOnClickListener {
+            vista.scrollTo(0, parrafo30.top)
+        }
+
+        indice5.setOnClickListener {
+            vista.scrollTo(0, parrafo31.top)
+        }
+
+        indice51.setOnClickListener {
+            vista.scrollTo(0, parrafo31.top)
+        }
+
+        indice52.setOnClickListener {
+            vista.scrollTo(0, parrafo33.top)
+        }
+
+        indice53.setOnClickListener {
+            vista.scrollTo(0, parrafo37.top)
+        }
+
+        indice54.setOnClickListener {
+            vista.scrollTo(0, parrafo40.top)
+        }
+
+        indice6.setOnClickListener {
+            vista.scrollTo(0, parrafo2.top)
+        }
+
+        /*1. Descripción de la aplicación PlanTEA*/parrafo1.text = HtmlCompat.fromHtml("<h1>1. Descripción de la aplicación PlanTEA</h1>  PlanTEA es una aplicación móvil que permite planificar y anticipar la asistencia a niños o adultos con Trastorno del Espectro Autista (TEA) a las consultas médicas, así como facilitar la comunicación con los especialistas mediante un cuaderno de comunicación aumentativa y alternativa. <br> <br> La aplicación da soporte a dos roles:" +
+                "<ul><li><b>Planificador:</b> Usuario dirigido a familiares, personal de apoyo o persona con altas capacidades. Este usuario podrá crear planificaciones y gestionarlas mediante un calendario con la posibilidad de recibir notificaciones.<br><br>" +
+                "<li><b>Usuario:</b> Usuario dirigido a niños o adultos que sólo podrá seguir la planificación relacionada con el evento elegido por el planificador y hacer uso del cuaderno de comunicación.</li></ul>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+        /*3. Descripción de la Pantalla inicial*/parrafo8.text = HtmlCompat.fromHtml("<h1>2. Descripción de la Pantalla inicial</h1> Al acceder a la aplicación aparecerá la pantalla principal. Desde esta pantalla se podrá acceder a dos usuarios diferenciados por la imagen y nombre elegido en la pantalla de preferencias.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo9.text = HtmlCompat.fromHtml("<br> Los dos usuarios disponibles son:<br><br> " +
-                "<b>-Planificador: </b>Corresponde al usuario de la izquierda. Podrá crear y gestionar planificaciones de las citas médicas.<br><br> " +
-                "<b>-Usuario: </b>Corresponde al usuario de la derecha. Sólo podrá seguir una planificación creada por el planificador y acceder al cuaderno de comunicación.<br> También se tendrá acceso a este manual de usuario tocando el icono     .", HtmlCompat.FROM_HTML_MODE_LEGACY)
+                "<ul> <li><b>Planificador: </b>Corresponde al usuario de la izquierda. Podrá crear y gestionar planificaciones de las citas médicas. </li> " +
+                "<li> <b> Usuario: </b>Corresponde al usuario de la derecha. Sólo podrá seguir una planificación creada por el planificador y acceder al cuaderno de comunicación. </li> </ul>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo9.text =
             mostrarIcono(R.drawable.ic_baseline_help_outline_64, parrafo9.text, 370, 371, true)
 
         /*4.Usuario Planificador*/
 
-        parrafo10.text = HtmlCompat.fromHtml("<br><h1>3. Usuario Planificador</h1>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        parrafo10.text = HtmlCompat.fromHtml("<h1>3. Usuario Planificador</h1>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        /*4.1 Uso seguro de la aplicación: Autenticación*/parrafo11.text = HtmlCompat.fromHtml("<br><h2>3.1 Uso seguro de la aplicación: Autenticación</h2> Para acceder a las funcionalidades correspondientes al usuario planificador se solicitará la contraseña creada.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        /*4.1 Uso seguro de la aplicación: Autenticación*/parrafo11.text = HtmlCompat.fromHtml("<h2>3.1 Uso seguro de la aplicación: Autenticación</h2> Para acceder a las funcionalidades correspondientes al usuario planificador se solicitará la contraseña creada.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        /*4.2 Cambio de contraseña*/parrafo12.text = HtmlCompat.fromHtml("<br><h2>3.2 Cambio de contraseña</h2> Para realizar el cambio de contraseña, se solicitará la contraseña actual, la nueva contraseña, la cual se deberá introducir dos veces, para su verificación. Al tocar el botón “Guardar”, la contraseña será actualizada.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        /*4.2 Cambio de contraseña*/parrafo12.text = HtmlCompat.fromHtml("<h2>3.2 Cambio de contraseña</h2> Para realizar el cambio de contraseña, se solicitará la contraseña actual, la nueva contraseña, la cual se deberá introducir dos veces, para su verificación. Al tocar el botón “Guardar”, la contraseña será actualizada.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        /*4.3 Descripción de la Pantalla inicial*/parrafo13.text = HtmlCompat.fromHtml("<br><h2>3.3 Descripción de la Pantalla inicial</h2> En la parte izquierda de esta pantalla se encuentra el calendario por el cual se podrá navegar y seleccionar cualquier día. En la parte derecha se mostrarán las citas médicas/eventos del día seleccionado en el calendario.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        /*4.3 Descripción de la Pantalla inicial*/parrafo13.text = HtmlCompat.fromHtml("<h2>3.3 Descripción de la pantalla inicial</h2> En la parte izquierda de esta pantalla se encuentra el calendario por el cual se podrá navegar y seleccionar cualquier día. En la parte derecha se mostrarán las citas médicas/eventos del día seleccionado en el calendario.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo14.text = HtmlCompat.fromHtml("<br>Se podrá crear un evento para el día seleccionado, tocando el botón “Evento”.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo15.text = HtmlCompat.fromHtml("<br>Desde esta pantalla también se puede acceder a las opciones:<br> " +
-                "<b>-Ajuste de las preferencias: </b>Tocando el icono  se podrá cambiar la imagen y nombre de los usuarios y del objeto para tranquilizar. También se podrá activar o desactivar las notificaciones de las citas médicas y modificar cuando quieres recibir el aviso.<br>" +
-                "<b>-Ayuda: </b>Tocando el icono se podrá acceder a este manual de usuario.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+                "<ul> <li><b>Ajuste de las preferencias: </b> Tocando el icono  se podrá cambiar la imagen y nombre de los usuarios y del objeto para tranquilizar. También se podrá activar o desactivar las notificaciones de las citas médicas y modificar cuando quieres recibir el aviso.</li>" +
+                "<li><b>Ayuda: </b>Tocando el icono se podrá acceder a este manual de usuario.</li></ul>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo15.text = mostrarIcono(R.drawable.user_circle, parrafo15.text, 107, 108, true)
         parrafo15.text =
             mostrarIcono(R.drawable.ic_baseline_help_outline_64, parrafo15.text, 418, 419, true)
 
-        /*4.4 Creación de un evento*/parrafo16.text = HtmlCompat.fromHtml("<br><h2>3.4 Creación de un evento</h2>" +
-                "Para crear un nuevo evento y añadirla al calendario se tendrá que completar los siguientes campos: <br>" +
-                "<br><b>-Hora:</b> Tocando el botón “Hora” se podrá seleccionar la hora de inicio de la cita. <br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
-        parrafo18.text = HtmlCompat.fromHtml("<br><b>-Planificación: </b> Después de seleccionar la hora se mostrarán todas las planificaciones disponibles. Si no hay ninguna planificación o si se necesita crear otra, se podrá crear tocando en el botón “Nueva planificación”.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        /*4.4 Creación de un evento*/parrafo16.text = HtmlCompat.fromHtml("<h2>3.4 Creación de un evento</h2>" +
+                "Para crear un nuevo evento y añadirla al calendario se tendrá que completar los siguientes campos: " +
+                "<ul> <li> <b>Hora:</b> Tocando el botón “Hora” se podrá seleccionar la hora de inicio de la cita. </li>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        parrafo18.text = HtmlCompat.fromHtml("<li><b>Planificación: </b> Después de seleccionar la hora se mostrarán todas las planificaciones disponibles. Si no hay ninguna planificación o si se necesita crear otra, se podrá crear tocando en el botón “Nueva planificación”.</li> </ul>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo19.text = HtmlCompat.fromHtml("<br>Una vez rellenados todos los campos y seleccionada la planificación, se creará el evento tocando el botón “Guardar”.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo20.text = HtmlCompat.fromHtml("<br>El nuevo evento se mostrará en el calendario en el día correspondiente.<br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        /*Opciones de los eventos/citas médicas*/parrafo21.text = HtmlCompat.fromHtml("<br><h2>Opciones de los eventos/citas médicas</h2>" +
+        /*Opciones de los eventos/citas médicas*/parrafo21.text = HtmlCompat.fromHtml("<h2>- Opciones de los eventos</h2>" +
                 "En los eventos creados se pueden encontrar las siguientes opciones: <br>" +
-                "<br>-Cuando un evento tiene el icono     la planificación no será visible para el niño o adulto. Pero si tiene el icono la planificación si será visible para el usuario y podrá seguirla. Solo una cita médica/evento podrá estar visible.<br>" +
-                "<br>-Tocando el icono   se podrá eliminar el evento. Antes pedirá confirmar la acción. <br>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+                "<ul> <li>Cuando un evento tiene el icono     la planificación no será visible para el niño o adulto. Pero si tiene el icono la planificación si será visible para el usuario y podrá seguirla. Solo una cita médica/evento podrá estar visible.</li>" +
+                "<li>Tocando el icono   se podrá eliminar el evento. Antes pedirá confirmar la acción. </li> </ul>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         parrafo21.text = mostrarIcono(R.drawable.ic_baseline_visibility_off_40, parrafo21.text, 156, 157, true)
         parrafo21.text =
             mostrarIcono(R.drawable.ic_baseline_visibility_40, parrafo21.text, 235, 236, true)

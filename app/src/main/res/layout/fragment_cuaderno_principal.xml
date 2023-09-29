@@ -7,41 +7,78 @@
     android:layout_gravity="center"
     tools:context=".presentacion.fragmentos.cuaderno.PrincipalFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_sentimientos"
+            android:layout_width="330dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:contentDescription="Opción Como te sientes"
+            app:strokeColor="?color"
+            android:theme="@style/cards"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="?android:solidColor">
+
+            <ImageView
+                android:id="@+id/img_sentimientos"
+                android:layout_width="170dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/card_sentimientos" />
+
+            <TextView
+                android:id="@+id/lbl_sentimientos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="@string/lbl_sentimientos"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="?colorOnSurface"
+                android:textSize="25sp" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_sintomas"
-            app:strokeColor="?colorPrimary"
+            app:strokeColor="?color"
             app:strokeWidth="1dp"
             app:cardBackgroundColor="?android:solidColor"
             android:contentDescription="Opción que te pasa"
-            android:layout_width="230dp"
-            android:layout_height="380dp"
+            android:layout_width="330dp"
+            android:layout_height="200dp"
             android:layout_marginTop="10dp"
             android:theme="@style/cards"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/card_dolores"
-            app:layout_constraintStart_toEndOf="@+id/card_sentimientos"
-            app:layout_constraintTop_toTopOf="parent">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/img_sintomas"
-                android:layout_width="200dp"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
+                android:layout_width="170dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/cuaderno_sintomas" />
 
             <TextView
                 android:id="@+id/lbl_sintomas"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="300dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:text="@string/lbl_sintomas"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="?colorOnSurface"
@@ -51,82 +88,39 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_dolores"
-            android:layout_width="230dp"
-            android:layout_height="380dp"
+            android:layout_width="330dp"
+            android:layout_height="200dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="1dp"
+            app:cardElevation="0dp"
             android:contentDescription="Opción donde te duele"
-            app:strokeColor="?colorPrimary"
+            app:strokeColor="?color"
             android:theme="@style/cards"
             app:strokeWidth="1dp"
-            app:cardBackgroundColor="?android:solidColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/card_sintomas"
-            app:layout_constraintTop_toTopOf="parent">
+            app:cardBackgroundColor="?android:solidColor">
 
             <ImageView
                 android:id="@+id/img_dolores"
-                android:layout_width="200dp"
-                android:layout_height="300dp"
-                android:layout_gravity="center"
+                android:layout_width="170dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/cuaderno_dolores" />
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="300dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp "
+                android:gravity="center"
                 android:text="@string/lbl_dolores"
-                android:gravity="center"
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="?colorOnSurface"
                 android:textSize="25sp" />
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_sentimientos"
-            android:layout_width="230dp"
-            android:layout_height="380dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="1dp"
-            android:contentDescription="Opción Como te sientes"
-            app:strokeColor="?colorPrimary"
-            android:theme="@style/cards"
-
-            app:strokeWidth="1dp"
-            app:cardBackgroundColor="?android:solidColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/card_sintomas"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/img_sentimientos"
-                android:layout_width="200dp"
-                android:layout_gravity="center"
-                android:layout_height="300dp"
-                android:src="@drawable/card_sentimientos" />
-
-            <TextView
-                android:id="@+id/lbl_sentimientos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="300dp"
-                android:gravity="center"
-                android:text="@string/lbl_sentimientos"
-                android:fontFamily="@font/montserrat_medium"
-                android:textColor="?colorOnSurface"
-                android:textSize="25sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </FrameLayout>

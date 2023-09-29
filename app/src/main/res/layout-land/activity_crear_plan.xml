@@ -86,7 +86,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="25dp"
         android:contentDescription="Contenedor de categorias de pictogramas"
@@ -181,7 +180,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
         android:closeIcon="@drawable/svg_close"
-        android:searchIcon="@drawable/svg_search"
+        android:iconifiedByDefault="false"
         tools:ignore="NotSibling">
     </SearchView>
 

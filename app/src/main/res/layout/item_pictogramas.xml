@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -9,12 +8,12 @@
     android:paddingTop="6dp">
 
     <RelativeLayout
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/id_card"
-            android:layout_width="210dp"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -30,11 +29,11 @@
                 android:layout_height="100dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="50dp"
+                android:layout_marginEnd="45dp"
                 android:background="@color/white"
                 android:contentDescription="@string/lbl_Consultas"
                 app:shapeAppearance="@style/cornerRadius"
-                app:srcCompat="@drawable/categoria_consultas"></com.google.android.material.imageview.ShapeableImageView>
+                app:srcCompat="@drawable/categoria_consultas" />
 
             <TextView
                 android:id="@+id/id_Texto"
@@ -48,19 +47,20 @@
                 android:fontFamily="@font/montserrat_regular"
                 android:maxLines="1"
                 android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:text="@string/lbl_Consultas"
                 android:textColor="?colorOnSurface"
-                android:textSize="16sp">
-            </TextView>
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/btn_borrarPicto"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="6dp"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_marginTop="5dp"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:elevation="4dp"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/svg_trash">
@@ -71,7 +71,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="6dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="2dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
@@ -83,33 +83,33 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="6dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="2dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/svg_heart_filled"></ImageView>
+                app:srcCompat="@drawable/svg_heart_filled" />
 
             <ImageView
                 android:id="@+id/btn_historiaPicto"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="7dp"
-                android:layout_marginRight="7dp"
+                android:layout_marginEnd="7dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/bocadillo_historia_off"></ImageView>
+                app:srcCompat="@drawable/bocadillo_historia_off" />
 
             <ImageView
                 android:id="@+id/btn_historiaPictoOn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="7dp"
-                android:layout_marginRight="7dp"
+                android:layout_marginEnd="7dp"
                 android:elevation="4dp"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/bocadillo_historia_on"></ImageView>
+                app:srcCompat="@drawable/bocadillo_historia_on" />
 
         </RelativeLayout>
 
@@ -117,9 +117,9 @@
             android:id="@+id/id_recompensa"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="-3dp"
-            android:layout_marginRight="-18dp"
+            android:layout_marginEnd="-22dp"
             android:contentDescription="@string/lbl_Consultas"
             android:elevation="4dp"
             android:visibility="invisible"

@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "554770088401-6kcbele1k48l73bh22ins82iqrd3ejpk.apps.googleusercontent.com",
+          "client_id": "554770088401-d6agn35ajmkop1jl8bvugobjbjtsnt9n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.plantea",
+            "certificate_hash": "77b7642c4cd3f06cdcc6eda50d3daedb0a479fe1"
+          }
+        },
+        {
+          "client_id": "554770088401-ensp05m1boo1je4v8kp5q9c4hpvkb6s1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

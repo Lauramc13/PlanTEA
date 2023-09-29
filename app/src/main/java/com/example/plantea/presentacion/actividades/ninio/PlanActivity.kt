@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import java.util.Stack
 
@@ -665,22 +666,30 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         })
     }
 
-    private fun mostrarPlanificaciones(planificaciones: ArrayList<Evento>) : ArrayList<PlanificacionItem>{
-        val lista : ArrayList<PlanificacionItem> = ArrayList()
+    private fun mostrarPlanificaciones(planificaciones: ArrayList<Evento>): ArrayList<PlanificacionItem> {
+        val lista: ArrayList<PlanificacionItem> = ArrayList()
+
         for (planificacion in planificaciones) {
-            planificacion.nombre?.let { PlanificacionItem(it, planificacion.fecha.toString()) }
-                ?.let { lista.add(it) }
+            planificacion.fecha?.let { fechaPlanificacion ->
+                val datePlanificacion = LocalDate.parse(fechaPlanificacion.toString())
+
+                if (!datePlanificacion.isBefore(LocalDate.now())) {
+                    planificacion.nombre?.let {
+                        lista.add(PlanificacionItem(it, fechaPlanificacion.toString()))
+                    }
+                }
+            }
         }
 
-        //format notificationList.date to dd-MM-yyyy and sort it
         lista.sortBy { it.date }
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.getDefault())
         for (notification in lista) {
-            val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val dateFormatted = formatter.parse(notification.date)
-            val formatter2 = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            notification.date = formatter2.format(dateFormatted!!)
+            val dateFormatted = LocalDate.parse(notification.date, DateTimeFormatter.ISO_LOCAL_DATE)
+            notification.date = dateFormatted.format(formatter)
         }
+
         return lista
     }
+
 
 }

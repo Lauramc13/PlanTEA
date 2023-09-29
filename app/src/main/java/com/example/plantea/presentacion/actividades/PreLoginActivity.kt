@@ -69,6 +69,8 @@ class PreLoginActivity : AppCompatActivity(){
 
         signin.setOnClickListener {
             Toast.makeText(this, "Iniciando sesión", Toast.LENGTH_SHORT).show()
+            val account = GoogleSignIn.getLastSignedInAccount(this)
+            Log.d("pruebas", account.toString())
             signInGoogle()
         }
 
@@ -124,7 +126,11 @@ class PreLoginActivity : AppCompatActivity(){
                             Log.w("TAG", "signInWithEmail:failure", task.exception)
                             email.error = "ESTO ES UN ERROR"
                             password.error = "ESTO ES UN ERROR"
-                            Toast.makeText(baseContext, "Las credenciales son incorrectas", Toast.LENGTH_SHORT,).show()
+                            Toast.makeText(
+                                baseContext,
+                                "Las credenciales son incorrectas",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
             }
@@ -149,16 +155,23 @@ class PreLoginActivity : AppCompatActivity(){
             btnEnviar.setOnClickListener{
                 val email = correo.editText?.text.toString()
 
-                FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                //if correo is empty -> error
+                if(email.isEmpty()){
+                    correo.error = "ESTO ES UN ERROR"
+                    Toast.makeText(applicationContext, "No puedes dejar el campo vacío", Toast.LENGTH_LONG).show()
+                }else{
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                     .addOnCompleteListener{task ->
                         if(task.isSuccessful){
                             Toast.makeText(this, "Si el usuario existe se enviará un correo para restablecer la contraseña", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }else{
-                            Log.w("pruebas", task.exception!!.message.toString())
+                            Toast.makeText(this, "El correo introducido no es válido", Toast.LENGTH_LONG).show()
                         }
                     }
+                }
             }
+
             iconoCerrar.setOnClickListener { dialog.dismiss() }
             dialog.show()
         }
@@ -174,7 +187,9 @@ class PreLoginActivity : AppCompatActivity(){
       */
 
     private fun signInGoogle() {
+
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
+        Log.d("pruebas", "pasa por signInGoogle")
         launcher.launch(signInIntent)
     }
 
@@ -199,6 +214,8 @@ class PreLoginActivity : AppCompatActivity(){
             } catch (e: ApiException) {
                 Log.w("FAILURE", "Google Sign-In Failed: ${e.statusCode}")
             }
+        }else{
+            Log.d("pruebas",result.resultCode.toString() )
         }
     }
 

@@ -8,6 +8,15 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.PlanActivity">
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3"
+        app:tint="#F6FBF7" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -249,7 +258,7 @@
                     android:layout_marginEnd="30dp"
                     android:orientation="vertical"
                     android:visibility="visible"
-                    android:background="@drawable/fondo_cuaderno_tiempo"
+                    android:background="@drawable/background_planificaciones_futuras"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
