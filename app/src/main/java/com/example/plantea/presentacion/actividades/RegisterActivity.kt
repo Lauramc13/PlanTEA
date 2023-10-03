@@ -47,6 +47,38 @@ class RegisterActivity : AppCompatActivity(){
 
     var usuario = Usuario_Planificador()
 
+    companion object {
+        const val NAME_KEY = "NAME_KEY"
+        const val EMAIL_KEY = "EMAIL_KEY"
+        const val USERNAME_KEY = "USERNAME_KEY"
+        const val PASSWORD_KEY = "PASSWORD_KEY"
+        const val PASSWORD2_KEY = "PASSWORD2_KEY"
+        const val OBJETO_KEY = "OBJETO_KEY"
+        const val NAMEPLANIFICADO_KEY = "NAMEPLANIFICADO_KEY"
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(NAME_KEY, txtName.editText?.text.toString())
+        outState.putString(EMAIL_KEY, txtEmail.editText?.text.toString())
+        outState.putString(USERNAME_KEY, txtUsername.editText?.text.toString())
+        outState.putString(PASSWORD_KEY, txtPassword.editText?.text.toString())
+        outState.putString(PASSWORD2_KEY, txtPassword2.editText?.text.toString())
+        outState.putString(OBJETO_KEY, txtObjeto.editText?.text.toString())
+        outState.putString(NAMEPLANIFICADO_KEY, txtNameplanificado.editText?.text.toString())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        txtName.editText?.setText(savedInstanceState.getString(NAME_KEY).toString())
+        txtEmail.editText?.setText(savedInstanceState.getString(EMAIL_KEY).toString())
+        txtUsername.editText?.setText(savedInstanceState.getString(USERNAME_KEY).toString())
+        txtPassword.editText?.setText(savedInstanceState.getString(PASSWORD_KEY).toString())
+        txtPassword2.editText?.setText(savedInstanceState.getString(PASSWORD2_KEY).toString())
+        txtObjeto.editText?.setText(savedInstanceState.getString(OBJETO_KEY).toString())
+        txtNameplanificado.editText?.setText(savedInstanceState.getString(NAMEPLANIFICADO_KEY).toString())
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)

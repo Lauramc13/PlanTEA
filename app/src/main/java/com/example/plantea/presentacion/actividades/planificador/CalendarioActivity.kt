@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.Button
 import android.widget.ImageView
@@ -11,6 +12,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -31,29 +34,62 @@ import java.time.LocalTime
 import java.util.*
 
 class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelectedListener, EventoInterface {
-    lateinit var transaction: FragmentTransaction
-    lateinit var fragment_eventos: Fragment
-    lateinit var fragment_crearEvento: Fragment
+    private lateinit var transaction: FragmentTransaction
+    private lateinit var fragment_eventos: Fragment
+    private lateinit var fragment_crearEvento: Fragment
     private lateinit var calendario: RecyclerView
     private lateinit var fechaActual: TextView
     private lateinit var dias: ArrayList<LocalDate?>
     private lateinit var btn_siguienteMes: ImageView
     private lateinit var btn_anteriorMes: ImageView
-    lateinit var adaptadorCalendario: AdaptadorCalendario
+    private lateinit var adaptadorCalendario: AdaptadorCalendario
+    private var isNuevoEventoSelected = false
+    private var isClickedReloj = false
     lateinit var prefs: SharedPreferences
-    lateinit var alarmManager: AlarmManager
+    private lateinit var alarmManager: AlarmManager
     var evento = Evento()
     private var navigationHandler = GestionNavegacion()
     private lateinit var backButton: Button
+   // private var fechaSeleccionada : LocalDate = LocalDate.now()
+
+    companion object {
+        const val FECHA_SELECCIONADA = "FECHA_SELECCIONADA"
+        const val NUEVO_EVENTO_KEY = "NUEVO_EVENTO_KEY"
+        // const val EVENTO_CREATED = "EVENTO_CREATED"
+
+        private const val CHANNEL_ID = "PlanTEA"
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(FECHA_SELECCIONADA, CalendarioUtilidades.fechaSeleccionada.toString())
+        outState.putBoolean(NUEVO_EVENTO_KEY, isNuevoEventoSelected)
+       // outState.putBoolean(EVENTO_CREATED, isClickedReloj)
+        //save if there is a planificacion selected
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val fechaSel = savedInstanceState.getString(FECHA_SELECCIONADA)
+
+        if (!fechaSel.isNullOrEmpty()) {
+            diaSeleccionado(LocalDate.parse(fechaSel))
+        }
+
+        if (savedInstanceState.getBoolean(NUEVO_EVENTO_KEY)){
+            crearEventoFragment()
+        }
+
+        /*if (savedInstanceState.getBoolean(EVENTO_CREATED)){
+            fragment_crearEvento.
+        }*/
 
 
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
+    }
 
     override fun onResume() {
         super.onResume()
         navigationHandler.configurarDatos(this, R.id.calendar)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,13 +111,20 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
 
         //Iniciamos con el fragment principal
         if (savedInstanceState == null) {
+            Log.d("pruebas", "paso por instance null")
             // Activity is not being recreated, so create a new instance of EventosFragment
             fragment_crearEvento = NuevoEventoFragment()
             fragment_eventos = EventosFragment()
-            transaction = supportFragmentManager.beginTransaction()
+            /*transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_calendario, fragment_eventos)
-            transaction.commitNow()
+            transaction.commitNow()*/
+            supportFragmentManager.commit {
+                replace<EventosFragment>(R.id.fragment_calendario)
+                setReorderingAllowed(true)
+                addToBackStack("nuevoEvento")
+            }
         } else {
+            Log.d("pruebas", "AAHHH :((((")
             // Activity is being recreated, so retrieve the existing fragment from the FragmentManager
             val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_calendario)
             fragment_eventos = if (existingFragment is EventosFragment) {
@@ -95,6 +138,14 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
             } else {
                 NuevoEventoFragment()
             }
+           /* val fragment: NuevoEventoFragment = supportFragmentManager.findFragmentById(R.id.fragment_calendario) as NuevoEventoFragment
+            Log.d("pruebas", fragment.toString())
+            supportFragmentManager.commit {
+                replace(R.id.fragment_calendario, fragment)
+                setReorderingAllowed(true)
+                addToBackStack("nuevoEvento")
+            }*/
+            //fragment_crearEvento = (supportFragmentManager.findFragmentByTag(NuevoEventoFragment::class.java.simpleName) as? NuevoEventoFragment)
         }
 
         backButton.setOnClickListener{
@@ -199,10 +250,16 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     }
 
     override fun crearEventoFragment() {
+        isNuevoEventoSelected = true
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, fragment_crearEvento)
         ft.addToBackStack(null)
         ft.commit()
+    }
+
+    override fun clickReloj(tiempo: CharSequence?) {
+        isClickedReloj = true
+        Log.d("pruebas", "paso por aqui $tiempo")
     }
 
     override fun nuevoEvento(cita: Evento) {
@@ -223,6 +280,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     }
 
     override fun cancelarEvento() {
+        isNuevoEventoSelected = false
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
@@ -273,9 +331,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         alarmManager.cancel(pendingIntent)
     }
 
-    companion object {
-        private const val CHANNEL_ID = "PlanTEA"
-    }
 
     override fun onDestroy() {
         super.onDestroy()

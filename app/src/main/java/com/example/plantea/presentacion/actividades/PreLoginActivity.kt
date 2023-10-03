@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
@@ -18,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -46,6 +48,23 @@ class PreLoginActivity : AppCompatActivity(){
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
+
+    companion object {
+        const val EMAIL_KEY = "EMAIL_KEY"
+        const val PASSWORD_KEY = "PASSWORD_KEY" 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EMAIL_KEY, email.editText?.text.toString())
+        outState.putString(PASSWORD_KEY, password.editText?.text.toString())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        email.editText?.setText(savedInstanceState.getString(EMAIL_KEY).toString())
+        password.editText?.setText(savedInstanceState.getString(PASSWORD_KEY).toString())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

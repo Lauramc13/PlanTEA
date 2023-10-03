@@ -4,13 +4,13 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.os.PersistableBundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
@@ -21,7 +21,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -45,7 +44,6 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 import java.util.Stack
 
@@ -83,7 +81,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     lateinit var eventos: ArrayList<Evento>
     var evento = Evento()
     private lateinit var textToSpeech: TextToSpeech
-    private var lastIndex = false
+    private var fechaSeleccionada : LocalDate = LocalDate.now()
 
     private var reproduccionLenta = false
     private var reproduccionRapida = false
@@ -107,8 +105,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var animCard: Animation
     lateinit var historia: ConstraintLayout
 
+    companion object {
+        const val FECHA_SELECCIONADA = "FECHA_SELECCIONADA" // const key to save/read value from bundle
+    }
+
     override fun diaSeleccionado(fecha: LocalDate?) {
         if (fecha != null) {
+            fechaSeleccionada = fecha
             CalendarioUtilidades.fechaSeleccionada = fecha
             val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
             selectedDate = dateFormatter.format(fecha)
@@ -125,7 +128,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    /*override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         val layoutParams = historia.layoutParams as? ConstraintLayout.LayoutParams
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -137,7 +140,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             layoutParams?.width = 250.dpToPx(this)
             historia.layoutParams = layoutParams
         }
-    }
+    }*/
+
+    /*private fun Int.dpToPx(context: Context): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        context.resources.displayMetrics
+    ).toInt()
+}*/
 
     override fun onStop() {
         super.onStop()
@@ -145,20 +156,26 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         handler.removeCallbacksAndMessages(null)
     }
 
-    private fun Int.dpToPx(context: Context): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save the RecyclerView state before the activity is destroyed
         recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
         outState.putParcelable("recycler_view_state", recyclerViewState)
+        outState.putString(FECHA_SELECCIONADA, fechaSeleccionada.toString())
     }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val fechaSel = savedInstanceState.getString(FECHA_SELECCIONADA)
+        //val recyclerView2 = savedInstanceState.getString("recycler_view_state")
+
+        if (!fechaSel.isNullOrEmpty()) {
+            diaSeleccionado(LocalDate.parse(fechaSel))
+        }
+       // mostrarPlan()
+       // cambiarPicto(1) TODO: QUE SE GUARDE EL ESTADO DE LOS PICTOGRAMAS QUE SE HAN HECHO
+    }
+
 
     private fun obtenerVistaMes() {
         fechaActual.text = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
@@ -181,20 +198,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plan)
 
-        val callback = object : OnBackPressedCallback(
-            true
-        ){
+        // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
+        val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 if (supportFragmentManager.backStackEntryCount == 0) {
                     startActivity(Intent(this@PlanActivity, MainActivity::class.java))
                 } else {
-                    // otherwise, pop back stack
                     supportFragmentManager.popBackStack()
                 }
                 finish()
             }
         }
-
         onBackPressedDispatcher.addCallback(this, callback)
 
         //Pila de los pasos completados en el seguimiento de un plan
@@ -216,18 +230,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerView = findViewById(R.id.recycler_plan)
         notificaciones = findViewById(R.id.planificacionRecyclerView)
 
-
         val userId = prefs.getString("idUsuario", "")
         val planificaciones = userId?.let { evento.obtenerTodosEventos(it, this) } as ArrayList<Evento>
 
         val notificationList : ArrayList<PlanificacionItem> = mostrarPlanificaciones(planificaciones)
-
         notificaciones.layoutManager = LinearLayoutManager(this)
         val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList)
         notificaciones.adapter = adaptadorNot
 
-
         dia = findViewById(R.id.lbl_dia)
+
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
         val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
@@ -264,12 +276,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             obtenerVistaMes()
             val userId = prefs.getString("idUsuario", "")
             eventos = userId?.let {
-                evento.obtenerEventos(
-                    it,
-                    this,
-                    CalendarioUtilidades.fechaSeleccionada
-                )
+                evento.obtenerEventos(it, this, CalendarioUtilidades.fechaSeleccionada)
             } as ArrayList<Evento>
+
 
             btnAnteriorMes.setOnClickListener {
                 CalendarioUtilidades.fechaSeleccionada =
@@ -290,17 +299,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             startActivity(Intent(applicationContext, CalendarioActivity::class.java))
         }
 
-        //card_actividades = findViewById(R.id.card_actividad)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         recyclerView.layoutManager = layoutManagerLinear
 
+        //card_actividades = findViewById(R.id.card_actividad)
         // Restore the RecyclerView state if it was saved before
-        if (savedInstanceState != null) {
+       /* if (savedInstanceState != null) {
             recyclerViewState =
                 savedInstanceState.getParcelable("recycler_view_state") // TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
             recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
-        }
+        }*/
 
         //Comprobar si hay parametros en caso de llamada desde el planificador
         val parametros = this.intent.extras
@@ -320,41 +329,12 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             mostrarPlan()
         }
 
-        //Este método se ejecutará al seleccionar el icono cuaderno para acceder
-        // card_cuaderno.setOnClickListener {
-        //     val intent = Intent(applicationContext, CuadernoActivity::class.java)
-        //     startActivity(intent)
-        // }
-
-        // card_actividades.setOnClickListener {
-        //     val intent = Intent(applicationContext, ActividadActivity::class.java)
-        //     startActivity(intent)
-        // }
-
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
         iconoDeshacer.setOnClickListener {
             if (!pasosCompletados.empty()) {
                 val posicionUndo = pasosCompletados.pop() as Int
-                val viewHolderPictogramas =
-                    recyclerView.findViewHolderForAdapterPosition(posicionUndo) as AdaptadorPresentacion.ViewHolderPictogramas?
-                viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
-                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
-                viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 1f
-                when (listaPictogramas[posicionUndo].categoria) {
-                    9 -> {
-                        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
-                            .setBackgroundResource(R.drawable.card_premio)
-                    }
-                    8 -> {
-                        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
-                            .setBackgroundResource(R.drawable.card_espera)
-                    }
-                    else -> {
-                        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
-                            .setBackgroundResource(R.drawable.card_personalizado)
-                    }
-                }
-                viewHolderPictogramas.popListClicked()
+                cambiarPicto(posicionUndo)
+
                 if (pasosCompletados.isEmpty()) {
                     iconoDeshacer.isEnabled = false
                 }
@@ -503,7 +483,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         if (currentDialog != null && currentDialog!!.isShowing) {
             currentDialog!!.dismiss()
         }
-
 
         dialog = Dialog(this)
         dialog!!.setContentView(R.layout.dialogo_presentacion)
@@ -673,7 +652,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             planificacion.fecha?.let { fechaPlanificacion ->
                 val datePlanificacion = LocalDate.parse(fechaPlanificacion.toString())
 
-                if (!datePlanificacion.isBefore(LocalDate.now())) {
+                if (!datePlanificacion.isBefore(LocalDate.now()) && planificacion.visible == 1) {
                     planificacion.nombre?.let {
                         lista.add(PlanificacionItem(it, fechaPlanificacion.toString()))
                     }
@@ -689,6 +668,29 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
 
         return lista
+    }
+
+    private fun cambiarPicto(posicion: Int){
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
+        viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 0.7f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 0.7f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 0.7f
+        when (listaPictogramas[posicion].categoria) {
+            9 -> {
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                    .setBackgroundResource(R.drawable.card_premio)
+            }
+            8 -> {
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                    .setBackgroundResource(R.drawable.card_espera)
+            }
+            else -> {
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
+                    .setBackgroundResource(R.drawable.card_personalizado)
+            }
+        }
+        viewHolderPictogramas.popListClicked()
+
     }
 
 

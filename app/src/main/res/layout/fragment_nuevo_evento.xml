@@ -148,7 +148,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_planificaciones"
                 android:layout_width="match_parent"
-                android:layout_height="260dp"
+                android:layout_height="230dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

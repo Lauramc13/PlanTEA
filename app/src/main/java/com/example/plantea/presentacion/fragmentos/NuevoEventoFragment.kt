@@ -1,19 +1,13 @@
 package com.example.plantea.presentacion.fragmentos
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
-import android.app.TimePickerDialog
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,7 +81,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         btn_guardar.setOnClickListener {
             val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
             val userId = prefs.getString("idUsuario", "")
-            Log.d("NUEVOS EVENTOS USUARIO", "$userId")
             val evento = userId?.let { it1 ->
                 Evento(
                     0,
@@ -163,6 +156,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     // }
 
     private fun mostrarReloj(tiempo: TextView?) {
+
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
@@ -195,6 +189,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
 
             layout_planificaciones.visibility = View.VISIBLE
             iniciarListaPlanificaciones()
+            eventoInterface.clickReloj(tiempo?.text)
         }
 
         picker.show(requireFragmentManager(), "TimePicker")

@@ -126,7 +126,6 @@ class ConfiguracionActivity : AppCompatActivity() {
         txtObjeto.isEnabled = infoObjeto
         imgObjeto.isEnabled = infoObjeto
 
-
         imgUsuarioPlanificador.setOnClickListener {
             val editor = prefs.edit()
             editor.putBoolean("editPreferences", true)

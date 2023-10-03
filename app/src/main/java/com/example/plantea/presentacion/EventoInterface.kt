@@ -11,4 +11,6 @@ interface EventoInterface {
     fun planificar()
     fun cancelarEvento()
     fun cancelarNotificacion(identificador: Int)
+
+    fun clickReloj(tiempo: CharSequence?)
 }

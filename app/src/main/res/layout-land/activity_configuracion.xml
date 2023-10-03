@@ -111,12 +111,12 @@
                         android:id="@+id/id_editIcon"
                         android:layout_width="33dp"
                         android:layout_height="33dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginTop="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:contentDescription="@string/lbl_Consultas"
                         android:elevation="4dp"
-                        app:srcCompat="@drawable/edit_image_svg"></ImageView>
+                        app:srcCompat="@drawable/edit_image_svg"/>
                 </RelativeLayout>
 
                 <EditText

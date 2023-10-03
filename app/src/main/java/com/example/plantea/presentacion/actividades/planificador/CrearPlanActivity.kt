@@ -20,6 +20,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +34,7 @@ import com.example.plantea.dominio.*
 import com.example.plantea.presentacion.ApiInterface
 import com.example.plantea.presentacion.CrearPlanInterface
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
+import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
@@ -49,38 +51,38 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     var identificadorCategoria = 0
     var subcategoriaOpen = false
     private lateinit var labelTitulo: TextView
-    lateinit var busquedaNula: TextView
-    lateinit var transaction: FragmentTransaction
-    lateinit var fragmentCategorias: Fragment
-    lateinit var fragmentPictogramas: Fragment
-    lateinit var fragmentSubcategoria: Fragment
-    lateinit var fragmentBusqueda: Fragment
-    lateinit var btn_logout: Button
-    lateinit var icono_cerrar_login : AppCompatImageView
-    lateinit var listaPlanificacion: ArrayList<Pictograma>
-    lateinit var listaPictogramas: ArrayList<Pictograma>
-    lateinit var tituloPicto: String
-    lateinit var imagenPicto: String
-    lateinit var searchBar: SearchView
-    lateinit var btn_salir: Button
-    lateinit var btn_cancelar: Button
+    private lateinit var busquedaNula: TextView
+    private lateinit var transaction: FragmentTransaction
+    private lateinit var fragmentCategorias: Fragment
+    private lateinit var fragmentPictogramas: Fragment
+    private lateinit var fragmentSubcategoria: Fragment
+    private lateinit var fragmentBusqueda: Fragment
+    private lateinit var btn_logout: Button
+    private lateinit var icono_cerrar_login : AppCompatImageView
+    private lateinit var listaPlanificacion: ArrayList<Pictograma>
+    private lateinit var listaPictogramas: ArrayList<Pictograma>
+    private lateinit var tituloPicto: String
+    private lateinit var imagenPicto: String
+    private lateinit var searchBar: SearchView
+    private lateinit var btn_salir: Button
+    private  lateinit var btn_cancelar: Button
     private lateinit var backButton: Button
-    var categoriaPicto = 0
+    private var categoriaPicto = 0
     var isEdited = false
     var pictograma = Pictograma()
 
     //Opcion para indicar funcionalidad editar o crear
-    var opcionEditar = false
+    private var opcionEditar = false
 
     //Variables dialogo crear nuevo pictograma
-    lateinit var dialogNuevoPictograma: Dialog
-    lateinit var titulo_Dialogo: TextView
-    lateinit var spinner_Dialogo: Spinner
-    lateinit var img_Picto: ImageView
-    lateinit var img_Cerrar: ImageView
-    lateinit var btn_Guardar: Button
-    lateinit var btn_GuardarPlanificacion: Button
-    lateinit var txt_TituloPlan: TextView
+    private lateinit var dialogNuevoPictograma: Dialog
+    private lateinit var titulo_Dialogo: TextView
+    private lateinit var spinner_Dialogo: Spinner
+    private lateinit var img_Picto: ImageView
+    private lateinit var img_Cerrar: ImageView
+    private lateinit var btn_Guardar: Button
+    private lateinit var btn_GuardarPlanificacion: Button
+    private lateinit var txt_TituloPlan: TextView
 
     //RecyclerView Planificacion
     lateinit var recyclerView: RecyclerView
@@ -88,7 +90,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     var picto = Pictograma()
     var categoria = Categoria()
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+   override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         // Comprobamos la orientacion de la pantalla
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -103,8 +105,13 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             replace<CategoriasFragment>(R.id.contenedor_fragments)
         }
         recreate()
-
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("arrayListKey", listaPlanificacion)
+    }
+
 
     private fun getPictogramas(query: String) {
         Log.d("TAG", "1")
@@ -254,6 +261,13 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             finish()
         }
 
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 getPictogramas(query)
@@ -282,7 +296,14 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             opcionEditar = true
             txt_TituloPlan.text = intent.getStringExtra("titulo")
             listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!! //TODO
+            Log.d("pruebas", "paso por parametros != null")
+        } else if (savedInstanceState != null){
+            val savedArrayList = savedInstanceState.getSerializable("arrayListKey") as ArrayList<Pictograma>?
+            if (savedArrayList != null) {
+                listaPlanificacion = savedArrayList
+            }
         }
+
 
         //Iniciar RecyclerView de planificaciones
         initRecyclerViewPlan()

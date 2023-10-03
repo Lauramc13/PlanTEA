@@ -20,6 +20,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -96,9 +97,10 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             }
         }
 
+
+
         fun popListClicked(){
             lastClickedPosition -= 1
         }
-
     }
 }
