@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -19,6 +20,8 @@ class TutorialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
+        val isFromManual : Boolean = intent.getBooleanExtra("isFromManual", false)
+
 
         viewPager = findViewById(R.id.view_pager)
         adapter = AdaptadorPaginas(this)
@@ -39,8 +42,11 @@ class TutorialActivity : AppCompatActivity() {
         btnNext.setOnClickListener {
             if(viewPager.currentItem == 2){
                 btnNext.text = getString(R.string.str_finalizar)
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                if (isFromManual){
+                    startActivity(Intent(applicationContext, ManualActivity::class.java))
+                }else {
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
+                }
                 finish()
             }else{
                 btnNext.text = getString(R.string.str_siguiente)
@@ -49,8 +55,11 @@ class TutorialActivity : AppCompatActivity() {
         }
 
         btnSkip.setOnClickListener {
-            val intent = Intent(applicationContext, MainActivity::class.java)
-            startActivity(intent)
+            if (isFromManual){
+                startActivity(Intent(applicationContext, ManualActivity::class.java))
+            }else {
+                startActivity(Intent(applicationContext, MainActivity::class.java))
+            }
             finish()
         }
 

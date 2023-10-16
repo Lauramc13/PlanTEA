@@ -312,8 +312,8 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Favorito where Favorito.id_usuario = '$id_usuario'", null)
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?) {
-        val query = "UPDATE Usuario_Planificador SET name = '$nombreUsuarioPlanificador', nameTEA = '$nombreUsuarioTEA', objeto = '$nombreObjeto', imagen = '$rutaPlanificador', imagenTEA = '$rutaUsuarioTEA', imagenObjeto = '$rutaObjeto' WHERE id = '$idUsuario'"
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?) {
+        val query = "UPDATE Usuario_Planificador SET name = '$nombreUsuarioPlanificador', username = '$username', nameTEA = '$nombreUsuarioTEA', objeto = '$nombreObjeto', imagen = '$rutaPlanificador', imagenTEA = '$rutaUsuarioTEA', imagenObjeto = '$rutaObjeto' WHERE id = '$idUsuario'"
         db?.execSQL(query)
     }
 

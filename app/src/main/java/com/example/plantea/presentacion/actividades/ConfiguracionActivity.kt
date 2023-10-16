@@ -5,9 +5,11 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +17,7 @@ import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
 import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
+import com.google.android.material.textfield.TextInputLayout
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -26,6 +29,11 @@ class ConfiguracionActivity : AppCompatActivity() {
     private lateinit var imgUsuarioPlanificador: ImageView
     private lateinit var imgUsuarioTEA: ImageView
     private lateinit var imgObjeto: ImageView
+    private lateinit var txtPlanificador : TextInputLayout
+    private lateinit var txtUsernamePlanificador : TextInputLayout
+    private lateinit var txtCorreoPlanificador : TextInputLayout
+    private lateinit var txtUsuarioTEA : TextInputLayout
+    private lateinit var txtObjeto : TextInputLayout
 
     private lateinit var iconEditUsuarioTEA : ImageView
     private lateinit var iconEditObjeto : ImageView
@@ -35,6 +43,32 @@ class ConfiguracionActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         configurarDatos()
+    }
+
+    companion object {
+        const val EMAIL_KEY = "EMAIL_KEY"
+        const val NAME = "NAME"
+        const val USERNAME = "USERNAME"
+        const val NAMETEA = "NAMETEA"
+        const val NAMEOBJ = "NAMEOBJ"
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EMAIL_KEY, txtCorreoPlanificador.editText?.text.toString())
+        outState.putString(NAME, txtPlanificador.editText?.text.toString())
+        outState.putString(USERNAME, txtUsernamePlanificador.editText?.text.toString())
+        outState.putString(NAMETEA, txtUsuarioTEA.editText?.text.toString())
+        outState.putString(NAMEOBJ, txtObjeto.editText?.text.toString())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        txtCorreoPlanificador.editText?.setText(savedInstanceState.getString(EMAIL_KEY).toString())
+        txtPlanificador.editText?.setText(savedInstanceState.getString(NAME).toString())
+        txtUsernamePlanificador.editText?.setText(savedInstanceState.getString(USERNAME).toString())
+        txtUsuarioTEA.editText?.setText(savedInstanceState.getString(NAMETEA).toString())
+        txtObjeto.editText?.setText(savedInstanceState.getString(NAMEOBJ).toString())
     }
 
     fun configurarDatos(){
@@ -71,9 +105,12 @@ class ConfiguracionActivity : AppCompatActivity() {
         imgUsuarioTEA = findViewById(R.id.img_FotoUsuarioTEA)
         imgObjeto = findViewById(R.id.img_objeto)
 
-        val txtPlanificador : TextView = findViewById(R.id.txt_nombrePlanificador)
-        val txtUsuarioTEA : TextView  = findViewById(R.id.txt_nombreUsuarioTEA)
-        val txtObjeto: TextView = findViewById(R.id.txt_nombreObjeto)
+        txtPlanificador = findViewById(R.id.txt_nombrePlanificador)
+        txtUsernamePlanificador = findViewById(R.id.txt_nombreUsuarioPlanificador)
+        txtCorreoPlanificador = findViewById(R.id.txt_correoPlanificador)
+        txtUsuarioTEA  = findViewById(R.id.txt_nombreUsuarioTEA)
+        txtObjeto = findViewById(R.id.txt_nombreObjeto)
+
         val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
         //val btnPassword : Button= findViewById(R.id.buttonContrasenia)
         val btnNotificacion : SwitchCompat = findViewById(R.id.switch_notificacion)
@@ -83,6 +120,14 @@ class ConfiguracionActivity : AppCompatActivity() {
         val dia : CheckBox = findViewById(R.id.checkBox_dia)
         val hora : CheckBox = findViewById(R.id.checkBox_hora)
         val backButton : Button = findViewById(R.id.goBackButton)
+        val credits : TextView = findViewById(R.id.btn_credits)
+
+        credits.paintFlags = credits.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+        credits.setOnClickListener{
+            Toast.makeText(applicationContext, "TODO: Esta funcionalidad todavia no esta disponible", Toast.LENGTH_LONG).show()
+        }
+
 
         txtUsuarioTEA.isEnabled = false
         imgUsuarioTEA.isEnabled = false
@@ -99,9 +144,12 @@ class ConfiguracionActivity : AppCompatActivity() {
         //val userAccount = prefs.getBoolean("userAccount", false)
 
         //Imagenes y nombres
-        txtPlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-        txtUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-        txtObjeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
+        txtPlanificador.editText?.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
+        txtUsernamePlanificador.editText?.setText(prefs.getString("nombreUsuarioPlanificador", "")!!.uppercase(Locale.getDefault()))
+        txtCorreoPlanificador.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
+
+        txtUsuarioTEA.editText?.setText(prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault()))
+        txtObjeto.editText?.setText(prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault()))
         imgObjeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
         configurarDatos()
 
@@ -168,19 +216,20 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-            if (txtPlanificador.text.toString().isEmpty() || txtUsuarioTEA.text.toString().isEmpty() && lblInfoUsuario.isChecked
+            if (txtPlanificador.editText?.text.toString().isEmpty() || txtUsernamePlanificador.editText?.text.toString().isEmpty() || txtUsuarioTEA.editText?.text.toString().isEmpty() && lblInfoUsuario.isChecked
             ) {
                 Toast.makeText(applicationContext, "Se necesita un nombre para cada usuario", Toast.LENGTH_LONG).show()
             } else if (imgUsuarioPlanificador.drawable == null || imgUsuarioTEA.drawable == null && lblInfoUsuario.isChecked) {
                 Toast.makeText(applicationContext, "Se necesita una imagen para cada usuario", Toast.LENGTH_LONG).show()
-            } else if ((txtObjeto.text.toString().isEmpty() || imgObjeto.drawable == null) && lblObjeto.isChecked) {
+            } else if ((txtObjeto.editText?.text.toString().isEmpty() || imgObjeto.drawable == null) && lblObjeto.isChecked) {
                 Toast.makeText(applicationContext, "Se necesita una imagen y nombre del objeto tranquilizador", Toast.LENGTH_LONG).show()
             } else {
 
                 //Obtener nombres de los usuarios y objeto
-                val nombreUsuarioPlanificador = txtPlanificador.text.toString()
-                val nombreUsuarioTEA = txtUsuarioTEA.text.toString()
-                val nombreObjeto = txtObjeto.text.toString()
+                val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
+                val nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
+                val username = txtUsernamePlanificador.editText?.text.toString()
+                val nombreObjeto = txtObjeto.editText?.text.toString()
                 val rutaPlanificador = crearRuta(imgUsuarioPlanificador, "Planificador")
                 var rutaUsuarioTEA= ""
                 var rutaObjeto = ""
@@ -222,7 +271,12 @@ class ConfiguracionActivity : AppCompatActivity() {
                 editor.apply()
 
                 val idUsuario = prefs.getString("idUsuario", "")
-                usuario.guardarConfiguracion(nombreUsuarioPlanificador, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
+                try {
+                    usuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
+                }catch (e: Exception){
+                    Toast.makeText(applicationContext, "Error al guardar la configuración", Toast.LENGTH_LONG).show()
+                    Log.d("pruebas", e.toString())
+                }
                 finish()
             }
         }

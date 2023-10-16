@@ -24,6 +24,12 @@
         android:checkable="true"
         android:icon="@drawable/svg_cuadernocomunicacion"
         android:title="Cuaderno de comunicacion"/>
+    <item
+        android:id="@+id/traductor"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_heart"
+        android:title="Traductor"/>
 
 
 </menu>

@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.actividades
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.SpannableString
@@ -17,7 +18,6 @@ class ManualActivity : AppCompatActivity() {
     lateinit var vista: ScrollView
     private lateinit var indice: View
     private lateinit var btn_subir: FloatingActionButton
-    private lateinit var backButton: Button
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -34,11 +34,20 @@ class ManualActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual)
 
-        backButton = findViewById(R.id.goBackButton)
+        val backButton : Button = findViewById(R.id.goBackButton)
+        val tutorialButton : Button = findViewById(R.id.tutorialButton)
 
         backButton.setOnClickListener{
             finish()
         }
+
+        tutorialButton.setOnClickListener {
+            val intent = Intent(applicationContext, TutorialActivity::class.java)
+            intent.putExtra("isFromManual", true)
+            startActivity(intent)
+        }
+
+
 
         indice = findViewById(R.id.layout_indice)
         vista = findViewById(R.id.scrollview)

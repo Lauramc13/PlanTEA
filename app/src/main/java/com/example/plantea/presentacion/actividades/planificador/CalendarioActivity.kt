@@ -111,7 +111,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
 
         //Iniciamos con el fragment principal
         if (savedInstanceState == null) {
-            Log.d("pruebas", "paso por instance null")
             // Activity is not being recreated, so create a new instance of EventosFragment
             fragment_crearEvento = NuevoEventoFragment()
             fragment_eventos = EventosFragment()
@@ -124,7 +123,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
                 addToBackStack("nuevoEvento")
             }
         } else {
-            Log.d("pruebas", "AAHHH :((((")
             // Activity is being recreated, so retrieve the existing fragment from the FragmentManager
             val existingFragment = supportFragmentManager.findFragmentById(R.id.fragment_calendario)
             fragment_eventos = if (existingFragment is EventosFragment) {
@@ -259,7 +257,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
 
     override fun clickReloj(tiempo: CharSequence?) {
         isClickedReloj = true
-        Log.d("pruebas", "paso por aqui $tiempo")
     }
 
     override fun nuevoEvento(cita: Evento) {

@@ -237,7 +237,7 @@ class RegisterActivity : AppCompatActivity(){
                 val id = usuario.consultarId(email, this@RegisterActivity)
                 val editor = prefs.edit()
                 editor.putString("idUsuario", id)
-                editor.putString("username", username)
+                editor.putString("nombreUsuarioPlanificador", username)
                 editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
                 editor.putBoolean("info_objeto", checkObjeto.isChecked)
                 editor.putString("email", email)

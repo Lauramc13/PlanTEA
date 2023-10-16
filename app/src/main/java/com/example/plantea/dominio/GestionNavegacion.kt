@@ -15,6 +15,7 @@ import com.example.plantea.presentacion.actividades.*
 import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
 import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
+import com.example.plantea.presentacion.actividades.ninio.TraductorActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -201,6 +202,7 @@ class GestionNavegacion {
             R.id.cuaderno -> CuadernoActivity::class.java
             R.id.user -> ConfiguracionActivity::class.java
             R.id.help -> ManualActivity::class.java
+            R.id.traductor -> TraductorActivity::class.java
             else -> return true
         }
         if (currentActivity == targetActivityClass) {

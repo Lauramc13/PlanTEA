@@ -68,9 +68,7 @@
     </style>
 
     <style name="Switches">
-        <item name="colorControlActivated">@color/md_theme_light_primary</item>
-        <item name="colorSwitchThumbNormal">@color/md_theme_light_outline</item>
-        <item name="android:colorForeground">@color/md_theme_light_outline</item>
+        <item name="track">@color/md_theme_light_primary</item>
 
     </style>
 
@@ -94,11 +92,6 @@
         <item name="cornerSizeTopRight">10dp</item>
         <item name="cornerSizeBottomLeft">10dp</item>
         <item name="cornerSizeBottomRight">10dp</item>
-
-        <!-- <item name="background">@color/md_theme_light_primary</item>
-        <item name="backgroundTint">@color/md_theme_light_primary</item>
-        <item name="boxBackgroundColor">@color/md_theme_light_primary</item>
-        <item name="backgroundColor">@color/md_theme_light_primary</item> -->
 
     </style>
 
@@ -249,6 +242,14 @@
         <item name="android:height">10dp</item>
     </style>
 
+    <style name="backgroundConfiguracion" parent="">
+        <item name="background">@color/md_theme_light_primary3</item>
+    </style>
+
+    <style name="backgroundTraduccion" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+
+    </style>
 
 
 </resources>

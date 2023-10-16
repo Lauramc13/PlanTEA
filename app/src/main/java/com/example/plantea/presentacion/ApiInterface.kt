@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface ApiInterface {
 
-   @GET("pictograms/es/search/{query}")
+   @GET("pictograms/es/bestsearch/{query}")
    fun getData(@Path("query") query: String): Call<List<JsonPictogramaItem>>
 
    @GET("{query}/{query}_300.png")

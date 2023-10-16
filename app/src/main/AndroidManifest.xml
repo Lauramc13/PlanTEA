@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -111,13 +114,10 @@
             android:label="Tutorial"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
-
+        <activity
+            android:name=".presentacion.actividades.ninio.TraductorActivity"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
         <receiver android:name=".dominio.onAlarmReceiver" />
-
     </application>
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-
 </manifest>

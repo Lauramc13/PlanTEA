@@ -114,7 +114,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
 
     private fun getPictogramas(query: String) {
-        Log.d("TAG", "1")
 
         val retrofitBuilder = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -270,7 +269,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                getPictogramas(query)
+                getPictogramas(query.trim())
                 listaPictogramas.clear()
                 val container = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)
                 container?.let {
@@ -296,7 +295,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             opcionEditar = true
             txt_TituloPlan.text = intent.getStringExtra("titulo")
             listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!! //TODO
-            Log.d("pruebas", "paso por parametros != null")
         } else if (savedInstanceState != null){
             val savedArrayList = savedInstanceState.getSerializable("arrayListKey") as ArrayList<Pictograma>?
             if (savedArrayList != null) {
