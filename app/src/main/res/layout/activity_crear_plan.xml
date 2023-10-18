@@ -133,6 +133,7 @@
 
     <Button
         android:id="@+id/btn_guardarPlan"
+        style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
@@ -166,8 +167,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
-    </SearchView>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"/>
 
 
     <TextView

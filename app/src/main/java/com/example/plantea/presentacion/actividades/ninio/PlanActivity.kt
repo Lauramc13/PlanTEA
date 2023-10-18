@@ -48,7 +48,7 @@ import java.util.Locale
 import java.util.Stack
 
 
-class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener, TextToSpeech.OnInitListener {
+class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener, TextToSpeech.OnInitListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener {
     lateinit var prefs: SharedPreferences
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
@@ -73,7 +73,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var btnSiguienteMes: ImageView
     private lateinit var btnAnteriorMes: ImageView
     private lateinit var calendario: RecyclerView
-    private lateinit var notificaciones: RecyclerView
+    private lateinit var planificacionesFuturas: RecyclerView
     private lateinit var cerrarDialog: ImageView
     private lateinit var fechaActual: TextView
     private lateinit var dias: ArrayList<LocalDate?>
@@ -109,7 +109,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         const val FECHA_SELECCIONADA = "FECHA_SELECCIONADA" // const key to save/read value from bundle
     }
 
-    override fun diaSeleccionado(fecha: LocalDate?) {
+    override fun diaSeleccionado(fecha: LocalDate) {
         if (fecha != null) {
             fechaSeleccionada = fecha
             CalendarioUtilidades.fechaSeleccionada = fecha
@@ -127,6 +127,24 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             dialog?.dismiss()
         }
     }
+/*
+    override fun onItemSeleccionadoFuturo(fecha: LocalDate){
+
+        fechaSeleccionada = fecha
+        CalendarioUtilidades.fechaSeleccionada = fecha
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+        selectedDate = dateFormatter.format(fecha)
+
+        val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
+        val dayOfWeek = dayOfWeekFormatter.format(fecha)
+        val dayOfMonth = fecha.dayOfMonth.toString()
+        val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault())
+        val month = monthFormatter.format(fecha)
+
+        dia.text =  getString(R.string.formatted_date, dayOfWeek, dayOfMonth, month)
+        mostrarPlan()
+        dialog?.dismiss()
+    }*/
 
     /*override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -228,15 +246,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
-        notificaciones = findViewById(R.id.planificacionRecyclerView)
+        planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
 
         val userId = prefs.getString("idUsuario", "")
         val planificaciones = userId?.let { evento.obtenerTodosEventos(it, this) } as ArrayList<Evento>
 
         val notificationList : ArrayList<PlanificacionItem> = mostrarPlanificaciones(planificaciones)
-        notificaciones.layoutManager = LinearLayoutManager(this)
-        val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList)
-        notificaciones.adapter = adaptadorNot
+        planificacionesFuturas.layoutManager = LinearLayoutManager(this)
+        val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList, this)
+        planificacionesFuturas.adapter = adaptadorNot
 
         dia = findViewById(R.id.lbl_dia)
 

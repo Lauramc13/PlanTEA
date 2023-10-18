@@ -4,6 +4,8 @@
     <color name="seed">#238382</color>
     <color name="seedLight">#72C7C4</color>
     <color name="white">#FFFFFF</color>
+    <color name="lightGray">#FAFAFA</color>
+    <color name="darkerGray">#e9ecef</color>
     <color name="black">#212121</color>
     <color name="background2">#DDECEC</color>
     <color name="md_theme_light_primary">#67D2D2</color>

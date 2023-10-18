@@ -105,9 +105,9 @@
     <string name="lbl_seleccionaAvatar">Selecciona el avatar del planificador</string>
     <string name="lbl_seleccionaAvatarTEA">Selecciona el avatar del planificado</string>
     <string name="lbl_seleccionaActividad">Selecciona la actividad tranquilizadora</string>
-    <string name="lbl_seleccionarFoto">Seleccionar foto de la galeria</string>
-    <string name="lbl_saltar">Saltar</string>
-    <string name="lbl_deshacer">Deshacer</string>
+    <string name="lbl_seleccionarFoto">SELECCIONAR FOTO DE LA GALERIA</string>
+    <string name="lbl_saltar">SALTAR</string>
+    <string name="lbl_deshacer">DESHACER</string>
     <string name="lbl_reproducir">Reproducir</string>
 
     <string name="lbl_cuaderno">Cuaderno de comunicación</string>

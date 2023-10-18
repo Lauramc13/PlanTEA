@@ -17,7 +17,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -31,18 +30,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.*
-import com.example.plantea.presentacion.ApiInterface
 import com.example.plantea.presentacion.CrearPlanInterface
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import kotlinx.coroutines.*
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.*
 import java.util.*
 
@@ -112,85 +108,18 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         outState.putSerializable("arrayListKey", listaPlanificacion)
     }
 
-
     private fun getPictogramas(query: String) {
-
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.arasaac.org/api/")
-            .build()
-            .create(ApiInterface::class.java)
-
-        val retrofitBuilderImg = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://static.arasaac.org/pictograms/")
-            .build()
-            .create(ApiInterface::class.java)
-
-        val dict = mutableMapOf<Bitmap, Pair<String, Int>>()
-        val listaIds = mutableListOf<Int>()
-        val listaTitulos = mutableListOf<String>()
-
         CoroutineScope(Dispatchers.IO).launch {
-            val job: Job = CoroutineScope(Dispatchers.IO).async {
-                val retrofitData = retrofitBuilder.getData(query)
-                Log.d("TAG", "2")
-                try {
-                    val response = retrofitData.execute()
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
+            val dict = CommonUtils.getDataApi(query)
 
-                        if (responseBody != null) {
-                            for (jsonData in responseBody) {
-                                val id = jsonData._id
-                                listaIds.add(id)
-                                val keyword = jsonData.keywords[0].keyword
-                                listaTitulos.add(keyword)
-                            }
-                        }
-                        Log.d("TAG", listaTitulos.toString())
-                    }else{
-                        Log.d("asf", "NO SE HA ENCONTRADO NADA")
-                       // busquedaNula.visibility = View.VISIBLE
-                    }
-                } catch (e: IOException) {
-                    // Handle exception
-                }
-
-                val imageJobs = listaIds.map { id ->
-                    val keyword = listaTitulos[listaIds.indexOf(id)]
-                    CoroutineScope(Dispatchers.IO).async {
-                        val retrofitImage = retrofitBuilderImg.getImage(id.toString())
-                        try {
-                            val response = retrofitImage.execute()
-                            if (response.isSuccessful) {
-                                val bitmap = BitmapFactory.decodeStream(
-                                    response.body()!!.byteStream()
-                                )
-                                dict[bitmap] = Pair(keyword, id)
-                            } else {
-                                Log.d("TAG", "Error de la llamada a las imagenes")
-                            }
-                        } catch (e: IOException) {
-                            // Handle exception
-                        }
+            withContext(Dispatchers.Main) {
+                dict.keys.forEach { key ->
+                    dict[key]?.let { (value, id) ->
+                        crearPictoBusqueda(key, value, id)
+                        mostrarBusqueda()
                     }
                 }
-
-                imageJobs.awaitAll()
-                Log.d("TAG", "3")
             }
-
-            job.join()
-            Log.d("TAG", "4")
-
-            dict.keys.forEach{ key ->
-                dict[key]?.let { (value, id) ->
-                    crearPictoBusqueda(key, value, id)
-                    mostrarBusqueda()
-                }
-            }
-
          }
     }
 
@@ -207,29 +136,13 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     }
 
     fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
-        val width = bitmap.width
-        val height = bitmap.height
-        val outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(outputBitmap)
-        canvas.drawColor(Color.WHITE)
-        canvas.drawBitmap(bitmap, 0f, 0f, null)
-        val numero = UUID.randomUUID()
 
-        val filename = "$titulo$numero.jpg"
-        val outputStream: FileOutputStream
-        try {
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE)
-            outputBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-            outputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
         val tituloMayus = titulo?.uppercase()
-        val archivo = getFileStreamPath(filename).absolutePath
-
         val prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
         val favorito = pictograma.getFavorito(this, id.toString() + 'b', userId)
+
+        val archivo = CommonUtils.crearImagen(bitmap, titulo, this)
 
         listaPictogramas.add(Pictograma(id.toString() + 'b', tituloMayus, archivo, 0, 0, favorito))
     }
@@ -286,6 +199,8 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 return true
             }
         })
+
+
 
 
 

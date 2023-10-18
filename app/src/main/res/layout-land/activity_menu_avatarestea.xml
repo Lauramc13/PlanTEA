@@ -38,6 +38,8 @@
 
     <Button
         android:id="@+id/btn_galeria"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:textSize="15sp"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
@@ -53,6 +55,8 @@
 
     <Button
         android:id="@+id/btn_saltar"
+        style="@style/Widget.Material3.Button.IconButton.Outlined"
+        android:textSize="15sp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"

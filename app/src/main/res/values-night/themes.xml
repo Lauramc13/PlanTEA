@@ -27,30 +27,30 @@
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
 
+        <!-- ARREGLAR ESTO  -->
         <item name="cardBackgroundColor">@color/md_theme_dark_surfaceVariant2</item>
         <item name="background">@color/md_theme_dark_background2</item>
         <item name="backgroundTint">@color/md_theme_dark_background2</item>
-
         <item name="colorAccent">@color/md_theme_dark_surfaceVariant</item>
         <item name="backgroundColor">@color/md_theme_dark_backgroundDark</item>
         <item name="backgroundSplit">@color/md_theme_dark_backgroundDark</item>
-
         <item name="backgroundStacked">@color/md_theme_dark_surfaceVariant</item>
         <item name="color">@color/md_theme_dark_background2</item>
         <item name="colorOnContainer">@color/md_theme_dark_onSecondaryContainer</item>
         <item name="colorBackgroundFloating">@color/md_theme_dark_surfaceVariant</item>
         <item name="colorContainer">@color/md_theme_dark_surfaceVariant3</item>
-
         <item name="colorControlHighlight">@color/md_theme_dark_onSecondaryContainer</item>
+
 
         <!-- PIZARRA -->
         <item name="android:colorControlNormal">@color/md_theme_dark_primary</item>
         <item name="android:solidColor">@color/pizarraContenido2</item>
-
         <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
-
-
         <item name="android:popupBackground">@color/transparent</item>
+
+        <!-- CUSTOM ITEMS -->
+        <item name="customBgColor">@color/md_theme_dark_backgroundDark</item>
+        <item name="customBgTermometro">@color/md_theme_dark_background2</item>
 
     </style>
 

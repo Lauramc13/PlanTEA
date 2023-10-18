@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?backgroundSplit"
+    android:background="?customBgColor"
     tools:context=".presentacion.actividades.ConfiguracionActivity">
+
 
 
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:background="?backgroundSplit"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"

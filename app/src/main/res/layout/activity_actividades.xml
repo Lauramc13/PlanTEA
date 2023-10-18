@@ -8,6 +8,25 @@
     android:background="?backgroundColor"
     tools:context=".presentacion.actividades.ninio.ActividadActivity">
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/svg_blob"
+        android:layout_marginStart="80dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="356dp" />
+
 
     <LinearLayout
         android:id="@+id/img_video"
@@ -98,25 +117,7 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/svg_blob"
-        android:layout_marginStart="80dp"
-
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="356dp" />
 
 
     <LinearLayout
@@ -218,5 +219,45 @@
         android:layout_marginTop="15dp"
         android:src="@drawable/svg_menu"
         android:layout_marginStart="15dp"/>
+
+    <FrameLayout
+        android:id="@+id/webViewFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="50dp"
+        android:paddingLeft="1dip"
+        android:paddingRight="1dip"
+        android:visibility="invisible"
+        android:background="@drawable/bg_calendario">
+
+        <Button
+            android:id="@+id/closeYoutube"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:layout_gravity="end"
+            android:text="Cerrar reproductor"
+            android:textSize="16sp"
+            android:textColor="?colorOnSurface"
+            android:fontFamily="@font/montserrat_semibold"
+            app:iconGravity="textEnd"
+            app:icon="@drawable/svg_close"
+            app:iconSize="25dp"
+            app:iconTint="?colorOnSurface"
+            />
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="10dp"/>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

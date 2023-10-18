@@ -7,6 +7,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -20,7 +25,6 @@ class ActividadActivity : AppCompatActivity() {
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
     private var navigationHandler = GestionNavegacion()
-
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -48,17 +52,47 @@ class ActividadActivity : AppCompatActivity() {
 
         navigationHandler.inicializarVariables(this, R.id.actividades, ActividadActivity::class.java)
 
+        val webView: WebView = findViewById(R.id.webView)
+        webView.settings.javaScriptEnabled = true
+
+        webView.webChromeClient = WebChromeClient()
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                view?.loadUrl(request?.url.toString())
+                return true
+            }
+        }
+
+        webView.loadUrl("https://www.youtube.com")
+
+
+
         val cardVideo : CardView = findViewById(R.id.card_video)
         val cardObjeto : CardView = findViewById(R.id.card_objeto)
         val backButton : Button = findViewById(R.id.goBackButton)
+        val frameVideo : FrameLayout =  findViewById(R.id.webViewFrame)
+        val closeButton : Button = findViewById(R.id.closeYoutube)
 
         backButton.setOnClickListener{
             finish()
         }
 
+        closeButton.setOnClickListener {
+            cardVideo.visibility = View.VISIBLE
+            cardObjeto.visibility = View.VISIBLE
+            frameVideo.visibility = View.INVISIBLE
+        }
+
         cardVideo.setOnClickListener{
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"))
-            startActivity(intent)
+            /*val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"))
+            startActivity(intent)*/
+            cardVideo.visibility = View.INVISIBLE
+            cardObjeto.visibility = View.INVISIBLE
+            frameVideo.visibility = View.VISIBLE
+
         }
 
         cardObjeto.setOnClickListener{

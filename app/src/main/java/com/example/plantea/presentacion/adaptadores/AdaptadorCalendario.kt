@@ -18,7 +18,7 @@ import java.time.LocalDate
 
 class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<ViewHolderCalendario>() {
     interface OnItemSelectedListener {
-        fun diaSeleccionado(fecha: LocalDate?)
+        fun diaSeleccionado(fecha: LocalDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderCalendario {
@@ -83,7 +83,9 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
 
         override fun onClick(view: View) {
             val fecha = diasMes[bindingAdapterPosition]
-            listener?.diaSeleccionado(fecha)
+            if (fecha != null) {
+                listener?.diaSeleccionado(fecha)
+            }
         }
     }
 }

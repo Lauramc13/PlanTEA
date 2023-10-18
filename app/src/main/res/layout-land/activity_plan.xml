@@ -64,28 +64,34 @@
 
                 <Button
                     android:id="@+id/icon_deshacer"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:textSize="16sp"
+                    android:layout_width="180dp"
                     android:layout_height="48dp"
+                    android:fontFamily="@font/montserrat_semibold"
                     android:layout_marginStart="30dp"
                     android:contentDescription="Botón deshacer acción"
                     android:enabled="false"
                     android:text="@string/lbl_deshacer"
-                    android:textColor="#203130"
+                    android:textColor="?colorOnSurface"
                     app:cornerRadius="25dp"
                     app:icon="@drawable/ic_baseline_undo_64"
                     app:iconSize="37dp"
-                    app:iconTint="#203130"
+                    app:iconTint="?colorOnSurface"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
 
                 <Button
                     android:id="@+id/icon_escuchar"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:layout_width="180dp"
                     android:layout_height="48dp"
                     android:layout_marginEnd="30dp"
                     android:contentDescription="Botón deshacer acción"
-                    android:text="Escuchar"
+                    android:text="ESCUCHAR"
                     android:textColor="#203130"
                     app:cornerRadius="25dp"
                     app:icon="@drawable/svg_sound"
@@ -107,6 +113,7 @@
 
                     <Button
                         android:id="@+id/icon_reproducir_lento"
+                        android:elevation="0dp"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:layout_marginEnd="15dp"
@@ -116,7 +123,6 @@
                         android:textSize="20sp"
                         android:theme="@style/botonesSecundarios"
                         app:cornerRadius="25dp"
-                        app:elevation="0dp"
                         app:icon="@drawable/svg_rewind"
                         app:iconGravity="textEnd"
                         app:iconSize="28dp"
@@ -124,6 +130,7 @@
 
                     <Button
                         android:id="@+id/icon_reproducir"
+                        app:elevation="0dp"
                         android:layout_width="57dp"
                         android:layout_height="67dp"
                         android:contentDescription="Botón reproducir lista"
@@ -137,6 +144,7 @@
                         android:id="@+id/icon_reproducir_rapido"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
+                        app:elevation="0dp"
                         android:layout_marginStart="15dp"
                         android:contentDescription="Botón reproducir lista"
                         android:text="1.5"

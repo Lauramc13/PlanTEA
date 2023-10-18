@@ -240,11 +240,9 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         ft.commit()
     }
 
-    override fun diaSeleccionado(fecha: LocalDate?) {
-        if (fecha != null) {
-            CalendarioUtilidades.fechaSeleccionada = fecha
-            obtenerVistaMes()
-        }
+    override fun diaSeleccionado(fecha: LocalDate) {
+        CalendarioUtilidades.fechaSeleccionada = fecha
+        obtenerVistaMes()
     }
 
     override fun crearEventoFragment() {

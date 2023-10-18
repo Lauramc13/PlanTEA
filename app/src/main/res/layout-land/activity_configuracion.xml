@@ -5,8 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?backgroundSplit"
+    android:background="?customBgColor"
     tools:context=".presentacion.actividades.ConfiguracionActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="180"
+        android:layout_marginEnd="-30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight" />
 
 
     <LinearLayout
@@ -15,6 +27,7 @@
         android:layout_height="70dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="?backgroundSplit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
