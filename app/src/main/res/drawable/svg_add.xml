@@ -5,13 +5,13 @@
     android:height="30dp">
     <path
         android:pathData="M12 19L12 5"
-        android:strokeColor="?colorOnSurface"
+        android:strokeColor="?colorOutline"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M5 12L19 12"
-        android:strokeColor="?colorOnSurface"
+        android:strokeColor="?colorOutline"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />

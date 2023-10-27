@@ -74,8 +74,12 @@ class Pictograma : Serializable {
     }
 
     fun getFavorito(actividad: Activity?, idPicto: String?, idUsuario: String?): Boolean {
-        Log.d("asf", idPicto.toString())
         return gestorPictogramas.getFavorito(actividad, idPicto, idUsuario)
+    }
+
+    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idUsuario: String?, idCuaderno: Int) {
+        return gestorPictogramas.guardarPictoCuaderno(actividad, id, titulo, imagen, idUsuario, idCuaderno)
+
     }
 
 }

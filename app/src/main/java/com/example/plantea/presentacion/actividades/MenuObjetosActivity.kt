@@ -72,9 +72,9 @@ class MenuObjetosActivity : AppCompatActivity() {
             avatar.setOnClickListener {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val username = prefs.getString("username", true.toString())
-                if (username != null) {
-                    usuario.aniadirImagenObjeto(uri.toString(), username, this@MenuObjetosActivity)
+                val idUsuario = prefs.getString("idUsuario", "")
+                if (idUsuario != null) {
+                    usuario.aniadirImagenObjeto(uri.toString(), idUsuario, this@MenuObjetosActivity)
                 }
                 val editor = prefs.edit()
                 editor.putString("imagenObjeto", uri.toString())

@@ -92,16 +92,16 @@ class Usuario_Planificador {
         return gestorUsuario.obtenerUsuario(email, actividad)
     }
 
-    fun aniadirImagenPlanificador(imagen: String, username: String, actividad: Activity?){
-        return gestorUsuario.addImagen(imagen, username, actividad)
+    fun aniadirImagenPlanificador(imagen: String, idUsuario: String, actividad: Activity?){
+        return gestorUsuario.addImagen(imagen, idUsuario, actividad)
     }
 
-    fun aniadirImagenPlanificado(imagen: String, username: String, actividad: Activity?){
-        return gestorUsuario.addImagenTEA(imagen, username, actividad)
+    fun aniadirImagenPlanificado(imagen: String, idUsuario: String, actividad: Activity?){
+        return gestorUsuario.addImagenTEA(imagen, idUsuario, actividad)
     }
 
-    fun aniadirImagenObjeto(imagen: String, username: String, actividad: Activity?){
-        return gestorUsuario.addImagenObjeto(imagen, username, actividad)
+    fun aniadirImagenObjeto(imagen: String, idUsuario: String, actividad: Activity?){
+        return gestorUsuario.addImagenObjeto(imagen, idUsuario, actividad)
     }
 
     fun consultarId(email: String, actividad: Activity?): String? {

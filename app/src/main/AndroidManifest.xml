@@ -115,6 +115,11 @@
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".presentacion.actividades.planificador.CreditsActivity"
+            android:label="Acerca de la aplicacion"
+            android:screenOrientation="fullSensor"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".presentacion.actividades.ninio.TraductorActivity"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />

@@ -153,4 +153,11 @@ class GestionPictogramas : Serializable {
         conectorBD!!.cerrar()
         return exists
     }
+
+    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idUsuario: String?, idCuaderno: Int) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.insertarPictogramaCuaderno( id, titulo, imagen, idUsuario, idCuaderno)
+        conectorBD!!.cerrar()
+    }
 }

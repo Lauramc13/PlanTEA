@@ -123,7 +123,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
          }
     }
 
-    fun mostrarBusqueda() {
+    private fun mostrarBusqueda() {
         //labelBuscando.visibility = View.GONE
         subcategoriaOpen = false
         val bundle = Bundle()
@@ -135,22 +135,16 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         transaction.commit()
     }
 
-    fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
-
+    private fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
         val tituloMayus = titulo?.uppercase()
         val prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
         val favorito = pictograma.getFavorito(this, id.toString() + 'b', userId)
-
         val archivo = CommonUtils.crearImagen(bitmap, titulo, this)
 
         listaPictogramas.add(Pictograma(id.toString() + 'b', tituloMayus, archivo, 0, 0, favorito))
     }
 
-    private fun hideKeyboard() {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(searchBar.windowToken, 0)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -190,7 +184,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                         .remove(it)
                         .commit()
                 }
-                hideKeyboard()
+                CommonUtils.hideKeyboard(this@CrearPlanActivity, searchBar)
                 //labelBuscando.visibility = VISIBLE
                 return true
             }
@@ -199,9 +193,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 return true
             }
         })
-
-
-
 
 
         //Comprobar si hay parametros en caso de llamada desde editar
@@ -307,7 +298,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             recyclerView.adapter!!.notifyItemRemoved(position)
         }
     }
-
+/*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
         return true
@@ -378,7 +369,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         }
         return true
     }
-
+*/
     //Creando lista horizontal para la planificacion
     private fun initRecyclerViewPlan() {
 

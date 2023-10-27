@@ -34,6 +34,7 @@ import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.PlanificacionItem
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
@@ -48,7 +49,7 @@ import java.util.Locale
 import java.util.Stack
 
 
-class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener, TextToSpeech.OnInitListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener {
+class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedListener, AdaptadorCalendario.OnItemSelectedListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener, CommonUtils.TextToSpeechListener {
     lateinit var prefs: SharedPreferences
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
@@ -80,7 +81,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var adaptadorCalendario: AdaptadorCalendario
     lateinit var eventos: ArrayList<Evento>
     var evento = Evento()
-    private lateinit var textToSpeech: TextToSpeech
+    //private lateinit var textToSpeech: TextToSpeech
     private var fechaSeleccionada : LocalDate = LocalDate.now()
 
     private var reproduccionLenta = false
@@ -171,14 +172,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     override fun onStop() {
         super.onStop()
         isRunning = false
-        handler.removeCallbacksAndMessages(null)
+        CommonUtils.handler.removeCallbacksAndMessages(null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save the RecyclerView state before the activity is destroyed
         recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
-        outState.putParcelable("recycler_view_state", recyclerViewState)
+       // outState.putParcelable("recycler_view_state", recyclerViewState)
         outState.putString(FECHA_SELECCIONADA, fechaSeleccionada.toString())
     }
 
@@ -212,11 +213,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }*/
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_plan)
-
-        // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
+    private fun backCallBack(): OnBackPressedCallback{
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
                 if (supportFragmentManager.backStackEntryCount == 0) {
@@ -227,6 +224,15 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 finish()
             }
         }
+        return callback
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_plan)
+
+        // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
+        val callback = backCallBack()
         onBackPressedDispatcher.addCallback(this, callback)
 
         //Pila de los pasos completados en el seguimiento de un plan
@@ -239,24 +245,30 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         calendarButton = findViewById(R.id.CalendarDate)
         buttonPlanNuevo = findViewById(R.id.crearPlan)
         backButton = findViewById(R.id.goBackButton)
-
-        navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity::class.java)
-        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
+        dia = findViewById(R.id.lbl_dia)
 
+
+        navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity::class.java)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
         val planificaciones = userId?.let { evento.obtenerTodosEventos(it, this) } as ArrayList<Evento>
+
+        val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = layoutManagerLinear
+
+        var speechInProgress = false
+        CommonUtils.initializeTextToSpeech(this)
+        CommonUtils.listener = this
+
 
         val notificationList : ArrayList<PlanificacionItem> = mostrarPlanificaciones(planificaciones)
         planificacionesFuturas.layoutManager = LinearLayoutManager(this)
         val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList, this)
         planificacionesFuturas.adapter = adaptadorNot
-
-        dia = findViewById(R.id.lbl_dia)
 
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
@@ -269,6 +281,26 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         dia.text = getString(R.string.formatted_date, dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, dayOfMonth, month)
 
         initializeAnimations()
+
+        //Comprobar si hay parametros en caso de llamada desde el planificador
+        val parametros = this.intent.extras
+        if (parametros != null) {
+            titulo.text = intent.getStringExtra("titulo")
+            listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
+            adaptador = AdaptadorPresentacion(listaPictogramas, this)
+            recyclerView.adapter = adaptador
+            lblMensaje.visibility = View.INVISIBLE
+            buttonPlanNuevo.visibility = View.INVISIBLE
+            iconoDeshacer.visibility = View.VISIBLE
+            iconoEscuchar.visibility = View.VISIBLE
+            iconoReproducir.visibility = View.VISIBLE
+            iconoReproducirLento.visibility = View.VISIBLE
+            iconoReproducirRapido.visibility = View.VISIBLE
+        } else {
+            mostrarPlan()
+        }
+
+        //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------
 
         backButton.setOnClickListener{
             if (supportFragmentManager.backStackEntryCount == 0) {
@@ -317,36 +349,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             startActivity(Intent(applicationContext, CalendarioActivity::class.java))
         }
 
-        val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        recyclerView.layoutManager = layoutManagerLinear
-
-        //card_actividades = findViewById(R.id.card_actividad)
-        // Restore the RecyclerView state if it was saved before
-       /* if (savedInstanceState != null) {
-            recyclerViewState =
-                savedInstanceState.getParcelable("recycler_view_state") // TODO: QUITAR EL PARCEABLE POR GETPARCEABLEEXTRA
-            recyclerView.layoutManager?.onRestoreInstanceState(recyclerViewState)
-        }*/
-
-        //Comprobar si hay parametros en caso de llamada desde el planificador
-        val parametros = this.intent.extras
-        if (parametros != null) {
-            titulo.text = intent.getStringExtra("titulo")
-            listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-            adaptador = AdaptadorPresentacion(listaPictogramas, this)
-            recyclerView.adapter = adaptador
-            lblMensaje.visibility = View.INVISIBLE
-            buttonPlanNuevo.visibility = View.INVISIBLE
-            iconoDeshacer.visibility = View.VISIBLE
-            iconoEscuchar.visibility = View.VISIBLE
-            iconoReproducir.visibility = View.VISIBLE
-            iconoReproducirLento.visibility = View.VISIBLE
-            iconoReproducirRapido.visibility = View.VISIBLE
-        } else {
-            mostrarPlan()
-        }
-
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
         iconoDeshacer.setOnClickListener {
             if (!pasosCompletados.empty()) {
@@ -359,39 +361,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             }
         }
 
-        textToSpeech = TextToSpeech(this, this)
-
-        //set language to spanish
-        textToSpeech.language = Locale("es", "ES")
-        val delayedSpeechRunnables = mutableListOf<Runnable>()
-        var speechInProgress = false
-
-
         iconoEscuchar.setOnClickListener {
             if (!speechInProgress) {
                 iconoEscuchar.text = getString(R.string.str_parar)
-                val delayBetweenSpeech = 2000
-
-                listaPictogramas.forEachIndexed { index, pictograma ->
-                    val runnable = Runnable {
-                        if (index == listaPictogramas.lastIndex) {
-                            textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
-                        }else{
-                            textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, null)
-
-                        }
-                    }
-
-                    delayedSpeechRunnables.add(runnable)
-                    handler.postDelayed(runnable, index * delayBetweenSpeech.toLong())
-
-
-                }
+                CommonUtils.textToSpeechOn(listaPictogramas, 2000)
                 speechInProgress = true
             } else {
                 iconoEscuchar.text = getString(R.string.str_escuchar)
-                handler.removeCallbacksAndMessages(null)
-                delayedSpeechRunnables.clear()
+                CommonUtils.textToSpeechOff()
                 speechInProgress = false
             }
 
@@ -495,7 +472,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoReproducirRapido.visibility = View.VISIBLE
         }
     }
-
 
     override fun onItemSeleccionado(posicion: Int) {
         if (currentDialog != null && currentDialog!!.isShowing) {
@@ -643,26 +619,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         navigationHandler.destroyPopup()
     }
 
-
-
-    override fun onInit(status : Int) {
-
-        textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-            override fun onStart(utteranceId: String) {
-                //Not implemented
-            }
-
-            override fun onDone(utteranceId: String) {
-                Log.d("TextToSpeech", "On Done")
-                runOnUiThread { iconoEscuchar.text = getString(R.string.str_escuchar) }
-            }
-
-            override fun onError(utteranceId: String) {
-                //Not implemented
-            }
-        })
-    }
-
     private fun mostrarPlanificaciones(planificaciones: ArrayList<Evento>): ArrayList<PlanificacionItem> {
         val lista: ArrayList<PlanificacionItem> = ArrayList()
 
@@ -709,6 +665,10 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
         viewHolderPictogramas.popListClicked()
 
+    }
+
+    override fun onSpeechDone() {
+        iconoEscuchar.text = getString(R.string.str_escuchar)
     }
 
 

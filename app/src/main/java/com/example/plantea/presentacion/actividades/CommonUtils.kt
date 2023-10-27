@@ -1,23 +1,65 @@
 package com.example.plantea.presentacion.actividades
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
+import android.os.Handler
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Locale
 import java.util.UUID
 
+class CommonUtils{
 
-class CommonUtils {
+    interface TextToSpeechListener {
+        fun onSpeechDone()
+    }
 
     companion object {
+        private lateinit var textToSpeech: TextToSpeech
+        val handler = Handler()
+        val delayedSpeechRunnables = mutableListOf<Runnable>()
+        var listener: TextToSpeechListener? = null
+
+        val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String) {
+                        //Not implemented
+                    }
+
+                    override fun onDone(utteranceId: String) {
+                        listener?.onSpeechDone()
+                    }
+
+                    override fun onError(utteranceId: String) {
+                        //Not implemented
+                    }
+                })
+            } else {
+                // Initialization failed. Handle the error.
+            }
+        }
+
         fun getRetrofitBuilder(): ApiInterface {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -57,7 +99,7 @@ class CommonUtils {
                     }
                     Log.d("TAG", listaTitulos.toString())
                 }else{
-                    Log.d("asf", "NO SE HA ENCONTRADO NADA")
+                    Log.d("ERROR", "NO SE HA ENCONTRADO NADA")
                     // busquedaNula.visibility = View.VISIBLE
                 }
             } catch (e: IOException) {
@@ -122,6 +164,84 @@ class CommonUtils {
 
             return context.getFileStreamPath(filename).absolutePath
         }
+
+        fun initializeTextToSpeech(context: Context) {
+            textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
+            textToSpeech.language = Locale("es", "ES")
+        }
+
+        fun textToSpeechOn(listaPictogramas: ArrayList<Pictograma>, delay: Int){
+           // textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
+           // textToSpeech.language = Locale("es", "ES")
+
+            listaPictogramas.forEachIndexed { index, pictograma ->
+                val runnable = Runnable {
+                    if (index == listaPictogramas.lastIndex) {
+                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+                    }else{
+                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, null)
+                    }
+                }
+
+                delayedSpeechRunnables.add(runnable)
+                handler.postDelayed(runnable, index * delay.toLong())
+        }
+
     }
+
+        fun textToSpeechOff(){
+            handler.removeCallbacksAndMessages(null)
+            delayedSpeechRunnables.clear()
+        }
+
+        fun hideKeyboard(context: Context, view: View){
+            val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        fun textToSpeechWord(word: String?){
+           textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+        }
+
+        fun crearRuta(context: Context, imagen: ImageView?, nombreImagen: String): String {
+            val image = (imagen!!.drawable as BitmapDrawable).bitmap
+
+            //Escalar imagen
+            val proporcion = 500 / image.width.toFloat()
+            val imagenFinal = Bitmap.createScaledBitmap(image, 500, (image.height * proporcion).toInt(), false)
+
+            //Guardar imagen
+            return guardarImagen(context, nombreImagen, imagenFinal)
+        }
+
+        private fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
+            val cw = ContextWrapper(context)
+            val dirImages = cw.getDir("Imagenes", AppCompatActivity.MODE_PRIVATE)
+            val myPath = File(dirImages, "$nombre.png")
+            val fos: FileOutputStream?
+            try {
+                fos = FileOutputStream(myPath)
+                imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
+                fos.flush()
+            } catch (ex: FileNotFoundException) {
+                ex.printStackTrace()
+            } catch (ex: IOException) {
+                ex.printStackTrace()
+            }
+            return myPath.absolutePath
+        }
+
+         fun cambioOrientacion(context: Context): Int {
+            val orientation = context.resources.configuration.orientation
+            val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                3
+            } else {
+                4
+            }
+            return gridValueManager
+        }
+
+    }
+
 
 }

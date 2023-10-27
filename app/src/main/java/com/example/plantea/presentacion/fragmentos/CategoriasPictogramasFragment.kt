@@ -82,13 +82,17 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     fun markAsFavorite(pictogram: Pictograma) {
         val prefs = requireContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
+        val id = pictogram.id
         pictograma.insertarFavorito(actividad, idUsuario, pictogram.id, pictogram.titulo, pictogram.imagen, pictogram.categoria)
+
     }
 
     fun removeFavorite(pictogram: Pictograma, posicion: Int) {
         val prefs = requireContext().getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
         pictograma.borrarFavorito(actividad, idUsuario, pictogram.id)
+
+        //UPDATE DATA
 
         // if (listaPictogramas[posicion].categoria == 10) {
         //     // delete in the position from listaPictogramas

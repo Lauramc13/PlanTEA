@@ -2,5 +2,6 @@
 <resources>
     <attr name="customBgColor" format="reference" />
     <attr name="customBgTermometro" format="reference" />
+    <attr name="customLinkColor" format="reference" />
 
 </resources>

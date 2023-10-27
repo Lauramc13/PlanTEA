@@ -13,8 +13,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SearchView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
@@ -28,16 +30,20 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.google.android.material.imageview.ShapeableImageView
 
-class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener {
+class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener {
     lateinit var vista: View
     lateinit var actividad: Activity
     lateinit var listaPictogramas: ArrayList<Pictograma>
     private lateinit var interfaceCuaderno: CuadernoInterface
     private lateinit var lst_Pictogramas: RecyclerView
-    private lateinit var image_Cerrar: ImageView
+    private lateinit var imageCerrar: ImageView
+    private lateinit var imageAtras: ImageView
     private lateinit var seekbar: SeekBar
+    private lateinit var adaptador: AdaptadorPictogramasCuaderno
     lateinit var termometro: LinearLayout
+    lateinit var searchbar: SearchView
     private var isTermometro: Boolean = true
+
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -45,22 +51,45 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
     }
 
+    fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?){
+        adaptador.isBusqueda = true
+        adaptador.updateData(newPictogramasList)
+        imageCerrar.visibility = View.INVISIBLE
+        imageAtras.visibility = View.VISIBLE
+    }
+
+    fun updateData(newPictogramasList: ArrayList<Pictograma>?){
+        adaptador.isBusqueda = false
+        adaptador.updateData(newPictogramasList)
+        imageCerrar.visibility = View.VISIBLE
+        imageAtras.visibility = View.INVISIBLE
+    }
+
+    fun updatePictoBusqueda(newPictogramasList: ArrayList<Pictograma>?){
+        adaptador.updateDataBusqueda(newPictogramasList)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas, container, false)
+        vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
         val bundle = this.arguments
         listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
         isTermometro = (bundle["termometro"] as Boolean)
-        val tituloCuaderno = (bundle["tituloCuaderno"] as String)
-        val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
-        txtCuaderno.text = tituloCuaderno
+        searchbar = vista.findViewById(R.id.searchViewPicto)
+        imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
+        imageAtras = vista.findViewById(R.id.icono_cuaderno_fragment_atras)
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
+
         val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
-        val adaptador = AdaptadorPictogramasCuaderno(listaPictogramas, this)
+        adaptador = AdaptadorPictogramasCuaderno(listaPictogramas, this)
         lst_Pictogramas.adapter = adaptador
-        image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
-        image_Cerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
+
+        imageCerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
+        imageAtras.setOnClickListener {
+            interfaceCuaderno.atrasFragment(listaPictogramas)
+        }
+        busqueda()
+
         context?.let { CommonUtils.initializeTextToSpeech(it) }
         return vista
     }
@@ -93,14 +122,13 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         }
 
         //Botón cerrar
-        image_Cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-        image_Cerrar.setOnClickListener { dialog.dismiss() }
+        imageCerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+        imageCerrar.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
         //Funcionalidad termómetro: cambio de color según el progreso
         seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                // Write code to perform some action when progress is changed.
                 if (progress < 45) {
                     seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(138, 255, 126))
                 } else if (progress < 90) {
@@ -111,19 +139,33 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                // Write code to perform some action when touch is started.
+                // No hacemos nada con esto
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                // Write code to perform some action when touch is stopped.
-                // Toast.makeText(getContext(), "Progress is " + seekBar.getProgress() + "%", Toast.LENGTH_SHORT).show();
+                // No hacemos nada con esto
             }
         })
         dialog.show()
     }
 
     override fun addPicto(pictograma: Pictograma) {
-        TODO("Not yet implemented")
+        interfaceCuaderno.addPictoFromBusqueda(pictograma)
     }
+
+    private fun busqueda(){
+        searchbar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                interfaceCuaderno.mostrarPictogramasBusqueda(query.trim())
+                context?.let { CommonUtils.hideKeyboard(it, searchbar) }
+                return true
+            }
+            override fun onQueryTextChange(newText: String): Boolean {
+                newText.trim()
+                return true
+            }
+        })
+    }
+
 
 }

@@ -239,15 +239,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cornerRadius="25dp"
-            android:layout_gravity="end"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="10dp"
             android:text="Cerrar reproductor"
             android:textSize="16sp"
-            android:textColor="?colorOnSurface"
+            android:textColor="#181F25"
             android:fontFamily="@font/montserrat_semibold"
             app:iconGravity="textEnd"
             app:icon="@drawable/svg_close"
             app:iconSize="25dp"
-            app:iconTint="?colorOnSurface"
+            app:iconTint="#181F25"
             />
 
         <WebView

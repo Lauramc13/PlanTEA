@@ -54,8 +54,6 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
                 holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
                 listaPictogramas!![position].favorito = true
                 favourites.markAsFavorite(listaPictogramas!![position])
-
-                Log.d("asf", listaPictogramas!![position].toString())
             }
         }
     }

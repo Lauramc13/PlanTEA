@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundColor"
-    tools:context=".presentacion.actividades.ninio.CuadernoActivity">
+    tools:context=".presentacion.actividades.ninio.CuadernoActivity"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/imageView7"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/blob3"
-        app:tint="#F6FBF7" />
+        app:tint="?colorPrimaryContainer" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -23,6 +23,7 @@
         android:layout_marginStart="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:tint="?colorPrimaryContainer"
         app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout
@@ -48,12 +49,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cuaderno"
+            android:text="@string/cuaderno_de_com"
             android:textSize="22sp"
             android:fontFamily="@font/montserrat_semibold" />
 
     </LinearLayout>
-
+<!--
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_escala"
         android:layout_width="wrap_content"
@@ -80,20 +81,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <FrameLayout
         android:id="@+id/layout_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="90dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="260dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_escala">
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 

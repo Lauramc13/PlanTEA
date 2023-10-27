@@ -49,26 +49,26 @@ class GestionUsuarios {
         return usuario
     }
 
-    fun addImagen(imagen: String, username: String, actividad: Activity?) {
+    fun addImagen(imagen: String, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.addImagen(imagen, username)
+        var usuario = conectorBD!!.addImagen(imagen, idUsuario)
         conectorBD!!.cerrar()
         return usuario
     }
 
-    fun addImagenTEA(imagen: String, username: String, actividad: Activity?) {
+    fun addImagenTEA(imagen: String, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.addImagenTEA(imagen, username)
+        var usuario = conectorBD!!.addImagenTEA(imagen, idUsuario)
         conectorBD!!.cerrar()
         return usuario
     }
 
-    fun addImagenObjeto(imagen: String, username: String, actividad: Activity?) {
+    fun addImagenObjeto(imagen: String, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.addImagenObjeto(imagen, username)
+        var usuario = conectorBD!!.addImagenObjeto(imagen, idUsuario)
         conectorBD!!.cerrar()
         return usuario
     }

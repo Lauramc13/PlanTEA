@@ -74,9 +74,9 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             avatar.setOnClickListener {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val username = prefs.getString("username", true.toString())
-                if (username != null) {
-                    usuario.aniadirImagenPlanificado(uri.toString(), username, this@MenuAvataresTEActivity)
+                val idUsuario = prefs.getString("idUsuario", "")
+                if (idUsuario != null) {
+                    usuario.aniadirImagenPlanificado(uri.toString(), idUsuario, this@MenuAvataresTEActivity)
                 }
                 val editor = prefs.edit()
                 editor.putString("imagenUsuarioTEA", uri.toString())

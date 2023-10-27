@@ -2,37 +2,51 @@ package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.GestionNavegacion
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCuadernoActivity
+import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
+import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuadernoActivity.OnItemSelectedListener {
+class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     private var transaction: FragmentTransaction? = null
     private var fragmentPrincipal: Fragment? = null
     private var fragmentCuadernoPictogramas: Fragment? = null
+    private var fragmentCuadernoPictoEdit: CuadernoPictoEditFragment? = null
     var listaPictogramas: ArrayList<Pictograma>? = null
+    private var originalPictogramas: ArrayList<Pictograma>? = null
+    private var idCuaderno: Int = 0
+
+    var listaCuadernos: ArrayList<Cuaderno>? = null
     private var listaEscala: ArrayList<Pictograma>? = null
-    private var recyclerView: RecyclerView? = null
-    private var adaptador: AdaptadorCuadernoActivity? = null
+
     private var picto = Pictograma()
     private var navigationHandler = GestionNavegacion()
+    private var cuaderno = Cuaderno()
+    private var isPlanificador = true
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -61,11 +75,37 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         navigationHandler.inicializarVariables(this, R.id.cuaderno, CuadernoActivity::class.java)
         val backButton: Button = findViewById(R.id.goBackButton)
 
-        listaPictogramas = ArrayList()
+        listaCuadernos = ArrayList()
         listaEscala = ArrayList()
         fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
-        if (savedInstanceState == null) {
+        fragmentCuadernoPictoEdit = CuadernoPictoEditFragment()
+        fragmentPrincipal = PrincipalFragment()
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val idUsuario = prefs.getString("idUsuario", "")
+
+
+        if (idUsuario != null) {
+            listaCuadernos = cuaderno.consultarCuadernos(this, idUsuario)
+        }
+        listaCuadernos!!.removeAt(0)
+
+        isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
+        if(isPlanificador){
+            listaCuadernos!!.add(Cuaderno(6, "AÑADIR CUADERNO", "archivo", false))
+        }
+
+        val bundle = Bundle()
+        bundle.putSerializable("key", listaCuadernos)
+        bundle.putSerializable("isPlan", isPlanificador)
+        fragmentPrincipal!!.arguments = bundle
+        transaction = supportFragmentManager.beginTransaction()
+        transaction!!.add(R.id.layout_fragments, fragmentPrincipal as PrincipalFragment)
+        transaction!!.commit()
+
+        /*if (savedInstanceState == null) {
             // La primera vez que se crea la actividad, se añade el fragmento principal
+
             fragmentPrincipal = PrincipalFragment()
             transaction = supportFragmentManager.beginTransaction()
             transaction!!.add(R.id.layout_fragments, fragmentPrincipal as PrincipalFragment)
@@ -78,10 +118,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
             } else {
                 PrincipalFragment()
             }
-        }
+        }*/
 
         //Pictogramas en la parte de arriba del cuaderno
-        iniciarListaEscala()
+        //iniciarListaEscala()
 
         backButton.setOnClickListener{
             finish()
@@ -89,7 +129,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
     }
 
     //Menu principal
-
+/*
     private fun iniciarListaEscala() {
         //picto = Pictograma()
         listaEscala = picto.obtenerPictogramasCuaderno(this, 1) as ArrayList<Pictograma>?
@@ -101,12 +141,48 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
             recyclerView!!.adapter = adaptador
         }
 
+    }*/
+
+    override fun mostrarPictogramas(identificador: Int, termometro: Boolean?, tituloCuaderno: String) {
+        listaPictogramas = picto.obtenerPictogramasCuaderno(this, identificador) as ArrayList<Pictograma>?
+        idCuaderno = identificador
+        originalPictogramas = listaPictogramas?.let { ArrayList(it) }
+        iniciarFragment(listaPictogramas, termometro, tituloCuaderno)
     }
 
-    override fun mostrarPictogramas(identificador: Int) {
-       // picto = Pictograma()
-        listaPictogramas = picto.obtenerPictogramasCuaderno(this, identificador) as ArrayList<Pictograma>?
-        iniciarFragment(listaPictogramas)
+    override fun mostrarPictogramasBusqueda(query: String) {
+        listaPictogramas?.clear()
+        getPictogramas(query)
+    }
+
+    override fun addPictoFromBusqueda(pictograma: Pictograma){
+        originalPictogramas?.add(pictograma)
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val idUsuario = prefs.getString("idUsuario", "")
+        picto.guardarPictoCuaderno(this, pictograma.id, pictograma.titulo, pictograma.imagen, idUsuario, idCuaderno)
+        fragmentCuadernoPictoEdit!!.updatePictoBusqueda(originalPictogramas)
+    }
+
+    
+    private fun getPictogramas(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val dict = CommonUtils.getDataApi(query)
+
+            withContext(Dispatchers.Main) {
+                dict.keys.forEach { key ->
+                    dict[key]?.let { (value, id) ->
+                        crearPictoBusqueda(key, value, id)
+                        fragmentCuadernoPictoEdit!!.mostrarPictogramasBusqueda(listaPictogramas)
+                    }
+                }
+            }
+        }
+    }
+
+    fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
+        val tituloMayus = titulo?.uppercase()
+        val archivo = CommonUtils.crearImagen(bitmap, titulo, this)
+        listaPictogramas?.add(Pictograma(id.toString() + 'b', tituloMayus, archivo, 0, 0, false))
     }
 
     //Método para cerrar fragment correspondiente
@@ -117,18 +193,36 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         transaction!!.commit()
     }
 
-    private fun iniciarFragment(pictogramas: ArrayList<*>?) {
-        val bundle = Bundle()
-        bundle.putSerializable("key", pictogramas)
-        fragmentCuadernoPictogramas!!.arguments = bundle
-        transaction = supportFragmentManager.beginTransaction()
-        transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictogramas!!)
-        transaction!!.addToBackStack(null) // Se añade a la pila para poder navegar hacia atrás
-        transaction!!.commit()
+    override fun atrasFragment(listaPictograma: ArrayList<Pictograma>? ) {
+        Log.d("pruebas", "ir atras")
+        fragmentCuadernoPictoEdit!!.updateData(originalPictogramas)
+
     }
 
+    fun algo(){
+
+    }
+
+    private fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String) {
+        val bundle = Bundle()
+        bundle.putSerializable("key", pictogramas)
+        bundle.putSerializable("termometro", termometro)
+        bundle.putSerializable("tituloCuaderno", tituloCuaderno)
+        if(isPlanificador){
+            fragmentCuadernoPictoEdit!!.arguments = bundle
+            transaction = supportFragmentManager.beginTransaction()
+            transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictoEdit!!)
+        }else{
+            fragmentCuadernoPictogramas!!.arguments = bundle
+            transaction = supportFragmentManager.beginTransaction()
+            transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictogramas!!)
+        }
+        transaction!!.addToBackStack(null)
+        transaction!!.commit()
+        }
+/*
     override fun pictogramaCuaderno(posicion: Int) {
-        val dialog = Dialog(this)
+        /*val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialogo_presentacion)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
@@ -142,7 +236,8 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface, AdaptadorCuader
         //Botón cerrar
         val btnCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
         btnCerrar.setOnClickListener { dialog.dismiss() }
-        dialog.show()
+        dialog.show()*/
+    }*/
 
-    }
+
 }

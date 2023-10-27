@@ -21,14 +21,15 @@ class ConectorBD(ctx: Context?) {
 
     /*Abre la conexión con la base de datos*/
     @Throws(SQLException::class)
-    fun abrir(): ConectorBD {
-        db = dbHelper.writableDatabase
-        return this
+    fun abrir(): SQLiteDatabase {
+        if (db == null || !db!!.isOpen) {
+            db = dbHelper.writableDatabase
+        }
+        return db!!
     }
-
     /*Cierra la conexión con la base de datos*/
     fun cerrar() {
-        if (db != null) db!!.close()
+       // if (db != null) db!!.close()
     }
 
     /*Listar pictogramas de una categoria*/
@@ -38,11 +39,7 @@ class ConectorBD(ctx: Context?) {
 
     /*Listar pictogramas de una categoria*/
     fun listarPictogramas(categoria: Int, userId: String?): Cursor {
-        return db!!.rawQuery("SELECT Pictograma.id, Pictograma.nombre, Pictograma.imagen, Pictograma.id_categoria, \n" +
-                "                   CASE WHEN Favorito.id IS NULL THEN 0 ELSE 1 END AS favorito\n" +
-                "                   FROM Pictograma\n" +
-                "                   LEFT JOIN Favorito ON Pictograma.id = Favorito.id_picto AND Favorito.id_usuario = '$userId'\n" +
-                "                   WHERE Pictograma.id_categoria = $categoria AND (Pictograma.id_usuario IS NULL OR Pictograma.id_usuario = $userId)", null)
+        return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria, favorito FROM Pictograma WHERE id_categoria = $categoria AND (id_usuario IS NULL OR id_usuario = $userId)", null)
     }
 
     /*Insertar un pictograma nuevo*/
@@ -193,7 +190,7 @@ class ConectorBD(ctx: Context?) {
 
     /*Listar pictogramas para el cuaderno*/
     fun listarPictogramasCuaderno(identificador: Int): Cursor {
-        return db!!.rawQuery("SELECT nombre,imagen,id_cuaderno from Pictograma Inner JOIN Cuaderno where Cuaderno.id = Pictograma.id_cuaderno AND Cuaderno.id = $identificador", null)
+        return db!!.rawQuery("SELECT nombre, imagen, id_cuaderno from Pictograma where id_cuaderno = $identificador", null)
     }
 
     /*Insertar nueva cita en la tabla eventos*/
@@ -270,17 +267,17 @@ class ConectorBD(ctx: Context?) {
     }
 
     
-    fun addImagen(image: String, username: String ) {
-        db!!.execSQL("UPDATE Usuario_Planificador SET imagen ='$image' WHERE Usuario_Planificador.username = '$username'")
+    fun addImagen(image: String, idUsuario: String ) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET imagen ='$image' WHERE Usuario_Planificador.id = '$idUsuario'")
     }
 
-    fun addImagenTEA(image: String, username: String ) {
-        db!!.execSQL("UPDATE Usuario_Planificador SET imagenTEA ='$image' WHERE Usuario_Planificador.username = '$username'")
+    fun addImagenTEA(image: String, idUsuario: String ) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET imagenTEA ='$image' WHERE Usuario_Planificador.id = '$idUsuario'")
     }
 
 
-    fun addImagenObjeto(image: String, username: String ) {
-        db!!.execSQL("UPDATE Usuario_Planificador SET imagenObjeto ='$image' WHERE Usuario_Planificador.username = '$username'")
+    fun addImagenObjeto(image: String, idUsuario: String ) {
+        db!!.execSQL("UPDATE Usuario_Planificador SET imagenObjeto ='$image' WHERE Usuario_Planificador.id = '$idUsuario'")
     }
 
     @SuppressLint("Range")
@@ -301,15 +298,21 @@ class ConectorBD(ctx: Context?) {
     //}
 
     fun insertarFavorito(id_usuario: String?, id:String?,  nombre: String?, imagen: String?, id_categoria:Int?) {
-        db!!.execSQL("INSERT INTO Favorito (id_usuario, id_picto, nombre, imagen, id_categoria) VALUES ('$id_usuario', '$id','$nombre','$imagen','$id_categoria')")
+        db!!.execSQL("INSERT INTO Pictograma (id_usuario, id_pictoAPI, nombre, imagen, id_categoria, favorito)\n" +
+            "VALUES ('$id_usuario', '$id', '$nombre', '$imagen', '$id_categoria', 1)\n" +
+            "ON CONFLICT(id_pictoAPI) DO UPDATE SET\n" +
+            "    nombre = excluded.nombre,\n" +
+            "    imagen = excluded.imagen,\n" +
+            "    id_categoria = excluded.id_categoria,\n" +
+            "    favorito = 1;")
     }
 
-    fun borrarFavorito(id_usuario: String?, id_picto: String?) {
-        db!!.execSQL("DELETE FROM Favorito WHERE id_usuario ='$id_usuario' AND id ='$id_picto'")
+    fun borrarFavorito(id_usuario: String?, idPicto: String?) {
+        db!!.execSQL("UPDATE Pictograma SET favorito = '0' WHERE id_usuario ='$id_usuario' AND id ='$idPicto'")
     }
 
     fun obtenerFavoritos(id_usuario: String?): Cursor {
-        return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Favorito where Favorito.id_usuario = '$id_usuario'", null)
+        return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Pictograma where id_usuario = '$id_usuario' AND favorito ='1'", null)
     }
 
     fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?) {
@@ -320,9 +323,9 @@ class ConectorBD(ctx: Context?) {
 
     @SuppressLint("Range")
     fun getFavorito(idPicto: String?, idUsuario: String?): Boolean {
-        val cursor = db!!.rawQuery("SELECT id_picto FROM Favorito WHERE id_picto = '$idPicto' AND id_usuario = '$idUsuario'", null)
+        val cursor = db!!.rawQuery("SELECT id_pictoAPI FROM Pictograma WHERE id_pictoAPI = '$idPicto' AND id_usuario = '$idUsuario' AND favorito = '1'", null)
         val exists = if (cursor.moveToFirst()) {
-            val id = cursor.getString(cursor.getColumnIndex("id_picto"))
+            val id = cursor.getString(cursor.getColumnIndex("id_pictoAPI"))
             cursor.close()
             id != null
         } else {
@@ -336,6 +339,30 @@ class ConectorBD(ctx: Context?) {
         val query = "UPDATE Usuario_Planificador SET password = '$passCifrada' WHERE email = '$email'"
         db?.execSQL(query)
     }
+
+    fun insertarCuaderno(idUsuario: String, titulo: String, imagen: String?, termometro: Int): Int {
+        val statement = db!!.compileStatement("INSERT INTO Cuaderno (titulo, imagen, termometro, id_usuario) VALUES (?, ?, ?, ?)")
+        statement.bindString(1, titulo)
+        statement.bindString(2, imagen)
+        statement.bindLong(3, termometro.toLong())
+        statement.bindString(4, idUsuario)
+        val insertedId = statement.executeInsert()
+        statement.close()
+        return insertedId.toInt()
+    }
+
+    fun insertarPictogramaCuaderno(id: String?, titulo: String?, imagen: String?, idUsuario: String?, idCuaderno: Int) {
+        db!!.execSQL("INSERT OR REPLACE INTO Pictograma (id_pictoAPI, nombre, imagen, id_usuario, id_cuaderno) VALUES ('$id', '$titulo','$imagen','$idUsuario','$idCuaderno')")
+    }
+
+    fun borrarCuaderno(idCuaderno: Int) {
+        //TODO
+    }
+
+    fun listarCuadernos(idUsuario: String): Cursor {
+        return db!!.rawQuery("SELECT id, titulo, imagen, termometro from Cuaderno WHERE id_usuario = '$idUsuario' OR id_usuario IS NULL", null)
+    }
+
 
 
     companion object {

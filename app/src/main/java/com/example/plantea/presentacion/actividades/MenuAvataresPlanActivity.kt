@@ -75,9 +75,9 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
 
             avatar.setOnClickListener {
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val username = prefs.getString("username", true.toString())
-                if (username != null) {
-                    usuario.aniadirImagenPlanificador(uri.toString(), username, this@MenuAvataresPlanActivity)
+                val idUsuario = prefs.getString("idUsuario", "")
+                if (idUsuario != null) {
+                    usuario.aniadirImagenPlanificador(uri.toString(), idUsuario, this@MenuAvataresPlanActivity)
                 }
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())

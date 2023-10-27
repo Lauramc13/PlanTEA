@@ -11,12 +11,14 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     /*Sentencia SQL para crear las tablas*/
     var sqlUsuario_Planificador = "CREATE TABLE Usuario_Planificador(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, username TEXT, name TEXT, password TEXT, objeto TEXT, imagen TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
     var sqlCategorias = "CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
-    var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_cuaderno INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+    var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictoAPI INTEGER UNIQUE, nombre TEXT, imagen TEXT, favorito INTEGER, id_categoria INTEGER, id_cuaderno INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+    var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictoAPI INTEGER UNIQUE, nombre TEXT, imagen TEXT, favorito INTEGER, id_categoria INTEGER, id_cuaderno INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+
     var sqlPictograma_Plan = "CREATE TABLE Pictograma_Plan(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, categoria INTEGER, historia TEXT, id_plan INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
+    var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, id_plan INTEGER,visible INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_picto INTEGER, nombre TEXT, imagen TEXT, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+    //var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_picto INTEGER, nombre TEXT, imagen TEXT, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/
@@ -27,7 +29,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlPlanificacion)
             db.execSQL(sqlCuaderno)
             db.execSQL(sqlEvento)
-            db.execSQL(sqlFavorito)
+            //db.execSQL(sqlFavorito)
             meterDatos(db)
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -44,7 +46,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS Planificacion")
             db.execSQL("DROP TABLE IF EXISTS Cuaderno")
             db.execSQL("DROP TABLE IF EXISTS Evento")
-            db.execSQL("DROP TABLE IF EXISTS Favorito")
+           // db.execSQL("DROP TABLE IF EXISTS Favorito")
 
             /*Se crea la nueva versión de la table*/onCreate(db)
         } catch (e: SQLException) {
@@ -81,11 +83,12 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Categorias (titulo) VALUES('PROFESORES')") // 25
 
         //Cuaderno
-        db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('TIEMPO')")
-        db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('SINTOMAS')")
-        db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('DOLOR')")
-        db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('ESCALA')")
-        db.execSQL("INSERT INTO Cuaderno (titulo) VALUES('SENTIMIENTOS')")
+        //var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+
+        db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('ESCALA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas + "', 0)")
+        db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('¿QUÉ TE PASA?', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sintomas + "', 1)")
+        db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('¿DÓNDE TE DUELE?', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolores + "', 1)")
+        db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('¿COMO TE SIENTES?', '" + "android.resource://com.example.plantea" + "/" + R.drawable.card_sentimientos + "', 0)")
 
         //Pictograma
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('REVISIÓN', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_consultas + "', 1)")

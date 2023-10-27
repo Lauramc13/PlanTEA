@@ -29,10 +29,11 @@ import java.security.MessageDigest
 import java.util.UUID
 
 
-class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnItemSelectedListener{
+class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnItemSelectedListener, CommonUtils.TextToSpeechListener{
 
     var listaPictogramas: ArrayList<Pictograma> = ArrayList()
     private var listaTraducir : ArrayList<String> = ArrayList()
+    lateinit var escucharButton : Button
     private var navigationHandler = GestionNavegacion()
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var adaptador: AdaptadorPictogramasTraductor
@@ -49,6 +50,11 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         navigationHandler.destroyPopup()
     }
 
+    override fun onStop() {
+        super.onStop()
+        CommonUtils.handler.removeCallbacksAndMessages(null)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
@@ -56,12 +62,20 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         navigationHandler.inicializarVariables(this, R.id.traductor, TraductorActivity::class.java)
 
         val traducirButton: Button = findViewById(R.id.traducirButton)
+        escucharButton = findViewById(R.id.escucharButton)
+
+
         val backButton: Button = findViewById(R.id.goBackButton)
         textoATraducir = findViewById(R.id.textoTraducir)
         recyclerView = findViewById(R.id.recycler_plan)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         textoATraducir.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
         recyclerView.layoutManager = layoutManagerLinear
+
+        var speechInProgress = false
+        CommonUtils.initializeTextToSpeech(this)
+        CommonUtils.listener = this
+
 
         backButton.setOnClickListener {
             finish()
@@ -76,7 +90,21 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
                 val words = texto.split("\\s+".toRegex())
                 listaTraducir.addAll(words)
                 getPictogramas()
+                CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
             }
+        }
+
+        escucharButton.setOnClickListener {
+            if (!speechInProgress) {
+                escucharButton.text = getString(R.string.str_parar)
+                CommonUtils.textToSpeechOn(listaPictogramas, 1000)
+                speechInProgress = true
+            } else {
+                escucharButton.text = getString(R.string.str_escuchar)
+                CommonUtils.textToSpeechOff()
+                speechInProgress = false
+            }
+
         }
 
         textoATraducir.editText?.setOnKeyListener{_, keyCode, event ->
@@ -87,6 +115,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
             }
             false
         }
+
     }
 
         private fun getPictogramas() {
@@ -164,6 +193,10 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         }catch (e: Exception){
             Log.d("ERROR", e.toString())
         }
+    }
+
+    override fun onSpeechDone() {
+        escucharButton.text = getString(R.string.str_escuchar)
     }
 
 }

@@ -155,13 +155,23 @@
 
     <string name="noConfigurationActivity">No hay una actividad configurada</string>
     <string name="formatted_date">%1$s, %2$s de %3$s</string>
-    <string name="str_parar">Parar</string>
-    <string name="str_escuchar">Escuchar</string>
+    <string name="str_parar">PARAR</string>
+    <string name="str_escuchar">ESCUCHAR</string>
     <string name="str_esperar">¡Mientras esperamos!</string>
     <string name="str_cancelar">Cancelar</string>
     <string name="str_saltar">Saltar</string>
     <string name="str_finalizar">Finalizar</string>
     <string name="str_siguiente">Siguiente</string>
     <string name="str_anterior">Anterior</string>
+
+    <!-- Credits-->
+    <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el Grupo de Investigación de la Universidad de Castilla-La Mancha ....</string>
+    <string name="str_parrafo2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin erat elit, vulputate pulvinar interdum sed, sagittis a enim. Quisque velit diam, euismod eget ornare sed, imperdiet ut ex.</string>
+    <string name="str_parrafo3">Sed interdum purus ac est sodales scelerisque. In sed interdum diam. In gravida nunc eu dignissim placerat. Donec a fermentum orci, nec egestas felis. Aenean porta enim sed leo commodo venenatis. Donec ut odio at nulla scelerisque rhoncus.</string>
+    <string name="str_parrafo4">CHICO es un Grupo de Investigación de la Universidad de Castilla-La Mancha con sede en la Escuela Superior de Informática del Campus de Ciudad Real que cuenta también con investigadores en la Facultad de Educación de Ciudad Real, en la Escuela de Ingeniería Minera e Industrial de Almadén, y en la Facultad de Ciencias Sociales de Talavera de la Reina.</string>
+    <string name="str_parrafo5">El interés investigador del grupo se focaliza, principalmente, en los nuevos métodos, técnicas, herramientas y procesos de Ingeniería Informática para la mejora de las tareas interactivas y colaborativas.</string>
+    <string name="cuaderno_de_com">Cuaderno de comunicación</string>
+    <string name="lbl_tulo">Título</string>
+
 
 </resources>

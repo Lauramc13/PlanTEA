@@ -1,12 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
-import android.content.Context
-import android.content.ContextWrapper
+
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -16,12 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario_Planificador
-import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
+import com.example.plantea.presentacion.actividades.planificador.CreditsActivity
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.google.android.material.textfield.TextInputLayout
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+
 import java.util.*
 
 class ConfiguracionActivity : AppCompatActivity() {
@@ -125,7 +120,8 @@ class ConfiguracionActivity : AppCompatActivity() {
         credits.paintFlags = credits.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         credits.setOnClickListener{
-            Toast.makeText(applicationContext, "TODO: Esta funcionalidad todavia no esta disponible", Toast.LENGTH_LONG).show()
+            val intent = Intent(applicationContext, CreditsActivity::class.java)
+            startActivity(intent)
         }
 
 
@@ -230,18 +226,16 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
                 val username = txtUsernamePlanificador.editText?.text.toString()
                 val nombreObjeto = txtObjeto.editText?.text.toString()
-                val rutaPlanificador = crearRuta(imgUsuarioPlanificador, "Planificador")
+                val rutaPlanificador = CommonUtils.crearRuta(this, imgUsuarioPlanificador, "Planificador")
                 var rutaUsuarioTEA= ""
                 var rutaObjeto = ""
                 if (lblInfoUsuario.isChecked) {
-                    rutaUsuarioTEA = crearRuta(imgUsuarioTEA, "Usuario")
+                    rutaUsuarioTEA = CommonUtils.crearRuta(this, imgUsuarioTEA, "Usuario")
                 }
                 if (lblObjeto.isChecked) {
-                    rutaObjeto = crearRuta(imgObjeto, "Objeto")
+                    rutaObjeto = CommonUtils.crearRuta(this, imgObjeto, "Objeto")
                 }
 
-                //val intent = Intent(applicationContext, MainActivity::class.java)
-               // startActivity(intent)
 
                 //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
                 val editor = prefs.edit()
@@ -281,42 +275,13 @@ class ConfiguracionActivity : AppCompatActivity() {
             }
         }
 
-       /* btnPassword.setOnClickListener{
-            val password = Intent(applicationContext, PasswordActivity::class.java)
-            startActivity(password)
-        }*/
-
         backButton.setOnClickListener {
             finish()
         }
     }
 
-    private fun crearRuta(imagen: ImageView?, nombreImagen: String): String {
-        val image = (imagen!!.drawable as BitmapDrawable).bitmap
 
-        //Escalar imagen
-        val proporcion = 500 / image.width.toFloat()
-        val imagenFinal = Bitmap.createScaledBitmap(image, 500, (image.height * proporcion).toInt(), false)
 
-        //Guardar imagen
-        return guardarImagen(applicationContext, nombreImagen, imagenFinal)
-    }
 
-    private fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
-        val cw = ContextWrapper(context)
-        val dirImages = cw.getDir("Imagenes", MODE_PRIVATE)
-        val myPath = File(dirImages, "$nombre.png")
-        val fos: FileOutputStream?
-        try {
-            fos = FileOutputStream(myPath)
-            imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
-            fos.flush()
-        } catch (ex: FileNotFoundException) {
-            ex.printStackTrace()
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-        return myPath.absolutePath
-    }
 
 }
