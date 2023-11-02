@@ -38,6 +38,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     private var fragmentCuadernoPictoEdit: CuadernoPictoEditFragment? = null
     var listaPictogramas: ArrayList<Pictograma>? = null
     private var originalPictogramas: ArrayList<Pictograma>? = null
+    private var listaPictosAgregados: ArrayList<String> = ArrayList()
     private var idCuaderno: Int = 0
 
     var listaCuadernos: ArrayList<Cuaderno>? = null
@@ -92,7 +93,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
 
         isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
         if(isPlanificador){
-            listaCuadernos!!.add(Cuaderno(6, "AÑADIR CUADERNO", "archivo", false))
+            listaCuadernos!!.add(Cuaderno(0, "AÑADIR CUADERNO", "archivo", false))
         }
 
         val bundle = Bundle()
@@ -156,14 +157,24 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     }
 
     override fun addPictoFromBusqueda(pictograma: Pictograma){
+        //for picto in originalPictramas log titles
         originalPictogramas?.add(pictograma)
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val idUsuario = prefs.getString("idUsuario", "")
-        picto.guardarPictoCuaderno(this, pictograma.id, pictograma.titulo, pictograma.imagen, idUsuario, idCuaderno)
-        fragmentCuadernoPictoEdit!!.updatePictoBusqueda(originalPictogramas)
+        picto.guardarPictoCuaderno(this, pictograma.id, pictograma.titulo, pictograma.imagen, idCuaderno)
+        //fragmentCuadernoPictoEdit!!.updateData(originalPictogramas)
     }
 
-    
+    override fun removePicto(pictograma: Pictograma, sourceAPI: Boolean, isBusqueda: Boolean){
+        if(sourceAPI){
+            picto.borrarPictoCuadernoBusqueda(this, pictograma.id, idCuaderno)
+        }else{
+            picto.borrarPictoCuaderno(this, pictograma.id, idCuaderno)
+        }
+        originalPictogramas?.removeIf { it.id == pictograma.id }
+        if(!isBusqueda){
+            fragmentCuadernoPictoEdit!!.updateDataRemove(pictograma)
+        }
+    }
+
     private fun getPictogramas(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val dict = CommonUtils.getDataApi(query)
@@ -172,17 +183,21 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
                 dict.keys.forEach { key ->
                     dict[key]?.let { (value, id) ->
                         crearPictoBusqueda(key, value, id)
-                        fragmentCuadernoPictoEdit!!.mostrarPictogramasBusqueda(listaPictogramas)
+                        fragmentCuadernoPictoEdit!!.mostrarPictogramasBusqueda(listaPictogramas, listaPictosAgregados)
                     }
                 }
             }
         }
     }
 
-    fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
+    private fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int) {
         val tituloMayus = titulo?.uppercase()
         val archivo = CommonUtils.crearImagen(bitmap, titulo, this)
-        listaPictogramas?.add(Pictograma(id.toString() + 'b', tituloMayus, archivo, 0, 0, false))
+        val exite = originalPictogramas?.find { it.id == id.toString() }
+        if(exite != null){
+            exite.id?.let { listaPictosAgregados.add(it) }
+        }
+        listaPictogramas?.add(Pictograma(id.toString(), tituloMayus, archivo, 0, 0, false, true))
     }
 
     //Método para cerrar fragment correspondiente
@@ -193,14 +208,8 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
         transaction!!.commit()
     }
 
-    override fun atrasFragment(listaPictograma: ArrayList<Pictograma>? ) {
-        Log.d("pruebas", "ir atras")
-        fragmentCuadernoPictoEdit!!.updateData(originalPictogramas)
-
-    }
-
-    fun algo(){
-
+    override fun atrasFragment() {
+        originalPictogramas?.let { fragmentCuadernoPictoEdit!!.updateData(it) }
     }
 
     private fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String) {
@@ -208,6 +217,8 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
         bundle.putSerializable("key", pictogramas)
         bundle.putSerializable("termometro", termometro)
         bundle.putSerializable("tituloCuaderno", tituloCuaderno)
+        bundle.putSerializable("idCuaderno", idCuaderno)
+
         if(isPlanificador){
             fragmentCuadernoPictoEdit!!.arguments = bundle
             transaction = supportFragmentManager.beginTransaction()

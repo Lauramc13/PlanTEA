@@ -1,23 +1,30 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 
-class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasCuaderno.ViewHolderPictogramas>() {
+class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?, private val isPlan: Boolean, private val listener: OnItemSelectedListener?, private val context: Context) : RecyclerView.Adapter<AdaptadorPictogramasCuaderno.ViewHolderPictogramas>() {
 
     var isBusqueda: Boolean = false
+    var listaPictosAgregados = ArrayList<String>()
 
     interface OnItemSelectedListener {
         fun pictogramaCuaderno(posicion: Int)
         fun addPicto(pictograma: Pictograma)
+        fun removePicto(pictograma: Pictograma, sourceAPI: Boolean, isBusqueda: Boolean)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -27,27 +34,51 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         holder.titulo.text = listaPictogramas!![position].titulo
-        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
 
-        if(isBusqueda){
-            holder.btnAniadir.visibility = View.VISIBLE
+        if(isPlan){
+            if(isBusqueda){
+                mostrarPicto(holder, position)
+                holder.borrar.visibility = View.INVISIBLE
+                if(listaPictogramas!![position].id in listaPictosAgregados){
+                    holder.btnNoAniair.visibility = View.VISIBLE
+                    holder.btnAniadir.visibility = View.INVISIBLE
+                }else{
+                    holder.btnAniadir.visibility = View.VISIBLE
+                    holder.btnNoAniair.visibility = View.INVISIBLE
+                }
+            }else{
+                holder.btnAniadir.visibility = View.INVISIBLE
+                holder.btnNoAniair.visibility = View.INVISIBLE
+                if(position == listaPictogramas!!.size - 1) {
+                    mostrarAniadir(holder)
+                    holder.borrar.visibility = View.INVISIBLE
+                }else{
+                    mostrarPicto(holder, position)
+                    holder.borrar.visibility = View.VISIBLE
+                }
+            }
         }else{
-            holder.btnAniadir.visibility = View.INVISIBLE
-            holder.btnNoAniair.visibility = View.INVISIBLE
+            mostrarPicto(holder, position)
+            holder.borrar.visibility = View.INVISIBLE
         }
 
+
+
         holder.btnNoAniair.setOnClickListener {
-            //segun la posicion eliminar el pictograma en el cuaderno
             holder.btnNoAniair.visibility = View.INVISIBLE
             holder.btnAniadir.visibility = View.VISIBLE
-           // listener?.addPicto(listaPictogramas!![position])
+            listener?.removePicto(listaPictogramas!![position], true, isBusqueda)
         }
 
         holder.btnAniadir.setOnClickListener {
-            //segun la posicion guardar el pictograma en el cuaderno
             holder.btnNoAniair.visibility = View.VISIBLE
             holder.btnAniadir.visibility = View.INVISIBLE
             listener?.addPicto(listaPictogramas!![position])
+        }
+
+        holder.borrar.setOnClickListener {
+            val sourceAPI = listaPictogramas!![position].sourceAPI
+            listener?.removePicto(listaPictogramas!![position], sourceAPI, false)
         }
     }
 
@@ -55,26 +86,22 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
         return listaPictogramas!!.size
     }
 
-    fun updateData(newPictogramasList: ArrayList<Pictograma>? ) {
-        listaPictogramas = newPictogramasList
-        notifyDataSetChanged()
-    }
-
-    fun updateDataBusqueda(newPictogramasList: ArrayList<Pictograma>?){
-        listaPictogramas = newPictogramasList
-    }
-
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var titulo: TextView
         var imagen: ImageView
+        var borde : RelativeLayout
         var btnAniadir: Button
         var btnNoAniair: Button
+        var borrar: ImageView
+
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
+            borde = itemView.findViewById<View>(R.id.card_pictograma) as RelativeLayout
             btnAniadir = itemView.findViewById<View>(R.id.btn_sin_aniadir) as Button
             btnNoAniair = itemView.findViewById<View>(R.id.btn_aniadido) as Button
+            borrar = itemView.findViewById<View>(R.id.btn_borrarPicto) as ImageView
             itemView.setOnClickListener(this)
         }
 
@@ -82,5 +109,17 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
             val posicion = bindingAdapterPosition
             listener?.pictogramaCuaderno(posicion)
         }
+    }
+
+    fun mostrarAniadir(holder : ViewHolderPictogramas){
+        holder.imagen.setImageResource(R.drawable.svg_add)
+        val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno_dotted)
+        holder.borde.background = drawable
+    }
+
+    fun mostrarPicto(holder : ViewHolderPictogramas, position: Int){
+        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno)
+        holder.borde.background = drawable
     }
 }

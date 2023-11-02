@@ -241,9 +241,10 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         val userId = prefs.getString("idUsuario", "")
         pictogramas = ArrayList()
         pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as ArrayList<Pictograma>
-        val creada = userId?.let { plan.crearPlanificacion(it, actividad, pictogramas, planes[posicion].titulo + " " + counter.toString()) }
+        val creada = userId?.let { plan.crearPlanificacion(actividad, it, planes[posicion].titulo + " " + counter.toString()) }
+        //añadir pictogramas TODO
         counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
-        if (creada == true) {
+        if (creada != 0) {
             Toast.makeText(context, "Planificación duplicada", Toast.LENGTH_LONG).show()
             iniciarListaPlanificaciones()
         } else {

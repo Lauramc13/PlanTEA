@@ -17,9 +17,12 @@ class Planificacion : Serializable {
         this.id = id
     }
 
-    fun crearPlanificacion(idUsuario: String, actividad: Activity?, pictogramas: java.util.ArrayList<Pictograma>, titulo: String?): Boolean {
-        resultado = gestionPlan.insertarPictogramaPlan(idUsuario, actividad, pictogramas, titulo)
-        return resultado
+    fun crearPlanificacion(actividad: Activity?,idUsuario: String, titulo: String?): Int {
+        return gestionPlan.insertarPlanificacion(actividad, idUsuario, titulo)
+    }
+
+    fun addPictogramasPlan(idPlan: Int?,actividad: Activity?, listaPlanificacion: ArrayList<Pictograma>): Any {
+        return gestionPlan.addPictogramasPlan(actividad, idPlan, listaPlanificacion)
     }
 
     fun mostrarPlanificacionesDisponibles(idUsuario: String, actividad: Activity?): ArrayList<*> {
@@ -38,8 +41,8 @@ class Planificacion : Serializable {
         return listaPictogramas
     }
 
-    fun actualizarPlanificacion(actividad: Activity?, id_plan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
-        gestionPlan.actualizarPlanificacion(actividad, id_plan, nombre, pictogramas)
+    fun actualizarPlanificacion(actividad: Activity?, idPlan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
+        gestionPlan.actualizarPlanificacion(actividad, idPlan, nombre, pictogramas)
     }
 
     //Mostrar la planificacion a seguir
@@ -54,4 +57,6 @@ class Planificacion : Serializable {
         titulo = gestionPlan.obtenerTituloPlan(idUsuario, fecha, actividad)
         return titulo
     }
+
+
 }

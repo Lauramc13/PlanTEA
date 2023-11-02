@@ -57,7 +57,11 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
         val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
-        val adaptador = AdaptadorPictogramasCuaderno(listaPictogramas, this)
+        val prefs = context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val isPlanificador = prefs?.getBoolean("PlanificadorLogged", false)
+        val adaptador = isPlanificador?.let { context?.let { it1 ->
+            AdaptadorPictogramasCuaderno(listaPictogramas, it, this, it1)
+        }}!!
         lst_Pictogramas.adapter = adaptador
         image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
         image_Cerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
@@ -125,5 +129,10 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
     override fun addPicto(pictograma: Pictograma) {
         TODO("Not yet implemented")
     }
+
+    override fun removePicto(pictograma: Pictograma, sourceAPI: Boolean, isBusqueda: Boolean) {
+        TODO("Not yet implemented")
+    }
+
 
 }

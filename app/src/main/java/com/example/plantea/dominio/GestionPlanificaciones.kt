@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import java.io.Serializable
 
@@ -9,17 +10,47 @@ class GestionPlanificaciones : Serializable {
     private var resultado: Boolean = false
     private lateinit var listaPlanes: ArrayList<Planificacion>
     private lateinit var listaPictogramas: ArrayList<Pictograma>
-    fun insertarPictogramaPlan(idUsuario: String, actividad: Activity?, pictogramas: java.util.ArrayList<Pictograma>, titulo: String?): Boolean {
+
+    fun insertarPlanificacion(actividad: Activity?, idUsuario: String, titulo: String?): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        val id_plan: Int = conectorBD.insertarPlanificacion(idUsuario, titulo)
+        val idPlan: Int = conectorBD.insertarPlanificacion(idUsuario, titulo)
+        conectorBD.cerrar()
+        return idPlan
+    }
+
+    fun addPictogramasPlan(actividad: Activity?, idPlan: Int?, listaPlanificacion: ArrayList<Pictograma>): Boolean {
+        conectorBD = ConectorBD(actividad)
+        conectorBD.abrir()
+        try{
+            for(pictogram in listaPlanificacion){
+                if(pictogram.sourceAPI){
+                    conectorBD.addPictogramaAPI(pictogram.id, pictogram.titulo, pictogram.imagen)
+                    conectorBD.addPictogramasPlanificacion(idPlan, null, pictogram.id, pictogram.historia)
+                }else{
+                    conectorBD.addPictogramasPlanificacion(idPlan, pictogram.id, null, pictogram.historia)
+                }
+            }
+        }catch (e: Exception){
+            Log.d("Warning", e.toString() )
+            return false
+        }
+        conectorBD.cerrar()
+        return true
+    }
+
+
+    /*fun insertarPictogramaPlan(idPlan: Int, actividad: Activity?, idPicto: Int, idPictoAPI: Int): Boolean {
+        conectorBD = ConectorBD(actividad)
+        conectorBD.abrir()
         for (i in pictogramas.indices) {
-            resultado = conectorBD.insertarPictogramaPlan(pictogramas[i].titulo,
-                pictogramas[i].imagen, pictogramas[i].categoria, pictogramas[i].historia, id_plan)
+            resultado = conectorBD.insertarPictogramaPlan(idPicto, idPictoAPI, historia, idPlan)
         }
         conectorBD.cerrar()
         return resultado
-    }
+    }*/
+
+
 
     fun listarPlanificaciones(idUsuario: String, actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
@@ -66,13 +97,21 @@ class GestionPlanificaciones : Serializable {
         return listaPictogramas
     }
 
-    fun actualizarPlanificacion(actividad: Activity?, id_plan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
+    fun actualizarPlanificacion(actividad: Activity?, idPlan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        conectorBD.actualizarPlanificacion(id_plan, nombre)
-        for (i in pictogramas.indices) {
-            conectorBD.insertarPictogramaPlan(pictogramas[i].titulo,
-                pictogramas[i].imagen, pictogramas[i].categoria, pictogramas[i].historia, id_plan)
+        conectorBD.actualizarPlanificacion(idPlan, nombre)
+        try{
+            for(pictogram in pictogramas){
+                if(pictogram.sourceAPI){
+                    conectorBD.addPictogramaAPI(pictogram.id, pictogram.titulo, pictogram.imagen)
+                    conectorBD.addPictogramasPlanificacion(idPlan, null, pictogram.id, pictogram.historia)
+                }else{
+                    conectorBD.addPictogramasPlanificacion(idPlan, pictogram.id, null, pictogram.historia)
+                }
+            }
+        }catch (e: Exception){
+            Log.d("Warning", e.toString())
         }
         conectorBD.cerrar()
     }
@@ -82,7 +121,7 @@ class GestionPlanificaciones : Serializable {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
-        val c = conectorBD.obtenerPlanficacion(idUsuario, fecha)
+        val c = conectorBD.obtenerPlanificacion(idUsuario, fecha)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -111,4 +150,6 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
         return titulo
     }
+
+
 }

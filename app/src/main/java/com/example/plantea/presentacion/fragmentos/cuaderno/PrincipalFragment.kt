@@ -4,10 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,31 +17,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
-import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.UUID
 
 class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelectedListener {
@@ -77,7 +64,7 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
         val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
         recycler_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
         val context = requireContext()
-        adaptador = AdaptadorCategoriasCuaderno(listaPictoCuaderno, isPlanificador, this, context)
+        adaptador = AdaptadorCategoriasCuaderno(listaPictoCuaderno, isPlanificador, this, context, this)
         recycler_Pictogramas.adapter = adaptador
         return vista
     }
@@ -97,6 +84,13 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
             listaPictoCuaderno[posicion].titulo?.let { interfaceCuaderno.mostrarPictogramas(idCuaderno, listaPictoCuaderno[posicion].termometro, it)
             }
         }
+    }
+
+    fun eliminarCuaderno(cuaderno: Cuaderno) {
+        cuaderno.eliminarCuaderno(actividad, cuaderno.id)
+        listaPictoCuaderno.remove(cuaderno)
+        adaptador.notifyDataSetChanged()
+
     }
 
     private fun mostrarDialogo(){
@@ -165,11 +159,11 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
             val bitmap = BitmapFactory.decodeStream(inputStream)
 
             // Guardar la imagen en rutaUsuarioTEA
-            val ruta = context?.let { getPathFromUri(it, uri) }
+            val ruta = context?.let { CommonUtils.getPathFromUri(it, uri)}
 
             context?.let {
                 if (ruta != null) {
-                    guardarImagen(it, ruta, bitmap)
+                    CommonUtils.guardarImagen(it, ruta, bitmap)
                     image.background = null
                     image.setImageURI(uri)
                 }
@@ -180,36 +174,7 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
         }
     }
 
-    private fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
-        val cw = ContextWrapper(context)
-        val dirImages = cw.getDir("Imagenes", AppCompatActivity.MODE_PRIVATE)
-        val myPath = File(dirImages, "$nombre.png")
-        var fos: FileOutputStream?
-        try {
-            fos = FileOutputStream(myPath)
-            imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
-            fos.flush()
-        } catch (ex: FileNotFoundException) {
-            ex.printStackTrace()
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-        return myPath.absolutePath
-    }
 
-    private fun getPathFromUri(context: Context, uri: Uri): String {
-        val filePath: String?
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-        if (cursor == null) {
-            filePath = uri.path
-        } else {
-            cursor.moveToFirst()
-            val index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            filePath = cursor.getString(index)
-            cursor.close()
-        }
-        return filePath ?: ""
-    }
 
 
 }

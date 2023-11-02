@@ -231,8 +231,8 @@ class RegisterActivity : AppCompatActivity(){
 
         // TODO: ORGANIZAR ESTO
         if (isAccountValid) {
-            val passCifrada = hashPassword(password)
-            creado = usuario.crearUsuario(name, email, username, passCifrada, objeto, namePlanificado, this@RegisterActivity)
+            //val passCifrada = hashPassword(password)
+            creado = usuario.crearUsuario(name, email, username, objeto, namePlanificado, this@RegisterActivity)
             if (creado) {
                 val id = usuario.consultarId(email, this@RegisterActivity)
                 val editor = prefs.edit()
@@ -248,7 +248,6 @@ class RegisterActivity : AppCompatActivity(){
                 editor.apply()
 
                 val user = auth.currentUser
-                Log.d("algo", user.toString())
                 //Guardamos los datos en firebase
                 auth.createUserWithEmailAndPassword(email, "123456")
                     .addOnCompleteListener { task ->
@@ -271,12 +270,12 @@ class RegisterActivity : AppCompatActivity(){
         return error
     }
 
-    private fun hashPassword(password: String): String {
+    /*private fun hashPassword(password: String): String {
         val bytes = password.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         return digest.fold("") { str, it -> str + "%02x".format(it) }
-    }
+    }*/
 
     private fun updateButtonIcon() {
         // Update the button's background based on the state

@@ -12,6 +12,7 @@ class Pictograma : Serializable {
     var cuaderno = 0
     var historia: String? = null
     var favorito: Boolean = false
+    var sourceAPI: Boolean = false
     var listaPictogramas: ArrayList<Pictograma>? = null
     private var listaConsultas: ArrayList<String>? = null
     private var gestorPictogramas = GestionPictogramas()
@@ -24,13 +25,14 @@ class Pictograma : Serializable {
         this.cuaderno = cuaderno
     }
 
-    constructor(id: String?, titulo: String?, imagen: String?, categoria: Int, cuaderno: Int, favorito: Boolean) {
+    constructor(id:String?, titulo: String?, imagen: String?, categoria: Int, cuaderno: Int, favorito: Boolean, sourceAPI: Boolean) {
         this.id = id
         this.titulo = titulo
         this.imagen = imagen
         this.categoria = categoria
         this.cuaderno = cuaderno
         this.favorito = favorito
+        this.sourceAPI = sourceAPI
     }
 
     fun obtenerPictogramas(actividad: Activity, idcategoria: Int, userId: String?): ArrayList<*> {
@@ -49,6 +51,10 @@ class Pictograma : Serializable {
         gestorPictogramas.insertarPictograma(actividad, nombre, imagen, categoria, idUsuario)
     }
 
+    fun nuevoPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
+        return gestorPictogramas.insertarPictogramaCuaderno(actividad, nombre, imagen, idCuaderno, idUsuario)
+    }
+
     fun obtenerPictogramasCuaderno(actividad: Activity?, identificador: Int): ArrayList<*>? {
         listaPictogramas = ArrayList()
         listaPictogramas = gestorPictogramas.listarPictogramasCuaderno(actividad, identificador)
@@ -65,8 +71,8 @@ class Pictograma : Serializable {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }
 
-    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id: String?, titulo: String?, imagen: String?, categoria: Int) {
-        gestorPictogramas.insertarFavorito(actividad, idUsuario, id, titulo, imagen, categoria)
+    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id: String?, titulo: String?, imagen: String?) {
+        gestorPictogramas.insertarFavorito(actividad, idUsuario, id, titulo, imagen)
     }
 
     fun borrarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {
@@ -77,9 +83,18 @@ class Pictograma : Serializable {
         return gestorPictogramas.getFavorito(actividad, idPicto, idUsuario)
     }
 
-    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idUsuario: String?, idCuaderno: Int) {
-        return gestorPictogramas.guardarPictoCuaderno(actividad, id, titulo, imagen, idUsuario, idCuaderno)
-
+    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
+        return gestorPictogramas.guardarPictoCuaderno(actividad, id, titulo, imagen, idCuaderno)
     }
+
+    fun borrarPictoCuadernoBusqueda(actividad: Activity?, id: String?, idCuaderno: Int) {
+        return gestorPictogramas.borrarPictoCuadernoBusqueda(actividad, id, idCuaderno)
+    }
+
+    fun borrarPictoCuaderno(actividad: Activity?, id: String?, idCuaderno: Int) {
+        return gestorPictogramas.borrarPictoCuaderno(actividad, id, idCuaderno)
+    }
+
+
 
 }

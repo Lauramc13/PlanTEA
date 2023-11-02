@@ -6,6 +6,7 @@
     android:padding="10dp">
 
     <RelativeLayout
+        android:id="@+id/card_pictograma"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -85,6 +86,19 @@
             app:iconGravity="textStart"
             android:drawableEnd="@drawable/card_personalizado_cuaderno"
             android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/btn_borrarPicto"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="8dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentStart="true"
+            android:elevation="4dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/svg_trash">
+        </ImageView>
     </RelativeLayout>
 
 

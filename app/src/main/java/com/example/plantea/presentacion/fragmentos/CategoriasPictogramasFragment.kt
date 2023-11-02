@@ -83,8 +83,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         val prefs = requireContext().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
         val id = pictogram.id
-        pictograma.insertarFavorito(actividad, idUsuario, pictogram.id, pictogram.titulo, pictogram.imagen, pictogram.categoria)
-
+        pictograma.insertarFavorito(actividad, idUsuario, pictogram.id, pictogram.titulo, pictogram.imagen)
     }
 
     fun removeFavorite(pictogram: Pictograma, posicion: Int) {

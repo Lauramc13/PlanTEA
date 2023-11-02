@@ -9,37 +9,37 @@ class GestionUsuarios {
     private var resultado = false
 
 
-    fun crearUsuario( name: String?, email: String?, username: String?,password: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
+    fun crearUsuario( name: String?, email: String?, username: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarUsuario(email, username, name, password, objeto, nameTEA)
+        resultado = conectorBD!!.insertarUsuario(email, username, name, objeto, nameTEA)
         conectorBD!!.cerrar()
         return resultado
     }
 
-    fun comprobarPassword(email:String, password: String, actividad: Activity?): Boolean {
+    /*fun comprobarPassword(email:String, password: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         resultado = conectorBD!!.consultarPass(email, password)
         conectorBD!!.cerrar()
         return resultado
-    }
+    }*/
 
-    fun cambiarPassword(email:String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
+   /* fun cambiarPassword(email:String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         resultado = conectorBD!!.actualizarPass(email, passwordVieja, passwordNueva)
         conectorBD!!.cerrar()
         return resultado
-    }
+    }*/
 
-    fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
+    /*fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         resultado = conectorBD!!.consultarUsuario(email, password)
         conectorBD!!.cerrar()
         return resultado
-    }
+    }*/
 
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario_Planificador {
         conectorBD = ConectorBD(actividad)
@@ -88,11 +88,11 @@ class GestionUsuarios {
         conectorBD!!.cerrar()
     }
 
-    fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
+   /* fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         conectorBD!!.crearPassword(email, passCifrada)
         conectorBD!!.cerrar()
-    }
+    }*/
 
 }

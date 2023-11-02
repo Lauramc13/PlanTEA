@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import java.io.Serializable
@@ -42,7 +43,7 @@ class GestionPictogramas : Serializable {
                 pictograma.titulo = c.getString(1)
                 pictograma.imagen = c.getString(2)
                 pictograma.categoria = c.getInt(3)
-                pictograma.favorito = c.getInt(4) == 1 // Convert favorito value to Boolean
+                //pictograma.favorito = c.getInt(4) == 1 // Convert favorito value to Boolean
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
         }
@@ -60,6 +61,14 @@ class GestionPictogramas : Serializable {
         conectorBD!!.cerrar()
     }
 
+    fun insertarPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        val id = conectorBD!!.insertarPictogramaCuaderno(nombre, imagen, idCuaderno, idUsuario)
+        conectorBD!!.cerrar()
+        return id
+    }
+
     fun listarPictogramasCuaderno(actividad: Activity?, identificador: Int): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
@@ -68,17 +77,19 @@ class GestionPictogramas : Serializable {
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
-                pictograma.titulo = c.getString(0)
-                pictograma.imagen = c.getString(1)
-                pictograma.cuaderno = c.getInt(2)
+                pictograma.id = c.getString(0)
+                pictograma.titulo = c.getString(1)
+                pictograma.imagen = c.getString(2)
+                pictograma.cuaderno = c.getInt(3)
+                pictograma.sourceAPI = c.getInt(4) == 1
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
         }
         c.close()
         conectorBD!!.cerrar()
-        for (i in listaPictogramas!!.indices) {
+        /*for (i in listaPictogramas!!.indices) {
             print(listaPictogramas!![i].titulo + listaPictogramas!![i].cuaderno)
-        }
+        }*/
         return listaPictogramas as ArrayList<Pictograma>
     }
 
@@ -123,7 +134,6 @@ class GestionPictogramas : Serializable {
                 pictograma.id = c.getString(0)
                 pictograma.titulo = c.getString(1)
                 pictograma.imagen = c.getString(2)
-                pictograma.categoria = c.getInt(3)
                 pictograma.favorito = true
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
@@ -133,10 +143,10 @@ class GestionPictogramas : Serializable {
         return listaPictogramas!!
     }
 
-    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id:String?, titulo: String?, imagen: String?, categoria: Int?){
+    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id:String?, titulo: String?, imagen: String?){
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarFavorito(idUsuario, id, titulo, imagen, categoria)
+        conectorBD!!.insertarFavorito(idUsuario, id, titulo, imagen)
         conectorBD!!.cerrar()
     }
 
@@ -154,10 +164,26 @@ class GestionPictogramas : Serializable {
         return exists
     }
 
-    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idUsuario: String?, idCuaderno: Int) {
+    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarPictogramaCuaderno( id, titulo, imagen, idUsuario, idCuaderno)
+        conectorBD!!.insertarPictogramaCuadernoBusqueda(id, titulo, imagen, idCuaderno)
         conectorBD!!.cerrar()
     }
+
+    fun borrarPictoCuadernoBusqueda(actividad: Activity?, id: String?, idCuaderno: Int) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarPictogramaCuadernoBusqueda(id, idCuaderno)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarPictoCuaderno(actividad: Activity?, id: String?, idCuaderno: Int) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarPictogramaCuaderno(id, idCuaderno)
+        conectorBD!!.cerrar()
+    }
+
+
 }

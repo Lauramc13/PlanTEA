@@ -76,8 +76,6 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
             heart = itemView.findViewById(R.id.btn_favoritosOff) as ImageView
             historia = itemView.findViewById(R.id.btn_historiaPictoOn)
             itemView.setOnClickListener(this)
-
-
         }
 
         override fun onClick(view: View?) {

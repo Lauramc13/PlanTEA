@@ -139,10 +139,10 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         val tituloMayus = titulo?.uppercase()
         val prefs = getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
-        val favorito = pictograma.getFavorito(this, id.toString() + 'b', userId)
+        val favorito = pictograma.getFavorito(this, id.toString(), userId)
         val archivo = CommonUtils.crearImagen(bitmap, titulo, this)
 
-        listaPictogramas.add(Pictograma(id.toString() + 'b', tituloMayus, archivo, 0, 0, favorito))
+        listaPictogramas.add(Pictograma(id.toString(), tituloMayus, archivo, 0, 0, favorito, true))
     }
 
 
@@ -200,7 +200,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         if (parametros != null) {
             opcionEditar = true
             txt_TituloPlan.text = intent.getStringExtra("titulo")
-            listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!! //TODO
+            listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
         } else if (savedInstanceState != null){
             val savedArrayList = savedInstanceState.getSerializable("arrayListKey") as ArrayList<Pictograma>?
             if (savedArrayList != null) {
@@ -226,11 +226,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         //Este método se ejecutará al seleccionar el icono guardar para crear la planificación
         btn_GuardarPlanificacion.setOnClickListener {
             if (txt_TituloPlan.text.toString().isEmpty() || listaPlanificacion.isEmpty()) {
-                Toast.makeText(
-                    applicationContext,
-                    "Necesita añadir un título y pictogramas",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(applicationContext, "Necesita añadir un título y pictogramas", Toast.LENGTH_LONG).show()
             } else {
                 //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
                 if (opcionEditar) {
@@ -241,24 +237,18 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                         txt_TituloPlan.text.toString().uppercase(Locale.getDefault()),
                         listaPlanificacion
                     )
-                    Toast.makeText(
-                        applicationContext,
-                        "Planificación " + txt_TituloPlan.text.toString() + " actualizada",
-                        Toast.LENGTH_LONG
-                    ).show()
+
+                    Toast.makeText(applicationContext, "Planificación " + txt_TituloPlan.text.toString() + " actualizada", Toast.LENGTH_LONG).show()
                 } else {
                     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                     val idUsuario = prefs.getString("idUsuario", "")
 
                     val plan = Planificacion()
-                    val creada = idUsuario?.let { it1 ->
-                        plan.crearPlanificacion(
-                            it1,
-                            this@CrearPlanActivity,
-                            listaPlanificacion,
-                            txt_TituloPlan.text.toString().uppercase(Locale.getDefault())
-                        )
+                    val idPlan = idUsuario?.let { it1 ->
+                        plan.crearPlanificacion(this@CrearPlanActivity,  it1,txt_TituloPlan.text.toString().uppercase(Locale.getDefault()))
                     }
+                    val creada = plan.addPictogramasPlan(idPlan, this@CrearPlanActivity, listaPlanificacion)
+
                     if (creada == true) {
                         Toast.makeText(
                             applicationContext,

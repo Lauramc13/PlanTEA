@@ -91,14 +91,9 @@ class PasswordActivity : AppCompatActivity() {
                     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                     val email = prefs.getString("email", "")
                     if (email != null) {
-                        val passCifrada = hashPassword(viejaPass.editText?.text.toString())
-                        val nuevaPassCifrada = hashPassword(nuevaPass.editText?.text.toString())
-                        actualizado = usuario.confirmarPass(
-                            email,
-                            passCifrada,
-                            nuevaPassCifrada,
-                            this@PasswordActivity
-                        )
+                        //val passCifrada = hashPassword(viejaPass.editText?.text.toString())
+                        //val nuevaPassCifrada = hashPassword(nuevaPass.editText?.text.toString())
+                        //actualizado = usuario.confirmarPass( email,passCifrada,nuevaPassCifrada,this@PasswordActivity)
                     }
                     if (actualizado) {
                         Toast.makeText(

@@ -261,7 +261,7 @@ class PreLoginActivity : AppCompatActivity(){
                 Log.w("FAILURE", "Google Sign-In Failed: ${e.statusCode}")
             }
         }else{
-            Log.d("pruebas",result.resultCode.toString() )
+            Log.d("pruebas", "El resultado es: " + result.resultCode.toString() )
         }
     }
 

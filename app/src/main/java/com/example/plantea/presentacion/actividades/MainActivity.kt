@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
                 val email = prefs.getString("email", "")
                 if(email != null){
                     val passCifrada = navigationHandler.hashPassword(password.editText?.text.toString())
-                    usuario.crearPassword(email, passCifrada, this)
+                    //usuario.crearPassword(email, passCifrada, this)
                     val editor = prefs.edit()
                     editor.putBoolean("PlanificadorLogged", true)
                     editor.apply()

@@ -223,9 +223,9 @@ class ConfiguracionActivity : AppCompatActivity() {
 
                 //Obtener nombres de los usuarios y objeto
                 val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
-                val nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
+                var nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
                 val username = txtUsernamePlanificador.editText?.text.toString()
-                val nombreObjeto = txtObjeto.editText?.text.toString()
+                var nombreObjeto = txtObjeto.editText?.text.toString()
                 val rutaPlanificador = CommonUtils.crearRuta(this, imgUsuarioPlanificador, "Planificador")
                 var rutaUsuarioTEA= ""
                 var rutaObjeto = ""
@@ -256,11 +256,13 @@ class ConfiguracionActivity : AppCompatActivity() {
                     editor.putString("nombreObjeto", nombreObjeto)
                 }else{
                     editor.putString("nombreObjeto", "")
+                    nombreObjeto = ""
                 }
                 if(lblInfoUsuario.isChecked){
                     editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
                 }else{
                     editor.putString("nombreUsuarioTEA", "")
+                    nombreUsuarioTEA = ""
                 }
                 editor.apply()
 

@@ -9,7 +9,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Handler
+import android.provider.MediaStore
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.Log
@@ -25,6 +27,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.security.MessageDigest
 import java.util.Locale
 import java.util.UUID
 
@@ -124,9 +127,18 @@ class CommonUtils{
             }
 
             val image = textAsBitmap(query)
-            dict[image] = Pair(query, 0)
+            val idImageCreated = wordToId(query)
+            dict[image] = Pair(query, idImageCreated)
             return dict
 
+        }
+
+        fun wordToId(word: String): Int {
+            var id = 0
+            for (char in word) {
+                id = id * 31 + char.code
+            }
+            return id
         }
 
         private fun textAsBitmap(text: String?): Bitmap {
@@ -214,7 +226,7 @@ class CommonUtils{
             return guardarImagen(context, nombreImagen, imagenFinal)
         }
 
-        private fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
+        fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
             val cw = ContextWrapper(context)
             val dirImages = cw.getDir("Imagenes", AppCompatActivity.MODE_PRIVATE)
             val myPath = File(dirImages, "$nombre.png")
@@ -239,6 +251,20 @@ class CommonUtils{
                 4
             }
             return gridValueManager
+        }
+
+         fun getPathFromUri(context: Context, uri: Uri): String {
+            val filePath: String?
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            if (cursor == null) {
+                filePath = uri.path
+            } else {
+                cursor.moveToFirst()
+                val index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                filePath = cursor.getString(index)
+                cursor.close()
+            }
+            return filePath ?: ""
         }
 
     }

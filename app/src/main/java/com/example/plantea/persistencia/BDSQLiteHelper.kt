@@ -1,35 +1,41 @@
 package com.example.plantea.persistencia
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.drawable.Drawable
 import com.example.plantea.R
 
 class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFactory?, versionBD: Int) : SQLiteOpenHelper(contexto, nombreBD, factory, versionBD) {
     /*Sentencia SQL para crear las tablas*/
-    var sqlUsuario_Planificador = "CREATE TABLE Usuario_Planificador(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, username TEXT, name TEXT, password TEXT, objeto TEXT, imagen TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
-    var sqlCategorias = "CREATE TABLE Categorias(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
-    var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictoAPI INTEGER UNIQUE, nombre TEXT, imagen TEXT, favorito INTEGER, id_categoria INTEGER, id_cuaderno INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictoAPI INTEGER UNIQUE, nombre TEXT, imagen TEXT, favorito INTEGER, id_categoria INTEGER, id_cuaderno INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Cuaderno(id),FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
 
-    var sqlPictograma_Plan = "CREATE TABLE Pictograma_Plan(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, categoria INTEGER, historia TEXT, id_plan INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
-    var sqlPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, id_plan INTEGER,visible INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-    //var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_picto INTEGER, nombre TEXT, imagen TEXT, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
+    var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, username TEXT, name TEXT, imagen TEXT, objeto TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
+    var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
+    var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT)"
+    var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_pictograma) REFERENCES PictogramaAPI(id))"
+    var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    var sqlRelacionPictogramaCuaderno = "CREATE TABLE RelacionPictogramaCuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_pictogramaAPI INTEGER, id_cuaderno INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_pictogramaAPI) REFERENCES PictogramaAPI(id))"
+    var sqpPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, visible INTEGER, id_plan INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    var sqlRelacionPictogramaPlan = "CREATE TABLE RelacionPictogramaPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, historia TEXT, id_plan INTEGER, id_pictograma INTEGER, id_pictogramaAPI INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_pictogramaAPI) REFERENCES PictogramaAPI(id))"
+
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/
-            db.execSQL(sqlUsuario_Planificador)
+            db.execSQL(sqlUsuario)
             db.execSQL(sqlCategorias)
             db.execSQL(sqlPictograma)
-            db.execSQL(sqlPictograma_Plan)
-            db.execSQL(sqlPlanificacion)
+            db.execSQL(sqlPictogramaAPI)
+            db.execSQL(sqlFavorito)
             db.execSQL(sqlCuaderno)
+            db.execSQL(sqlRelacionPictogramaCuaderno)
+            db.execSQL(sqpPlanificacion)
+            db.execSQL(sqlRelacionPictogramaPlan)
             db.execSQL(sqlEvento)
-            //db.execSQL(sqlFavorito)
             meterDatos(db)
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -39,48 +45,51 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     override fun onUpgrade(db: SQLiteDatabase, versionAnterior: Int, versionNueva: Int) {
         try {
             /*Se elimina la versión anterior de la tablet*/
-            db.execSQL("DROP TABLE IF EXISTS Usuario_Planificador")
+            db.execSQL("DROP TABLE IF EXISTS Usuario")
             db.execSQL("DROP TABLE IF EXISTS Categorias")
             db.execSQL("DROP TABLE IF EXISTS Pictograma")
-            db.execSQL("DROP TABLE IF EXISTS Pictograma_Plan")
+            db.execSQL("DROP TABLE IF EXISTS PictogramaAPI")
+            db.execSQL("DROP TABLE IF EXISTS Favorito")
             db.execSQL("DROP TABLE IF EXISTS Planificacion")
             db.execSQL("DROP TABLE IF EXISTS Cuaderno")
+            db.execSQL("DROP TABLE IF EXISTS RelacionPictogramaCuaderno")
+            db.execSQL("DROP TABLE IF EXISTS RelacionPictogramaPlan")
             db.execSQL("DROP TABLE IF EXISTS Evento")
-           // db.execSQL("DROP TABLE IF EXISTS Favorito")
 
-            /*Se crea la nueva versión de la table*/onCreate(db)
+            /*Se crea la nueva versión de la table*/
+            onCreate(db)
         } catch (e: SQLException) {
             e.printStackTrace()
         }
     }
 
     fun meterDatos(db: SQLiteDatabase) {
-        //Categorias
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('CONSULTAS')") // 1
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('PELUQUERIA')") // 2
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('COMPRA')") // 3
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('COLEGIO')") // 4
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('LUGARES')") // 5
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('DESPLAZAMIENTO')") // 6 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('ACCION')") // 7
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('ENTRETENIMIENTO')") // 8
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('RECOMPENSA')") // 9 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('FAVORITOS')") // 10 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('REVISIÓN')") // 11 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('PROFESIONALES')") // 12 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('VACUNACIÓN')") // 13 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('PRUEBAS')") // 14 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('OFTALMOLOGÍA')") // 15 
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('ODONTOLOGÍA')") // 16
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('LOGOPEDIA')") // 17
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('KIT DE PELUQUERIA')") // 18
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('CORTES DE PELO')") // 19
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('TRABAJADORES')") // 20
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('ALIMENTOS')") // 21
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('OBJETOS')") // 22
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('EMPLEADOS')") // 23
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('UTILES')") // 24
-        db.execSQL("INSERT INTO Categorias (titulo) VALUES('PROFESORES')") // 25
+        //Categoria
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('CONSULTAS')") // 1
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('PELUQUERIA')") // 2
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('COMPRA')") // 3
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('COLEGIO')") // 4
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('LUGARES')") // 5
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('DESPLAZAMIENTO')") // 6 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('ACCION')") // 7
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('ENTRETENIMIENTO')") // 8
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('RECOMPENSA')") // 9 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('FAVORITOS')") // 10 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('REVISIÓN')") // 11 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('PROFESIONALES')") // 12 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('VACUNACIÓN')") // 13 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('PRUEBAS')") // 14 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('OFTALMOLOGÍA')") // 15 
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('ODONTOLOGÍA')") // 16
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('LOGOPEDIA')") // 17
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('KIT DE PELUQUERIA')") // 18
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('CORTES DE PELO')") // 19
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('TRABAJADORES')") // 20
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('ALIMENTOS')") // 21
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('OBJETOS')") // 22
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('EMPLEADOS')") // 23
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('UTILES')") // 24
+        db.execSQL("INSERT INTO Categoria (titulo) VALUES('PROFESORES')") // 25
 
         //Cuaderno
         //var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
@@ -322,8 +331,19 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         
 
         //PICTOGRAMAS CORRESPONDIENTES AL CUADERNO DE COMUNICACIÓN
-        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('IZQUIERDA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_izquierda + "',1)")
-        db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('DERECHA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_derecha + "',1)")
+        //val cursor = db.rawQuery("INSERT INTO Pictograma (nombre, imagen) VALUES('IZQUIERDA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_izquierda + "')", null)
+        insertarPictoCuaderno(db, "IZQUIERDA", R.drawable.cuaderno_escala_izquierda, 1)
+        insertarPictoCuaderno(db, "DERECHA", R.drawable.cuaderno_escala_derecha, 1)
+        insertarPictoCuaderno(db, "SI", R.drawable.cuaderno_escala_bien, 1)
+        insertarPictoCuaderno(db, "NO", R.drawable.cuaderno_escala_mal, 1)
+        insertarPictoCuaderno(db, "HORAS", R.drawable.cuaderno_escala_hora, 1)
+        insertarPictoCuaderno(db, "DÍAS", R.drawable.cuaderno_escala_dia, 1)
+        insertarPictoCuaderno(db, "SEMANAS", R.drawable.cuaderno_escala_semana, 1)
+        insertarPictoCuaderno(db, "MESES", R.drawable.cuaderno_escala_mes, 1)
+        insertarPictoCuaderno(db, "AÑO", R.drawable.cuaderno_escala_anio, 1)
+
+
+        /*db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('DERECHA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_derecha + "',1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('SI', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_bien + "',1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('NO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_mal + "',1)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('HORAS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_escala_hora + "',1)")
@@ -364,7 +384,6 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRIPA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_estomago + "',3)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('PIERNA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_dolor_pierna + "',3)")
 
-
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ABURRIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_aburrir + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ALEGRE', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_alegrar + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('AMADA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_amada + "',4)")
@@ -383,6 +402,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ENTRISTECIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_entristecer + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('ENVIDIOSO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_envidia + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('NOSTALGICO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_nostalgico + "',4)")
+        
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('REGOCIJAR', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_regocijar + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('SERIO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_serio + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('SORPRENDIDO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_sorprender + "',4)")
@@ -390,5 +410,80 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRANQUILO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tranquilo + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('TRANQUILO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_tranquilo1 + "',4)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_cuaderno) VALUES('VERGUENZA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.cuaderno_sentimientos_verguenza + "',4)")
+   
+        */
+
+        insertarPictoCuaderno(db, "MAREO", R.drawable.cuaderno_sintomas_mareo, 2)
+        insertarPictoCuaderno(db, "CANSANCIO", R.drawable.cuaderno_sintomas_cansancio, 2)
+        insertarPictoCuaderno(db, "ESCALOFRIOS", R.drawable.cuaderno_sintomas_escalofrios, 2)
+        insertarPictoCuaderno(db, "TOS", R.drawable.cuaderno_sintomas_tos, 2)
+        insertarPictoCuaderno(db, "FIEBRE", R.drawable.cuaderno_sintomas_fiebre, 2)
+        insertarPictoCuaderno(db, "NO VEO BIEN", R.drawable.cuaderno_sintomas_noveobien, 2)
+        insertarPictoCuaderno(db, "VOMITOS", R.drawable.cuaderno_sintomas_vomitar, 2)
+        insertarPictoCuaderno(db, "ALERGIA", R.drawable.cuaderno_sintomas_alergia, 2)
+        insertarPictoCuaderno(db, "RESFRIADO", R.drawable.cuaderno_sintomas_resfriado, 2)
+        insertarPictoCuaderno(db, "SARPULLIDO", R.drawable.cuaderno_sintomas_sarpullido, 2)
+        insertarPictoCuaderno(db, "HERIDA", R.drawable.cuaderno_sintomas_herida, 2)
+        insertarPictoCuaderno(db, "QUEMADURA", R.drawable.cuaderno_sintomas_quemadura, 2)
+        insertarPictoCuaderno(db, "TAQUICARDIA", R.drawable.cuaderno_sintomas_taquicardia, 2)
+        insertarPictoCuaderno(db, "DIARREA", R.drawable.cuaderno_sintomas_diarrea, 2)
+        insertarPictoCuaderno(db, "ESTREÑIMIENTO", R.drawable.cuaderno_sintomas_estrenimiento, 2)
+
+        insertarPictoCuaderno(db, "CUELLO", R.drawable.cuaderno_dolor_cuello, 3)
+        insertarPictoCuaderno(db, "ESPALDA", R.drawable.cuaderno_dolor_espalda, 3)
+        insertarPictoCuaderno(db, "PECHO", R.drawable.cuaderno_dolor_pecho, 3)
+        insertarPictoCuaderno(db, "CULO", R.drawable.cuaderno_dolor_culo, 3)
+        insertarPictoCuaderno(db, "MUÑECA", R.drawable.cuaderno_dolor_muneca, 3)
+        insertarPictoCuaderno(db, "RODILLA", R.drawable.cuaderno_dolor_rodilla, 3)
+        insertarPictoCuaderno(db, "TOBILLO", R.drawable.cuaderno_dolor_tobillo, 3)
+        insertarPictoCuaderno(db, "PIE", R.drawable.cuaderno_dolor_pie, 3)
+        insertarPictoCuaderno(db, "MUELA", R.drawable.cuaderno_dolor_muela, 3)
+        insertarPictoCuaderno(db, "OÍDO", R.drawable.cuaderno_dolor_oido, 3)
+        insertarPictoCuaderno(db, "CABEZA", R.drawable.cuaderno_dolor_cabeza, 3)
+        insertarPictoCuaderno(db, "BRAZO", R.drawable.cuaderno_dolor_brazo, 3)
+        insertarPictoCuaderno(db, "GARGANTA", R.drawable.cuaderno_dolor_garganta, 3)
+        insertarPictoCuaderno(db, "TRIPA", R.drawable.cuaderno_dolor_estomago, 3)
+        insertarPictoCuaderno(db, "PIERNA", R.drawable.cuaderno_dolor_pierna, 3)
+
+        insertarPictoCuaderno(db, "ABURRIDO", R.drawable.cuaderno_sentimientos_aburrir, 4)
+        insertarPictoCuaderno(db, "ALEGRE", R.drawable.cuaderno_sentimientos_alegrar, 4)
+        insertarPictoCuaderno(db, "AMADA", R.drawable.cuaderno_sentimientos_amada, 4)
+        insertarPictoCuaderno(db, "AMADO", R.drawable.cuaderno_sentimientos_amado, 4)
+        insertarPictoCuaderno(db, "ANSIOSO", R.drawable.cuaderno_sentimientos_ansioso, 4)
+        insertarPictoCuaderno(db, "ASQUEADO", R.drawable.cuaderno_sentimientos_asco, 4)
+        insertarPictoCuaderno(db, "ASUSTADO", R.drawable.cuaderno_sentimientos_asustar, 4)
+        insertarPictoCuaderno(db, "AUTOESTIMA", R.drawable.cuaderno_sentimientos_autoestima, 4)
+        insertarPictoCuaderno(db, "AVERGONZADO", R.drawable.cuaderno_sentimientos_avergonzar, 4)
+        insertarPictoCuaderno(db, "CANSADO", R.drawable.cuaderno_sentimientos_cansar, 4)
+        insertarPictoCuaderno(db, "CONDICION", R.drawable.cuaderno_sentimientos_condicion, 4)
+        insertarPictoCuaderno(db, "CONFUNDIDO", R.drawable.cuaderno_sentimientos_confundir, 4)
+        insertarPictoCuaderno(db, "DISTRAIDO", R.drawable.cuaderno_sentimientos_distraer, 4)
+        insertarPictoCuaderno(db, "ENAMORADO", R.drawable.cuaderno_sentimientos_enamorado, 4)
+        insertarPictoCuaderno(db, "ENFADADO", R.drawable.cuaderno_sentimientos_enfadar, 4)
+        insertarPictoCuaderno(db, "ENTRISTECIDO", R.drawable.cuaderno_sentimientos_entristecer, 4)
+        insertarPictoCuaderno(db, "ENVIDIOSO", R.drawable.cuaderno_sentimientos_envidia, 4)
+        insertarPictoCuaderno(db, "NOSTALGICO", R.drawable.cuaderno_sentimientos_nostalgico, 4)
+        insertarPictoCuaderno(db, "REGOCIJAR", R.drawable.cuaderno_sentimientos_regocijar, 4)
+        insertarPictoCuaderno(db, "SERIO", R.drawable.cuaderno_sentimientos_serio, 4)
+        insertarPictoCuaderno(db, "SORPRENDIDO", R.drawable.cuaderno_sentimientos_sorprender, 4)
+        insertarPictoCuaderno(db, "TENER MIEDO", R.drawable.cuaderno_sentimientos_tener_miedo, 4)
+        insertarPictoCuaderno(db, "TRANQUILO", R.drawable.cuaderno_sentimientos_tranquilo, 4)
+        insertarPictoCuaderno(db, "TRANQUILO", R.drawable.cuaderno_sentimientos_tranquilo1, 4)
+        insertarPictoCuaderno(db, "VERGUENZA", R.drawable.cuaderno_sentimientos_verguenza, 4)
+     }
+
+    @SuppressLint("Range")
+    fun insertarPictoCuaderno(db: SQLiteDatabase, nombre: String, imagen: Int, idCuaderno: Int){
+        db.execSQL("INSERT INTO Pictograma (nombre, imagen) VALUES('$nombre', 'android.resource://com.example.plantea/$imagen')")
+
+        var id = "0"
+        val cursor = db.rawQuery("SELECT id FROM Pictograma WHERE nombre = '$nombre'", null)
+        if (cursor.moveToFirst()) {
+            id = cursor.getString(cursor.getColumnIndex("id"))
+            cursor.close()
+        }
+
+        db.execSQL("INSERT INTO RelacionPictogramaCuaderno (id_pictograma, id_cuaderno) VALUES('$id', '$idCuaderno')")
     }
+
 }

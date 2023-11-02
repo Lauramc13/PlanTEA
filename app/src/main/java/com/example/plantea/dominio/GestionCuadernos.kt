@@ -39,10 +39,6 @@ class GestionCuadernos {
         return id
     }
 
-    fun editarCuaderno(actividad: Activity?, id_cuaderno: Int, pictogramas: ArrayList<Pictograma>) {
-       //TODO
-    }
-
     fun eliminarCuaderno(actividad: Activity?, id_cuaderno: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()

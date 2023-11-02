@@ -62,7 +62,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0">
 
-                <Button
+               <!-- <Button
                     android:id="@+id/icon_deshacer"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:textSize="16sp"
@@ -80,7 +80,7 @@
                     app:iconTint="?colorOnSurface"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />-->
 
                 <Button
                     android:id="@+id/icon_escuchar"
@@ -111,7 +111,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recycler_plan">
 
-                    <Button
+                   <!--<Button
                         android:id="@+id/icon_reproducir_lento"
                         android:elevation="0dp"
                         android:layout_width="wrap_content"
@@ -124,6 +124,40 @@
                         android:theme="@style/botonesSecundarios"
                         app:cornerRadius="25dp"
                         app:icon="@drawable/svg_rewind"
+                        app:iconGravity="textEnd"
+                        app:iconSize="28dp"
+                        app:iconTint="#203130" /> -->
+
+                    <Button
+                        android:id="@+id/icon_deshacerTodas"
+                        android:elevation="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:text="0.5"
+                        android:enabled="false"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/svg_rewind"
+                        app:iconGravity="textEnd"
+                        app:iconSize="28dp"
+                        app:iconTint="#203130" />
+
+                    <Button
+                        android:id="@+id/icon_deshacer"
+                        android:elevation="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/svg_play_goback"
                         app:iconGravity="textEnd"
                         app:iconSize="28dp"
                         app:iconTint="#203130" />
@@ -141,7 +175,22 @@
                         app:iconTint="#203130" />
 
                     <Button
-                        android:id="@+id/icon_reproducir_rapido"
+                        android:id="@+id/icon_marcar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        app:elevation="0dp"
+                        android:layout_marginStart="15dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/svg_play_gofoward"
+                        app:iconSize="28dp"
+                        app:iconTint="#203130" />
+
+                    <Button
+                        android:id="@+id/icon_marcarTodas"
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         app:elevation="0dp"

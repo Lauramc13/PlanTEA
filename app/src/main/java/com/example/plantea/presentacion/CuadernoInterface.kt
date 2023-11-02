@@ -6,6 +6,9 @@ interface CuadernoInterface {
     fun mostrarPictogramas(identificador: Int, termometro: Boolean?, tituloCuaderno: String)
     fun mostrarPictogramasBusqueda(query: String)
     fun cerrarFragment()
-    fun atrasFragment(listaPictograma:  ArrayList<Pictograma>?)
+    fun atrasFragment()
     fun addPictoFromBusqueda(pictograma: Pictograma)
+    fun removePicto(pictograma: Pictograma, sourceAPI: Boolean, isBusqueda: Boolean)
+
+
 }

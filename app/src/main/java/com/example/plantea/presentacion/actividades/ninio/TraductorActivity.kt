@@ -149,9 +149,9 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
 
         //Si sabemos la posicion del pictograma, estamos cambiando la imagen del pictograma
         if(posicion != null){
-            listaPictogramas[posicion] = Pictograma(id, titulo?.uppercase(), archivo, 0, 0, false)
+            listaPictogramas[posicion] = Pictograma(id, titulo?.uppercase(), archivo, 0, 0, false, true)
         }else {
-            listaPictogramas.add(Pictograma(id, titulo?.uppercase(), archivo, 0, 0, false))
+            listaPictogramas.add(Pictograma(id, titulo?.uppercase(), archivo, 0, 0, false, true))
         }
     }
 

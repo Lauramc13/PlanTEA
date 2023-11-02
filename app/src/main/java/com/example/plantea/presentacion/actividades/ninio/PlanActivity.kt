@@ -61,6 +61,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var iconoDeshacer: Button
     private lateinit var iconoEscuchar: Button
     private lateinit var iconoReproducir: Button
+    private lateinit var iconoDeshacerTodas: Button
+    private lateinit var iconoMarcar: Button
+    private lateinit var iconoMarcarTodas: Button
     private lateinit var iconoReproducirLento: Button
     private lateinit var iconoReproducirRapido: Button
     private lateinit var imagenConfeti: ImageView
@@ -240,8 +243,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         iconoDeshacer = findViewById(R.id.icon_deshacer)
         iconoEscuchar = findViewById(R.id.icon_escuchar)
         iconoReproducir = findViewById(R.id.icon_reproducir)
-        iconoReproducirLento = findViewById(R.id.icon_reproducir_lento)
-        iconoReproducirRapido = findViewById(R.id.icon_reproducir_rapido)
+        //iconoReproducirLento = findViewById(R.id.icon_reproducir_lento)
+        //iconoReproducirRapido = findViewById(R.id.icon_reproducir_rapido)
         calendarButton = findViewById(R.id.CalendarDate)
         buttonPlanNuevo = findViewById(R.id.crearPlan)
         backButton = findViewById(R.id.goBackButton)
@@ -294,8 +297,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoDeshacer.visibility = View.VISIBLE
             iconoEscuchar.visibility = View.VISIBLE
             iconoReproducir.visibility = View.VISIBLE
-            iconoReproducirLento.visibility = View.VISIBLE
-            iconoReproducirRapido.visibility = View.VISIBLE
+            //iconoReproducirLento.visibility = View.VISIBLE
+            //iconoReproducirRapido.visibility = View.VISIBLE
         } else {
             mostrarPlan()
         }
@@ -380,7 +383,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             reproducirEvento(4000L)
         }
 
-        iconoReproducirLento.setOnClickListener {
+       /* iconoReproducirLento.setOnClickListener {
             reproduccionLenta = true
             reproduccionRapida = false
             reproducirEvento(7000L)
@@ -390,7 +393,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             reproduccionRapida = true
             reproduccionLenta = false
             reproducirEvento(2500L)
-        }
+        }*/
     }
 
     private fun reproducirEvento(tiempo: Long) {
@@ -457,8 +460,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoDeshacer.visibility = View.INVISIBLE
             iconoEscuchar.visibility = View.INVISIBLE
             iconoReproducir.visibility = View.INVISIBLE
-            iconoReproducirLento.visibility = View.INVISIBLE
-            iconoReproducirRapido.visibility = View.INVISIBLE
+            //iconoReproducirLento.visibility = View.INVISIBLE
+            //iconoReproducirRapido.visibility = View.INVISIBLE
             if(infoUsuario) {
                 buttonPlanNuevo.visibility = View.VISIBLE
             }
@@ -468,8 +471,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoDeshacer.visibility = View.VISIBLE
             iconoEscuchar.visibility = View.VISIBLE
             iconoReproducir.visibility = View.VISIBLE
-            iconoReproducirLento.visibility = View.VISIBLE
-            iconoReproducirRapido.visibility = View.VISIBLE
+           // iconoReproducirLento.visibility = View.VISIBLE
+            //iconoReproducirRapido.visibility = View.VISIBLE
         }
     }
 
@@ -502,7 +505,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val avatarHistoria = dialog!!.findViewById<ShapeableImageView>(R.id.avatarBubble)
 
         // Si tenemos historias
-        if (listaPictogramas[posicion].historia != null) {
+        if (listaPictogramas[posicion].historia != "null") {
             textoHistoria.text = listaPictogramas[posicion].historia
             historia.visibility = View.VISIBLE
             if (prefs.getString("imagenPlanificador", "") === "") {
