@@ -16,7 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.dominio.Usuario
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -27,7 +27,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     private lateinit var btnGaleria: Button
     private var imagenSeleccionada : Boolean = false
-    var usuario = Usuario_Planificador()
+    var usuario = Usuario()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

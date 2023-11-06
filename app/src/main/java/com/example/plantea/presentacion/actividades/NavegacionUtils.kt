@@ -1,4 +1,4 @@
-package com.example.plantea.dominio
+package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
 import android.app.Dialog
@@ -11,7 +11,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
-import com.example.plantea.presentacion.actividades.*
+import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
 import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
@@ -26,8 +26,8 @@ import com.google.firebase.auth.FirebaseAuth
 import java.security.MessageDigest
 import java.util.*
 
-class GestionNavegacion {
-    var usuario = Usuario_Planificador()
+class NavegacionUtils {
+    var usuario = Usuario()
     private lateinit var password: TextInputLayout
     private lateinit var btn_acceder: Button
     private lateinit var icono_cerrar_login: ImageView

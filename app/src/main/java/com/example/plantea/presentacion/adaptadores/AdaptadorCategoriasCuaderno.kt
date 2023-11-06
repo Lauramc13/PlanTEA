@@ -32,19 +32,26 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
             val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno_dotted)
             holder.borde.background = drawable
             holder.borrar.visibility = View.INVISIBLE
+            holder.editar.visibility = View.INVISIBLE
         }else{
             holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
             val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno)
             holder.borde.background = drawable
             holder.borrar.visibility = View.VISIBLE
+            holder.editar.visibility = View.VISIBLE
         }
 
         if ((listaPictogramas!![position].id == 2 || listaPictogramas!![position].id == 3 || listaPictogramas!![position].id == 4) || !isPlan) {
             holder.borrar.visibility = View.INVISIBLE
+            holder.editar.visibility = View.INVISIBLE
         }
 
         holder.borrar.setOnClickListener {
             fragment.eliminarCuaderno(listaPictogramas!![position])
+        }
+
+        holder.editar.setOnClickListener {
+            fragment.editarCuaderno(listaPictogramas!![position])
         }
     }
 
@@ -57,12 +64,14 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
         var imagen: ImageView
         var borde : RelativeLayout
         var borrar: ImageView
+        var editar: ImageView
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             borde = itemView.findViewById<View>(R.id.card_categoria) as RelativeLayout
             borrar = itemView.findViewById<View>(R.id.btn_borrarCategoria) as ImageView
+            editar = itemView.findViewById<View>(R.id.btn_editCategoria) as ImageView
             itemView.setOnClickListener(this)
         }
 

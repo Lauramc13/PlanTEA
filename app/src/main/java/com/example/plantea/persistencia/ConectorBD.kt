@@ -8,7 +8,7 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.dominio.Usuario
 
 class ConectorBD(ctx: Context?) {
     private val dbHelper: BDSQLiteHelper
@@ -295,9 +295,9 @@ class ConectorBD(ctx: Context?) {
 
     @SuppressLint("Range")
     /*Obtenemos los usuarios existentes con el email que tenemos*/
-    fun obtenerUsuarioExistente(email: String): Usuario_Planificador {
+    fun obtenerUsuarioExistente(email: String): Usuario {
         val cursor = db!!.rawQuery("SELECT * from Usuario WHERE Usuario.email = '$email'", null)
-        val usuario: Usuario_Planificador?
+        val usuario: Usuario?
         cursor.moveToFirst()
 
         val username = cursor.getString(cursor.getColumnIndex("username"))
@@ -307,7 +307,7 @@ class ConectorBD(ctx: Context?) {
         val nameTEA = cursor.getString(cursor.getColumnIndex("nameTEA"))
         val imagenTEA = cursor.getString(cursor.getColumnIndex("imagenTEA"))
         val imagenObjeto = cursor.getString(cursor.getColumnIndex("imagenObjeto"))
-        usuario = Usuario_Planificador(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto)
+        usuario = Usuario(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto)
 
         cursor.close()
         return usuario
@@ -462,6 +462,10 @@ class ConectorBD(ctx: Context?) {
         db!!.execSQL("DELETE FROM RelacionPictogramaCuaderno WHERE id_cuaderno = '$idCuaderno'")
     }
 
+    fun editarCuaderno(idUsuario: String, idCuaderno: String, titulo: String, imagen: String?, termometro: Int) {
+        db!!.execSQL("UPDATE Cuaderno SET titulo ='$titulo', imagen = '$imagen', termometro = '$termometro' WHERE id ='$idCuaderno' AND id_usuario = '$idUsuario'")
+    }
+
     fun listarCuadernos(idUsuario: String): Cursor {
         return db!!.rawQuery("SELECT id, titulo, imagen, termometro from Cuaderno WHERE id_usuario = '$idUsuario' OR id_usuario IS NULL", null)
     }
@@ -469,6 +473,8 @@ class ConectorBD(ctx: Context?) {
     fun addPictogramaAPI(idPicto: String?, nombre: String?, imagen: String?) {
         db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$idPicto', '$nombre', '$imagen')")
     }
+
+
 
     companion object {
         const val NOMBRE_BD = "PlanTEA"

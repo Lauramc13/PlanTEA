@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Crear nueva categoría"
+            android:text="Crear nuevo cuaderno"
             android:textColor="?colorOnSurface"
             android:textSize="22sp" />
 

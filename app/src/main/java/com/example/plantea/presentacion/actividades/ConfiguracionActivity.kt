@@ -12,9 +12,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.planificador.CreditsActivity
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.google.android.material.textfield.TextInputLayout
 
 import java.util.*
@@ -33,7 +32,7 @@ class ConfiguracionActivity : AppCompatActivity() {
     private lateinit var iconEditUsuarioTEA : ImageView
     private lateinit var iconEditObjeto : ImageView
 
-    var usuario = Usuario_Planificador()
+    var usuario = Usuario()
 
     override fun onResume() {
         super.onResume()

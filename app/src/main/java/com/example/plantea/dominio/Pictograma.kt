@@ -1,7 +1,6 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
-import android.util.Log
 import java.io.Serializable
 
 class Pictograma : Serializable {
@@ -94,7 +93,4 @@ class Pictograma : Serializable {
     fun borrarPictoCuaderno(actividad: Activity?, id: String?, idCuaderno: Int) {
         return gestorPictogramas.borrarPictoCuaderno(actividad, id, idCuaderno)
     }
-
-
-
 }

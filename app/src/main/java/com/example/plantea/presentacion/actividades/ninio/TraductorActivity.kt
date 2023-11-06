@@ -1,9 +1,6 @@
 package com.example.plantea.presentacion.actividades.ninio
 
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.GestionNavegacion
+import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.actividades.CommonUtils
@@ -24,9 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
 import java.security.MessageDigest
-import java.util.UUID
 
 
 class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnItemSelectedListener, CommonUtils.TextToSpeechListener{
@@ -34,7 +29,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
     var listaPictogramas: ArrayList<Pictograma> = ArrayList()
     private var listaTraducir : ArrayList<String> = ArrayList()
     lateinit var escucharButton : Button
-    private var navigationHandler = GestionNavegacion()
+    private var navigationHandler = NavegacionUtils()
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var adaptador: AdaptadorPictogramasTraductor
     private lateinit var recyclerView: RecyclerView

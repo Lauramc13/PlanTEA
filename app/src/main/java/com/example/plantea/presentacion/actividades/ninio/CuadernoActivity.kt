@@ -1,35 +1,26 @@
 package com.example.plantea.presentacion.actividades.ninio
 
-import android.app.Dialog
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
-import com.example.plantea.dominio.GestionNavegacion
+import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.adaptadores.AdaptadorCuadernoActivity
-import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
-import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     private var transaction: FragmentTransaction? = null
@@ -45,9 +36,15 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     private var listaEscala: ArrayList<Pictograma>? = null
 
     private var picto = Pictograma()
-    private var navigationHandler = GestionNavegacion()
+    private var navigationHandler = NavegacionUtils()
     private var cuaderno = Cuaderno()
     private var isPlanificador = true
+    private var isBusqueda = false
+
+    companion object {
+        const val ISBUSQUEDA_KEY = false
+        val PICTOGRAMS_KEY = ArrayList<Pictograma>()
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -68,6 +65,19 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     override fun onDestroy() {
         super.onDestroy()
         navigationHandler.destroyPopup()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(ISBUSQUEDA_KEY.toString(), isBusqueda)
+        outState.putSerializable(PICTOGRAMS_KEY.toString(), originalPictogramas)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val isBusquedaFragment = savedInstanceState.getBoolean(ISBUSQUEDA_KEY.toString())
+        originalPictogramas = savedInstanceState.getSerializable(PICTOGRAMS_KEY.toString()) as ArrayList<Pictograma>?
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,30 +106,27 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
             listaCuadernos!!.add(Cuaderno(0, "AÑADIR CUADERNO", "archivo", false))
         }
 
-        val bundle = Bundle()
-        bundle.putSerializable("key", listaCuadernos)
-        bundle.putSerializable("isPlan", isPlanificador)
-        fragmentPrincipal!!.arguments = bundle
-        transaction = supportFragmentManager.beginTransaction()
-        transaction!!.add(R.id.layout_fragments, fragmentPrincipal as PrincipalFragment)
-        transaction!!.commit()
-
-        /*if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             // La primera vez que se crea la actividad, se añade el fragmento principal
-
-            fragmentPrincipal = PrincipalFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("key", listaCuadernos)
+            bundle.putSerializable("isPlan", isPlanificador)
+            fragmentPrincipal!!.arguments = bundle
             transaction = supportFragmentManager.beginTransaction()
             transaction!!.add(R.id.layout_fragments, fragmentPrincipal as PrincipalFragment)
             transaction!!.commit()
         } else {
-            // La actividad se está recreando, por lo que se recupera el fragmento existente del FragmentManager
-            val existingFragment = supportFragmentManager.findFragmentById(R.id.layout_fragments)
-            fragmentPrincipal = if (existingFragment is PrincipalFragment) {
-                existingFragment
-            } else {
-                PrincipalFragment()
+            // Si la actividad se ha recreado, se recupera el fragmento correspondiente
+            fragmentPrincipal = supportFragmentManager.findFragmentById(R.id.layout_fragments)
+            if( fragmentPrincipal is PrincipalFragment){
+                val bundle = Bundle()
+                bundle.putSerializable("key", listaCuadernos)
+                bundle.putSerializable("isPlan", isPlanificador)
+                fragmentPrincipal!!.arguments = bundle
+            }else{
+                iniciarFragment(originalPictogramas, false, "")
             }
-        }*/
+        }
 
         //Pictogramas en la parte de arriba del cuaderno
         //iniciarListaEscala()
@@ -154,6 +161,7 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     override fun mostrarPictogramasBusqueda(query: String) {
         listaPictogramas?.clear()
         getPictogramas(query)
+        isBusqueda = true
     }
 
     override fun addPictoFromBusqueda(pictograma: Pictograma){
@@ -202,6 +210,10 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
 
     //Método para cerrar fragment correspondiente
     override fun cerrarFragment() {
+        val bundle = Bundle()
+        bundle.putSerializable("key", listaCuadernos)
+        bundle.putSerializable("isPlan", isPlanificador)
+        fragmentPrincipal!!.arguments = bundle
         transaction = supportFragmentManager.beginTransaction()
         transaction!!.replace(R.id.layout_fragments, fragmentPrincipal!!)
         transaction!!.addToBackStack(null)
@@ -209,7 +221,13 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     }
 
     override fun atrasFragment() {
+        // if fragment exists do updateData, else do newFragment
         originalPictogramas?.let { fragmentCuadernoPictoEdit!!.updateData(it) }
+        isBusqueda = false
+    }
+
+    override fun addPictoPersonalizado(newPictograma: Pictograma){
+        originalPictogramas?.add(newPictograma)
     }
 
     private fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String) {
@@ -230,25 +248,26 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
         }
         transaction!!.addToBackStack(null)
         transaction!!.commit()
-        }
-/*
-    override fun pictogramaCuaderno(posicion: Int) {
-        /*val dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialogo_presentacion)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
-        val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
-        pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
-        tituloPictograma.text = listaEscala!![posicion].titulo
+    }
 
-        val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
-        historia.visibility = View.GONE
+    /*
+        override fun pictogramaCuaderno(posicion: Int) {
+            /*val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialogo_presentacion)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
+            val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
+            pictograma.setImageURI(Uri.parse(listaEscala!![posicion].imagen))
+            tituloPictograma.text = listaEscala!![posicion].titulo
 
-        //Botón cerrar
-        val btnCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-        btnCerrar.setOnClickListener { dialog.dismiss() }
-        dialog.show()*/
-    }*/
+            val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
+            historia.visibility = View.GONE
+
+            //Botón cerrar
+            val btnCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+            btnCerrar.setOnClickListener { dialog.dismiss() }
+            dialog.show()*/
+        }*/
 
 
 }

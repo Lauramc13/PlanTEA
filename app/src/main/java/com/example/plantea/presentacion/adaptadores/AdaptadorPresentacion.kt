@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.adaptadores
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,12 @@ import com.example.plantea.dominio.Pictograma
 
 
 class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPresentacion.ViewHolderPictogramas>() {
-    private var lastClickedPosition: Int = -1
     lateinit var context: Context
 
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int)
+
+        fun checkPosition(posicion: Int) : Boolean
 
     }
 
@@ -79,27 +81,18 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         override fun onClick(view: View) {
             val position = bindingAdapterPosition
 
-            if (position == lastClickedPosition + 1) {
+            val checkedPosition =  listener?.checkPosition(position)
+
+            if(checkedPosition == true){
                 listener?.onItemSeleccionado(position)
-
-                // Update the last clicked position
-                lastClickedPosition = position
-
-                // Perform click action and update UI for the current item
                 card.setBackgroundResource(R.drawable.card_disabled)
                 imagen.alpha = 0.7f
                 titulo.alpha = 0.7f
                 historia.alpha = 0.7f
-
             }else{
                 Toast.makeText(context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()
             }
         }
 
-
-
-        fun popListClicked(){
-            lastClickedPosition -= 1
-        }
     }
 }

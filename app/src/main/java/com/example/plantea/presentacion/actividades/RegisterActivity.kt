@@ -18,11 +18,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.dominio.Usuario
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import java.security.MessageDigest
 
 class RegisterActivity : AppCompatActivity(){
     lateinit var prefs: SharedPreferences
@@ -45,7 +44,7 @@ class RegisterActivity : AppCompatActivity(){
 
     private val emptyTextViews = mutableListOf<TextView>()
 
-    var usuario = Usuario_Planificador()
+    var usuario = Usuario()
 
     companion object {
         const val NAME_KEY = "NAME_KEY"

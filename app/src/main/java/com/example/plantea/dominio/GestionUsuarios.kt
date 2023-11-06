@@ -41,7 +41,7 @@ class GestionUsuarios {
         return resultado
     }*/
 
-    fun obtenerUsuario(email: String, actividad: Activity?): Usuario_Planificador {
+    fun obtenerUsuario(email: String, actividad: Activity?): Usuario {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         var usuario = conectorBD!!.obtenerUsuarioExistente(email)

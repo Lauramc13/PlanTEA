@@ -39,6 +39,13 @@ class GestionCuadernos {
         return id
     }
 
+    fun editarCuaderno(actividad: Activity?, idUsuario: String, idCuaderno: String, titulo: String, imagen: String?, termometro: Int) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD.abrir()
+        conectorBD.editarCuaderno(idUsuario, idCuaderno, titulo, imagen, termometro)
+        conectorBD.cerrar()
+    }
+
     fun eliminarCuaderno(actividad: Activity?, id_cuaderno: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()

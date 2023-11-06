@@ -6,7 +6,7 @@ import java.io.Serializable
 class Planificacion : Serializable {
     lateinit var titulo: String
     var id = 0
-    private var resultado = false
+    //private var resultado = false
     private lateinit var listaPlanes: ArrayList<Planificacion>
     lateinit var listaPictogramas: ArrayList<Pictograma>
     private var gestionPlan = GestionPlanificaciones()

@@ -1,7 +1,6 @@
 package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -10,16 +9,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
-import android.os.PersistableBundle
-import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
-import android.util.Log
-import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
-import com.example.plantea.dominio.GestionNavegacion
+import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.PlanificacionItem
@@ -58,14 +53,14 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var lblMensaje: TextView
     private lateinit var tituloObtenido: String
     private lateinit var buttonPlanNuevo : Button
-    private lateinit var iconoDeshacer: Button
     private lateinit var iconoEscuchar: Button
     private lateinit var iconoReproducir: Button
+    private lateinit var iconoDeshacer: Button
     private lateinit var iconoDeshacerTodas: Button
     private lateinit var iconoMarcar: Button
     private lateinit var iconoMarcarTodas: Button
-    private lateinit var iconoReproducirLento: Button
-    private lateinit var iconoReproducirRapido: Button
+   // private lateinit var iconoReproducirLento: Button
+   // private lateinit var iconoReproducirRapido: Button
     private lateinit var imagenConfeti: ImageView
     private lateinit var pasosCompletados: Stack<Int>
     private lateinit var adaptador: AdaptadorPresentacion
@@ -73,7 +68,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var dialogoPresentacion: ConstraintLayout
     private lateinit var backButton: Button
 
-    private var navigationHandler = GestionNavegacion()
+    private var navigationHandler = NavegacionUtils()
     private lateinit var btnSiguienteMes: ImageView
     private lateinit var btnAnteriorMes: ImageView
     private lateinit var calendario: RecyclerView
@@ -241,6 +236,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //Pila de los pasos completados en el seguimiento de un plan
         pasosCompletados = Stack<Int>()
         iconoDeshacer = findViewById(R.id.icon_deshacer)
+        iconoDeshacerTodas = findViewById(R.id.icon_deshacerTodas)
+        iconoMarcar = findViewById(R.id.icon_marcar)
+        iconoMarcarTodas = findViewById(R.id.icon_marcarTodas)
         iconoEscuchar = findViewById(R.id.icon_escuchar)
         iconoReproducir = findViewById(R.id.icon_reproducir)
         //iconoReproducirLento = findViewById(R.id.icon_reproducir_lento)
@@ -295,6 +293,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             lblMensaje.visibility = View.INVISIBLE
             buttonPlanNuevo.visibility = View.INVISIBLE
             iconoDeshacer.visibility = View.VISIBLE
+            iconoDeshacerTodas.visibility = View.VISIBLE
+            iconoMarcar.visibility = View.VISIBLE
+            iconoMarcarTodas.visibility = View.VISIBLE
             iconoEscuchar.visibility = View.VISIBLE
             iconoReproducir.visibility = View.VISIBLE
             //iconoReproducirLento.visibility = View.VISIBLE
@@ -360,8 +361,62 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
                 if (pasosCompletados.isEmpty()) {
                     iconoDeshacer.isEnabled = false
+                    iconoDeshacerTodas.isEnabled = false
                 }
+
+                iconoMarcarTodas.isEnabled = true
+                iconoMarcar.isEnabled = true
             }
+        }
+
+        //Este método se ejecutará al seleccionar el icono deshacer para marcar todos los pictogramas como no realizados
+        iconoDeshacerTodas.setOnClickListener {
+            if (!pasosCompletados.empty()) {
+                for(i in 0 until pasosCompletados.size){
+                    val posicionUndo = pasosCompletados.pop() as Int
+                    cambiarPicto(posicionUndo)
+                }
+
+                iconoDeshacerTodas.isEnabled = false
+                iconoDeshacer.isEnabled = false
+                iconoMarcarTodas.isEnabled = true
+                iconoMarcar.isEnabled = true
+            }
+        }
+
+        //Este método se ejecutará al seleccionar el icono marcar para marcar el pictograma actual como realizado
+        iconoMarcar.setOnClickListener {
+
+            if (!pasosCompletados.empty()) {
+                val posicion = pasosCompletados.peek() as Int
+                cambiarPictoClicked(posicion+1)
+                pasosCompletados.add(posicion+1)
+            }else{
+                cambiarPictoClicked(0)
+                pasosCompletados.add(0)
+                //onItemSeleccionado(0)
+            }
+
+            iconoDeshacerTodas.isEnabled = true
+            iconoDeshacer.isEnabled = true
+
+            if(pasosCompletados.size == listaPictogramas.size){
+                iconoMarcarTodas.isEnabled = false
+                iconoMarcar.isEnabled = false
+            }
+        }
+
+        // Este método se ejecutará al seleccionar el icono marcar para marcar todos los pictogramas como realizados
+        iconoMarcarTodas.setOnClickListener {
+            for (i in 0 until listaPictogramas.size){
+                cambiarPictoClicked(i)
+                pasosCompletados.add(i)
+            }
+
+            iconoMarcarTodas.isEnabled = false
+            iconoMarcar.isEnabled = false
+            iconoDeshacerTodas.isEnabled = true
+            iconoDeshacer.isEnabled = true
         }
 
         iconoEscuchar.setOnClickListener {
@@ -452,27 +507,44 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
         adaptador = AdaptadorPresentacion(listaPictogramas, this)
         recyclerView.adapter = adaptador
-        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
+        val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
 
         //Mostrar mensaje si no hay plan
         if (listaPictogramas.isEmpty()) {
             lblMensaje.visibility = View.VISIBLE
             iconoDeshacer.visibility = View.INVISIBLE
+            iconoDeshacerTodas.visibility = View.INVISIBLE
+            iconoMarcar.visibility = View.INVISIBLE
+            iconoMarcarTodas.visibility = View.INVISIBLE
             iconoEscuchar.visibility = View.INVISIBLE
             iconoReproducir.visibility = View.INVISIBLE
             //iconoReproducirLento.visibility = View.INVISIBLE
             //iconoReproducirRapido.visibility = View.INVISIBLE
-            if(infoUsuario) {
+            if(isPlanificador) {
                 buttonPlanNuevo.visibility = View.VISIBLE
             }
         } else {
             lblMensaje.visibility = View.INVISIBLE
             buttonPlanNuevo.visibility = View.INVISIBLE
             iconoDeshacer.visibility = View.VISIBLE
+            iconoDeshacerTodas.visibility = View.VISIBLE
+            iconoMarcar.visibility = View.VISIBLE
+            iconoMarcarTodas.visibility = View.VISIBLE
             iconoEscuchar.visibility = View.VISIBLE
             iconoReproducir.visibility = View.VISIBLE
+
            // iconoReproducirLento.visibility = View.VISIBLE
             //iconoReproducirRapido.visibility = View.VISIBLE
+
+        }
+        if(isPlanificador) {
+            val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
+            layoutPlanificaciones.visibility = View.VISIBLE
+            val imageDecoration = findViewById<ImageView>(R.id.imageDecoration)
+            imageDecoration.visibility = View.GONE
+        }else{
+            iconoDeshacerTodas.visibility = View.INVISIBLE
+            iconoMarcarTodas.visibility = View.INVISIBLE
         }
     }
 
@@ -526,6 +598,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             pasosCompletados.push(posicion)
             if (posicion == 0) {
                 iconoDeshacer.isEnabled = true
+                iconoDeshacerTodas.isEnabled = true
             }
             currentDialog = dialog
 
@@ -585,8 +658,20 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 dialog!!.dismiss()
                 stopReproductor()
             }
+
+            dialog!!.setOnCancelListener {
+                stopReproductor()
+            }
         }
         dialog!!.show()
+    }
+
+    override fun checkPosition(posicion: Int): Boolean {
+        return if(pasosCompletados.isEmpty() ){
+            posicion == 0
+        }else{
+            pasosCompletados.peek() + 1 == posicion
+        }
     }
 
     private fun initializeAnimations() {
@@ -649,9 +734,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
     private fun cambiarPicto(posicion: Int){
         val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
-        viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 0.7f
-        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 0.7f
-        viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 0.7f
+        viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 1f
         when (listaPictogramas[posicion].categoria) {
             9 -> {
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
@@ -666,7 +751,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                     .setBackgroundResource(R.drawable.card_personalizado)
             }
         }
-        viewHolderPictogramas.popListClicked()
+        //viewHolderPictogramas.popListClicked()
+
+    }
+
+    private fun cambiarPictoClicked(posicion: Int){
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
+        viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 0.7f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 0.7f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 0.7f
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card).setBackgroundResource(R.drawable.card_disabled)
 
     }
 

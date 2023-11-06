@@ -22,7 +22,7 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoMesAnio
 import com.example.plantea.dominio.CalendarioUtilidades.formatoMesEvento
 import com.example.plantea.dominio.CalendarioUtilidades.obtenerDiasMes
 import com.example.plantea.dominio.Evento
-import com.example.plantea.dominio.GestionNavegacion
+import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.onAlarmReceiver
 import com.example.plantea.presentacion.EventoInterface
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
@@ -47,7 +47,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
     lateinit var prefs: SharedPreferences
     private lateinit var alarmManager: AlarmManager
     var evento = Evento()
-    private var navigationHandler = GestionNavegacion()
+    private var navigationHandler = NavegacionUtils()
     private lateinit var backButton: Button
    // private var fechaSeleccionada : LocalDate = LocalDate.now()
 

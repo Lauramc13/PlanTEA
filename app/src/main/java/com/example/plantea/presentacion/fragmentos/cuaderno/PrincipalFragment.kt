@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -43,7 +44,7 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
     lateinit var adaptador : AdaptadorCategoriasCuaderno
     private var isPlanificador = false
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    /*override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         val orientation = newConfig.orientation
         val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -52,7 +53,7 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
             4
         }
         recycler_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
-    }
+    }*/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cuaderno_principal, container, false)
@@ -87,10 +88,83 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
     }
 
     fun eliminarCuaderno(cuaderno: Cuaderno) {
-        cuaderno.eliminarCuaderno(actividad, cuaderno.id)
-        listaPictoCuaderno.remove(cuaderno)
-        adaptador.notifyDataSetChanged()
+        //crear dialogo estas seguro que quiere borrar el cuaderno
+        val dialogo = Dialog(requireContext())
+        dialogo.setContentView(R.layout.dialogo_borrar_cuaderno)
+        dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnBorrar : Button = dialogo.findViewById(R.id.btn_borrar)
+        val btnCancelar : Button = dialogo.findViewById(R.id.btn_cancelar)
+        val btnCerrar : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
+        btnBorrar.setOnClickListener {
+            cuaderno.eliminarCuaderno(actividad, cuaderno.id)
+            listaPictoCuaderno.remove(cuaderno)
+            adaptador.notifyDataSetChanged()
+            dialogo.dismiss()
+        }
 
+        btnCancelar.setOnClickListener {
+            dialogo.dismiss()
+        }
+
+        btnCerrar.setOnClickListener {
+            dialogo.dismiss()
+        }
+        dialogo.show()
+    }
+
+    fun editarCuaderno(cuaderno: Cuaderno){
+        val dialogo = context?.let { Dialog(it) }
+        dialogo!!.setContentView(R.layout.dialogo_crear_categoria_cuaderno)
+        dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val title : TextInputLayout = dialogo.findViewById(R.id.txt_title)
+        val termometro : SwitchCompat =  dialogo.findViewById(R.id.switch_termometro)
+        image = dialogo.findViewById(R.id.img)
+
+        val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
+        val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
+
+        image.setOnClickListener {
+            abrirGaleria()
+        }
+
+        title.editText?.setText(cuaderno.titulo)
+        image.setImageURI(Uri.parse(cuaderno.imagen))
+        image.background = null
+        termometro.isChecked = cuaderno.termometro == true
+        btnCrear.text = "EDITAR CATEGORÍA"
+
+        btnCrear.setOnClickListener{
+            title.error = null
+            if (title.editText?.text.toString().isEmpty() || image.drawable == null) {
+                title.error = "Obligatorio"
+                Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
+            }else{
+                val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
+                val idUsuario = prefs?.getString("idUsuario", "")
+                val numero = UUID.randomUUID()
+                val imagen = context?.let { it1 -> CommonUtils.crearRuta(it1, image, "ImgCuaderno$numero"
+                ) }
+
+                var isTermometro = 0
+                if(termometro.isChecked){
+                    isTermometro = 1
+                }
+
+                if (idUsuario != null) {
+                    cuaderno.editarCuaderno(activity, idUsuario, cuaderno.id.toString(), title.editText?.text.toString(), imagen, isTermometro)
+                    cuaderno.id = cuaderno.id
+                    cuaderno.titulo = title.editText?.text.toString()
+                    cuaderno.imagen = imagen
+                    cuaderno.termometro = termometro.isChecked
+                    val index = listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
+                    listaPictoCuaderno[index] = cuaderno
+                }
+                adaptador.notifyDataSetChanged()
+                dialogo.dismiss()
+            }
+        }
+        iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
+        dialogo.show()
     }
 
     private fun mostrarDialogo(){

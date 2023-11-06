@@ -1,7 +1,7 @@
 package com.example.plantea.presentacion.actividades.ninio
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -16,7 +16,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
-import com.example.plantea.dominio.GestionNavegacion
+import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import java.util.*
@@ -24,7 +24,7 @@ import java.util.*
 class ActividadActivity : AppCompatActivity() {
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
-    private var navigationHandler = GestionNavegacion()
+    private var navigationHandler = NavegacionUtils()
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -46,6 +46,7 @@ class ActividadActivity : AppCompatActivity() {
         navigationHandler.destroyPopup()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
@@ -66,9 +67,7 @@ class ActividadActivity : AppCompatActivity() {
             }
         }
 
-        webView.loadUrl("https://www.youtube.com")
-
-
+       // webView.loadUrl("https://www.youtube.com")
 
         val cardVideo : CardView = findViewById(R.id.card_video)
         val cardObjeto : CardView = findViewById(R.id.card_objeto)
@@ -84,15 +83,17 @@ class ActividadActivity : AppCompatActivity() {
             cardVideo.visibility = View.VISIBLE
             cardObjeto.visibility = View.VISIBLE
             frameVideo.visibility = View.INVISIBLE
+            //stop the webview from playing
+            webView.loadUrl("about:blank")
         }
 
         cardVideo.setOnClickListener{
             /*val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"))
             startActivity(intent)*/
+            webView.loadUrl("https://www.youtube.com")
             cardVideo.visibility = View.INVISIBLE
             cardObjeto.visibility = View.INVISIBLE
             frameVideo.visibility = View.VISIBLE
-
         }
 
         cardObjeto.setOnClickListener{

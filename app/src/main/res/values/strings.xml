@@ -172,6 +172,8 @@
     <string name="str_parrafo5">El interés investigador del grupo se focaliza, principalmente, en los nuevos métodos, técnicas, herramientas y procesos de Ingeniería Informática para la mejora de las tareas interactivas y colaborativas.</string>
     <string name="cuaderno_de_com">Cuaderno de comunicación</string>
     <string name="lbl_tulo">Título</string>
+    <string name="lbl_borrarCuaderno">¿Estas seguro que quiere borrar el cuaderno seleccionado?</string>
+    <string name="lbl_borrarCuadernoBotton">Borrar cuaderno</string>
 
 
 </resources>

@@ -7,6 +7,7 @@ class GestionCategorias {
     private var listaCategorias: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
     private var categoria = 0
+
     fun listarCategorias(actividad: Activity?): ArrayList<String> {
         conectorBD = ConectorBD(actividad)
         listaCategorias = ArrayList()

@@ -41,7 +41,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
+        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
     }
 
@@ -55,7 +55,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
         txtCuaderno.text = tituloCuaderno
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
-        val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
+        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
         val prefs = context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val isPlanificador = prefs?.getBoolean("PlanificadorLogged", false)

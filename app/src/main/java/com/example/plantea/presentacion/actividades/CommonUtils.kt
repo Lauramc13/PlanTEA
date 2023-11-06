@@ -246,12 +246,25 @@ class CommonUtils{
          fun cambioOrientacion(context: Context): Int {
             val orientation = context.resources.configuration.orientation
             val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                3
+                2
             } else {
                 4
             }
             return gridValueManager
         }
+
+        fun cambioOrientacion2(context: Context): Int {
+            val orientation = context.resources.configuration.orientation
+            val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                3
+            } else {
+                5
+            }
+            return gridValueManager
+        }
+
+
+
 
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?

@@ -2,7 +2,7 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 
-class Usuario_Planificador {
+class Usuario {
     private var name: String? = null
     private var email: String? = null
     private var username:String? = null
@@ -81,7 +81,7 @@ class Usuario_Planificador {
         return gestorUsuario.comprobarUsuario(email, password, actividad)
     }*/
 
-    fun obtenerUsuario(email: String, actividad: Activity?): Usuario_Planificador{
+    fun obtenerUsuario(email: String, actividad: Activity?): Usuario{
         return gestorUsuario.obtenerUsuario(email, actividad)
     }
 

@@ -60,7 +60,7 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
+        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
     }
 
@@ -81,11 +81,10 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         imageAtras.visibility = View.INVISIBLE
     }
 
-
     fun updateData(newPictogramasList: ArrayList<Pictograma>){
         listaPictogramas.clear()
         listaPictogramas.addAll(newPictogramasList)
-        listaPictogramas.add(Pictograma("AÑADIR CUADERNO", "archivo", 0, 0))
+        listaPictogramas.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
 
         adaptador.isBusqueda = false
         activity?.runOnUiThread {
@@ -95,25 +94,36 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         imageAtras.visibility = View.INVISIBLE
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("listaPictogramas", listaPictogramas)
+        outState.putBoolean("isBusqueda", adaptador.isBusqueda)
+        outState.putBoolean("isPlanificador", isPlanificador)
+        outState.putBoolean("isTermometro", isTermometro)
+        outState.putInt("idCuaderno", idCuaderno)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
         val bundle = this.arguments
         listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
         isTermometro = (bundle["termometro"] as Boolean)
         idCuaderno =  (bundle["idCuaderno"] as Int)
+        val tituloCuaderno = (bundle["tituloCuaderno"] as String)
         searchbar = vista.findViewById(R.id.searchViewPicto)
         imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
         imageAtras = vista.findViewById(R.id.icono_cuaderno_fragment_atras)
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
+        val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
+        txtCuaderno.text = tituloCuaderno
 
-        val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
+        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
         lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it)}
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true
-        if(isPlanificador){
-            listaPictogramas.add(Pictograma("AÑADIR CUADERNO", "archivo", 0, 0))
-        }
+        listaPictogramas.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+
         adaptador = isPlanificador.let { context?.let { it1 ->
             AdaptadorPictogramasCuaderno(listaPictogramas, it, this, it1)
         }}!!
@@ -125,6 +135,25 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         busqueda()
 
         context?.let { CommonUtils.initializeTextToSpeech(it) }
+
+        if(savedInstanceState != null){
+            listaPictogramas = savedInstanceState.getSerializable("listaPictogramas") as ArrayList<Pictograma>
+            adaptador.isBusqueda = savedInstanceState.getBoolean("isBusqueda")
+            isPlanificador = savedInstanceState.getBoolean("isPlanificador")
+            isTermometro = savedInstanceState.getBoolean("isTermometro")
+            idCuaderno = savedInstanceState.getInt("idCuaderno")
+
+            if(adaptador.isBusqueda){
+                imageCerrar.visibility = View.INVISIBLE
+                imageAtras.visibility = View.VISIBLE
+                listaPictogramas.removeAt(listaPictogramas.lastIndex)
+                adaptador.notifyDataSetChanged()
+            }
+
+        }
+
+
+
         return vista
     }
 
@@ -186,8 +215,8 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         }
 
         //Botón cerrar
-        imageCerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-        imageCerrar.setOnClickListener { dialog.dismiss() }
+        val btnCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogoEvento)
+        btnCerrar.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
         //Funcionalidad termómetro: cambio de color según el progreso
@@ -247,6 +276,7 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
                     newPictograma.imagen = imagen
                     val lastIndex = listaPictogramas.size - 1
                     listaPictogramas.add(lastIndex, newPictograma)
+                    interfaceCuaderno.addPictoPersonalizado(newPictograma)
                 }
                 adaptador.notifyDataSetChanged()
                 dialogo.dismiss()
@@ -259,7 +289,12 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
     private fun abrirGaleria() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        if(pickMedia != null){
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }else{
+            Log.d("TAG", "Error al abrir la galería")
+            Toast.makeText(context, "Error al abrir la galería", Toast.LENGTH_SHORT).show()
+        }
 
     }
 

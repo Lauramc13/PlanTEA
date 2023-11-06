@@ -68,7 +68,7 @@
                 android:id="@+id/icon_edit"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:padding="10dp"
+                android:padding="6dp"
                 android:contentDescription="Editar planificacion"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/icon_delete"

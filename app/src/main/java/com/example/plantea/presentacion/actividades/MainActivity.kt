@@ -16,8 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
-import com.example.plantea.dominio.GestionNavegacion
-import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.dominio.Usuario
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.google.android.material.textfield.TextInputLayout
@@ -35,9 +34,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var dialogLogout : Dialog
     private lateinit var iconoCerrar: ImageView
-    private var navigationHandler = GestionNavegacion()
+    private var navigationHandler = NavegacionUtils()
 
-    var usuario = Usuario_Planificador()
+    var usuario = Usuario()
     private var infoUsuario = false
 
     override fun onConfigurationChanged(newConfig: Configuration) {

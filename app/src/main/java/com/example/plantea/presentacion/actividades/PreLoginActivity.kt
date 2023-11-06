@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
@@ -18,9 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
-import com.example.plantea.dominio.PlanificacionItem
-import com.example.plantea.dominio.Usuario_Planificador
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
+import com.example.plantea.dominio.Usuario
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -29,9 +26,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -47,8 +41,8 @@ class PreLoginActivity : AppCompatActivity(){
     private lateinit var prefs : SharedPreferences
     private lateinit var auth: FirebaseAuth
 
-    var usuario = Usuario_Planificador()
-    var user = Usuario_Planificador()
+    var usuario = Usuario()
+    var user = Usuario()
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth

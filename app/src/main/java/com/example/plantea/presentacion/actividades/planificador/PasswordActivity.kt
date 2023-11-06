@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario_Planificador
+import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PreLoginActivity
@@ -24,7 +24,7 @@ class PasswordActivity : AppCompatActivity() {
     private lateinit var confirmaPass: TextInputLayout
     private lateinit var btn_guardar: Button
     private var actualizado: Boolean = false
-    var usuario = Usuario_Planificador()
+    var usuario = Usuario()
     private lateinit var backButton: Button
 
     lateinit var btn_logout: Button
