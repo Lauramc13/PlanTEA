@@ -46,10 +46,10 @@ class GestionCuadernos {
         conectorBD.cerrar()
     }
 
-    fun eliminarCuaderno(actividad: Activity?, id_cuaderno: Int) {
+    fun eliminarCuaderno(actividad: Activity?, idCuaderno: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        conectorBD.borrarCuaderno(id_cuaderno)
+        conectorBD.borrarCuaderno(idCuaderno)
         conectorBD.cerrar()
     }
 

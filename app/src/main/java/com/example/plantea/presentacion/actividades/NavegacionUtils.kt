@@ -49,7 +49,6 @@ class NavegacionUtils {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         firebaseAuth = FirebaseAuth.getInstance()
 
-
         val dialogLogin = Dialog(context)
         dialogLogin.setContentView(R.layout.dialogo_login)
         dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -88,14 +87,14 @@ class NavegacionUtils {
         dialogLogin.show()
     }
 
-        fun hashPassword(password: String): String {
+       /* fun hashPassword(password: String): String {
             val bytes = password.toByteArray()
             val md = MessageDigest.getInstance("SHA-256")
             val digest = md.digest(bytes)
             return digest.fold("", { str, it -> str + "%02x".format(it) })
-        }
+        }*/
 
-        fun buttonAccountNavigation(context: AppCompatActivity, it: View, buttonAccount: LinearLayout){
+        private fun buttonAccountNavigation(context: AppCompatActivity, it: View, buttonAccount: LinearLayout){
             if (popupView?.visibility == View.GONE){
                 popupView!!.visibility = View.VISIBLE
             }else{
@@ -193,7 +192,7 @@ class NavegacionUtils {
 
     }
 
-    fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity, currentActivity: Class<*>): Boolean {
+    private fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity, currentActivity: Class<*>): Boolean {
         val targetActivityClass = when (itemId) {
             R.id.home -> MainActivity::class.java
             R.id.calendar -> CalendarioActivity::class.java
@@ -212,7 +211,7 @@ class NavegacionUtils {
         return true
     }
 
-    fun animateNavigationViewWidth(targetWidth: Int) {
+    private fun animateNavigationViewWidth(targetWidth: Int) {
         val animator = ValueAnimator.ofInt(navigationView.width, targetWidth)
         animator.addUpdateListener { valueAnimator ->
             val layoutParams = navigationView.layoutParams as ViewGroup.LayoutParams
@@ -223,7 +222,7 @@ class NavegacionUtils {
         animator.start()
     }
 
-    fun setNavigationViewWidth(width: Int) {
+    private fun setNavigationViewWidth(width: Int) {
         val layoutParams = navigationView.layoutParams as ViewGroup.LayoutParams
         layoutParams.width = width
         navigationView.layoutParams = layoutParams

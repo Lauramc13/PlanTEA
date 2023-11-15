@@ -7,7 +7,6 @@ import java.io.Serializable
 
 class GestionPlanificaciones : Serializable {
     private lateinit var conectorBD: ConectorBD
-    private var resultado: Boolean = false
     private lateinit var listaPlanes: ArrayList<Planificacion>
     private lateinit var listaPictogramas: ArrayList<Pictograma>
 
@@ -70,18 +69,18 @@ class GestionPlanificaciones : Serializable {
         return listaPlanes
     }
 
-    fun eliminarPlanificacion(actividad: Activity?, id_plan: Int) {
+    fun eliminarPlanificacion(actividad: Activity?, idPlan: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        conectorBD.borrarPlanificacion(id_plan)
+        conectorBD.borrarPlanificacion(idPlan)
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramasPlanificacion(actividad: Activity?, id_plan: Int): ArrayList<Pictograma> {
+    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
-        val c = conectorBD.listarPictogramasPlanificacion(id_plan)
+        val c = conectorBD.listarPictogramasPlanificacion(idPlan)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()

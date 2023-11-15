@@ -151,9 +151,6 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
             }
 
         }
-
-
-
         return vista
     }
 
@@ -168,8 +165,6 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
     override fun pictogramaCuaderno(posicion: Int) {
         if(posicion == listaPictogramas.lastIndex && isPlanificador){
             mostrarDialogoCrearPicto()
-        }else {
-            mostrarDialogo(posicion)
         }
     }
 
@@ -193,53 +188,6 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
                 return true
             }
         })
-    }
-
-    private fun mostrarDialogo(posicion: Int){
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.dialogo_termometro)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
-        val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
-        val iconoEscuchar = dialog.findViewById<ImageView>(R.id.icono_escuchar)
-        seekbar = dialog.findViewById(R.id.seekBar_termometro)
-        termometro = dialog.findViewById(R.id.termometro)
-        pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
-        tituloPictograma.text = listaPictogramas[posicion].titulo
-        if(!isTermometro){
-            termometro.visibility = View.GONE
-        }
-
-        iconoEscuchar.setOnClickListener {
-            CommonUtils.textToSpeechWord(listaPictogramas[posicion].titulo)
-        }
-
-        //Botón cerrar
-        val btnCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogoEvento)
-        btnCerrar.setOnClickListener { dialog.dismiss() }
-        dialog.show()
-
-        //Funcionalidad termómetro: cambio de color según el progreso
-        seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (progress < 45) {
-                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(138, 255, 126))
-                } else if (progress < 90) {
-                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 193, 79))
-                } else if (progress < 100) {
-                    seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(239, 35, 60))
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                // No hacemos nada con esto
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                // No hacemos nada con esto
-            }
-        })
-        dialog.show()
     }
 
     private fun mostrarDialogoCrearPicto(){

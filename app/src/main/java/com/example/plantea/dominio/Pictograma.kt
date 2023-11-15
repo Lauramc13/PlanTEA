@@ -34,9 +34,9 @@ class Pictograma : Serializable {
         this.sourceAPI = sourceAPI
     }
 
-    fun obtenerPictogramas(actividad: Activity, idcategoria: Int, userId: String?): ArrayList<*> {
+    fun obtenerPictogramas(actividad: Activity, idcategoria: Int, idUsuario: String?): ArrayList<*> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.listarPictogramas(actividad, idcategoria, userId)
+        listaPictogramas = gestorPictogramas.listarPictogramas(actividad, idcategoria, idUsuario)
         return listaPictogramas as ArrayList<Pictograma>
     }
 
@@ -54,9 +54,9 @@ class Pictograma : Serializable {
         return gestorPictogramas.insertarPictogramaCuaderno(actividad, nombre, imagen, idCuaderno, idUsuario)
     }
 
-    fun obtenerPictogramasCuaderno(actividad: Activity?, identificador: Int): ArrayList<*>? {
+    fun obtenerPictogramasCuaderno(actividad: Activity?, idCuaderno: Int): ArrayList<*>? {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.listarPictogramasCuaderno(actividad, identificador)
+        listaPictogramas = gestorPictogramas.listarPictogramasCuaderno(actividad, idCuaderno)
         return listaPictogramas
     }
 
@@ -66,9 +66,9 @@ class Pictograma : Serializable {
         return listaConsultas
     }
 
-    fun obtenerImagenEvento(actividad: Activity?, idCategoria: Int): String? {
+    /*fun obtenerImagenEvento(actividad: Activity?, idCategoria: Int): String? {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
-    }
+    }*/
 
     fun insertarFavorito(actividad: Activity?, idUsuario: String?, id: String?, titulo: String?, imagen: String?) {
         gestorPictogramas.insertarFavorito(actividad, idUsuario, id, titulo, imagen)

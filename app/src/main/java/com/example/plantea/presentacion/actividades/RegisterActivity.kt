@@ -248,7 +248,7 @@ class RegisterActivity : AppCompatActivity(){
 
                 val user = auth.currentUser
                 //Guardamos los datos en firebase
-                auth.createUserWithEmailAndPassword(email, "123456")
+                auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         Log.w("Registration", "ha petado")
 

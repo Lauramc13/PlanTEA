@@ -1,14 +1,16 @@
 package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -19,23 +21,24 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
-import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.PlanificacionItem
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.MainActivity
+import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
-import com.google.android.material.imageview.ShapeableImageView
+import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -54,7 +57,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var tituloObtenido: String
     private lateinit var buttonPlanNuevo : Button
     private lateinit var iconoEscuchar: Button
-    private lateinit var iconoReproducir: Button
+    private lateinit var iconoReproducir: com.google.android.material.button.MaterialButton
     private lateinit var iconoDeshacer: Button
     private lateinit var iconoDeshacerTodas: Button
     private lateinit var iconoMarcar: Button
@@ -159,13 +162,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
     }*/
 
-    /*private fun Int.dpToPx(context: Context): Int {
+    private fun Int.dpToPx(context: Context): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),
         context.resources.displayMetrics
     ).toInt()
-}*/
+}
 
     override fun onStop() {
         super.onStop()
@@ -251,7 +254,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         recyclerView = findViewById(R.id.recycler_plan)
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         dia = findViewById(R.id.lbl_dia)
-
 
         navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity::class.java)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
@@ -433,9 +435,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
 
         iconoReproducir.setOnClickListener {
-            reproduccionLenta = false
-            reproduccionRapida = false
-            reproducirEvento(4000L)
+            /*reproduccionLenta = false
+            reproduccionRapida = false*/
+            reproducirEvento(2000L)
         }
 
        /* iconoReproducirLento.setOnClickListener {
@@ -452,30 +454,55 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     private fun reproducirEvento(tiempo: Long) {
-        if (currentDialog != null) {
-            currentDialog?.dismiss()
-            currentDialog = null
-        }
+        if(isRunning){
+            val targetHeight = 170.dpToPx(this).toFloat()
+            val targetWidth = 200.dpToPx(this).toFloat()
+            animationReproduccion(targetHeight, targetWidth, currentPosition)
+            iconoReproducir.icon = ContextCompat.getDrawable(this, R.drawable.svg_play)
+            iconoDeshacer.isEnabled = true
+            iconoMarcar.isEnabled = false
+            iconoMarcarTodas.isEnabled = false
+            iconoDeshacerTodas.isEnabled = true
+            iconoDeshacerTodas.performClick()
+            stopReproductor()
 
-        currentPosition = 0
-        isRunning = true
+        }else{
+            iconoReproducir.icon = ContextCompat.getDrawable(this, R.drawable.svg_stop)
 
-        currentRunnable = object : Runnable {
-            override fun run() {
-                if (isRunning) {
-                    onItemSeleccionado(currentPosition)
-                    currentPosition++
+            iconoDeshacerTodas.performClick()
+            iconoMarcar.isEnabled = false
+            iconoDeshacer.isEnabled = false
+            iconoMarcarTodas.isEnabled = false
+            iconoDeshacerTodas.isEnabled = false
 
-                    if (currentPosition < listaPictogramas.size) {
-                        handler.postDelayed(this, tiempo)
-                    } else {
-                        stopReproductor()
+            currentPosition = 0
+            isRunning = true
+
+            currentRunnable = object : Runnable {
+                override fun run() {
+                    if (isRunning) {
+                        onItemSeleccionado(currentPosition)
+                        if (currentPosition < listaPictogramas.size) {
+                            handler.postDelayed(this, tiempo)
+                            cambiarPictoClicked(currentPosition)
+                            pasosCompletados.add(currentPosition)
+                        } else {
+                            lastPictoClicked(currentPosition)
+                            stopReproductor()
+                            iconoDeshacer.isEnabled = true
+                            iconoMarcar.isEnabled = false
+                            iconoMarcarTodas.isEnabled = false
+                            iconoDeshacerTodas.isEnabled = true
+                            iconoReproducir.icon = ContextCompat.getDrawable(applicationContext, R.drawable.svg_play)
+
+                        }
+                        currentPosition++
                     }
                 }
             }
-        }
 
-        handler.post(currentRunnable!!)
+            handler.post(currentRunnable!!)
+        }
     }
 
     fun stopReproductor() {
@@ -486,8 +513,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
         currentRunnable = null
         currentPosition = 0
-        currentDialog?.dismiss()
-        currentDialog = null
+       /* currentDialog?.dismiss()
+        currentDialog = null*/
     }
 
     private fun mostrarPlan() {
@@ -549,7 +576,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     override fun onItemSeleccionado(posicion: Int) {
-        if (currentDialog != null && currentDialog!!.isShowing) {
+        /* if (currentDialog != null && currentDialog!!.isShowing) {
             currentDialog!!.dismiss()
         }
 
@@ -663,7 +690,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 stopReproductor()
             }
         }
-        dialog!!.show()
+        dialog!!.show()*/
     }
 
     override fun checkPosition(posicion: Int): Boolean {
@@ -755,14 +782,82 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
     }
 
-    private fun cambiarPictoClicked(posicion: Int){
+    /*private fun cambiarPictoClicked(posicion: Int){
         val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_pronunced)
+
+       // convert dp into pixels
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)?.layoutParams?.height = 180.dpToPx(this)
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)?.layoutParams?.width = 220.dpToPx(this)
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)?.requestLayout()
+
+        if(posicion !=0){
+            lastPictoClicked(posicion)
+        }
+
+    }
+
+    private fun lastPictoClicked(posicion: Int){
+        val viewHolderPictogramas= recyclerView.findViewHolderForAdapterPosition(posicion-1) as AdaptadorPresentacion.ViewHolderPictogramas?
         viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 0.7f
         viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 0.7f
         viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 0.7f
         viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card).setBackgroundResource(R.drawable.card_disabled)
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)?.layoutParams?.height = 170.dpToPx(this)
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)?.layoutParams?.width = 200.dpToPx(this)
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card_picto)?.requestLayout()
 
     }
+*/
+
+    private fun cambiarPictoClicked(posicion: Int) {
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_pronunced)
+
+        val targetHeight = 185.dpToPx(this).toFloat()
+        val targetWidth = 220.dpToPx(this).toFloat()
+
+        animationReproduccion(targetHeight, targetWidth, posicion)
+
+        if(posicion !=0){
+            lastPictoClicked(posicion)
+        }
+    }
+
+    private fun lastPictoClicked(posicion: Int){
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion-1) as AdaptadorPresentacion.ViewHolderPictogramas?
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_disabled)
+
+        val targetHeight = 170.dpToPx(this).toFloat()
+        val targetWidth = 200.dpToPx(this).toFloat()
+
+        animationReproduccion(targetHeight, targetWidth, posicion-1)
+    }
+
+
+    private fun animationReproduccion(targetHeight: Float, targetWidth: Float, posicion: Int){
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
+
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)
+            ?.animate()
+            ?.setDuration(250)
+            ?.alpha(1.0f)
+            ?.scaleX(targetWidth / viewHolderPictogramas.itemView.width)
+            ?.scaleY(targetHeight / viewHolderPictogramas.itemView.height)
+            ?.withEndAction {
+                viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)
+                    ?.layoutParams?.height = targetHeight.toInt()
+                viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)
+                    ?.layoutParams?.width = targetWidth.toInt()
+            }
+
+        if(posicion !=0){
+            lastPictoClicked(posicion)
+        }
+
+    }
+
+
 
     override fun onSpeechDone() {
         iconoEscuchar.text = getString(R.string.str_escuchar)

@@ -7,13 +7,11 @@ import java.time.LocalDate
 
 class GestionEventos {
     private var conectorBD: ConectorBD? = null
-    private var contador = 0
-    private var identificador = 0
     private var eventos: ArrayList<Evento>? = null
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan)
+        var identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan)
         conectorBD!!.cerrar()
         return identificador
     }
@@ -40,23 +38,23 @@ class GestionEventos {
         return eventos!!
     }
 
-    fun eliminarEvento(actividad: Activity?, id_evento: Int) {
+    fun eliminarEvento(actividad: Activity?, idEvento: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.eliminarEvento(id_evento)
+        conectorBD!!.eliminarEvento(idEvento)
         conectorBD!!.cerrar()
     }
 
-    fun cambiarVisibilidad(actividad: Activity?, valor: Int, id_evento: Int) {
+    fun cambiarVisibilidad(actividad: Activity?, valor: Int, idEvento: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.modificarVisibilidad(valor, id_evento)
+        conectorBD!!.modificarVisibilidad(valor, idEvento)
         conectorBD!!.cerrar()
     }
 
     //Comprobar el numero de eventos visibles
     fun comprobarEventosVisible(userId: String, fecha: String, actividad: Activity?): Int {
-        contador = 0
+         var contador = 0
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         val c = conectorBD!!.contarEventoVisible(userId, fecha)

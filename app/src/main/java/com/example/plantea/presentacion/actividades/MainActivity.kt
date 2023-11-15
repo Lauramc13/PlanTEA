@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun crearDialogoNewPass() {
+    /*fun crearDialogoNewPass() {
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         val dialogLogin = Dialog(this)
@@ -186,6 +186,6 @@ class MainActivity : AppCompatActivity() {
         }
         iconoCerrar.setOnClickListener { dialogLogin.dismiss() }
         dialogLogin.show()
-    }
+    }*/
 
 }

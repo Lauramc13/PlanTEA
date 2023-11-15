@@ -101,9 +101,9 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         return vista
     }
 
-    fun obtenerImagenEvento(): String? {
+    /*fun obtenerImagenEvento(): String? {
         return pictograma.obtenerImagenEvento(actividad, 1)
-    }
+    }*/
 
     override fun onResume() {
         super.onResume()

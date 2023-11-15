@@ -97,12 +97,12 @@ class ActividadActivity : AppCompatActivity() {
         }
 
         cardObjeto.setOnClickListener{
-            val dialogLogout = Dialog(this)
-            dialogLogout.setContentView(R.layout.dialogo_actividad)
-            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val dialogo = Dialog(this)
+            dialogo.setContentView(R.layout.dialogo_actividad)
+            dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-            val imgObjeto : ImageView = dialogLogout.findViewById(R.id.imageObjeto)
-            val txtObjeto : TextView = dialogLogout.findViewById(R.id.lbl_nombreObjeto)
+            val imgObjeto : ImageView = dialogo.findViewById(R.id.imageObjeto)
+            val txtObjeto : TextView = dialogo.findViewById(R.id.lbl_nombreObjeto)
             // imgAnimacion = dialogLogout.findViewById(R.id.img_animacion)
             // rotateImageWithAnimation(imgAnimacion, 260f, 6000)
 
@@ -118,9 +118,9 @@ class ActividadActivity : AppCompatActivity() {
                 imgObjeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
             }
 
-            val iconoCerrarLogin :ImageView = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-            iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
-            dialogLogout.show()
+            val iconoCerrarLogin :ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
+            iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
+            dialogo.show()
         }
     }
 }

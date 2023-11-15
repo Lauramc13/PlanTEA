@@ -6,7 +6,6 @@ import com.example.plantea.persistencia.ConectorBD
 class GestionCategorias {
     private var listaCategorias: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
-    private var categoria = 0
 
     fun listarCategorias(actividad: Activity?): ArrayList<String> {
         conectorBD = ConectorBD(actividad)
@@ -26,6 +25,7 @@ class GestionCategorias {
     fun obtenerIdCategoria(actividad: Activity?, nombre: String?): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
+        var categoria = 0
         val c = conectorBD!!.obtenerIdCategoria(nombre)
         if (c.moveToFirst()) {
             categoria = c.getInt(0)

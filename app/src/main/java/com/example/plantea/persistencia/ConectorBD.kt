@@ -227,7 +227,7 @@ class ConectorBD(ctx: Context?) {
     }*/
 
 
-    fun listarPictogramasCuaderno(id: Int): Cursor {
+    fun listarPictogramasCuaderno(idCuaderno: Int): Cursor {
         return db!!.rawQuery(
             "SELECT CombinedPictograms.id, CombinedPictograms.nombre, CombinedPictograms.imagen, RelacionPictogramaCuaderno.id_cuaderno, " +
                     "CASE WHEN CombinedPictograms.id IN (SELECT id FROM Pictograma) THEN 0 ELSE 1 END AS sourceAPI " +
@@ -236,7 +236,7 @@ class ConectorBD(ctx: Context?) {
                     "INNER JOIN Cuaderno ON Cuaderno.id = RelacionPictogramaCuaderno.id_cuaderno " +
                     "WHERE Cuaderno.id = ? " +
                     "ORDER BY RelacionPictogramaCuaderno.id",
-            arrayOf(id.toString())
+            arrayOf(idCuaderno.toString())
         )
     }
 
@@ -280,9 +280,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Listar categorias de consulta*/
-    fun obtenerRutaPictograma(identificador: Int): Cursor {
+    /*fun obtenerRutaPictograma(identificador: Int): Cursor {
         return db!!.rawQuery("SELECT imagen from Pictograma WHERE Pictograma.id_categoria = '$identificador'", null)
-    }
+    }*/
 
     /*Vemos si existe un usuario con el email y contraseña introducida*/
     /*fun consultarUsuario(email: String, password: String): Boolean {
@@ -314,16 +314,16 @@ class ConectorBD(ctx: Context?) {
     }
 
     
-    fun addImagen(image: String, idUsuario: String ) {
+    fun addImagen(image: String, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagen ='$image' WHERE Usuario.id = '$idUsuario'")
     }
 
-    fun addImagenTEA(image: String, idUsuario: String ) {
+    fun addImagenTEA(image: String, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagenTEA ='$image' WHERE Usuario.id = '$idUsuario'")
     }
 
 
-    fun addImagenObjeto(image: String, idUsuario: String ) {
+    fun addImagenObjeto(image: String, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagenObjeto ='$image' WHERE Usuario.id = '$idUsuario'")
     }
 

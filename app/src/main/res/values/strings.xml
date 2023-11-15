@@ -156,7 +156,8 @@
     <string name="noConfigurationActivity">No hay una actividad configurada</string>
     <string name="formatted_date">%1$s, %2$s de %3$s</string>
     <string name="str_parar">PARAR</string>
-    <string name="str_escuchar">ESCUCHAR</string>
+    <string name="str_escuchar">ESCUCHAR POR PALABRA</string>
+    <string name="str_escucharFrase">ESCUCHAR FRASE</string>
     <string name="str_esperar">¡Mientras esperamos!</string>
     <string name="str_cancelar">Cancelar</string>
     <string name="str_saltar">Saltar</string>

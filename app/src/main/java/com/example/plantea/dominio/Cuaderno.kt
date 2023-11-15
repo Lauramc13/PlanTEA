@@ -58,8 +58,8 @@ class Cuaderno() : Parcelable {
         gestorCuadernos.editarCuaderno(actividad, idUsuario, idCuaderno, titulo, imagen, termometro)
     }
 
-    fun eliminarCuaderno(actividad: Activity?, id: Int) {
-        gestorCuadernos.eliminarCuaderno(actividad, id)
+    fun eliminarCuaderno(actividad: Activity?, idCuaderno: Int) {
+        gestorCuadernos.eliminarCuaderno(actividad, idCuaderno)
     }
 
 }

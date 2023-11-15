@@ -63,7 +63,7 @@ class CommonUtils{
             }
         }
 
-        fun getRetrofitBuilder(): ApiInterface {
+        private fun getRetrofitBuilder(): ApiInterface {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://api.arasaac.org/api/")
@@ -133,7 +133,7 @@ class CommonUtils{
 
         }
 
-        fun wordToId(word: String): Int {
+        private fun wordToId(word: String): Int {
             var id = 0
             for (char in word) {
                 id = id * 31 + char.code
@@ -197,9 +197,12 @@ class CommonUtils{
 
                 delayedSpeechRunnables.add(runnable)
                 handler.postDelayed(runnable, index * delay.toLong())
+            }
         }
 
-    }
+        fun textToSpeechFrase(string: String){
+            textToSpeech.speak(string, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+        }
 
         fun textToSpeechOff(){
             handler.removeCallbacksAndMessages(null)

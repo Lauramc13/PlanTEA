@@ -69,11 +69,11 @@ class GestionPictogramas : Serializable {
         return id
     }
 
-    fun listarPictogramasCuaderno(actividad: Activity?, identificador: Int): ArrayList<Pictograma> {
+    fun listarPictogramasCuaderno(actividad: Activity?, idCuaderno: Int): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarPictogramasCuaderno(identificador)
+        val c = conectorBD!!.listarPictogramasCuaderno(idCuaderno)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -108,7 +108,7 @@ class GestionPictogramas : Serializable {
         return listaConsultas!!
     }
 
-    fun obtenerImagenPictograma(actividad: Activity?, idCategoria: Int): String? {
+   /* fun obtenerImagenPictograma(actividad: Activity?, idCategoria: Int): String? {
         conectorBD = ConectorBD(actividad)
         var ruta: String? = null
         conectorBD!!.abrir()
@@ -121,7 +121,7 @@ class GestionPictogramas : Serializable {
         c.close()
         conectorBD!!.cerrar()
         return ruta
-    }
+    }*/
 
     fun obtenerFavoritos(actividad: Activity?, idUsuario: String?): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)

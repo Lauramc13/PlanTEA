@@ -31,13 +31,13 @@ class Planificacion : Serializable {
         return listaPlanes
     }
 
-    fun eliminarPlanificacion(actividad: Activity?, id_plan: Int) {
-        gestionPlan.eliminarPlanificacion(actividad, id_plan)
+    fun eliminarPlanificacion(actividad: Activity?, idPlan: Int) {
+        gestionPlan.eliminarPlanificacion(actividad, idPlan)
     }
 
-    fun obtenerPictogramasPlanificacion(actividad: Activity?, id_plan: Int): ArrayList<*> {
+    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int): ArrayList<*> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestionPlan.obtenerPictogramasPlanificacion(actividad, id_plan)
+        listaPictogramas = gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan)
         return listaPictogramas
     }
 

@@ -28,12 +28,15 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
 
     var listaPictogramas: ArrayList<Pictograma> = ArrayList()
     private var listaTraducir : ArrayList<String> = ArrayList()
-    lateinit var escucharButton : Button
+    lateinit var escucharButtonPalabra : Button
+    lateinit var escucharButtonFrase : Button
     private var navigationHandler = NavegacionUtils()
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var adaptador: AdaptadorPictogramasTraductor
     private lateinit var recyclerView: RecyclerView
     private var listaPictoBuscador: MutableList<MutableMap<Bitmap, Pair<String, Int>>> = mutableListOf()
+    var speechInProgress = false
+
 
     override fun onResume() {
         super.onResume()
@@ -57,7 +60,8 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         navigationHandler.inicializarVariables(this, R.id.traductor, TraductorActivity::class.java)
 
         val traducirButton: Button = findViewById(R.id.traducirButton)
-        escucharButton = findViewById(R.id.escucharButton)
+        escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
+        escucharButtonFrase = findViewById(R.id.escucharButtonFrase)
 
 
         val backButton: Button = findViewById(R.id.goBackButton)
@@ -67,7 +71,6 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         textoATraducir.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
         recyclerView.layoutManager = layoutManagerLinear
 
-        var speechInProgress = false
         CommonUtils.initializeTextToSpeech(this)
         CommonUtils.listener = this
 
@@ -89,17 +92,26 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
             }
         }
 
-        escucharButton.setOnClickListener {
+        escucharButtonPalabra.setOnClickListener {
             if (!speechInProgress) {
-                escucharButton.text = getString(R.string.str_parar)
+                escucharButtonPalabra.text = getString(R.string.str_parar)
+                escucharButtonFrase.isEnabled = false
                 CommonUtils.textToSpeechOn(listaPictogramas, 1000)
                 speechInProgress = true
             } else {
-                escucharButton.text = getString(R.string.str_escuchar)
                 CommonUtils.textToSpeechOff()
-                speechInProgress = false
             }
+        }
 
+        escucharButtonFrase.setOnClickListener {
+            if (!speechInProgress) {
+                escucharButtonFrase.text = getString(R.string.str_parar)
+                escucharButtonPalabra.isEnabled = false
+                CommonUtils.textToSpeechFrase(textoATraducir.editText?.text.toString())
+                speechInProgress = true
+            } else {
+                CommonUtils.textToSpeechOff()
+            }
         }
 
         textoATraducir.editText?.setOnKeyListener{_, keyCode, event ->
@@ -191,7 +203,12 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
     }
 
     override fun onSpeechDone() {
-        escucharButton.text = getString(R.string.str_escuchar)
+        escucharButtonPalabra.isEnabled = true
+        escucharButtonFrase.isEnabled = true
+        escucharButtonPalabra.text = getString(R.string.str_escuchar)
+        escucharButtonFrase.text = getString(R.string.str_escucharFrase)
+        speechInProgress = false
+
     }
 
 }

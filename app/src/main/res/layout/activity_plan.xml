@@ -165,18 +165,21 @@
                 app:iconSize="25dp"
                 app:iconTint="#203130" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/icon_reproducir"
                 style="@style/Widget.Material3.Button.Icon"
-                app:elevation="0dp"
                 android:layout_width="67dp"
                 android:layout_height="67dp"
                 android:contentDescription="Botón reproducir lista"
                 android:textColor="#203130"
                 app:cornerRadius="100dp"
+                app:iconPadding="0dp"
+                android:padding="0dp"
+                app:iconSize="35dp"
+                app:iconGravity="textStart"
                 app:icon="@drawable/svg_play"
-                app:iconSize="40dp"
                 app:iconTint="#203130" />
+
 
             <Button
                 android:id="@+id/icon_marcar"

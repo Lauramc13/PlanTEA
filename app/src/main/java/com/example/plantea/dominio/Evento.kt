@@ -11,8 +11,6 @@ class Evento {
     var hora: String? = null
     var id_plan = 0
     var visible = 0
-    private var contador = 0
-    private var identificador = 0
     var gestorEventos = GestionEventos()
 
     constructor()
@@ -43,23 +41,20 @@ class Evento {
     }
 
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
-        identificador = gestorEventos.crearEvento(actividad, evento)
-        return identificador
+        return gestorEventos.crearEvento(actividad, evento)
     }
 
-    fun eliminarEvento(actividad: Activity?, id_evento: Int) {
-        gestorEventos.eliminarEvento(actividad, id_evento)
+    fun eliminarEvento(actividad: Activity?, idEvento: Int) {
+        gestorEventos.eliminarEvento(actividad, idEvento)
     }
 
-    fun cambiarVisibilidad(actividad: Activity?, valor: Int, id_evento: Int) {
-        gestorEventos.cambiarVisibilidad(actividad, valor, id_evento)
+    fun cambiarVisibilidad(actividad: Activity?, valor: Int, idEvento: Int) {
+        gestorEventos.cambiarVisibilidad(actividad, valor, idEvento)
     }
 
     //Comprobar el numero de eventos visibles
     fun comprobarEventosVisible(userId: String, fecha: String, actividad: Activity?): Int {
-        contador = 0
-        contador = gestorEventos.comprobarEventosVisible(userId, fecha, actividad)
-        return contador
+        return gestorEventos.comprobarEventosVisible(userId, fecha, actividad)
     }
 
     companion object {
