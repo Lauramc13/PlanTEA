@@ -9,6 +9,7 @@
     <color name="darkerGray">#e9ecef</color>
     <color name="darkGray">#EAEAEA</color>
     <color name="darkdarkGray">#898989</color>
+    <color name="gray2">#60181F25</color>
     <color name="black">#212121</color>
     <color name="background2">#DDECEC</color>
     <color name="md_theme_light_primary">#67D2D2</color>
@@ -69,6 +70,7 @@
     <color name="md_theme_dark_surfaceVariant">#323F4B</color>
     <color name="md_theme_dark_surfaceVariant2">#52606D</color>
     <color name="md_theme_dark_surfaceVariant3">#7F909F</color>
+    <color name="md_theme_dark_surfaceVariant4">#29343E</color>
     <color name="md_theme_dark_onSurfaceVariant">#DCE0E5</color>
     <color name="md_theme_dark_outline">#7B8794</color>
     <color name="md_theme_dark_inverseOnSurface">#181F25</color>

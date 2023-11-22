@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentacion.actividades.ninio.CuadernoActivity"
-    android:background="@color/white">
+    android:background="?customBgColorCuaderno">
 
     <ImageView
         android:id="@+id/imageView7"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/blob3"
-        app:tint="?colorPrimaryContainer" />
+        app:tint="#9CE2DC" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -23,7 +23,7 @@
         android:layout_marginStart="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tint="?colorPrimaryContainer"
+        app:tint="#9CE2DC"
         app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout

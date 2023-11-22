@@ -26,6 +26,8 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
+        <item name="customLinkColor">@color/link</item>
+
 
         <!-- ARREGLAR ESTO  -->
         <item name="cardBackgroundColor">@color/md_theme_dark_surfaceVariant2</item>
@@ -51,6 +53,14 @@
         <!-- CUSTOM ITEMS -->
         <item name="customBgColor">@color/md_theme_dark_backgroundDark</item>
         <item name="customBgTermometro">@color/md_theme_dark_background2</item>
+        <item name="customBgColorCuaderno">@color/md_theme_dark_surfaceVariant4</item>
+        <item name="customColorGray">@color/md_theme_dark_onSurfaceVariant</item>
+
+        <item name="configuracionCardBg">@color/md_theme_dark_background2</item>
+        <item name="configuracionCardBorder">@color/md_theme_dark_surfaceVariant</item>
+        <item name="gray">@color/md_theme_dark_background2</item>
+        <item name="grayStroke">@color/md_theme_dark_surfaceVariant</item>
+
 
     </style>
 

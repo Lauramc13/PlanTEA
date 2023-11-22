@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,6 +10,8 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+
 
     <application
         android:allowBackup="true"
@@ -17,6 +21,7 @@
         android:enableOnBackInvokedCallback="true"
         android:theme="@style/AppTheme"
         android:supportsRtl="true">
+
         <activity
             android:name=".presentacion.actividades.planificador.CalendarioActivity"
             android:label="Calendario"
@@ -49,6 +54,7 @@
         <activity
             android:name=".presentacion.actividades.ninio.CuadernoActivity"
             android:label="Cuaderno de comunicación"
+            android:configChanges="orientation|screenSize|screenLayout"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -125,4 +131,6 @@
             android:windowSoftInputMode="adjustPan" />
         <receiver android:name=".dominio.onAlarmReceiver" />
     </application>
+
+
 </manifest>

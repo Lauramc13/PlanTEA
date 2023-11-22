@@ -38,8 +38,8 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
         holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
 
         //Normal
-        holder.premio.visibility = View.INVISIBLE
-        holder.premio.setImageResource(R.drawable.categoria_recompensa)
+        //holder.premio.visibility = View.INVISIBLE
+        //holder.premio.setImageResource(R.drawable.categoria_recompensa)
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
         holder.borrar.visibility = View.VISIBLE
         holder.historia.visibility = View.VISIBLE
@@ -61,7 +61,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
     inner class ViewHolderPlanificacion(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView
         var imagen: ImageView
-        var premio: ImageView
+        //var premio: ImageView
         var borrar: ImageView
         var historia: ImageView
         var card: View
@@ -69,7 +69,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
+            //premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
             borrar = itemView.findViewById<View>(R.id.btn_borrarPicto) as ImageView
             historia = itemView.findViewById<View>(R.id.btn_historiaPicto) as ImageView
             card = itemView.findViewById(R.id.id_card) as View

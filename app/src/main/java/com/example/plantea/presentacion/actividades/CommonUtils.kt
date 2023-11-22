@@ -18,7 +18,9 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
 import retrofit2.Retrofit
@@ -30,6 +32,7 @@ import java.io.IOException
 import java.security.MessageDigest
 import java.util.Locale
 import java.util.UUID
+import kotlin.coroutines.coroutineContext
 
 class CommonUtils{
 
@@ -87,23 +90,19 @@ class CommonUtils{
             val listaIds = mutableListOf<Int>()
             val listaTitulos = mutableListOf<String>()
             try {
-                val retrofitData = retrofitBuilder.getData(query)
-                val response = retrofitData.execute()
+                var retrofitData = retrofitBuilder.getData(query)
+                var response = retrofitData.execute()
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-
-                    if (responseBody != null) {
-                        for (jsonData in responseBody) {
-                            val id = jsonData._id
-                            listaIds.add(id)
-                            val keyword = jsonData.keywords[0].keyword
-                            listaTitulos.add(keyword)
-                        }
-                    }
-                    Log.d("TAG", listaTitulos.toString())
+                    receiveDataFromAPI(response, query, listaIds, listaTitulos)
                 }else{
-                    Log.d("ERROR", "NO SE HA ENCONTRADO NADA")
-                    // busquedaNula.visibility = View.VISIBLE
+                    //intentar la busqueda completa
+                    retrofitData = retrofitBuilder.getAllData(query)
+                    response = retrofitData.execute()
+                    if(response.isSuccessful) {
+                        receiveDataFromAPI(response, query, listaIds, listaTitulos)
+                    }else{
+                        Log.d("ERROR", "Error de la llamada a la API")
+                    }
                 }
             } catch (e: IOException) {
                 // Handle exception
@@ -139,6 +138,27 @@ class CommonUtils{
                 id = id * 31 + char.code
             }
             return id
+        }
+
+
+        private fun receiveDataFromAPI(response: retrofit2.Response<List<JsonPictogramaItem>>, query: String, listaIds: MutableList<Int>, listaTitulos: MutableList<String>){
+            val responseBody = response.body()
+
+            if (responseBody != null) {
+                for (jsonData in responseBody) {
+                    val isArticulo = jsonData.tags.contains("article")
+                    val isPronombre = jsonData.tags.contains("pronoun")
+                    val isArticuloQuery = checkArticulos(query)
+                    val isPronombreQuery = checkPronombres(query)
+
+                    if ((isArticulo && isArticuloQuery) || (isPronombreQuery && isPronombre) || (!isArticuloQuery && !isPronombreQuery)) {
+                        val id = jsonData._id
+                        listaIds.add(id)
+                        val keyword = jsonData.keywords[0].keyword
+                        listaTitulos.add(keyword)
+                    }
+                }
+            }
         }
 
         private fun textAsBitmap(text: String?): Bitmap {
@@ -267,8 +287,6 @@ class CommonUtils{
         }
 
 
-
-
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?
             val cursor = context.contentResolver.query(uri, null, null, null, null)
@@ -283,6 +301,15 @@ class CommonUtils{
             return filePath ?: ""
         }
 
+        private fun checkArticulos(query: String): Boolean{
+            val articulos = listOf("el", "la", "los", "las", "un", "una", "unos", "unas")
+            return articulos.any { it.equals(query.toLowerCase(), ignoreCase = true) }
+        }
+
+        private fun checkPronombres(query: String): Boolean{
+            val pronombres = listOf("yo", "tú", "él", "ella", "nosotros", "nosotras", "vosotros", "vosotras", "ellos", "ellas", "ustedes", "usted")
+            return pronombres.any { it.equals(query.toLowerCase(), ignoreCase = true) }
+        }
     }
 
 

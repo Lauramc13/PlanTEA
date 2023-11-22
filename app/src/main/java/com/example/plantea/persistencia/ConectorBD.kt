@@ -120,7 +120,8 @@ class ConectorBD(ctx: Context?) {
                     "FROM (SELECT id, nombre, imagen, id_categoria FROM Pictograma UNION SELECT id, nombre, imagen, NULL AS id_categoria FROM PictogramaAPI) AS CombinedPictograms " +
                     "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id OR RelacionPictogramaPlan.id_pictogramaAPI = CombinedPictograms.id " +
                     "INNER JOIN Planificacion ON Planificacion.id = RelacionPictogramaPlan.id_plan " +
-                    "WHERE Planificacion.id = ?",
+                    "WHERE Planificacion.id = ?" +
+                    "ORDER BY RelacionPictogramaPlan.id",
             arrayOf(id.toString())
         )
     }

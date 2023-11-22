@@ -53,9 +53,17 @@
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
         <item name="android:windowSplashScreenBackground">@color/md_theme_light_primary</item>
 
+
         <!-- CUSTOM ITEMS -->
         <item name="customBgColor">@color/lightGray</item>
         <item name="customBgTermometro">@color/darkerGray</item>
+        <item name="customBgColorCuaderno">@color/white</item>
+        <item name="customColorGray">@color/md_theme_light_outline</item>
+
+        <item name="configuracionCardBg">@color/white</item>
+        <item name="configuracionCardBorder">@color/md_theme_light_surfaceVariant</item>
+        <item name="gray">@color/semiGray</item>
+        <item name="grayStroke">@color/gray2</item>
 
 
     </style>
@@ -251,8 +259,9 @@
     <style name="backgroundTraduccion" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeWidthFocused">0dp</item>
         <item name="boxStrokeWidth">0dp</item>
-
     </style>
 
-
+    <style name="CustomBackgroundPopUp" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/background_register</item>
+    </style>
 </resources>

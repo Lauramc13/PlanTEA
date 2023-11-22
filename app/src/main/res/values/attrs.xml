@@ -3,5 +3,11 @@
     <attr name="customBgColor" format="reference" />
     <attr name="customBgTermometro" format="reference" />
     <attr name="customLinkColor" format="reference" />
+    <attr name="customBgColorCuaderno" format="reference" />
+    <attr name="customColorGray" format="reference" />
+    <attr name="configuracionCardBorder" format="reference" />
+    <attr name="configuracionCardBg" format="reference" />
+    <attr name="grayStroke" format="reference" />
+    <attr name="gray" format="reference" />
 
 </resources>

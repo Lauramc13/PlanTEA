@@ -44,7 +44,7 @@ class PreLoginActivity : AppCompatActivity(){
     var usuario = Usuario()
     var user = Usuario()
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
 
     companion object {
@@ -81,37 +81,12 @@ class PreLoginActivity : AppCompatActivity(){
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        /*val database = Firebase.database
-        val myref = database.getReference("/Cuaderno/kAJG6w1EDMD15TmKkKx0")
-        myref.setValue("holi")*/
-
-        //FIRESTORE CLOUD
-/*
-        val db = Firebase.firestore
-
-        // Create a new user with a first and last name
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
-
-// Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w("TAG", "Error adding document", e)
-            }
-*/
         email = findViewById(R.id.txt_Email)
         password = findViewById(R.id.txt_Password)
 
         signin.setOnClickListener {
             Toast.makeText(this, "Iniciando sesión", Toast.LENGTH_SHORT).show()
-            val account = GoogleSignIn.getLastSignedInAccount(this)
+            GoogleSignIn.getLastSignedInAccount(this)
             signInGoogle()
         }
 
@@ -132,48 +107,22 @@ class PreLoginActivity : AppCompatActivity(){
             email.error = null
             password.error = null
 
-            val emptyTextViews = mutableListOf<TextView>()
+            val noTextViewVacios = comprobarTextViewsVacios(email.editText?.text.toString(), password.editText?.text.toString())
 
-            if (email.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(email.editText!!)
-                email.error = "ESTO ES UN ERROR"
-            }
-
-            if (password.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(password.editText!!)
-                password.error = "ESTO ES UN ERROR"
-            }
-
-            if (emptyTextViews.isNotEmpty()) {
+            if (!noTextViewVacios) {
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             } else {
-
-                /*  val passCifrada = hashPassword(password.editText?.text.toString())
-                if (usuario.comprobarUsuario(email.editText?.text.toString(), passCifrada, this@PreLoginActivity) == true) {
-                     configurarDatos(email.editText?.text.toString())
-                 } else {
-                     email.error = "ESTO ES UN ERROR"
-                     password.error = "ESTO ES UN ERROR"
-                     Toast.makeText(applicationContext, "Las credenciales son incorrectas", Toast.LENGTH_LONG).show()
-                 }*/
                 val emailText = email.editText?.text.toString().lowercase()
                 val passwordText = password.editText?.text.toString()
-                auth.signInWithEmailAndPassword(emailText, passwordText)
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            Log.d("TAG", "signInWithEmail:success")
-                            configurarDatos(emailText)
-                        } else {
-                            Log.w("TAG", "signInWithEmail:failure", task.exception)
-                            email.error = "ESTO ES UN ERROR"
-                            password.error = "ESTO ES UN ERROR"
-                            Toast.makeText(
-                                baseContext,
-                                "Las credenciales son incorrectas",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                iniciarSesion(emailText, passwordText) { success ->
+                    if (success) {
+                        configurarDatos(emailText)
+                    } else {
+                        email.error = "ESTO ES UN ERROR"
+                        password.error = "ESTO ES UN ERROR"
+                        Toast.makeText(baseContext, "Las credenciales son incorrectas", Toast.LENGTH_SHORT).show()
                     }
+                }
             }
         }
 
@@ -218,22 +167,38 @@ class PreLoginActivity : AppCompatActivity(){
         }
     }
 
-  /*
-          private fun hashPassword(password: String): String {
-              val bytes = password.toByteArray()
-              val md = MessageDigest.getInstance("SHA-256")
-              val digest = md.digest(bytes)
-              return digest.fold("") { str, it -> str + "%02x".format(it) }
-          }
-      */
+    fun iniciarSesion(emailText: String, passwordText: String, callback: (Boolean) -> Unit = { _ -> }) {
+        auth.signInWithEmailAndPassword(emailText, passwordText)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d("pruebas", "signInWithEmail:success")
+                    callback(true)
+                } else {
+                    Log.w("pruebas", "signInWithEmail:failure", task.exception)
+                    callback(false)
+                }
+            }
+    }
+
+    fun comprobarTextViewsVacios(emailText: String, passwordText: String): Boolean {
+        if (emailText.isEmpty()) {
+            runOnUiThread {email.error = "ESTO ES UN ERROR"}
+            return false
+        }
+
+        if (passwordText.isEmpty()) {
+            runOnUiThread {password.error = "ESTO ES UN ERROR"}
+            return false
+        }
+        return true
+    }
 
     private fun signInGoogle() {
-
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+    var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
@@ -259,17 +224,7 @@ class PreLoginActivity : AppCompatActivity(){
         }
     }
 
-    /*
-    //ESTO ES PARA COMPROBAR SI YA SE HA INICIADO SESION CON GOOGLE AL ABRIR LA APLICACION
-    override fun onStart() {
-        super.onStart()
-        if (GoogleSignIn.getLastSignedInAccount(this) != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-    }*/
-
-    private fun configurarDatos(email: String){
+    fun configurarDatos(email: String){
         user = usuario.obtenerUsuario(email, this@PreLoginActivity)
         val id = usuario.consultarId(email, this@PreLoginActivity)
         val editor = prefs.edit()

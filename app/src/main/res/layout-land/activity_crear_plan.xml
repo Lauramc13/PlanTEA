@@ -143,6 +143,7 @@
         android:textColor="#203130"
         android:fontFamily="@font/montserrat_semibold"
         android:textSize="16sp"
+        app:iconSize="27dp"
         app:icon="@drawable/ic_baseline_save_24"
         app:iconTint="#203130"
         app:layout_constraintEnd_toEndOf="parent"

@@ -11,6 +11,9 @@ interface ApiInterface {
    @GET("pictograms/es/bestsearch/{query}")
    fun getData(@Path("query") query: String): Call<List<JsonPictogramaItem>>
 
+   @GET("pictograms/es/search/{query}")
+   fun getAllData(@Path("query") query: String): Call<List<JsonPictogramaItem>>
+
    @GET("{query}/{query}_300.png")
    fun getImage(@Path("query") query: String): Call<ResponseBody>
 }

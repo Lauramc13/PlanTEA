@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
@@ -18,6 +19,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -38,6 +40,7 @@ import com.example.plantea.presentacion.actividades.planificador.CalendarioActiv
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
+import com.google.android.material.imageview.ShapeableImageView
 import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -352,6 +355,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
 
         buttonPlanNuevo.setOnClickListener {
+            Toast.makeText(this, "Crear plan", Toast.LENGTH_SHORT).show()
             startActivity(Intent(applicationContext, CalendarioActivity::class.java))
         }
 
@@ -391,12 +395,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
             if (!pasosCompletados.empty()) {
                 val posicion = pasosCompletados.peek() as Int
-                cambiarPictoClicked(posicion+1)
+                cambiarPictoClickedNormal(posicion+1)
                 pasosCompletados.add(posicion+1)
             }else{
-                cambiarPictoClicked(0)
+                cambiarPictoClickedNormal(0)
                 pasosCompletados.add(0)
-                //onItemSeleccionado(0)
             }
 
             iconoDeshacerTodas.isEnabled = true
@@ -411,7 +414,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         // Este método se ejecutará al seleccionar el icono marcar para marcar todos los pictogramas como realizados
         iconoMarcarTodas.setOnClickListener {
             for (i in 0 until listaPictogramas.size){
-                cambiarPictoClicked(i)
+                cambiarPictoClickedNormal(i)
                 pasosCompletados.add(i)
             }
 
@@ -437,7 +440,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         iconoReproducir.setOnClickListener {
             /*reproduccionLenta = false
             reproduccionRapida = false*/
-            reproducirEvento(2000L)
+            reproducirEvento(1500L)
         }
 
        /* iconoReproducirLento.setOnClickListener {
@@ -457,7 +460,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         if(isRunning){
             val targetHeight = 170.dpToPx(this).toFloat()
             val targetWidth = 200.dpToPx(this).toFloat()
-            animationReproduccion(targetHeight, targetWidth, currentPosition)
+            animationReproduccion(targetHeight, targetWidth, currentPosition, 1f)
             iconoReproducir.icon = ContextCompat.getDrawable(this, R.drawable.svg_play)
             iconoDeshacer.isEnabled = true
             iconoMarcar.isEnabled = false
@@ -481,7 +484,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             currentRunnable = object : Runnable {
                 override fun run() {
                     if (isRunning) {
-                        onItemSeleccionado(currentPosition)
+                        //onItemSeleccionado(currentPosition)
                         if (currentPosition < listaPictogramas.size) {
                             handler.postDelayed(this, tiempo)
                             cambiarPictoClicked(currentPosition)
@@ -576,7 +579,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     override fun onItemSeleccionado(posicion: Int) {
-        /* if (currentDialog != null && currentDialog!!.isShowing) {
+        if (currentDialog != null && currentDialog!!.isShowing) {
             currentDialog!!.dismiss()
         }
 
@@ -599,7 +602,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         imagenConfeti.visibility = View.INVISIBLE
         mensajePremio.visibility = View.INVISIBLE
 
-
         val textoHistoria = dialog!!.findViewById<TextView>(R.id.lblBubble)
         val avatarHistoria = dialog!!.findViewById<ShapeableImageView>(R.id.avatarBubble)
 
@@ -616,8 +618,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             historia.visibility = View.GONE
         }
 
-        //Añade a la pila el paso completado
-        if (!isRunning) {
             if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
                 animacionesConfeti(listaPictogramas[posicion].categoria)
             }
@@ -633,7 +633,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             btnCerrar.setOnClickListener { dialog!!.dismiss() }
             dialog!!.show()
 
-        } else {
+        /*} else {
             val showAnimation: Animation
             val delayBeforeDismiss: Long
             val dismissAnimation = AnimationUtils.makeOutAnimation(this, false)
@@ -689,8 +689,8 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             dialog!!.setOnCancelListener {
                 stopReproductor()
             }
-        }
-        dialog!!.show()*/
+        }*/
+        dialog!!.show()
     }
 
     override fun checkPosition(posicion: Int): Boolean {
@@ -760,10 +760,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     private fun cambiarPicto(posicion: Int){
-        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
-        viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_Imagen).alpha = 1f
-        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_Texto).alpha = 1f
-        viewHolderPictogramas.itemView.findViewById<View>(R.id.btn_historiaPictoOn).alpha = 1f
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas
+        viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card_picto).animate().alpha(1f).setDuration(100).start()
+
         when (listaPictogramas[posicion].categoria) {
             9 -> {
                 viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card)
@@ -778,7 +777,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                     .setBackgroundResource(R.drawable.card_personalizado)
             }
         }
-        //viewHolderPictogramas.popListClicked()
+
 
     }
 
@@ -817,11 +816,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val targetHeight = 185.dpToPx(this).toFloat()
         val targetWidth = 220.dpToPx(this).toFloat()
 
-        animationReproduccion(targetHeight, targetWidth, posicion)
+        animationReproduccion(targetHeight, targetWidth, posicion, 1f)
 
         if(posicion !=0){
             lastPictoClicked(posicion)
         }
+    }
+
+    private fun cambiarPictoClickedNormal(posicion: Int){
+        val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
+        viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_disabled)
+        viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_card_picto).alpha = 0.7f
     }
 
     private fun lastPictoClicked(posicion: Int){
@@ -831,17 +836,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val targetHeight = 170.dpToPx(this).toFloat()
         val targetWidth = 200.dpToPx(this).toFloat()
 
-        animationReproduccion(targetHeight, targetWidth, posicion-1)
+        animationReproduccion(targetHeight, targetWidth, posicion-1, 0.7f)
     }
 
 
-    private fun animationReproduccion(targetHeight: Float, targetWidth: Float, posicion: Int){
+    private fun animationReproduccion(targetHeight: Float, targetWidth: Float, posicion: Int, alpha: Float){
         val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
 
         viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)
             ?.animate()
             ?.setDuration(250)
-            ?.alpha(1.0f)
+            ?.alpha(alpha)
             ?.scaleX(targetWidth / viewHolderPictogramas.itemView.width)
             ?.scaleY(targetHeight / viewHolderPictogramas.itemView.height)
             ?.withEndAction {

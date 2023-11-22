@@ -11,6 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.PathInterpolator
 import android.widget.Button
+import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -26,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 class RegisterActivity : AppCompatActivity(){
     lateinit var prefs: SharedPreferences
     private lateinit var btnRegister: Button
-    private lateinit var txtName : TextInputLayout
+    lateinit var txtName : TextInputLayout
     private lateinit var txtEmail: TextInputLayout
     private lateinit var txtUsername : TextInputLayout
     private lateinit var txtPassword : TextInputLayout
@@ -34,15 +35,15 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txtNameplanificado : TextInputLayout
     private lateinit var txtObjeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
-    private lateinit var checkObjeto: SwitchCompat
+    lateinit var checkObjeto: SwitchCompat
     private lateinit var botonAyuda: MaterialButton
     private lateinit var tooltipText: TextView
     private lateinit var backButton: Button
     private var isClicked = true
-    private var creado: Boolean = false
+    //private var creado: Boolean = false
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val emptyTextViews = mutableListOf<TextView>()
+    //val emptyTextViews = mutableListOf<TextView>()
 
     var usuario = Usuario()
 
@@ -107,7 +108,6 @@ class RegisterActivity : AppCompatActivity(){
         txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
         txtName.editText?.setText(intent.getStringExtra("NAME"))
 
-
         botonAyuda.setOnClickListener {
             val slideTransition = Slide(Gravity.END)
             slideTransition.duration = 800
@@ -144,7 +144,6 @@ class RegisterActivity : AppCompatActivity(){
             txtPassword2.error = null
             txtNameplanificado.error = null
 
-            comprobarTextViews()
             val errorMessage = createAccount()
             if (errorMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
@@ -152,44 +151,72 @@ class RegisterActivity : AppCompatActivity(){
         }
     }
 
-    private fun comprobarTextViews() {
-        if (txtName.editText?.text.toString().isEmpty()) {
-            emptyTextViews.add(txtName.editText!!)
-            txtName.error = "ESTO ES UN ERROR"
+    fun comprobarTextViewsVacios(username: String, password: String, password2: String, name: String, email: String, objeto: String, namePlanificado: String, checkedObjeto: Boolean, checkedUserTea: Boolean): Boolean {
+        if (name.isEmpty()) {
+            runOnUiThread{txtName.error = "ESTO ES UN ERROR"}
+            return false
         }
-        if (txtEmail.editText?.text.toString().isEmpty()) {
-            emptyTextViews.add(txtEmail.editText!!)
-            txtEmail.error = "ESTO ES UN ERROR"
+
+        if (email.isEmpty()) {
+            runOnUiThread{txtEmail.error = "ESTO ES UN ERROR"}
+            return false
         }
-        if (txtUsername.editText?.text.toString().isEmpty()) {
-            emptyTextViews.add(txtUsername.editText!!)
-            txtUsername.error = "ESTO ES UN ERROR"
+
+        if (username.isEmpty()) {
+            runOnUiThread{txtUsername.error = "ESTO ES UN ERROR"}
+            return false
         }
-        if (txtPassword.editText?.text.toString().isEmpty()) {
-            emptyTextViews.add(txtPassword.editText!!)
-            txtPassword.error = "ESTO ES UN ERROR"
+
+        if (password.isEmpty()) {
+            runOnUiThread { txtPassword.error = "ESTO ES UN ERROR" }
+            return false
         }
-        if (txtPassword2.editText?.text.toString().isEmpty()) {
-            emptyTextViews.add(txtPassword2.editText!!)
-            txtPassword2.error = "ESTO ES UN ERROR"
+
+        if (password2.isEmpty()) {
+            runOnUiThread { txtPassword2.error = "ESTO ES UN ERROR" }
+            return false
         }
-        if (txtObjeto.editText?.text.toString().isEmpty() && checkObjeto.isChecked) {
-            emptyTextViews.add(txtObjeto.editText!!)
-            txtObjeto.error = "ESTO ES UN ERROR"
+
+        if (objeto.isEmpty() && checkedObjeto) {
+            runOnUiThread { txtObjeto.error = "ESTO ES UN ERROR" }
+            return false
         }
-        if (txtNameplanificado.editText?.text.toString().isEmpty() && checkUserPlanificado.isChecked) {
-            emptyTextViews.add(txtObjeto.editText!!)
-            txtNameplanificado.error = "ESTO ES UN ERROR"
+
+        if (namePlanificado.isEmpty() && checkedUserTea) {
+            runOnUiThread { txtNameplanificado.error = "ESTO ES UN ERROR" }
+            return false
         }
+        return true
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    data class ValidationResult(val isValid: Boolean, var errorMessage: String? = null)
+
+    fun isAccountValid(email: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            runOnUiThread { txtEmail.error = "ESTO ES UN ERROR" }
+            return  ValidationResult(false, "La dirección de correo electrónico no es válida")
+        }
+
+        if (password != password2) {
+            runOnUiThread {
+                txtPassword.error = "ESTO ES UN ERROR"
+                txtPassword2.error = "ESTO ES UN ERROR"
+            }
+            return ValidationResult(false, "Las contraseñas no coinciden")
+        }
+
+        //la contraseña tiene que tener minimo 6 caracteres
+        if (password.length < 6) {
+            runOnUiThread {txtPassword.error = "ESTO ES UN ERROR"}
+            return ValidationResult(false, "La contraseña debe tener al menos 6 caracteres")
+        }
+
+        if (!notextViewsVacios) {
+            return ValidationResult(false, "Tienes que rellenar todos los campos")
+        }
+        return ValidationResult(true)
     }
 
-    private fun showError(editText: TextInputLayout?) {
-        editText?.error = "ESTO ES UN ERROR"
-    }
 
     private fun createAccount(): String {
         val email = txtEmail.editText?.text.toString().lowercase()
@@ -200,39 +227,14 @@ class RegisterActivity : AppCompatActivity(){
         val objeto = txtObjeto.editText?.text.toString()
         val namePlanificado = txtNameplanificado.editText?.text.toString()
 
-        var error = ""
-        var isAccountValid = true
+        val notextViewsVacios =  comprobarTextViewsVacios(email, password, password2, name, username, objeto, namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
 
-        if (!isValidEmail(email)) {
-            error = "La dirección de correo electrónico no es válida"
-            showError(txtEmail)
-            isAccountValid = false
-        }
+        val isAccountValid = isAccountValid(email, password, password2, notextViewsVacios)
 
-        if (password != password2) {
-            error = "Las contraseñas no coinciden"
-            showError(txtPassword)
-            showError(txtPassword2)
-            isAccountValid = false
-        }
-
-        //la contraseña tiene que tener minimo 6 caracteres
-        if (password.length < 6) {
-            error = "La contraseña tiene que tener mínimo 6 caracteres"
-            showError(txtPassword)
-            isAccountValid = false
-        }
-
-        if (emptyTextViews.isNotEmpty()) {
-            error = "Tienes que rellenar todos los campos"
-            isAccountValid = false
-        }
 
         // TODO: ORGANIZAR ESTO
-        if (isAccountValid) {
-            //val passCifrada = hashPassword(password)
-            creado = usuario.crearUsuario(name, email, username, objeto, namePlanificado, this@RegisterActivity)
-            if (creado) {
+        if (isAccountValid.isValid) {
+            if (usuario.crearUsuario(name, email, username, objeto, namePlanificado, this@RegisterActivity)) {
                 val id = usuario.consultarId(email, this@RegisterActivity)
                 val editor = prefs.edit()
                 editor.putString("idUsuario", id)
@@ -246,11 +248,10 @@ class RegisterActivity : AppCompatActivity(){
                 editor.putBoolean("editPreferences", false)
                 editor.apply()
 
-                val user = auth.currentUser
+                auth.currentUser
                 //Guardamos los datos en firebase
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
-                        Log.w("Registration", "ha petado")
 
                         if (!task.isSuccessful) {
                             // El registro ha fallado
@@ -261,23 +262,15 @@ class RegisterActivity : AppCompatActivity(){
                 startActivity(intent)
                 finish()
             } else {
-                error = "El nombre de usuario o correo introducido ya existe"
-                showError(txtUsername)
-                showError(txtEmail)
+                txtUsername.error = "El nombre de usuario o correo introducido ya existe"
+                txtEmail.error = "El nombre de usuario o correo introducido ya existe"
             }
         }
-        return error
+        return isAccountValid.errorMessage ?: ""
     }
 
-    /*private fun hashPassword(password: String): String {
-        val bytes = password.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.fold("") { str, it -> str + "%02x".format(it) }
-    }*/
-
     private fun updateButtonIcon() {
-        // Update the button's background based on the state
+        // Actualizar el icono del botón segun el estado
         val iconResource = if (isClicked) R.drawable.question_simple else R.drawable.svg_close
         val iconDrawable = ContextCompat.getDrawable(this, iconResource)
         botonAyuda.icon = iconDrawable

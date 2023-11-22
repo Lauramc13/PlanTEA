@@ -1,18 +1,25 @@
 package com.example.plantea.presentacion.actividades.ninio
 
+import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.google.android.material.textfield.TextInputLayout
@@ -21,7 +28,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
 import java.security.MessageDigest
+import java.util.Locale
 
 
 class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnItemSelectedListener, CommonUtils.TextToSpeechListener{
@@ -30,6 +39,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
     private var listaTraducir : ArrayList<String> = ArrayList()
     lateinit var escucharButtonPalabra : Button
     lateinit var escucharButtonFrase : Button
+    lateinit var guardarButton : Button
     private var navigationHandler = NavegacionUtils()
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var adaptador: AdaptadorPictogramasTraductor
@@ -62,6 +72,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         val traducirButton: Button = findViewById(R.id.traducirButton)
         escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
         escucharButtonFrase = findViewById(R.id.escucharButtonFrase)
+        guardarButton = findViewById(R.id.guardarButton)
 
 
         val backButton: Button = findViewById(R.id.goBackButton)
@@ -85,6 +96,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
             listaPictoBuscador.clear()
             val texto = textoATraducir.editText?.text?.trim()
             if (!texto.isNullOrBlank()) {
+                guardarButton.visibility = View.VISIBLE
                 val words = texto.split("\\s+".toRegex())
                 listaTraducir.addAll(words)
                 getPictogramas()
@@ -123,6 +135,53 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
             false
         }
 
+        guardarButton.setOnClickListener {
+            //dialog of dialogo_olvidar_password
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialogo_crear_planificacion)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val titulo : TextInputLayout = dialog.findViewById(R.id.txt_title)
+            val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
+            val btnCrear : Button = dialog.findViewById(R.id.btn_create)
+
+            btnCrear.setOnClickListener{
+                val tituloString = titulo.editText?.text.toString()
+
+                //if tituloString is empty -> error
+                if(tituloString.isEmpty()){
+                    titulo.error = "ESTO ES UN ERROR"
+                    Toast.makeText(applicationContext, "No puedes dejar el campo vacío", Toast.LENGTH_LONG).show()
+                }else{
+                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                    val idUsuario = prefs.getString("idUsuario", "")
+
+                    val plan = Planificacion()
+                    val idPlan = idUsuario?.let { it1 ->
+                        plan.crearPlanificacion(this@TraductorActivity,  it1, tituloString.uppercase(Locale.getDefault()))
+                    }
+                    val creada = plan.addPictogramasPlan(idPlan, this@TraductorActivity, listaPictogramas)
+
+                    if (creada == true) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Planificación $tituloString creada",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        dialog.dismiss()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            "Error al crear la planificación",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+
+            iconoCerrar.setOnClickListener { dialog.dismiss() }
+            dialog.show()
+        }
+
     }
 
         private fun getPictogramas() {
@@ -156,14 +215,14 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
 
         //Si sabemos la posicion del pictograma, estamos cambiando la imagen del pictograma
         if(posicion != null){
-            listaPictogramas[posicion] = Pictograma(id, titulo?.uppercase(), archivo, 0, 0, false, true)
+            listaPictogramas[posicion] = Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, false, true)
         }else {
-            listaPictogramas.add(Pictograma(id, titulo?.uppercase(), archivo, 0, 0, false, true))
+            listaPictogramas.add(Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, false, true))
         }
     }
 
     //Genero un id unico para cada bitmap
-    private fun generateBitmapId(bitmap: Bitmap): String {
+    private fun generateBitmapId(bitmap: Bitmap): Int {
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
         val byteArray = byteArrayOutputStream.toByteArray()
@@ -171,7 +230,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         val md5 = MessageDigest.getInstance("MD5")
         val digest = md5.digest(byteArray)
 
-        return digest.fold("") { str, byte -> str + "%02x".format(byte) }
+        return ByteBuffer.wrap(digest.copyOfRange(0, 4)).int
     }
 
     override fun onItemSeleccionado(posicion: Int) {
@@ -181,7 +240,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
             var position = 0
 
             for ((index, entry) in entryList.withIndex()) {
-                val bitmapId = generateBitmapId(entry.key)
+                val bitmapId = generateBitmapId(entry.key).toString()
                 if (bitmapId == desiredId) {
                     position = index
                     break

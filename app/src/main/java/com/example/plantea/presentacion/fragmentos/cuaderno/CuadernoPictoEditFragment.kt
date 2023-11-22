@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.fragmentos.cuaderno
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -47,12 +48,12 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
     private lateinit var lst_Pictogramas: RecyclerView
     private lateinit var imageCerrar: ImageView
     private lateinit var imageAtras: ImageView
-    private lateinit var seekbar: SeekBar
     private lateinit var adaptador: AdaptadorPictogramasCuaderno
     lateinit var termometro: LinearLayout
     lateinit var searchbar: SearchView
     private var isTermometro: Boolean = true
     private var isPlanificador : Boolean = true
+    private var tituloCuaderno : String = ""
     private val pictograma = Pictograma()
     lateinit var image: ShapeableImageView
     private var idCuaderno : Int = 0
@@ -103,13 +104,22 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         outState.putInt("idCuaderno", idCuaderno)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
         val bundle = this.arguments
-        listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
-        isTermometro = (bundle["termometro"] as Boolean)
-        idCuaderno =  (bundle["idCuaderno"] as Int)
-        val tituloCuaderno = (bundle["tituloCuaderno"] as String)
+        if(savedInstanceState != null){
+            listaPictogramas = savedInstanceState.getSerializable("listaPictogramas") as ArrayList<Pictograma>
+            isPlanificador = savedInstanceState.getBoolean("isPlanificador")
+            isTermometro = savedInstanceState.getBoolean("isTermometro")
+            idCuaderno = savedInstanceState.getInt("idCuaderno")
+        }else{
+            listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
+            isTermometro = (bundle["termometro"] as Boolean)
+            idCuaderno =  (bundle["idCuaderno"] as Int)
+            tituloCuaderno = (bundle["tituloCuaderno"] as String)
+        }
+
         searchbar = vista.findViewById(R.id.searchViewPicto)
         imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
         imageAtras = vista.findViewById(R.id.icono_cuaderno_fragment_atras)
@@ -124,11 +134,19 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true
         listaPictogramas.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
 
-        adaptador = isPlanificador.let { context?.let { it1 ->
-            AdaptadorPictogramasCuaderno(listaPictogramas, it, this, it1)
-        }}!!
+        adaptador = isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(listaPictogramas, it, this, it1) }}!!
 
         lst_Pictogramas.adapter = adaptador
+
+        if(savedInstanceState != null){
+            adaptador.isBusqueda = savedInstanceState.getBoolean("isBusqueda")
+            if(adaptador.isBusqueda){
+                imageCerrar.visibility = View.INVISIBLE
+                imageAtras.visibility = View.VISIBLE
+                listaPictogramas.removeAt(listaPictogramas.lastIndex)
+                adaptador.notifyDataSetChanged()
+            }
+        }
 
         imageCerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
         imageAtras.setOnClickListener { interfaceCuaderno.atrasFragment() }
@@ -136,21 +154,6 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
 
         context?.let { CommonUtils.initializeTextToSpeech(it) }
 
-        if(savedInstanceState != null){
-            listaPictogramas = savedInstanceState.getSerializable("listaPictogramas") as ArrayList<Pictograma>
-            adaptador.isBusqueda = savedInstanceState.getBoolean("isBusqueda")
-            isPlanificador = savedInstanceState.getBoolean("isPlanificador")
-            isTermometro = savedInstanceState.getBoolean("isTermometro")
-            idCuaderno = savedInstanceState.getInt("idCuaderno")
-
-            if(adaptador.isBusqueda){
-                imageCerrar.visibility = View.INVISIBLE
-                imageAtras.visibility = View.VISIBLE
-                listaPictogramas.removeAt(listaPictogramas.lastIndex)
-                adaptador.notifyDataSetChanged()
-            }
-
-        }
         return vista
     }
 

@@ -4,6 +4,7 @@ package com.example.plantea.presentacion.actividades
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -65,7 +66,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         txtObjeto.editText?.setText(savedInstanceState.getString(NAMEOBJ).toString())
     }
 
-    fun configurarDatos(){
+    private fun configurarDatos(){
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         if (prefs.getString("imagenPlanificador", "") == "") {
             imgUsuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
@@ -211,20 +212,15 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-            if (txtPlanificador.editText?.text.toString().isEmpty() || txtUsernamePlanificador.editText?.text.toString().isEmpty() || txtUsuarioTEA.editText?.text.toString().isEmpty() && lblInfoUsuario.isChecked
-            ) {
-                Toast.makeText(applicationContext, "Se necesita un nombre para cada usuario", Toast.LENGTH_LONG).show()
-            } else if (imgUsuarioPlanificador.drawable == null || imgUsuarioTEA.drawable == null && lblInfoUsuario.isChecked) {
-                Toast.makeText(applicationContext, "Se necesita una imagen para cada usuario", Toast.LENGTH_LONG).show()
-            } else if ((txtObjeto.editText?.text.toString().isEmpty() || imgObjeto.drawable == null) && lblObjeto.isChecked) {
-                Toast.makeText(applicationContext, "Se necesita una imagen y nombre del objeto tranquilizador", Toast.LENGTH_LONG).show()
-            } else {
+            //Obtener nombres de los usuarios y objeto
+            val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
+            var nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
+            val username = txtUsernamePlanificador.editText?.text.toString()
+            var nombreObjeto = txtObjeto.editText?.text.toString()
 
-                //Obtener nombres de los usuarios y objeto
-                val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
-                var nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
-                val username = txtUsernamePlanificador.editText?.text.toString()
-                var nombreObjeto = txtObjeto.editText?.text.toString()
+            val isValid = comprobarCampos(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, imgUsuarioPlanificador.drawable, imgUsuarioTEA.drawable, imgObjeto.drawable, lblInfoUsuario.isChecked, lblObjeto.isChecked)
+
+            if(isValid){
                 val rutaPlanificador = CommonUtils.crearRuta(this, imgUsuarioPlanificador, "Planificador")
                 var rutaUsuarioTEA= ""
                 var rutaObjeto = ""
@@ -282,7 +278,23 @@ class ConfiguracionActivity : AppCompatActivity() {
     }
 
 
+    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, txtUsuarioTEAText: String, txtObjetoText: String, imgPlanificador: Drawable, imgUserTEA: Drawable, imageObjeto: Drawable, infoUserTEA: Boolean, infoObjeto: Boolean): Boolean {
+        if (txtPlanificadorText.isEmpty() || txtUsernameText.isEmpty() || txtUsuarioTEAText.isEmpty() && infoUserTEA) {
+            Toast.makeText(applicationContext, "Se necesita un nombre para cada usuario", Toast.LENGTH_LONG).show()
+            return false
+        }
 
+        if (imgPlanificador == null || (imgUserTEA == null && infoUserTEA)) {
+            Toast.makeText(applicationContext, "Se necesita una imagen para cada usuario", Toast.LENGTH_LONG).show()
+            return false
+        }
+
+        if ((txtObjetoText.isEmpty() || imageObjeto == null) && infoObjeto) {
+            Toast.makeText(applicationContext, "Se necesita una imagen y nombre del objeto tranquilizador", Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
+    }
 
 
 }

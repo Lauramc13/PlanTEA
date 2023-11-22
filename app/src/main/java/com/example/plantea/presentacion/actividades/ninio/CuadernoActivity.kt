@@ -75,7 +75,6 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val isBusquedaFragment = savedInstanceState.getBoolean(ISBUSQUEDA_KEY.toString())
         originalPictogramas = savedInstanceState.getSerializable(PICTOGRAMS_KEY.toString()) as ArrayList<Pictograma>?
 
     }

@@ -37,15 +37,12 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
         when (listaPictogramas!![position].categoria) {
             9 -> {
-                holder.premio.visibility = View.INVISIBLE
                 holder.card.setBackgroundResource(R.drawable.card_premio)
             }
             8 -> {
-                holder.premio.visibility = View.INVISIBLE
                 holder.card.setBackgroundResource(R.drawable.card_espera)
             }
             else -> {
-                holder.premio.visibility = View.INVISIBLE
                 holder.card.setBackgroundResource(R.drawable.card_personalizado)
             }
         }
@@ -64,7 +61,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var titulo: TextView
         var imagen: ImageView
-        var premio: ImageView
+        //var premio: ImageView
         var card: View
         var historia: ImageView
 
@@ -72,7 +69,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
+            // premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
             historia = itemView.findViewById(R.id.btn_historiaPictoOn)
             itemView.setOnClickListener(this)
