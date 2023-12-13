@@ -7,7 +7,7 @@ class Categoria {
     var listaCategorias: ArrayList<String>? = null
     var gestorCategorias = GestionCategorias()
 
-    constructor() {}
+    constructor()
     constructor(categoria: Int) {
         this.categoria = categoria
     }

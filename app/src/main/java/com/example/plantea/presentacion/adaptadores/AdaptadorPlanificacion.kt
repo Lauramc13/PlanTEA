@@ -94,7 +94,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
                 btnGuardar = dialogLogout.findViewById(R.id.btn_eliminarEvento)
                 cardtitulo = dialogLogout.findViewById(R.id.cardName)
                 cardtitulo.text = tituloCard
-                iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogoEvento)
+                iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                 historiaText = dialogLogout.findViewById(R.id.historiaText)
                 if(listaPlanificacion[position].historia.toString() == "null"){
                     historiaText.editText?.setText("")

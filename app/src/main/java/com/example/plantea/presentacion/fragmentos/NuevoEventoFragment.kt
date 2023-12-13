@@ -58,7 +58,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     lateinit var nombreEvento: String
     var plan = Planificacion()
     var pictograma = Pictograma()
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
         cancelarEvento = vista.findViewById(R.id.img_cancelarEvento)
@@ -201,7 +201,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         dialogPlan.setContentView(R.layout.dialogo_eliminar_planificacion)
         dialogPlan.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         btn_eliminar = dialogPlan.findViewById(R.id.btn_eliminarPlan)
-        icono_cerrar_login = dialogPlan.findViewById(R.id.icono_CerrarDialogoEvento)
+        icono_cerrar_login = dialogPlan.findViewById(R.id.icono_CerrarDialogo)
         btn_cancelar = dialogPlan.findViewById(R.id.btn_cancelarPlan)
         btn_eliminar.setOnClickListener {
             Toast.makeText(context, "Planificación eliminada", Toast.LENGTH_SHORT).show()

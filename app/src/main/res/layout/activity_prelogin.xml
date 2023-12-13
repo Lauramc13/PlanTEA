@@ -9,68 +9,71 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="800dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.55"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:rotation="90"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backgroundlogin" />
+        app:srcCompat="@drawable/background_login_svg" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fontFamily="@font/tiltneon"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
         android:text="@string/app_name"
         android:textColor="#203130"
-        android:textSize="100sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintWidth_percent="0.5" />
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="485dp"
-        android:layout_height="398dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.293"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintWidth_percent="0.8"
         app:srcCompat="@drawable/svg_problemsolving" />
 
 
     <LinearLayout
         android:id="@+id/linearLayout8"
-        android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginBottom="40dp"
+        app:layout_constraintWidth_max="350dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.8">
 
         <TextView
             android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="¡Bienvenido de nuevo!"
+            android:gravity="center"
+            android:text="@string/bienvenido_de_nuevo"
             android:textColor="?colorOnSurface"
-            android:textSize="30sp" />
+            app:autoSizeTextType="uniform" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="340dp"
+            style="@style/customTextInputLayout"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:contentDescription="Campo de texto nombre de usuario"
@@ -84,15 +87,17 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="@style/customTextInputLayout"
                 android:cursorVisible="true"
                 android:inputType="text"
+                android:textSize="16sp"
                 android:textColor="?colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Password"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="340dp"
+            style="@style/customTextInputLayout"
+            android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/fondo_texto_login"
@@ -111,13 +116,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
+                style="@style/customTextInputLayout"
+                android:textSize="16sp"
                 android:textColor="?colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_login"
             style="@style/Widget.Material3.Button"
-            android:layout_width="340dp"
+            android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -135,12 +142,12 @@
 
         <TextView
             android:id="@+id/btn_olvidar"
-            android:layout_width="340dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_contraseniaOlvidada"
-            android:textColor="?colorOnSurface"
             android:fontFamily="@font/montserrat_semibold"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/lbl_contraseniaOlvidada"
+            android:textColor="?colorOnSurface" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -151,8 +158,9 @@
         <Button
             android:id="@+id/Signin"
             style="@style/Widget.Material3.Button.IconButton.Outlined"
-            android:layout_width="340dp"
-            android:layout_height="58dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?configuracionCardBg"
             android:contentDescription="Boton iniciar sesion"
             android:fontFamily="@font/montserrat_semibold"
             android:text="INICIAR SESIÓN CON GOOGLE"
@@ -164,21 +172,24 @@
             app:iconTint="@null"
             app:strokeWidth="1dp" />
 
+        <TextView
+            android:id="@+id/btn_registrar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:contentDescription="Boton registrarse"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center"
+            android:paddingEnd="5dp"
+            android:text="@string/lbl_noCuenta"
+            android:textColor="?colorOnSurface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/btn_registrar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="30dp"
-        android:contentDescription="Boton registrarse"
-        android:fontFamily="@font/montserrat_semibold"
-        android:gravity="center"
-        android:paddingEnd="5dp"
-        android:text="@string/lbl_noCuenta"
-        android:textColor="?colorOnSurface"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

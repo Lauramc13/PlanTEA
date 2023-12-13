@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fondo_dialogo_login"
+    android:layout_margin="15dp"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="700dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:background="@drawable/fondo_dialogo_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="65dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/svg_plan_icon" />
 
         <TextView
             android:id="@+id/lbl_Logout2"
@@ -20,36 +28,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
             android:gravity="center"
-            android:paddingStart="70dp"
-            android:paddingEnd="70dp"
-            android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             android:text="@string/lbl_eliminarPlanificacion"
             android:textColor="?colorOnSurface"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toTopOf="@+id/lbl_Logout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.348" />
-
-        <TextView
-            android:id="@+id/lbl_Logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_medium"
-            android:gravity="center"
-            android:paddingStart="70dp"
-            android:paddingEnd="70dp"
-            android:text="@string/lbl_eliminarPlanificacionMensaje"
-            android:textColor="?colorOnSurface"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/lbl_Logout3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_Logout2" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/lbl_Logout3"
@@ -57,67 +39,57 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
             android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:paddingStart="70dp"
-            android:paddingEnd="70dp"
+            android:layout_marginTop="10dp"
             android:text="@string/lbl_eliminarPlanificacionMensaje2"
             android:textColor="?colorOnSurface"
             android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_cancelarPlan"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_Logout"
              />
 
-        <Button
-            android:id="@+id/btn_eliminarPlan"
-            android:layout_width="280dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="85dp"
-            android:layout_marginTop="35dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/lbl_eliminarPlanificacionMensaje3"
-            android:textColor="#203130"
-            app:cornerRadius="25dp"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_cancelarPlan"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_Logout3"
-            app:layout_constraintVertical_bias="0.011" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:padding="10dp"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btn_cancelarPlan"
             style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="200dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="35dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="@string/lbl_cancelar"
-            android:layout_marginBottom="20dp"
-            android:textColor="?colorOnSurface"
-            app:cornerRadius="25dp"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_eliminarPlan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_Logout3"/>
-
-        <ImageView
-            android:id="@+id/icono_CerrarDialogoEvento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:contentDescription="Cerrar dialogo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.961"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.051"
-            app:srcCompat="@drawable/ic_baseline_close_24" />
+            android:textColor="#203130"
+            app:cornerRadius="25dp"
+            android:textSize="14sp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/lbl_cancelar" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btn_eliminarPlan"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/lbl_eliminarPlanificacionMensaje3"
+            android:textColor="#203130"
+            app:cornerRadius="25dp"
+            android:textSize="14sp" />
 
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

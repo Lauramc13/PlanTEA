@@ -43,24 +43,24 @@
             android:layout_height="wrap_content"
             app:cornerRadius="25dp"
             app:icon="@drawable/svg_go_back"
-            app:iconSize="35dp"
+            app:iconSize="30dp"
             app:iconTint="?colorOnSurface"
             app:backgroundTint="@color/transparent" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Planificaciones"
-            android:textSize="22sp"
+            android:text="@string/planificaciones"
+            android:textSize="18sp"
             android:fontFamily="@font/montserrat_semibold" />
-
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,35 +71,36 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/fondo_cuaderno_tiempo">
 
 
         <LinearLayout
             android:id="@+id/layout_fecha"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:contentDescription="Mes y flechas de navegación atras/delante"
             android:orientation="horizontal"
             app:cornerRadius="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/lbl_titulo"
+            android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/lbl_dia"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:contentDescription="Mes"
-                android:fontFamily="@font/montserrat_alternates"
+                android:layout_marginEnd="10dp"
+                android:maxLines="2"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/montserrat_bold"
                 android:text="Viernes, 9 de septiembre"
                 android:textColor="?colorTertiary"
-                android:textFontWeight="900"
-                android:textSize="22sp" />
+                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/CalendarDate"
@@ -110,12 +111,10 @@
                 android:gravity="center"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_calendardate"
-                app:iconSize="31dp"
+                app:iconSize="26dp"
                 app:iconTint="?colorOnSurface">
 
             </Button>
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -131,11 +130,9 @@
             <Button
                 android:id="@+id/icon_deshacerTodas"
                 style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-
-                android:elevation="0dp"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="15dp"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="5dp"
                 android:contentDescription="Botón reproducir lista"
                 android:enabled="false"
                 android:textColor="#203130"
@@ -144,16 +141,16 @@
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_rewind"
                 app:iconGravity="textEnd"
-                app:iconSize="28dp"
+                app:iconSize="22dp"
                 app:iconTint="#203130" />
 
             <Button
                 android:id="@+id/icon_deshacer"
                 style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 android:elevation="0dp"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginEnd="15dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="5dp"
                 android:contentDescription="Botón reproducir lista"
                 android:textColor="#203130"
                 android:textSize="20sp"
@@ -162,31 +159,31 @@
                 android:enabled="false"
                 app:icon="@drawable/svg_play_goback"
                 app:iconGravity="textEnd"
+                app:iconSize="20dp"
+                app:iconTint="#203130" />
+
+            <Button
+                android:id="@+id/icon_reproducir"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:elevation="0dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:contentDescription="Botón reproducir lista"
+                android:textColor="#203130"
+                android:textSize="20sp"
+                app:cornerRadius="25dp"
+                android:enabled="true"
+                app:icon="@drawable/svg_play"
+                app:iconGravity="textEnd"
                 app:iconSize="25dp"
                 app:iconTint="#203130" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/icon_reproducir"
-                style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:contentDescription="Botón reproducir lista"
-                android:textColor="#203130"
-                app:cornerRadius="100dp"
-                app:iconPadding="0dp"
-                android:padding="0dp"
-                app:iconSize="35dp"
-                app:iconGravity="textStart"
-                app:icon="@drawable/svg_play"
-                app:iconTint="#203130" />
-
-
             <Button
                 android:id="@+id/icon_marcar"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 app:elevation="0dp"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="5dp"
                 android:contentDescription="Botón reproducir lista"
                 android:textColor="#203130"
                 android:textSize="20sp"
@@ -194,16 +191,16 @@
                 android:theme="@style/botonesSecundarios"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_play_gofoward"
-                app:iconSize="25dp"
+                app:iconSize="20dp"
                 app:iconTint="#203130" />
 
             <Button
                 android:id="@+id/icon_marcarTodas"
                 style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="5dp"
                 android:elevation="0dp"
-                android:layout_width="90dp"
-                android:layout_height="48dp"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
                 android:contentDescription="Botón reproducir lista"
                 android:textColor="#203130"
                 android:textSize="20sp"
@@ -211,7 +208,7 @@
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_foward"
                 app:iconGravity="textEnd"
-                app:iconSize="28dp"
+                app:iconSize="22dp"
                 app:iconTint="#203130"  />
         </LinearLayout>
 
@@ -220,7 +217,9 @@
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="180dp"
             android:layout_height="48dp"
-            android:contentDescription="Botón deshacer acción"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="Botón escuchar planificacion"
             android:fontFamily="@font/montserrat_semibold"
             android:text="ESCUCHAR"
             android:textColor="#203130"
@@ -229,9 +228,9 @@
             app:icon="@drawable/svg_sound"
             app:iconSize="25dp"
             app:iconTint="#203130"
-            android:layout_marginEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
       <!--  <Button
@@ -263,7 +262,7 @@
             android:fontFamily="@font/montserrat_bold"
             android:text="Titulo"
             android:textColor="?colorOnSurface"
-            android:textSize="30sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
 
@@ -275,7 +274,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/lbl_mensajeNinio"
             android:textColor="?colorOnSurface"
-            android:textSize="21sp"
+            android:textSize="17sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -285,9 +284,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_plan"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:contentDescription="Lista con la planificación actual"
             android:scrollbars="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -300,14 +301,14 @@
         <Button
             android:id="@+id/crearPlan"
             style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="270dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="@string/lbl_nuevaPlanificacion"
             android:textColor="#203130"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:visibility="invisible"
             app:cornerRadius="25dp"
             android:layout_marginTop="10dp"
@@ -325,11 +326,12 @@
     <LinearLayout
         android:id="@+id/layoutPlanificacionesFuturas"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/background_planificaciones_futuras">
 
         <TextView
@@ -338,8 +340,8 @@
             android:layout_marginTop="15dp"
             android:fontFamily="@font/montserrat_semibold"
             android:gravity="center_horizontal"
-            android:text="Planificaciones futuras"
-            android:textSize="22sp" />
+            android:text="@string/planificaciones_futuras"
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -350,8 +352,8 @@
                 android:id="@+id/planificacionRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="20dp"
                 android:clipToPadding="false"
                 android:contentDescription="Lista con la planificación actual"

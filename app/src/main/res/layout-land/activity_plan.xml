@@ -48,15 +48,15 @@
             app:backgroundTint="@color/transparent"
             app:cornerRadius="25dp"
             app:icon="@drawable/svg_go_back"
-            app:iconSize="35dp"
+            app:iconSize="30dp"
             app:iconTint="?colorOnSurface" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
-            android:text="Planificaciones"
-            android:textSize="22sp" />
+            android:text="@string/planificaciones"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -181,19 +181,20 @@
                     app:iconSize="25dp"
                     app:iconTint="#203130" />
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/icon_reproducir"
-                    style="@style/Widget.Material3.Button.Icon"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:elevation="0dp"
                     android:layout_width="67dp"
                     android:layout_height="67dp"
                     android:contentDescription="Botón reproducir lista"
                     android:textColor="#203130"
-                    app:cornerRadius="100dp"
-                    app:iconPadding="0dp"
-                    android:padding="0dp"
-                    app:iconSize="35dp"
-                    app:iconGravity="textStart"
+                    android:textSize="20sp"
+                    app:cornerRadius="25dp"
+                    android:enabled="true"
                     app:icon="@drawable/svg_play"
+                    app:iconGravity="textEnd"
+                    app:iconSize="35dp"
                     app:iconTint="#203130" />
 
                 <Button
@@ -353,8 +354,8 @@
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:gravity="center_horizontal"
-                android:text="Planificaciones futuras"
-                android:textSize="22sp" />
+                android:text="@string/planificaciones_futuras"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

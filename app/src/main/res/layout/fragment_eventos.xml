@@ -13,53 +13,44 @@
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/txt_dia_eventos"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_marginStart="10dp"
                 android:text="TextView"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/montserrat_semibold"
                 android:textColor="?colorOnSurface"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_nuevo_evento"
-                app:layout_constraintHorizontal_bias="0.052"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.95" />
+                android:textSize="18sp" />
+
 
             <Button
                 android:id="@+id/btn_nuevo_evento"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:text="@string/btn_nuevo_evento"
-                android:contentDescription="Boton nuevo evento"
-                android:drawableLeft="@drawable/ic_baseline_add_24"
-                app:cornerRadius="25dp"
-                android:drawableTint="#203130"
-                android:textColor="#203130"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
                 android:fontFamily="@font/montserrat_semibold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:text="@string/btn_nuevo_evento"
+                android:textColor="#203130"
+                android:textSize="14sp"
+                android:textAllCaps="true"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_baseline_add_24"
+                app:iconSize="20dp"
+                app:iconTint="#203130" />
+            </LinearLayout>
 
         <TextView
             android:id="@+id/lbl_mensaje_evento"

@@ -38,6 +38,7 @@ import com.example.plantea.presentacion.actividades.PreLoginActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.*
 import java.io.*
 import java.util.*
@@ -56,7 +57,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     private lateinit var btn_logout: Button
     private lateinit var icono_cerrar_login : AppCompatImageView
     private lateinit var listaPlanificacion: ArrayList<Pictograma>
-    private lateinit var listaPictogramas: ArrayList<Pictograma>
+    lateinit var listaPictogramas: ArrayList<Pictograma>
     private lateinit var tituloPicto: String
     private lateinit var imagenPicto: String
     private lateinit var searchBar: SearchView
@@ -72,7 +73,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
 
     //Variables dialogo crear nuevo pictograma
     private lateinit var dialogNuevoPictograma: Dialog
-    private lateinit var titulo_Dialogo: TextView
+    private lateinit var titulo_Dialogo: TextInputLayout
     private lateinit var spinner_Dialogo: Spinner
     private lateinit var img_Picto: ImageView
     private lateinit var img_Cerrar: ImageView
@@ -288,83 +289,11 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
             recyclerView.adapter!!.notifyItemRemoved(position)
         }
     }
-/*
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_ayuda -> {
-                val i = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(i)
-            }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@CrearPlanActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().apply()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> {
-                if (!isEdited) {
-                    finish()
-                } else {
-                    val dialogSalir = Dialog(this)
-                    dialogSalir.setContentView(R.layout.dialogo_salir_planificacion)
-                    dialogSalir.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                    btn_salir = dialogSalir.findViewById(R.id.btn_salir)
-                    icono_cerrar_login = dialogSalir.findViewById(R.id.icono_CerrarDialogoSalir)
-                    btn_cancelar = dialogSalir.findViewById(R.id.btn_cancelarSalir)
-                    btn_salir.setOnClickListener {
-                        dialogSalir.dismiss()
-                        finish()
-                    }
-                    btn_cancelar.setOnClickListener { dialogSalir.dismiss() }
-                    icono_cerrar_login.setOnClickListener { dialogSalir.dismiss() }
-
-                    dialogSalir.show()
-                }
-            }
-
-        }
-        return true
-    }
-*/
     //Creando lista horizontal para la planificacion
     private fun initRecyclerViewPlan() {
 
-        val layoutManager: LinearLayoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_planificacion)
         recyclerView.layoutManager = layoutManager
         adaptador = AdaptadorPlanificacion(listaPlanificacion)
@@ -380,7 +309,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         //labelBuscando.visibility = View.GONE
         identificadorCategoria = idCategoria
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val idUsuario = prefs.getString("idUsuario", "")
+        val idUsuario = prefs.getString("idUsuario", "null")
         if (idCategoria == 10) {
             listaPictogramas = picto.obtenerFavoritos(this, idUsuario)
         } else {
@@ -403,10 +332,6 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
         listaPictogramas = picto.obtenerPictogramas(this, identificadorCategoria, idUsuario) as ArrayList<Pictograma>
-        //get favourite for each pictogram
-        // for (pictograma in listaPictogramas) {
-        //     Log.d("asf", "listaPictogramas: ${pictograma.favorito}")
-        // }
 
         val bundle = Bundle()
         bundle.putSerializable("key", listaPictogramas)
@@ -450,7 +375,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         )
         spinner_Dialogo.adapter = adapter
         btn_Guardar.setOnClickListener {
-            if (titulo_Dialogo.text.toString().isEmpty()) {
+            if (titulo_Dialogo.editText?.text.toString().isEmpty()) {
                 Toast.makeText(
                     applicationContext,
                     "Se necesita un título para el nuevo pictograma",
@@ -463,7 +388,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                     Toast.LENGTH_LONG
                 ).show()
             } else {
-                val imagen = titulo_Dialogo.text.toString() //Nombre de la imagen
+                val imagen = titulo_Dialogo.editText?.text.toString() //Nombre de la imagen
                 val image = (img_Picto.drawable as BitmapDrawable).bitmap
 
                 //Escalar imagen
@@ -486,7 +411,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 //Añadir pictograma
                 picto.nuevoPictograma(
                     this@CrearPlanActivity,
-                    titulo_Dialogo.text.toString().uppercase(Locale.getDefault()),
+                    titulo_Dialogo.editText?.text.toString().uppercase(Locale.getDefault()),
                     ruta,
                     spinner_Dialogo.selectedItem.toString(),
                     idUsuario
@@ -495,7 +420,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
                 if (spinner_Dialogo.selectedItem.toString() == "CONSULTAS") {
                     categoria.crearCategoria(
                         this@CrearPlanActivity,
-                        titulo_Dialogo.text.toString().uppercase(Locale.getDefault())
+                        titulo_Dialogo.editText?.text.toString().uppercase(Locale.getDefault())
                     )
                 }
                 cerrarFragment()
@@ -577,7 +502,7 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     fun addPictogram(pictogram: Pictograma) {
         listaPlanificacion.add(pictogram)
         isEdited = true
-        adaptador!!.notifyDataSetChanged()
+        adaptador.notifyDataSetChanged()
     }
 
 

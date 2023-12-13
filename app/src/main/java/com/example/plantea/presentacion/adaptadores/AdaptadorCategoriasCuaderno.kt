@@ -5,10 +5,12 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
@@ -21,11 +23,17 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cuaderno_picto, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cuaderno_picto, parent, false)
         return ViewHolderPictogramas(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
+        /*val parentWidth = (fragment.view?.parent as? View)?.width ?: 0
+        val width = (parentWidth * 0.5).toInt()
+
+        val layoutParams = FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT)
+        holder.borde.layoutParams = layoutParams*/
+
         holder.titulo.text = listaPictogramas!![position].titulo
         if(isPlan && (position == listaPictogramas!!.size - 1) ){
             holder.imagen.setImageResource(R.drawable.svg_add)

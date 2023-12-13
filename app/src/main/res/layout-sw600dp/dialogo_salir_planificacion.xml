@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="700dp"
+    android:layout_height="wrap_content"
+    
+    android:background="@drawable/fondo_dialogo_login">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="65dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/svg_plan_icon" />
+    
+        <TextView
+            android:id="@+id/lbl_Logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="center"
+            android:paddingStart="70dp"
+            android:paddingEnd="70dp"
+            android:text="@string/lbl_salirPlanificacion2"
+            android:textColor="?colorOnSurface"
+            android:textSize="20sp" />
+    
+        <TextView
+            android:id="@+id/lbl_Logout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="center"
+            android:text="@string/lbl_salirPlanificacion3"
+            android:textColor="?colorOnSurface"
+            android:textSize="15sp" />
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_cancelarSalir"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/lbl_cancelar"
+                android:layout_marginEnd="20dp"
+                android:textColor="?colorOnSurface"
+                app:cornerRadius="25dp"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_salir"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textAllCaps="true"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/lbl_salirPlanificacionBotton"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

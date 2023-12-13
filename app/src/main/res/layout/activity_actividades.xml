@@ -27,15 +27,18 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="356dp" />
 
-
     <LinearLayout
         android:id="@+id/img_video"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintHeight_percent="0.65"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
         android:layout_marginStart="80dp"
+        app:layout_constraintWidth_max="500dp"
+        app:layout_constraintHeight_max="1200dp"
         android:contentDescription="Contenedor con actividades"
         app:cardBackgroundColor="#B5DFDE"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,26 +48,25 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_objeto"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             app:cardBackgroundColor="?cardBackgroundColor"
             android:layout_marginBottom="30dp"
             android:contentDescription="Tarjeta de actividad tranquilizadora"
             android:elevation="1dp"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:cardCornerRadius="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="294dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginTop="30dp"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/svg_happy" />
@@ -74,34 +76,34 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:layout_margin="10dp"
                     android:text="@string/lbl_actividades_objeto"
-                    android:textSize="20sp" />
+                    android:textSize="17sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_video"
-            android:layout_width="400dp"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:elevation="1dp"
             app:cardCornerRadius="20dp"
             android:contentDescription="Tarjeta de youtube"
-            app:cardBackgroundColor="?cardBackgroundColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:cardBackgroundColor="?cardBackgroundColor">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="294dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_marginTop="30dp"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/svg_video" />
@@ -112,12 +114,12 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
                     android:text="@string/lbl_actividades_youtube"
-                    android:textSize="20sp" />
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="17sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
-
-
 
 
     <LinearLayout
@@ -222,44 +224,46 @@
 
     <FrameLayout
         android:id="@+id/webViewFrame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="140dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_calendario"
+        android:layout_marginTop="20dp"
         android:paddingLeft="1dip"
+        android:layout_marginStart="80dp"
         android:paddingRight="1dip"
         android:visibility="invisible"
-        android:background="@drawable/bg_calendario">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.75"
+        app:layout_constraintHeight_percent="0.85">
 
         <Button
             android:id="@+id/closeYoutube"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cornerRadius="25dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="6dp"
-            android:layout_marginEnd="10dp"
-            android:text="Cerrar reproductor"
-            android:textSize="16sp"
-            android:textColor="#181F25"
             android:fontFamily="@font/montserrat_semibold"
-            app:iconGravity="textEnd"
+            android:text="Cerrar reproductor"
+            android:textColor="#181F25"
+            android:textSize="16sp"
+            app:cornerRadius="25dp"
             app:icon="@drawable/svg_close"
+            app:iconGravity="textEnd"
             app:iconSize="25dp"
-            app:iconTint="#181F25"
-            />
+            app:iconTint="#181F25" />
 
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="60dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

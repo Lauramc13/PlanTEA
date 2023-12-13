@@ -15,6 +15,13 @@ class ConfiguracionActivityTest {
 
     private lateinit var configuracionActivity: ConfiguracionActivity
 
+    val imgPlanificador :Drawable = mock(Drawable::class.java)
+    val imgUserTEA :Drawable = mock(Drawable::class.java)
+    val imgObjeto :Drawable = mock(Drawable::class.java)
+
+    var isCheckUserTEA = false
+    var isCheckObjeto = false
+
 
     @Before
     fun setUp() {
@@ -28,12 +35,29 @@ class ConfiguracionActivityTest {
 
     @Test
     fun emptyFields_returnFalse(){
-        val imgPlanificador :Drawable = mock(Drawable::class.java)
-        val imgUserTEA :Drawable = mock(Drawable::class.java)
-        val imgObjeto :Drawable = mock(Drawable::class.java)
-
-        Assert.assertFalse(configuracionActivity.comprobarCampos("","","","",imgPlanificador,imgUserTEA,imgObjeto,false,false))
+        Assert.assertFalse(configuracionActivity.comprobarCampos("","","","",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
     }
 
+    @Test
+    fun emptyPlanificador_returnFalse(){
+        Assert.assertFalse(configuracionActivity.comprobarCampos("","username","userTEA","objeto",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
+    }
+
+    @Test
+    fun emptyUsername_returnFalse(){
+        Assert.assertFalse(configuracionActivity.comprobarCampos("planificador","","userTEA","objeto",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
+    }
+
+    @Test
+    fun emptyUserTEA_returnFalse(){
+        isCheckUserTEA = true
+        Assert.assertFalse(configuracionActivity.comprobarCampos("planificador","username","","objeto",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
+    }
+
+    @Test
+    fun emptyObjeto_returnFalse(){
+        isCheckObjeto = true
+        Assert.assertFalse(configuracionActivity.comprobarCampos("planificador","username","userTEA","",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
+    }
 
 }

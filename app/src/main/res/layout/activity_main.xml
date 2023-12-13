@@ -7,6 +7,24 @@
     android:background="?background"
     tools:context=".presentacion.actividades.MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:rotationY="180"
+        app:srcCompat="@drawable/svg_blob" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:rotation="180"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/svg_blob2" />
+
     <Button
         android:id="@+id/image_RolPlanificador2"
         style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -14,14 +32,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="100dp"
         android:backgroundTint="?background"
         android:contentDescription="Preferencias"
-        app:icon="@drawable/user"
-        app:iconSize="45dp"
         android:padding="8dp"
-        app:iconTint="#ffffff"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:icon="@drawable/user"
+        app:iconSize="40dp"
+        app:iconTint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -35,84 +52,94 @@
         android:backgroundTint="?background"
         android:contentDescription="Preferencias"
         app:icon="@drawable/svg_logout"
-        app:iconSize="45dp"
+        app:iconSize="40dp"
         android:padding="8dp"
-        app:iconTint="#ffffff"
+        app:iconTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.13"
         android:fontFamily="@font/tiltneon"
         android:text="@string/app_name"
-        android:contentDescription="Título de la aplicación"
         android:textColor="@color/white"
-        android:textSize="90sp"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.148" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewPlanificador"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.25"
         android:clickable="true"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:contentDescription="Tarjeta del planificador para iniciar sesión"
-        app:cardCornerRadius="20dp"
+        android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
         android:gravity="center"
-        app:layout_constraintVertical_bias="0.4"
         app:cardBackgroundColor="?cardBackgroundColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewUsuarioTEA"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        android:layout_marginTop="20dp"
+        android:focusable="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_RolPlanificador"
                 style="@style/editText"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:contentDescription="Imagen del planificador"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
+                android:layout_weight="1"
+
                 android:background="@drawable/rounded_cardview"
+                android:contentDescription="Imagen del planificador"
                 app:srcCompat="@drawable/user" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/lbl_nombrePlanificador"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/lbl_nombre"
+                android:layout_height="wrap_content"
                 android:contentDescription="Nombre del planificador"
-                android:textColor="?colorOnSurface"
                 android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/lbl_nombre"
                 android:textAlignment="center"
+                android:textColor="?colorOnSurface"
                 android:textSize="24sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewUsuarioTEA"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.25"
         android:clickable="true"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:contentDescription="Tarjeta del planificado para iniciar sesión"
         app:cardBackgroundColor="?cardBackgroundColor"
         app:cardCornerRadius="20dp"
-        app:layout_constraintVertical_bias="0.4"
-        android:contentDescription="Tarjeta del planificado para iniciar sesión"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardViewPlanificador"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewPlanificador">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,40 +153,24 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
-                android:contentDescription="Imagen del planificado"
+                android:layout_weight="1"
                 android:background="@drawable/rounded_cardview"
+                android:contentDescription="Imagen del planificado"
                 app:srcCompat="@drawable/user" />
 
             <TextView
                 android:id="@+id/lbl_nombreUsuarioTEA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/lbl_nombre"
-                android:textColor="?colorOnSurface"
                 android:contentDescription="Nombre del planificado"
                 android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/lbl_nombre"
                 android:textAlignment="center"
+                android:textColor="?colorOnSurface"
                 android:textSize="24sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <ImageView
-        android:id="@+id/imageView6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/svg_blob"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="356dp" />
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"
-
-        app:srcCompat="@drawable/svg_blob2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

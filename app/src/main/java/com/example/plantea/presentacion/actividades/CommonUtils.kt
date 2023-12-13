@@ -286,7 +286,6 @@ class CommonUtils{
             return gridValueManager
         }
 
-
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?
             val cursor = context.contentResolver.query(uri, null, null, null, null)
@@ -303,13 +302,14 @@ class CommonUtils{
 
         private fun checkArticulos(query: String): Boolean{
             val articulos = listOf("el", "la", "los", "las", "un", "una", "unos", "unas")
-            return articulos.any { it.equals(query.toLowerCase(), ignoreCase = true) }
+            return articulos.any { it.equals(query.lowercase(Locale.getDefault()), ignoreCase = true) }
         }
 
         private fun checkPronombres(query: String): Boolean{
             val pronombres = listOf("yo", "tú", "él", "ella", "nosotros", "nosotras", "vosotros", "vosotras", "ellos", "ellas", "ustedes", "usted")
-            return pronombres.any { it.equals(query.toLowerCase(), ignoreCase = true) }
+            return pronombres.any { it.equals(query.lowercase(Locale.getDefault()), ignoreCase = true) }
         }
+
     }
 
 

@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/fondo_dialogo_login"
+    android:padding="15dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:background="@drawable/fondo_dialogo_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <ImageView
+     <ImageView
             android:id="@+id/imageView3"
             android:layout_width="65dp"
             android:layout_height="64dp"
@@ -33,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="96dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="@string/lbl_CrearPass"
+            android:text="@string/lbl_login"
             android:textColor="?colorOnSurface"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +32,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Password"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="44dp"
@@ -59,34 +48,9 @@
             app:shapeAppearance="@style/cornerRadiusLogin">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="62dp"
                 android:hint="@string/lbl_contrasena"
-                android:inputType="textPassword"
-                android:textColor="?colorOnSurface"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_Password2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="50dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textColor="?colorOnSurface"
-            android:textColorHint="?colorOnSurface"
-            app:endIconMode="password_toggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password"
-            app:shapeAppearance="@style/cornerRadiusLogin">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="300dp"
-                android:layout_height="62dp"
-                android:hint="@string/lbl_RepPass"
                 android:inputType="textPassword"
                 android:textColor="?colorOnSurface"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,22 +69,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password2"
+            app:layout_constraintTop_toBottomOf="@+id/txt_Password"
             app:layout_constraintVertical_bias="0.011" />
 
-        <ImageView
-            android:id="@+id/icono_CerrarDialogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:contentDescription="Cerrar dialogo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.961"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.051"
-            app:srcCompat="@drawable/ic_baseline_close_24" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,10 +28,10 @@ class CategoriasFragment : Fragment() {
     lateinit var cardEntretenimiento: CardView
     lateinit var interfaceCategorias: CrearPlanInterface
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val orientation = resources.configuration.orientation
-        val layoutId = if (orientation == Configuration.ORIENTATION_LANDSCAPE) R.layout.fragment_categorias else R.layout.fragment_categorias_portrait
-        vista = inflater.inflate(layoutId, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        //val orientation = resources.configuration.orientation
+        //val layoutId = if (orientation == Configuration.ORIENTATION_LANDSCAPE) R.layout.fragment_categorias else R.layout.fragment_categorias_portrait
+        vista = inflater.inflate(R.layout.fragment_categorias, container, false)
         cardMedico = vista.findViewById(R.id.categoria_medico)
         cardCompra = vista.findViewById(R.id.categoria_compra)
         cardPeluqueria = vista.findViewById(R.id.categoria_peluqueria)

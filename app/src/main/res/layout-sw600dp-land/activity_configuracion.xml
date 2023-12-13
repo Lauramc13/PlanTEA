@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?customBgColor"
+    tools:context=".presentacion.actividades.ConfiguracionActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="180"
+        android:layout_marginEnd="-30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="?backgroundSplit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/goBackButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:padding="15dp"
+            app:backgroundTint="?colorSecondaryContainer"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/svg_go_back"
+            app:iconSize="28dp"
+            app:iconTint="?colorOnSurface" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Preferencias"
+            android:textSize="23sp" />
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/materialDivider"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
+        android:layout_height="2dp"/>
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider"
+        tools:context=".presentacion.actividades.ConfiguracionActivity">
+
+        <LinearLayout
+            android:layout_width="1000dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Contenedor con la configuración del usuario"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_cards_configuracion"
+                android:contentDescription="Contenedor del planificador"
+                android:elevation="0dp">
+
+                <TextView
+                    android:id="@+id/lbl_infoPlanificador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="Titulo, información del planificador"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/lbl_infoPlanificador"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Usuario responsable de crear y gestionar planificaciones"
+                    android:textColor="?colorOutline"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador" />
+
+
+                <RelativeLayout
+                    android:id="@+id/id_card_Planificador"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@drawable/card_personalizado"
+                    android:elevation="0dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
+                    app:layout_constraintHorizontal_bias="0.435"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_FotoPlanificador"
+                        style="@style/addPhotoBackground"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/ic_baseline_add_photo_alternate_128"
+                        android:contentDescription="Añadir imagen del planificador"
+                        app:shapeAppearance="@style/cornerRadius" />
+
+                    <ImageView
+                        android:id="@+id/id_editIcon"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="35dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.90"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_nombrePlanificador"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="340dp"
+                        android:layout_height="60dp"
+                        android:contentDescription="Campo de texto con nombre del planificador"
+                        android:ems="10"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:hint="Nombre"
+                        android:inputType="textPersonName"
+                        android:maxLength="14"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="?colorOnSurface"
+                        android:textCursorDrawable="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cursorVisible="true"
+                            android:inputType="text"
+                            android:textColor="?colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_nombreUsuarioPlanificador"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="340dp"
+                        android:layout_height="60dp"
+                        android:contentDescription="Campo de texto con nombre de usuario del planificador"
+                        android:ems="10"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:hint="Nombre de usuario"
+                        android:inputType="textPersonName"
+                        android:maxLength="14"
+                        android:textColor="?colorOnSurface"
+                        android:textCursorDrawable="@null"
+                        android:layout_marginBottom="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
+                        app:layout_constraintVertical_bias="0.214">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cursorVisible="true"
+                            android:inputType="text"
+                            android:textColor="?colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_correoPlanificador"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="340dp"
+                        android:layout_height="60dp"
+                        android:contentDescription="Campo de texto con correo del planificador"
+                        android:ems="10"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:hint="Correo electrónico"
+                        android:inputType="textPersonName"
+                        android:maxLength="14"
+                        android:enabled="false"
+                        android:textColor="?colorOnSurface"
+                        android:textCursorDrawable="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
+                        app:layout_constraintVertical_bias="0.214">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cursorVisible="true"
+                            android:inputType="text"
+                            android:textColor="?colorOnSurface" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+
+
+                <!--<Button
+                    android:id="@+id/buttonContrasenia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_password"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:textColor="#203130"
+                    android:textSize="12sp"
+                    app:cornerRadius="25dp"
+                    android:contentDescription="Boton para cambiar contraseña del usuario"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_cards_configuracion"
+                android:contentDescription="Contenedor del planificado"
+                android:elevation="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/id_card_UsuarioTEA"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="35dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/card_personalizado"
+                    android:elevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_nombreUsuarioTEA"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_FotoUsuarioTEA"
+                        style="@style/addPhotoBackground"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/svg_add_photo"
+                        android:contentDescription="Añadir imagen del planificado"
+                        app:shapeAppearance="@style/cornerRadius" />
+
+                    <ImageView
+                        android:id="@+id/id_editIconUsuario"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg" />
+                </RelativeLayout>
+
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/lbl_infoUsuarioTEA"
+                    style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="top"
+                    android:contentDescription="Interruptor, información del planificado"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/lbl_infoUsuarioTEA"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Usuario capaz de ver y seguir las planificaciones"
+                    android:textColor="?colorOutline"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_infoUsuarioTEA" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_nombreUsuarioTEA"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="340dp"
+                    android:layout_height="60dp"
+                    android:contentDescription="Campo de texto con nombre del usuario TEA"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Nombre"
+                    android:inputType="textPersonName"
+                    android:maxLength="14"
+                    android:textColor="?colorOnSurface"
+                    android:textCursorDrawable="@null"
+                    android:layout_marginTop="35dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:cursorVisible="true"
+                        android:inputType="text"
+                        android:textColor="?colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_cards_configuracion"
+                android:contentDescription="Contenedor de la actividad tranquilizadora"
+                android:elevation="0dp">
+
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/lbl_objeto"
+                    style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="top"
+                    android:contentDescription="Interruptor, información de la actividad tranquilizadora"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/lbl_infoactividad"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:theme="@style/Switches" />
+
+                <TextView
+                    android:layout_width="290dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Representa el objeto que calma a la persona con TEA"
+                    android:textColor="?colorOutline"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_objeto" />
+
+                <RelativeLayout
+                    android:id="@+id/id_card_Objeto"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="35dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/card_personalizado"
+                    android:elevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_nombreObjeto"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_objeto"
+                        style="@style/addPhotoBackground"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/svg_add_photo"
+                        android:contentDescription="Añadir imagen de la actividad tranquilizadora"
+                        app:shapeAppearance="@style/cornerRadius" />
+
+                    <ImageView
+                        android:id="@+id/id_editIconObjeto"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg" />
+                </RelativeLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_nombreObjeto"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="340dp"
+                    android:layout_height="60dp"
+                    android:contentDescription="Campo de texto con nombre del usuario TEA"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:hint="Nombre"
+                    android:inputType="textPersonName"
+                    android:maxLength="14"
+                    android:textColor="?colorOnSurface"
+                    android:textCursorDrawable="@null"
+                    android:layout_marginTop="35dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.9"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:cursorVisible="true"
+                        android:inputType="text"
+                        android:textColor="?colorOnSurface" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_cards_configuracion"
+                android:contentDescription="Contenedor de la configuración de las notificaciones"
+                android:elevation="0dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_notificacion"
+                    style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="top"
+                    android:contentDescription="Notificaciones de los eventos"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="@string/lbl_configuracion_notificaciones"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="20sp"
+                    app:theme="@style/Switches" />
+
+                <CheckBox
+                    android:id="@+id/checkBox_hora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:contentDescription="Casilla de 1 hora antes"
+                    android:enabled="false"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_configuracion_notificaciones_1"
+                    android:textColor="?colorOnSurface"
+                    app:buttonTint="?colorPrimary" />
+
+                <CheckBox
+                    android:id="@+id/checkBox_dia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:contentDescription="Casilla de 1 día antes"
+                    android:enabled="false"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_configuracion_notificaciones_2"
+                    android:textColor="?colorOnSurface"
+                    app:buttonTint="?colorPrimary" />
+
+                <CheckBox
+                    android:id="@+id/checkBox_semana"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:checked="false"
+                    android:contentDescription="Casilla de 1 sesmana antes"
+                    android:enabled="false"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_configuracion_notificaciones_3"
+                    android:textColor="?colorOnSurface"
+                    app:buttonTint="?colorPrimary" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_guardarConfiguracion"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="200dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:contentDescription="Boton guardar configuración"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/btn_Guardar"
+                android:textColor="#203130"
+                app:cornerRadius="25dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/btn_credits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15.5sp"
+                android:padding="10dp"
+                android:text="Acerca de la aplicación"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

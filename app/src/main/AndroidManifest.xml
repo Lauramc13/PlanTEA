@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +27,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ConfiguracionActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Preferencias"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
@@ -54,7 +53,7 @@
         <activity
             android:name=".presentacion.actividades.ninio.CuadernoActivity"
             android:label="Cuaderno de comunicación"
-            android:configChanges="orientation|screenSize|screenLayout"
+            android:configChanges="screenSize|screenLayout"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -76,7 +75,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:configChanges="screenSize|screenLayout|keyboardHidden"
             android:screenOrientation="fullSensor"
             android:label=""
             android:windowSoftInputMode="adjustPan" />

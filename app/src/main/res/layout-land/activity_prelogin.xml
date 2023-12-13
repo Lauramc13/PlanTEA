@@ -9,181 +9,203 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="1100dp"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.8"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:rotationY="180"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/backgroundlogin" />
+        app:srcCompat="@drawable/background_login_land_svg" />
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout8"
-        android:layout_width="600dp"
+    <ScrollView
+        android:id="@+id/scrollRegister"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="¡Bienvenido de nuevo!"
-            android:textColor="?colorOnSurface"
-            android:textSize="30sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_Email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="340dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="Campo de texto nombre de usuario"
-            android:ems="10"
-            android:fontFamily="@font/montserrat_regular"
-            android:hint="@string/lbl_email"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            app:shapeAppearance="@style/cornerRadiusLogin">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:cursorVisible="true"
-                android:inputType="text"
-                android:textColor="?colorOnSurface" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_Password"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="340dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_texto_login"
-            android:contentDescription="Campo de texto contraseña"
-            android:ems="10"
-            android:fontFamily="@font/montserrat_regular"
-            android:hint="@string/lbl_contrasena"
-            android:inputType="textPassword"
-            android:textColor="?colorOnSurface"
-            app:endIconMode="password_toggle"
-            app:layout_constraintStart_toStartOf="@+id/txt_UserName"
-            app:layout_constraintTop_toBottomOf="@+id/txt_UserName"
-            app:shapeAppearance="@style/cornerRadiusLogin">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPassword"
-                android:textColor="?colorOnSurface" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btn_login"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="340dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="Boton iniciar sesion"
-            android:elevation="0dp"
-            android:fontFamily="@font/montserrat_semibold"
-            android:maxWidth="10dp"
-            android:text="@string/lbl_iniciarSesion"
-            android:textColor="#203130"
-            android:textSize="14sp"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
-
-        <TextView
-            android:id="@+id/btn_olvidar"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_contraseniaOlvidada"
-            android:textColor="?colorOnSurface"
-            android:fontFamily="@font/montserrat_semibold"
-            android:gravity="center"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/svg_separador" />
-
-        <Button
-            android:id="@+id/Signin"
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
-            android:layout_width="340dp"
-            android:layout_height="58dp"
-            android:contentDescription="Boton iniciar sesion"
-            android:fontFamily="@font/montserrat_semibold"
-            android:text="INICIAR SESIÓN CON GOOGLE"
-            android:textColor="?colorOnSurface"
-            android:textSize="14sp"
-            app:cornerRadius="10dp"
-            app:icon="@drawable/svg_google_icon"
-            app:iconSize="28dp"
-            app:iconTint="@null"
-            app:strokeWidth="1dp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/btn_registrar"
-        android:layout_width="600dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="40dp"
-        android:contentDescription="Boton registrarse"
-        android:fontFamily="@font/montserrat_semibold"
-        android:gravity="center"
-        android:paddingEnd="5dp"
-        android:text="@string/lbl_noCuenta"
-        android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="90dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.296"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="360dp"
+        app:layout_constraintWidth_percent="0.35">
 
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center"
+                android:text="@string/bienvenido_de_nuevo"
+                android:textColor="?colorOnSurface"
+                android:textSize="20sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_Email"
+                style="@style/customTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="Campo de texto nombre de usuario"
+                android:ems="10"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/lbl_email"
+                android:inputType="text"
+                android:textColor="?colorOnSurface"
+                app:shapeAppearance="@style/cornerRadiusLogin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/customTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cursorVisible="true"
+                    android:inputType="text"
+                    android:textSize="16sp"
+                    android:textColor="?colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_Password"
+                style="@style/customTextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/fondo_texto_login"
+                android:contentDescription="Campo de texto contraseña"
+                android:ems="10"
+                android:fontFamily="@font/montserrat_regular"
+                android:hint="@string/lbl_contrasena"
+                android:inputType="textPassword"
+                android:textColor="?colorOnSurface"
+                app:endIconMode="password_toggle"
+                app:layout_constraintStart_toStartOf="@+id/txt_UserName"
+                app:layout_constraintTop_toBottomOf="@+id/txt_UserName"
+                app:shapeAppearance="@style/cornerRadiusLogin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/customTextInputLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:textSize="16sp"
+                    android:textColor="?colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_login"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="Boton iniciar sesion"
+                android:elevation="0dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:maxWidth="10dp"
+                android:text="@string/lbl_iniciarSesion"
+                android:textColor="#203130"
+                android:textSize="14sp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
+
+            <TextView
+                android:id="@+id/btn_olvidar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center"
+                android:text="@string/lbl_contraseniaOlvidada"
+                android:textColor="?colorOnSurface" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/svg_separador" />
+
+            <Button
+                android:id="@+id/Signin"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?configuracionCardBg"
+                android:contentDescription="Boton iniciar sesion"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="INICIAR SESIÓN CON GOOGLE"
+                android:textColor="?colorOnSurface"
+                android:textSize="14sp"
+                app:cornerRadius="10dp"
+                android:autoSizeTextType="uniform"
+                app:icon="@drawable/svg_google_icon"
+                app:iconSize="28dp"
+                app:iconTint="@null"
+                app:strokeWidth="1dp" />
+
+            <TextView
+                android:id="@+id/btn_registrar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="30dp"
+                android:contentDescription="Boton registrarse"
+                android:fontFamily="@font/montserrat_semibold"
+                android:gravity="center"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:text="@string/lbl_noCuenta"
+                android:textColor="?colorOnSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="30dp">
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/my_image"
             android:layout_width="63dp"
             android:layout_height="63dp"
             android:src="@drawable/svg_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/my_image"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/tiltneon"
             android:text="PlanTEA"
             android:textColor="?colorOnSurface"
             android:textSize="24sp"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/tiltneon" />
+            app:layout_constraintStart_toEndOf="@+id/my_image"
+            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="650dp"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.40"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"

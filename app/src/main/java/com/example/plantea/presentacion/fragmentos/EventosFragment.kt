@@ -50,7 +50,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     var evento = Evento()
     var plan = Planificacion()
     
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_eventos, container, false)
         diaEvento = vista.findViewById(R.id.txt_dia_eventos)

@@ -5,7 +5,6 @@
         android:checkable="true"
         android:icon="@drawable/svg_home"
         android:title="Inicio"/>
-
     <item
         android:id="@+id/planificacion"
         android:enabled="true"
@@ -30,6 +29,4 @@
         android:checkable="true"
         android:icon="@drawable/svg_translation"
         android:title="Traductor"/>
-
-
 </menu>

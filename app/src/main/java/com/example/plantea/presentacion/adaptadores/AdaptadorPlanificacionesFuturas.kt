@@ -18,9 +18,7 @@ class AdaptadorPlanificacionesFuturas(var list : ArrayList<PlanificacionItem>, p
 
     }
 
-
     inner class ViewHolderPlanFuturos(itemView : View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
         val title = itemView.findViewById<TextView>(R.id.titleNotification)
         val date = itemView.findViewById<TextView>(R.id.dateNotification)
 

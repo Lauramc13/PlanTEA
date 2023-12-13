@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     var usuario = Usuario()
     private var infoUsuario = false
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+   /* override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         // Comprobamos la orientacion de la pantalla
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
     override fun onResume() {
         super.onResume()

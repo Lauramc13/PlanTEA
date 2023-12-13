@@ -39,7 +39,7 @@ class PreLoginActivity : AppCompatActivity(){
     private lateinit var background: ImageView
     private lateinit var signin : Button
     private lateinit var prefs : SharedPreferences
-    private lateinit var auth: FirebaseAuth
+    lateinit var auth: FirebaseAuth
 
     var usuario = Usuario()
     var user = Usuario()
@@ -91,11 +91,11 @@ class PreLoginActivity : AppCompatActivity(){
         }
 
         val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        if (isDarkMode) {
+        /*if (isDarkMode) {
             background.setImageResource(R.drawable.backgroundlogindark)
         } else {
             background.setImageResource(R.drawable.backgroundlogin)
-        }
+        }*/
 
         btnLogin = findViewById(R.id.btn_login)
         btnRegister = findViewById(R.id.btn_registrar)

@@ -20,6 +20,7 @@ import com.example.plantea.presentacion.actividades.planificador.CalendarioActiv
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -57,8 +58,8 @@ class NavegacionUtils {
         icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
         btn_acceder.setOnClickListener {
             if (password.editText?.text.toString() == "") {
-                Toast.makeText(context.applicationContext, "Introduce la contraseña", Toast.LENGTH_LONG)
-                    .show()
+                password.error = "El campo no puede estar vacío"
+
             } else {
                 val email = prefs.getString("email", "")
                 if(email != null){
@@ -75,7 +76,7 @@ class NavegacionUtils {
                             context.finishAffinity()
                             dialogLogin.dismiss()
                         }else{
-                            Toast.makeText(context.applicationContext, "Error en la contraseña", Toast.LENGTH_LONG).show()
+                            password.error = "La contraseña introducida no es correcta"
 
                         }
                     }
@@ -159,15 +160,14 @@ class NavegacionUtils {
         }
 
     fun configurarDatos(context: AppCompatActivity, id: Int){
-
-        val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
+        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
 
         navigationView = context.findViewById(R.id.navigationView)
 
         iconoRol = navigationView.findViewById(R.id.iconoRol)
         textoRol = navigationView.findViewById(R.id.textRol)
         navigationView.menu.clear()
-        if (info_usuario) {
+        if (infoUsuario) {
             navigationView.inflateMenu(R.menu.navigation_rail_menu)
             textoRol.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
@@ -232,7 +232,6 @@ class NavegacionUtils {
         buttonMenu = context.findViewById(R.id.item_menu)
         navigationView = context.findViewById(R.id.navigationView)
         buttonAccount = navigationView.findViewById(R.id.accountButton)
-
 
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener { item ->

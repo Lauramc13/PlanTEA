@@ -60,7 +60,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var tituloObtenido: String
     private lateinit var buttonPlanNuevo : Button
     private lateinit var iconoEscuchar: Button
-    private lateinit var iconoReproducir: com.google.android.material.button.MaterialButton
+    private lateinit var iconoReproducir: Button
     private lateinit var iconoDeshacer: Button
     private lateinit var iconoDeshacerTodas: Button
     private lateinit var iconoMarcar: Button
@@ -457,21 +457,22 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     private fun reproducirEvento(tiempo: Long) {
+        val drawableIconStop = ContextCompat.getDrawable(this, R.drawable.svg_stop)
+        val drawableIconPlay = ContextCompat.getDrawable(this, R.drawable.svg_play)
+
         if(isRunning){
             val targetHeight = 170.dpToPx(this).toFloat()
             val targetWidth = 200.dpToPx(this).toFloat()
             animationReproduccion(targetHeight, targetWidth, currentPosition, 1f)
-            iconoReproducir.icon = ContextCompat.getDrawable(this, R.drawable.svg_play)
+            iconoReproducir.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableIconPlay, null)
             iconoDeshacer.isEnabled = true
             iconoMarcar.isEnabled = false
             iconoMarcarTodas.isEnabled = false
             iconoDeshacerTodas.isEnabled = true
             iconoDeshacerTodas.performClick()
             stopReproductor()
-
         }else{
-            iconoReproducir.icon = ContextCompat.getDrawable(this, R.drawable.svg_stop)
-
+            iconoReproducir.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableIconStop, null)
             iconoDeshacerTodas.performClick()
             iconoMarcar.isEnabled = false
             iconoDeshacer.isEnabled = false
@@ -496,8 +497,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                             iconoMarcar.isEnabled = false
                             iconoMarcarTodas.isEnabled = false
                             iconoDeshacerTodas.isEnabled = true
-                            iconoReproducir.icon = ContextCompat.getDrawable(applicationContext, R.drawable.svg_play)
-
+                            iconoReproducir.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableIconPlay, null)
                         }
                         currentPosition++
                     }
@@ -850,9 +850,9 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             ?.scaleX(targetWidth / viewHolderPictogramas.itemView.width)
             ?.scaleY(targetHeight / viewHolderPictogramas.itemView.height)
             ?.withEndAction {
-                viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card_picto)
                     ?.layoutParams?.height = targetHeight.toInt()
-                viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card_picto)
+                viewHolderPictogramas.itemView.findViewById<View>(R.id.id_card_picto)
                     ?.layoutParams?.width = targetWidth.toInt()
             }
 

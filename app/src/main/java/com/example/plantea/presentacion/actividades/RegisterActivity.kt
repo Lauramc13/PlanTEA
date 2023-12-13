@@ -234,37 +234,34 @@ class RegisterActivity : AppCompatActivity(){
 
         // TODO: ORGANIZAR ESTO
         if (isAccountValid.isValid) {
-            if (usuario.crearUsuario(name, email, username, objeto, namePlanificado, this@RegisterActivity)) {
-                val id = usuario.consultarId(email, this@RegisterActivity)
-                val editor = prefs.edit()
-                editor.putString("idUsuario", id)
-                editor.putString("nombreUsuarioPlanificador", username)
-                editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
-                editor.putBoolean("info_objeto", checkObjeto.isChecked)
-                editor.putString("email", email)
-                editor.putString("nombrePlanificador", name)
-                editor.putString("nombreUsuarioTEA", namePlanificado)
-                editor.putString("nombreObjeto", objeto)
-                editor.putBoolean("editPreferences", false)
-                editor.apply()
+            auth.currentUser
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        // El registro ha fallado
+                        Log.w("Registration", "createUserWithEmail:failure", task.exception)
+                        txtUsername.error = "El nombre de usuario o correo introducido ya existe"
+                        txtEmail.error = "El nombre de usuario o correo introducido ya existe"
+                    }else{
+                        usuario.crearUsuario(name, email, username, objeto, namePlanificado, this@RegisterActivity)
+                        val id = usuario.consultarId(email, this@RegisterActivity)
+                        val editor = prefs.edit()
+                        editor.putString("idUsuario", id)
+                        editor.putString("nombreUsuarioPlanificador", username)
+                        editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
+                        editor.putBoolean("info_objeto", checkObjeto.isChecked)
+                        editor.putString("email", email)
+                        editor.putString("nombrePlanificador", name)
+                        editor.putString("nombreUsuarioTEA", namePlanificado)
+                        editor.putString("nombreObjeto", objeto)
+                        editor.putBoolean("editPreferences", false)
+                        editor.apply()
 
-                auth.currentUser
-                //Guardamos los datos en firebase
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-
-                        if (!task.isSuccessful) {
-                            // El registro ha fallado
-                            Log.w("Registration", "createUserWithEmail:failure", task.exception)
-                        }
+                        val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     }
-                val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                txtUsername.error = "El nombre de usuario o correo introducido ya existe"
-                txtEmail.error = "El nombre de usuario o correo introducido ya existe"
-            }
+                }
         }
         return isAccountValid.errorMessage ?: ""
     }

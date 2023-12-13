@@ -27,6 +27,7 @@
         app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout
+        android:id="@+id/linearLayout16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
@@ -40,18 +41,18 @@
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/transparent"
             app:cornerRadius="25dp"
             app:icon="@drawable/svg_go_back"
             app:iconSize="35dp"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/transparent" />
+            app:iconTint="?colorOnSurface" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_semibold"
             android:text="@string/cuaderno_de_com"
-            android:textSize="22sp"
-            android:fontFamily="@font/montserrat_semibold" />
+            android:textSize="22sp" />
 
     </LinearLayout>
 <!--
@@ -85,16 +86,17 @@
 
     <FrameLayout
         android:id="@+id/layout_fragments"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.7"
         android:layout_marginStart="110dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="80dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout16"
+        app:layout_constraintWidth_percent="0.9">
 
     </FrameLayout>
 

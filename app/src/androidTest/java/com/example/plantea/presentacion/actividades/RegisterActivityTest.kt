@@ -1,11 +1,20 @@
 package com.example.plantea.presentacion.actividades
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Rule
+import com.example.plantea.R
+import org.junit.Before
 import org.junit.Test
+
+
 
 class RegisterActivityTest{
     private lateinit var resource : RegisterActivity
@@ -54,7 +63,6 @@ class RegisterActivityTest{
     @Test
     fun empty_Name2ReturnFalse(){
         assertFalse(resource.comprobarTextViewsVacios("username", "password", "password2", "name", "email", "object", "", false, true))
-
     }
 
     @Test
@@ -98,13 +106,11 @@ class RegisterActivityTest{
         assertFalse(resource.isAccountValid("correo@gmail.com", "password", "password2", false).isValid)
     }
 
-   /* @Test
-    fun clickRegister(){
-        onView(withId(R.id.btn_register)).perform(click()).perform(click())
-    }*/
-
     //Test que si se pulsa el botonAyuda, se muestra el tooltip
-
-    //Test que si se pulsa el  backButton, se vuelve atras a la pantalla de login
-
+    @Test
+    fun toolTip_isVisible(){
+        //onView(withId(R.id.scrollRegister)).perform(scrollTo(), click())
+        onView(withId(R.id.buttonAyudaActividad)).perform(click())
+        onView(withId(R.id.tooltipText)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+    }
 }

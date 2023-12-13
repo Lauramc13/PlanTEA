@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/svg_blob"
-        app:tint="@color/seedLight" />
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -26,7 +27,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/svg_blob"
-        app:tint="@color/seedLight" />
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -69,138 +71,124 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
         android:layout_height="2dp"/>
 
-        <ScrollView
-            android:id="@+id/scrollview"
-            android:layout_width="600dp"
-            android:layout_height="550dp"
-            android:layout_marginStart="100dp"
-            android:background="@drawable/fondo_cuaderno_tiempo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:padding="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/svg_info" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sobre la organización"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/montserrat_bold"/>
-
-            </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:justificationMode="inter_word"
-                    android:text="@string/str_parrafo1"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:justificationMode="inter_word"
-                    android:text="@string/str_parrafo2"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:layout_marginBottom="15dp"
-                    android:justificationMode="inter_word"
-                    android:text="@string/str_parrafo3"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:layout_marginBottom="7dp"
-                    android:text="Sobre el Grupo CHICO"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:layout_marginBottom="10dp"
-                    android:justificationMode="inter_word"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/str_parrafo4"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:justificationMode="inter_word"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text="@string/str_parrafo5"/>
-            </LinearLayout>
-
-
-
-        </ScrollView>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="550dp"
-        android:layout_marginStart="30dp"
-        android:orientation="vertical"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/scrollview"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
+        app:layout_constraintWidth_percent="0.9">
 
-        <ScrollView
-            android:layout_width="450dp"
-            android:layout_height="0dp"
-            android:padding="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/fondo_cuaderno_tiempo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/fondo_cuaderno_tiempo"
+                android:padding="20dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/svg_info" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Sobre la organización"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:justificationMode="inter_word"
+                    android:text="@string/str_parrafo1"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:justificationMode="inter_word"
+                    android:text="@string/str_parrafo2"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:justificationMode="inter_word"
+                    android:text="@string/str_parrafo3"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Sobre el Grupo CHICO"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:justificationMode="inter_word"
+                    android:text="@string/str_parrafo4"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:justificationMode="inter_word"
+                    android:text="@string/str_parrafo5"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/fondo_cuaderno_tiempo"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="35dp"
@@ -210,203 +198,195 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Licencias de código abierto"
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Licencias de código abierto"
                         android:textColor="?colorOnSurface"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/montserrat_bold"/>
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_bold"
                     android:layout_marginBottom="7dp"
-                    android:text="Ilustraciones"/>
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Ilustraciones"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:text="Centro Aragonés para la Comunicación Aumentativa y Alternativa"/>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Centro Aragonés para la Comunicación Aumentativa y Alternativa"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/arasaacLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="?customLinkColor"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="5dp"
-                    android:text="Condiciones de uso, Noviembre 2023"/>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Condiciones de uso, Noviembre 2023"
+                    android:textColor="?customLinkColor"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:text="manypixels"/>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="manypixels"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/manypixelsLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="?customLinkColor"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
-                    android:text="Terms of Service, 25 de Enero, 2019"/>
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Terms of Service, 25 de Enero, 2019"
+                    android:textColor="?customLinkColor"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:text="Freepik"/>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Freepik"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/freepikLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="?customLinkColor"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Terms of Use, Marzo, 2023"/>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Terms of Use, Marzo, 2023"
+                    android:textColor="?customLinkColor"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/montserrat_bold"
                     android:layout_marginBottom="7dp"
-                    android:text="Iconos"/>
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Iconos"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="17sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="SVG Repo"/>
+                    android:text="SVG Repo"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/svgRepoLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="?customLinkColor"
-                    android:fontFamily="@font/montserrat_medium"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="SVG Repo License, 03 de Enero, 2023"/>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="SVG Repo License, 03 de Enero, 2023"
+                    android:textColor="?customLinkColor"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?colorOnSurface"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="Flaticon"/>
+                    android:text="Flaticon"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/flatIconLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="?customLinkColor"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/montserrat_medium"
-                    android:layout_marginStart="10dp"
-                    android:text="Terms of Use, Junio, 2022"/>
-
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="450dp"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:background="@drawable/fondo_cuaderno_tiempo"
-            android:layout_marginTop="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/svg_terms"/>
-
-                <TextView
-                    android:id="@+id/txt_terms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Términos de servicio"
-                    android:textColor="?colorOnSurface"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/montserrat_bold"/>
-
+                    android:text="Terms of Use, Junio, 2022"
+                    android:textColor="?customLinkColor"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@drawable/fondo_cuaderno_tiempo"
+                android:orientation="vertical"
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
 
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/svg_privacy" />
-
-                <TextView
-                    android:id="@+id/txt_privacy"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Política de privacidad"
-                    android:layout_gravity="center"
-                    android:textColor="?colorOnSurface"
-                    android:layout_marginStart="10dp"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/montserrat_bold"/>
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/svg_terms" />
+
+                    <TextView
+                        android:id="@+id/txt_terms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Términos de servicio"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/svg_privacy" />
+
+                    <TextView
+                        android:id="@+id/txt_privacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="Política de privacidad"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="18sp" />
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
-
-
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

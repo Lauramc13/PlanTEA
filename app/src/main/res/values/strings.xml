@@ -138,7 +138,7 @@
     <string name="lbl_salirPlanificacion">Salir de la planificación</string>
     <string name="lbl_salirPlanificacion2">¿Estas segur@ que quieres salir de la planificación?</string>
     <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>
-    <string name="lbl_salirPlanificacionBotton">Salir de la planificación</string>
+    <string name="lbl_salirPlanificacionBotton">Salir</string>
     <string name="lbl_contraseniaOlvidada">¿Has olvidado la contraseña?</string>
     <string name="lbl_manual">Manual de usuario</string>
 
@@ -175,6 +175,20 @@
     <string name="lbl_tulo">Título</string>
     <string name="lbl_borrarCuaderno">¿Estas seguro que quiere borrar el cuaderno seleccionado?</string>
     <string name="lbl_borrarCuadernoBotton">Borrar cuaderno</string>
+    <string name="tarjeta_de_actividad_tranquilizadora">Tarjeta de actividad tranquilizadora</string>
+    <string name="tarjeta_de_youtube">Tarjeta de youtube</string>
+    <string name="cerrar_reproductor">Cerrar reproductor</string>
+    <string name="actividades">Actividades</string>
+    <string name="bienvenido_de_nuevo">¡Bienvenido de nuevo!</string>
+    <string name="tarjeta_del_planificador_para_iniciar_sesi_n">Tarjeta del planificador para iniciar sesión</string>
+    <string name="la_actividad_es">La actividad es:</string>
+    <string name="crear_categoria">CREAR CUADERNO</string>
+    <string name="cerrar_dialogo">Cerrar dialogo</string>
+    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Elige un avatar para la actividad/objeto que calma a la persona con TEA</string>
+    <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Elige un avatar para la persona que va a crear y gestionar las planificaciones</string>
+    <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Elige un avatar para la persona que va a seguir las planificaciones</string>
+    <string name="planificaciones">Planificaciones</string>
+    <string name="planificaciones_futuras">Planificaciones futuras</string>
 
 
 </resources>

@@ -218,6 +218,7 @@ class ConfiguracionActivity : AppCompatActivity() {
             val username = txtUsernamePlanificador.editText?.text.toString()
             var nombreObjeto = txtObjeto.editText?.text.toString()
 
+            //if drawable doesnt exists, set it to null
             val isValid = comprobarCampos(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, imgUsuarioPlanificador.drawable, imgUsuarioTEA.drawable, imgObjeto.drawable, lblInfoUsuario.isChecked, lblObjeto.isChecked)
 
             if(isValid){
@@ -278,19 +279,19 @@ class ConfiguracionActivity : AppCompatActivity() {
     }
 
 
-    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, txtUsuarioTEAText: String, txtObjetoText: String, imgPlanificador: Drawable, imgUserTEA: Drawable, imageObjeto: Drawable, infoUserTEA: Boolean, infoObjeto: Boolean): Boolean {
+    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, txtUsuarioTEAText: String, txtObjetoText: String, imgPlanificador: Drawable?, imgUserTEA: Drawable?, imageObjeto: Drawable?, infoUserTEA: Boolean, infoObjeto: Boolean): Boolean {
         if (txtPlanificadorText.isEmpty() || txtUsernameText.isEmpty() || txtUsuarioTEAText.isEmpty() && infoUserTEA) {
-            Toast.makeText(applicationContext, "Se necesita un nombre para cada usuario", Toast.LENGTH_LONG).show()
+           runOnUiThread { Toast.makeText(applicationContext, "Se necesita un nombre para cada usuario", Toast.LENGTH_LONG).show() }
             return false
         }
 
         if (imgPlanificador == null || (imgUserTEA == null && infoUserTEA)) {
-            Toast.makeText(applicationContext, "Se necesita una imagen para cada usuario", Toast.LENGTH_LONG).show()
+            runOnUiThread { Toast.makeText(applicationContext, "Se necesita una imagen para cada usuario", Toast.LENGTH_LONG).show()}
             return false
         }
 
         if ((txtObjetoText.isEmpty() || imageObjeto == null) && infoObjeto) {
-            Toast.makeText(applicationContext, "Se necesita una imagen y nombre del objeto tranquilizador", Toast.LENGTH_LONG).show()
+            runOnUiThread { Toast.makeText(applicationContext, "Se necesita una imagen y nombre del objeto tranquilizador", Toast.LENGTH_LONG).show()}
             return false
         }
         return true

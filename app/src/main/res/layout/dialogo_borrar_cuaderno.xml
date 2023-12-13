@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:background="@drawable/fondo_dialogo_login">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:background="@drawable/fondo_dialogo_login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="65dp"
             android:layout_height="64dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/lbl_borrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/svg_borrar_cuaderno" />
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/svg_borrar_cuaderno"
+            android:importantForAccessibility="no" />
 
         <TextView
             android:id="@+id/lbl_borrar"
@@ -31,30 +28,27 @@
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/lbl_borrarCuaderno"
             android:textColor="?colorOnSurface"
-            android:textSize="22sp"
+            android:textSize="18sp"
+            android:maxLines="2"
+            android:autoSizeMinTextSize="20sp"
+            app:autoSizeTextType="uniform"
             android:gravity="center"
             android:paddingEnd="40dp"
-            android:paddingStart="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingStart="40dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_borrar">
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/btn_cancelar"
                 style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="20dp"
+                android:layout_height="wrap_content"
                 android:textColor="#203130"
                 app:cornerRadius="25dp"
                 android:textSize="14sp"
@@ -64,19 +58,20 @@
 
             <Button
                 android:id="@+id/btn_borrar"
+                style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginBottom="20dp"
+                android:layout_height="wrap_content"
                 android:textColor="#203130"
                 app:cornerRadius="25dp"
                 android:textSize="14sp"
+                android:textAllCaps="true"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="@string/lbl_borrarCuadernoBotton" />
 
 
         </LinearLayout>
 
+    </LinearLayout>
 
 
         <ImageView
@@ -84,14 +79,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:contentDescription="Cerrar dialogo"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.961"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.051"
+            android:layout_margin="20dp"
             app:srcCompat="@drawable/ic_baseline_close_24" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

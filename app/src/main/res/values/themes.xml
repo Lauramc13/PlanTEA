@@ -49,10 +49,9 @@
         <item name="android:colorControlNormal">@color/pizarraBorde</item>
         <item name="android:solidColor">@color/pizarraContenido</item>
         <item name="boxBackgroundColor">@color/md_theme_light_primary</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/md_theme_light_primary</item>
+       <!-- <item name="android:windowSplashScreenIconBackgroundColor">@color/md_theme_light_primary</item>
         <item name="android:windowSplashScreenAnimationDuration">1000</item>
-        <item name="android:windowSplashScreenBackground">@color/md_theme_light_primary</item>
-
+        <item name="android:windowSplashScreenBackground">@color/md_theme_light_primary</item>-->
 
         <!-- CUSTOM ITEMS -->
         <item name="customBgColor">@color/lightGray</item>
@@ -64,13 +63,17 @@
         <item name="configuracionCardBorder">@color/md_theme_light_surfaceVariant</item>
         <item name="gray">@color/semiGray</item>
         <item name="grayStroke">@color/gray2</item>
-
-
+        <item name="greenLight">@color/greenLight</item>
     </style>
 
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@drawable/ic_search_24dp</item>
         <item name="closeIcon">@drawable/ic_search_24dp</item>
+    </style>
+    
+    <style name="customTextInputLayout" parent="Widget.Material3.NavigationView">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="backgroundTint">@color/white</item>
     </style>
 
     <style name="Switches">
@@ -98,7 +101,7 @@
         <item name="cornerSizeTopRight">10dp</item>
         <item name="cornerSizeBottomLeft">10dp</item>
         <item name="cornerSizeBottomRight">10dp</item>
-
+        <item name="boxBackgroundColor">@color/white</item>
     </style>
 
     <style name="addPhotoBackground">
@@ -139,13 +142,12 @@
         <item name="android:textColorHint">@color/md_theme_light_onSurface</item>
         <item name="android:editTextColor">@color/md_theme_light_onSurface</item>
         <item name="queryHint">@color/md_theme_light_onSurface</item>
-        <item name="background">@color/md_theme_light_primary</item>
-        <item name="android:popupBackground">@color/background2</item>
+        <item name="backgroundTint">@color/white</item>
     </style>
 
     <style name="ShapeableImageViewStyle">
         <item name="cornerFamily">rounded</item> <!-- Use 'rounded' for rounded corners -->
-        <item name="cornerSize">50dp</item> <!-- Adjust the corner radius value as needed -->
+        <item name="cornerSize">25dp</item> <!-- Adjust the corner radius value as needed -->
     </style>
 
     <style name="cardCuaderno">
@@ -221,6 +223,10 @@
         <item name="backgroundStacked">@color/md_theme_dark_primaryContainer</item>
     </style>
 
+    <style name="backgroundBottomNavigation" parent="@style/Widget.Material3.NavigationView">
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="botonesSecundarios" parent="@style/Widget.Material3.Button">
         <item name="colorPrimary">@color/md_theme_light_primary3</item>
     </style>
@@ -242,6 +248,10 @@
         <item name="cornerSizeTopRight">16dp</item>
     </style>
 
+    <style name="cornersNavigationBottom" parent="Widget.MaterialComponents.NavigationView">
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
+    </style>
 
     <style name="cornersNavigationItem" parent="">
         <item name="cornerSize">50%</item>

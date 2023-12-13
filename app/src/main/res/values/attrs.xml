@@ -9,5 +9,6 @@
     <attr name="configuracionCardBg" format="reference" />
     <attr name="grayStroke" format="reference" />
     <attr name="gray" format="reference" />
+    <attr name="greenLight" format="reference" />
 
 </resources>

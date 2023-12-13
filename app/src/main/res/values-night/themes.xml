@@ -60,6 +60,7 @@
         <item name="configuracionCardBorder">@color/md_theme_dark_surfaceVariant</item>
         <item name="gray">@color/md_theme_dark_background2</item>
         <item name="grayStroke">@color/md_theme_dark_surfaceVariant</item>
+        <item name="greenLight">@color/md_theme_dark_inversePrimary</item>
 
 
     </style>
@@ -82,6 +83,11 @@
     </style>
     <style name="Switches">
         <item name="colorControlActivated">@color/md_theme_dark_primary</item>
+    </style>
+
+    <style name="customTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
+        <item name="backgroundTint">@color/md_theme_dark_background2</item>
     </style>
 
     <style name="cornerRadius" parent="">

@@ -8,8 +8,10 @@
     tools:context=".presentacion.actividades.SplashActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.3"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,21 +20,24 @@
 
         <ImageView
             android:id="@+id/my_image"
-            android:layout_width="200dp"
-            android:layout_height="206dp"
-            android:src="@drawable/icon" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:src="@drawable/icon"
+            android:importantForAccessibility="no" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:fontFamily="@font/tiltneon"
-            android:text=" PlanTEA"
+            android:gravity="center_vertical"
+            android:layout_weight="0.6"
+            android:maxLines="1"
+            android:text="@string/lblPlantea"
             android:textColor="#000000"
-            android:textSize="95sp"
+            android:autoSizeTextType="uniform"
             android:textStyle="bold" />
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

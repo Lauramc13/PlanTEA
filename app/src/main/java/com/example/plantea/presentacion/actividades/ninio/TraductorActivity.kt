@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.actividades.ninio
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -22,6 +23,9 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.MainActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +44,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
     lateinit var escucharButtonPalabra : Button
     lateinit var escucharButtonFrase : Button
     lateinit var guardarButton : Button
-    private var navigationHandler = NavegacionUtils()
+    //private var navigationHandler = NavegacionUtils()
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var adaptador: AdaptadorPictogramasTraductor
     private lateinit var recyclerView: RecyclerView
@@ -50,12 +54,12 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
 
     override fun onResume() {
         super.onResume()
-        navigationHandler.configurarDatos(this, R.id.traductor)
+        //navigationHandler.configurarDatos(this, R.id.traductor)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        navigationHandler.destroyPopup()
+        //navigationHandler.destroyPopup()
     }
 
     override fun onStop() {
@@ -67,7 +71,7 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
-        navigationHandler.inicializarVariables(this, R.id.traductor, TraductorActivity::class.java)
+        //navigationHandler.inicializarVariables(this, R.id.traductor, TraductorActivity::class.java)
 
         val traducirButton: Button = findViewById(R.id.traducirButton)
         escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
@@ -85,6 +89,18 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         CommonUtils.initializeTextToSpeech(this)
         CommonUtils.listener = this
 
+        //preliminar
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.setOnItemReselectedListener  { item ->
+            when(item.itemId) {
+                R.id.planificacion -> startActivity(Intent(applicationContext, PlanActivity::class.java))
+                R.id.actividades -> startActivity(Intent(applicationContext, ActividadActivity::class.java))
+                R.id.cuaderno -> startActivity(Intent(applicationContext, CuadernoActivity::class.java))
+                R.id.traductor -> startActivity(Intent(applicationContext, TraductorActivity::class.java))
+                R.id.cuenta -> true
+            }
+            true
+        }
 
         backButton.setOnClickListener {
             finish()

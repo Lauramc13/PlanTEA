@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/planificacion"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_plan"
+        android:title="Planificaciones"/>
+    <item
+        android:id="@+id/actividades"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_actividadesdado"
+        android:title="Actividades"/>
+    <item
+        android:id="@+id/cuaderno"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_cuadernocomunicacion"
+        android:title="Cuaderno de comunicacion"/>
+    <item
+        android:id="@+id/traductor"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_translation"
+        android:title="Traductor"/>
+    <item
+        android:id="@+id/cuenta"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_user3"
+        android:title="Inicio"/>
+</menu>

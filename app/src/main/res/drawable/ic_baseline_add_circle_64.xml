@@ -5,22 +5,22 @@
     android:height="50dp">
     <path
         android:pathData="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-        android:fillColor="#1E9992"
-        android:fillAlpha="0.1" />
+        android:fillColor="?colorOnTertiary"
+        />
     <path
         android:pathData="M9 12H15"
-        android:strokeColor="#1E9992"
+        android:strokeColor="?colorOnSecondaryContainer"
         android:strokeWidth="1.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M12 9L12 15"
-        android:strokeColor="#1E9992"
+        android:strokeColor="?colorOnSecondaryContainer"
         android:strokeWidth="1.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
     <path
         android:pathData="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-        android:strokeColor="#1E9992"
+        android:strokeColor="?colorOnSecondaryContainer"
         android:strokeWidth="1.5" />
 </vector>

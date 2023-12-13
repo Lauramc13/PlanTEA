@@ -38,11 +38,16 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
         recyclerPictogramas = vista.findViewById(R.id.recycler_Pictogramas)
         val orientation = resources.configuration.orientation
-        val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            3 // set the number of columns to 3 for portrait mode
-        } else {
-            5 // set the number of columns to 5 for landscape mode
+        val screenWidthInDp = resources.displayMetrics.widthPixels / resources.displayMetrics.density
+
+        val gridValueManager: Int = if (screenWidthInDp< 600) {
+            2
+        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            3
+        } else{
+            5
         }
+
         recyclerPictogramas.layoutManager = GridLayoutManager(context, gridValueManager, GridLayoutManager.VERTICAL, false)
         image_Cerrar = vista.findViewById(R.id.image_CerrarContenedor)
         image_add = vista.findViewById(R.id.image_add)

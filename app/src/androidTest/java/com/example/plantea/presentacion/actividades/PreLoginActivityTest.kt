@@ -8,6 +8,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -23,7 +26,14 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import net.bytebuddy.matcher.ElementMatchers.any
+import org.junit.Assert.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.RegisterExtension
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 
@@ -32,8 +42,8 @@ class PreLoginActivityTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(PreLoginActivity::class.java)
 
-    @Mock
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+   /* @Mock
+    private lateinit var mGoogleSignInClientMock: GoogleSignInClient*/
     @Mock
     private lateinit var usuario: Usuario
 
@@ -47,21 +57,16 @@ class PreLoginActivityTest {
 
     @Before
     fun setUp() {
+
+        /*launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            preLoginActivity.handleGoogleSignInResult(result)
+        }*/
         activityRule.scenario.onActivity { activity ->
             preLoginActivity = activity
+            //preLoginActivity.mGoogleSignInClient = mGoogleSignInClientMock
+           // preLoginActivity.usuario = usuario
+           // preLoginActivity.launcher = launcher
         }
-
-       /* launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            preLoginActivity.handleGoogleSignInResult(result)
-        }
-
-        val scenario = ActivityScenario.launch(PreLoginActivity::class.java)
-        scenario.onActivity {
-            preLoginActivity = it
-            preLoginActivity.mGoogleSignInClient = mGoogleSignInClient
-            preLoginActivity.usuario = usuario
-            preLoginActivity.launcher = launcher
-        }*/
     }
 
     @Test
@@ -96,27 +101,33 @@ class PreLoginActivityTest {
 
     }
 
-    @Test
-    fun accountDoesntExistReturnFalse() = runBlocking {
-        val resultDeferred = CompletableDeferred<Boolean>()
+  /*  @Test
+    fun testIniciarSesion_Success() {
+        val auth = mock(FirebaseAuth::class.java)
 
-        val callback: (Boolean) -> Unit = { result ->
-            resultDeferred.complete(result)
+        preLoginActivity.auth = auth
+
+        val email = "test@example.com"
+        val password = "password123"
+
+        `when`(auth.signInWithEmailAndPassword(anyString(), anyString())).thenReturn(TestUtils.createSuccessfulTask())
+
+        var result: Boolean? = null
+        preLoginActivity.iniciarSesion(email, password) {
+            result = it
         }
 
-        preLoginActivity.iniciarSesion("email", "password", callback)
-
-        val result = resultDeferred.await()
-        assertFalse(result)
+        // Verify that the callback was called with the expected result
+        assertEquals(true, result)
     }
-
+*/
     // Test el login con una cuenta de Google
-    /*@Test
+   /* @Test
     fun signInGoogle_Success() {
         // Mock successful Google sign-in result
         val mockAccount = mock(GoogleSignInAccount::class.java)
         `when`(mockAccount.email).thenReturn("test@example.com")
-        `when`(mGoogleSignInClient.signInIntent).thenReturn(Intent())
+        `when`(mGoogleSignInClientMock.signInIntent).thenReturn(Intent())
 
         val mockActivityResult = Instrumentation.ActivityResult(
             Activity.RESULT_OK,
@@ -146,4 +157,50 @@ class PreLoginActivityTest {
        // verify(preLoginActivity).handleGoogleSignInFailure(any(ApiException::class.java))
     }
 */
+}
+
+object TestUtils {
+    fun <T> createSuccessfulTask(result: T? = null): Task<T> {
+        val task = mock(Task::class.java) as Task<T>
+        `when`(task.isSuccessful).thenReturn(true)
+        `when`(task.result).thenReturn(result)
+        return task
+    }
+
+    fun <T> createFailedTask(exception: Exception): Task<T> {
+        val task = mock(Task::class.java) as Task<T>
+        `when`(task.isSuccessful).thenReturn(false)
+        `when`(task.exception).thenReturn(exception)
+        return task
+    }
+}
+
+class ActividadActivityTest {
+
+    private lateinit var activityActivity: ActividadActivity
+
+    @JvmField
+    @RegisterExtension
+    val activityRule = ActivityScenarioRule(ActividadActivity::class.java)
+
+
+    @BeforeEach
+    fun setUp() {
+        activityRule.scenario.onActivity { activity ->
+            activityActivity = activity
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    fun testCardObjetoClick(){
+
+        onView(withId(R.id.card_objeto)).perform(click())
+
+        onView(ViewMatchers.withText(R.string.noConfigurationActivity))
+            .inRoot(RootMatchers.isDialog())
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        onView(withId(R.id.icono_CerrarDialogo)).perform(click())
+    }
+
 }

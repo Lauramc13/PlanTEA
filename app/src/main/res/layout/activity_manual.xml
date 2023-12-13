@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/tiltneon"
             android:text="@string/app_name"
+            android:textColor="?colorOnSurface"
             android:textSize="38sp" />
 
     </LinearLayout>
@@ -66,9 +67,10 @@
         android:textColor="#203130"
         android:textSize="14sp"
         app:cornerRadius="25dp"
-        android:layout_margin="15dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleManual" />
 
     <ScrollView
         android:id="@+id/scrollview"
@@ -76,9 +78,9 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="170dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleManual"
+        app:layout_constraintTop_toBottomOf="@+id/tutorialButton"
         tools:context=".presentacion.actividades.ManualActivity">
 
 

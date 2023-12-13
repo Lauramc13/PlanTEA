@@ -299,7 +299,4 @@
         android:src="@drawable/svg_menu"
         android:layout_marginStart="15dp"/>
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

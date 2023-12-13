@@ -3,55 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="70dp"
-    android:layout_marginBottom="150dp"
-    android:layout_marginLeft="20dp"
-    android:layout_height="706dp"
+    android:layout_height="match_parent"
     android:background="@drawable/fragment_personalizado2"
+    android:padding="5dp"
     tools:context=".presentacion.fragmentos.CategoriasPictogramasFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_Pictogramas"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:paddingEnd="5dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
-        android:paddingRight="55dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
         android:scrollbars="vertical"
+        android:layout_marginTop="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/image_CerrarContenedor"/>
 
     <ImageView
         android:id="@+id/image_CerrarContenedor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_margin="3dp"
         android:contentDescription="Cerrar seccion"
         android:src="@drawable/ic_baseline_close_24"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.988"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/image_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
+        android:layout_margin="6dp"
         android:src="@drawable/ic_baseline_add_circle_64"
         android:contentDescription="Añadir nuevo pictograma"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.989"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_Cerrar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
