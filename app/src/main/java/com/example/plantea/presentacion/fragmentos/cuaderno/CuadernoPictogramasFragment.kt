@@ -13,11 +13,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,8 +43,25 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
-        lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
+        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
+        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // Remove the listener to avoid multiple calls
+                vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Get the width of the ConstraintLayout
+                val density = resources.displayMetrics.density
+                val widthRecyclerView = (constraintLayout.width / density).toInt()
+
+                val gridValue: Int = if(context?.let { CommonUtils.isMobile(it)} == true){
+                    widthRecyclerView/150
+                }else{
+                    widthRecyclerView/200
+                }
+                lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -54,9 +73,29 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val tituloCuaderno = (bundle["tituloCuaderno"] as String)
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
         txtCuaderno.text = tituloCuaderno
+
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
-        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
-        lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
+
+        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
+        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // Remove the listener to avoid multiple calls
+                vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Get the width of the ConstraintLayout
+                val density = resources.displayMetrics.density
+                val widthRecyclerView = (constraintLayout.width / density).toInt()
+
+                val gridValue: Int = if(context?.let { CommonUtils.isMobile(it)} == true){
+                    widthRecyclerView/150
+                }else{
+                    widthRecyclerView/200
+                }
+                lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
+            }
+        })
+
         val prefs = context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val isPlanificador = prefs?.getBoolean("PlanificadorLogged", false)
         val adaptador = isPlanificador?.let { context?.let { it1 ->

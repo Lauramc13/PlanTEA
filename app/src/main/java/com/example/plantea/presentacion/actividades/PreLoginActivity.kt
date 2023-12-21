@@ -118,8 +118,8 @@ class PreLoginActivity : AppCompatActivity(){
                     if (success) {
                         configurarDatos(emailText)
                     } else {
-                        email.error = "ESTO ES UN ERROR"
-                        password.error = "ESTO ES UN ERROR"
+                        email.error = "Correo o contraseña incorrectos"
+                        password.error = "Correo o contraseña incorrectos"
                         Toast.makeText(baseContext, "Las credenciales son incorrectas", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -147,8 +147,7 @@ class PreLoginActivity : AppCompatActivity(){
 
                 //if correo is empty -> error
                 if(email.isEmpty()){
-                    correo.error = "ESTO ES UN ERROR"
-                    Toast.makeText(applicationContext, "No puedes dejar el campo vacío", Toast.LENGTH_LONG).show()
+                    correo.error = "No puedes dejar el campo vacío"
                 }else{
                     FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                     .addOnCompleteListener{task ->
@@ -182,12 +181,12 @@ class PreLoginActivity : AppCompatActivity(){
 
     fun comprobarTextViewsVacios(emailText: String, passwordText: String): Boolean {
         if (emailText.isEmpty()) {
-            runOnUiThread {email.error = "ESTO ES UN ERROR"}
+            runOnUiThread {email.error = "No puedes dejar el campo vacío"}
             return false
         }
 
         if (passwordText.isEmpty()) {
-            runOnUiThread {password.error = "ESTO ES UN ERROR"}
+            runOnUiThread {password.error = "No puedes dejar el campo vacío"}
             return false
         }
         return true

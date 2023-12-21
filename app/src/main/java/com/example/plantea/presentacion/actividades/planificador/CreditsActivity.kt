@@ -22,11 +22,6 @@ class CreditsActivity : AppCompatActivity(){
         val flaticonLink : TextView = findViewById(R.id.flatIconLink)
         val freepikLink : TextView = findViewById(R.id.freepikLink)
         val svgRepoLink: TextView = findViewById(R.id.svgRepoLink)
-        val goBackButton : Button = findViewById(R.id.goBackButton)
-
-        goBackButton.setOnClickListener{
-            finish()
-        }
 
         terms.paintFlags = terms.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         terms.setOnClickListener{

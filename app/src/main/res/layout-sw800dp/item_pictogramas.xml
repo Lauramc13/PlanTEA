@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:paddingTop="6dp">
+
+    <RelativeLayout
+        android:id="@+id/id_card_picto"
+        android:layout_width="200dp"
+        android:layout_height="170dp">
+
+        <RelativeLayout
+            android:id="@+id/id_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/card_personalizado"
+            android:elevation="0dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/id_Imagen"
+                style="@style/pictogramas"
+                android:layout_width="100dp"
+                android:foregroundGravity="center"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="40dp"
+                android:background="@color/white"
+                android:contentDescription="@string/lbl_Consultas"
+                app:shapeAppearance="@style/cornerRadius"
+                app:srcCompat="@drawable/categoria_consultas" />
+
+            <TextView
+                android:id="@+id/id_Texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:layout_marginBottom="5dp"
+                android:foregroundGravity="bottom|center_vertical"
+                android:fontFamily="@font/montserrat_regular"
+                android:maxLines="1"
+                android:gravity="center"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:text="@string/lbl_Consultas"
+                android:textColor="?colorOnSurface"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/btn_borrarPicto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="7dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentStart="true"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/svg_trash">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/btn_favoritosOff"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="2dp"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/svg_heart">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/btn_favoritosOn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="2dp"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/svg_heart_filled" />
+
+            <ImageView
+                android:id="@+id/btn_historiaPicto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/bocadillo_historia_off" />
+
+            <ImageView
+                android:id="@+id/btn_historiaPictoOn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
+                android:elevation="4dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/bocadillo_historia_on" />
+
+            <ImageView
+                android:id="@+id/btn_removePicto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
+                android:padding="3dp"
+                android:visibility="invisible"
+                app:tint="?customColorGray"
+                app:srcCompat="@drawable/svg_close" />
+
+        </RelativeLayout>
+
+        <!--<ImageView
+            android:id="@+id/id_recompensa"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-3dp"
+            android:layout_marginEnd="-22dp"
+            android:contentDescription="@string/lbl_Consultas"
+            android:elevation="4dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/categoria_recompensa">
+        </ImageView>-->
+
+
+    </RelativeLayout>
+</LinearLayout>

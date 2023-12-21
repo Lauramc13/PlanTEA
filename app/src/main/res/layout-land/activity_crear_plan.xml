@@ -37,7 +37,27 @@
             android:fontFamily="@font/montserrat_semibold"
             android:text="Planificación"
             android:textSize="21sp" />
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_guardarPlan"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Botón para guardar la planificación"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="@string/btn_Guardar"
+        android:textColor="#203130"
+        android:layout_marginEnd="20dp"
+        android:textSize="16sp"
+        app:cornerRadius="25dp"
+        app:icon="@drawable/ic_baseline_save_24"
+        app:iconSize="27dp"
+        app:iconTint="#203130"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
@@ -98,7 +118,7 @@
         android:fontFamily="@font/montserrat_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="80dp"
         android:text="@string/lbl_CrearPlanActividad"
         android:contentDescription="Título de la planificación"
@@ -128,26 +148,6 @@
         android:textSize="22sp"
         app:layout_constraintStart_toEndOf="@+id/lbl_CrearPlanActividad"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_guardarPlan"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:layout_marginEnd="20dp"
-        android:text="@string/btn_Guardar"
-        android:contentDescription="Botón para guardar la planificación"
-        app:cornerRadius="25dp"
-        android:textColor="#203130"
-        android:fontFamily="@font/montserrat_semibold"
-        android:textSize="16sp"
-        app:iconSize="27dp"
-        app:icon="@drawable/ic_baseline_save_24"
-        app:iconTint="#203130"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/lbl_buscando"

@@ -3,7 +3,6 @@ package com.example.plantea.presentacion.actividades
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -12,14 +11,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 
@@ -101,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, PlanActivity::class.java)
                 startActivity(intent)
             }else{
-                navigationHandler.crearDialogoLogin(this)
+                 navigationHandler.crearDialogoLogin(this)
             }
         }
 

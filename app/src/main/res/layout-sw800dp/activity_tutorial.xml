@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorAccent"
+    tools:context=".presentacion.actividades.TutorialActivity">
+
+    <ImageView
+        android:id="@+id/imageView6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/svg_blobl3"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="356dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp">
+
+        <ImageView
+            android:id="@+id/my_image"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:src="@drawable/svg_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/my_image"
+            android:text="PlanTEA"
+            android:textColor="?colorOnSurface"
+            android:textSize="24sp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/tiltneon" />
+    </LinearLayout>
+
+
+    <LinearLayout
+    android:id="@+id/linearLayout7"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:elevation="0dp"
+            android:textSize="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="20dp"
+            android:onClick="onSkipButtonClick"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="?colorOnSurface"
+            android:paddingStart="16dp"
+            app:iconSize="20dp"
+            android:layout_gravity="end"
+            android:textAllCaps="false"
+            android:background="@drawable/button_transparent_bg"
+            app:icon="@drawable/ic_baseline_arrow_forward_32"
+            app:iconGravity="end"
+            app:iconTint="?colorOnSurface"
+            android:paddingEnd="16dp"
+            android:text="Saltar" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/view_pager"
+        android:layout_weight="100">
+
+    </androidx.viewpager.widget.ViewPager>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            android:backgroundTint="@color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabMaxWidth="25dp"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btn_previous"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="100dp"
+                android:gravity="end"
+                android:textAllCaps="false"
+                android:textSize="20dp"
+                android:onClick="onPreviousButtonClick"
+                android:fontFamily="@font/montserrat_semibold"
+                android:background="@drawable/button_transparent_bg"
+                android:paddingBottom="10dp"
+                android:textColor="?colorOnSecondaryContainer"
+                android:text="@string/str_anterior"
+                style="?android:attr/buttonBarButtonStyle" />
+
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="170dp"
+                android:gravity="start"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_transparent_bg"
+                android:fontFamily="@font/montserrat_semibold"
+                android:onClick="onNextButtonClick"
+                android:paddingBottom="10dp"
+                android:text="@string/str_siguiente"
+                android:textAllCaps="false"
+                android:textColor="?colorOnSecondaryContainer"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

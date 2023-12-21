@@ -162,6 +162,8 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
             image.background = null
             termometro.isChecked = cuaderno.termometro == true
             btnCrear.text = "EDITAR CATEGORÍA"
+            val textView = dialogo.findViewById<TextView>(R.id.lbl_cuaderno)
+            textView.text = "Editar cuaderno"
 
             btnCrear.setOnClickListener{
                 title.error = null

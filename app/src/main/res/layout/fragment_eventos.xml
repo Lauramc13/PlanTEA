@@ -55,8 +55,9 @@
         <TextView
             android:id="@+id/lbl_mensaje_evento"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="10dp"
+            android:gravity="center"
             android:text="@string/lbl_mensaje_evento"
             android:textAlignment="center"
             android:textColor="?colorOnSurface"

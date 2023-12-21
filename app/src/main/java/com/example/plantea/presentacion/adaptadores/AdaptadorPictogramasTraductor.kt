@@ -26,6 +26,12 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         holder.titulo.text = listaPictogramas!![position].titulo
         holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+
+        holder.removePicto.visibility = View.VISIBLE
+        holder.removePicto.setOnClickListener {
+            listaPictogramas!!.removeAt(position)
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -35,10 +41,12 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var titulo: TextView
         var imagen: ImageView
+        val removePicto : ImageView
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
+            removePicto = itemView.findViewById<View>(R.id.btn_removePicto) as ImageView
             itemView.setOnClickListener(this)
         }
 

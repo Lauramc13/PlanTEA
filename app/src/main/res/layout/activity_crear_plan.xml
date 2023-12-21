@@ -35,7 +35,7 @@
             android:layout_marginStart="15dp"
             android:fontFamily="@font/montserrat_semibold"
             android:text="Planificación"
-            android:textSize="17sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
@@ -107,7 +107,7 @@
             android:fontFamily="@font/montserrat_regular"
             android:text="@string/lbl_CrearPlanActividad"
             android:textColor="?colorOnSurface"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/txt_TituloPlan"
@@ -120,18 +120,17 @@
             android:maxLength="14"
             android:textColor="?colorOnSurface"
             android:textCursorDrawable="@null"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:theme="@style/AppTheme.CursorBubble" />
 
     </LinearLayout>
 
     <SearchView
         android:id="@+id/searchViewPicto"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
+        app:layout_constraintWidth_percent="0.9"
         android:elevation="0dp"
         android:theme="@style/AppTheme.SearchBar"
         android:queryHint="Buscar pictograma"
@@ -140,10 +139,8 @@
         android:background="@drawable/fragment_personalizado3"
         android:closeIcon="@drawable/svg_close"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"/>
-
 
     <TextView
         android:id="@+id/busquedaNula"

@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -18,16 +17,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
-import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +39,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.UUID
+
 
 class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener {
     lateinit var vista: View
@@ -61,8 +62,13 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
-        lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
+        val widthRecyclerView =  lst_Pictogramas.width
+        val gridValue: Int = if(context?.let { CommonUtils.isMobile(it) } == true){
+            widthRecyclerView/150
+        }else{
+            widthRecyclerView/200
+        }
+        lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
     }
 
     fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?, listaPicto: ArrayList<String>){
@@ -127,8 +133,35 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
         txtCuaderno.text = tituloCuaderno
 
-        val gridValue = context?.let { CommonUtils.cambioOrientacion2(it) }
-        lst_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it)}
+
+        vista.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                view!!.width
+            }
+        })
+
+        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
+        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // Remove the listener to avoid multiple calls
+                vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Get the width of the ConstraintLayout
+                val density = resources.displayMetrics.density
+                val widthRecyclerView = (constraintLayout.width / density).toInt()
+
+                val gridValue: Int = if(context?.let { CommonUtils.isMobile(it)} == true){
+                    widthRecyclerView/150
+                }else{
+                    widthRecyclerView/200
+                }
+                lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
+            }
+        })
+
+
+
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true

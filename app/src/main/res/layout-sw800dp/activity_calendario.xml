@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?backgroundColor"
+    tools:context=".presentacion.actividades.planificador.CalendarioActivity">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3"
+        app:tint="#F6FBF7" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_percent="0.82"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentContainerViewBottom">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:background="@drawable/bg_calendario"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:contentDescription="Mes y flechas de navegación atras/delante"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_calendar_anterior"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="Flecha mes anterior"
+                    app:srcCompat="@drawable/ic_baseline_arrow_back_32"
+                    app:tint="?colorOnSurface" />
+
+                <TextView
+                    android:id="@+id/lbl_mes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:contentDescription="Mes"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Noviembre 2021"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="17sp" />
+
+                <ImageView
+                    android:id="@+id/image_calendar_siguiente"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:contentDescription="Flecha mes siguiente"
+                    app:srcCompat="@drawable/ic_baseline_arrow_forward_32"
+                    app:tint="?colorOnSurface" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lbl_lunes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/lbl_lunes"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_lunes"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/lbl_martes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/lbl_martes"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_martes"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/lbl_miercoles"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/lbl_miercoles"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_miercoles"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/lbl_jueves"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/lbl_jueves"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_jueves"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/lbl_viernes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autoSizeTextType="uniform"
+                    android:contentDescription="@string/lbl_viernes"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_viernes"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/lbl_sabado"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/lbl_sabado"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_sabado"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/lbl_domingo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/lbl_domingo"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="@string/lbl_domingo"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_calendario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:overScrollMode="never" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_calendario"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_calendario" />
+
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationTopFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerViewBottom"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationBottomFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?backgroundColor"
+    tools:context=".presentacion.actividades.ninio.ActividadActivity">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/blob3" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:srcCompat="@drawable/svg_blob"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="356dp" />
+
+    <LinearLayout
+        android:id="@+id/img_video"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="Contenedor con actividades"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:cardBackgroundColor="#B5DFDE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="500dp"
+        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="1200dp"
+        app:layout_constraintWidth_percent="0.75">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_objeto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="0.5"
+            android:contentDescription="@string/tarjeta_de_actividad_tranquilizadora"
+            android:elevation="1dp"
+            app:cardBackgroundColor="?cardBackgroundColor"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/svg_happy" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:gravity="center"
+                    android:text="@string/lbl_actividades_objeto"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_weight="0.5"
+            android:contentDescription="@string/tarjeta_de_youtube"
+            android:elevation="1dp"
+            app:cardBackgroundColor="?cardBackgroundColor"
+            app:cardCornerRadius="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/svg_video" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:text="@string/lbl_actividades_youtube"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/webViewFrame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_calendario"
+        android:paddingLeft="1dip"
+        android:paddingRight="1dip"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.85">
+
+        <Button
+            android:id="@+id/closeYoutube"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/cerrar_reproductor"
+            android:textColor="#181F25"
+            android:textSize="16sp"
+            app:cornerRadius="25dp"
+            app:icon="@drawable/svg_close"
+            app:iconGravity="textEnd"
+            app:iconSize="25dp"
+            app:iconTint="#181F25" />
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp" />
+    </FrameLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerViewSide"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationSideFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:elevation="5dp"
+        app:shapeAppearance="@style/cornersNavigation"
+        android:background="?colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

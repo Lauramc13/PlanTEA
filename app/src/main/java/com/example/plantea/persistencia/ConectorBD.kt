@@ -116,7 +116,7 @@ class ConectorBD(ctx: Context?) {
 
     fun listarPictogramasPlanificacion(id: Int): Cursor {
         return db!!.rawQuery(
-            "SELECT CombinedPictograms.nombre, CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.id_pictogramaAPI " +
+            "SELECT CombinedPictograms.id, CombinedPictograms.nombre, CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.id_pictogramaAPI " +
                     "FROM (SELECT id, nombre, imagen, id_categoria FROM Pictograma UNION SELECT id, nombre, imagen, NULL AS id_categoria FROM PictogramaAPI) AS CombinedPictograms " +
                     "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id OR RelacionPictogramaPlan.id_pictogramaAPI = CombinedPictograms.id " +
                     "INNER JOIN Planificacion ON Planificacion.id = RelacionPictogramaPlan.id_plan " +

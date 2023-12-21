@@ -86,8 +86,11 @@
     </style>
 
     <style name="customTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
         <item name="backgroundTint">@color/md_theme_dark_background2</item>
+    </style>
+
+    <style name="activeIndicator" parent="Theme.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/md_theme_dark_secondaryContainer</item>
     </style>
 
     <style name="cornerRadius" parent="">

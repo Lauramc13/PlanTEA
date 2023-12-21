@@ -23,7 +23,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,13 +34,12 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.PlanificacionItem
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.MainActivity
-import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
-import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -60,7 +58,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var tituloObtenido: String
     private lateinit var buttonPlanNuevo : Button
     private lateinit var iconoEscuchar: Button
-    private lateinit var iconoReproducir: Button
+    private lateinit var iconoReproducir: MaterialButton
     private lateinit var iconoDeshacer: Button
     private lateinit var iconoDeshacerTodas: Button
     private lateinit var iconoMarcar: Button
@@ -74,12 +72,11 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     private lateinit var dialogoPresentacion: ConstraintLayout
     private lateinit var backButton: Button
 
-    private var navigationHandler = NavegacionUtils()
     private lateinit var btnSiguienteMes: ImageView
     private lateinit var btnAnteriorMes: ImageView
     private lateinit var calendario: RecyclerView
     private lateinit var planificacionesFuturas: RecyclerView
-    private lateinit var cerrarDialog: ImageView
+    private lateinit var cerrarDialog: Button
     private lateinit var fechaActual: TextView
     private lateinit var dias: ArrayList<LocalDate?>
     private lateinit var adaptadorCalendario: AdaptadorCalendario
@@ -199,7 +196,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
        // cambiarPicto(1) TODO: QUE SE GUARDE EL ESTADO DE LOS PICTOGRAMAS QUE SE HAN HECHO
     }
 
-
     private fun obtenerVistaMes() {
         fechaActual.text = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         //Calcular días del mes y mostrar
@@ -208,14 +204,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         adaptadorCalendario = AdaptadorCalendario(dias, this)
         calendario.adapter = adaptadorCalendario
     }
-    override fun onResume() {
-        super.onResume()
-        navigationHandler.configurarDatos(this, R.id.planificacion)
-        /*val info_usuario = prefs.getBoolean("PlanificadorLogged", false)
-        if(info_usuario){
-            buttonPlanNuevo.visibility = View.VISIBLE
-        }*/
-    }
+
 
     private fun backCallBack(): OnBackPressedCallback{
         val callback = object : OnBackPressedCallback(true){
@@ -251,14 +240,12 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         //iconoReproducirRapido = findViewById(R.id.icon_reproducir_rapido)
         calendarButton = findViewById(R.id.CalendarDate)
         buttonPlanNuevo = findViewById(R.id.crearPlan)
-        backButton = findViewById(R.id.goBackButton)
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         recyclerView = findViewById(R.id.recycler_plan)
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         dia = findViewById(R.id.lbl_dia)
 
-        navigationHandler.inicializarVariables(this, R.id.planificacion, PlanActivity::class.java)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
         val planificaciones = userId?.let { evento.obtenerTodosEventos(it, this) } as ArrayList<Evento>
@@ -269,7 +256,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         var speechInProgress = false
         CommonUtils.initializeTextToSpeech(this)
         CommonUtils.listener = this
-
 
         val notificationList : ArrayList<PlanificacionItem> = mostrarPlanificaciones(planificaciones)
         planificacionesFuturas.layoutManager = LinearLayoutManager(this)
@@ -311,7 +297,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
 
         //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------
 
-        backButton.setOnClickListener{
+        /*backButton.setOnClickListener{
             if (supportFragmentManager.backStackEntryCount == 0) {
                 startActivity(Intent(this, MainActivity::class.java))
             } else {
@@ -319,7 +305,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                 supportFragmentManager.popBackStack()
             }
             finish()
-        }
+        }*/
 
         calendarButton.setOnClickListener {
             dialog = Dialog(this)
@@ -427,14 +413,13 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         iconoEscuchar.setOnClickListener {
             if (!speechInProgress) {
                 iconoEscuchar.text = getString(R.string.str_parar)
-                CommonUtils.textToSpeechOn(listaPictogramas, 2000)
+                CommonUtils.textToSpeechOn(listaPictogramas)
                 speechInProgress = true
             } else {
                 iconoEscuchar.text = getString(R.string.str_escuchar)
-                CommonUtils.textToSpeechOff()
+                CommonUtils.textToSpeech.stop()
                 speechInProgress = false
             }
-
         }
 
         iconoReproducir.setOnClickListener {
@@ -457,14 +442,24 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
     }
 
     private fun reproducirEvento(tiempo: Long) {
-        val drawableIconStop = ContextCompat.getDrawable(this, R.drawable.svg_stop)
-        val drawableIconPlay = ContextCompat.getDrawable(this, R.drawable.svg_play)
+
+        //val drawableIconStop = ContextCompat.getDrawable(this, R.drawable.svg_stop)
+        //val drawableIconPlay = ContextCompat.getDrawable(this, R.drawable.svg_play)
+        val screenWidthInDp = resources.displayMetrics.widthPixels / resources.displayMetrics.density
+        val targetHeight: Float
+        val targetWidth: Float
+        if (screenWidthInDp < 800) {
+            //Es (129, 164) y no (115,150) ya que le sumamos el margen
+            targetHeight = 129.dpToPx(this).toFloat()
+            targetWidth = 164.dpToPx(this).toFloat()
+        }else{
+            targetHeight = 170.dpToPx(this).toFloat()
+            targetWidth = 200.dpToPx(this).toFloat()
+        }
 
         if(isRunning){
-            val targetHeight = 170.dpToPx(this).toFloat()
-            val targetWidth = 200.dpToPx(this).toFloat()
             animationReproduccion(targetHeight, targetWidth, currentPosition, 1f)
-            iconoReproducir.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableIconPlay, null)
+            iconoReproducir.setIconResource(R.drawable.svg_play)
             iconoDeshacer.isEnabled = true
             iconoMarcar.isEnabled = false
             iconoMarcarTodas.isEnabled = false
@@ -472,7 +467,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
             iconoDeshacerTodas.performClick()
             stopReproductor()
         }else{
-            iconoReproducir.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableIconStop, null)
+            iconoReproducir.setIconResource(R.drawable.svg_stop)
             iconoDeshacerTodas.performClick()
             iconoMarcar.isEnabled = false
             iconoDeshacer.isEnabled = false
@@ -497,7 +492,7 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
                             iconoMarcar.isEnabled = false
                             iconoMarcarTodas.isEnabled = false
                             iconoDeshacerTodas.isEnabled = true
-                            iconoReproducir.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableIconPlay, null)
+                            iconoReproducir.setIconResource(R.drawable.svg_stop)
                         }
                         currentPosition++
                     }
@@ -729,10 +724,6 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationHandler.destroyPopup()
-    }
 
     private fun mostrarPlanificaciones(planificaciones: ArrayList<Evento>): ArrayList<PlanificacionItem> {
         val lista: ArrayList<PlanificacionItem> = ArrayList()
@@ -813,8 +804,16 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
         viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_pronunced)
 
-        val targetHeight = 185.dpToPx(this).toFloat()
-        val targetWidth = 220.dpToPx(this).toFloat()
+        val targetHeight : Float
+        val targetWidth : Float
+
+        if (CommonUtils.isMobile(this)) {
+            targetHeight = 145.dpToPx(this).toFloat()
+            targetWidth = 180.dpToPx(this).toFloat()
+        }else{
+            targetHeight = 185.dpToPx(this).toFloat()
+            targetWidth = 220.dpToPx(this).toFloat()
+        }
 
         animationReproduccion(targetHeight, targetWidth, posicion, 1f)
 
@@ -833,8 +832,17 @@ class PlanActivity : AppCompatActivity(), AdaptadorPresentacion.OnItemSelectedLi
         val viewHolderPictogramas = recyclerView.findViewHolderForAdapterPosition(posicion-1) as AdaptadorPresentacion.ViewHolderPictogramas?
         viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_disabled)
 
-        val targetHeight = 170.dpToPx(this).toFloat()
-        val targetWidth = 200.dpToPx(this).toFloat()
+        val targetHeight : Float
+        val targetWidth : Float
+
+        if (CommonUtils.isMobile(this)) {
+            targetHeight = 129.dpToPx(this).toFloat()
+            targetWidth = 164.dpToPx(this).toFloat()
+        }else{
+            targetHeight = 170.dpToPx(this).toFloat()
+            targetWidth = 200.dpToPx(this).toFloat()
+        }
+
 
         animationReproduccion(targetHeight, targetWidth, posicion-1, 0.7f)
     }

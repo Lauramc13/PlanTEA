@@ -1,292 +1,292 @@
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?backgroundStacked"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="?backgroundStacked"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        android:rotationY="180"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/blob3" />
+<ImageView
+    android:id="@+id/imageView7"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    android:rotationY="180"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/blob3" />
 
-    <TextView
-        android:id="@+id/lbl_planificacion"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.5"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/montserrat_semibold"
-        android:gravity="center"
-        android:text="@string/lbl_seleccionaAvatar"
-        android:textColor="?colorOnSurface"
-        android:textSize="34sp"
-        android:maxLines="1"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<TextView
+    android:id="@+id/lbl_planificacion"
+    android:layout_width="0dp"
+    app:layout_constraintWidth_percent="0.5"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:fontFamily="@font/montserrat_semibold"
+    android:gravity="center"
+    android:text="@string/lbl_seleccionaAvatar"
+    android:textColor="?colorOnSurface"
+    android:textSize="34sp"
+    android:maxLines="1"
+    app:autoSizeTextType="uniform"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/lbl_planificacion2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones"
-        android:textColor="?colorOnSurface"
-        android:textSize="22sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_planificacion"
-        app:layout_constraintWidth_percent="0.9" />
+<TextView
+    android:id="@+id/lbl_planificacion2"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:fontFamily="@font/montserrat_medium"
+    android:gravity="center"
+    android:maxLines="1"
+    android:text="@string/elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones"
+    android:textColor="?colorOnSurface"
+    android:textSize="22sp"
+    app:autoSizeTextType="uniform"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/lbl_planificacion"
+    app:layout_constraintWidth_percent="0.9" />
 
-    <Button
-        android:id="@+id/btn_galeria"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:contentDescription="Boton para seleccionar foto de la galeria"
-        android:fontFamily="@font/montserrat_semibold"
-        android:maxLines="1"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="@string/lbl_seleccionarFoto"
-        android:textAllCaps="true"
-        android:textColor="#203130"
-        android:textSize="15sp"
-        app:cornerRadius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Button
-        android:id="@+id/btn_saltar"
-        style="@style/Widget.Material3.Button.IconButton.Outlined"
-        android:textSize="13sp"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:fontFamily="@font/montserrat_semibold"
-        android:maxWidth="10dp"
-        android:text="@string/lbl_saltar"
-        android:contentDescription="Boton para saltar el paso de seleccionar avatar del planificado"
-        android:textColor="#203130"
-        app:cornerRadius="25dp"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.985"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="20dp" />
-
-    <TableLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/btn_galeria"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_planificacion2"
-        app:layout_constraintWidth_percent="0.85">
-
-        <TableRow
-            android:id="@+id/row1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar1chica"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 1 chica pelo moreno"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar1chica" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar2chica"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 2 chica pelo rubio"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar2chica" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar3chica"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 3 chica pelo negro"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar3chica" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar4chica"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 4 chica pelo moreno"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar4chica" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar5chica"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 5 chica pelo moreno corto"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar5chica" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/row2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+<Button
+    android:id="@+id/btn_galeria"
+    style="@style/Widget.Material3.Button.IconButton.Filled"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:contentDescription="Boton para seleccionar foto de la galeria"
+    android:fontFamily="@font/montserrat_semibold"
+    android:maxLines="1"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:text="@string/lbl_seleccionarFoto"
+    android:textAllCaps="true"
+    android:textColor="#203130"
+    android:textSize="15sp"
+    app:cornerRadius="25dp"
+    android:autoSizeTextType="uniform"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar1chico"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 1 chico pelo moreno barba"
-                app:cardCornerRadius="20dp">
+<Button
+    android:id="@+id/btn_saltar"
+    style="@style/Widget.Material3.Button.IconButton.Outlined"
+    android:textSize="13sp"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#FFFFFF"
+    android:fontFamily="@font/montserrat_semibold"
+    android:maxWidth="10dp"
+    android:text="@string/lbl_saltar"
+    android:contentDescription="Boton para saltar el paso de seleccionar avatar del planificado"
+    android:textColor="#203130"
+    app:cornerRadius="25dp"
+    android:textAllCaps="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.985"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginBottom="20dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar1chico" />
+<TableLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:layout_constraintBottom_toTopOf="@+id/btn_galeria"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/lbl_planificacion2"
+    app:layout_constraintWidth_percent="0.85">
 
-            </com.google.android.material.card.MaterialCardView>
+    <TableRow
+        android:id="@+id/row1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar2chico"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 2 chico pelo rubio"
-                app:cardCornerRadius="20dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar1chica"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 1 chica pelo moreno"
+            app:cardCornerRadius="20dp">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar2chico" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar1chica" />
 
-            </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar3chico"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 3 chico pelo moreno largo barba"
-                app:cardCornerRadius="20dp">
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar2chica"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 2 chica pelo rubio"
+            app:cardCornerRadius="20dp">
 
-                <ImageView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar2chica" />
 
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar3chico" />
+        </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar3chica"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 3 chica pelo negro"
+            app:cardCornerRadius="20dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar4chico"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 4 chico pelo moreno"
-                app:cardCornerRadius="20dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar3chica" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar4chico" />
+        </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar4chica"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 4 chica pelo moreno"
+            app:cardCornerRadius="20dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar5chico"
-                android:layout_height="180dp"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Opción 5 chico pelo moreno gafas"
-                app:cardCornerRadius="20dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar4chica" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/avatar5chico" />
+        </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar5chica"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 5 chica pelo moreno corto"
+            app:cardCornerRadius="20dp">
 
-        </TableRow>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar5chica" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/row2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
 
-    </TableLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar1chico"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 1 chico pelo moreno barba"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar1chico" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar2chico"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 2 chico pelo rubio"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar2chico" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar3chico"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 3 chico pelo moreno largo barba"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar3chico" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar4chico"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 4 chico pelo moreno"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar4chico" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatar5chico"
+            android:layout_height="180dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Opción 5 chico pelo moreno gafas"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/avatar5chico" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </TableRow>
+
+
+</TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

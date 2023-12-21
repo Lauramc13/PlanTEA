@@ -63,7 +63,7 @@
         android:clickable="true"
         android:layout_width="0dp"
         app:layout_constraintWidth_percent="0.3"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintHeight_percent="0.5"
         android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
         app:cardCornerRadius="20dp"
@@ -108,7 +108,7 @@
         android:clickable="true"
         android:layout_width="0dp"
         app:layout_constraintWidth_percent="0.3"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintHeight_percent="0.5"
         app:cardBackgroundColor="?cardBackgroundColor"
         app:cardCornerRadius="20dp"
@@ -155,9 +155,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/svg_blob"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="356dp" />
+        app:srcCompat="@drawable/svg_blob" />
 
     <ImageView
         android:id="@+id/imageView7"

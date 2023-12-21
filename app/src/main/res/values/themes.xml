@@ -72,8 +72,15 @@
     </style>
     
     <style name="customTextInputLayout" parent="Widget.Material3.NavigationView">
-        <item name="boxBackgroundColor">@color/white</item>
         <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="activeIndicator" parent="Theme.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/md_theme_light_primary2</item>
+    </style>
+
+    <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/md_theme_light_primary2</item>
     </style>
 
     <style name="Switches">

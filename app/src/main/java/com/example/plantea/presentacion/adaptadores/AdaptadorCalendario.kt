@@ -27,23 +27,16 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
         val layoutParams = view.layoutParams
         layoutParams.height = (parent.height * 0.14).toInt()
         layoutParams.width = (parent.height * 0.14).toInt()
-        val layoutParams2 = view.layoutParams as ViewGroup.MarginLayoutParams
         view.setBackgroundResource(R.drawable.round_bg)
-        view.foregroundGravity = Gravity.CENTER
-        layoutParams2.setMargins(18, 10, 0, 7)
         return ViewHolderCalendario(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolderCalendario, position: Int) {
         val fecha = diasMes[position]
-
-
         //Mostrar imagen del evento en el calendario
         for (i in Evento.listaEventos!!.indices) {
             if (Evento.listaEventos!![i].fecha == fecha) {
                 holder.vistaPrincipal.setBackgroundResource(R.drawable.round_bg_evento)
-                //holder.imagenEvento.setImageURI(Uri.parse(Evento.listaEventos!![i].imagen))
-                //holder.imagenEvento.visibility = View.VISIBLE
             }
         }
 
@@ -67,17 +60,10 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
     inner class ViewHolderCalendario(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var diaMes: TextView
         var vistaPrincipal: View
-        private var imagenEvento: ImageView
 
         init {
             diaMes = itemView.findViewById(R.id.lbl_celda_dia)
-            diaMes.gravity = Gravity.CENTER
-            diaMes.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            diaMes.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-            diaMes.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-            diaMes.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             vistaPrincipal = itemView.findViewById(R.id.vistaPrincipal)
-            imagenEvento = itemView.findViewById(R.id.img_evento)
             itemView.setOnClickListener(this)
         }
 

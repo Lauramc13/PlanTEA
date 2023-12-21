@@ -24,7 +24,6 @@ import java.util.*
 class ActividadActivity : AppCompatActivity() {
     lateinit var listaPictogramas: ArrayList<Pictograma>
     var plan = Planificacion()
-    private var navigationHandler = NavegacionUtils()
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -36,22 +35,12 @@ class ActividadActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        navigationHandler.configurarDatos(this, R.id.actividades)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationHandler.destroyPopup()
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
 
-        navigationHandler.inicializarVariables(this, R.id.actividades, ActividadActivity::class.java)
 
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
@@ -71,13 +60,13 @@ class ActividadActivity : AppCompatActivity() {
 
         val cardVideo : CardView = findViewById(R.id.card_video)
         val cardObjeto : CardView = findViewById(R.id.card_objeto)
-        val backButton : Button = findViewById(R.id.goBackButton)
+        //val backButton : Button = findViewById(R.id.goBackButton)
         val frameVideo : FrameLayout =  findViewById(R.id.webViewFrame)
         val closeButton : Button = findViewById(R.id.closeYoutube)
 
-        backButton.setOnClickListener{
+       /* backButton.setOnClickListener{
             finish()
-        }
+        }*/
 
         closeButton.setOnClickListener {
             cardVideo.visibility = View.VISIBLE

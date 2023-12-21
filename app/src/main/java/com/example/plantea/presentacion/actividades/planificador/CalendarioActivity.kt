@@ -86,10 +86,7 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        navigationHandler.configurarDatos(this, R.id.calendar)
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +95,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         //Recuperamos la informacion sobre notificación
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
-        navigationHandler.inicializarVariables(this, R.id.calendar, CalendarioActivity::class.java)
 
         //Crear canal para las notificaciones
         crearCanalNotificacion()
@@ -106,7 +102,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         fechaActual = findViewById(R.id.lbl_mes)
         btn_siguienteMes = findViewById(R.id.image_calendar_siguiente)
         btn_anteriorMes = findViewById(R.id.image_calendar_anterior)
-        backButton = findViewById(R.id.goBackButton)
 
         //Iniciamos con el fragment principal
         if (savedInstanceState == null) {
@@ -143,10 +138,6 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
                 addToBackStack("nuevoEvento")
             }*/
             //fragment_crearEvento = (supportFragmentManager.findFragmentByTag(NuevoEventoFragment::class.java.simpleName) as? NuevoEventoFragment)
-        }
-
-        backButton.setOnClickListener{
-            finish()
         }
 
         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
@@ -324,11 +315,4 @@ class CalendarioActivity : AppCompatActivity(), AdaptadorCalendario.OnItemSelect
         alarmManager = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
     }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationHandler.destroyPopup()
-    }
-
 }

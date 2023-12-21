@@ -8,7 +8,7 @@
     android:layout_margin="10dp">
 
     <TextView
-        android:id="@+id/lbl_Acceder"
+        android:id="@+id/lbl_cuaderno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_bold"
@@ -26,7 +26,7 @@
         android:layout_height="250dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_Acceder">
+        app:layout_constraintTop_toBottomOf="@+id/lbl_cuaderno">
 
         <LinearLayout
             android:layout_width="match_parent"

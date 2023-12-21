@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_gravity="center"
     tools:context=".presentacion.fragmentos.CategoriasFragment"
     android:id="@+id/categoriasPortrait">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
         <androidx.gridlayout.widget.GridLayout
             android:layout_width="wrap_content"

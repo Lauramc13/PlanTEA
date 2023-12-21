@@ -1,7 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -10,6 +12,7 @@ import android.net.Uri
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
@@ -35,6 +38,7 @@ class NavegacionUtils {
     lateinit var iconoRol: ImageView
     lateinit var textoRol: TextView
     lateinit var navigationView: NavigationView
+    lateinit var navigationViewBottom: BottomNavigationView
     lateinit var popupWindow: PopupWindow
     lateinit var buttonMenu : ImageView
     lateinit var buttonAccount: LinearLayout
@@ -42,11 +46,10 @@ class NavegacionUtils {
     private var isExpanded = true
     private lateinit var firebaseAuth: FirebaseAuth
 
-
     lateinit var btn_logout : Button
     var popupView : View? = null
 
-    fun crearDialogoLogin(context: AppCompatActivity) {
+    fun crearDialogoLogin(context: Context) {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -71,13 +74,12 @@ class NavegacionUtils {
                             val editor = prefs.edit()
                             editor.putBoolean("PlanificadorLogged", true)
                             editor.apply()
-                            context.startActivity(Intent(context.baseContext, PlanActivity::class.java))
-                            context.finish()
-                            context.finishAffinity()
+                            context.startActivity(Intent((context as? Activity)?.baseContext, PlanActivity::class.java))
+                            (context as? Activity)?.finish()
+                            (context as? Activity)?.finishAffinity()
                             dialogLogin.dismiss()
                         }else{
                             password.error = "La contraseña introducida no es correcta"
-
                         }
                     }
 
@@ -95,7 +97,7 @@ class NavegacionUtils {
             return digest.fold("", { str, it -> str + "%02x".format(it) })
         }*/
 
-        private fun buttonAccountNavigation(context: AppCompatActivity, it: View, buttonAccount: LinearLayout){
+        private fun buttonAccountNavigation(fragment: Fragment, it: View, buttonAccount: LinearLayout){
             if (popupView?.visibility == View.GONE){
                 popupView!!.visibility = View.VISIBLE
             }else{
@@ -122,77 +124,71 @@ class NavegacionUtils {
                         editor.putBoolean("PlanificadorLogged", false)
                         editor.apply()
                         popupView?.visibility = View.INVISIBLE
-                        context.startActivity(Intent(context.baseContext, PlanActivity::class.java))
-                        context.finish()
-                        context.finishAffinity()
+                        fragment.requireContext().startActivity(Intent(fragment.activity?.baseContext, PlanActivity::class.java))
+                        fragment.activity?.finish()
+                        fragment.activity?.finishAffinity()
                     }else{
-                        crearDialogoLogin(context)
+                        crearDialogoLogin(fragment.requireContext())
                     }
                 }
             }
 
             val logout = popupView?.findViewById<LinearLayout>(R.id.logout)
             logout?.setOnClickListener{
-                val dialogLogout = Dialog(context)
-                dialogLogout.setContentView(R.layout.dialogo_logout)
-                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                btn_logout.setOnClickListener {
-                    firebaseAuth = FirebaseAuth.getInstance()
-                    firebaseAuth.signOut()
-                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .build()
-
-                    val googleSignInClient: GoogleSignInClient =
-                        GoogleSignIn.getClient(context, gso)
-                    googleSignInClient.signOut()
-                    prefs.edit().clear().apply()
-                    dialogLogout.dismiss()
-                    context.startActivity(Intent(context.baseContext, PreLoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK))
-                    context.finish()
-                    context.finishAffinity()
-                }
-                icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                dialogLogout.show()
-
+                cerrarSesion(fragment)
             }
         }
 
-    fun configurarDatos(context: AppCompatActivity, id: Int){
+    fun cerrarSesion(fragment: Fragment){
+        val dialogLogout = Dialog(fragment.requireContext())
+        dialogLogout.setContentView(R.layout.dialogo_logout)
+        dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        btn_logout = dialogLogout.findViewById(R.id.btn_logout)
+        icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+        btn_logout.setOnClickListener {
+            firebaseAuth = FirebaseAuth.getInstance()
+            firebaseAuth.signOut()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .build()
+
+            val googleSignInClient: GoogleSignInClient =
+                GoogleSignIn.getClient(fragment.requireContext(), gso)
+            googleSignInClient.signOut()
+            //prefs.edit().clear().apply()
+            dialogLogout.dismiss()
+            fragment.requireContext().startActivity(Intent(fragment.activity?.baseContext, PreLoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK))
+            fragment.activity?.finish()
+            fragment.activity?.finishAffinity()
+        }
+        icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+        dialogLogout.show()
+    }
+
+    fun configurarDatos(vista: View, fragment: Fragment, id: Int){
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
 
-        navigationView = context.findViewById(R.id.navigationView)
-
-        iconoRol = navigationView.findViewById(R.id.iconoRol)
-        textoRol = navigationView.findViewById(R.id.textRol)
-        navigationView.menu.clear()
+        iconoRol = vista.findViewById(R.id.iconoRol)
+        textoRol = vista.findViewById(R.id.textRol)
         if (infoUsuario) {
-            navigationView.inflateMenu(R.menu.navigation_rail_menu)
             textoRol.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
         } else {
-            navigationView.inflateMenu(R.menu.navigation_rail_menu_tea)
             textoRol.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
         }
 
         val isUsuarioTEA = prefs.getBoolean("info_usuario", false)
-
         if (isUsuarioTEA) {
-            popupView = LayoutInflater.from(context).inflate(R.layout.header_navigation_drawer_tea, null)
+            popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.header_navigation_drawer_tea, null)
         }else{
-            popupView = LayoutInflater.from(context).inflate(R.layout.header_navigation_drawer, null)
+            popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.header_navigation_drawer, null)
         }
         popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         popupView?.visibility = View.GONE
 
-        var menu: Menu = navigationView.menu
-        menu.findItem(id).isChecked = true
-
     }
 
-    private fun onNavigationItemSelected(itemId: Int, context: AppCompatActivity, currentActivity: Class<*>): Boolean {
+    private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>): Boolean {
         val targetActivityClass = when (itemId) {
             R.id.home -> MainActivity::class.java
             R.id.calendar -> CalendarioActivity::class.java
@@ -207,7 +203,7 @@ class NavegacionUtils {
         if (currentActivity == targetActivityClass) {
             return true
         }
-        context.startActivity(Intent(context.applicationContext, targetActivityClass))
+        fragment.startActivity(Intent(fragment.requireContext().applicationContext, targetActivityClass))
         return true
     }
 
@@ -228,36 +224,35 @@ class NavegacionUtils {
         navigationView.layoutParams = layoutParams
     }
 
-    fun inicializarVariables(context: AppCompatActivity, id:Int, currentActivity: Class<*>){
-        buttonMenu = context.findViewById(R.id.item_menu)
-        navigationView = context.findViewById(R.id.navigationView)
-        buttonAccount = navigationView.findViewById(R.id.accountButton)
+    fun inicializarVariables(view: View, fragment: Fragment, currentActivity: Class<*>, id:Int){
+        val contextFragment = fragment.requireContext()
+        buttonMenu = view.findViewById(R.id.item_menu)
+        buttonAccount = view.findViewById(R.id.accountButton)
 
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener { item ->
-                onNavigationItemSelected(item.itemId, context, currentActivity)
-            }
+        navigationView = view.findViewById(R.id.navigationView)
+        navigationView.setNavigationItemSelectedListener {item ->
+            onNavigationItemSelected(item.itemId, fragment, currentActivity)
+            true
         }
 
-        prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+        prefs = contextFragment.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+        iconoRol = view.findViewById(R.id.iconoRol)
+        textoRol = view.findViewById(R.id.textRol)
 
-        iconoRol = navigationView.findViewById(R.id.iconoRol)
-        textoRol = navigationView.findViewById(R.id.textRol)
-
-        val initialWidth = context.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
+        val initialWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
         setNavigationViewWidth(initialWidth)
-        configurarDatos(context, id)
+        configurarDatos(view, fragment, id)
 
         buttonMenu.setOnClickListener {
             var targetWidth: Int
             if(isExpanded){
                 textoRol.visibility = View.VISIBLE
-                targetWidth = context.resources.getDimensionPixelSize(R.dimen.new_navigation_width)
+                targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.new_navigation_width)
                 buttonMenu.setImageResource(R.drawable.svg_close)
             }else{
                 textoRol.visibility = View.GONE
                 popupView?.visibility = View.INVISIBLE
-                targetWidth = context.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
+                targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
                 buttonMenu.setImageResource(R.drawable.svg_menu)
             }
             animateNavigationViewWidth(targetWidth)
@@ -265,8 +260,23 @@ class NavegacionUtils {
         }
 
         buttonAccount.setOnClickListener {
-            buttonAccountNavigation(context, it, buttonAccount)
+            buttonAccountNavigation(fragment, it, buttonAccount)
         }
+        val menu: Menu = navigationView.menu
+        menu.findItem(id).isChecked = true
+
+    }
+
+    fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int){
+        navigationViewBottom = view.findViewById(R.id.bottom_navigation)
+        navigationViewBottom.setOnItemSelectedListener { item ->
+            onNavigationItemSelected(item.itemId, fragment, currentActivity)
+            true
+        }
+
+        prefs = fragment.requireContext().getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+        val menu: Menu = navigationViewBottom.menu
+        menu.findItem(id).isChecked = true
     }
 
     fun destroyPopup(){

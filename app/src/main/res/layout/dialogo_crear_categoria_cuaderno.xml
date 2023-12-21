@@ -18,6 +18,7 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/lbl_cuaderno"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"

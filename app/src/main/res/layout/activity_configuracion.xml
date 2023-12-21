@@ -8,56 +8,24 @@ android:orientation="vertical"
 android:background="?customBgColor"
 tools:context=".presentacion.actividades.ConfiguracionActivity">
 
-<LinearLayout
-    android:id="@+id/linearLayout9"
-    android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="?backgroundSplit"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <Button
-        android:id="@+id/goBackButton"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:padding="15dp"
-        app:backgroundTint="?colorSecondaryContainer"
-        app:cornerRadius="20dp"
-        app:icon="@drawable/svg_go_back"
-        app:iconSize="28dp"
-        app:iconTint="?colorOnSurface" />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationTopFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:fontFamily="@font/montserrat_semibold"
-        android:text="Preferencias"
-        android:textSize="23sp" />
-</LinearLayout>
-
-<com.google.android.material.divider.MaterialDivider
-    android:id="@+id/materialDivider"
-    android:layout_width="match_parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/linearLayout9"
-    android:layout_height="2dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 <ScrollView
     android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="80dp"
+    android:layout_marginTop="70dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/materialDivider"
+    app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
     tools:context=".presentacion.actividades.ConfiguracionActivity">
 
     <LinearLayout
@@ -88,7 +56,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="@string/lbl_infoPlanificador"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -237,7 +205,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="@string/lbl_infoUsuarioTEA"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/TextView7"
@@ -337,7 +305,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="@string/lbl_infoactividad"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:theme="@style/Switches" />
@@ -443,7 +411,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="@string/lbl_configuracion_notificaciones"
                 android:textColor="?colorOnSurface"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:theme="@style/Switches" />
 
             <CheckBox
@@ -455,6 +423,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:enabled="false"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_configuracion_notificaciones_1"
+                android:textSize="14sp"
                 android:textColor="?colorOnSurface"
                 app:buttonTint="?colorPrimary" />
 
@@ -467,6 +436,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:enabled="false"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_configuracion_notificaciones_2"
+                android:textSize="14sp"
                 android:textColor="?colorOnSurface"
                 app:buttonTint="?colorPrimary" />
 
@@ -481,6 +451,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 android:enabled="false"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lbl_configuracion_notificaciones_3"
+                android:textSize="14sp"
                 android:textColor="?colorOnSurface"
                 app:buttonTint="?colorPrimary" />
 
@@ -507,7 +478,8 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
             android:id="@+id/btn_credits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15.5sp"
+            android:textSize="14sp"
+            android:fontFamily="@font/montserrat_medium"
             android:padding="10dp"
             android:text="Acerca de la aplicación"
             android:layout_gravity="center_horizontal"

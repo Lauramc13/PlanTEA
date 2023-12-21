@@ -14,11 +14,12 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
@@ -29,10 +30,9 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.security.MessageDigest
 import java.util.Locale
 import java.util.UUID
-import kotlin.coroutines.coroutineContext
+
 
 class CommonUtils{
 
@@ -41,30 +41,47 @@ class CommonUtils{
     }
 
     companion object {
-        private lateinit var textToSpeech: TextToSpeech
+        lateinit var textToSpeech: TextToSpeech
         val handler = Handler()
-        val delayedSpeechRunnables = mutableListOf<Runnable>()
         var listener: TextToSpeechListener? = null
 
-        val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
+        private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
+                Log.i("prueba", "TextToSpeech initialization success")
+
                 textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String) {
-                        //Not implemented
+                        Log.d("prueba", "onStart: $utteranceId")
                     }
 
                     override fun onDone(utteranceId: String) {
+                        Log.d("prueba", "onDone: $utteranceId")
                         listener?.onSpeechDone()
                     }
 
                     override fun onError(utteranceId: String) {
-                        //Not implemented
+                        Log.e("prueba", "onError: $utteranceId")
                     }
                 })
             } else {
-                // Initialization failed. Handle the error.
+                Log.e("prueba", "TextToSpeech initialization failed")
+
             }
         }
+
+        fun isMobile(context: Context): Boolean {
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val display = windowManager.defaultDisplay
+            val displayMetrics = DisplayMetrics()
+            display.getMetrics(displayMetrics)
+            val density = displayMetrics.density
+            val widthPixels = displayMetrics.widthPixels
+            val heightPixels = displayMetrics.heightPixels
+            val shortestDimensionInPixels = (Math.min(widthPixels, heightPixels) /density).toInt()
+
+            return shortestDimensionInPixels < 700
+        }
+
 
         private fun getRetrofitBuilder(): ApiInterface {
             return Retrofit.Builder()
@@ -74,7 +91,7 @@ class CommonUtils{
                 .create(ApiInterface::class.java)
         }
 
-        fun getRetrofitBuilderImg(): ApiInterface {
+        private fun getRetrofitBuilderImg(): ApiInterface {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://static.arasaac.org/pictograms/")
@@ -202,31 +219,24 @@ class CommonUtils{
             textToSpeech.language = Locale("es", "ES")
         }
 
-        fun textToSpeechOn(listaPictogramas: ArrayList<Pictograma>, delay: Int){
-           // textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
-           // textToSpeech.language = Locale("es", "ES")
+        fun textToSpeechOn(listaPictogramas: ArrayList<Pictograma>){
 
             listaPictogramas.forEachIndexed { index, pictograma ->
-                val runnable = Runnable {
                     if (index == listaPictogramas.lastIndex) {
-                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
                     }else{
-                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_FLUSH, null, null)
+                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_ADD, null, null)
                     }
-                }
 
-                delayedSpeechRunnables.add(runnable)
-                handler.postDelayed(runnable, index * delay.toLong())
             }
         }
 
         fun textToSpeechFrase(string: String){
-            textToSpeech.speak(string, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+            textToSpeech.speak(string, TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
         }
 
         fun textToSpeechOff(){
-            handler.removeCallbacksAndMessages(null)
-            delayedSpeechRunnables.clear()
+            textToSpeech.stop()
         }
 
         fun hideKeyboard(context: Context, view: View){
@@ -276,15 +286,13 @@ class CommonUtils{
             return gridValueManager
         }
 
-        fun cambioOrientacion2(context: Context): Int {
-            val orientation = context.resources.configuration.orientation
-            val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                3
-            } else {
-                5
-            }
-            return gridValueManager
-        }
+       /* fun cambioOrientacion2(widthLayout: Int): Int {
+
+            val itemWidthDp = 150 // Replace with the actual width of your grid item in dp
+
+            // Calculate the number of columns based on screen width and item width
+            return (widthLayout / itemWidthDp)
+        }*/
 
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?

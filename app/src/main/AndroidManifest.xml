@@ -27,7 +27,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ConfiguracionActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Preferencias"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
@@ -67,12 +66,12 @@
             android:label="Crear planificación"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
-        <activity
+       <!-- <activity
             android:name=".presentacion.actividades.planificador.PasswordActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:label="Cambiar contraseña"
             android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" />-->
         <activity
             android:name=".presentacion.actividades.MainActivity"
             android:configChanges="screenSize|screenLayout|keyboardHidden"
@@ -121,8 +120,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.planificador.CreditsActivity"
-            android:label="Acerca de la aplicacion"
             android:screenOrientation="fullSensor"
+            android:label="Acerca de la aplicacion"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ninio.TraductorActivity"

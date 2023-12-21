@@ -114,7 +114,6 @@ class ConfiguracionActivity : AppCompatActivity() {
         val semana : CheckBox = findViewById(R.id.checkBox_semana)
         val dia : CheckBox = findViewById(R.id.checkBox_dia)
         val hora : CheckBox = findViewById(R.id.checkBox_hora)
-        val backButton : Button = findViewById(R.id.goBackButton)
         val credits : TextView = findViewById(R.id.btn_credits)
 
         credits.paintFlags = credits.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -271,10 +270,6 @@ class ConfiguracionActivity : AppCompatActivity() {
                 }
                 finish()
             }
-        }
-
-        backButton.setOnClickListener {
-            finish()
         }
     }
 

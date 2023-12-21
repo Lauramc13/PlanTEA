@@ -77,7 +77,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         consultas = pictograma.obtenerConsultas(actividad, 1) as ArrayList<String>
         btn_hora.setOnClickListener { mostrarReloj(horaEvento) }
 
-
         btn_guardar.setOnClickListener {
             val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
             val userId = prefs.getString("idUsuario", "")
@@ -242,7 +241,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         pictogramas = ArrayList()
         pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as ArrayList<Pictograma>
         val creada = userId?.let { plan.crearPlanificacion(actividad, it, planes[posicion].titulo + " " + counter.toString()) }
-        //añadir pictogramas TODO
+        plan.addPictogramasPlan(creada, actividad, pictogramas)
         counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
         if (creada != 0) {
             Toast.makeText(context, "Planificación duplicada", Toast.LENGTH_LONG).show()

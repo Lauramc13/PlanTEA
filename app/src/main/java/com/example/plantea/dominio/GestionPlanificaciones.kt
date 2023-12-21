@@ -84,10 +84,11 @@ class GestionPlanificaciones : Serializable {
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
-                pictograma.titulo = c.getString(0)
-                pictograma.imagen = c.getString(1)
-                pictograma.categoria = c.getInt(2)
-                pictograma.historia = c.getString(3)
+                pictograma.id = c.getInt(0).toString()
+                pictograma.titulo = c.getString(1)
+                pictograma.imagen = c.getString(2)
+                pictograma.categoria = c.getInt(3)
+                pictograma.historia = c.getString(4)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }

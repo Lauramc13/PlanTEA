@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?backgroundColor"
+    tools:context=".presentacion.actividades.ninio.TraductorActivity">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3"
+        app:tint="#F6FBF7" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.85"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fondo_cuaderno_tiempo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textoTraducir"
+                style="@style/backgroundTraduccion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:hint="Escribe tu frase aqui..."
+                android:inputType="text"
+                android:textColor="?colorOnSurface"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:hintTextColor="?colorAccent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_margin="5dp"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/traducirButton"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="TRADUCIR"
+                android:textColor="#203130"
+                android:textSize="14sp"
+                app:cornerRadius="25dp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/fondo_cuaderno_tiempo">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_plan"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_margin="20dp"
+                android:contentDescription="Lista con la planificación actual"
+                android:scrollbars="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
+
+
+            <Button
+                android:id="@+id/escucharButtonPalabra"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/str_escuchar"
+                android:textColor="?colorOnSurface"
+                android:textSize="14sp"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/svg_sound"
+                app:iconSize="25dp"
+                app:iconTint="?colorOnSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/escucharButtonFrase"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="300dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="@string/str_escucharFrase"
+                android:textColor="?colorOnSurface"
+                android:textSize="14sp"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/svg_sound"
+                app:iconSize="25dp"
+                app:iconTint="?colorOnSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/guardarButton"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="GUARDAR"
+                android:textColor="?colorOnSurface"
+                android:textSize="14sp"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_baseline_save_24"
+                app:iconSize="25dp"
+                app:iconTint="?colorOnSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerViewSide"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationSideFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

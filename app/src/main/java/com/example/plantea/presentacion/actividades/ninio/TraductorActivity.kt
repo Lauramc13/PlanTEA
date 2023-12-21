@@ -24,6 +24,8 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.MainActivity
+import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
+import com.example.plantea.presentacion.fragmentos.NavigationBottomFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.textfield.TextInputLayout
@@ -44,23 +46,12 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
     lateinit var escucharButtonPalabra : Button
     lateinit var escucharButtonFrase : Button
     lateinit var guardarButton : Button
-    //private var navigationHandler = NavegacionUtils()
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var adaptador: AdaptadorPictogramasTraductor
     private lateinit var recyclerView: RecyclerView
     private var listaPictoBuscador: MutableList<MutableMap<Bitmap, Pair<String, Int>>> = mutableListOf()
     var speechInProgress = false
 
-
-    override fun onResume() {
-        super.onResume()
-        //navigationHandler.configurarDatos(this, R.id.traductor)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //navigationHandler.destroyPopup()
-    }
 
     override fun onStop() {
         super.onStop()
@@ -71,15 +62,11 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
-        //navigationHandler.inicializarVariables(this, R.id.traductor, TraductorActivity::class.java)
-
         val traducirButton: Button = findViewById(R.id.traducirButton)
         escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
         escucharButtonFrase = findViewById(R.id.escucharButtonFrase)
         guardarButton = findViewById(R.id.guardarButton)
 
-
-        val backButton: Button = findViewById(R.id.goBackButton)
         textoATraducir = findViewById(R.id.textoTraducir)
         recyclerView = findViewById(R.id.recycler_plan)
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -88,23 +75,6 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
 
         CommonUtils.initializeTextToSpeech(this)
         CommonUtils.listener = this
-
-        //preliminar
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigation.setOnItemReselectedListener  { item ->
-            when(item.itemId) {
-                R.id.planificacion -> startActivity(Intent(applicationContext, PlanActivity::class.java))
-                R.id.actividades -> startActivity(Intent(applicationContext, ActividadActivity::class.java))
-                R.id.cuaderno -> startActivity(Intent(applicationContext, CuadernoActivity::class.java))
-                R.id.traductor -> startActivity(Intent(applicationContext, TraductorActivity::class.java))
-                R.id.cuenta -> true
-            }
-            true
-        }
-
-        backButton.setOnClickListener {
-            finish()
-        }
 
         traducirButton.setOnClickListener {
             listaTraducir.clear()
@@ -124,10 +94,10 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
             if (!speechInProgress) {
                 escucharButtonPalabra.text = getString(R.string.str_parar)
                 escucharButtonFrase.isEnabled = false
-                CommonUtils.textToSpeechOn(listaPictogramas, 1000)
+                CommonUtils.textToSpeechOn(listaPictogramas)
                 speechInProgress = true
             } else {
-                CommonUtils.textToSpeechOff()
+                CommonUtils.textToSpeech.stop()
             }
         }
 
@@ -278,12 +248,12 @@ class TraductorActivity : AppCompatActivity(), AdaptadorPictogramasTraductor.OnI
     }
 
     override fun onSpeechDone() {
-        escucharButtonPalabra.isEnabled = true
-        escucharButtonFrase.isEnabled = true
-        escucharButtonPalabra.text = getString(R.string.str_escuchar)
-        escucharButtonFrase.text = getString(R.string.str_escucharFrase)
-        speechInProgress = false
-
+        runOnUiThread {
+            escucharButtonPalabra.isEnabled = true
+            escucharButtonFrase.isEnabled = true
+            escucharButtonPalabra.text = getString(R.string.str_escuchar)
+            escucharButtonFrase.text = getString(R.string.str_escucharFrase)
+            speechInProgress = false
+        }
     }
-
 }

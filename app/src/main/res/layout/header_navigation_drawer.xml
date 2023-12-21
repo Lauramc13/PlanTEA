@@ -18,10 +18,10 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
             android:src="@drawable/svg_logout"
-            android:layout_marginEnd="15dp"/>
+            app:tint="?colorPrimary" />
 
         <TextView
             android:layout_width="wrap_content"

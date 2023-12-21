@@ -36,7 +36,6 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     private var listaEscala: ArrayList<Pictograma>? = null
 
     private var picto = Pictograma()
-    private var navigationHandler = NavegacionUtils()
     private var cuaderno = Cuaderno()
     private var isPlanificador = true
     private var isBusqueda = false
@@ -44,27 +43,6 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     companion object {
         const val ISBUSQUEDA_KEY = false
         val PICTOGRAMS_KEY = ArrayList<Pictograma>()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        val orientation = newConfig.orientation
-        // Comprobamos la orientacion de la pantalla
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-        } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        navigationHandler.configurarDatos(this, R.id.cuaderno)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationHandler.destroyPopup()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -82,8 +60,6 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cuaderno)
-        navigationHandler.inicializarVariables(this, R.id.cuaderno, CuadernoActivity::class.java)
-        val backButton: Button = findViewById(R.id.goBackButton)
 
         listaCuadernos = ArrayList()
         listaEscala = ArrayList()
@@ -130,9 +106,6 @@ class CuadernoActivity : AppCompatActivity(), CuadernoInterface  {
         //Pictogramas en la parte de arriba del cuaderno
         //iniciarListaEscala()
 
-        backButton.setOnClickListener{
-            finish()
-        }
     }
 
     //Menu principal

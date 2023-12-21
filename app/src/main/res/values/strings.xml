@@ -66,7 +66,7 @@
     <string name="lbl_mensaje_evento">No hay eventos para este día</string>
     <string name="btn_horaEvento">HORA</string>
     <string name="item_perfil">preferencias</string>
-    <string name="lbl_mensajeNinio">No hay planificación para seguir este dia</string>
+    <string name="lbl_mensajeNinio">No hay eventos para seguir este dia</string>
     <string name="lbl_indice1">1. Descripción de la aplicación PlanTEA</string>
     <string name="lbl_indice2">2. Ajuste de las preferencias</string>
     <string name="lbl_indice2_1">- Información de los usuarios</string>
@@ -134,7 +134,7 @@
     <string name="lbl_historialSocial">Historial social para:</string>
     <string name="lbl_cerrarSesion">¿Estas segur@ que quieres cerrar la sesión?</string>
     <string name="lbl_cerrarSesionBotton">Cerrar sesión</string>
-    <string name="lbl_nuevaPlanificacion">NUEVA PLANIFICACIÓN</string>
+    <string name="lbl_nuevaPlanificacion">NUEVO EVENTO</string>
     <string name="lbl_salirPlanificacion">Salir de la planificación</string>
     <string name="lbl_salirPlanificacion2">¿Estas segur@ que quieres salir de la planificación?</string>
     <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>
@@ -188,7 +188,7 @@
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Elige un avatar para la persona que va a crear y gestionar las planificaciones</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Elige un avatar para la persona que va a seguir las planificaciones</string>
     <string name="planificaciones">Planificaciones</string>
-    <string name="planificaciones_futuras">Planificaciones futuras</string>
+    <string name="planificaciones_futuras">Eventos futuros</string>
 
 
 </resources>

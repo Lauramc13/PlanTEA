@@ -72,10 +72,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Email"
-            style="@style/customTextInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto nombre de usuario"
             android:ems="10"
             android:fontFamily="@font/montserrat_regular"
@@ -87,8 +88,6 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/customTextInputLayout"
-                android:cursorVisible="true"
                 android:inputType="text"
                 android:textSize="16sp"
                 android:textColor="?colorOnSurface" />
@@ -96,11 +95,11 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Password"
-            style="@style/customTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/fondo_texto_login"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:contentDescription="Campo de texto contraseña"
             android:ems="10"
             android:fontFamily="@font/montserrat_regular"
@@ -116,7 +115,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
-                style="@style/customTextInputLayout"
                 android:textSize="16sp"
                 android:textColor="?colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>

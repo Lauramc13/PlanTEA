@@ -95,7 +95,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         dialogEvento.setContentView(R.layout.dialogo_eliminar_evento)
         dialogEvento.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         btn_eliminar = dialogEvento.findViewById(R.id.btn_eliminarEvento)
-        icono_cerrar_login = dialogEvento.findViewById(R.id.icono_CerrarDialogoEvento)
+        icono_cerrar_login = dialogEvento.findViewById(R.id.icono_CerrarDialogo)
         btn_cancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
         btn_eliminar.setOnClickListener {
             Toast.makeText(context, "Evento eliminado", Toast.LENGTH_SHORT).show()
