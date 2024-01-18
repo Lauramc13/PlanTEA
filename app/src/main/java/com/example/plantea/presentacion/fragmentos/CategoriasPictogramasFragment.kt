@@ -30,8 +30,6 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     private lateinit var image_add: ImageView
     var pictograma = Pictograma()
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_categorias_pictogramas, container, false)
         val bundle = this.arguments

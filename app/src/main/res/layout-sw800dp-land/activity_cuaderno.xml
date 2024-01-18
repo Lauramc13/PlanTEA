@@ -45,6 +45,9 @@
         android:name="com.example.plantea.presentacion.fragmentos.NavigationSideFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:elevation="7dp"
+        app:shapeAppearance="@style/cornersNavigation"
+        android:background="?colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

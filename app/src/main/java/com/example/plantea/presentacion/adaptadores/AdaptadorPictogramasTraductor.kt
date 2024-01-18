@@ -15,7 +15,7 @@ import com.example.plantea.dominio.Pictograma
 class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasTraductor.ViewHolderPictogramas>() {
 
     interface OnItemSelectedListener {
-        fun onItemSeleccionado(posicion: Int)
+        fun onItemSeleccionado(posicion: Int, context: Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -53,7 +53,7 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
         override fun onClick(view: View) {
             val position = bindingAdapterPosition
 
-            listener?.onItemSeleccionado(position)
+            listener?.onItemSeleccionado(position, view.context)
 
             // Perform click action and update UI for the current item
             //imagen.alpha = 0.7f

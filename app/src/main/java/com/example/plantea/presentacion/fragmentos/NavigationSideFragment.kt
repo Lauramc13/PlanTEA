@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.MainActivity
@@ -26,6 +27,11 @@ class NavigationSideFragment: Fragment() {
         CommonUtils.handler.removeCallbacksAndMessages(null)
     }
 
+    override fun onResume() {
+        super.onResume()
+        navigationHandler.restoreNavigationItemClicked(navigationHandler.hostingId(activity?.javaClass!!))
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_navigation_side, container, false)
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
@@ -39,20 +45,13 @@ class NavigationSideFragment: Fragment() {
         }
 
         val hostingActivityClass = activity?.javaClass
-        val idActivity = when (hostingActivityClass) {
-            MainActivity::class.java -> R.id.home
-            PlanActivity::class.java -> R.id.planificacion
-            TraductorActivity::class.java -> R.id.traductor
-            CalendarioActivity::class.java -> R.id.calendar
-            ActividadActivity::class.java -> R.id.actividades
-            CuadernoActivity::class.java -> R.id.cuaderno
-            else -> R.id.planificacion
-        }
+
 
         if (hostingActivityClass != null) {
-            navigationHandler.inicializarVariables(vista, this, hostingActivityClass, idActivity)
+            navigationHandler.inicializarVariables(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
         }
 
         return vista
     }
+
 }

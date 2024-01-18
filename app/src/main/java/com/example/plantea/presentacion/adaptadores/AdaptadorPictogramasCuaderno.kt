@@ -62,8 +62,6 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
             holder.borrar.visibility = View.INVISIBLE
         }
 
-
-
         holder.btnNoAniair.setOnClickListener {
             holder.btnNoAniair.visibility = View.INVISIBLE
             holder.btnAniadir.visibility = View.VISIBLE

@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3" />
+        app:srcCompat="@drawable/blob3"
+        app:tint="?subColorBackground" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -22,9 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/svg_blob"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="356dp" />
+        app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout
         android:id="@+id/img_video"

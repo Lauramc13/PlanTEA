@@ -1,6 +1,9 @@
 package com.example.plantea.presentacion.adaptadores
 
 
+import android.app.Activity
+import android.content.Context
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,9 +19,9 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario.ViewHold
 import java.time.LocalDate
 
 
-class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<ViewHolderCalendario>() {
+class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private val listaEventos: ArrayList<Evento>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<ViewHolderCalendario>() {
     interface OnItemSelectedListener {
-        fun diaSeleccionado(fecha: LocalDate)
+        fun diaSeleccionado(context: Context?, fecha: LocalDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderCalendario {
@@ -34,8 +37,8 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
     override fun onBindViewHolder(holder: ViewHolderCalendario, position: Int) {
         val fecha = diasMes[position]
         //Mostrar imagen del evento en el calendario
-        for (i in Evento.listaEventos!!.indices) {
-            if (Evento.listaEventos!![i].fecha == fecha) {
+        for (i in listaEventos.indices) {
+            if (listaEventos[i].fecha == fecha) {
                 holder.vistaPrincipal.setBackgroundResource(R.drawable.round_bg_evento)
             }
         }
@@ -70,7 +73,7 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
         override fun onClick(view: View) {
             val fecha = diasMes[bindingAdapterPosition]
             if (fecha != null) {
-                listener?.diaSeleccionado(fecha)
+                listener?.diaSeleccionado(view.context, fecha)
             }
         }
     }

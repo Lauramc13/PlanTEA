@@ -13,6 +13,7 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
@@ -188,6 +189,19 @@ class NavegacionUtils {
 
     }
 
+    fun hostingId(hostingActivityClass: Class<FragmentActivity>) : Int {
+        val idActivity = when (hostingActivityClass) {
+            MainActivity::class.java -> R.id.home
+            PlanActivity::class.java -> R.id.planificacion
+            TraductorActivity::class.java -> R.id.traductor
+            CalendarioActivity::class.java -> R.id.calendar
+            ActividadActivity::class.java -> R.id.actividades
+            CuadernoActivity::class.java -> R.id.cuaderno
+            else -> R.id.planificacion
+        }
+        return idActivity
+    }
+
     private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>): Boolean {
         val targetActivityClass = when (itemId) {
             R.id.home -> MainActivity::class.java
@@ -205,6 +219,16 @@ class NavegacionUtils {
         }
         fragment.startActivity(Intent(fragment.requireContext().applicationContext, targetActivityClass))
         return true
+    }
+
+    fun restoreNavigationItemClicked(id: Int){
+        val menu: Menu = navigationView.menu
+        menu.findItem(id).isChecked = true
+    }
+
+    fun restoreNavigationItemClickedBottom(id: Int){
+        val menu: Menu = navigationViewBottom.menu
+        menu.findItem(id).isChecked = true
     }
 
     private fun animateNavigationViewWidth(targetWidth: Int) {
@@ -264,8 +288,9 @@ class NavegacionUtils {
         }
         val menu: Menu = navigationView.menu
         menu.findItem(id).isChecked = true
-
     }
+
+
 
     fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int){
         navigationViewBottom = view.findViewById(R.id.bottom_navigation)

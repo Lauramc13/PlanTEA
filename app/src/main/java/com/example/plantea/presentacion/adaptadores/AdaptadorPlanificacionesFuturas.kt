@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.adaptadores
 
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class AdaptadorPlanificacionesFuturas(var list : ArrayList<PlanificacionItem>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPlanificacionesFuturas.ViewHolderPlanFuturos>() {
 
     interface OnItemSelectedListener {
-        fun diaSeleccionado(fecha:LocalDate)
+        fun diaSeleccionado(context: Context?, fecha:LocalDate)
 
     }
 
@@ -30,7 +31,7 @@ class AdaptadorPlanificacionesFuturas(var list : ArrayList<PlanificacionItem>, p
             val position = bindingAdapterPosition
             val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
             val fecha = LocalDate.parse(list[position].date, formatter)
-            listener?.diaSeleccionado(fecha)
+            listener?.diaSeleccionado(view.context, fecha)
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanFuturos {

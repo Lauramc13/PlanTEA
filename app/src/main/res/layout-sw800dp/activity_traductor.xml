@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/blob3"
-        app:tint="#F6FBF7" />
+        app:tint="?subColorBackground" />
 
     <ImageView
         android:id="@+id/imageView8"

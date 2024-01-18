@@ -17,10 +17,15 @@ import android.speech.tts.UtteranceProgressListener
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
@@ -44,6 +49,7 @@ class CommonUtils{
         lateinit var textToSpeech: TextToSpeech
         val handler = Handler()
         var listener: TextToSpeechListener? = null
+        //var pictogramasCuaderno = ArrayList<Pictograma>()
 
         private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -69,6 +75,8 @@ class CommonUtils{
             }
         }
 
+
+
         fun isMobile(context: Context): Boolean {
             val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val display = windowManager.defaultDisplay
@@ -80,6 +88,39 @@ class CommonUtils{
             val shortestDimensionInPixels = (Math.min(widthPixels, heightPixels) /density).toInt()
 
             return shortestDimensionInPixels < 700
+        }
+
+
+        fun getGridValueCuaderno(vista: View, context: Context?, recyclerView: RecyclerView, constraintLayout: ConstraintLayout){
+            vista.viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    vista.width
+                }
+            })
+
+            val globalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    // Remove the listener to avoid multiple calls
+                    constraintLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                    // Get the width of the ConstraintLayout
+                    val density = context?.resources?.displayMetrics?.density ?: 1f
+                    val widthRecyclerView = (constraintLayout.width / density).toInt()
+
+                    val gridValue: Int = if (context?.let { isMobile(it) } == true) {
+                        widthRecyclerView / 150
+                    } else {
+                        widthRecyclerView / 200
+                    }
+                    recyclerView.layoutManager = GridLayoutManager(context, gridValue)
+                }
+            }
+
+            // Add the global layout listener
+            constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
+
         }
 
 
@@ -285,14 +326,6 @@ class CommonUtils{
             }
             return gridValueManager
         }
-
-       /* fun cambioOrientacion2(widthLayout: Int): Int {
-
-            val itemWidthDp = 150 // Replace with the actual width of your grid item in dp
-
-            // Calculate the number of columns based on screen width and item width
-            return (widthLayout / itemWidthDp)
-        }*/
 
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?

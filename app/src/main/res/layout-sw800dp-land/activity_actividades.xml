@@ -13,17 +13,17 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/blob3" />
+        app:srcCompat="@drawable/blob3"
+        app:tint="?subColorBackground" />
 
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
-        app:srcCompat="@drawable/svg_blob"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="356dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="80dp"
+        app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout
         android:id="@+id/img_video"
@@ -31,6 +31,7 @@
         android:layout_height="0dp"
         android:contentDescription="Contenedor con actividades"
         android:gravity="center"
+        android:layout_marginStart="80dp"
         android:orientation="horizontal"
         android:visibility="visible"
         app:cardBackgroundColor="#B5DFDE"
@@ -38,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="500dp"
         app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_max="1200dp"
         app:layout_constraintWidth_percent="0.75">
@@ -122,10 +123,11 @@
         android:paddingLeft="1dip"
         android:paddingRight="1dip"
         android:visibility="invisible"
+        android:layout_marginStart="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.85"
-        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.85">
 

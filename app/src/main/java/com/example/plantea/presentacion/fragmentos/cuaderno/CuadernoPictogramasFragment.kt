@@ -40,61 +40,24 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
     private lateinit var seekbar: SeekBar
     lateinit var termometro: LinearLayout
     private var isTermometro: Boolean = true
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
-        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // Remove the listener to avoid multiple calls
-                vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                // Get the width of the ConstraintLayout
-                val density = resources.displayMetrics.density
-                val widthRecyclerView = (constraintLayout.width / density).toInt()
-
-                val gridValue: Int = if(context?.let { CommonUtils.isMobile(it)} == true){
-                    widthRecyclerView/150
-                }else{
-                    widthRecyclerView/200
-                }
-                lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
-            }
-        })
-    }
+    private lateinit var tituloCuaderno: String
+    private lateinit var constraintLayout: ConstraintLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas, container, false)
         val bundle = this.arguments
+
         listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
         isTermometro = (bundle["termometro"] as Boolean)
-        val tituloCuaderno = (bundle["tituloCuaderno"] as String)
+        tituloCuaderno = (bundle["tituloCuaderno"] as String)
+
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
         txtCuaderno.text = tituloCuaderno
 
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
-
-        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
-        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // Remove the listener to avoid multiple calls
-                vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                // Get the width of the ConstraintLayout
-                val density = resources.displayMetrics.density
-                val widthRecyclerView = (constraintLayout.width / density).toInt()
-
-                val gridValue: Int = if(context?.let { CommonUtils.isMobile(it)} == true){
-                    widthRecyclerView/150
-                }else{
-                    widthRecyclerView/200
-                }
-                lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
-            }
-        })
+        constraintLayout = vista.findViewById(R.id.frameLayout)
+        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout)
 
         val prefs = context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val isPlanificador = prefs?.getBoolean("PlanificadorLogged", false)

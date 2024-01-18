@@ -44,7 +44,7 @@
                 android:id="@+id/img_pictograma"
                 android:layout_width="297dp"
                 android:layout_height="286dp"
-                android:layout_marginTop="55dp"
+                android:layout_marginTop="65dp"
                 app:shapeAppearance="@style/cornerRadius"
                 android:background="@color/white"
                 style="@style/pictogramas"

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -25,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.ShareActionProvider
 import androidx.appcompat.widget.SwitchCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
@@ -49,17 +51,14 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
     lateinit var image: ShapeableImageView
     lateinit var adaptador : AdaptadorCategoriasCuaderno
     private var isPlanificador = false
+    private lateinit var constraintLayout: ConstraintLayout
 
-    /*override fun onConfigurationChanged(newConfig: Configuration) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        val orientation = newConfig.orientation
-        val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            3
-        } else {
-            4
-        }
-        recycler_Pictogramas.layoutManager = GridLayoutManager(context, gridValueManager)
-    }*/
+        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recycler_Pictogramas, constraintLayout) }
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cuaderno_principal, container, false)
@@ -68,8 +67,9 @@ class PrincipalFragment : Fragment(), AdaptadorCategoriasCuaderno.OnItemSelected
         isPlanificador = (bundle["isPlan"] as Boolean)
         recycler_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
 
-        val gridValue = context?.let { CommonUtils.cambioOrientacion(it) }
-        recycler_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
+        constraintLayout = vista.findViewById(R.id.frameLayout)
+        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recycler_Pictogramas, constraintLayout) }
+        //recycler_Pictogramas.layoutManager = gridValue?.let { GridLayoutManager(context, it) }
         val context = requireContext()
         adaptador = AdaptadorCategoriasCuaderno(listaPictoCuaderno, isPlanificador, this, context, this)
         recycler_Pictogramas.adapter = adaptador

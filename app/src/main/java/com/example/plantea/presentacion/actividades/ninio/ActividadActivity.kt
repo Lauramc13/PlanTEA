@@ -1,115 +1,51 @@
 package com.example.plantea.presentacion.actividades.ninio
 
-import android.annotation.SuppressLint
-import android.app.Dialog
-import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
-import com.example.plantea.presentacion.actividades.NavegacionUtils
-import com.example.plantea.dominio.Pictograma
-import com.example.plantea.dominio.Planificacion
-import java.util.*
+import com.example.plantea.presentacion.viewModels.ActividadViewModel
 
 class ActividadActivity : AppCompatActivity() {
-    lateinit var listaPictogramas: ArrayList<Pictograma>
-    var plan = Planificacion()
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        // Comprobamos la orientacion de la pantalla
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
-        }
-    }
+    private val viewModel by viewModels<ActividadViewModel>()
 
-
-    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
 
-
         val webView: WebView = findViewById(R.id.webView)
-        webView.settings.javaScriptEnabled = true
-
-        webView.webChromeClient = WebChromeClient()
-        webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView?,
-                request: WebResourceRequest?
-            ): Boolean {
-                view?.loadUrl(request?.url.toString())
-                return true
-            }
-        }
-
-       // webView.loadUrl("https://www.youtube.com")
+        viewModel.configureWebView(webView)
 
         val cardVideo : CardView = findViewById(R.id.card_video)
         val cardObjeto : CardView = findViewById(R.id.card_objeto)
-        //val backButton : Button = findViewById(R.id.goBackButton)
         val frameVideo : FrameLayout =  findViewById(R.id.webViewFrame)
         val closeButton : Button = findViewById(R.id.closeYoutube)
 
-       /* backButton.setOnClickListener{
-            finish()
-        }*/
-
         closeButton.setOnClickListener {
+            //stop the webview from playing
+            webView.loadUrl("about:blank")
+
             cardVideo.visibility = View.VISIBLE
             cardObjeto.visibility = View.VISIBLE
             frameVideo.visibility = View.INVISIBLE
-            //stop the webview from playing
-            webView.loadUrl("about:blank")
         }
 
         cardVideo.setOnClickListener{
-            /*val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"))
-            startActivity(intent)*/
+            //load the video
             webView.loadUrl("https://www.youtube.com")
+
             cardVideo.visibility = View.INVISIBLE
             cardObjeto.visibility = View.INVISIBLE
             frameVideo.visibility = View.VISIBLE
         }
 
         cardObjeto.setOnClickListener{
-            val dialogo = Dialog(this)
-            dialogo.setContentView(R.layout.dialogo_actividad)
-            dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val imgObjeto : ImageView = dialogo.findViewById(R.id.imageObjeto)
-            val txtObjeto : TextView = dialogo.findViewById(R.id.lbl_nombreObjeto)
-            // imgAnimacion = dialogLogout.findViewById(R.id.img_animacion)
-            // rotateImageWithAnimation(imgAnimacion, 260f, 6000)
-
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            txtObjeto.text = prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault())
-
-
-            if (prefs.getString("imagenObjeto", "") === "") {
-                imgObjeto.setBackgroundResource(R.drawable.question2)
-                txtObjeto.text = getString(R.string.noConfigurationActivity)
-            } else {
-                imgObjeto.background = null
-                imgObjeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-            }
-
-            val iconoCerrarLogin :ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
-            iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
-            dialogo.show()
+            viewModel.dialogObjeto(this)
         }
     }
 }

@@ -1,16 +1,17 @@
 package com.example.plantea.presentacion
 
+import android.content.Context
 import com.example.plantea.dominio.Evento
 
 interface EventoInterface {
     //EventosFragment
-    fun crearEventoFragment()
+    fun crearEventoFragment(context: Context)
 
     //NuevoEventoFragment
-    fun nuevoEvento(evento: Evento)
-    fun planificar()
-    fun cancelarEvento()
-    fun cancelarNotificacion(identificador: Int)
+    fun nuevoEvento(context: Context, evento: Evento)
+    fun planificar(context: Context)
+    fun cancelarEvento(context: Context)
+    fun cancelarNotificacion(context: Context, identificador: Int)
 
     fun clickReloj(tiempo: CharSequence?)
 }

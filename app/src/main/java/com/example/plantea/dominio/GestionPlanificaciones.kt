@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import java.io.Serializable
@@ -116,9 +117,9 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramas(idUsuario: String, fecha: String, actividad: Activity?): ArrayList<*> {
+    fun obtenerPictogramas(idUsuario: String, fecha: String, context: Context?): ArrayList<*> {
 
-        conectorBD = ConectorBD(actividad)
+        conectorBD = ConectorBD(context)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
         val c = conectorBD.obtenerPlanificacion(idUsuario, fecha)
@@ -138,8 +139,8 @@ class GestionPlanificaciones : Serializable {
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(idUsuario: String, fecha: String, actividad: Activity?): String {
-        conectorBD = ConectorBD(actividad)
+    fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
+        conectorBD = ConectorBD(context)
 
         conectorBD.abrir()
         var titulo = " " // set a default value

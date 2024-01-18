@@ -64,6 +64,7 @@
         <item name="gray">@color/semiGray</item>
         <item name="grayStroke">@color/gray2</item>
         <item name="greenLight">@color/greenLight</item>
+        <item name="subColorBackground">@color/subColorBackground</item>
     </style>
 
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">

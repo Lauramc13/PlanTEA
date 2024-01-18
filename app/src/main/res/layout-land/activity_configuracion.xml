@@ -89,9 +89,9 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/img_FotoPlanificador"
                         style="@style/addPhotoBackground"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
                         android:background="@drawable/ic_baseline_add_photo_alternate_128"
                         android:contentDescription="Añadir imagen del planificador"
                         app:shapeAppearance="@style/cornerRadius" />
@@ -238,12 +238,9 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/img_FotoUsuarioTEA"
                         style="@style/addPhotoBackground"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
                         android:background="@drawable/svg_add_photo"
                         android:contentDescription="Añadir imagen del planificado"
                         app:shapeAppearance="@style/cornerRadius" />
@@ -343,12 +340,9 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/img_objeto"
                         style="@style/addPhotoBackground"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="1dp"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginEnd="1dp"
-                        android:layout_marginBottom="1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
                         android:background="@drawable/svg_add_photo"
                         android:contentDescription="Añadir imagen de la actividad tranquilizadora"
                         app:shapeAppearance="@style/cornerRadius" />

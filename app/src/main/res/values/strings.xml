@@ -134,7 +134,7 @@
     <string name="lbl_historialSocial">Historial social para:</string>
     <string name="lbl_cerrarSesion">¿Estas segur@ que quieres cerrar la sesión?</string>
     <string name="lbl_cerrarSesionBotton">Cerrar sesión</string>
-    <string name="lbl_nuevaPlanificacion">NUEVO EVENTO</string>
+    <string name="lbl_nuevaPlanificacion">NUEVA PLANIFICACIÓN</string>
     <string name="lbl_salirPlanificacion">Salir de la planificación</string>
     <string name="lbl_salirPlanificacion2">¿Estas segur@ que quieres salir de la planificación?</string>
     <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>

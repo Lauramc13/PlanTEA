@@ -15,6 +15,7 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -26,6 +27,7 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.EventoInterface
 import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
+import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.util.*
@@ -54,10 +56,12 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     var hora = 0
     var minuto = 0
     var planSeleccionado = 0
-    var posAnterior = 0
     lateinit var nombreEvento: String
     var plan = Planificacion()
     var pictograma = Pictograma()
+
+   private val viewModel by viewModels<CalendarioViewModel>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
@@ -90,13 +94,11 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
                     planSeleccionado,
                 )
             }
-            if (evento != null) {
-                eventoInterface.nuevoEvento(evento)
-            }
+            //if (evento != null) { context?.let { it1 -> viewModel.nuevoEvento(it1, evento) } }
             Toast.makeText(context, "Evento creado", Toast.LENGTH_SHORT).show()
         }
-        btn_planificar.setOnClickListener { eventoInterface.planificar() }
-        cancelarEvento.setOnClickListener { eventoInterface.cancelarEvento() }
+       // btn_planificar.setOnClickListener { context?.let { it1 -> viewModel.planificar(it1) } }
+        //cancelarEvento.setOnClickListener { context?.let { it1 -> viewModel.cancelarEvento(it1) } }
         return vista
     }
 
@@ -113,7 +115,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         super.onAttach(context)
         if (context is Activity) {
             actividad = context
-            eventoInterface = (actividad as EventoInterface?)!!
+           // eventoInterface = (actividad as EventoInterface?)!!
         }
     }
 
@@ -188,7 +190,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
 
             layout_planificaciones.visibility = View.VISIBLE
             iniciarListaPlanificaciones()
-            eventoInterface.clickReloj(tiempo?.text)
+           // viewModel.clickReloj()
         }
 
         picker.show(requireFragmentManager(), "TimePicker")
@@ -252,21 +254,6 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     }
 
     override fun planSeleccionado(posicion: Int) {
-        val viewHolder = listaPlanificaciones.findViewHolderForAdapterPosition(posAnterior) as AdaptadorListaPlanes.ViewHolder? // TODO: NULL POINTER EXCEPTION
-        val card = viewHolder!!.itemView.findViewById<View>(R.id.card_plan) as CardView
-        val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        if (isDarkMode) {
-            if (posicion != posAnterior) {
-                card.setCardBackgroundColor(Color.rgb(37, 47, 56))
-            }
-        } else {
-            if (posicion != posAnterior) {
-                card.setCardBackgroundColor(Color.WHITE)
-            }
-        }
-        posAnterior = posicion
-        planSeleccionado = 0
-        nombreEvento = null.toString()
         planSeleccionado = planes[posicion].id
         nombreEvento = planes[posicion].titulo
         btn_guardar.isEnabled = true

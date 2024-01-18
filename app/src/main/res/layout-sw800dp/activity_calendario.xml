@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/blob3"
-        app:tint="#F6FBF7" />
+        app:tint="?subColorBackground" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -38,7 +38,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="330dp"
+            android:layout_height="500dp"
             android:background="@drawable/bg_calendario"
             android:orientation="vertical">
 

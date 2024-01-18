@@ -30,7 +30,6 @@ import com.google.firebase.ktx.Firebase
 
 
 class PreLoginActivity : AppCompatActivity(){
-
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: TextView
     private lateinit var btnOlvidarPass: TextView
@@ -90,12 +89,6 @@ class PreLoginActivity : AppCompatActivity(){
             signInGoogle()
         }
 
-        val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        /*if (isDarkMode) {
-            background.setImageResource(R.drawable.backgroundlogindark)
-        } else {
-            background.setImageResource(R.drawable.backgroundlogin)
-        }*/
 
         btnLogin = findViewById(R.id.btn_login)
         btnRegister = findViewById(R.id.btn_registrar)

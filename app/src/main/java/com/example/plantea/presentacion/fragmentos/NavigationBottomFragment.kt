@@ -27,6 +27,10 @@ class NavigationBottomFragment: Fragment() {
         CommonUtils.handler.removeCallbacksAndMessages(null)
     }
 
+    override fun onResume() {
+        super.onResume()
+        navigationHandler.restoreNavigationItemClickedBottom(navigationHandler.hostingId(activity?.javaClass!!))
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_navigation_bottom, container, false)
@@ -42,18 +46,9 @@ class NavigationBottomFragment: Fragment() {
 
 
         val hostingActivityClass = activity?.javaClass
-        val idActivity = when (hostingActivityClass) {
-            MainActivity::class.java -> R.id.home
-            PlanActivity::class.java -> R.id.planificacion
-            TraductorActivity::class.java -> R.id.traductor
-            CalendarioActivity::class.java -> R.id.calendar
-            ActividadActivity::class.java -> R.id.actividades
-            CuadernoActivity::class.java -> R.id.cuaderno
-            else -> R.id.planificacion
-        }
 
         if (hostingActivityClass != null) {
-            navigationHandler.inicializarVariablesBottom(vista, this, hostingActivityClass, idActivity)
+            navigationHandler.inicializarVariablesBottom(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
         }
         return vista
     }

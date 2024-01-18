@@ -16,7 +16,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -25,9 +27,9 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoDiaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
-import com.example.plantea.presentacion.EventoInterface
 import com.example.plantea.presentacion.actividades.ninio.PlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
+import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import java.time.LocalDate
 import java.util.*
 
@@ -39,7 +41,6 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var crearEvento: Button
     lateinit var listaEventos: RecyclerView
     lateinit var actividad: Activity
-    lateinit var eventoInterface: EventoInterface
     lateinit var eventos: ArrayList<Evento>
     lateinit var pictogramas: ArrayList<Pictograma>
     lateinit var adaptadorEvento: AdaptadorEvento
@@ -49,7 +50,10 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     var contador = 0
     var evento = Evento()
     var plan = Planificacion()
-    
+
+    private val viewModel by viewModels<CalendarioViewModel>()
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_eventos, container, false)
@@ -58,15 +62,16 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         mensaje = vista.findViewById(R.id.lbl_mensaje_evento)
         listaEventos = vista.findViewById(R.id.recycler_eventos)
         iniciarAdaptadorEvento()
-        crearEvento.setOnClickListener { eventoInterface.crearEventoFragment() }
+        crearEvento.setOnClickListener { context?.let { it1 -> viewModel.crearEventoFragment(it1) } }
         return vista
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         if (context is Activity) {
             actividad = context
-            eventoInterface = (actividad as EventoInterface?)!!
+            //eventoInterface = (actividad as EventoInterface?)!!
         }
     }
 
@@ -77,7 +82,6 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         }
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
-        Log.d("EVENTOS USUARIO", "$userId")
         eventos = userId?.let { evento.obtenerEventos(it, actividad, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
         listaEventos.layoutManager = LinearLayoutManager(context)
         adaptadorEvento = AdaptadorEvento(eventos, this)
@@ -99,7 +103,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         btn_cancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
         btn_eliminar.setOnClickListener {
             Toast.makeText(context, "Evento eliminado", Toast.LENGTH_SHORT).show()
-                    eventoInterface.cancelarNotificacion(eventos[posicion].id)
+           // context?.let { it1 -> viewModel.cancelarNotificacion(it1, eventos[posicion].id) }
                     evento.eliminarEvento(actividad, eventos[posicion].id)
                     eventos.removeAt(posicion)
                     adaptadorEvento.notifyDataSetChanged()

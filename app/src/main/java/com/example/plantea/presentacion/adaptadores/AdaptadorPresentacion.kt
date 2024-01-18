@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     lateinit var context: Context
 
     interface OnItemSelectedListener {
-        fun onItemSeleccionado(posicion: Int)
+        fun onItemSeleccionado(context: Context, posicion: Int)
 
         fun checkPosition(posicion: Int) : Boolean
 
@@ -61,7 +62,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var titulo: TextView
         var imagen: ImageView
-        //var premio: ImageView
+        var cardLayout : RelativeLayout
         var card: View
         var historia: ImageView
 
@@ -69,6 +70,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
+            cardLayout = itemView.findViewById(R.id.id_card_picto)
             // premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
             historia = itemView.findViewById(R.id.btn_historiaPictoOn)
@@ -77,15 +79,14 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
         override fun onClick(view: View) {
             val position = bindingAdapterPosition
-
             val checkedPosition =  listener?.checkPosition(position)
 
             if(checkedPosition == true){
-                listener?.onItemSeleccionado(position)
+                listener?.onItemSeleccionado(view.context, position)
                 card.setBackgroundResource(R.drawable.card_disabled)
-                imagen.alpha = 0.7f
-                titulo.alpha = 0.7f
-                historia.alpha = 0.7f
+                cardLayout.alpha = 0.7f
+                //titulo.alpha = 0.7f
+                //historia.alpha = 0.7f
             }else{
                 Toast.makeText(context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()
             }

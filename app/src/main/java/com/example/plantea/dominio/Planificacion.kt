@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import java.io.Serializable
 
 class Planificacion : Serializable {
@@ -46,15 +47,15 @@ class Planificacion : Serializable {
     }
 
     //Mostrar la planificacion a seguir
-    fun mostrarPlanificacion(idUsuario: String, fecha: String, actividad: Activity?): ArrayList<*> {
+    fun mostrarPlanificacion(idUsuario: String, fecha: String, context: Context?): ArrayList<*> {
         listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, fecha, actividad) as ArrayList<Planificacion>
+        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, fecha, context) as ArrayList<Planificacion>
         return listaPlanes
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(idUsuario: String, fecha: String, actividad: Activity?): String {
-        titulo = gestionPlan.obtenerTituloPlan(idUsuario, fecha, actividad)
+    fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
+        titulo = gestionPlan.obtenerTituloPlan(idUsuario, fecha, context)
         return titulo
     }
 

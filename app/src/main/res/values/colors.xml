@@ -13,6 +13,7 @@
     <color name="gray2">#60181F25</color>
     <color name="black">#212121</color>
     <color name="background2">#DDECEC</color>
+    <color name="subColorBackground">#F6FBF7</color>
     <color name="md_theme_light_primary">#67D2D2</color>
     <color name="md_theme_light_primary3">#ABE4E4</color>
     <color name="md_theme_light_primary2">#A6DDDD</color>

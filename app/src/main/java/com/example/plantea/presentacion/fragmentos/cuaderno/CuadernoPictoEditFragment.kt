@@ -17,8 +17,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -29,12 +27,12 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.CuadernoInterface
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
@@ -58,17 +56,17 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
     private val pictograma = Pictograma()
     lateinit var image: ShapeableImageView
     private var idCuaderno : Int = 0
-
+    private lateinit var constraintLayout: ConstraintLayout
+    private var changedUiMode = false
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        val widthRecyclerView =  lst_Pictogramas.width
-        val gridValue: Int = if(context?.let { CommonUtils.isMobile(it) } == true){
-            widthRecyclerView/150
-        }else{
-            widthRecyclerView/200
-        }
-        lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
+        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("CHANGED_KEY", true) // this is so we know that the UI mode has changed
     }
 
     fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?, listaPicto: ArrayList<String>){
@@ -91,7 +89,9 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
     fun updateData(newPictogramasList: ArrayList<Pictograma>){
         listaPictogramas.clear()
         listaPictogramas.addAll(newPictogramasList)
-        listaPictogramas.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
+        //if savedInstance == null then add picto
+        if(listaPictogramas.lastIndex != 0)
+            listaPictogramas.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
 
         adaptador.isBusqueda = false
         activity?.runOnUiThread {
@@ -101,30 +101,15 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         imageAtras.visibility = View.INVISIBLE
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable("listaPictogramas", listaPictogramas)
-        outState.putBoolean("isBusqueda", adaptador.isBusqueda)
-        outState.putBoolean("isPlanificador", isPlanificador)
-        outState.putBoolean("isTermometro", isTermometro)
-        outState.putInt("idCuaderno", idCuaderno)
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
-        val bundle = this.arguments
-        if(savedInstanceState != null){
-            listaPictogramas = savedInstanceState.getSerializable("listaPictogramas") as ArrayList<Pictograma>
-            isPlanificador = savedInstanceState.getBoolean("isPlanificador")
-            isTermometro = savedInstanceState.getBoolean("isTermometro")
-            idCuaderno = savedInstanceState.getInt("idCuaderno")
-        }else{
-            listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
-            isTermometro = (bundle["termometro"] as Boolean)
-            idCuaderno =  (bundle["idCuaderno"] as Int)
-            tituloCuaderno = (bundle["tituloCuaderno"] as String)
-        }
+        val bundle = arguments
+
+        listaPictogramas = (bundle?.get("key") as ArrayList<Pictograma>?)!!
+        isTermometro = (bundle?.get("termometro") as Boolean)
+        idCuaderno =  (bundle["idCuaderno"] as Int)
+        tituloCuaderno = (bundle["tituloCuaderno"] as String)
 
         searchbar = vista.findViewById(R.id.searchViewPicto)
         imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
@@ -133,56 +118,38 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
         txtCuaderno.text = tituloCuaderno
 
-
-        vista.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                view!!.width
-            }
-        })
-
-        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
-        constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // Remove the listener to avoid multiple calls
-                vista.viewTreeObserver.removeOnGlobalLayoutListener(this)
-
-                // Get the width of the ConstraintLayout
-                val density = resources.displayMetrics.density
-                val widthRecyclerView = (constraintLayout.width / density).toInt()
-
-                val gridValue: Int = if(context?.let { CommonUtils.isMobile(it)} == true){
-                    widthRecyclerView/150
-                }else{
-                    widthRecyclerView/200
-                }
-                lst_Pictogramas.layoutManager = GridLayoutManager(context, gridValue)
-            }
-        })
-
-
+        constraintLayout = vista.findViewById(R.id.frameLayout)
+        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout)
 
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true
-        listaPictogramas.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+        if (savedInstanceState != null) {
+            changedUiMode = savedInstanceState.getBoolean("CHANGED_KEY")
+        }
+        if(!changedUiMode){
+            listaPictogramas.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+        }
+
+        val cuadernoActivity = activity as CuadernoActivity
 
         adaptador = isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(listaPictogramas, it, this, it1) }}!!
+        adaptador.isBusqueda = cuadernoActivity.isBusqueda
+        adaptador.listaPictosAgregados = cuadernoActivity.listaPictosAgregados
 
         lst_Pictogramas.adapter = adaptador
 
         if(savedInstanceState != null){
-            adaptador.isBusqueda = savedInstanceState.getBoolean("isBusqueda")
-            if(adaptador.isBusqueda){
-                imageCerrar.visibility = View.INVISIBLE
-                imageAtras.visibility = View.VISIBLE
-                listaPictogramas.removeAt(listaPictogramas.lastIndex)
-                adaptador.notifyDataSetChanged()
-            }
+            if(cuadernoActivity.isBusqueda){
+                    imageCerrar.visibility = View.INVISIBLE
+                    imageAtras.visibility = View.VISIBLE
+                    listaPictogramas.removeAt(listaPictogramas.lastIndex)
+                    adaptador.notifyDataSetChanged()
+                }
         }
 
         imageCerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
-        imageAtras.setOnClickListener { interfaceCuaderno.atrasFragment() }
+        imageAtras.setOnClickListener { interfaceCuaderno.atrasFragment(isTermometro, tituloCuaderno) }
         busqueda()
 
         context?.let { CommonUtils.initializeTextToSpeech(it) }

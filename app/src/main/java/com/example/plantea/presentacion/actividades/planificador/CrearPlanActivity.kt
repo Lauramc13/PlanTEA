@@ -87,21 +87,28 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
     var picto = Pictograma()
     var categoria = Categoria()
 
-   override fun onConfigurationChanged(newConfig: Configuration) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Comprobamos la orientacion de la pantalla
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
+
+        val fragmentManager = supportFragmentManager
+        val currentFragment = fragmentManager.findFragmentById(R.id.contenedor_fragments)
+
+        val transaction = supportFragmentManager.beginTransaction()
+
+        when (currentFragment) {
+            is CategoriasFragment -> {
+                transaction.replace<CategoriasFragment>(R.id.contenedor_fragments)
+            }
+            is CategoriasPictogramasFragment -> {
+                val bundle = Bundle()
+                bundle.putSerializable("key", listaPictogramas)
+                val fragment = CategoriasPictogramasFragment()
+                fragment.arguments = bundle
+                transaction.replace(R.id.contenedor_fragments, fragment)
+            }
         }
-        fragmentCategorias = CategoriasFragment()
-        transaction = supportFragmentManager.beginTransaction()
-        supportFragmentManager.commit {
-            setReorderingAllowed(false)
-            replace<CategoriasFragment>(R.id.contenedor_fragments)
-        }
-        recreate()
+
+        transaction.commit()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -217,9 +224,11 @@ class CrearPlanActivity : AppCompatActivity(), CrearPlanInterface, AdaptadorPlan
         fragmentSubcategoria = CategoriasPictogramasFragment()
         fragmentBusqueda = CategoriasPictogramasFragment()
 
-        transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.contenedor_fragments, fragmentCategorias)
-        transaction.commit()
+        if(savedInstanceState == null){
+            transaction = supportFragmentManager.beginTransaction()
+            transaction.add(R.id.contenedor_fragments, fragmentCategorias)
+            transaction.commit()
+        }
 
         //Dialogo para la creación de un nuevo pictograma
         dialogNuevoPictograma = Dialog(this)
