@@ -41,15 +41,10 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var crearEvento: Button
     lateinit var listaEventos: RecyclerView
     lateinit var actividad: Activity
-    lateinit var eventos: ArrayList<Evento>
-    lateinit var pictogramas: ArrayList<Pictograma>
     lateinit var adaptadorEvento: AdaptadorEvento
     lateinit var btn_eliminar: Button
     lateinit var btn_cancelar: Button
     lateinit var icono_cerrar_login : ImageView
-    var contador = 0
-    var evento = Evento()
-    var plan = Planificacion()
 
     private val viewModel by viewModels<CalendarioViewModel>()
 
@@ -61,31 +56,34 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         crearEvento = vista.findViewById(R.id.btn_nuevo_evento)
         mensaje = vista.findViewById(R.id.lbl_mensaje_evento)
         listaEventos = vista.findViewById(R.id.recycler_eventos)
+
         iniciarAdaptadorEvento()
+        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        viewModel.setIdUsario(prefs)
+
         crearEvento.setOnClickListener { context?.let { it1 -> viewModel.crearEventoFragment(it1) } }
+
         return vista
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         if (context is Activity) {
             actividad = context
-            //eventoInterface = (actividad as EventoInterface?)!!
         }
     }
 
-    fun iniciarAdaptadorEvento() {
+    private fun iniciarAdaptadorEvento() {
         diaEvento.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){
             crearEvento.isEnabled = false
         }
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
-        eventos = userId?.let { evento.obtenerEventos(it, actividad, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
+        viewModel.eventos = userId?.let { viewModel.evento.obtenerEventos(it, actividad, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
         listaEventos.layoutManager = LinearLayoutManager(context)
-        adaptadorEvento = AdaptadorEvento(eventos, this)
-        if (eventos.isEmpty()) {
+        adaptadorEvento = AdaptadorEvento(viewModel.eventos, this)
+        if (viewModel.eventos.isEmpty()) {
             listaEventos.visibility = View.GONE
             mensaje.visibility = View.VISIBLE
         } else {
@@ -103,12 +101,12 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         btn_cancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
         btn_eliminar.setOnClickListener {
             Toast.makeText(context, "Evento eliminado", Toast.LENGTH_SHORT).show()
-           // context?.let { it1 -> viewModel.cancelarNotificacion(it1, eventos[posicion].id) }
-                    evento.eliminarEvento(actividad, eventos[posicion].id)
-                    eventos.removeAt(posicion)
+            context?.let { it1 -> viewModel.cancelarNotificacion(it1, viewModel.eventos[posicion].id) }
+            viewModel.evento.eliminarEvento(actividad, viewModel.eventos[posicion].id)
+            viewModel.eventos.removeAt(posicion)
                     adaptadorEvento.notifyDataSetChanged()
                     //Mostramos un mensaje informando si la lista está vacía
-                    if (eventos.isEmpty()) {
+                    if (viewModel.eventos.isEmpty()) {
                         listaEventos.visibility = View.GONE
                         mensaje.visibility = View.VISIBLE
                     } else {
@@ -125,19 +123,14 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     override fun viewClick(posicion: Int) {
-        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val userId = prefs.getString("idUsuario", "")
-
         val fecha = CalendarioUtilidades.fechaSeleccionada.toString()
 
-        Log.d("asf", CalendarioUtilidades.fechaSeleccionada.toString())
-
-        contador = userId?.let { evento.comprobarEventosVisible(it, fecha, actividad) }!!
-        if (eventos[posicion].visible == 1) {
-            evento.cambiarVisibilidad(actividad, 0, eventos[posicion].id)
+        val contador = viewModel.idUsuario.let { viewModel.evento.comprobarEventosVisible(it, fecha, actividad) }
+        if (viewModel.eventos[posicion].visible == 1) {
+            viewModel.evento.cambiarVisibilidad(actividad, 0, viewModel.eventos[posicion].id)
         } else {
             if (contador == 0) {
-                evento.cambiarVisibilidad(actividad, 1, eventos[posicion].id)
+                viewModel.evento.cambiarVisibilidad(actividad, 1, viewModel.eventos[posicion].id)
             } else {
                 Toast.makeText(context, "Solo un evento puede ser visible", Toast.LENGTH_SHORT).show()
             }
@@ -146,10 +139,9 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     override fun viewEventClick(posicion: Int) {
-        pictogramas = ArrayList()
-        pictogramas = plan.obtenerPictogramasPlanificacion(actividad, eventos[posicion].id_plan) as ArrayList<Pictograma>
+        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventos[posicion].id_plan) as ArrayList<Pictograma>
         val intent = Intent(actividad, PlanActivity::class.java)
-        intent.putExtra("titulo", eventos[posicion].nombre)
+        intent.putExtra("titulo", viewModel.eventos[posicion].nombre)
         intent.putExtra("pictogramas", pictogramas)
         startActivity(intent)
     }

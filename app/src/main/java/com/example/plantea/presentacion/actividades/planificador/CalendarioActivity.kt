@@ -9,6 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,38 +60,15 @@ class CalendarioActivity : AppCompatActivity() {
         fragmentNuevoEvento = viewModel.fragmentNuevoEvento
 
         //set up the fragments
-        if(savedInstanceState == null){
-            fragmentEventos = viewModel.fragmentEventos
-            fragmentNuevoEvento = viewModel.fragmentNuevoEvento
-
-            supportFragmentManager.commit {
-                add(R.id.fragment_calendario, fragmentEventos)
-                setReorderingAllowed(true)
-                addToBackStack("Evento")
-            }
-        }else{
-            if(supportFragmentManager.backStackEntryCount > 0){
-                val fragment = supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
-                if(fragment.name == "Evento"){
-                    supportFragmentManager.commit {
-                        replace(R.id.fragment_calendario, fragmentNuevoEvento)
-                        setReorderingAllowed(true)
-                        addToBackStack("nuevoEvento")
-                    }
-                }else{
-                    supportFragmentManager.commit {
-                        replace(R.id.fragment_calendario, fragmentNuevoEvento)
-                        setReorderingAllowed(true)
-                        addToBackStack("nuevoEvento")
-                    }
-                }
-            }
+        if(savedInstanceState == null) {
+            CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
+            viewModel.obtenerVistaMes()
         }
 
-        observer()
 
-        CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
-        viewModel.obtenerVistaMes()
+        observer(savedInstanceState)
+//        CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
+        //viewModel.obtenerVistaMes()
 
         btn_anteriorMes.setOnClickListener {
             CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
@@ -101,21 +80,28 @@ class CalendarioActivity : AppCompatActivity() {
         }
     }
 
-    private fun observer(){
+    private fun observer(savedInstanceState: Bundle?){
         viewModel._fechaActual.observe(this) {
             fechaActual.text = it
         }
 
-        viewModel._dias.observe(this){
+        viewModel._dias.observe(this) {
             calendario.layoutManager = GridLayoutManager(this, 7)
             val adaptadorCalendario = AdaptadorCalendario(it, viewModel.eventos, viewModel)
             calendario.adapter = adaptadorCalendario
-            val ft = supportFragmentManager.beginTransaction()
-            ft.replace(R.id.fragment_calendario, EventosFragment())
-            ft.commit()
+
+            if (savedInstanceState == null || viewModel.isDiaSeleccionado) {
+                val ft = supportFragmentManager.beginTransaction()
+                ft.replace(R.id.fragment_calendario, EventosFragment())
+                ft.commit()
+            }
         }
+    }
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.isDiaSeleccionado = false
     }
 
 }

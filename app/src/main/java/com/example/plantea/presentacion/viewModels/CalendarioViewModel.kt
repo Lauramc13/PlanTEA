@@ -10,26 +10,27 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
+import com.example.plantea.dominio.Pictograma
+import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.onAlarmReceiver
 import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
 import java.util.Locale
 
 class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener {
-
     private lateinit var alarmManager: AlarmManager
-    private var isClickedReloj = false
+   // var isClickedReloj = false
     var isNuevoEventoSelected = false
-    var fragment_crearEvento = NuevoEventoFragment()
     var evento = Evento()
     var _dias = MutableLiveData<ArrayList<LocalDate?>>()
     lateinit var eventos: ArrayList<Evento>
@@ -40,7 +41,24 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var fragmentEventos = EventosFragment()
     var fragmentNuevoEvento = NuevoEventoFragment()
 
-    fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
+    var isDiaSeleccionado = false
+
+    //Variables de Eventos Fragment
+    lateinit var pictogramas: ArrayList<Pictograma>
+
+    //Variables de Nuevo Evento Fragment
+    var isClickedReloj = false
+    var hora = 0
+    var minuto = 0
+    var isPlanSeleccionado = false
+    var posicionPlan = 0
+    var planSeleccionado = 0
+    lateinit var nombreEvento: String
+    lateinit var planes: ArrayList<Planificacion>
+    var counter: Int = 1
+    var plan = Planificacion()
+
+    private fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
         val intent = Intent()
         intent.setClass(context, onAlarmReceiver::class.java)
         intent.putExtra("Evento", evento)
@@ -87,10 +105,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         ft.commit()
     }
 
-    fun clickReloj() {
-        isClickedReloj = true
-    }
-
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
@@ -130,6 +144,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     override fun diaSeleccionado(context: Context?, fecha: LocalDate) {
         CalendarioUtilidades.fechaSeleccionada = fecha
+        isDiaSeleccionado = true
         obtenerVistaMes()
     }
 
@@ -139,4 +154,40 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         eventos = userId?.let { evento.obtenerTodosEventos(it, context as Activity) } as ArrayList<Evento>
     }
 
+    fun setIdUsario(prefs : android.content.SharedPreferences){
+        val userId = prefs.getString("idUsuario", "")
+        idUsuario = userId.toString()
+    }
+
+    fun createReloj(): MaterialTimePicker{
+        val currentTime = Calendar.getInstance()
+        val currentHour = currentTime[Calendar.HOUR_OF_DAY]
+        val currentMinute = currentTime[Calendar.MINUTE]
+
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(currentHour)
+            .setMinute(currentMinute)
+            .setTheme(R.style.TimePicker)
+            .setTitleText("Selecciona una hora")
+            .build()
+
+        return picker
+    }
+
+    fun configureDataPlanSeleccionado(posicion: Int){
+        isPlanSeleccionado = true
+        posicionPlan = posicion
+        planSeleccionado = planes[posicion].id
+        nombreEvento = planes[posicion].titulo
+    }
+
+    fun editarClick(actividad: Activity, posicion: Int){
+        val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as java.util.ArrayList<Pictograma>
+        val intent = Intent(actividad, CrearPlanActivity::class.java)
+        intent.putExtra("identificador", planes[posicion].id)
+        intent.putExtra("titulo", planes[posicion].titulo)
+        intent.putExtra("pictogramas", pictogramas)
+        actividad.startActivity(intent)
+    }
 }

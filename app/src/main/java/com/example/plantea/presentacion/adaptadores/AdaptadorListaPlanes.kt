@@ -13,7 +13,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Planificacion
 
 class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaPlanes.ViewHolder>() {
-    private var selectedPosition = RecyclerView.NO_POSITION
+    var selectedPosition = RecyclerView.NO_POSITION
 
     interface OnItemSelectedListener {
         fun deleteClick(posicion: Int)
