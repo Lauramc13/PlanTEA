@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import com.example.plantea.persistencia.ConectorBD
 
 class GestionCategorias {
@@ -22,8 +23,8 @@ class GestionCategorias {
         return listaCategorias!!
     }
 
-    fun obtenerIdCategoria(actividad: Activity?, nombre: String?): Int {
-        conectorBD = ConectorBD(actividad)
+    fun obtenerIdCategoria(context: Context, nombre: String?): Int {
+        conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
         var categoria = 0
         val c = conectorBD!!.obtenerIdCategoria(nombre)

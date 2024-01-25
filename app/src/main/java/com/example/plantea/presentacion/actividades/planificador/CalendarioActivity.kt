@@ -19,23 +19,20 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.CalendarioUtilidades.formatoMesAnio
 import com.example.plantea.dominio.CalendarioUtilidades.obtenerDiasMes
 import com.example.plantea.dominio.Evento
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
 class CalendarioActivity : AppCompatActivity() {
-    private lateinit var fragmentEventos: Fragment
-    private lateinit var fragmentNuevoEvento: Fragment
     private lateinit var calendario: RecyclerView
     private lateinit var fechaActual: TextView
-    //private lateinit var dias: ArrayList<LocalDate?>
-    private lateinit var btn_siguienteMes: ImageView
-    private lateinit var btn_anteriorMes: ImageView
     lateinit var prefs: SharedPreferences
 
     private val viewModel by viewModels<CalendarioViewModel>()
@@ -52,29 +49,29 @@ class CalendarioActivity : AppCompatActivity() {
         viewModel.crearCanalNotificacion(this)
         calendario = findViewById(R.id.recycler_calendario)
         fechaActual = findViewById(R.id.lbl_mes)
-        btn_siguienteMes = findViewById(R.id.image_calendar_siguiente)
-        btn_anteriorMes = findViewById(R.id.image_calendar_anterior)
-
-        // Retrieve or create the fragments using the ViewModel
-        fragmentEventos = viewModel.fragmentEventos
-        fragmentNuevoEvento = viewModel.fragmentNuevoEvento
+        val btnSiguienteMes = findViewById<ImageView>(R.id.image_calendar_siguiente)
+        val btnAnteriorMes = findViewById<ImageView>(R.id.image_calendar_anterior)
 
         //set up the fragments
-        if(savedInstanceState == null) {
-            CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
+        if (this.intent.extras != null) {
+            // selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            CalendarioUtilidades.fechaSeleccionada = LocalDate.parse(this.intent.extras!!.getString("date"))
             viewModel.obtenerVistaMes()
+        }else{
+            if(savedInstanceState == null) {
+                CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
+                viewModel.obtenerVistaMes()
+            }
         }
 
-
         observer(savedInstanceState)
-//        CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
-        //viewModel.obtenerVistaMes()
 
-        btn_anteriorMes.setOnClickListener {
+        btnSiguienteMes.setOnClickListener {
             CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
             viewModel.obtenerVistaMes()
         }
-        btn_siguienteMes.setOnClickListener {
+
+        btnAnteriorMes.setOnClickListener {
             CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
             viewModel.obtenerVistaMes()
         }

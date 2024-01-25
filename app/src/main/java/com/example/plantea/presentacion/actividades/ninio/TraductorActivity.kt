@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
@@ -92,7 +93,9 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             if (!viewModel.speechInProgress) {
                 escucharButtonFrase.text = getString(R.string.str_parar)
                 escucharButtonPalabra.isEnabled = false
-                CommonUtils.textToSpeechFrase(textoATraducir.editText?.text.toString())
+                val frase = textoATraducir.editText?.text.toString()
+                CommonUtils.textToSpeech.speak(frase, TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+
                 viewModel.speechInProgress = true
             } else {
                 CommonUtils.textToSpeech.stop()

@@ -48,8 +48,7 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
             if(listaPictogramas!![position].favorito){
                 holder.heart!!.setImageResource(R.drawable.svg_heart)
                 listaPictogramas!![position].favorito = false
-                favourites.removeFavorite(listaPictogramas!![position], position)
-                //favourites.nuevoPictoFavorito(listaPictogramas!![position])
+                favourites.removeFavorite(listaPictogramas!![position])
             }else{
                 holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
                 listaPictogramas!![position].favorito = true

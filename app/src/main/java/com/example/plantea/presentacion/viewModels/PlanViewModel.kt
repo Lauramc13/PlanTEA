@@ -1,10 +1,11 @@
 package com.example.plantea.presentacion.viewModels
 
 import android.app.Activity
-import android.app.Application
 import android.app.Dialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
@@ -31,7 +33,6 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.imageview.ShapeableImageView
-import org.checkerframework.checker.units.qual.A
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -39,26 +40,28 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.Stack
 
-class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener {
+
+class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener, AdaptadorPresentacion.OnItemSelectedListener {
+
+    var itemList = ArrayList<Pictograma>()
 
     var fechaSeleccionada : LocalDate = LocalDate.now()
-    lateinit var selectedDate: String
     var _diaText = MutableLiveData<String>()
     val _planLiveData: MutableLiveData<ArrayList<Pictograma>> = MutableLiveData()
     val _tituloLiveData: MutableLiveData<String> = MutableLiveData()
     val _fechaActual = MutableLiveData<String>()
     val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
-    val _imageAvatar = MutableLiveData<Uri>()
+    //val _imageAvatar = MutableLiveData<Uri>()
     val _dismissDialog = MutableLiveData<Boolean>()
+    var speechInProgress = false
 
-    var viewHolderPictogramas : AdaptadorPresentacion.ViewHolderPictogramas? = null
+    lateinit var recyclerView: RecyclerView
 
     var listaPictogramas = ArrayList<Pictograma>()
     var plan = Planificacion()
     lateinit var adaptador: AdaptadorPresentacion
     var currentDialog: Dialog? = null
-    var pasosCompletados = Stack<Int>()
-    val _pasoActual = MutableLiveData<Int>()
+    var _pasosCompletados = MutableLiveData<Stack<Int>>()
 
     var dialog: Dialog? = null
 
@@ -73,6 +76,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     val handler = Handler()
 
     val calendar = Calendar.getInstance()
+    var selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
     val dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
     val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
     val dayOfWeek = dateFormat.format(calendar.time)
@@ -82,6 +86,9 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     var planificaciones = ArrayList<Evento>()
     var evento = Evento()
     lateinit var eventos: ArrayList<Evento>
+
+    private lateinit var imagenConfeti: ImageView
+    private lateinit var mensajePremio: TextView
 
     fun dpToPx(dp: Int, context: Context): Int {
         return TypedValue.applyDimension(
@@ -109,13 +116,12 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
 
         //_dismissDialog.value = true
         mostrarPlan(context)
-        //dialog?.dismiss()
+        dialog?.dismiss()
     }
 
     fun mostrarPlan(context: Context?) {
-        listaPictogramas = idUsuario.let {
-            plan.mostrarPlanificacion(it, selectedDate, context)
-        } as ArrayList<Pictograma>
+        _pasosCompletados.value = Stack()
+        listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, selectedDate, context) } as ArrayList<Pictograma>
 
         //Mostrar título de la planificación
         val tituloObtenido = plan.obtenerTituloPlan(idUsuario, selectedDate, context)
@@ -127,6 +133,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     fun configureDataEvento(){
         _tituloLiveData.value = _tituloLiveData.value
         _planLiveData.value = _planLiveData.value
+        _pasosCompletados.value = _pasosCompletados.value
     }
 
     fun mostrarPlanificaciones(): ArrayList<PlanificacionItem> {
@@ -155,8 +162,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     }
 
     fun stopReproductor() {
-        isRunning = false
-       currentRunnable?.let {
+        currentRunnable?.let {
             handler.removeCallbacksAndMessages(null)
             currentRunnable = null
         }
@@ -199,4 +205,89 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         eventos = idUsuario.let { evento.obtenerEventos(it, context as Activity, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
     }
 
+    override fun onItemSeleccionado(context: Context, posicion: Int) {
+        if (currentDialog != null && currentDialog!!.isShowing) {
+            currentDialog!!.dismiss()
+        }
+
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.dialogo_presentacion)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val  btnCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogoEvento)
+        val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
+        val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
+        val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
+        imagenConfeti = dialog.findViewById(R.id.img_confeti)
+        mensajePremio = dialog.findViewById(R.id.txt_premio)
+        val  dialogoPresentacion = dialog.findViewById<ConstraintLayout>(R.id.dialogo_presentacion_2)
+        pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
+        tituloPictograma.text = listaPictogramas[posicion].titulo
+
+        dialogoPresentacion.clearAnimation()
+        imagenConfeti.clearAnimation()
+        mensajePremio.clearAnimation()
+        imagenConfeti.visibility = View.INVISIBLE
+        mensajePremio.visibility = View.INVISIBLE
+
+        val textoHistoria = dialog.findViewById<TextView>(R.id.lblBubble)
+        val avatarHistoria = dialog.findViewById<ShapeableImageView>(R.id.avatarBubble)
+
+        val prefs: SharedPreferences = context.getSharedPreferences("Preferencias", MODE_PRIVATE)
+
+        // Si tenemos historias
+        if (listaPictogramas[posicion].historia != "null") {
+            textoHistoria.text = listaPictogramas[posicion].historia
+            historia.visibility = View.VISIBLE
+            if (prefs.getString("imagenPlanificador", "") === "") {
+                avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            } else {
+                avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+            }
+        } else {
+            historia.visibility = View.GONE
+        }
+
+        if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
+            animacionesConfeti(context, listaPictogramas[posicion].categoria)
+        }
+
+        _pasosCompletados.value?.push(posicion)
+        _pasosCompletados.postValue(_pasosCompletados.value)
+
+        currentDialog = dialog
+
+        //Botón cerrar
+        btnCerrar.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
+    override fun checkPosition(posicion: Int): Boolean {
+        return if(_pasosCompletados.value?.isEmpty()!!){
+            posicion == 0
+        }else{
+            _pasosCompletados.value?.peek()!! + 1 == posicion
+        }
+    }
+
+    fun animacionesConfeti(context: Context, categoria: Int) {
+        imagenConfeti.visibility = View.VISIBLE
+        mensajePremio.visibility = View.VISIBLE
+
+        imagenConfeti.clearAnimation()
+        mensajePremio.clearAnimation()
+
+        if (categoria == 9) {
+            imagenConfeti.animation = animFondo
+            animFondo.start()
+            mensajePremio.animation = animFondo
+            animFondo.start()
+        } else if (categoria == 8) {
+            imagenConfeti.setImageResource(R.drawable.svg_espera)
+            mensajePremio.text = context.getString(R.string.str_esperar)
+            imagenConfeti.animation = animCard
+            animCard.start()
+            mensajePremio.animation = animCard
+            animCard.start()
+        }
+    }
 }

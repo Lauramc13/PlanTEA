@@ -102,14 +102,8 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         adaptador = AdaptadorListaPlanes(viewModel.planes, this)
         listaPlanificaciones.adapter = adaptador
 
-        //Mostramos un mensaje informando si la lista está vacía
-        if (viewModel.planes.isEmpty()) {
-            listaPlanificaciones.visibility = View.GONE
-            mensajePlanes.visibility = View.VISIBLE
-        } else {
-            listaPlanificaciones.visibility = View.VISIBLE
-            mensajePlanes.visibility = View.GONE
-        }
+        visibilityPlan()
+
     }
 
     private fun mostrarReloj() {
@@ -156,10 +150,7 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
             viewModel.planes.removeAt(posicion)
             adaptador.notifyDataSetChanged()
             //Mostramos un mensaje informando si la lista está vacía
-            if (viewModel.planes.isEmpty()) {
-                listaPlanificaciones.visibility = View.GONE
-                mensajePlanes.visibility = View.VISIBLE
-            }
+            visibilityPlan()
             dialogPlan.dismiss()
         }
         btnCancelar.setOnClickListener {
@@ -190,5 +181,24 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
     override fun planSeleccionado(posicion: Int) {
         viewModel.configureDataPlanSeleccionado(posicion)
         btnGuardar.isEnabled = true
+    }
+
+    fun visibilityPlan(){
+        if (viewModel.planes.isEmpty()) {
+            listaPlanificaciones.visibility = View.GONE
+            mensajePlanes.visibility = View.VISIBLE
+        } else {
+            listaPlanificaciones.visibility = View.VISIBLE
+            mensajePlanes.visibility = View.GONE
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.planes.clear()
+        viewModel.planes.addAll(viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>)
+        visibilityPlan()
+        adaptador.notifyDataSetChanged()
     }
 }

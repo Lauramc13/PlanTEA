@@ -7,51 +7,48 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.plantea.R
 import com.example.plantea.presentacion.CrearPlanInterface
+import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
 
 class CategoriasFragment : Fragment() {
-    lateinit var vista: View
     lateinit var actividad: Activity
-    //lateinit var cardConsultas: CardView
-    lateinit var cardMedico: CardView
-    lateinit var cardCompra: CardView
-    lateinit var cardPeluqueria: CardView
-    lateinit var cardColegio: CardView
-    lateinit var cardLugares: CardView
-    lateinit var cardDesplazamiento: CardView
-    lateinit var cardAccion: CardView
-    lateinit var cardRecompensa: CardView
-    lateinit var cardFavoritos: CardView
-    lateinit var cardEntretenimiento: CardView
-    lateinit var interfaceCategorias: CrearPlanInterface
+    private val viewModel: CrearPlanViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        //val orientation = resources.configuration.orientation
-        //val layoutId = if (orientation == Configuration.ORIENTATION_LANDSCAPE) R.layout.fragment_categorias else R.layout.fragment_categorias_portrait
-        vista = inflater.inflate(R.layout.fragment_categorias, container, false)
-        cardMedico = vista.findViewById(R.id.categoria_medico)
-        cardCompra = vista.findViewById(R.id.categoria_compra)
-        cardPeluqueria = vista.findViewById(R.id.categoria_peluqueria)
-        cardColegio = vista.findViewById(R.id.categoria_colegio)
-        cardFavoritos = vista.findViewById(R.id.categoria_favoritos)
-        cardAccion = vista.findViewById(R.id.categoria_accion)
-        cardDesplazamiento = vista.findViewById(R.id.categoria_desplazamiento)
-        cardEntretenimiento = vista.findViewById(R.id.categoria_entretenimiento)
-        cardLugares = vista.findViewById(R.id.categoria_lugares)
-        cardRecompensa = vista.findViewById(R.id.categoria_recompensa)
-        cardMedico.setOnClickListener { interfaceCategorias.mostrarCategoria(1) }
-        cardPeluqueria.setOnClickListener { interfaceCategorias.mostrarCategoria(2) }
-        cardCompra.setOnClickListener { interfaceCategorias.mostrarCategoria(3) }
-        cardColegio.setOnClickListener { interfaceCategorias.mostrarCategoria(4) }
-        cardLugares.setOnClickListener { interfaceCategorias.mostrarCategoria(5) }
-        cardDesplazamiento.setOnClickListener { interfaceCategorias.mostrarCategoria(6) }
-        cardAccion.setOnClickListener { interfaceCategorias.mostrarCategoria(7) }
-        cardEntretenimiento.setOnClickListener { interfaceCategorias.mostrarCategoria(8) }
-        cardRecompensa.setOnClickListener { interfaceCategorias.mostrarCategoria(9) }
-        cardFavoritos.setOnClickListener { interfaceCategorias.mostrarCategoria(10) }
+
+        val vista = inflater.inflate(R.layout.fragment_categorias, container, false)
+        val cardMedico = vista.findViewById<CardView>(R.id.categoria_medico)
+        val cardCompra = vista.findViewById<CardView>(R.id.categoria_compra)
+        val cardPeluqueria = vista.findViewById<CardView>(R.id.categoria_peluqueria)
+        val cardColegio = vista.findViewById<CardView>(R.id.categoria_colegio)
+        val cardFavoritos = vista.findViewById<CardView>(R.id.categoria_favoritos)
+        val cardAccion = vista.findViewById<CardView>(R.id.categoria_accion)
+        val cardDesplazamiento = vista.findViewById<CardView>(R.id.categoria_desplazamiento)
+        val cardEntretenimiento = vista.findViewById<CardView>(R.id.categoria_entretenimiento)
+        val cardLugares = vista.findViewById<CardView>(R.id.categoria_lugares)
+        val cardRecompensa = vista.findViewById<CardView>(R.id.categoria_recompensa)
+
+        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        viewModel.setIdUsuario(prefs)
+
+        cardMedico.setOnClickListener { viewModel.mostrarCategoria(1, this.requireContext()) }
+        cardPeluqueria.setOnClickListener { viewModel.mostrarCategoria(2, this.requireContext()) }
+        cardCompra.setOnClickListener { viewModel.mostrarCategoria(3, this.requireContext())}
+        cardColegio.setOnClickListener { viewModel.mostrarCategoria(4, this.requireContext())}
+        cardLugares.setOnClickListener { viewModel.mostrarCategoria(5, this.requireContext())}
+        cardDesplazamiento.setOnClickListener { viewModel.mostrarCategoria(6, this.requireContext())}
+        cardAccion.setOnClickListener { viewModel.mostrarCategoria(7, this.requireContext())}
+        cardEntretenimiento.setOnClickListener { viewModel.mostrarCategoria(8, this.requireContext())}
+        cardRecompensa.setOnClickListener { viewModel.mostrarCategoria(9, this.requireContext())}
+        cardFavoritos.setOnClickListener { viewModel.mostrarCategoria(10, this.requireContext())}
+
         return vista
     }
 
@@ -59,7 +56,6 @@ class CategoriasFragment : Fragment() {
         super.onAttach(context)
         if (context is Activity) {
             actividad = context
-            interfaceCategorias = (actividad as CrearPlanInterface?)!!
         }
     }
 

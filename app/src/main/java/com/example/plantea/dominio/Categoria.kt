@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 
 class Categoria {
     var categoria = 0
@@ -18,8 +19,8 @@ class Categoria {
         return listaCategorias
     }
 
-    fun obtenerCategoria(actividad: Activity?, nombre: String?): Int {
-        categoria = gestorCategorias.obtenerIdCategoria(actividad, nombre)
+    fun obtenerCategoria(context: Context, nombre: String?): Int {
+        categoria = gestorCategorias.obtenerIdCategoria(context, nombre)
         return categoria
     }
 

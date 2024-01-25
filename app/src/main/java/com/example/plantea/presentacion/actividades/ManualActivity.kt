@@ -45,6 +45,7 @@ class ManualActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, TutorialActivity::class.java)
             intent.putExtra("isFromManual", true)
             startActivity(intent)
+            finish()
         }
 
 

@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import java.io.Serializable
 
 class Pictograma : Serializable {
@@ -34,13 +35,13 @@ class Pictograma : Serializable {
         this.sourceAPI = sourceAPI
     }
 
-    fun obtenerPictogramas(actividad: Activity, idcategoria: Int, idUsuario: String?): ArrayList<*> {
+    fun obtenerPictogramas(context: Context, idcategoria: Int, idUsuario: String?): ArrayList<*> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.listarPictogramas(actividad, idcategoria, idUsuario)
+        listaPictogramas = gestorPictogramas.obtenerPictogramas(context, idcategoria, idUsuario)
         return listaPictogramas as ArrayList<Pictograma>
     }
 
-    fun obtenerFavoritos(actividad: Activity?, idUsuario: String?): ArrayList<Pictograma> {
+    fun obtenerFavoritos(actividad: Context?, idUsuario: String?): ArrayList<Pictograma> {
         listaPictogramas = ArrayList()
         listaPictogramas = gestorPictogramas.obtenerFavoritos(actividad, idUsuario)
         return listaPictogramas!!
@@ -70,12 +71,12 @@ class Pictograma : Serializable {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }*/
 
-    fun insertarFavorito(actividad: Activity?, idUsuario: String?, id: String?, titulo: String?, imagen: String?) {
-        gestorPictogramas.insertarFavorito(actividad, idUsuario, id, titulo, imagen)
+    fun insertarFavorito(context: Context?, idUsuario: String?, id: String?, titulo: String?, imagen: String?, sourceAPI: Boolean) {
+        gestorPictogramas.insertarFavorito(context, idUsuario, id, titulo, imagen, sourceAPI)
     }
 
-    fun borrarFavorito(actividad: Activity?, idUsuario: String?, idPicto: String?) {
-        gestorPictogramas.borrarFavorito(actividad, idUsuario, idPicto)
+    fun borrarFavorito(context: Context?, idUsuario: String?, idPicto: String?) {
+        gestorPictogramas.borrarFavorito(context, idUsuario, idPicto)
     }
 
     fun getFavorito(actividad: Activity?, idPicto: String?, idUsuario: String?): Boolean {

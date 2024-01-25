@@ -1,23 +1,17 @@
 package com.example.plantea.presentacion.actividades.ninio
 
-import android.app.Application
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
+import android.util.Log
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -34,18 +28,12 @@ import com.example.plantea.presentacion.actividades.planificador.CalendarioActiv
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
-import com.example.plantea.presentacion.fragmentos.DialogCalendarFragment
 import com.example.plantea.presentacion.viewModels.PlanViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.imageview.ShapeableImageView
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.Locale
-import java.util.Stack
 
 
-
-class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, AdaptadorPresentacion.OnItemSelectedListener {
+class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     lateinit var prefs: SharedPreferences
     lateinit var titulo: TextView
     private lateinit var lblMensaje: TextView
@@ -56,23 +44,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
     private lateinit var iconoDeshacerTodas: Button
     private lateinit var iconoMarcar: Button
     private lateinit var iconoMarcarTodas: Button
-    private lateinit var adaptador: AdaptadorPresentacion
     private lateinit var dia: TextView
 
-    private var viewHolderPicto: AdaptadorPresentacion.ViewHolderPictogramas? = null
-
-    private lateinit var imagenConfeti: ImageView
-    private lateinit var mensajePremio: TextView
-
     private lateinit var planificacionesFuturas: RecyclerView
-
     private lateinit var calendarButton: Button
-
-    private lateinit var recyclerView: RecyclerView
-
-    private var dialog: Dialog? = null
-    private var dialogCalendar: DialogCalendarFragment? = null
-
     lateinit var historia: ConstraintLayout
 
     val viewModel: PlanViewModel by viewModels()
@@ -83,35 +58,14 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
         CommonUtils.handler.removeCallbacksAndMessages(null)
     }
 
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        // Save the RecyclerView state before the activity is destroyed
-        recyclerViewState = recyclerView.layoutManager?.onSaveInstanceState()
-       // outState.putParcelable("recycler_view_state", recyclerViewState)
-        outState.putString("FECHA_SELECCIONADA", viewModel.fechaSeleccionada.toString())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val fechaSel = savedInstanceState.getString("FECHA_SELECCIONADA")
-        //val recyclerView2 = savedInstanceState.getString("recycler_view_state")
-
-        if (!fechaSel.isNullOrEmpty()) {
-            viewModel.diaSeleccionado(this, LocalDate.parse(fechaSel))
-        }
-       // mostrarPlan()
-       // cambiarPicto(1)
-    }
-
-*/
-
     override fun onDestroy() {
         super.onDestroy()
         viewModel._dismissDialog.postValue(true)
         viewModel._fechaActual.removeObservers(this)
         viewModel._diasMes.removeObservers(this)
         viewModel._dismissDialog.removeObservers(this)
-        viewModel.viewHolderPictogramas = viewHolderPicto
+        CommonUtils.textToSpeech.stop()
+        viewModel.dialog?.dismiss()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,8 +76,6 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
         val callback = viewModel.backCallBack(this)
         onBackPressedDispatcher.addCallback(this, callback)
 
-        //Pila de los pasos completados en el seguimiento de un plan
-        //viewModel.pasosCompletados = Stack<Int>()
         iconoDeshacer = findViewById(R.id.icon_deshacer)
         iconoDeshacerTodas = findViewById(R.id.icon_deshacerTodas)
         iconoMarcar = findViewById(R.id.icon_marcar)
@@ -134,7 +86,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
         buttonPlanNuevo = findViewById(R.id.crearPlan)
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
-        recyclerView = findViewById(R.id.recycler_plan)
+        viewModel.recyclerView = findViewById(R.id.recycler_plan)
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         dia = findViewById(R.id.lbl_dia)
 
@@ -142,21 +94,16 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
         viewModel.configureUser(prefs, this)
 
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManagerLinear
+        viewModel.recyclerView.layoutManager = layoutManagerLinear
 
-        var speechInProgress = false
-        CommonUtils.initializeTextToSpeech(this)
-        CommonUtils.listener = this
+        initTextSpeech()
+        initNotificationList()
 
-        val notificationList : ArrayList<PlanificacionItem> = viewModel.mostrarPlanificaciones()
-        planificacionesFuturas.layoutManager = LinearLayoutManager(this)
-        val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList, viewModel)
-        planificacionesFuturas.adapter = adaptadorNot
-
-        viewModel.selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(viewModel.calendar.time)
         dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
 
         viewModel.initializeAnimations(applicationContext)
+
+        observe(savedInstanceState)
 
         //Comprobar si hay parametros en caso de llamada desde el planificador
         if (this.intent.extras != null) {
@@ -165,106 +112,120 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
             if(savedInstanceState == null){
                 viewModel.mostrarPlan(this)
             }else{
-                viewModel.configureDataEvento() //Tiene que haber una mejor forma de hacer esto
-                recyclerView.adapter = viewModel.adaptador
-                for (i in 0 until viewModel.pasosCompletados.size){
-                    viewModel.viewHolderPictogramas?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_disabled)
-                    viewModel.viewHolderPictogramas!!.itemView.findViewById<View>(R.id.id_card_picto).alpha = 0.7f
-                }
-
-                if(dialogCalendar?.isVisible == true){
-                    dialogCalendar!!.notificarCambio()
-                }
+                viewModel.configureDataEvento()
             }
         }
 
         //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------
 
         calendarButton.setOnClickListener {
-            dialogCalendar = DialogCalendarFragment()
-            dialogCalendar!!.viewModel = viewModel
-            dialogCalendar!!.show(supportFragmentManager, "CalendarDialogFragment")
+            crearDialogo()
         }
 
         buttonPlanNuevo.setOnClickListener {
-            Toast.makeText(this, "Crear plan", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(applicationContext, CalendarioActivity::class.java))
+            val intent = Intent(this, CalendarioActivity::class.java)
+            intent.putExtra("date", viewModel.fechaSeleccionada.toString())
+            startActivity(intent)
         }
 
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
         iconoDeshacer.setOnClickListener {
-            if (!viewModel.pasosCompletados.empty()) {
-                cambiarPicto(viewModel.pasosCompletados.pop() as Int)
-
-                if (viewModel.pasosCompletados.isEmpty()) {
-                    iconoDeshacer.isEnabled = false
-                    iconoDeshacerTodas.isEnabled = false
-                }
-
-                iconoMarcarTodas.isEnabled = true
-                iconoMarcar.isEnabled = true
+            if (!viewModel._pasosCompletados.value?.empty()!!) {
+                viewModel.adaptador.optionMarcar = false
+                viewModel.adaptador.notifyItemChanged(viewModel._pasosCompletados.value?.pop() as Int)
+                viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
             }
         }
 
         //Este método se ejecutará al seleccionar el icono deshacer para marcar todos los pictogramas como no realizados
         iconoDeshacerTodas.setOnClickListener {
-            if (!viewModel.pasosCompletados.empty()) {
-                for(i in 0 until viewModel.pasosCompletados.size){
-                    cambiarPicto(viewModel.pasosCompletados.pop() as Int)
+            if (!viewModel._pasosCompletados.value?.empty()!!) {
+                viewModel.adaptador.optionMarcar = false
+                for(i in 0 until viewModel._pasosCompletados.value?.size!!){
+                    viewModel.adaptador.notifyItemChanged(i)
+                    viewModel._pasosCompletados.value?.pop()
+                    viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
                 }
-
-                canGoBack(false)
             }
         }
 
         //Este método se ejecutará al seleccionar el icono marcar para marcar el pictograma actual como realizado
         iconoMarcar.setOnClickListener {
-
-            if (!viewModel.pasosCompletados.empty()) {
-                val posicion = viewModel.pasosCompletados.peek() as Int
-                cambiarPictoClickedNormal(posicion+1)
-                viewModel.pasosCompletados.add(posicion+1)
+            viewModel.adaptador.optionMarcar = true
+            if (!viewModel._pasosCompletados.value?.empty()!!) {
+                val posicion = viewModel._pasosCompletados.value?.peek() as Int
+                viewModel.adaptador.notifyItemChanged(posicion+1)
+                viewModel._pasosCompletados.value?.add(posicion+1)
             }else{
-                cambiarPictoClickedNormal(0)
-                viewModel.pasosCompletados.add(0)
+                viewModel.adaptador.notifyItemChanged(0)
+                viewModel._pasosCompletados.value?.add(0)
             }
-
-            iconoDeshacerTodas.isEnabled = true
-            iconoDeshacer.isEnabled = true
-
-            if(viewModel.pasosCompletados.size == viewModel.listaPictogramas.size){
-                iconoMarcarTodas.isEnabled = false
-                iconoMarcar.isEnabled = false
-            }
+            viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
         }
 
         // Este método se ejecutará al seleccionar el icono marcar para marcar todos los pictogramas como realizados
         iconoMarcarTodas.setOnClickListener {
+            viewModel.adaptador.optionMarcar = true
             for (i in 0 until viewModel.listaPictogramas.size){
-                cambiarPictoClickedNormal(i)
-                viewModel.pasosCompletados.add(i)
+                viewModel.adaptador.notifyItemChanged(i)
+                viewModel._pasosCompletados.value?.add(i)
+                viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
             }
-            canGoBack(true)
         }
 
         iconoEscuchar.setOnClickListener {
-            if (!speechInProgress) {
+            if (!viewModel.speechInProgress) {
                 iconoEscuchar.text = getString(R.string.str_parar)
                 CommonUtils.textToSpeechOn(viewModel.listaPictogramas)
-                speechInProgress = true
+                viewModel.speechInProgress = true
             } else {
                 iconoEscuchar.text = getString(R.string.str_escuchar)
                 CommonUtils.textToSpeech.stop()
-                speechInProgress = false
+                viewModel.speechInProgress = false
             }
         }
 
         iconoReproducir.setOnClickListener {
             reproducirEvento(1500L)
         }
+    }
 
-        observe(savedInstanceState)
 
+     fun crearDialogo(){
+         viewModel.dialog = Dialog(this)
+         viewModel.dialog!!.setContentView(R.layout.dialogo_calendario)
+         viewModel.dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+         val fechaActual = viewModel.dialog!!.findViewById<TextView>(R.id.lbl_mes2)
+         val btnSiguienteMes = viewModel.dialog!!.findViewById<ImageView>(R.id.image_calendar_siguiente2)
+         val btnAnteriorMes = viewModel.dialog!!.findViewById<ImageView>(R.id.image_calendar_anterior2)
+         val calendario = viewModel.dialog!!.findViewById<RecyclerView>(R.id.recycler_calendario)
+         val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
+         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
+
+         viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuario, this) as ArrayList<Evento>
+         viewModel.obtenerVistaMes()
+
+         viewModel._fechaActual.observe(this) { fechaActual.text = it }
+         viewModel._diasMes.observe(this) {
+             calendario.layoutManager = GridLayoutManager(this, 7)
+             val adaptadorCalendario = AdaptadorCalendario(it, viewModel.eventos, viewModel)
+             calendario.adapter = adaptadorCalendario
+         }
+
+         btnAnteriorMes.setOnClickListener {
+             CalendarioUtilidades.fechaSeleccionada =
+                 CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
+             viewModel.obtenerVistaMes()
+         }
+         btnSiguienteMes.setOnClickListener {
+             CalendarioUtilidades.fechaSeleccionada =
+                 CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
+             viewModel.obtenerVistaMes()
+         }
+
+         cerrarDialog.setOnClickListener { viewModel.dialog!!.dismiss() }
+         viewModel.dialog!!.show()
     }
 
     private fun observe(savedInstanceState : Bundle?){
@@ -296,8 +257,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
                 iconoReproducir.visibility = View.VISIBLE
             }
 
-            viewModel.adaptador = AdaptadorPresentacion(it, this)
-            recyclerView.adapter = viewModel.adaptador
+            viewModel.adaptador = AdaptadorPresentacion(it, viewModel)
+            viewModel.adaptador.listMarcados = viewModel._pasosCompletados.value!!
+            viewModel.recyclerView.adapter = viewModel.adaptador
+            viewModel.adaptador.notifyDataSetChanged()
 
             if(isPlanificador) {
                 val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
@@ -310,13 +273,43 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
             }
         }
 
+        viewModel._pasosCompletados.observe(this){
+            if(it.isEmpty()){
+                iconoDeshacer.isEnabled = false
+                iconoDeshacerTodas.isEnabled = false
+            }else{
+                iconoDeshacer.isEnabled = true
+                iconoDeshacerTodas.isEnabled = true
+            }
+
+            if (it.size == viewModel.listaPictogramas.size){
+                iconoMarcar.isEnabled = false
+                iconoMarcarTodas.isEnabled = false
+            }else{
+                iconoMarcar.isEnabled = true
+                iconoMarcarTodas.isEnabled = true
+            }
+        }
+
+    }
+
+    private fun initTextSpeech(){
+        CommonUtils.initializeTextToSpeech(this)
+        CommonUtils.listener = this
+    }
+
+    fun initNotificationList(){
+        val notificationList : ArrayList<PlanificacionItem> = viewModel.mostrarPlanificaciones()
+        planificacionesFuturas.layoutManager = LinearLayoutManager(this)
+        val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList, viewModel)
+        planificacionesFuturas.adapter = adaptadorNot
     }
 
     private fun configureParameters(){
         titulo.text = intent.getStringExtra("titulo")
         viewModel.listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-        adaptador = AdaptadorPresentacion(viewModel.listaPictogramas, this)
-        recyclerView.adapter = adaptador
+        viewModel.adaptador = AdaptadorPresentacion(viewModel.listaPictogramas, viewModel)
+        viewModel.recyclerView.adapter = viewModel.adaptador
         lblMensaje.visibility = View.INVISIBLE
         buttonPlanNuevo.visibility = View.INVISIBLE
         iconoDeshacer.visibility = View.VISIBLE
@@ -327,122 +320,14 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
         iconoReproducir.visibility = View.VISIBLE
     }
 
-
-    override fun onItemSeleccionado(context: Context, posicion: Int) {
-        if (viewModel.currentDialog != null && viewModel.currentDialog!!.isShowing) {
-            viewModel.currentDialog!!.dismiss()
-        }
-
-        dialog = Dialog(context)
-        dialog!!.setContentView(R.layout.dialogo_presentacion)
-        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val  btnCerrar = dialog!!.findViewById<ImageView>(R.id.icono_CerrarDialogoEvento)
-        val pictograma = dialog!!.findViewById<ShapeableImageView>(R.id.img_pictograma)
-        val tituloPictograma = dialog!!.findViewById<TextView>(R.id.lbl_pictograma)
-        val historia = dialog!!.findViewById<ConstraintLayout>(R.id.Bubble)
-         imagenConfeti = dialog!!.findViewById(R.id.img_confeti)
-         mensajePremio = dialog!!.findViewById(R.id.txt_premio)
-        val  dialogoPresentacion = dialog!!.findViewById<ConstraintLayout>(R.id.dialogo_presentacion_2)
-        pictograma.setImageURI(Uri.parse(viewModel.listaPictogramas[posicion].imagen))
-        tituloPictograma.text = viewModel.listaPictogramas[posicion].titulo
-
-        dialogoPresentacion.clearAnimation()
-           imagenConfeti.clearAnimation()
-           mensajePremio.clearAnimation()
-           imagenConfeti.visibility = View.INVISIBLE
-           mensajePremio.visibility = View.INVISIBLE
-
-        val textoHistoria = dialog!!.findViewById<TextView>(R.id.lblBubble)
-        val avatarHistoria = dialog!!.findViewById<ShapeableImageView>(R.id.avatarBubble)
-
-        // Si tenemos historias
-        if (viewModel.listaPictogramas[posicion].historia != "null") {
-            textoHistoria.text = viewModel.listaPictogramas[posicion].historia
-            historia.visibility = View.VISIBLE
-            if (prefs.getString("imagenPlanificador", "") === "") {
-                avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            } else {
-                avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
-            }
-        } else {
-            historia.visibility = View.GONE
-        }
-
-        if (viewModel.listaPictogramas[posicion].categoria == 9 || viewModel.listaPictogramas[posicion].categoria == 8) {
-            animacionesConfeti(this, viewModel.listaPictogramas[posicion].categoria)
-        }
-
-        viewModel.pasosCompletados.push(posicion)
-        if (posicion == 0) {
-            iconoDeshacer.isEnabled = true
-            iconoDeshacerTodas.isEnabled = true
-        }
-        viewModel.currentDialog = dialog
-
-        //Botón cerrar
-        btnCerrar.setOnClickListener { dialog!!.dismiss() }
-        dialog!!.show()
-    }
-
-    override fun checkPosition(posicion: Int): Boolean {
-        return if(viewModel.pasosCompletados.isEmpty() ){
-            posicion == 0
-        }else{
-            viewModel.pasosCompletados.peek() + 1 == posicion
-        }
-    }
-
-    private fun animacionesConfeti(context: Context, categoria: Int) {
-        imagenConfeti.visibility = View.VISIBLE
-        mensajePremio.visibility = View.VISIBLE
-
-        imagenConfeti.clearAnimation()
-        mensajePremio.clearAnimation()
-
-        if (categoria == 9) {
-             imagenConfeti.animation = viewModel.animFondo
-             viewModel.animFondo.start()
-             mensajePremio.animation = viewModel.animFondo
-            viewModel.animFondo.start()
-        } else if (categoria == 8) {
-             imagenConfeti.setImageResource(R.drawable.svg_espera)
-             mensajePremio.text = context.getString(R.string.str_esperar)
-             imagenConfeti.animation = viewModel.animCard
-             viewModel.animCard.start()
-             mensajePremio.animation = viewModel.animCard
-             viewModel.animCard.start()
-        }
-    }
-
-    private fun reproducirEvento(tiempo: Long) {
-        val screenWidthInDp = resources.displayMetrics.widthPixels / resources.displayMetrics.density
-        val targetHeight: Float
-        val targetWidth: Float
-        if (screenWidthInDp < 800) {
-            //Es (129, 164) y no (115,150) ya que le sumamos el margen
-            targetHeight = viewModel.dpToPx(129, this).toFloat()
-            targetWidth = viewModel.dpToPx(164, this).toFloat()
-        }else{
-            targetHeight = viewModel.dpToPx(170, this).toFloat()
-            targetWidth = viewModel.dpToPx(200, this).toFloat()
-        }
+    fun reproducirEvento(tiempo: Long) {
 
         if(viewModel.isRunning){
-            animationReproduccion(targetHeight, targetWidth, viewModel.currentPosition, 1f)
-            iconoReproducir.setIconResource(R.drawable.svg_play)
-            canGoBack(true)
-            iconoDeshacerTodas.performClick()
-            viewModel.stopReproductor()
+            configureIsRunning()
+            iconoMarcar.isEnabled = true
+            iconoMarcarTodas.isEnabled = true
         }else{
-            iconoReproducir.setIconResource(R.drawable.svg_stop)
-            iconoDeshacerTodas.performClick()
-            iconoMarcar.isEnabled = false
-            iconoDeshacer.isEnabled = false
-            iconoMarcarTodas.isEnabled = false
-            iconoDeshacerTodas.isEnabled = false
-
-            viewModel.currentPosition = 0
-            viewModel.isRunning = true
+            configureIsRunningLast()
 
             viewModel.currentRunnable = object : Runnable {
                 override fun run() {
@@ -450,13 +335,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
                         //onItemSeleccionado(currentPosition)
                         if (viewModel.currentPosition < viewModel.listaPictogramas.size) {
                             viewModel.handler.postDelayed(this, tiempo)
-                            cambiarPictoClicked(viewModel.currentPosition)
-                            viewModel.pasosCompletados.add(viewModel.currentPosition)
+                            viewModel.adaptador.animatedPositions.add(viewModel.currentPosition)
+                            viewModel.adaptador.notifyItemChanged(viewModel.currentPosition)
                         } else {
-                            lastPictoClicked(viewModel.currentPosition)
-                            viewModel.stopReproductor()
-                            canGoBack(true)
-                            iconoReproducir.setIconResource(R.drawable.svg_play)
+                            configureIsRunning()
                         }
                         viewModel.currentPosition++
                     }
@@ -467,104 +349,30 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener, Adap
         }
     }
 
-    private fun cambiarPicto(posicion: Int){
-        viewHolderPicto = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas
-        viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card_picto).animate().alpha(1f).setDuration(100).start()
-
-        when (viewModel.listaPictogramas[posicion].categoria) {
-            9 -> {
-                viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card)
-                    .setBackgroundResource(R.drawable.card_premio)
-            }
-            8 -> {
-                viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card)
-                    .setBackgroundResource(R.drawable.card_espera)
-            }
-            else -> {
-                viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card)
-                    .setBackgroundResource(R.drawable.card_personalizado)
-            }
-        }
-
+    fun configureIsRunning(){
+        viewModel.isRunning = false
+        viewModel.adaptador.animatedPositions.clear()
+        iconoReproducir.setIconResource(R.drawable.svg_play)
+        viewModel.adaptador.notifyDataSetChanged()
+        viewModel.stopReproductor()
     }
 
-    private fun cambiarPictoClicked(posicion: Int) {
-        viewHolderPicto = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
-        viewHolderPicto?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_pronunced)
+    fun configureIsRunningLast(){
+        iconoReproducir.setIconResource(R.drawable.svg_stop)
+        viewModel.adaptador.optionMarcar = false
+        viewModel.adaptador.notifyDataSetChanged()
 
-        val targetHeight : Float
-        val targetWidth : Float
+        iconoMarcar.isEnabled = false
+        iconoMarcarTodas.isEnabled = false
+        iconoDeshacer.isEnabled = false
+        iconoDeshacerTodas.isEnabled = false
 
-        if (CommonUtils.isMobile(this)) {
-            targetHeight = viewModel.dpToPx(145, this).toFloat()
-            targetWidth = viewModel.dpToPx(180, this).toFloat()
-        }else{
-            targetHeight = viewModel.dpToPx(185, this).toFloat()
-            targetWidth = viewModel.dpToPx(220, this).toFloat()
-        }
-
-        animationReproduccion(targetHeight, targetWidth, posicion, 1f)
-
-        if(posicion !=0){
-            lastPictoClicked(posicion)
-        }
-    }
-
-    private fun cambiarPictoClickedNormal(posicion: Int){
-        viewHolderPicto = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
-        viewHolderPicto?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_disabled)
-        viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card_picto).alpha = 0.7f
-    }
-
-    private fun lastPictoClicked(posicion: Int){
-        viewHolderPicto = recyclerView.findViewHolderForAdapterPosition(posicion-1) as AdaptadorPresentacion.ViewHolderPictogramas?
-        viewHolderPicto?.itemView?.findViewById<View>(R.id.id_card)?.setBackgroundResource(R.drawable.card_disabled)
-
-        val targetHeight : Float
-        val targetWidth : Float
-
-        if (CommonUtils.isMobile(this)) {
-            targetHeight = viewModel.dpToPx(129, this).toFloat()
-            targetWidth = viewModel.dpToPx(164, this).toFloat()
-        }else{
-            targetHeight = viewModel.dpToPx(170, this).toFloat()
-            targetWidth = viewModel.dpToPx(200, this).toFloat()
-        }
-        animationReproduccion(targetHeight, targetWidth, posicion-1, 0.7f)
-    }
-
-
-    private fun animationReproduccion(targetHeight: Float, targetWidth: Float, posicion: Int, alpha: Float){
-        viewHolderPicto = recyclerView.findViewHolderForAdapterPosition(posicion) as AdaptadorPresentacion.ViewHolderPictogramas?
-
-        viewHolderPicto?.itemView?.findViewById<View>(R.id.id_card_picto)
-            ?.animate()
-            ?.setDuration(250)
-            ?.alpha(alpha)
-            ?.scaleX(targetWidth / viewHolderPicto!!.itemView.width)
-            ?.scaleY(targetHeight / viewHolderPicto!!.itemView.height)
-            ?.withEndAction {
-                viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card_picto)
-                    ?.layoutParams?.height = targetHeight.toInt()
-                viewHolderPicto!!.itemView.findViewById<View>(R.id.id_card_picto)
-                    ?.layoutParams?.width = targetWidth.toInt()
-            }
-
-        if(posicion !=0){
-            lastPictoClicked(posicion)
-        }
-
+        viewModel.currentPosition = 0
+        viewModel.isRunning = true
     }
 
     override fun onSpeechDone() {
         iconoEscuchar.text = getString(R.string.str_escuchar)
-    }
-
-    fun canGoBack(value: Boolean) {
-        iconoDeshacer.isEnabled = value
-        iconoDeshacerTodas.isEnabled = value
-        iconoMarcar.isEnabled = !value
-        iconoMarcarTodas.isEnabled = !value
     }
 
 

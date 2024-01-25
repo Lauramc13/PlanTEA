@@ -46,6 +46,16 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Pictograma WHERE id_categoria = $categoria AND (id_usuario IS NULL OR id_usuario = $userId)", null)
     }
 
+    fun listarPictogramasPrueba(categoria: Int, userId: String?): Cursor {
+        return db!!.rawQuery(
+            "SELECT Pictograma.id, Pictograma.nombre, Pictograma.imagen, Pictograma.id_categoria, " +
+                    "CASE WHEN Favorito.id_usuario IS NOT NULL THEN 1 ELSE 0 END AS favorito " +
+                    "FROM Pictograma " +
+                    "LEFT JOIN Favorito ON Favorito.id_pictograma = Pictograma.id AND Favorito.id_usuario = ? " +
+                    "WHERE Pictograma.id_categoria = ?",
+            arrayOf(userId, categoria.toString())
+        )
+    }
 
     /*Insertar un pictograma nuevo*/
     fun insertarPictograma(nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
@@ -353,9 +363,11 @@ class ConectorBD(ctx: Context?) {
             "    favorito = 1;")
     }*/
 
-    fun insertarFavorito(idUsuario: String?, id:String?, nombre: String?, imagen: String?) {
+    fun insertarFavorito(idUsuario: String?, id:String?, nombre: String?, imagen: String?, sourceApi: Boolean) {
         db!!.execSQL("INSERT INTO Favorito (id_usuario, id_pictograma) VALUES ('$idUsuario', '$id')")
-        db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$id', '$nombre', '$imagen')")
+        if(sourceApi){
+            db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$id', '$nombre', '$imagen')")
+        }
     }
 
     /*fun borrarFavoritoOLD(idUsuario: String?, idPicto: String?) {
@@ -370,11 +382,21 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Pictograma where id_usuario = '$idUsuario' AND favorito ='1'", null)
     }*/
 
-    fun obtenerFavoritos(idUsuario: String?): Cursor {
+   /* fun obtenerFavoritos(idUsuario: String?): Cursor {
         return db!!.rawQuery(
             "SELECT PictogramaAPI.id, nombre, imagen " +
                     "FROM PictogramaAPI " +
                     "INNER JOIN Favorito ON Favorito.id_pictograma = PictogramaAPI.id " +
+                    "WHERE Favorito.id_usuario = ?",
+            arrayOf(idUsuario)
+        )
+    }*/
+
+    fun obtenerFavoritos(idUsuario: String?): Cursor {
+        return db!!.rawQuery(
+            "SELECT CombinedPictograms.id, CombinedPictograms.nombre, CombinedPictograms.imagen " +
+                    "FROM (SELECT id, nombre, imagen FROM Pictograma UNION SELECT id, nombre, imagen FROM PictogramaAPI) AS CombinedPictograms " +
+                    "INNER JOIN Favorito ON Favorito.id_pictograma = CombinedPictograms.id " +
                     "WHERE Favorito.id_usuario = ?",
             arrayOf(idUsuario)
         )
@@ -402,10 +424,10 @@ class ConectorBD(ctx: Context?) {
 
     fun getFavorito(idPicto: String?, idUsuario: String?): Boolean {
         val cursor = db!!.rawQuery(
-            "SELECT PictogramaAPI.id " +
-                    "FROM PictogramaAPI " +
-                    "INNER JOIN Favorito ON Favorito.id_pictograma = PictogramaAPI.id " +
-                    "WHERE PictogramaAPI.id = ? AND Favorito.id_usuario = ? ",
+            "SELECT CombinedPictograms.id " +
+                    "FROM (SELECT id FROM Pictograma UNION SELECT id FROM PictogramaAPI) AS CombinedPictograms " +
+                    "INNER JOIN Favorito ON Favorito.id_pictograma = CombinedPictograms.id " +
+                    "WHERE CombinedPictograms.id = ? AND Favorito.id_usuario = ? ",
             arrayOf(idPicto, idUsuario)
         )
 
@@ -413,6 +435,8 @@ class ConectorBD(ctx: Context?) {
         cursor.close()
         return exists
     }
+
+
 
     /*fun crearPassword(email: String, passCifrada: String) {
         val query = "UPDATE Usuario SET password = '$passCifrada' WHERE email = '$email'"

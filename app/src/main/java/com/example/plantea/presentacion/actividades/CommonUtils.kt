@@ -268,16 +268,7 @@ class CommonUtils{
                     }else{
                         textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_ADD, null, null)
                     }
-
             }
-        }
-
-        fun textToSpeechFrase(string: String){
-            textToSpeech.speak(string, TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
-        }
-
-        fun textToSpeechOff(){
-            textToSpeech.stop()
         }
 
         fun hideKeyboard(context: Context, view: View){

@@ -29,7 +29,6 @@ import java.util.Locale
 
 class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener {
     private lateinit var alarmManager: AlarmManager
-   // var isClickedReloj = false
     var isNuevoEventoSelected = false
     var evento = Evento()
     var _dias = MutableLiveData<ArrayList<LocalDate?>>()
@@ -37,9 +36,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     var idUsuario = "0"
     val _fechaActual = MutableLiveData<String>()
-
-    var fragmentEventos = EventosFragment()
-    var fragmentNuevoEvento = NuevoEventoFragment()
 
     var isDiaSeleccionado = false
 
@@ -100,7 +96,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     fun crearEventoFragment(context: Context) {
         isNuevoEventoSelected = true
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_calendario, fragmentNuevoEvento)
+        ft.replace(R.id.fragment_calendario, NuevoEventoFragment())
         ft.addToBackStack(null)
         ft.commit()
     }
