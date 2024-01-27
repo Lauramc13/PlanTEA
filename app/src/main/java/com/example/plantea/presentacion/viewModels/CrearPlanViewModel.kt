@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,10 +20,6 @@ import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -37,6 +34,7 @@ class CrearPlanViewModel : ViewModel() {
     val _pictogramaSeleccionado = MutableLiveData<Pictograma>()
     val _nuevoPictoDialog = MutableLiveData<Boolean>()
     var subcategoriaOpen = false
+    var busquedaOpen = false
     var categoriaPicto = 0
     lateinit var tituloPicto: String
     lateinit var imagenPicto: String
@@ -45,11 +43,8 @@ class CrearPlanViewModel : ViewModel() {
     var categoria = Categoria()
     val planificacion = Planificacion()
 
-    var fragmentPictogramas = CategoriasPictogramasFragment()
-    var fragmentSubcategoria = CategoriasPictogramasFragment()
-    var fragmentBusqueda = CategoriasPictogramasFragment()
-
-    //var fragmentBackStackEntry : MutableList<Fragment> = ArrayList()
+    var fragmentCategoriasPictogramas = CategoriasPictogramasFragment()
+    var fragment = Fragment()
 
     @SuppressLint("StaticFieldLeak")
     var activity: Activity = Activity()
@@ -61,13 +56,8 @@ class CrearPlanViewModel : ViewModel() {
     //Opcion para indicar funcionalidad editar o crear
     var opcionEditar = false
 
-    /*fun <T> MutableLiveData<T>.forceRefresh() {
-        this.value = this.value
-    }*/
-
     fun setIdUsuario(prefs: android.content.SharedPreferences) {
-        val userId = prefs.getString("idUsuario", "")
-        idUsuario = userId.toString()
+        idUsuario = prefs.getString("idUsuario", "").toString()
     }
 
     //Método para mostrar categoria correspondiente
@@ -137,62 +127,43 @@ class CrearPlanViewModel : ViewModel() {
         return myPath.absolutePath
     }
 
-    fun cambiarFragmentCategoria(transaction: FragmentTransaction){
-        val bundle = Bundle()
-        bundle.putSerializable("key", listaPictogramas)
-        fragmentPictogramas.arguments = bundle
-        transaction.add(R.id.contenedor_fragments, fragmentPictogramas)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    fun cambiarFragment(transaction: FragmentTransaction, subCategoria: Boolean){
+        if(subCategoria){
+            fragmentCategoriasPictogramas.updateDataFragment()
+        }else{
+            transaction.replace(R.id.contenedor_fragments, fragmentCategoriasPictogramas)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
-    fun cambiarFragmentBusqueda(transaction: FragmentTransaction){
-        subcategoriaOpen = false
-        val bundle = Bundle()
-        bundle.putSerializable("key", listaPictogramas)
-        fragmentBusqueda.arguments = bundle
-        transaction.add(R.id.contenedor_fragments, fragmentBusqueda, "FragmentBusqueda")
-        transaction.addToBackStack(null)
-        transaction.commit()
+    fun cambiarFragmentBusqueda(transaction: FragmentTransaction, fragment: Fragment){
+        if(fragment is CategoriasFragment){
+            transaction.replace(R.id.contenedor_fragments, fragmentCategoriasPictogramas)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }else{
+            fragmentCategoriasPictogramas.updateDataFragment()
+        }
+
+
     }
 
-    fun cambiarFragmentSubCategoria(transaction: FragmentTransaction){
-        val bundle = Bundle()
-        bundle.putSerializable("key", listaPictogramas)
-        fragmentSubcategoria.arguments = bundle
-        transaction.add(R.id.contenedor_fragments, fragmentSubcategoria)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    //TODO: cuando se gira la pantalla con una subcategoria abierta y se intenta cerrar el fragmento, no se hace nada y se queda en la misma pantalla
-    // si se pulsa una segunda vez se va a la pantalla categorias y por ultimo, si se vuelve a abrir una subcategoria, entonces ahi si va el boton de cerrar
     fun closeFragment(transaction: FragmentTransaction, context: Context){
         if(subcategoriaOpen){
             listaPictogramas = _identificadorCategoria.value?.let { idCategoria -> pictograma.obtenerPictogramas(context, idCategoria, idUsuario) } as java.util.ArrayList<Pictograma>
-            val bundle = Bundle()
-            bundle.putSerializable("key", listaPictogramas)
-            fragmentPictogramas.arguments = bundle
-            transaction.replace(R.id.contenedor_fragments, fragmentPictogramas)
+            fragmentCategoriasPictogramas.updateDataFragment()
+            subcategoriaOpen = false
+
         }else{
+            fragmentCategoriasPictogramas.updateDataFragment()
             transaction.replace(R.id.contenedor_fragments, CategoriasFragment())
-            _clearBusqueda.value = true
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
-        transaction.addToBackStack(null)
-        transaction.commit()
-        subcategoriaOpen = false
-    }
-
-
-    fun escalarImagen(context: Context, imagen: String, image: Bitmap): String{
-        val proporcion = 500 / image.width.toFloat()
-        val imagenFinal = Bitmap.createScaledBitmap(image, 500, (image.height * proporcion).toInt(), false)
-
-        //Crear ruta y guardar imagen
-        val ruta = guardarImagen(context, imagen, imagenFinal)
-
-        return ruta
+        _clearBusqueda.value = true
 
     }
+
 
 }

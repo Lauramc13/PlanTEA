@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?customBgColor"
-    tools:context=".presentacion.actividades.planificador.CreditsActivity">
+    tools:context=".presentacion.actividades.CreditsActivity">
 
     <ImageView
         android:id="@+id/imageView7"

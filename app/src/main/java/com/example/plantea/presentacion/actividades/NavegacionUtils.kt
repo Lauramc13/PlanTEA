@@ -16,11 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
-import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
-import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-import com.example.plantea.presentacion.actividades.ninio.TraductorActivity
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,7 +23,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import java.security.MessageDigest
 import java.util.*
 
 class NavegacionUtils {

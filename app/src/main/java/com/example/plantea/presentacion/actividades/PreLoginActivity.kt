@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
@@ -15,19 +14,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.viewModels.PreLoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-
 
 class PreLoginActivity : AppCompatActivity(){
     private lateinit var btnLogin: Button
@@ -38,57 +31,37 @@ class PreLoginActivity : AppCompatActivity(){
     private lateinit var background: ImageView
     private lateinit var signin : Button
     private lateinit var prefs : SharedPreferences
-    lateinit var auth: FirebaseAuth
 
-    var usuario = Usuario()
-    var user = Usuario()
+    private val viewModel by viewModels<PreLoginViewModel>()
 
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
-
-    companion object {
-        const val EMAIL_KEY = "EMAIL_KEY"
-        const val PASSWORD_KEY = "PASSWORD_KEY" 
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(EMAIL_KEY, email.editText?.text.toString())
-        outState.putString(PASSWORD_KEY, password.editText?.text.toString())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        email.editText?.setText(savedInstanceState.getString(EMAIL_KEY).toString())
-        password.editText?.setText(savedInstanceState.getString(PASSWORD_KEY).toString())
+    override fun onStop() {
+        super.onStop()
+        viewModel.email = email.editText?.text.toString()
+        viewModel.password = password.editText?.text.toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         setContentView(R.layout.activity_prelogin)
+        prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
         background = findViewById(R.id.imageView6)
         signin = findViewById(R.id.Signin)
-        auth = Firebase.auth
-
-        FirebaseApp.initializeApp(this)
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.client_id_google))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        firebaseAuth = FirebaseAuth.getInstance()
-
         email = findViewById(R.id.txt_Email)
         password = findViewById(R.id.txt_Password)
+
+        viewModel.initGoogleSignInClient(this)
+
+        if(savedInstanceState != null){
+            email.editText?.setText(viewModel.email)
+            password.editText?.setText(viewModel.password)
+        }
 
         signin.setOnClickListener {
             Toast.makeText(this, "Iniciando sesión", Toast.LENGTH_SHORT).show()
             GoogleSignIn.getLastSignedInAccount(this)
             signInGoogle()
         }
-
 
         btnLogin = findViewById(R.id.btn_login)
         btnRegister = findViewById(R.id.btn_registrar)
@@ -100,19 +73,23 @@ class PreLoginActivity : AppCompatActivity(){
             email.error = null
             password.error = null
 
-            val noTextViewVacios = comprobarTextViewsVacios(email.editText?.text.toString(), password.editText?.text.toString())
+            val noTextViewVacios = viewModel.comprobarTextViewsVacios(email.editText?.text.toString(), password.editText?.text.toString())
 
             if (!noTextViewVacios) {
                 Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             } else {
+
                 val emailText = email.editText?.text.toString().lowercase()
                 val passwordText = password.editText?.text.toString()
-                iniciarSesion(emailText, passwordText) { success ->
+                viewModel.iniciarSesion(this, emailText, passwordText) { success ->
                     if (success) {
-                        configurarDatos(emailText)
+                        viewModel.configurarDatos(emailText, prefs, this)
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
-                        email.error = "Correo o contraseña incorrectos"
-                        password.error = "Correo o contraseña incorrectos"
+                        viewModel._errorEmail.value = "Correo o contraseña incorrectos"
+                        viewModel._errorPassword.value = "Correo o contraseña incorrectos"
                         Toast.makeText(baseContext, "Las credenciales son incorrectas", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -125,7 +102,6 @@ class PreLoginActivity : AppCompatActivity(){
         }
 
         btnOlvidarPass.setOnClickListener{
-            //dialog of dialogo_olvidar_password
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dialogo_olvidar_password)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -133,71 +109,51 @@ class PreLoginActivity : AppCompatActivity(){
             val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
             val btnEnviar : Button = dialog.findViewById(R.id.btn_enviar)
 
-            //coger el correo y hacer cositas
-
             btnEnviar.setOnClickListener{
                 val email = correo.editText?.text.toString()
-
-                //if correo is empty -> error
                 if(email.isEmpty()){
                     correo.error = "No puedes dejar el campo vacío"
                 }else{
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                    .addOnCompleteListener{task ->
-                        if(task.isSuccessful){
-                            Toast.makeText(this, "Si el usuario existe se enviará un correo para restablecer la contraseña", Toast.LENGTH_SHORT).show()
-                            dialog.dismiss()
-                        }else{
-                            Toast.makeText(this, "El correo introducido no es válido", Toast.LENGTH_LONG).show()
-                        }
-                    }
+                   if(viewModel.restablecerContrasesnia()){
+                       Toast.makeText(this, "Si el usuario existe se enviará un correo para restablecer la contraseña", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                   }else{
+                          Toast.makeText(this, "El correo introducido no es válido", Toast.LENGTH_LONG).show()
+                   }
                 }
             }
 
             iconoCerrar.setOnClickListener { dialog.dismiss() }
             dialog.show()
         }
+
+        observers()
     }
 
-    fun iniciarSesion(emailText: String, passwordText: String, callback: (Boolean) -> Unit = { _ -> }) {
-        auth.signInWithEmailAndPassword(emailText, passwordText)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d("pruebas", "signInWithEmail:success")
-                    callback(true)
-                } else {
-                    Log.w("pruebas", "signInWithEmail:failure", task.exception)
-                    callback(false)
-                }
-            }
-    }
-
-    fun comprobarTextViewsVacios(emailText: String, passwordText: String): Boolean {
-        if (emailText.isEmpty()) {
-            runOnUiThread {email.error = "No puedes dejar el campo vacío"}
-            return false
+    fun observers(){
+        viewModel._errorEmail.observe(this) {
+            email.error = it
         }
 
-        if (passwordText.isEmpty()) {
-            runOnUiThread {password.error = "No puedes dejar el campo vacío"}
-            return false
+        viewModel._errorPassword.observe(this) {
+            password.error = it
         }
-        return true
     }
+
 
     private fun signInGoogle() {
-        val signInIntent: Intent = mGoogleSignInClient.signInIntent
+        val signInIntent: Intent = viewModel.mGoogleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }
 
-    var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+    private var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                val id = usuario.consultarId(account?.email.toString(), this@PreLoginActivity)
+                val id = viewModel.usuario.consultarId(account?.email.toString(), this@PreLoginActivity)
                 if (id != null){
-                    configurarDatos(account?.email.toString())
+                    viewModel.configurarDatos(account?.email.toString(), prefs, this@PreLoginActivity)
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }else{
@@ -216,34 +172,4 @@ class PreLoginActivity : AppCompatActivity(){
         }
     }
 
-    fun configurarDatos(email: String){
-        user = usuario.obtenerUsuario(email, this@PreLoginActivity)
-        val id = usuario.consultarId(email, this@PreLoginActivity)
-        val editor = prefs.edit()
-        editor.putString("idUsuario", id)
-        editor.putBoolean("userAccount", true)
-        editor.putString("nombrePlanificador", user.getName())
-        editor.putString("nombreUsuarioPlanificador", user.getUsername())
-        editor.putString("email", user.getEmail())
-        editor.putString("nombreUsuarioTEA", user.getNameTEA())
-        //  if(user.getPassword() == ""){
-        //      editor.putBoolean("isGoogleUser", true)
-        //  }
-        if (user.getNameTEA() != "") {
-            editor.putBoolean("info_usuario", true)
-        }
-        editor.putString("imagenPlanificador", user.getImagen())
-        editor.putString("imagenUsuarioTEA", user.getImagenTEA())
-        editor.putString("nombreObjeto", user.getObjeto())
-        if(user.getObjeto() != "") {
-            editor.putBoolean("info_objeto", true)
-        }
-        editor.putString("imagenObjeto", user.getImagenObjeto())
-        editor.apply()
-
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-
-    }
 }

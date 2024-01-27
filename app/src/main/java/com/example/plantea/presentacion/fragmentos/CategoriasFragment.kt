@@ -16,9 +16,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.plantea.R
 import com.example.plantea.presentacion.CrearPlanInterface
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.example.plantea.presentacion.viewModels.CuadernoViewModel
 
 class CategoriasFragment : Fragment() {
     lateinit var actividad: Activity
+
     private val viewModel: CrearPlanViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -35,19 +37,23 @@ class CategoriasFragment : Fragment() {
         val cardLugares = vista.findViewById<CardView>(R.id.categoria_lugares)
         val cardRecompensa = vista.findViewById<CardView>(R.id.categoria_recompensa)
 
-        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        viewModel.setIdUsuario(prefs)
+        if(savedInstanceState == null){
+            val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+            viewModel.setIdUsuario(prefs)
 
-        cardMedico.setOnClickListener { viewModel.mostrarCategoria(1, this.requireContext()) }
-        cardPeluqueria.setOnClickListener { viewModel.mostrarCategoria(2, this.requireContext()) }
-        cardCompra.setOnClickListener { viewModel.mostrarCategoria(3, this.requireContext())}
-        cardColegio.setOnClickListener { viewModel.mostrarCategoria(4, this.requireContext())}
-        cardLugares.setOnClickListener { viewModel.mostrarCategoria(5, this.requireContext())}
-        cardDesplazamiento.setOnClickListener { viewModel.mostrarCategoria(6, this.requireContext())}
-        cardAccion.setOnClickListener { viewModel.mostrarCategoria(7, this.requireContext())}
-        cardEntretenimiento.setOnClickListener { viewModel.mostrarCategoria(8, this.requireContext())}
-        cardRecompensa.setOnClickListener { viewModel.mostrarCategoria(9, this.requireContext())}
-        cardFavoritos.setOnClickListener { viewModel.mostrarCategoria(10, this.requireContext())}
+            cardMedico.setOnClickListener { viewModel.mostrarCategoria(1, this.requireContext()) }
+            cardPeluqueria.setOnClickListener { viewModel.mostrarCategoria(2, this.requireContext()) }
+            cardCompra.setOnClickListener { viewModel.mostrarCategoria(3, this.requireContext())}
+            cardColegio.setOnClickListener { viewModel.mostrarCategoria(4, this.requireContext())}
+            cardLugares.setOnClickListener { viewModel.mostrarCategoria(5, this.requireContext())}
+            cardDesplazamiento.setOnClickListener { viewModel.mostrarCategoria(6, this.requireContext())}
+            cardAccion.setOnClickListener { viewModel.mostrarCategoria(7, this.requireContext())}
+            cardEntretenimiento.setOnClickListener { viewModel.mostrarCategoria(8, this.requireContext())}
+            cardRecompensa.setOnClickListener { viewModel.mostrarCategoria(9, this.requireContext())}
+            cardFavoritos.setOnClickListener { viewModel.mostrarCategoria(10, this.requireContext())}
+        }
+
+
 
         return vista
     }

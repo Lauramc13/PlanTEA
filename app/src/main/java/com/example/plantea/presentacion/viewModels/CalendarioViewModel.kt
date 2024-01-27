@@ -16,7 +16,7 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.onAlarmReceiver
-import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
+import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment

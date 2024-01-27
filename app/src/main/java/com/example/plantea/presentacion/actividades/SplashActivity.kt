@@ -10,16 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 
 class SplashActivity : AppCompatActivity() {
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        // Comprobamos la orientacion de la pantalla
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +27,6 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             finish()
-        }, 2000)
+        }, 2000) // TODO: QUITAR EL SPLASH ACTIVITY
     }
 }

@@ -11,18 +11,16 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.PathInterpolator
 import android.widget.Button
-import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.viewModels.RegisterViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 
 class RegisterActivity : AppCompatActivity(){
     lateinit var prefs: SharedPreferences
@@ -39,44 +37,22 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var botonAyuda: MaterialButton
     private lateinit var tooltipText: TextView
     private lateinit var backButton: Button
-    private var isClicked = true
-    //private var creado: Boolean = false
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    //val emptyTextViews = mutableListOf<TextView>()
+    private val viewModel by viewModels<RegisterViewModel>()
 
-    var usuario = Usuario()
-
-    companion object {
-        const val NAME_KEY = "NAME_KEY"
-        const val EMAIL_KEY = "EMAIL_KEY"
-        const val USERNAME_KEY = "USERNAME_KEY"
-        const val PASSWORD_KEY = "PASSWORD_KEY"
-        const val PASSWORD2_KEY = "PASSWORD2_KEY"
-        const val OBJETO_KEY = "OBJETO_KEY"
-        const val NAMEPLANIFICADO_KEY = "NAMEPLANIFICADO_KEY"
+    override fun onStop() {
+        super.onStop()
+        textInput()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(NAME_KEY, txtName.editText?.text.toString())
-        outState.putString(EMAIL_KEY, txtEmail.editText?.text.toString())
-        outState.putString(USERNAME_KEY, txtUsername.editText?.text.toString())
-        outState.putString(PASSWORD_KEY, txtPassword.editText?.text.toString())
-        outState.putString(PASSWORD2_KEY, txtPassword2.editText?.text.toString())
-        outState.putString(OBJETO_KEY, txtObjeto.editText?.text.toString())
-        outState.putString(NAMEPLANIFICADO_KEY, txtNameplanificado.editText?.text.toString())
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        txtName.editText?.setText(savedInstanceState.getString(NAME_KEY).toString())
-        txtEmail.editText?.setText(savedInstanceState.getString(EMAIL_KEY).toString())
-        txtUsername.editText?.setText(savedInstanceState.getString(USERNAME_KEY).toString())
-        txtPassword.editText?.setText(savedInstanceState.getString(PASSWORD_KEY).toString())
-        txtPassword2.editText?.setText(savedInstanceState.getString(PASSWORD2_KEY).toString())
-        txtObjeto.editText?.setText(savedInstanceState.getString(OBJETO_KEY).toString())
-        txtNameplanificado.editText?.setText(savedInstanceState.getString(NAMEPLANIFICADO_KEY).toString())
+    private fun textInput(){
+        viewModel.name = txtName.editText?.text.toString()
+        viewModel.email = txtEmail.editText?.text.toString()
+        viewModel.username = txtUsername.editText?.text.toString()
+        viewModel.password = txtPassword.editText?.text.toString()
+        viewModel.password2 = txtPassword2.editText?.text.toString()
+        viewModel.objeto = txtObjeto.editText?.text.toString()
+        viewModel.namePlanificado = txtNameplanificado.editText?.text.toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +84,16 @@ class RegisterActivity : AppCompatActivity(){
         txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
         txtName.editText?.setText(intent.getStringExtra("NAME"))
 
+        if(savedInstanceState != null){
+            txtName.editText?.setText(viewModel.name)
+            txtEmail.editText?.setText(viewModel.email)
+            txtUsername.editText?.setText(viewModel.username)
+            txtPassword.editText?.setText(viewModel.password)
+            txtPassword2.editText?.setText(viewModel.password2)
+            txtObjeto.editText?.setText(viewModel.objeto)
+            txtNameplanificado.editText?.setText(viewModel.namePlanificado)
+        }
+
         botonAyuda.setOnClickListener {
             val slideTransition = Slide(Gravity.END)
             slideTransition.duration = 800
@@ -116,9 +102,10 @@ class RegisterActivity : AppCompatActivity(){
             slideTransition.interpolator = pathInterpolator
             TransitionManager.beginDelayedTransition(parentView, slideTransition)
 
-            isClicked = !isClicked
-            updateButtonIcon()
-            if (isClicked) tooltipText.visibility = View.GONE else tooltipText.visibility =
+            viewModel.isClicked = !viewModel.isClicked
+            botonAyuda.icon = viewModel.updateButtonIcon(this)
+
+            if (viewModel.isClicked) tooltipText.visibility = View.GONE else tooltipText.visibility =
                 View.VISIBLE
         }
 
@@ -151,44 +138,6 @@ class RegisterActivity : AppCompatActivity(){
         }
     }
 
-    fun comprobarTextViewsVacios(username: String, password: String, password2: String, name: String, email: String, objeto: String, namePlanificado: String, checkedObjeto: Boolean, checkedUserTea: Boolean): Boolean {
-        if (name.isEmpty()) {
-            runOnUiThread{txtName.error = "ESTO ES UN ERROR"}
-            return false
-        }
-
-        if (email.isEmpty()) {
-            runOnUiThread{txtEmail.error = "ESTO ES UN ERROR"}
-            return false
-        }
-
-        if (username.isEmpty()) {
-            runOnUiThread{txtUsername.error = "ESTO ES UN ERROR"}
-            return false
-        }
-
-        if (password.isEmpty()) {
-            runOnUiThread { txtPassword.error = "ESTO ES UN ERROR" }
-            return false
-        }
-
-        if (password2.isEmpty()) {
-            runOnUiThread { txtPassword2.error = "ESTO ES UN ERROR" }
-            return false
-        }
-
-        if (objeto.isEmpty() && checkedObjeto) {
-            runOnUiThread { txtObjeto.error = "ESTO ES UN ERROR" }
-            return false
-        }
-
-        if (namePlanificado.isEmpty() && checkedUserTea) {
-            runOnUiThread { txtNameplanificado.error = "ESTO ES UN ERROR" }
-            return false
-        }
-        return true
-    }
-
     data class ValidationResult(val isValid: Boolean, var errorMessage: String? = null)
 
     fun isAccountValid(email: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
@@ -219,58 +168,64 @@ class RegisterActivity : AppCompatActivity(){
 
 
     private fun createAccount(): String {
-        val email = txtEmail.editText?.text.toString().lowercase()
-        val password = txtPassword.editText?.text.toString()
-        val password2 = txtPassword2.editText?.text.toString()
-        val name = txtName.editText?.text.toString()
-        val username = txtUsername.editText?.text.toString()
-        val objeto = txtObjeto.editText?.text.toString()
-        val namePlanificado = txtNameplanificado.editText?.text.toString()
+        textInput()
 
-        val notextViewsVacios =  comprobarTextViewsVacios(email, password, password2, name, username, objeto, namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
+        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.email, viewModel.password, viewModel.password2, viewModel.name, viewModel.username, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
+        val isAccountValid = isAccountValid(viewModel.email, viewModel.password, viewModel.password2, notextViewsVacios)
 
-        val isAccountValid = isAccountValid(email, password, password2, notextViewsVacios)
-
-
-        // TODO: ORGANIZAR ESTO
         if (isAccountValid.isValid) {
-            auth.currentUser
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        // El registro ha fallado
-                        Log.w("Registration", "createUserWithEmail:failure", task.exception)
-                        txtUsername.error = "El nombre de usuario o correo introducido ya existe"
-                        txtEmail.error = "El nombre de usuario o correo introducido ya existe"
-                    }else{
-                        usuario.crearUsuario(name, email, username, objeto, namePlanificado, this@RegisterActivity)
-                        val id = usuario.consultarId(email, this@RegisterActivity)
-                        val editor = prefs.edit()
-                        editor.putString("idUsuario", id)
-                        editor.putString("nombreUsuarioPlanificador", username)
-                        editor.putBoolean("info_usuario", checkUserPlanificado.isChecked)
-                        editor.putBoolean("info_objeto", checkObjeto.isChecked)
-                        editor.putString("email", email)
-                        editor.putString("nombrePlanificador", name)
-                        editor.putString("nombreUsuarioTEA", namePlanificado)
-                        editor.putString("nombreObjeto", objeto)
-                        editor.putBoolean("editPreferences", false)
-                        editor.apply()
-
-                        val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-                }
+            if(viewModel.createAccountGoogle()){
+                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                viewModel.accountCreated(this, prefs, checkObjeto.isChecked, checkUserPlanificado.isChecked)
+                val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                Log.w("Registration", "createUserWithEmail:failure")
+                txtUsername.error = "El nombre de usuario o correo introducido ya existe"
+                txtEmail.error = "El nombre de usuario o correo introducido ya existe"
+            }
         }
+
         return isAccountValid.errorMessage ?: ""
     }
 
-    private fun updateButtonIcon() {
-        // Actualizar el icono del botón segun el estado
-        val iconResource = if (isClicked) R.drawable.question_simple else R.drawable.svg_close
-        val iconDrawable = ContextCompat.getDrawable(this, iconResource)
-        botonAyuda.icon = iconDrawable
+    fun comprobarTextViewsVacios(username: String, password: String, password2: String, name: String, email: String, objeto: String, namePlanificado: String, checkedObjeto: Boolean, checkedUserTea: Boolean): Boolean {
+        if (name.isEmpty()) {
+            txtName.error = "ESTO ES UN ERROR"
+            return false
+        }
+
+        if (email.isEmpty()) {
+            txtEmail.error = "ESTO ES UN ERROR"
+            return false
+        }
+
+        if (username.isEmpty()) {
+            txtUsername.error = "ESTO ES UN ERROR"
+            return false
+        }
+
+        if (password.isEmpty()) {
+            txtPassword.error = "ESTO ES UN ERROR"
+            return false
+        }
+
+        if (password2.isEmpty()) {
+            txtPassword2.error = "ESTO ES UN ERROR"
+            return false
+        }
+
+        if (objeto.isEmpty() && checkedObjeto) {
+            txtObjeto.error = "ESTO ES UN ERROR"
+            return false
+        }
+
+        if (namePlanificado.isEmpty() && checkedUserTea) {
+            txtNameplanificado.error = "ESTO ES UN ERROR"
+            return false
+        }
+        return true
     }
 
 }

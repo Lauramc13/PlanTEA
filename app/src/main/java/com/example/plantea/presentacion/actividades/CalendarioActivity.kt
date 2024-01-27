@@ -1,4 +1,4 @@
-package com.example.plantea.presentacion.actividades.planificador
+package com.example.plantea.presentacion.actividades
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -36,6 +36,7 @@ class CalendarioActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
 
     private val viewModel by viewModels<CalendarioViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

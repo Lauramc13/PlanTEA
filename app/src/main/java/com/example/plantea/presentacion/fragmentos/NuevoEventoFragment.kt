@@ -3,7 +3,6 @@ package com.example.plantea.presentacion.fragmentos
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,12 +22,8 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
-import com.example.plantea.presentacion.EventoInterface
-import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import java.util.*
 
 class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListener {

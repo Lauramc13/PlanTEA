@@ -3,10 +3,8 @@ package com.example.plantea.presentacion.fragmentos
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -16,20 +14,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.plantea.R
-import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.NavegacionUtils
-import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
-import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-import com.example.plantea.presentacion.actividades.ninio.TraductorActivity
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
-import com.example.plantea.presentacion.actividades.planificador.CreditsActivity
+import com.example.plantea.presentacion.actividades.ActividadActivity
+import com.example.plantea.presentacion.actividades.CuadernoActivity
+import com.example.plantea.presentacion.actividades.PlanActivity
+import com.example.plantea.presentacion.actividades.TraductorActivity
+import com.example.plantea.presentacion.actividades.CalendarioActivity
+import com.example.plantea.presentacion.actividades.CreditsActivity
 
 class NavigationTopFragment: Fragment() {
     lateinit var vista: View

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentacion.actividades.ninio.CuadernoActivity"
+    tools:context=".presentacion.actividades.CuadernoActivity"
     android:background="?customBgColorCuaderno">
 
     <ImageView

@@ -6,16 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.NavegacionUtils
-import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
-import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-import com.example.plantea.presentacion.actividades.ninio.TraductorActivity
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.google.android.material.navigation.NavigationView
 
 class NavigationSideFragment: Fragment() {

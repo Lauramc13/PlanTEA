@@ -164,6 +164,9 @@
     <string name="str_finalizar">Finalizar</string>
     <string name="str_siguiente">Siguiente</string>
     <string name="str_anterior">Anterior</string>
+    <string name="str_editarCategoria">EDITAR CATEGORÍA</string>
+    <string name="str_editarCuaderno">Editar cuaderno</string>
+
 
     <!-- Credits-->
     <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el Grupo de Investigación de la Universidad de Castilla-La Mancha ....</string>

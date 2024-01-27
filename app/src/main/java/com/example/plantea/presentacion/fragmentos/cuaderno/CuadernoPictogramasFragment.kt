@@ -4,16 +4,13 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -21,39 +18,36 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.CuadernoInterface
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
+import com.example.plantea.presentacion.viewModels.CuadernoViewModel
 import com.google.android.material.imageview.ShapeableImageView
 
 class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener {
-    lateinit var vista: View
     lateinit var actividad: Activity
-    lateinit var listaPictogramas: ArrayList<Pictograma>
-    private lateinit var interfaceCuaderno: CuadernoInterface
     private lateinit var lst_Pictogramas: RecyclerView
     private lateinit var image_Cerrar: ImageView
     private lateinit var seekbar: SeekBar
     lateinit var termometro: LinearLayout
-    private var isTermometro: Boolean = true
-    private lateinit var tituloCuaderno: String
     private lateinit var constraintLayout: ConstraintLayout
+
+    private val viewModel: CuadernoViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas, container, false)
+        val vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas, container, false)
         val bundle = this.arguments
 
-        listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
-        isTermometro = (bundle["termometro"] as Boolean)
-        tituloCuaderno = (bundle["tituloCuaderno"] as String)
+        viewModel.listaPictogramas = (bundle!!["key"] as ArrayList<Pictograma>?)!!
+        viewModel.isTermometro = (bundle["termometro"] as Boolean)
+        viewModel.tituloCuaderno = (bundle["tituloCuaderno"] as String)
 
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
-        txtCuaderno.text = tituloCuaderno
+        txtCuaderno.text = viewModel.tituloCuaderno
 
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
         constraintLayout = vista.findViewById(R.id.frameLayout)
@@ -61,13 +55,12 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
 
         val prefs = context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val isPlanificador = prefs?.getBoolean("PlanificadorLogged", false)
-        val adaptador = isPlanificador?.let { context?.let { it1 ->
-            AdaptadorPictogramasCuaderno(listaPictogramas, it, this, it1)
-        }}!!
+        val adaptador = isPlanificador?.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
         lst_Pictogramas.adapter = adaptador
         image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
-        image_Cerrar.setOnClickListener { interfaceCuaderno.cerrarFragment() }
+        image_Cerrar.setOnClickListener { viewModel._cerrarFragment.value = true}
         context?.let { CommonUtils.initializeTextToSpeech(it) }
+
         return vista
     }
 
@@ -75,7 +68,6 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         super.onAttach(context)
         if (context is Activity) {
             actividad = context
-            interfaceCuaderno = (actividad as CuadernoInterface?)!!
         }
     }
 
@@ -88,14 +80,14 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val iconoEscuchar = dialog.findViewById<ImageView>(R.id.icono_escuchar)
         seekbar = dialog.findViewById(R.id.seekBar_termometro)
         termometro = dialog.findViewById(R.id.termometro)
-        pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
-        tituloPictograma.text = listaPictogramas[posicion].titulo
-        if(!isTermometro){
+        pictograma.setImageURI(Uri.parse(viewModel.listaPictogramas?.get(posicion)?.imagen ))
+        tituloPictograma.text = viewModel.listaPictogramas?.get(posicion)?.titulo
+        if(!viewModel.isTermometro){
             termometro.visibility = View.GONE
         }
 
         iconoEscuchar.setOnClickListener {
-            CommonUtils.textToSpeechWord(listaPictogramas[posicion].titulo)
+            CommonUtils.textToSpeechWord(viewModel.listaPictogramas?.get(posicion)?.titulo )
         }
 
         //Botón cerrar

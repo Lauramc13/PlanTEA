@@ -7,9 +7,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
-import com.example.plantea.presentacion.actividades.ninio.CuadernoActivity
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 
 class MenuActivity : AppCompatActivity() {
     private lateinit var layoutEmociones : LinearLayout

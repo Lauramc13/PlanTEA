@@ -5,21 +5,18 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
 
-
 class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, private val isPlan: Boolean, private val listener: OnItemSelectedListener?, private val context: Context, private val fragment: PrincipalFragment) : RecyclerView.Adapter<AdaptadorCategoriasCuaderno.ViewHolderPictogramas>() {
     interface OnItemSelectedListener {
-        fun pictogramaCuaderno(posicion: Int, idCuaderno: Int)
+        fun pictogramaCuaderno(posicion: Int, cuadernoId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -28,35 +25,23 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
     }
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
-        /*val parentWidth = (fragment.view?.parent as? View)?.width ?: 0
-        val width = (parentWidth * 0.5).toInt()
-
-        val layoutParams = FrameLayout.LayoutParams(width, FrameLayout.LayoutParams.WRAP_CONTENT)
-        holder.borde.layoutParams = layoutParams*/
-
         holder.titulo.text = listaPictogramas!![position].titulo
+
         if(isPlan && (position == listaPictogramas!!.size - 1) ){
             holder.imagen.setImageResource(R.drawable.svg_add)
             val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno_dotted)
             holder.borde.background = drawable
-            //holder.borrar.visibility = View.INVISIBLE
             holder.menu.visibility = View.INVISIBLE
         }else{
             holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
             val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno)
             holder.borde.background = drawable
-            //holder.borrar.visibility = View.VISIBLE
             holder.menu.visibility = View.VISIBLE
         }
 
         if ((listaPictogramas!![position].id == 2 || listaPictogramas!![position].id == 3 || listaPictogramas!![position].id == 4) || !isPlan) {
-            //holder.borrar.visibility = View.INVISIBLE
             holder.menu.visibility = View.INVISIBLE
         }
-
-       /* holder.borrar.setOnClickListener {
-            fragment.eliminarCuaderno(listaPictogramas!![position])
-        }*/
 
         holder.menu.setOnClickListener {
             fragment.menuCuaderno(listaPictogramas!![position], holder.menu)
@@ -78,7 +63,6 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             borde = itemView.findViewById<View>(R.id.card_categoria) as RelativeLayout
-            //borrar = itemView.findViewById<View>(R.id.btn_borrarCategoria) as ImageView
             menu = itemView.findViewById<View>(R.id.btn_editCategoria) as ImageView
             itemView.setOnClickListener(this)
         }

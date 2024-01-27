@@ -1,11 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
@@ -13,10 +9,6 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -26,16 +18,10 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
-import com.example.plantea.presentacion.actividades.ninio.ActividadActivity
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import net.bytebuddy.matcher.ElementMatchers.any
-import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.RegisterExtension
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.verify
 
 class PreLoginActivityTest {
 

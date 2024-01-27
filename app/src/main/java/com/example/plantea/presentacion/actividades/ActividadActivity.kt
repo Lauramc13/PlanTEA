@@ -1,4 +1,4 @@
-package com.example.plantea.presentacion.actividades.ninio
+package com.example.plantea.presentacion.actividades
 
 import android.os.Bundle
 import android.view.View

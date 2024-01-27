@@ -1,11 +1,7 @@
-package com.example.plantea.presentacion.actividades.planificador
+package com.example.plantea.presentacion.actividades
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
@@ -19,7 +15,6 @@ import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -30,8 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.dominio.Planificacion
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
@@ -41,10 +34,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.Collections
 import java.util.Locale
 
@@ -123,18 +112,11 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
         initRecyclerViewPlan()
 
         if(savedInstanceState == null){
+            viewModel.fragment = CategoriasFragment()
             transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.contenedor_fragments, CategoriasFragment())
-            transaction.commit()
-        }else {
-            val bundle = Bundle()
-            bundle.putSerializable("key", viewModel.listaPictogramas)
-            transaction = supportFragmentManager.beginTransaction()
-            val fragment = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)!!
-            fragment.arguments = bundle
-            transaction.replace(R.id.contenedor_fragments, fragment)
-            transaction.addToBackStack(null) // Se añade a la pila para poder navegar hacia atrás
-            transaction.commit()
+            transaction.add(R.id.contenedor_fragments, CategoriasFragment()).commit()
+        }else{
+            viewModel.fragment = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)!!
         }
 
         //Este método se ejecutará al seleccionar el icono guardar para crear la planificación
@@ -196,22 +178,16 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
         }
     }
 
-    /*fun addPictogram(pictogram: Pictograma) {
-        viewModel.listaPlanificacion.add(pictogram)
-        viewModel.isEdited = true
-        adaptador.notifyDataSetChanged()
-    }*/
-
     fun observers() {
-
         viewModel._identificadorCategoria.observe(this) {
             transaction = supportFragmentManager.beginTransaction()
-            viewModel.cambiarFragmentCategoria(transaction)
+            viewModel.cambiarFragment(transaction, false)
         }
 
-        viewModel._identificadorSubCategoria.observe(this) {
+        viewModel._identificadorSubCategoria.observe(this) {//TODO: ver si se quita esto
             transaction = supportFragmentManager.beginTransaction()
-            viewModel.cambiarFragmentSubCategoria(transaction)
+            viewModel.subcategoriaOpen = true
+            viewModel.cambiarFragment(transaction, true)
         }
 
         viewModel._closeFragment.observe(this) {
@@ -347,14 +323,14 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
                     }
                 }
 
-                val transaction = supportFragmentManager.beginTransaction()
-                var fragment = supportFragmentManager.findFragmentByTag("FragmentBusqueda")
-                if (fragment != null) {
-                    viewModel.fragmentBusqueda.updateBusqueda()
-                }else{
-                    viewModel.cambiarFragmentBusqueda(transaction)
-                }
+                viewModel.busquedaOpen = true
+                //find fragment by id
+                val fragment = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)
+                transaction = supportFragmentManager.beginTransaction()
 
+                if (fragment != null) {
+                    viewModel.cambiarFragmentBusqueda(transaction, fragment)
+                }
             }
         }
     }
@@ -363,5 +339,7 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
         super.onStop()
         viewModel._closeFragment.value = false
     }
+
+
 
 }

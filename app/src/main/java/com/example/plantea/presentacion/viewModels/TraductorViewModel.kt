@@ -16,7 +16,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.ninio.TraductorActivity
+import com.example.plantea.presentacion.actividades.TraductorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope

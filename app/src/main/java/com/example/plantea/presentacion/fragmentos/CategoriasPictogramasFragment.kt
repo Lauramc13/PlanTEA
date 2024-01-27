@@ -9,21 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
-import com.example.plantea.presentacion.actividades.planificador.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramas
+import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
-import java.time.LocalDate
 
 class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSelectedListener {
     lateinit var actividad: Activity
@@ -37,7 +32,6 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val vista = inflater.inflate(R.layout.fragment_categorias_pictogramas, container, false)
 
-        viewModel.listaPictogramas = (this.requireArguments()["key"] as ArrayList<Pictograma>?)!!
         recyclerPictogramas = vista.findViewById(R.id.recycler_Pictogramas)
 
         val orientation = resources.configuration.orientation
@@ -68,16 +62,16 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         return vista
     }
 
+    fun updateDataFragment(){
+        val adaptador = AdaptadorPictogramas(viewModel.listaPictogramas, this, this)
+        recyclerPictogramas.adapter = adaptador
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Activity) {
             actividad = context
         }
-    }
-
-    fun updateBusqueda(){
-        val adaptador = AdaptadorPictogramas(viewModel.listaPictogramas, this, this)
-        recyclerPictogramas.adapter = adaptador
     }
 
     //Este método se ejecutará al seleccionar un pictograma para añadirlo en la planificacion

@@ -1,4 +1,4 @@
-package com.example.plantea.presentacion.actividades.ninio
+package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -23,8 +22,6 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.PlanificacionItem
-import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.planificador.CalendarioActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion

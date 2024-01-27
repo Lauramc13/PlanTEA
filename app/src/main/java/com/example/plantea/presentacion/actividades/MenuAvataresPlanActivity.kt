@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -8,15 +9,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -26,23 +27,21 @@ import java.io.IOException
 class MenuAvataresPlanActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     private lateinit var btnGaleria: Button
-    private var imagenSeleccionada : Boolean = false
-    var usuario = Usuario()
+    private val viewModel by viewModels<MenuAvataresViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_avatares)
         setAvatarOnClickListeners(listOf("avatar1chica", "avatar2chica", "avatar3chica","avatar4chica", "avatar5chica", "avatar1chico", "avatar2chico", "avatar3chico", "avatar4chico", "avatar5chico"))
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        createPickMedia()
+
+        viewModel.idUsuario = prefs.getString("idUsuario", "").toString()
 
         btnGaleria = findViewById(R.id.btn_galeria)
         btnGaleria.setOnClickListener{
-            abrirGaleria() 
-            if(imagenSeleccionada){
-                next()
-            }else{
-                Toast.makeText(this, "No se ha seleccionado ningun avatar", Toast.LENGTH_SHORT).show()
-            }
+            viewModel.abrirGaleria()
         }
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
@@ -63,6 +62,32 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             }
             next()
         }
+
+        observers()
+    }
+
+    private fun createPickMedia() {
+        viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+                viewModel.imagenSeleccionada = true
+                val inputStream = this.contentResolver?.openInputStream(uri)
+                viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
+                viewModel._ruta.value = CommonUtils.getPathFromUri(this, uri)
+            } else {
+                Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun observers(){
+        viewModel._ruta.observe(this){
+            val editor = prefs.edit()
+            editor.putString("imagenPlanificador", it)
+            editor.apply()
+            viewModel.bitmap?.let { it1 -> viewModel.guardarImagen(applicationContext, it, it1) }
+            viewModel.imagenSeleccionada = true
+            next()
+        }
     }
 
     private fun setAvatarOnClickListeners(avatarIds: List<String>) {
@@ -77,12 +102,12 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val idUsuario = prefs.getString("idUsuario", "")
                 if (idUsuario != null) {
+                    val usuario = Usuario()
                     usuario.aniadirImagenPlanificador(uri.toString(), idUsuario, this@MenuAvataresPlanActivity)
                 }
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())
                 editor.putString("imagenPlanificadorDraw", avatarId)
-
                 editor.apply()
                 next()
             }
@@ -93,76 +118,12 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         if(prefs.getBoolean("editPreferences", false)){
             finish()
         }else{
-            if (prefs.getBoolean("info_usuario", false)){
-                val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
-                startActivity(intent)
-            }else if(prefs.getBoolean("info_objeto", false)){
-                val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
-                startActivity(intent)
-            }else{
-                val intent = Intent(applicationContext, TutorialActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+            val nextActivity = viewModel.determineNextScreenPlan(prefs)
+            val intent = Intent(applicationContext, nextActivity)
+            startActivity(intent)
+            finish()
         }
     }
 
-    private fun abrirGaleria() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        // Handle the returned URI here
-        if (uri != null) {
-            // Load the selected image from the URI
-            val inputStream = contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-
-            // Save the image to rutaUsuarioTEA
-            val rutaUsuarioTEA = getPathFromUri(this, uri)
-            val editor = prefs.edit()
-            editor.putString("imagenPlanificador", rutaUsuarioTEA)
-            editor.commit()
-            guardarImagen(applicationContext, rutaUsuarioTEA, bitmap)
-            imagenSeleccionada = true
-            btnGaleria.performClick()
-
-        } else {
-            Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun getPathFromUri(context: Context, uri: Uri): String {
-        val filePath: String?
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-        if (cursor == null) {
-            filePath = uri.path
-        } else {
-            cursor.moveToFirst()
-            val index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            filePath = cursor.getString(index)
-            cursor.close()
-        }
-        return filePath ?: ""
-    }
-
-    private fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
-        val cw = ContextWrapper(context)
-        val dirImages = cw.getDir("Imagenes", MODE_PRIVATE)
-        val myPath = File(dirImages, "$nombre.png")
-        val fos: FileOutputStream?
-        try {
-            fos = FileOutputStream(myPath)
-            imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
-            fos.flush()
-        } catch (ex: FileNotFoundException) {
-            ex.printStackTrace()
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-        return myPath.absolutePath
-    }
 
 }

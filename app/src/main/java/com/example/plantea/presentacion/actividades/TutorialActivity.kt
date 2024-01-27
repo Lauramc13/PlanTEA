@@ -2,13 +2,14 @@ package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.plantea.R
 import com.google.android.material.tabs.TabLayout
 import com.example.plantea.presentacion.adaptadores.AdaptadorPaginas
+import com.example.plantea.presentacion.viewModels.TutorialViewModel
 
 class TutorialActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
@@ -16,12 +17,13 @@ class TutorialActivity : AppCompatActivity() {
     private lateinit var btnPrevious: Button
     private lateinit var btnNext: Button
     private lateinit var btnSkip: Button
+    private val isFromManual = intent.getBooleanExtra("isFromManual", false)
+
+    private val viewModel by viewModels<TutorialViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
-        val isFromManual : Boolean = intent.getBooleanExtra("isFromManual", false)
-
 
         viewPager = findViewById(R.id.view_pager)
         adapter = AdaptadorPaginas(this)
@@ -42,12 +44,7 @@ class TutorialActivity : AppCompatActivity() {
         btnNext.setOnClickListener {
             if(viewPager.currentItem == 2){
                 btnNext.text = getString(R.string.str_finalizar)
-                if (isFromManual){
-                    startActivity(Intent(applicationContext, ManualActivity::class.java))
-                }else {
-                    startActivity(Intent(applicationContext, MainActivity::class.java))
-                }
-                finish()
+                isFromManual()
             }else{
                 btnNext.text = getString(R.string.str_siguiente)
             }
@@ -55,25 +52,16 @@ class TutorialActivity : AppCompatActivity() {
         }
 
         btnSkip.setOnClickListener {
-            if (isFromManual){
-                startActivity(Intent(applicationContext, ManualActivity::class.java))
-            }else {
-                startActivity(Intent(applicationContext, MainActivity::class.java))
-            }
-            finish()
+            isFromManual()
         }
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 // No se usa
             }
 
             override fun onPageSelected(position: Int) {
-                updateButtonText(position)
+                btnNext.text = viewModel.updateButtonText(this@TutorialActivity, position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -82,11 +70,12 @@ class TutorialActivity : AppCompatActivity() {
         })
     }
 
-    private fun updateButtonText(currentItem: Int) {
-        if (currentItem == 2) {
-            btnNext.text = getString(R.string.str_finalizar)
-        } else {
-            btnNext.text = getString(R.string.str_siguiente)
+    private fun isFromManual(){
+        if (isFromManual){
+            startActivity(Intent(applicationContext, ManualActivity::class.java))
+        }else {
+            startActivity(Intent(applicationContext, MainActivity::class.java))
         }
+        finish()
     }
 }

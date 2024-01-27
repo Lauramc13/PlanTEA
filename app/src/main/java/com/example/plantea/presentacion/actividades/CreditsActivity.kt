@@ -1,4 +1,4 @@
-package com.example.plantea.presentacion.actividades.planificador
+package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.graphics.Paint

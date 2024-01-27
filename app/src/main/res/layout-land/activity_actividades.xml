@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?backgroundColor"
-    tools:context=".presentacion.actividades.ninio.ActividadActivity">
+    tools:context=".presentacion.actividades.ActividadActivity">
 
     <ImageView
         android:id="@+id/imageView7"

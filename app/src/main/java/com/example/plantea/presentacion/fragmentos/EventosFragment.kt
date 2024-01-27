@@ -1,14 +1,12 @@
 package com.example.plantea.presentacion.fragmentos
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,8 +23,7 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.CalendarioUtilidades.formatoDiaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.dominio.Planificacion
-import com.example.plantea.presentacion.actividades.ninio.PlanActivity
+import com.example.plantea.presentacion.actividades.PlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import java.time.LocalDate
