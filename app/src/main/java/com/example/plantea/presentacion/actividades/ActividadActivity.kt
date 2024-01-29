@@ -33,6 +33,7 @@ class ActividadActivity : AppCompatActivity() {
             cardVideo.visibility = View.VISIBLE
             cardObjeto.visibility = View.VISIBLE
             frameVideo.visibility = View.INVISIBLE
+
         }
 
         cardVideo.setOnClickListener{

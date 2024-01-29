@@ -136,6 +136,23 @@ class RegisterActivity : AppCompatActivity(){
                 Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
+
+        observers()
+    }
+
+
+    fun observers(){
+        viewModel._accountCreated.observe(this) {
+            if(it){
+                val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                Log.w("Registration", "createUserWithEmail:failure")
+                txtUsername.error = "El nombre de usuario o correo introducido ya existe"
+                txtEmail.error = "El nombre de usuario o correo introducido ya existe"
+            }
+        }
     }
 
     data class ValidationResult(val isValid: Boolean, var errorMessage: String? = null)
@@ -170,11 +187,15 @@ class RegisterActivity : AppCompatActivity(){
     private fun createAccount(): String {
         textInput()
 
-        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.email, viewModel.password, viewModel.password2, viewModel.name, viewModel.username, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
+        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
         val isAccountValid = isAccountValid(viewModel.email, viewModel.password, viewModel.password2, notextViewsVacios)
 
         if (isAccountValid.isValid) {
-            if(viewModel.createAccountGoogle()){
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            viewModel.registerUser(checkObjeto.isChecked, checkUserPlanificado.isChecked, prefs, this)
+
+
+            /*if(viewModel.createUserWithEmailAndPassword(viewModel.email, viewModel.password)){
                 val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                 viewModel.accountCreated(this, prefs, checkObjeto.isChecked, checkUserPlanificado.isChecked)
                 val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
@@ -184,7 +205,7 @@ class RegisterActivity : AppCompatActivity(){
                 Log.w("Registration", "createUserWithEmail:failure")
                 txtUsername.error = "El nombre de usuario o correo introducido ya existe"
                 txtEmail.error = "El nombre de usuario o correo introducido ya existe"
-            }
+            }*/
         }
 
         return isAccountValid.errorMessage ?: ""

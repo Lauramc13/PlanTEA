@@ -137,7 +137,8 @@ class CrearPlanViewModel : ViewModel() {
         }
     }
 
-    fun cambiarFragmentBusqueda(transaction: FragmentTransaction, fragment: Fragment){
+    fun cambiarFragmentBusqueda(transaction: FragmentTransaction, fragment: Fragment){ //ESTO HAY QUE QUITARLO
+        busquedaOpen = true
         if(fragment is CategoriasFragment){
             transaction.replace(R.id.contenedor_fragments, fragmentCategoriasPictogramas)
             transaction.addToBackStack(null)
@@ -145,21 +146,25 @@ class CrearPlanViewModel : ViewModel() {
         }else{
             fragmentCategoriasPictogramas.updateDataFragment()
         }
-
-
     }
 
-    fun closeFragment(transaction: FragmentTransaction, context: Context){
-        if(subcategoriaOpen){
-            listaPictogramas = _identificadorCategoria.value?.let { idCategoria -> pictograma.obtenerPictogramas(context, idCategoria, idUsuario) } as java.util.ArrayList<Pictograma>
-            fragmentCategoriasPictogramas.updateDataFragment()
-            subcategoriaOpen = false
-
-        }else{
-            fragmentCategoriasPictogramas.updateDataFragment()
+    fun closeFragment(transaction: FragmentTransaction, context: Context){ //ESTO HAY QUE MEJORARLO
+        if(busquedaOpen){
             transaction.replace(R.id.contenedor_fragments, CategoriasFragment())
             transaction.addToBackStack(null)
             transaction.commit()
+            busquedaOpen = false
+        }else{
+            if(subcategoriaOpen){
+                listaPictogramas = _identificadorCategoria.value?.let { idCategoria -> pictograma.obtenerPictogramas(context, idCategoria, idUsuario) } as ArrayList<Pictograma>
+                fragmentCategoriasPictogramas.updateDataFragment()
+                subcategoriaOpen = false
+            }else{
+                fragmentCategoriasPictogramas.updateDataFragment()
+                transaction.replace(R.id.contenedor_fragments, CategoriasFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
         }
         _clearBusqueda.value = true
 

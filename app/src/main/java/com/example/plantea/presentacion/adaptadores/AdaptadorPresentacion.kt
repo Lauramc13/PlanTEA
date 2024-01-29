@@ -119,10 +119,10 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             if(checkedPosition == true){
                 listener?.onItemSeleccionado(view.context, position)
                 card.setBackgroundResource(R.drawable.card_disabled)
-                cardLayout.alpha = 0.7f
+                card.alpha = 0.7f
 
             }else{
-                Toast.makeText(context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()
+                Toast.makeText(view.context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()
             }
         }
 

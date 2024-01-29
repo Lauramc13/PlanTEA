@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
@@ -21,6 +22,9 @@ class RegisterViewModel: ViewModel() {
     var password2 = ""
     var objeto = ""
     var namePlanificado = ""
+
+    val _toastError = MutableLiveData<String>()
+    val _accountCreated = MutableLiveData<Boolean>()
 
     fun updateButtonIcon(context: Context): Drawable?{
         // Actualizar el icono del botón segun el estado
@@ -43,9 +47,10 @@ class RegisterViewModel: ViewModel() {
         editor.putString("nombreObjeto", objeto)
         editor.putBoolean("editPreferences", false)
         editor.apply()
+        _accountCreated.value = true
     }
 
-    fun createAccountGoogle(): Boolean{
+    fun createAccountGoogleOLD(): Boolean{
         auth.currentUser
         var suscess = false
         auth.createUserWithEmailAndPassword(email, password)
@@ -55,4 +60,27 @@ class RegisterViewModel: ViewModel() {
         return suscess
 
     }
+
+
+    fun createUserWithEmailAndPassword(email: String, password: String): Boolean {
+        var success = false
+        auth.createUserWithEmailAndPassword("example@gmail.com", "123456")
+            .addOnCompleteListener { task ->
+                success = task.isSuccessful
+            }
+        return success
+    }
+
+    fun registerUser(chekedObjeto: Boolean, checkedUserTEA: Boolean, prefs: SharedPreferences, activity: Activity) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(activity) { task ->
+                if (task.isSuccessful) {
+                    accountCreated(activity, prefs, checkedUserTEA, chekedObjeto)
+                }else{
+                   _accountCreated.value = false
+                }
+            }
+    }
+
+
 }

@@ -134,7 +134,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         imgUsuarioTEA.setOnClickListener {
-            imgClick(MenuObjetosActivity::class.java)
+            imgClick(MenuAvataresTEActivity::class.java)
         }
 
         imgObjeto.setOnClickListener {

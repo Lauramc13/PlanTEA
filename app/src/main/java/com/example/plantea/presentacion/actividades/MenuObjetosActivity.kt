@@ -101,6 +101,7 @@ class MenuObjetosActivity : AppCompatActivity() {
             finish()
         }else{
             val intent = Intent(applicationContext, TutorialActivity::class.java)
+            intent.putExtra("isFromManual", false)
             startActivity(intent)
             finish()
         }

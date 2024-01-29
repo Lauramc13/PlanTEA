@@ -105,6 +105,9 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         }else{
             val nextActivity = viewModel.determineNextScreenTEA(prefs)
             val intent = Intent(applicationContext, nextActivity)
+            if(nextActivity == TutorialActivity::class.java){
+                intent.putExtra("isFromManual", false)
+            }
             startActivity(intent)
             finish()
         }

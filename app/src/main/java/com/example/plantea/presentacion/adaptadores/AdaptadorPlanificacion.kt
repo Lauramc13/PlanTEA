@@ -52,6 +52,11 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
             holder.card.setBackgroundResource(R.drawable.card_espera)
         }
 
+        if(listaPlanificacion[position].historia.toString() == "null"){
+            holder.historia.setImageResource(R.drawable.bocadillo_historia_off)
+        }else{
+            holder.historia.setImageResource(R.drawable.bocadillo_historia_on)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -96,27 +101,20 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
                 cardtitulo.text = tituloCard
                 iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
                 historiaText = dialogLogout.findViewById(R.id.historiaText)
-                if(listaPlanificacion[position].historia.toString() == "null"){
-                    historiaText.editText?.setText("")
-                }else{
-                    historiaText.editText?.setText(listaPlanificacion[position].historia.toString())
-                }
+                historiaText.editText?.setText(listaPlanificacion[position].historia)
+
                 iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
                 btnGuardar.setOnClickListener{
                     if(historiaText.editText?.text.toString() == ""){
-                        Toast.makeText(
-                            context,
-                            "No se puede crear una historia vacía",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(context, "No se puede crear una historia vacía", Toast.LENGTH_LONG).show()
                     }else {
-                        listaPlanificacion[position].historia =
-                            historiaText.editText?.text.toString()
+                        listaPlanificacion[position].historia = historiaText.editText?.text.toString()
+                        notifyItemChanged(position)
                         dialogLogout.dismiss()
                     }
                 }
-                dialogLogout.show()
 
+                dialogLogout.show()
             }
         }
 

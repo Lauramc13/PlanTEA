@@ -110,7 +110,11 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         }
 
         guardarButton.setOnClickListener {
-          viewModel.dialogGuardar(this)
+            if(viewModel.listaPictogramas.isNotEmpty()){
+                viewModel.dialogGuardar(this)
+            }else{
+                Toast.makeText(applicationContext, "No se puede guardar una traducción sin pictogramas", Toast.LENGTH_LONG).show()
+            }
         }
 
         /////////////  Observers  //////////////

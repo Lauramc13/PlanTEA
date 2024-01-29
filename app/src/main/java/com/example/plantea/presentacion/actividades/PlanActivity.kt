@@ -28,6 +28,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.example.plantea.presentacion.viewModels.PlanViewModel
 import com.google.android.material.button.MaterialButton
 import java.time.LocalDate
+import java.util.Stack
 
 
 class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
@@ -303,9 +304,11 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     }
 
     private fun configureParameters(){
-        titulo.text = intent.getStringExtra("titulo")
-        viewModel.listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-        viewModel.adaptador = AdaptadorPresentacion(viewModel.listaPictogramas, viewModel)
+        viewModel._pasosCompletados.value = Stack()
+        viewModel._tituloLiveData.value = intent.getStringExtra("titulo")
+        viewModel.listaPictogramas = intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>
+        viewModel._planLiveData.value = viewModel.listaPictogramas
+     /*   viewModel.adaptador = AdaptadorPresentacion(viewModel.listaPictogramas, viewModel)
         viewModel.recyclerView.adapter = viewModel.adaptador
         lblMensaje.visibility = View.INVISIBLE
         buttonPlanNuevo.visibility = View.INVISIBLE
@@ -314,17 +317,15 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         iconoMarcar.visibility = View.VISIBLE
         iconoMarcarTodas.visibility = View.VISIBLE
         iconoEscuchar.visibility = View.VISIBLE
-        iconoReproducir.visibility = View.VISIBLE
+        iconoReproducir.visibility = View.VISIBLE*/
     }
 
-    fun reproducirEvento(tiempo: Long) {
+    private fun reproducirEvento(tiempo: Long) {
 
         if(viewModel.isRunning){
-            configureIsRunning()
-            iconoMarcar.isEnabled = true
-            iconoMarcarTodas.isEnabled = true
+            configureIsNotRunning()
         }else{
-            configureIsRunningLast()
+            configureIsRunning()
 
             viewModel.currentRunnable = object : Runnable {
                 override fun run() {
@@ -335,7 +336,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                             viewModel.adaptador.animatedPositions.add(viewModel.currentPosition)
                             viewModel.adaptador.notifyItemChanged(viewModel.currentPosition)
                         } else {
-                            configureIsRunning()
+                            configureIsNotRunning()
                         }
                         viewModel.currentPosition++
                     }
@@ -346,17 +347,21 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         }
     }
 
-    fun configureIsRunning(){
+    fun configureIsNotRunning(){
         viewModel.isRunning = false
         viewModel.adaptador.animatedPositions.clear()
         iconoReproducir.setIconResource(R.drawable.svg_play)
+        viewModel.adaptador.listMarcados.clear()
+        viewModel._pasosCompletados.value?.clear()
         viewModel.adaptador.notifyDataSetChanged()
         viewModel.stopReproductor()
     }
 
-    fun configureIsRunningLast(){
+    private fun configureIsRunning(){
         iconoReproducir.setIconResource(R.drawable.svg_stop)
         viewModel.adaptador.optionMarcar = false
+        viewModel.adaptador.listMarcados.clear()
+        viewModel._pasosCompletados.value?.clear()
         viewModel.adaptador.notifyDataSetChanged()
 
         iconoMarcar.isEnabled = false

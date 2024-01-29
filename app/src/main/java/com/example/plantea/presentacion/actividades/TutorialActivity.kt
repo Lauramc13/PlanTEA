@@ -17,13 +17,15 @@ class TutorialActivity : AppCompatActivity() {
     private lateinit var btnPrevious: Button
     private lateinit var btnNext: Button
     private lateinit var btnSkip: Button
-    private val isFromManual = intent.getBooleanExtra("isFromManual", false)
+    private var isFromManual = false
 
     private val viewModel by viewModels<TutorialViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
+
+        isFromManual = intent.getBooleanExtra("isFromManual", false)
 
         viewPager = findViewById(R.id.view_pager)
         adapter = AdaptadorPaginas(this)

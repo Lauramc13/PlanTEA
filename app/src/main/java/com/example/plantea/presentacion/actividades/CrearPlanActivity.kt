@@ -323,7 +323,6 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
                     }
                 }
 
-                viewModel.busquedaOpen = true
                 //find fragment by id
                 val fragment = supportFragmentManager.findFragmentById(R.id.contenedor_fragments)
                 transaction = supportFragmentManager.beginTransaction()
@@ -340,6 +339,16 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
         viewModel._closeFragment.value = false
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(viewModel.fragment is CategoriasFragment){
+            transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.contenedor_fragments, viewModel.fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }else{
+            viewModel.fragmentCategoriasPictogramas.updateDataFragment()
 
-
+        }
+    }
 }
