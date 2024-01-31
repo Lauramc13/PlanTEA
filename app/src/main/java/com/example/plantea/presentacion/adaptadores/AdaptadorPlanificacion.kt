@@ -43,6 +43,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
         holder.borrar.visibility = View.VISIBLE
         holder.historia.visibility = View.VISIBLE
+
         if (listaPlanificacion[position].categoria == 9) { //Premio
             //holder.premio.visibility = View.VISIBLE
             holder.card.setBackgroundResource(R.drawable.card_premio)

@@ -41,7 +41,9 @@ class CuadernoActivity : AppCompatActivity() {
         if (idUsuario != null) {
             viewModel.listaCuadernos = viewModel.cuaderno.consultarCuadernos(this, idUsuario)
         }
+
         viewModel.listaCuadernos!!.removeAt(0)
+
 
         viewModel.isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
         if(viewModel.isPlanificador){
@@ -55,7 +57,7 @@ class CuadernoActivity : AppCompatActivity() {
             bundle.putSerializable("isPlan", viewModel.isPlanificador)
             fragmentPrincipal!!.arguments = bundle
             transaction = supportFragmentManager.beginTransaction()
-            transaction!!.add(R.id.layout_fragments, fragmentPrincipal as PrincipalFragment)
+            transaction!!.replace(R.id.layout_fragments, fragmentPrincipal!!)
             transaction!!.commit()
         } else {
             val fragment = supportFragmentManager.findFragmentById(R.id.layout_fragments)

@@ -113,7 +113,7 @@
                 android:text="@string/lbl_nombre"
                 android:contentDescription="Nombre del planificador"
                 android:textColor="?colorOnSurface"
-                android:fontFamily="@font/montserrat_semibold"
+                android:fontFamily="@font/poppins_semibold"
                 android:textAlignment="center"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -156,7 +156,7 @@
                 android:text="@string/lbl_nombre"
                 android:textColor="?colorOnSurface"
                 android:contentDescription="Nombre del planificado"
-                android:fontFamily="@font/montserrat_semibold"
+                android:fontFamily="@font/poppins_semibold"
                 android:textAlignment="center"
                 android:textSize="24sp" />
         </LinearLayout>

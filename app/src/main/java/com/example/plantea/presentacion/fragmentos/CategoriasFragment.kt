@@ -17,6 +17,7 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.CrearPlanInterface
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
+import com.google.android.material.transition.MaterialContainerTransform
 
 class CategoriasFragment : Fragment() {
     lateinit var actividad: Activity
@@ -26,6 +27,8 @@ class CategoriasFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         val vista = inflater.inflate(R.layout.fragment_categorias, container, false)
+
+
         val cardMedico = vista.findViewById<CardView>(R.id.categoria_medico)
         val cardCompra = vista.findViewById<CardView>(R.id.categoria_compra)
         val cardPeluqueria = vista.findViewById<CardView>(R.id.categoria_peluqueria)

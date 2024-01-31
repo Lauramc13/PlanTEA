@@ -25,6 +25,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
+import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout

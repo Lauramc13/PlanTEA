@@ -15,6 +15,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
     interface OnItemSelectedListener {
         fun deleteClick(posicion: Int)
         fun viewClick(posicion: Int)
+        fun viewExportClick(posicion: Int)
         fun viewEventClick(posicion: Int)
     }
 
@@ -40,6 +41,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
         var nombre: TextView
         var hora: TextView
         private var eliminarEvento: ImageView
+        private var export : ImageView
         var visibilidad: ImageView
         private var verPlan: CardView
 
@@ -47,6 +49,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
             nombre = itemView.findViewById(R.id.txt_evento)
             hora = itemView.findViewById(R.id.txt_hora)
             eliminarEvento = itemView.findViewById(R.id.img_borrarEvento)
+            export = itemView.findViewById(R.id.img_exportCalendar)
             visibilidad = itemView.findViewById(R.id.img_eventoVisible)
             verPlan = itemView.findViewById(R.id.card_Evento)
             verPlan.setOnClickListener {
@@ -70,6 +73,13 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
                         visibilidad.setImageResource(R.drawable.ic_baseline_visibility_40)
                     }
                     listener.viewClick(position)
+                }
+            }
+
+            export.setOnClickListener {
+                if (listener != null) {
+                    val position = bindingAdapterPosition
+                    listener.viewExportClick(position)
                 }
             }
         }

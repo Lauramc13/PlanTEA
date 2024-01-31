@@ -16,6 +16,8 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
 
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, context: Context)
+
+        fun onLongItemSeleccionado(posicion: Int, context: Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -38,7 +40,7 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
         return listaPictogramas!!.size
     }
 
-    inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         var titulo: TextView
         var imagen: ImageView
         val removePicto : ImageView
@@ -48,16 +50,20 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             removePicto = itemView.findViewById<View>(R.id.btn_removePicto) as ImageView
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         override fun onClick(view: View) {
             val position = bindingAdapterPosition
-
             listener?.onItemSeleccionado(position, view.context)
-
-            // Perform click action and update UI for the current item
-            //imagen.alpha = 0.7f
-            //titulo.alpha = 0.7f
         }
+
+        override fun onLongClick(view: View): Boolean {
+            val position = bindingAdapterPosition
+            listener?.onLongItemSeleccionado(position, view.context)
+            return true
+        }
+
+
     }
 }

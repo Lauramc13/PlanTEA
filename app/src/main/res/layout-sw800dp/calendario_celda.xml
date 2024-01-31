@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="1"
         android:textColor="@color/black"
-        android:fontFamily="@font/montserrat_regular"
+        android:fontFamily="@font/poppins_regular"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

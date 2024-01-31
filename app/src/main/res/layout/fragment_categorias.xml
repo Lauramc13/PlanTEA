@@ -50,7 +50,7 @@
                         android:id="@+id/lbl_Medico"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:text="@string/lbl_IrMedico"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_CortarsePelo"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="13sp">
@@ -133,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Comprar"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="13sp">
@@ -174,7 +174,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_IrColegio"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="13sp">
@@ -215,7 +215,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Lugares"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="13sp">
@@ -255,7 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Desplazamiento"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="13sp">
@@ -296,7 +296,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Accion"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="?colorOnSurface"
                         android:textSize="13sp">
@@ -336,7 +336,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Entretenimiento"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="13sp">
@@ -374,7 +374,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Recompensa"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="13sp">
@@ -412,7 +412,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_Favoritos"
-                        android:fontFamily="@font/montserrat_regular"
+                        android:fontFamily="@font/poppins_regular"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="13sp">

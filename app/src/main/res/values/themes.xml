@@ -65,6 +65,7 @@
         <item name="grayStroke">@color/gray2</item>
         <item name="greenLight">@color/greenLight</item>
         <item name="subColorBackground">@color/subColorBackground</item>
+
     </style>
 
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
@@ -188,7 +189,7 @@
 
     <style name="TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
         <item name="colorPrimary">@color/md_theme_light_onPrimaryContainer</item>
-        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="fontFamily">@font/poppins_medium</item>
         <item name="materialClockStyle">@style/TimePicker.Clock</item>
         <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>

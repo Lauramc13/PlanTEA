@@ -1,18 +1,24 @@
 package com.example.plantea.presentacion.viewModels
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
@@ -27,6 +33,8 @@ import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.Locale
+import com.example.plantea.R
+
 
 class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSelectedListener{
 
@@ -36,6 +44,11 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     lateinit var adaptador: AdaptadorPictogramasTraductor
     var _visibilityButtons = MutableLiveData<Boolean>()
     var speechInProgress = false
+    lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+    var bitmap : Bitmap? = null
+    var ruta : String? = null
+    var posicionSelected = -1
+
 
     val _dialogMessage: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
@@ -175,6 +188,16 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         }
     }
 
+    @SuppressLint("IntentReset")
+    override fun onLongItemSeleccionado(posicion: Int, context: Context){
+        posicionSelected = posicion
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
 
-
+    fun imageSelected(){
+        listaPictogramas[posicionSelected].imagen = ruta
+        adaptador.notifyItemChanged(posicionSelected)
+    }
 }

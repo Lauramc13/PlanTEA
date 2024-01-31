@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="6dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="@string/cerrar_reproductor"
             android:textColor="#181F25"
             android:textSize="16sp"

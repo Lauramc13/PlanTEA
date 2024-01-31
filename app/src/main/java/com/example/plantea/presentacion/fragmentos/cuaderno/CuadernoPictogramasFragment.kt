@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
@@ -53,9 +54,8 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         constraintLayout = vista.findViewById(R.id.frameLayout)
         CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout)
 
-        val prefs = context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val isPlanificador = prefs?.getBoolean("PlanificadorLogged", false)
-        val adaptador = isPlanificador?.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
+        context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val adaptador = viewModel.isPlanificador?.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
         lst_Pictogramas.adapter = adaptador
         image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
         image_Cerrar.setOnClickListener { viewModel._cerrarFragment.value = true}

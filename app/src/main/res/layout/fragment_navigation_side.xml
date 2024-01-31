@@ -27,7 +27,7 @@
         android:layout_gravity="start"
         android:background="?colorAccent"
         android:backgroundTint="?colorAccent"
-        android:fontFamily="@font/montserrat_light"
+        android:fontFamily="@font/poppins_light"
         app:elevation="3dp"
         android:layout_marginTop="5dp"
         app:itemIconPadding="10dp"

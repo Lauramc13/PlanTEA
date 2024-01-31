@@ -136,7 +136,7 @@
 
     <style name="TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
         <item name="colorPrimary">@color/background2</item>
-        <item name="fontFamily">@font/montserrat_medium</item>
+        <item name="fontFamily">@font/poppins_medium</item>
         <item name="materialClockStyle">@style/TimePicker.Clock</item>
         <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>

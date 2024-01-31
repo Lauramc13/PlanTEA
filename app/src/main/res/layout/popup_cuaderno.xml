@@ -22,7 +22,7 @@
         android:textSize="16sp"
         android:gravity="center"
         android:padding="10dp"
-        android:fontFamily="@font/montserrat_medium"
+        android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         android:textColor="?colorOnSurface"
         android:onClick="onEliminarClicked" />
@@ -48,7 +48,7 @@
         android:textColor="?colorOnSurface"
         android:gravity="center"
         android:layout_marginEnd="30dp"
-        android:fontFamily="@font/montserrat_medium"
+        android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         android:onClick="onEliminarClicked"/>
 

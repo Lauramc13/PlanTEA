@@ -308,7 +308,7 @@ class CommonUtils{
             return myPath.absolutePath
         }
 
-         fun cambioOrientacion(context: Context): Int {
+       /*  fun cambioOrientacion(context: Context): Int {
             val orientation = context.resources.configuration.orientation
             val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
                 2
@@ -316,7 +316,7 @@ class CommonUtils{
                 4
             }
             return gridValueManager
-        }
+        }*/
 
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?

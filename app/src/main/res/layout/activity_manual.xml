@@ -49,7 +49,7 @@
         android:id="@+id/titleManual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_bold"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/lbl_manual"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:contentDescription="Boton guardar configuración"
-        android:fontFamily="@font/montserrat_semibold"
+        android:fontFamily="@font/poppins_semibold"
         android:text="@string/btn_tutorial"
         android:textColor="#203130"
         android:textSize="14sp"
@@ -102,7 +102,7 @@
                     android:id="@+id/lbl_indice1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:text="@string/lbl_indice1"
                     android:textSize="20sp" />
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice2"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -123,7 +123,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice2_1"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -134,7 +134,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice2_2"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -145,7 +145,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice2_3"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" /> -->
 
@@ -154,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice3"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice4"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -175,7 +175,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_1"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" /> -->
 
@@ -186,7 +186,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_2"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -197,7 +197,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_3"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -208,7 +208,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_4"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -219,7 +219,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_5"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -230,7 +230,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_6"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -241,7 +241,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice4_7"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -252,7 +252,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_8"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -263,7 +263,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_9"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -274,7 +274,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_10"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -285,7 +285,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice4_11"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -294,7 +294,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice5"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -305,7 +305,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice5_1"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -316,7 +316,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice5_2"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -327,7 +327,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:text="@string/lbl_indice5_3"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -338,7 +338,7 @@
                     android:paddingStart="45dp"
                     android:paddingEnd="45dp"
                     android:text="@string/lbl_indice5_4"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
 
@@ -347,14 +347,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_indice6"
-                    android:fontFamily="@font/montserrat_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSecondaryContainer"
                     android:textSize="20sp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/lbl_parrafo1"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -362,7 +362,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo8"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -376,7 +376,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo9"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -384,7 +384,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo10"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -398,7 +398,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo11"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -412,7 +412,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo12"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -426,7 +426,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo13"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -440,7 +440,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo14"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -454,7 +454,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo15"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -468,7 +468,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo16"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -482,7 +482,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo17"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -496,7 +496,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo18"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -510,7 +510,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo19"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -524,7 +524,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo20"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -538,7 +538,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo21"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -552,7 +552,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo22"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -566,7 +566,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo23"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -580,7 +580,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo24"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -601,7 +601,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo241"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -616,7 +616,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo25"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -637,7 +637,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo26"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -651,7 +651,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo27"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -672,7 +672,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo28"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -686,7 +686,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo29"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -700,7 +700,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo30"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -714,7 +714,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo31"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -735,7 +735,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo32"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -743,7 +743,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo33"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -757,7 +757,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo34"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -771,7 +771,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo341"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -785,7 +785,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo35"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -799,7 +799,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo36"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -820,7 +820,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo37"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -834,7 +834,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo38"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -855,7 +855,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo39"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -863,7 +863,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo40"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -877,7 +877,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo41"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -891,7 +891,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo42"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -905,7 +905,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo43"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -920,7 +920,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo2"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -935,7 +935,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo3"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -949,7 +949,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo4"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -963,7 +963,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo5"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -977,7 +977,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo6"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"
@@ -991,7 +991,7 @@
 
             <TextView
                 android:id="@+id/lbl_parrafo7"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?colorOnSurface"

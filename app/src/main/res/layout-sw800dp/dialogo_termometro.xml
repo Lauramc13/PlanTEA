@@ -64,7 +64,7 @@
                 android:layout_marginBottom="15dp"
                 android:foregroundGravity="center"
                 android:text="Pictograma"
-                android:fontFamily="@font/montserrat_medium"
+                android:fontFamily="@font/poppins_medium"
                 android:textColor="?colorOnSurface"
                 android:textSize="36sp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -59,7 +59,7 @@ class MenuAvataresViewModel : ViewModel() {
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
+    /*fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
         val cw = ContextWrapper(context)
         val dirImages = cw.getDir("Imagenes", AppCompatActivity.MODE_PRIVATE)
         val myPath = File(dirImages, "$nombre.png")
@@ -74,7 +74,7 @@ class MenuAvataresViewModel : ViewModel() {
             ex.printStackTrace()
         }
         return myPath.absolutePath
-    }
+    }*/
 
 
 }

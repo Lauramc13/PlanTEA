@@ -7,6 +7,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.provider.CalendarContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,7 @@ import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
@@ -103,10 +105,12 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
+
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
         ft.commit()
+
         val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         val notificacion = prefs.getBoolean("notificaciones", false)
         if (notificacion) {
@@ -185,5 +189,22 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         intent.putExtra("titulo", planes[posicion].titulo)
         intent.putExtra("pictogramas", pictogramas)
         actividad.startActivity(intent)
+    }
+
+    fun exportEventCalendar(posicion: Int): Intent {
+        val date = CalendarioUtilidades.fechaSeleccionada
+        val time = CalendarioUtilidades.formatoHoraAviso(eventos[posicion].hora)
+
+        //convert date and time to Date object
+        val calendar = Calendar.getInstance()
+        calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, time.hour, time.minute, time.second)
+
+        //TODO: cuando este hehco lo del recordatorio meterlo aqui tambien
+        return Intent(Intent.ACTION_INSERT)
+            .setData(CalendarContract.Events.CONTENT_URI)
+            .putExtra(CalendarContract.Events.TITLE, eventos[posicion].nombre)
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis + (60 * 60 * 1000))
+
     }
 }

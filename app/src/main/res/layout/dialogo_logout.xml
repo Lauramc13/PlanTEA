@@ -24,7 +24,7 @@
             android:id="@+id/lbl_Logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_cerrarSesion"
             android:textColor="?colorOnSurface"
             android:textSize="18sp"
@@ -42,7 +42,7 @@
             android:textColor="#203130"
             android:textSize="13sp"
             android:textAllCaps="true"
-            android:fontFamily="@font/montserrat_semibold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="@string/lbl_cerrarSesionBotton" />
     </LinearLayout>
 

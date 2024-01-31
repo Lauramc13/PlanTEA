@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/poppins_bold"
             android:text="Crear nuevo pictograma"
             android:textColor="?colorOnSurface"
             android:textSize="18sp" />
@@ -72,7 +72,7 @@
             android:layout_marginBottom="10dp"
             android:contentDescription="Boton iniciar sesion"
             android:elevation="0dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:fontFamily="@font/poppins_semibold"
             android:maxWidth="10dp"
             android:text="CREAR PICTOGRAMA"
             android:textColor="#203130"

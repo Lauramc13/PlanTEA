@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Planificación"
             android:textSize="21sp" />
     </LinearLayout>
@@ -95,7 +95,7 @@
 
     <TextView
         android:id="@+id/lbl_CrearPlanActividad"
-        android:fontFamily="@font/montserrat_regular"
+        android:fontFamily="@font/poppins_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -113,7 +113,7 @@
 
     <EditText
         android:id="@+id/txt_TituloPlan"
-        android:fontFamily="@font/montserrat_medium"
+        android:fontFamily="@font/poppins_medium"
         android:layout_width="230dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:contentDescription="Botón para guardar la planificación"
-        android:fontFamily="@font/montserrat_semibold"
+        android:fontFamily="@font/poppins_semibold"
         android:text="@string/btn_Guardar"
         android:textColor="#203130"
         android:textSize="16sp"
@@ -153,7 +153,7 @@
         android:id="@+id/lbl_buscando"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_regular"
+        android:fontFamily="@font/poppins_regular"
         android:text="Buscando pictogramas..."
         android:textColor="@color/black"
         android:textSize="24sp"
@@ -189,7 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Título de la planificación"
-        android:fontFamily="@font/montserrat_regular"
+        android:fontFamily="@font/poppins_regular"
         android:text="No se ha encontrado nada"
         android:textColor="?colorOnSurface"
         android:visibility="gone"

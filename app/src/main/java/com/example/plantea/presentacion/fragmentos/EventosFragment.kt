@@ -7,6 +7,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.CalendarContract
+import android.provider.CalendarContract.Events
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +28,11 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.PlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
+import com.google.android.material.transition.MaterialFadeThrough
+import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 
 
 class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
@@ -48,6 +53,11 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_eventos, container, false)
+
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y,true)
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, false)
+        //reenterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, /* forward= */ false)
+
         diaEvento = vista.findViewById(R.id.txt_dia_eventos)
         crearEvento = vista.findViewById(R.id.btn_nuevo_evento)
         mensaje = vista.findViewById(R.id.lbl_mensaje_evento)
@@ -77,6 +87,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
         viewModel.eventos = userId?.let { viewModel.evento.obtenerEventos(it, actividad, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
+
         listaEventos.layoutManager = LinearLayoutManager(context)
         adaptadorEvento = AdaptadorEvento(viewModel.eventos, this)
         if (viewModel.eventos.isEmpty()) {
@@ -140,5 +151,14 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         intent.putExtra("titulo", viewModel.eventos[posicion].nombre)
         intent.putExtra("pictogramas", pictogramas)
         startActivity(intent)
+    }
+
+    override fun viewExportClick(posicion: Int) {
+        val intent = viewModel.exportEventCalendar(posicion)
+        if (intent.resolveActivity(actividad.packageManager) != null) {
+            startActivity(intent)
+        } else {
+            Toast.makeText(context, "No hay aplicaciones a las que exportar el evento", Toast.LENGTH_SHORT).show()
+        }
     }
 }

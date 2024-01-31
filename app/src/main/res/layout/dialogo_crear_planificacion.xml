@@ -25,7 +25,7 @@
             android:id="@+id/lbl_Acceder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/poppins_bold"
             android:text="Crear nueva planificación"
             android:textColor="?colorOnSurface"
             android:textSize="18sp" />
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            android:fontFamily="@font/montserrat_semibold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="CREAR PLANIFICACION"
             android:textAllCaps="true"
             android:textColor="#203130"

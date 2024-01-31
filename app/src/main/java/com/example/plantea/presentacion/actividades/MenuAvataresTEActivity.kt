@@ -70,7 +70,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putString("imagenUsuarioTEA", it)
             editor.commit()
-            viewModel.bitmap?.let { it1 -> viewModel.guardarImagen(applicationContext, it, it1) }
+            viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
             viewModel.imagenSeleccionada = true
             next()
         }

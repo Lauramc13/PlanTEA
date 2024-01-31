@@ -67,8 +67,9 @@ class CuadernoPictoEditFragment : Fragment(){
             viewModel.listaPictogramas!!.addAll(newPictogramasList)
         }
 
-        if(viewModel.listaPictogramas!!.lastIndex != 0)
+        if(viewModel.listaPictogramas!!.lastIndex != 0) {
             viewModel.listaPictogramas!!.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
+        }
 
         adaptador.isBusqueda = false
         activity?.runOnUiThread {
@@ -88,6 +89,10 @@ class CuadernoPictoEditFragment : Fragment(){
         viewModel.isTermometro = (bundle?.get("termometro") as Boolean)
         viewModel.idCuaderno =  (bundle["idCuaderno"] as Int)
         viewModel.tituloCuaderno = (bundle["tituloCuaderno"] as String)
+
+        if(viewModel.listaPictogramas!!.lastIndex != 0) {
+            viewModel.listaPictogramas!!.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
+        }
 
         searchBar = vista.findViewById(R.id.searchViewPicto)
         imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)

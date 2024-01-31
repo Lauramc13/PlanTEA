@@ -74,7 +74,8 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
 
     override fun pictogramaCuaderno(posicion: Int, cuadernoId: Int){
         if(posicion == listaPictoCuaderno.lastIndex && isPlanificador){
-            _lastPictoClicked.value = true
+            //_lastPictoClicked.value = true
+            _lastPictoClicked.postValue(true)
         }else {
             idCuaderno = cuadernoId
             _posicionPictoClicked.value = posicion

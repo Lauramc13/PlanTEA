@@ -137,7 +137,7 @@ class CrearPlanViewModel : ViewModel() {
         }
     }
 
-    fun cambiarFragmentBusqueda(transaction: FragmentTransaction, fragment: Fragment){ //ESTO HAY QUE QUITARLO
+    fun cambiarFragmentBusqueda(transaction: FragmentTransaction, fragment: Fragment){ //ESTO HAY QUE QUITARLO Y UNIRLO CON CAMBIARFRAGMENT
         busquedaOpen = true
         if(fragment is CategoriasFragment){
             transaction.replace(R.id.contenedor_fragments, fragmentCategoriasPictogramas)
@@ -167,8 +167,5 @@ class CrearPlanViewModel : ViewModel() {
             }
         }
         _clearBusqueda.value = true
-
     }
-
-
 }

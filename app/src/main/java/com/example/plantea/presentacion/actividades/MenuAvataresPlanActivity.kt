@@ -84,7 +84,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putString("imagenPlanificador", it)
             editor.apply()
-            viewModel.bitmap?.let { it1 -> viewModel.guardarImagen(applicationContext, it, it1) }
+            viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
             viewModel.imagenSeleccionada = true
             next()
         }

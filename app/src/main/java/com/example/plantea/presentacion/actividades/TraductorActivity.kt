@@ -1,11 +1,14 @@
 package com.example.plantea.presentacion.actividades
 
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +17,8 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
 import com.google.android.material.textfield.TextInputLayout
+import java.util.Random
+import java.util.UUID
 
 
 class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
@@ -49,6 +54,8 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         if(textoATraducir.editText?.text.toString().isNotEmpty()){
             textoATraducir.requestFocus()
         }
+
+        createPickMedia()
 
         recyclerView = findViewById(R.id.recycler_plan)
 
@@ -152,6 +159,20 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             escucharButtonPalabra.text = getString(R.string.str_escuchar)
             escucharButtonFrase.text = getString(R.string.str_escucharFrase)
             viewModel.speechInProgress = false
+        }
+    }
+
+    private fun createPickMedia() {
+        viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+                val nombreFile = viewModel.listaPictogramas[viewModel.posicionSelected].titulo + UUID.randomUUID().toString()
+                val inputStream = this.contentResolver?.openInputStream(uri)
+                viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
+                viewModel.ruta = CommonUtils.guardarImagen(applicationContext, nombreFile, viewModel.bitmap!!)
+                viewModel.imageSelected()
+            } else {
+                Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

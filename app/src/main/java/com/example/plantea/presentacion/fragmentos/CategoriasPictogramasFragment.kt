@@ -19,6 +19,7 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramas
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.google.android.material.transition.MaterialContainerTransform
 
 class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSelectedListener {
     lateinit var actividad: Activity
