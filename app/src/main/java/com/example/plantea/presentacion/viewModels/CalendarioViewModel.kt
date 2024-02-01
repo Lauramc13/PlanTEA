@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
@@ -17,13 +18,13 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.onAlarmReceiver
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Calendar
@@ -55,6 +56,9 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     lateinit var planes: ArrayList<Planificacion>
     var counter: Int = 1
     var plan = Planificacion()
+
+    private var bottomSheetDialogFragment = NuevoEventoFragment()
+
 
     private fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
         val intent = Intent()
@@ -103,13 +107,22 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         ft.commit()
     }
 
+    fun bottomSheetDialog(context: Context){
+        bottomSheetDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
+        bottomSheetDialogFragment.show((context as AppCompatActivity).supportFragmentManager, bottomSheetDialogFragment.tag)
+    }
+
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
-
-        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_calendario, EventosFragment())
-        ft.addToBackStack(null)
-        ft.commit()
+        if(CommonUtils.isMobile(context)){
+            bottomSheetDialogFragment.dismiss()
+        }else{
+            //TODO: CAMBIAR ESTO PARA ACTUALIZAR EL FRAGMENT EN VEZ DE CREAR UNO NUEVO
+            val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+            ft.replace(R.id.fragment_calendario, EventosFragment())
+            ft.addToBackStack(null)
+            ft.commit()
+        }
 
         val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         val notificacion = prefs.getBoolean("notificaciones", false)

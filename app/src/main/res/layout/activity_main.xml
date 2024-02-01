@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:rotationY="180"
-        app:srcCompat="@drawable/svg_blob" />
+        app:srcCompat="@drawable/svg_blob"
+        android:tint="@color/white"/>
 
     <ImageView
         android:id="@+id/imageView7"
@@ -70,11 +71,11 @@
         android:autoSizeTextType="uniform"
         android:maxLines="1"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/cardViewPlanificador"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148" />
+        app:layout_constraintVertical_bias="0.3" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewPlanificador"
@@ -92,6 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         android:layout_marginTop="20dp"
+        app:layout_constraintVertical_bias="0.35"
         android:focusable="true">
 
         <LinearLayout
@@ -135,7 +137,7 @@
         android:contentDescription="Tarjeta del planificado para iniciar sesión"
         app:cardBackgroundColor="?cardBackgroundColor"
         app:cardCornerRadius="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

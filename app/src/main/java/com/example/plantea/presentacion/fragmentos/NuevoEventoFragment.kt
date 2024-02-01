@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,12 +23,14 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.transition.MaterialSharedAxis
 import java.util.*
 
-class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListener {
+class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.OnItemSelectedListener {
     lateinit var actividad: Activity
     lateinit var vista: View
     private lateinit var btnHora: Button
@@ -44,6 +47,8 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
+        // view background transparent
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ false)
@@ -79,10 +84,16 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
         btnGuardar.setOnClickListener {
             val evento = Evento(0, viewModel.idUsuario, viewModel.nombreEvento, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(), viewModel.planSeleccionado)
             context?.let { it1 -> viewModel.nuevoEvento(it1, evento) }
-            Toast.makeText(context, "Evento creado", Toast.LENGTH_SHORT).show()
+            dismiss()
         }
         btnPlanificar.setOnClickListener { context?.let { it1 -> viewModel.planificar(it1) } }
-        cancelarEvento.setOnClickListener { context?.let { it1 -> viewModel.cancelarEvento(it1) } }
+        cancelarEvento.setOnClickListener {
+            if(CommonUtils.isMobile(requireContext())) {
+                dismiss()
+            } else{
+                context?.let { it1 -> viewModel.cancelarEvento(it1) }
+            }
+        }
         return vista
     }
 
@@ -119,14 +130,16 @@ class NuevoEventoFragment : Fragment(), AdaptadorListaPlanes.OnItemSelectedListe
 
     private fun mostrarPlanificaciones(){
         btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
+        btnGuardar.visibility = View.VISIBLE
 
-        val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+
+       /* val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         if (isDarkMode) {
             btnHora.setTextColor(Color.rgb(228, 231, 235))
         } else {
             btnHora.setTextColor(Color.rgb(24, 31, 37))
         }
-
+*/
         layout_planificaciones.visibility = View.VISIBLE
         iniciarListaPlanificaciones()
     }

@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/btn_desplegar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet">
 
     <TextView
         android:id="@+id/lbl_nuevoEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="35dp"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginBottom="10dp"
         android:text="@string/lbl_nuevoEvento"
@@ -21,7 +22,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="65dp"
         android:padding="15dp">
 
         <LinearLayout
@@ -30,11 +31,45 @@
             android:padding="15dp"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Titulo:"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/lbl_tituloEvento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Planificación"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAlignment="viewEnd"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view46"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?customColorGray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/textView11"
@@ -60,7 +95,7 @@
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="?customColorGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,34 +104,66 @@
                 android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/lbl_hora"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Hora:"
+                    android:textColor="?colorOnSurface"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="16sp" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_horaEvento"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:textSize="12sp"
-                    android:text="@string/btn_horaEvento"
+                    android:textSize="14sp"
+                    android:text="SELECCIONAR HORA"
                     android:contentDescription="Boton seleccionar hora"
                     android:textColor="#203130"
                     app:cornerRadius="25dp"
                     android:fontFamily="@font/poppins_semibold"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?customColorGray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/lbl_horaEvento"
-                    android:layout_width="match_parent"
+                    android:id="@+id/lbl_recordatorio"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No seleccionada"
-                    android:textColor="?colorError"
+                    android:text="Recordatorio:"
+                    android:textColor="?colorOnSurface"
                     android:fontFamily="@font/poppins_regular"
-                    android:textAlignment="textEnd"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
+
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_recordatorio"
+                    style="@style/switchCompact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.SwitchCompat>
             </LinearLayout>
 
             <View
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="?customColorGray" />
 
 
             <!-- <Button
@@ -134,7 +201,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_planificaciones"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -172,6 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
+                android:visibility="invisible"
                 style="@style/Widget.Material3.Button"
                 android:contentDescription="Boton guardar nuevo evento"
                 android:fontFamily="@font/poppins_semibold"
@@ -188,7 +256,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_margin="6dp"
+        android:layout_margin="10dp"
         android:padding="7dp"
         android:contentDescription="Cerrar configuración nuevo evento"
         app:srcCompat="@drawable/ic_baseline_close_24" />

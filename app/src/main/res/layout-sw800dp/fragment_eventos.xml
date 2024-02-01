@@ -60,11 +60,10 @@
 
     </LinearLayout>
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_nuevo_evento"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
+        style="@style/Widget.Material3.FloatingActionButton.Large.Primary"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:textColor="#203130"
@@ -75,5 +74,14 @@
         app:cornerRadius="45dp"
         app:icon="@drawable/ic_baseline_add_24"
         app:iconSize="35dp"
-        app:iconTint="#203130" />
+        app:iconTint="#203130" />-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_nuevo_evento"
+        style="@style/buttonFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_baseline_add_24"/>
 </FrameLayout>

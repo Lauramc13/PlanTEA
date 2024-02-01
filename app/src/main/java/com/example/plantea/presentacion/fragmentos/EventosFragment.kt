@@ -25,9 +25,12 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.CalendarioUtilidades.formatoDiaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.PlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
@@ -39,7 +42,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var vista: View
     lateinit var diaEvento: TextView
     lateinit var mensaje: TextView
-    lateinit var crearEvento: Button
+    lateinit var crearEvento: FloatingActionButton
     lateinit var listaEventos: RecyclerView
     lateinit var actividad: Activity
     lateinit var adaptadorEvento: AdaptadorEvento
@@ -67,7 +70,14 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         viewModel.setIdUsario(prefs)
 
-        crearEvento.setOnClickListener { context?.let { it1 -> viewModel.crearEventoFragment(it1) } }
+        crearEvento.setOnClickListener {
+            if(CommonUtils.isMobile(this.requireContext())){
+                context?.let { it1 -> viewModel.bottomSheetDialog(it1) }
+            }else{
+                context?.let { it1 -> viewModel.crearEventoFragment(it1) }
+
+            }
+        }
 
         return vista
     }
