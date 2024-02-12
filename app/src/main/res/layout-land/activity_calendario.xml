@@ -70,7 +70,7 @@
                     android:text="Noviembre 2021"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/subtitle" />
 
                 <ImageView
                     android:id="@+id/image_calendar_siguiente"
@@ -101,7 +101,7 @@
                     android:text="LUN"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/lbl_martes"
@@ -113,7 +113,7 @@
                     android:text="MAR"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/lbl_miercoles"
@@ -125,7 +125,7 @@
                     android:text="MIE"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/lbl_jueves"
@@ -137,7 +137,7 @@
                     android:text="JUE"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/lbl_viernes"
@@ -150,7 +150,7 @@
                     android:text="VIE"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/lbl_sabado"
@@ -162,7 +162,7 @@
                     android:text="SAB"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/lbl_domingo"
@@ -174,7 +174,7 @@
                     android:text="DOM"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/body" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

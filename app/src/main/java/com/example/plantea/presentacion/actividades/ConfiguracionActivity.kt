@@ -68,12 +68,12 @@ class ConfiguracionActivity : AppCompatActivity() {
 
         val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
         //val btnPassword : Button= findViewById(R.id.buttonContrasenia)
-        val btnNotificacion : SwitchCompat = findViewById(R.id.switch_notificacion)
+        //val btnNotificacion : SwitchCompat = findViewById(R.id.switch_notificacion)
         val lblInfoUsuario : SwitchCompat = findViewById(R.id.lbl_infoUsuarioTEA)
         val lblObjeto : SwitchCompat = findViewById(R.id.lbl_objeto)
-        val semana : CheckBox = findViewById(R.id.checkBox_semana)
+        /*val semana : CheckBox = findViewById(R.id.checkBox_semana)
         val dia : CheckBox = findViewById(R.id.checkBox_dia)
-        val hora : CheckBox = findViewById(R.id.checkBox_hora)
+        val hora : CheckBox = findViewById(R.id.checkBox_hora)*/
         val credits : TextView = findViewById(R.id.btn_credits)
         iconEditUsuarioTEA = findViewById(R.id.id_editIconUsuario)
         iconEditObjeto = findViewById(R.id.id_editIconObjeto)
@@ -109,7 +109,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         //Notificaciones
-        val notificacionActiva = prefs.getBoolean("notificaciones", false)
+        /*val notificacionActiva = prefs.getBoolean("notificaciones", false)
         semana.isChecked = prefs.getBoolean("notificacion_semana", false)
         dia.isChecked = prefs.getBoolean("notificacion_dia", false)
         hora.isChecked = prefs.getBoolean("notificacion_hora", false)
@@ -117,7 +117,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         btnNotificacion.isChecked = notificacionActiva
         semana.isEnabled = notificacionActiva
         dia.isEnabled = notificacionActiva
-        hora.isEnabled = notificacionActiva
+        hora.isEnabled = notificacionActiva*/
 
         val infoUsuario = prefs.getBoolean("info_usuario", false)
         lblInfoUsuario.isChecked = infoUsuario
@@ -141,12 +141,12 @@ class ConfiguracionActivity : AppCompatActivity() {
             imgClick(MenuObjetosActivity::class.java)
         }
 
-        btnNotificacion.setOnCheckedChangeListener { _, isChecked ->
+       /* btnNotificacion.setOnCheckedChangeListener { _, isChecked ->
             semana.isChecked = isChecked
             semana.isEnabled = isChecked
             dia.isEnabled = isChecked
             hora.isEnabled = isChecked
-        }
+        }*/
 
         lblInfoUsuario.setOnCheckedChangeListener { _, isChecked ->
             txtUsuarioTEA.isEnabled = isChecked
@@ -159,7 +159,9 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-            guardarConfiguracion(lblInfoUsuario, lblObjeto, btnNotificacion, semana, dia, hora)
+           // guardarConfiguracionOLD(lblInfoUsuario, lblObjeto, btnNotificacion, semana, dia, hora)
+           guardarConfiguracion(lblInfoUsuario, lblObjeto)
+
         }
 
         observers()
@@ -204,7 +206,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
     }
 
-    fun guardarConfiguracion(lblInfoUsuario : SwitchCompat, lblObjeto : SwitchCompat, btnNotificacion : SwitchCompat, semana : CheckBox, dia : CheckBox, hora : CheckBox){
+    fun guardarConfiguracion(lblInfoUsuario : SwitchCompat, lblObjeto : SwitchCompat){
         //Obtener nombres de los usuarios y objeto
         val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
         var nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
@@ -229,10 +231,10 @@ class ConfiguracionActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putBoolean("userAccount", true)
             editor.putBoolean("iniciadaSesion", true)
-            editor.putBoolean("notificaciones", btnNotificacion.isChecked)
+            /*editor.putBoolean("notificaciones", btnNotificacion.isChecked)
             editor.putBoolean("notificacion_semana", semana.isChecked)
             editor.putBoolean("notificacion_dia", dia.isChecked)
-            editor.putBoolean("notificacion_hora", hora.isChecked)
+            editor.putBoolean("notificacion_hora", hora.isChecked)*/
             editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
             editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
             editor.putString("imagenPlanificador", rutaPlanificador)

@@ -7,12 +7,20 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.FragmentContainerView
 import com.example.plantea.R
+import com.example.plantea.presentacion.fragmentos.CountDownFragment
+import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.ActividadViewModel
+import com.google.android.material.transition.MaterialSharedAxis
 
 class ActividadActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<ActividadViewModel>()
+
+    private lateinit var cardVideo: CardView
+    private lateinit var cardObjeto: CardView
+    private lateinit var frameVideo: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,9 +29,9 @@ class ActividadActivity : AppCompatActivity() {
         val webView: WebView = findViewById(R.id.webView)
         viewModel.configureWebView(webView)
 
-        val cardVideo : CardView = findViewById(R.id.card_video)
-        val cardObjeto : CardView = findViewById(R.id.card_objeto)
-        val frameVideo : FrameLayout =  findViewById(R.id.webViewFrame)
+        cardVideo = findViewById(R.id.card_video)
+        cardObjeto = findViewById(R.id.card_objeto)
+        frameVideo = findViewById(R.id.webViewFrame)
         val closeButton : Button = findViewById(R.id.closeYoutube)
 
         closeButton.setOnClickListener {
@@ -33,7 +41,6 @@ class ActividadActivity : AppCompatActivity() {
             cardVideo.visibility = View.VISIBLE
             cardObjeto.visibility = View.VISIBLE
             frameVideo.visibility = View.INVISIBLE
-
         }
 
         cardVideo.setOnClickListener{
@@ -48,5 +55,27 @@ class ActividadActivity : AppCompatActivity() {
         cardObjeto.setOnClickListener{
             viewModel.dialogObjeto(this)
         }
+    }
+
+    fun observers(){
+        viewModel._timerEnded.observe(this) {
+            if (it) {
+                cardVideo.visibility = View.VISIBLE
+                cardObjeto.visibility = View.VISIBLE
+                frameVideo.visibility = View.INVISIBLE
+
+                cardObjeto.isEnabled= false
+                cardVideo.isEnabled= false
+            }
+        }
+    }
+
+    fun stopVideo(){
+        cardVideo.visibility = View.VISIBLE
+        cardObjeto.visibility = View.VISIBLE
+        frameVideo.visibility = View.INVISIBLE
+
+        cardObjeto.isEnabled= false
+        cardVideo.isEnabled= false
     }
 }

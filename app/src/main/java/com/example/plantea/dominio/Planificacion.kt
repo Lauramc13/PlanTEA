@@ -53,11 +53,12 @@ class Planificacion : Serializable {
         return listaPlanes
     }
 
+
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
+   /* fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
         titulo = gestionPlan.obtenerTituloPlan(idUsuario, fecha, context)
         return titulo
-    }
+    }*/
 
 
 }

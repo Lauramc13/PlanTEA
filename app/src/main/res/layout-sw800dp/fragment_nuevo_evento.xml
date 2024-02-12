@@ -34,50 +34,42 @@
                 android:textColor="?colorOnSurface"
                 android:textSize="20sp" />
 
-            <LinearLayout
+
+            <EditText
+                android:id="@+id/txt_tituloEvento"
+                android:hint="Titulo"
+                android:theme="@style/AppTheme.CursorBubble"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:fontFamily="@font/poppins_regular"
+                android:layout_gravity="center_vertical|end"
+                android:textColor="?colorOnSurface"
+                android:inputType="textCapSentences"
+                style="@style/cornerRadiusEvento"
+                android:layout_marginBottom="10dp"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Titulo:"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/lbl_tituloEvento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Planificación"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textAlignment="viewEnd"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view46"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?customColorGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:padding="3dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/svg_calendar3"/>
 
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fecha:"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp" />
@@ -93,61 +85,99 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?customColorGray" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:padding="3dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/svg_clock"/>
 
                 <TextView
                     android:id="@+id/lbl_hora"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:layout_marginStart="10dp"
                     android:layout_height="wrap_content"
                     android:text="Hora:"
                     android:textColor="?colorOnSurface"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="16sp" />
 
-                <com.google.android.material.button.MaterialButton
+                <TextView
                     android:id="@+id/btn_horaEvento"
-                    style="@style/Widget.Material3.Button"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:textSize="14sp"
-                    android:text="SELECCIONAR HORA"
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccionar hora"
+                    android:gravity="end"
                     android:contentDescription="Boton seleccionar hora"
-                    android:textColor="#203130"
-                    app:cornerRadius="25dp"
-                    android:fontFamily="@font/poppins_semibold"/>
-
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_regular"/>
             </LinearLayout>
-
-            <View
-                android:id="@+id/view6"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?customColorGray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:padding="3dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/svg_duration"/>
+
+                <TextView
+                    android:id="@+id/lbl_duracion"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:text="Duración:"
+                    android:textColor="?colorOnSurface"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/btn_duracionEvento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Seleccionar duración"
+                    android:gravity="end"
+                    android:contentDescription="Boton seleccionar hora"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_regular"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="3dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/svg_bell"/>
 
                 <TextView
                     android:id="@+id/lbl_recordatorio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Recordatorio:"
+                    android:layout_marginStart="10dp"
                     android:textColor="?colorOnSurface"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="16sp" />
@@ -155,30 +185,13 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_recordatorio"
-                    style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+                    style="@style/switchCompact"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="35dp">
 
                 </androidx.appcompat.widget.SwitchCompat>
             </LinearLayout>
 
-
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?customColorGray" />
-
-
-            <!-- <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Planificar"
-                android:textColor="#203130"
-                app:cornerRadius="25dp" /> -->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout"
@@ -190,14 +203,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="137dp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
                     android:text="@string/lbl_mensaje"
                     android:textColor="?colorOnSurface"
-                    android:textSize="18sp"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="16sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -207,6 +220,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
                     app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -218,12 +232,12 @@
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
                     android:contentDescription="Boton nueva planificación"
                     android:drawableLeft="@drawable/ic_baseline_add_24"
                     android:drawableTint="?colorOnSurface"
                     android:fontFamily="@font/poppins_semibold"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:text="@string/lbl_nuevaPlanificacion"
                     android:textColor="?colorOnSurface"
                     android:textSize="15sp"
@@ -242,7 +256,6 @@
                     android:enabled="false"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/btn_Guardar"
-                    android:visibility="invisible"
                     android:textColor="#203130"
                     android:textSize="16sp"
                     app:cornerRadius="25dp"

@@ -3,7 +3,7 @@ package com.example.plantea.presentacion.fragmentos
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Configuration
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,10 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -28,22 +29,29 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.OnItemSelectedListener {
     lateinit var actividad: Activity
     lateinit var vista: View
-    private lateinit var btnHora: Button
+    private lateinit var btnHora: TextView
+    private lateinit var btnDuracion: TextView
     private lateinit var btnGuardar: Button
     private lateinit var btnPlanificar: Button
+    private lateinit var tituloEvento : EditText
     private lateinit var fechaEvento: TextView
     private lateinit var mensajePlanes: TextView
     private lateinit var cancelarEvento: ImageView
     private lateinit var listaPlanificaciones: RecyclerView
     private lateinit var adaptador: AdaptadorListaPlanes
     private lateinit var layout_planificaciones: ConstraintLayout
+    private lateinit var switchReminder : SwitchCompat
+   // private lateinit var reminderview: FragmentContainerView
 
     private val viewModel by viewModels<CalendarioViewModel>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
@@ -55,24 +63,27 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
 
         cancelarEvento = vista.findViewById(R.id.img_cancelarEvento)
         btnHora = vista.findViewById(R.id.btn_horaEvento)
+        btnDuracion = vista.findViewById(R.id.btn_duracionEvento)
         btnGuardar = vista.findViewById(R.id.btn_guardarEvento)
         btnPlanificar = vista.findViewById(R.id.btn_planificar)
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
         mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
         listaPlanificaciones = vista.findViewById(R.id.recycler_planificaciones)
         layout_planificaciones = vista.findViewById(R.id.layout)
+        tituloEvento = vista.findViewById(R.id.txt_tituloEvento)
+        switchReminder = vista.findViewById(R.id.switch_recordatorio)
+        //reminderview = vista.findViewById(R.id.fragment_container_view)
 
         iniciarListaPlanificaciones()
 
-        if(viewModel.isClickedReloj){
-            mostrarPlanificaciones()
-            if(viewModel.isPlanSeleccionado){
-                adaptador.setItemSelected(viewModel.posicionPlan)
-                btnGuardar.isEnabled = true
-            }
-        }else{
-            layout_planificaciones.visibility = View.GONE
+        //if(viewModel.isClickedReloj){
+        if(viewModel.isPlanSeleccionado){
+            adaptador.setItemSelected(viewModel.posicionPlan)
+            btnGuardar.isEnabled = true
         }
+       /* }else{
+            layout_planificaciones.visibility = View.GONE
+        }*/
 
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         viewModel.setIdUsario(prefs)
@@ -80,20 +91,50 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         //consultas = pictograma.obtenerConsultas(actividad, 1) as ArrayList<String>
         btnHora.setOnClickListener { mostrarReloj() }
+        btnDuracion.setOnClickListener { mostrarRelojDuracion() }
 
         btnGuardar.setOnClickListener {
-            val evento = Evento(0, viewModel.idUsuario, viewModel.nombreEvento, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(), viewModel.planSeleccionado)
+
+            if(tituloEvento.text.toString().isEmpty()){
+                tituloEvento.error = "Introduce un título"
+                return@setOnClickListener
+            }
+
+            if(btnHora.text.toString().isEmpty()){
+                //color de texto
+                btnHora.setHintTextColor(Color.RED)
+                return@setOnClickListener
+            }
+
+            val evento = Evento(0, viewModel.idUsuario, tituloEvento.text.toString(), CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(), btnDuracion.text.toString(),viewModel.planSeleccionado)
             context?.let { it1 -> viewModel.nuevoEvento(it1, evento) }
             dismiss()
         }
+
         btnPlanificar.setOnClickListener { context?.let { it1 -> viewModel.planificar(it1) } }
         cancelarEvento.setOnClickListener {
             if(CommonUtils.isMobile(requireContext())) {
+                switchReminder.isChecked = false
                 dismiss()
             } else{
                 context?.let { it1 -> viewModel.cancelarEvento(it1) }
             }
         }
+
+        switchReminder.setOnCheckedChangeListener { _, isChecked ->
+
+            if(CommonUtils.isMobile(requireContext())) {
+                showReminderFragment(isChecked)
+            } else{
+                if(isChecked){
+                    createDialogReminder()
+                }
+            }
+
+        }
+
+        dialog?.setOnCancelListener { switchReminder.isChecked = false }
+
         return vista
     }
 
@@ -102,6 +143,82 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         if (context is Activity) {
             actividad = context
         }
+    }
+
+    private fun showReminderFragment(isChecked: Boolean) {
+        val transaction = childFragmentManager.beginTransaction()
+
+        if (isChecked) {
+            // createDialogReminder()
+            val fragment = ReminderFragment()
+            transaction.replace(R.id.fragment_container_view, fragment)
+            transaction.addToBackStack(null)
+
+        }else{
+            val existingFragment = childFragmentManager.findFragmentById(R.id.fragment_container_view)
+            if (existingFragment is ReminderFragment) {
+                transaction.remove(existingFragment)
+                transaction.addToBackStack(null)  // Optional: Add to back stack if you want to navigate back
+            }
+        }
+        transaction.commit()
+    }
+
+    private fun createDialogReminder(){
+        val dialogReminder = Dialog(actividad)
+        dialogReminder.setContentView(R.layout.dialog_reminder)
+        dialogReminder.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val btnAceptar = dialogReminder.findViewById<Button>(R.id.btn_aceptarRecordatorio)
+        val iconCerrar = dialogReminder.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        val checkboxMin = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_min)
+        val checkboxHora = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_hora)
+        val checkboxDia = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_dia)
+        val checkBoxPersonalizar = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_personalizar)
+
+        btnAceptar.setOnClickListener {
+            //si no se ha seleccionado ningun checkbox poner el switch a false
+            if(!checkBoxPersonalizar.isChecked && !checkboxMin.isChecked && !checkboxHora.isChecked && !checkboxDia.isChecked){
+                switchReminder.isChecked = false
+            }else{
+                Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
+            }
+            //delete dialog
+            dialogReminder.dismiss()
+        }
+
+        checkBoxPersonalizar.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBoxPer = isChecked
+            if (isChecked) {
+                val picker = viewModel.createReloj()
+                picker.addOnPositiveButtonClickListener {
+                    viewModel.selectedHour = picker.hour
+                    viewModel.selectedMin = picker.minute
+                    checkBoxPersonalizar.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.selectedHour, viewModel.selectedMin)
+                }
+                picker.show(requireFragmentManager(), "TimePicker")
+            }
+        }
+
+        checkboxMin.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBoxMin = isChecked
+        }
+
+        checkboxHora.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBoxHora = isChecked
+        }
+
+        checkboxDia.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBoxDia = isChecked
+        }
+
+        iconCerrar.setOnClickListener {
+            if(!checkBoxPersonalizar.isChecked && !checkboxMin.isChecked && !checkboxHora.isChecked && !checkboxDia.isChecked){
+                switchReminder.isChecked = false
+            }
+            dialogReminder.dismiss()
+        }
+        dialogReminder.show()
     }
 
     private fun iniciarListaPlanificaciones() {
@@ -122,28 +239,34 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             viewModel.hora = picker.hour
             viewModel.minuto = picker.minute
 
-            mostrarPlanificaciones()
+            //mostrarPlanificaciones()
+            btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
+
         }
 
         picker.show(requireFragmentManager(), "TimePicker")
     }
 
-    private fun mostrarPlanificaciones(){
-        btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
-        btnGuardar.visibility = View.VISIBLE
 
+    private fun mostrarRelojDuracion() {
+        val picker = viewModel.createRelojDuracion()
 
-       /* val isDarkMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        if (isDarkMode) {
-            btnHora.setTextColor(Color.rgb(228, 231, 235))
-        } else {
-            btnHora.setTextColor(Color.rgb(24, 31, 37))
+        picker.addOnPositiveButtonClickListener {
+            val hora = picker.hour
+            val minuto = picker.minute
+            btnDuracion.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
+
         }
-*/
-        layout_planificaciones.visibility = View.VISIBLE
+
+        picker.show(requireFragmentManager(), "TimePicker")
+    }
+   /* private fun mostrarPlanificaciones(){
+        btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
+
+        //layout_planificaciones.visibility = View.VISIBLE
         iniciarListaPlanificaciones()
     }
-
+*/
 
     override fun deleteClick(posicion: Int) {
         val dialogPlan = Dialog(actividad)
@@ -193,7 +316,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         btnGuardar.isEnabled = true
     }
 
-    fun visibilityPlan(){
+    private fun visibilityPlan(){
         if (viewModel.planes.isEmpty()) {
             listaPlanificaciones.visibility = View.GONE
             mensajePlanes.visibility = View.VISIBLE

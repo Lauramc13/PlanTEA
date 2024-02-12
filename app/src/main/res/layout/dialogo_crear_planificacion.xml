@@ -28,7 +28,7 @@
             android:fontFamily="@font/poppins_bold"
             android:text="Crear nueva planificación"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp" />
+            android:textSize="@dimen/modalTitle" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -64,8 +64,8 @@
             android:text="CREAR PLANIFICACION"
             android:textAllCaps="true"
             android:textColor="#203130"
-            android:textSize="13sp"
-            app:cornerRadius="25dp"
+            android:textSize="@dimen/button"
+            app:cornerRadius="10dp"
             app:layout_constraintTop_toBottomOf="@+id/txt_Password"/>
 
     </LinearLayout>

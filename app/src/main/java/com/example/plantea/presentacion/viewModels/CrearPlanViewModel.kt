@@ -2,11 +2,18 @@ package com.example.plantea.presentacion.viewModels
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,14 +25,16 @@ import com.example.plantea.dominio.Categoria
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
+import com.google.android.material.textfield.TextInputLayout
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
-class CrearPlanViewModel : ViewModel() {
+class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener{
 
     val _identificadorCategoria = MutableLiveData<Int>()
     val _identificadorSubCategoria = MutableLiveData<Int>()
@@ -65,11 +74,7 @@ class CrearPlanViewModel : ViewModel() {
         listaPictogramas = if (idCategoria == 10) {
             pictograma.obtenerFavoritos(context, idUsuario)
         } else {
-            pictograma.obtenerPictogramas(
-                context,
-                idCategoria,
-                idUsuario
-            ) as ArrayList<Pictograma>
+            pictograma.obtenerPictogramas(context, idCategoria, idUsuario) as ArrayList<Pictograma>
         }
         _identificadorCategoria.value = idCategoria
     }
@@ -167,5 +172,40 @@ class CrearPlanViewModel : ViewModel() {
             }
         }
         _clearBusqueda.value = true
+    }
+
+    override fun onHistoriaClick(position: Int): Boolean{
+        var historiaSaved = false
+        val tituloCard = listaPlanificacion[position].titulo
+        val context = fragmentCategoriasPictogramas.requireContext()
+        val dialogLogout = Dialog(context)
+        dialogLogout.setContentView(R.layout.dialogo_historiasocial)
+        dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnGuardar = dialogLogout.findViewById<Button>(R.id.btn_eliminarEvento)
+        val cardtitulo = dialogLogout.findViewById<TextView>(R.id.cardName)
+        cardtitulo.text = tituloCard
+        val iconoCerrarLogin = dialogLogout.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        val historiaText = dialogLogout.findViewById<TextInputLayout>(R.id.historiaText)
+
+        if(listaPlanificacion[position].historia.toString() == "null"){
+            historiaText.editText?.setText("")
+        }else {
+            historiaText.editText?.setText(listaPlanificacion[position].historia)
+        }
+
+        iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
+        btnGuardar.setOnClickListener{
+            if(historiaText.editText?.text.toString() == ""){
+                Toast.makeText(context, "No se puede crear una historia vacía", Toast.LENGTH_LONG).show()
+            }else {
+                listaPlanificacion[position].historia = historiaText.editText?.text.toString()
+                historiaSaved = true
+                dialogLogout.dismiss()
+            }
+        }
+
+        dialogLogout.show()
+
+        return historiaSaved
     }
 }

@@ -38,7 +38,7 @@ import java.util.Collections
 import java.util.Locale
 
 
-class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSelectedListener{
+class CrearPlanActivity : AppCompatActivity(){
     private lateinit var labelTitulo: TextView
     private lateinit var busquedaNula: TextView
     private lateinit var transaction: FragmentTransaction
@@ -154,11 +154,11 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_planificacion)
         recyclerView.layoutManager = layoutManager
-        adaptador = AdaptadorPlanificacion(viewModel.listaPlanificacion)
+        adaptador = AdaptadorPlanificacion(viewModel.listaPlanificacion, viewModel)
         recyclerView.adapter = adaptador
 
         //Desplaza la lista para insertar un nuevo pictograma
-        recyclerView.scrollToPosition(adaptador.itemCount - 1)
+        recyclerView.scrollToPosition(adaptador.itemCount - 2)
     }
 
     private fun abrirGaleria() {
@@ -205,11 +205,13 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
         }
 
         viewModel._pictogramaSeleccionado.observe(this) {
-            adaptador.notifyDataSetChanged()
-            initRecyclerViewPlan()
+            //initRecyclerViewPlan()
             viewModel.tituloPicto = it.titulo!!
             viewModel.imagenPicto = it.imagen!!
             viewModel.categoriaPicto = it.categoria
+            adaptador.notifyItemInserted(viewModel.listaPlanificacion.size - 1)
+
+            recyclerView.scrollToPosition(adaptador.itemCount -2)
         }
 
         viewModel._nuevoPictoDialog.observe(this) {
@@ -229,6 +231,7 @@ class CrearPlanActivity : AppCompatActivity(), AdaptadorPlanificacion.OnItemSele
 
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categorias as ArrayList<String>)
                 spinner_Dialogo.adapter = adapter
+
 
                 btn_Guardar.setOnClickListener {
                     if (titulo_Dialogo.editText?.text.toString().isEmpty()) {

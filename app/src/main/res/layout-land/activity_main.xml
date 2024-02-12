@@ -99,7 +99,7 @@
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/poppins_semibold"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textSize="@dimen/title" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -145,7 +145,7 @@
                 android:contentDescription="Nombre del planificado"
                 android:fontFamily="@font/poppins_semibold"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textSize="@dimen/title" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

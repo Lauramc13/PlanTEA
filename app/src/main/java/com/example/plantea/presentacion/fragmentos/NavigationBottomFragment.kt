@@ -37,7 +37,6 @@ class NavigationBottomFragment: Fragment() {
             bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom_tea)
         }
 
-
         val hostingActivityClass = activity?.javaClass
 
         if (hostingActivityClass != null) {

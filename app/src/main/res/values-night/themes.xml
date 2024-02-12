@@ -62,6 +62,7 @@
         <item name="grayStroke">@color/md_theme_dark_surfaceVariant</item>
         <item name="greenLight">@color/md_theme_dark_inversePrimary</item>
         <item name="subColorBackground">@color/md_theme_dark_background2</item>
+        <item name="shadow">@color/md_theme_dark_scrim</item>
 
 
     </style>

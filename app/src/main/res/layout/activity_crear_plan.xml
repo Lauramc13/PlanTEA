@@ -35,7 +35,7 @@
             android:layout_marginStart="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Planificación"
-            android:textSize="18sp" />
+            android:textSize="@dimen/title" />
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
@@ -107,7 +107,7 @@
             android:fontFamily="@font/poppins_regular"
             android:text="@string/lbl_CrearPlanActividad"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp" />
+            android:textSize="@dimen/title" />
 
         <EditText
             android:id="@+id/txt_TituloPlan"
@@ -120,7 +120,7 @@
             android:maxLength="14"
             android:textColor="?colorOnSurface"
             android:textCursorDrawable="@null"
-            android:textSize="17sp"
+            android:textSize="@dimen/formText"
             android:theme="@style/AppTheme.CursorBubble" />
 
     </LinearLayout>
@@ -168,10 +168,10 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/btn_Guardar"
         android:textColor="#203130"
-        android:textSize="14sp"
+        android:textSize="@dimen/button"
         app:cornerRadius="25dp"
         app:icon="@drawable/ic_baseline_save_24"
-        app:iconSize="15dp"
+        app:iconSize="20dp"
         app:iconTint="#203130"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout6"

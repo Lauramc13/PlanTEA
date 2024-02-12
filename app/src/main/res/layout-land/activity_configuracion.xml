@@ -64,7 +64,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/lbl_infoPlanificador"
                     android:textColor="?colorOnSurface"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/titleSmall" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -75,7 +75,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="Usuario responsable de crear y gestionar planificaciones"
                     android:textColor="?colorOutline"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/body" />
 
                 <RelativeLayout
                     android:id="@+id/id_card_Planificador"
@@ -208,12 +208,12 @@
                     android:layout_height="30dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:gravity="top"
+                    android:gravity="center"
                     android:contentDescription="Interruptor, información del planificado"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/lbl_infoUsuarioTEA"
                     android:textColor="?colorOnSurface"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/titleSmall" />
 
                 <TextView
                     android:id="@+id/TextView7"
@@ -224,7 +224,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="Usuario capaz de ver y seguir las planificaciones"
                     android:textColor="?colorOutline"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/body" />
 
                 <RelativeLayout
                     android:id="@+id/id_card_UsuarioTEA"
@@ -300,17 +300,17 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/lbl_objeto"
                     style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:gravity="top"
+                    android:gravity="center_vertical"
                     android:contentDescription="Interruptor, información de la actividad tranquilizadora"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/lbl_infoactividad"
                     android:textColor="?colorOnSurface"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/titleSmall"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:theme="@style/Switches" />
@@ -324,7 +324,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="Representa el objeto que calma a la persona con TEA"
                     android:textColor="?colorOutline"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/body"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_objeto" />
 
@@ -388,7 +388,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -454,7 +454,7 @@
                     android:textColor="?colorOnSurface"
                     app:buttonTint="?colorPrimary" />
 
-            </LinearLayout>
+            </LinearLayout> -->
 
             <Button
                 android:id="@+id/btn_guardarConfiguracion"

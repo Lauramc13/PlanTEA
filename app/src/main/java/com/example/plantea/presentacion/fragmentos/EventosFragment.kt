@@ -92,7 +92,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     private fun iniciarAdaptadorEvento() {
         diaEvento.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){
-            crearEvento.isEnabled = false
+            crearEvento.visibility = View.GONE
         }
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")

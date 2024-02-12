@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_navigation_side"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:shapeAppearance="@style/cornersNavigation"
     android:background="?colorAccent"
@@ -22,7 +23,7 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         style="@style/Widget.Material3.NavigationView"
-        android:layout_width="80dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="start"
         android:background="?colorAccent"
@@ -41,7 +42,7 @@
 
     <LinearLayout
         android:id="@+id/accountButton"
-        android:layout_width="80dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"

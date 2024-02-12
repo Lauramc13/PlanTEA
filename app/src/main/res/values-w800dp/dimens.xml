@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="display">25sp</dimen>
+    <dimen name="title">20sp</dimen>
+    <dimen name="subtitle">16sp</dimen>
+    <dimen name="body">14sp</dimen>
+    <dimen name="caption">12sp</dimen>
+    <dimen name="overline">10sp</dimen>
+    <dimen name="button">14sp</dimen>
+    <dimen name="modalText">16sp</dimen>
+    <dimen name="modalTitle">20sp</dimen>
+    <dimen name="listItems">16sp</dimen>
+    <dimen name="listItemsTitle">14sp</dimen>
+    <dimen name="listItemsSubtitle">14sp</dimen>
+    <dimen name="menuItems">14sp</dimen>
+    <dimen name="errorText">12sp</dimen>
+    <dimen name="formText">12sp</dimen>
+</resources>

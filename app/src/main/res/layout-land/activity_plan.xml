@@ -74,7 +74,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Viernes, 9 de septiembre"
                     android:textColor="?colorTertiary"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/subtitle" />
 
                 <Button
                     android:id="@+id/CalendarDate"
@@ -197,7 +197,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="ESCUCHAR"
                 android:textColor="#203130"
-                android:textSize="16sp"
+                android:textSize="@dimen/button"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_sound"
                 app:iconSize="25dp"
@@ -235,7 +235,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Titulo"
                 android:textColor="?colorOnSurface"
-                android:textSize="22sp"
+                android:textSize="@dimen/titleSmall"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
 
@@ -247,7 +247,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:text="@string/lbl_mensajeNinio"
                 android:textColor="?colorOnSurface"
-                android:textSize="17sp"
+                android:textSize="@dimen/subtitle"
                 android:gravity="center"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
@@ -280,7 +280,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/lbl_nuevoEvento"
                 android:textColor="#203130"
-                android:textSize="14sp"
+                android:textSize="@dimen/button"
                 android:visibility="invisible"
                 app:cornerRadius="25dp"
                 android:textAllCaps="true"
@@ -308,7 +308,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/subtitle"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center_horizontal"
                 android:text="@string/planificaciones_futuras"

@@ -80,7 +80,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Sobre la organización"
                         android:textColor="?colorOnSurface"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/titleSmall" />
 
                 </LinearLayout>
 
@@ -92,7 +92,7 @@
                     android:justificationMode="inter_word"
                     android:text="@string/str_parrafo1"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
                     android:justificationMode="inter_word"
                     android:text="@string/str_parrafo2"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                     android:justificationMode="inter_word"
                     android:text="@string/str_parrafo3"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Sobre el Grupo CHICO"
                     android:textColor="?colorOnSurface"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/subtitle" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
                     android:justificationMode="inter_word"
                     android:text="@string/str_parrafo4"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                     android:justificationMode="inter_word"
                     android:text="@string/str_parrafo5"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
             </LinearLayout>
 
             <LinearLayout
@@ -171,7 +171,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Licencias de código abierto"
                         android:textColor="?colorOnSurface"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/titleSmall" />
 
                 </LinearLayout>
 
@@ -182,7 +182,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Ilustraciones"
                     android:textColor="?colorOnSurface"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/subtitle" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -192,7 +192,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Centro Aragonés para la Comunicación Aumentativa y Alternativa"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/arasaacLink"
@@ -203,7 +203,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Condiciones de uso, Noviembre 2023"
                     android:textColor="?customLinkColor"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -213,7 +213,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="manypixels"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/manypixelsLink"
@@ -224,7 +224,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Terms of Service, 25 de Enero, 2019"
                     android:textColor="?customLinkColor"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -234,7 +234,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Freepik"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/freepikLink"
@@ -245,7 +245,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Terms of Use, Marzo, 2023"
                     android:textColor="?customLinkColor"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -254,7 +254,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Iconos"
                     android:textColor="?colorOnSurface"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/subtitle" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -264,7 +264,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="SVG Repo"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/svgRepoLink"
@@ -275,7 +275,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="SVG Repo License, 03 de Enero, 2023"
                     android:textColor="?customLinkColor"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -285,7 +285,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Flaticon"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
 
                 <TextView
                     android:id="@+id/flatIconLink"
@@ -295,7 +295,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="Terms of Use, Junio, 2022"
                     android:textColor="?customLinkColor"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/body" />
             </LinearLayout>
 
             <LinearLayout
@@ -329,7 +329,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Términos de servicio"
                         android:textColor="?colorOnSurface"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/titleSmall" />
 
                 </LinearLayout>
 
@@ -352,7 +352,7 @@
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Política de privacidad"
                         android:textColor="?colorOnSurface"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/titleSmall" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

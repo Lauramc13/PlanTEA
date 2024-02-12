@@ -39,7 +39,6 @@ class NavigationSideFragment: Fragment() {
 
         val hostingActivityClass = activity?.javaClass
 
-
         if (hostingActivityClass != null) {
             navigationHandler.inicializarVariables(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
         }

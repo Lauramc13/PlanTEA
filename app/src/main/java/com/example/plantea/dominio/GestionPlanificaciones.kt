@@ -139,7 +139,7 @@ class GestionPlanificaciones : Serializable {
     }
 
     //Obtener el titulo de la planificacion a seguir
-    fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
+   /* fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
         conectorBD = ConectorBD(context)
 
         conectorBD.abrir()
@@ -150,7 +150,7 @@ class GestionPlanificaciones : Serializable {
         }
         conectorBD.cerrar()
         return titulo
-    }
+    }*/
 
 
 }

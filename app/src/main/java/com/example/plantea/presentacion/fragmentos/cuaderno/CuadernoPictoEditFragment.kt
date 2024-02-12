@@ -39,7 +39,6 @@ class CuadernoPictoEditFragment : Fragment(){
     private lateinit var adaptador: AdaptadorPictogramasCuaderno
     lateinit var termometro: LinearLayout
     lateinit var searchBar: SearchView
-    lateinit var image: ShapeableImageView
     private lateinit var constraintLayout: ConstraintLayout
 
     private val viewModel: CuadernoViewModel by activityViewModels()
@@ -139,8 +138,8 @@ class CuadernoPictoEditFragment : Fragment(){
         context?.let { CommonUtils.initializeTextToSpeech(it) }
 
         viewModel._image.observe(viewLifecycleOwner){
-            image.setImageURI(it)
-            image.background = null
+            viewModel.image.setImageURI(it)
+            viewModel.image.background = null
         }
         viewModel.createPickMedia(this, context)
 
@@ -181,18 +180,18 @@ class CuadernoPictoEditFragment : Fragment(){
         dialogo!!.setContentView(R.layout.dialogo_crear_pictograma_cuaderno)
         dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val nombre : TextInputLayout = dialogo.findViewById(R.id.txt_title)
-        image = dialogo.findViewById(R.id.img)
+        viewModel.image = dialogo.findViewById(R.id.img)
 
         val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
 
-        image.setOnClickListener {
+        viewModel.image.setOnClickListener {
             viewModel.abrirGaleria()
         }
 
         btnCrear.setOnClickListener{
             nombre.error = null
-            if (nombre.editText?.text.toString().isEmpty() || image.drawable == null) {
+            if (nombre.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
                 nombre.error = "Obligatorio"
                 Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             }else{
@@ -208,7 +207,7 @@ class CuadernoPictoEditFragment : Fragment(){
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
         val idUsuario = prefs?.getString("idUsuario", "")
         val numero = UUID.randomUUID()
-        val imagen = context?.let { it1 -> CommonUtils.crearRuta(it1, image, "ImgPictograma$numero") }
+        val imagen = context?.let { it1 -> CommonUtils.crearRuta(it1, viewModel.image, "ImgPictograma$numero") }
 
         if (idUsuario != null) {
             val id = viewModel.picto.nuevoPictogramaCuaderno(activity, nombre.editText?.text.toString(), imagen, viewModel.idCuaderno, idUsuario)

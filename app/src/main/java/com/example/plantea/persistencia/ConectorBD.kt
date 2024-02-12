@@ -166,6 +166,10 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT titulo from Planificacion Inner JOIN Evento where Evento.id_plan = Planificacion.id AND Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
     }
 
+    fun listarTituloEvento(idUsuario: String, fecha: String): Cursor {
+        return db!!.rawQuery("SELECT nombre, duracion from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
+    }
+
     /*Insertar una nueva subcategoria*/
     fun insertarSubcategoria(nombre: String?) {
         db!!.execSQL("INSERT INTO Categoria (titulo) VALUES ('$nombre')")
@@ -253,9 +257,9 @@ class ConectorBD(ctx: Context?) {
 
 
     /*Insertar nueva cita en la tabla eventos*/
-    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, idPlan: Int): Int {
+    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, duracion: String?, idPlan: Int): Int {
         var id = 0
-        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora,id_plan,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$idPlan',0)")
+        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora, duracion,id_plan,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$duracion', '$idPlan', 0)")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
         if (c.moveToFirst()) {
             id = c.getInt(0)
@@ -272,7 +276,7 @@ class ConectorBD(ctx: Context?) {
     fun listarEventosPorUsuario(idUsuario: String): Cursor {
         val selectionArgs = arrayOf(idUsuario)
         return db!!.rawQuery(
-            "SELECT id, id_usuario, nombre, fecha, hora, id_plan, visible " +
+            "SELECT id, id_usuario, nombre, fecha, hora, duracion, id_plan, visible " +
             "FROM Evento " +
             "WHERE id_usuario = ?",
             selectionArgs

@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:elevation="0dp"
-            android:textSize="17sp"
+            android:textSize="@dimen/buttonBig"
             android:layout_marginEnd="5dp"
             android:layout_marginTop="20dp"
             android:onClick="onSkipButtonClick"
@@ -124,7 +124,7 @@
                 android:gravity="end"
                 android:textAllCaps="false"
                 android:layout_marginEnd="20dp"
-                android:textSize="16sp"
+                android:textSize="@dimen/buttonBig"
                 android:onClick="onPreviousButtonClick"
                 android:fontFamily="@font/poppins_semibold"
                 android:background="@drawable/button_transparent_bg"
@@ -148,7 +148,7 @@
                 android:text="@string/str_siguiente"
                 android:textAllCaps="false"
                 android:textColor="?colorOnSecondaryContainer"
-                android:textSize="16sp" />
+                android:textSize="@dimen/buttonBig" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

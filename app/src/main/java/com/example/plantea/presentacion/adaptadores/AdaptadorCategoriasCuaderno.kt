@@ -16,7 +16,7 @@ import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
 
 class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, private val isPlan: Boolean, private val listener: OnItemSelectedListener?, private val context: Context, private val fragment: PrincipalFragment) : RecyclerView.Adapter<AdaptadorCategoriasCuaderno.ViewHolderPictogramas>() {
     interface OnItemSelectedListener {
-        fun pictogramaCuaderno(posicion: Int, cuadernoId: Int)
+        fun categoriaCuaderno(posicion: Int, cuadernoId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -71,7 +71,7 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
             val posicion = bindingAdapterPosition
             val idCuaderno = listaPictogramas?.get(posicion)?.id
             if (idCuaderno != null) {
-                listener?.pictogramaCuaderno(posicion, idCuaderno)
+                listener?.categoriaCuaderno(posicion, idCuaderno)
             }
         }
     }

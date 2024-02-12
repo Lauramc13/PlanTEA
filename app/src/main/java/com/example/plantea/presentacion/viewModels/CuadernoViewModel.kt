@@ -18,6 +18,7 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
+import com.google.android.material.imageview.ShapeableImageView
 
 class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelectedListener, AdaptadorPictogramasCuaderno.OnItemSelectedListener  {
 
@@ -36,6 +37,7 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
     lateinit var listaPictoCuaderno: ArrayList<Cuaderno>
     var isTermometro: Boolean = true
     var tituloCuaderno : String = ""
+    lateinit var image: ShapeableImageView
 
     val _lastPictoClicked = MutableLiveData<Boolean>()
     val _posicionPictoClicked = MutableLiveData<Int>()
@@ -63,6 +65,7 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
                     if (ruta != null) {
                         CommonUtils.guardarImagen(it, ruta, bitmap)
                         _image.value = uri
+
                     }
                 }
 
@@ -72,10 +75,9 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
         }
     }
 
-    override fun pictogramaCuaderno(posicion: Int, cuadernoId: Int){
+    override fun categoriaCuaderno(posicion: Int, cuadernoId: Int){
         if(posicion == listaPictoCuaderno.lastIndex && isPlanificador){
-            //_lastPictoClicked.value = true
-            _lastPictoClicked.postValue(true)
+            _lastPictoClicked.value = true
         }else {
             idCuaderno = cuadernoId
             _posicionPictoClicked.value = posicion

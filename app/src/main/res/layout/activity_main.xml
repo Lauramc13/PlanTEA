@@ -123,7 +123,7 @@
                 android:text="@string/lbl_nombre"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
-                android:textSize="24sp" />
+                android:textSize="@dimen/title" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -169,7 +169,7 @@
                 android:text="@string/lbl_nombre"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
-                android:textSize="24sp" />
+                android:textSize="@dimen/title" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

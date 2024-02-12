@@ -32,7 +32,7 @@ import java.util.Locale
 
 class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener {
     private lateinit var alarmManager: AlarmManager
-    var isNuevoEventoSelected = false
+    private var isNuevoEventoSelected = false
     var evento = Evento()
     var _dias = MutableLiveData<ArrayList<LocalDate?>>()
     lateinit var eventos: ArrayList<Evento>
@@ -52,10 +52,17 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var isPlanSeleccionado = false
     var posicionPlan = 0
     var planSeleccionado = 0
-    lateinit var nombreEvento: String
     lateinit var planes: ArrayList<Planificacion>
     var counter: Int = 1
     var plan = Planificacion()
+
+    //Notificaciones
+    var checkBoxMin = false
+    var checkBoxHora = false
+    var checkBoxDia = false
+    var checkBoxPer = false
+    var selectedHour = 0
+    var selectedMin = 0
 
     private var bottomSheetDialogFragment = NuevoEventoFragment()
 
@@ -69,24 +76,26 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         intent.putExtra("Hora", hora)
         intent.putExtra("Id", id)
 
-        val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
-
         val pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_MUTABLE)
         alarmManager = context.applicationContext.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val aviso = Calendar.getInstance()
         aviso.timeInMillis = System.currentTimeMillis()
-        if (prefs.getBoolean("notificacion_semana", false)) {
-            val nuevafecha = fecha.minusDays(7)
-            aviso[nuevafecha.year, nuevafecha.month.value - 1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
-            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
-        }
-        if (prefs.getBoolean("notificacion_dia", false)) {
+
+        if (checkBoxDia) {
             val nuevafecha = fecha.minusDays(1)
             aviso[nuevafecha.year, nuevafecha.month.value - 1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
             alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
         }
-        if (prefs.getBoolean("notificacion_hora", false)) {
+        if (checkBoxHora) {
             aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, hora.hour - 1, hora.minute] = 0
+            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+        }
+        if(checkBoxMin){
+            aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, hora.hour, hora.minute - 5] = 0
+            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+        }
+        if(checkBoxPer){
+            aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, selectedHour, selectedMin] = 0
             alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
         }
     }
@@ -114,21 +123,21 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
-        if(CommonUtils.isMobile(context)){
-            bottomSheetDialogFragment.dismiss()
-        }else{
+        //if(!CommonUtils.isMobile(context)){
             //TODO: CAMBIAR ESTO PARA ACTUALIZAR EL FRAGMENT EN VEZ DE CREAR UNO NUEVO
             val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
             ft.replace(R.id.fragment_calendario, EventosFragment())
             ft.addToBackStack(null)
             ft.commit()
-        }
+        //}
 
-        val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+        /*val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         val notificacion = prefs.getBoolean("notificaciones", false)
-        if (notificacion) {
+        if (notificacion) {*/
+        if(checkBoxMin || checkBoxHora || checkBoxDia || checkBoxPer){
             crearNotificacion(context, cita.fecha, CalendarioUtilidades.formatoHoraAviso(cita.hora), cita.nombre, id)
         }
+
     }
 
     fun planificar(context: Context) {
@@ -188,11 +197,21 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         return picker
     }
 
+    fun createRelojDuracion():MaterialTimePicker{
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
+            .setTheme(R.style.TimePicker)
+            .setTitleText("Selecciona una duración para el evento")
+            .build()
+        return picker
+    }
+
     fun configureDataPlanSeleccionado(posicion: Int){
         isPlanSeleccionado = true
         posicionPlan = posicion
         planSeleccionado = planes[posicion].id
-        nombreEvento = planes[posicion].titulo
+        //nombreEvento = planes[posicion].titulo
     }
 
     fun editarClick(actividad: Activity, posicion: Int){

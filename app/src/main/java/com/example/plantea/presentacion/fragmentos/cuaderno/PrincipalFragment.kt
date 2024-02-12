@@ -19,13 +19,15 @@ import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
+import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CuadernoActivity
+import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
-import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
@@ -35,12 +37,10 @@ import java.util.UUID
 class PrincipalFragment : Fragment(){
     lateinit var actividad: Activity
     lateinit var recycler_Pictogramas: RecyclerView
-    lateinit var image: ShapeableImageView
     lateinit var adaptador : AdaptadorCategoriasCuaderno
     private lateinit var constraintLayout: ConstraintLayout
 
-    private val viewModel: CuadernoViewModel by activityViewModels()
-
+    private val viewModel by viewModels<CuadernoViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val vista = inflater.inflate(R.layout.fragment_cuaderno_principal, container, false)
@@ -55,16 +55,11 @@ class PrincipalFragment : Fragment(){
         adaptador = AdaptadorCategoriasCuaderno(viewModel.listaPictoCuaderno, viewModel.isPlanificador, viewModel, requireContext(), this)
         recycler_Pictogramas.adapter = adaptador
 
-        viewModel._image.observe(viewLifecycleOwner){
-            image.setImageURI(it)
-            image.background = null
-        }
-
         viewModel.createPickMedia(this, requireContext())
-        return vista
 
         observers()
 
+        return vista
     }
 
     override fun onAttach(context: Context) {
@@ -75,15 +70,30 @@ class PrincipalFragment : Fragment(){
     }
 
     private fun observers(){
+        viewModel._image.observe(viewLifecycleOwner){
+            viewModel.image.setImageURI(it)
+            viewModel.image.background = null
+        }
+
         viewModel._lastPictoClicked.observe(viewLifecycleOwner){
             mostrarDialogo()
         }
+
+        viewModel._posicionPictoClicked.observe(viewLifecycleOwner) {position ->
+            val activity = requireActivity() as CuadernoActivity
+            viewModel.listaPictogramas = viewModel.picto.obtenerPictogramasCuaderno(activity, viewModel.idCuaderno) as ArrayList<Pictograma>?
+            viewModel.originalPictogramas = viewModel.listaPictogramas?.let { ArrayList(it) }
+            activity.iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[position].termometro, viewModel.listaPictoCuaderno[position].titulo!!)
+        }
+
+
     }
 
     fun menuCuaderno(cuaderno: Cuaderno, anchorView: View) {
         val inflater = LayoutInflater.from(requireContext())
         val customView = inflater.inflate(R.layout.popup_cuaderno, null)
         val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        val position = viewModel.listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
 
         customView.findViewById<TextView>(R.id.item_editar).setOnClickListener {
             editarCuaderno(cuaderno)
@@ -91,14 +101,14 @@ class PrincipalFragment : Fragment(){
         }
 
         customView.findViewById<TextView>(R.id.item_borrar).setOnClickListener {
-            eliminarCuaderno(cuaderno)
+            eliminarCuaderno(cuaderno, position)
             popupWindow.dismiss()
         }
 
         popupWindow.showAsDropDown(anchorView)
     }
 
-    fun eliminarCuaderno(cuaderno: Cuaderno) {
+    fun eliminarCuaderno(cuaderno: Cuaderno, position: Int) {
         //crear dialogo estas seguro que quiere borrar el cuaderno
         val dialogo = Dialog(requireContext())
         dialogo.setContentView(R.layout.dialogo_borrar_cuaderno)
@@ -110,7 +120,7 @@ class PrincipalFragment : Fragment(){
         btnBorrar.setOnClickListener {
             cuaderno.eliminarCuaderno(actividad, cuaderno.id)
             viewModel.listaPictoCuaderno.remove(cuaderno)
-            adaptador.notifyDataSetChanged()
+            adaptador.notifyItemRemoved(position)
             dialogo.dismiss()
         }
 
@@ -131,18 +141,18 @@ class PrincipalFragment : Fragment(){
         dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val title : TextInputLayout = dialogo.findViewById(R.id.txt_title)
         val termometro : SwitchCompat =  dialogo.findViewById(R.id.switch_termometro)
-        image = dialogo.findViewById(R.id.img)
+        viewModel.image = dialogo.findViewById(R.id.img)
 
         val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
 
-        image.setOnClickListener {
+        viewModel.image.setOnClickListener {
             viewModel.abrirGaleria()
         }
 
         title.editText?.setText(cuaderno.titulo)
-        image.setImageURI(Uri.parse(cuaderno.imagen))
-        image.background = null
+        viewModel.image.setImageURI(Uri.parse(cuaderno.imagen))
+        viewModel.image.background = null
         termometro.isChecked = cuaderno.termometro == true
         btnCrear.text = getString(R.string.str_editarCategoria)
         val textView = dialogo.findViewById<TextView>(R.id.lbl_cuaderno)
@@ -150,7 +160,7 @@ class PrincipalFragment : Fragment(){
 
         btnCrear.setOnClickListener{
             title.error = null
-            if (title.editText?.text.toString().isEmpty() || image.drawable == null) {
+            if (title.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
                 title.error = "Obligatorio"
                 Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             }else{
@@ -162,25 +172,25 @@ class PrincipalFragment : Fragment(){
         dialogo.show()
     }
 
-    private fun mostrarDialogo(){
+    fun mostrarDialogo(){
         val dialogo = context?.let { Dialog(it) }
         dialogo!!.setContentView(R.layout.dialogo_crear_categoria_cuaderno)
         dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val title : TextInputLayout = dialogo.findViewById(R.id.txt_title)
         val termometro : SwitchCompat =  dialogo.findViewById(R.id.switch_termometro)
-        image = dialogo.findViewById(R.id.img)
+        viewModel.image = dialogo.findViewById(R.id.img)
 
         val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
 
-        image.setOnClickListener {
+        viewModel.image.setOnClickListener {
             viewModel.abrirGaleria()
         }
 
         //el termometro por ahora no hace nada
         btnCrear.setOnClickListener{
             title.error = null
-            if (title.editText?.text.toString().isEmpty() || image.drawable == null) {
+            if (title.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
                 title.error = "Obligatorio"
                 Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
             }else{
@@ -197,9 +207,10 @@ class PrincipalFragment : Fragment(){
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
         val idUsuario = prefs?.getString("idUsuario", "")
         val numero = UUID.randomUUID()
-        val imagen = context?.let { it1 -> CommonUtils.crearRuta(it1, image, "ImgCuaderno$numero") }
+        val imagen = context?.let { it1 -> CommonUtils.crearRuta(it1, viewModel.image, "ImgCuaderno$numero") }
 
         val isTermometro = if (termometro.isChecked) 1 else 0
+        var index = -1
 
         if (idUsuario != null) {
             var id = 0
@@ -216,14 +227,15 @@ class PrincipalFragment : Fragment(){
             cuaderno.termometro = termometro.isChecked
 
             if(isEditar){
-                val index = viewModel.listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
+                index = viewModel.listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
                 viewModel.listaPictoCuaderno[index] = cuaderno
             }else{
-                val lastIndex = viewModel.listaPictoCuaderno.size - 1
-                viewModel.listaPictoCuaderno.add(lastIndex, cuaderno)
+                index = viewModel.listaPictoCuaderno.size - 1
+                viewModel.listaPictoCuaderno.add(index, cuaderno)
             }
         }
 
-        adaptador.notifyDataSetChanged()
+        adaptador.notifyItemChanged(index)
     }
+
 }

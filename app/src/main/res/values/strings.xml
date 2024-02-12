@@ -53,7 +53,7 @@
     <string name="lbl_infoUsuarioTEA">Datos del usuario TEA </string>
     <string name="lbl_infoactividad">Datos de la actividad tranquilizadora </string>
     <string name="btn_add">Planificación</string>
-    <string name="lbl_mensaje">No hay planificaciones disponibles</string>
+    <string name="lbl_mensaje">No hay planificaciones disponibles. Pulsa en \"Nueva planificación\" para crear una planificación</string>
     <string name="lbl_lunes">Lunes</string>
     <string name="lbl_martes">Martes</string>
     <string name="lbl_miercoles">Miércoles</string>
@@ -63,7 +63,7 @@
     <string name="lbl_domingo">Domingo</string>
     <string name="btn_nuevo_evento">Evento</string>
     <string name="lbl_nuevoEvento">Nuevo Evento</string>
-    <string name="lbl_mensaje_evento">No hay eventos para este día</string>
+    <string name="lbl_mensaje_evento">No hay eventos para este día. Pulsa en \"+\" para crear un evento.</string>
     <string name="btn_horaEvento">HORA</string>
     <string name="item_perfil">preferencias</string>
     <string name="lbl_mensajeNinio">No hay eventos para seguir este dia</string>

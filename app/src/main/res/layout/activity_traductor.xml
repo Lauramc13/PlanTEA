@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:textColor="?colorOnSurface"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/subtitle" />
             </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -69,7 +69,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="TRADUCIR"
             android:textColor="#203130"
-            android:textSize="14sp"
+            android:textSize="@dimen/button"
             app:cornerRadius="25dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -114,7 +114,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="GUARDAR"
                 android:textColor="?colorOnSurface"
-                android:textSize="14sp"
+                android:textSize="@dimen/button"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/ic_baseline_save_24"
                 app:iconSize="25dp"
@@ -139,7 +139,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/str_escuchar"
                 android:textColor="?colorOnSurface"
-                android:textSize="14sp"
+                android:textSize="@dimen/button"
                 app:cornerRadius="25dp"
                 android:backgroundTint="?configuracionCardBg"
                 app:icon="@drawable/svg_sound"
@@ -154,7 +154,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/str_escucharFrase"
                 android:textColor="?colorOnSurface"
-                android:textSize="14sp"
+                android:textSize="@dimen/button"
                 android:backgroundTint="?configuracionCardBg"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_sound"

@@ -46,18 +46,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/lbl_registrarse"
             android:textColor="?colorOnSurface"
-            android:textSize="30sp"
-            android:layout_marginBottom="15dp"
+            android:textSize="@dimen/title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.21" />
 
-    <ScrollView
+        <ScrollView
         android:id="@+id/scrollRegister"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -77,7 +77,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_datosPlanificador"
             android:textColor="?colorOnSurface"
-            android:textSize="20sp"
+            android:textSize="@dimen/subtitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -227,7 +227,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_configuracion_objeto"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp"
+            android:textSize="@dimen/subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -285,6 +285,7 @@
                     android:layout_marginEnd="52dp"
                     android:background="@drawable/fragment_personalizado"
                     android:padding="13dp"
+                    android:textSize="@dimen/caption"
                     android:text="La actividad tranquilizadora representa el objeto que calma a la persona con TEA"
                     android:textColor="?colorOnSurface"
                     android:theme="@style/cards2"
@@ -302,7 +303,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_datosPlanificado"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp"
+            android:textSize="@dimen/subtitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:theme="@style/Switches"
@@ -342,7 +343,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/lbl_crearCuenta"
             style="@style/Widget.Material3.Button"
-            android:textSize="14sp"
+            android:textSize="@dimen/button"
             android:textColor="#203130"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"

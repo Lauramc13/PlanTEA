@@ -20,7 +20,7 @@ import java.util.Locale
 
 class ActividadViewModel: ViewModel() {
 
-
+    val _timerEnded = MutableLiveData<Boolean>()
     @SuppressLint("SetJavaScriptEnabled")
 
     fun configureWebView(webView: WebView) {
@@ -62,6 +62,10 @@ class ActividadViewModel: ViewModel() {
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
         iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
         dialogo.show()
+    }
+
+    fun timerEnded(){
+        _timerEnded.value = true
     }
 
 

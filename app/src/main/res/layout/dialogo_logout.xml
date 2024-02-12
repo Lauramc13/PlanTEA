@@ -27,7 +27,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_cerrarSesion"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp"
+            android:textSize="@dimen/modalTitle"
             android:gravity="center"
             android:paddingEnd="40dp"
             android:paddingStart="40dp" />
@@ -40,7 +40,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginBottom="20dp"
             android:textColor="#203130"
-            android:textSize="13sp"
+            android:textSize="@dimen/button"
             android:textAllCaps="true"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/lbl_cerrarSesionBotton" />

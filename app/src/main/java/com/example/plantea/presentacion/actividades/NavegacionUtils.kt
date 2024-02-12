@@ -9,9 +9,21 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.view.*
-import android.widget.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.PathInterpolator
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
@@ -23,7 +35,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import java.util.*
+import java.util.Locale
+
 
 class NavegacionUtils {
     var usuario = Usuario()
@@ -34,6 +47,7 @@ class NavegacionUtils {
     lateinit var textoRol: TextView
     lateinit var navigationView: NavigationView
     lateinit var navigationViewBottom: BottomNavigationView
+    lateinit var fragmentSide : ConstraintLayout
     lateinit var popupWindow: PopupWindow
     lateinit var buttonMenu : ImageView
     lateinit var buttonAccount: LinearLayout
@@ -226,13 +240,20 @@ class NavegacionUtils {
     }
 
     private fun animateNavigationViewWidth(targetWidth: Int) {
-        val animator = ValueAnimator.ofInt(navigationView.width, targetWidth)
+        val animator = ValueAnimator.ofInt(fragmentSide.width, targetWidth)
         animator.addUpdateListener { valueAnimator ->
-            val layoutParams = navigationView.layoutParams as ViewGroup.LayoutParams
+            val layoutParams = fragmentSide.layoutParams as ViewGroup.LayoutParams
             layoutParams.width = valueAnimator.animatedValue as Int
-            navigationView.layoutParams = layoutParams
+            fragmentSide.layoutParams = layoutParams
+
+            val layoutParams2 = navigationView.layoutParams as ViewGroup.LayoutParams
+            layoutParams2.width = valueAnimator.animatedValue as Int
+            navigationView.layoutParams = layoutParams2
         }
-        animator.duration = 300
+
+        animator.duration = 400
+        animator.interpolator = PathInterpolator(0.05f, 0.7f, 0.1f, 1f)
+
         animator.start()
     }
 
@@ -248,6 +269,7 @@ class NavegacionUtils {
         buttonAccount = view.findViewById(R.id.accountButton)
 
         navigationView = view.findViewById(R.id.navigationView)
+        fragmentSide = view.findViewById(R.id.fragment_navigation_side)
         navigationView.setNavigationItemSelectedListener {item ->
             onNavigationItemSelected(item.itemId, fragment, currentActivity)
             true

@@ -444,7 +444,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
@@ -509,7 +509,7 @@
                     android:textColor="?colorOnSurface"
                     app:buttonTint="?colorPrimary" />
 
-            </LinearLayout>
+            </LinearLayout> -->
 
             <Button
                 android:id="@+id/btn_guardarConfiguracion"

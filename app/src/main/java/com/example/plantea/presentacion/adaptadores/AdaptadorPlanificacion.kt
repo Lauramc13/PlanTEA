@@ -19,14 +19,10 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlin.collections.ArrayList
 
 
-
-class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
-    interface OnItemSelectedListener
-    private lateinit var btnGuardar : Button
-    private lateinit var iconoCerrarLogin : ImageView
-    lateinit var cardtitulo: TextView
-    lateinit var historiaText: TextInputLayout
-
+class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, private val listener: OnItemSelectedListener) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
+    interface OnItemSelectedListener{
+        fun onHistoriaClick(position: Int) : Boolean
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanificacion {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas, null, false)
@@ -80,9 +76,9 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
             historia = itemView.findViewById<View>(R.id.btn_historiaPicto) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
 
+
             borrar.setOnClickListener {
                 val position = bindingAdapterPosition
-
                 if (position != RecyclerView.NO_POSITION) {
                     listaPlanificacion.removeAt(position)
                     notifyItemRemoved(position)
@@ -92,30 +88,9 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>) : Re
             //obtenemos la posicion del pictograma y guardamos en el objeto Pictograma la historia, si el pictograma tenia historia de antes tambien la mostramos
             historia.setOnClickListener {
                 val position = bindingAdapterPosition
-                val tituloCard = listaPlanificacion[position].titulo
-                val context = itemView.context
-                val dialogLogout = Dialog(context)
-                dialogLogout.setContentView(R.layout.dialogo_historiasocial)
-                dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                btnGuardar = dialogLogout.findViewById(R.id.btn_eliminarEvento)
-                cardtitulo = dialogLogout.findViewById(R.id.cardName)
-                cardtitulo.text = tituloCard
-                iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                historiaText = dialogLogout.findViewById(R.id.historiaText)
-                historiaText.editText?.setText(listaPlanificacion[position].historia)
-
-                iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
-                btnGuardar.setOnClickListener{
-                    if(historiaText.editText?.text.toString() == ""){
-                        Toast.makeText(context, "No se puede crear una historia vacía", Toast.LENGTH_LONG).show()
-                    }else {
-                        listaPlanificacion[position].historia = historiaText.editText?.text.toString()
-                        notifyItemChanged(position)
-                        dialogLogout.dismiss()
-                    }
+                if(listener.onHistoriaClick(position)){
+                    notifyItemChanged(position)
                 }
-
-                dialogLogout.show()
             }
         }
 

@@ -28,7 +28,6 @@ class CategoriasFragment : Fragment() {
 
         val vista = inflater.inflate(R.layout.fragment_categorias, container, false)
 
-
         val cardMedico = vista.findViewById<CardView>(R.id.categoria_medico)
         val cardCompra = vista.findViewById<CardView>(R.id.categoria_compra)
         val cardPeluqueria = vista.findViewById<CardView>(R.id.categoria_peluqueria)
@@ -55,8 +54,6 @@ class CategoriasFragment : Fragment() {
             cardRecompensa.setOnClickListener { viewModel.mostrarCategoria(9, this.requireContext())}
             cardFavoritos.setOnClickListener { viewModel.mostrarCategoria(10, this.requireContext())}
         }
-
-
 
         return vista
     }

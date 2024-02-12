@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,19 +22,16 @@ import kotlinx.coroutines.withContext
 
 class CuadernoActivity : AppCompatActivity() {
     private var transaction: FragmentTransaction? = null
-    private var fragmentPrincipal: Fragment? = null
-    private var fragmentCuadernoPictogramas: Fragment? = null
-    private var fragmentCuadernoPictoEdit: CuadernoPictoEditFragment? = null
+    private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
+    private var fragmentCuadernoPictoEdit = CuadernoPictoEditFragment()
+    private var fragmentPrincipal = PrincipalFragment()
+
 
     private val viewModel by viewModels<CuadernoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cuaderno)
-
-        fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
-        fragmentCuadernoPictoEdit = CuadernoPictoEditFragment()
-        fragmentPrincipal = PrincipalFragment()
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val idUsuario = prefs.getString("idUsuario", "")
@@ -43,7 +41,6 @@ class CuadernoActivity : AppCompatActivity() {
         }
 
         viewModel.listaCuadernos!!.removeAt(0)
-
 
         viewModel.isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
         if(viewModel.isPlanificador){
@@ -55,9 +52,9 @@ class CuadernoActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putSerializable("key", viewModel.listaCuadernos)
             bundle.putSerializable("isPlan", viewModel.isPlanificador)
-            fragmentPrincipal!!.arguments = bundle
+            fragmentPrincipal.arguments = bundle
             transaction = supportFragmentManager.beginTransaction()
-            transaction!!.replace(R.id.layout_fragments, fragmentPrincipal!!)
+            transaction!!.replace(R.id.layout_fragments, fragmentPrincipal)
             transaction!!.commit()
         } else {
             val fragment = supportFragmentManager.findFragmentById(R.id.layout_fragments)
@@ -71,18 +68,13 @@ class CuadernoActivity : AppCompatActivity() {
                 transaction!!.replace(R.id.layout_fragments, fragment!!)
                 transaction!!.commit()
             }
+
         }
 
         observers()
     }
 
     fun observers(){
-        viewModel._posicionPictoClicked.observe(this) {position ->
-            viewModel.listaPictogramas = viewModel.picto.obtenerPictogramasCuaderno(this, viewModel.idCuaderno) as ArrayList<Pictograma>?
-            viewModel.originalPictogramas = viewModel.listaPictogramas?.let { ArrayList(it) }
-            iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[position].termometro, viewModel.listaPictoCuaderno[position].titulo!!)
-        }
-
         viewModel._pictoBusquedaAdded.observe(this) {
             viewModel.originalPictogramas?.add(it)
             viewModel.picto.guardarPictoCuaderno(this, it.id, it.titulo, it.imagen, viewModel.idCuaderno)
@@ -96,17 +88,18 @@ class CuadernoActivity : AppCompatActivity() {
             }
             viewModel.originalPictogramas?.remove(it)
             if(!viewModel.isBusqueda){
-                fragmentCuadernoPictoEdit!!.updateDataRemove(it)
+                fragmentCuadernoPictoEdit.updateDataRemove(it)
             }
         }
 
         viewModel._cerrarFragment.observe(this) {
             val bundle = Bundle()
+            val fragment = PrincipalFragment()
             bundle.putSerializable("key", viewModel.listaCuadernos)
             bundle.putSerializable("isPlan", viewModel.isPlanificador)
-            fragmentPrincipal!!.arguments = bundle
+            fragment.arguments = bundle
             transaction = supportFragmentManager.beginTransaction()
-            transaction!!.replace(R.id.layout_fragments, fragmentPrincipal!!)
+            transaction!!.replace(R.id.layout_fragments, fragment)
             transaction!!.commit()
         }
 
@@ -115,8 +108,6 @@ class CuadernoActivity : AppCompatActivity() {
             getPictogramas(it)
             viewModel.isBusqueda = true
         }
-
-
     }
 
 
@@ -128,7 +119,7 @@ class CuadernoActivity : AppCompatActivity() {
                 dict.keys.forEach { key ->
                     dict[key]?.let { (value, id) ->
                         crearPictoBusqueda(key, value, id)
-                        fragmentCuadernoPictoEdit!!.mostrarPictogramasBusqueda(viewModel.listaPictogramas, viewModel.listaPictosAgregados)
+                        fragmentCuadernoPictoEdit.mostrarPictogramasBusqueda(viewModel.listaPictogramas, viewModel.listaPictosAgregados)
                     }
                 }
             }
@@ -146,7 +137,7 @@ class CuadernoActivity : AppCompatActivity() {
     }
 
 
-    private fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String) {
+    fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String) {
         val bundle = Bundle()
         bundle.putSerializable("key", pictogramas ?: ArrayList<Pictograma>())
         bundle.putSerializable("termometro", termometro)
@@ -155,17 +146,16 @@ class CuadernoActivity : AppCompatActivity() {
         bundle.putSerializable("isBusqueda", viewModel.isBusqueda)
 
          if (viewModel.isPlanificador) {
-                fragmentCuadernoPictoEdit!!.arguments = bundle
+                fragmentCuadernoPictoEdit.arguments = bundle
                 transaction = supportFragmentManager.beginTransaction()
-                transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictoEdit!!)
+                transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictoEdit)
             } else {
-                fragmentCuadernoPictogramas!!.arguments = bundle
+                fragmentCuadernoPictogramas.arguments = bundle
                 transaction = supportFragmentManager.beginTransaction()
-                transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictogramas!!)
+                transaction!!.replace(R.id.layout_fragments, fragmentCuadernoPictogramas)
             }
 
         transaction!!.addToBackStack(null)
         transaction!!.commit()
     }
-
 }

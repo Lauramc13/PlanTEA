@@ -20,7 +20,7 @@
             android:fontFamily="@font/poppins_bold"
             android:text="Crear nuevo pictograma"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp" />
+            android:textSize="@dimen/modalTitle" />
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
             android:maxWidth="10dp"
             android:text="CREAR PICTOGRAMA"
             android:textColor="#203130"
-            android:textSize="14sp"
+            android:textSize="@dimen/button"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
             app:layout_constraintEnd_toEndOf="parent"

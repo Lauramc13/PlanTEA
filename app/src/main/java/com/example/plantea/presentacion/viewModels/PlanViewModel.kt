@@ -124,9 +124,9 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, selectedDate, context) } as ArrayList<Pictograma>
 
         //Mostrar título de la planificación
-        val tituloObtenido = plan.obtenerTituloPlan(idUsuario, selectedDate, context)
+        evento = evento.obtenerEventoPlan(idUsuario, selectedDate, context)
 
-        _tituloLiveData.value = tituloObtenido
+        _tituloLiveData.value = evento.nombre
         _planLiveData.value = listaPictogramas
     }
 
@@ -201,9 +201,9 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         animCard = AnimationUtils.loadAnimation(applicationContext, R.anim.card)
     }
 
-    fun obtenerEventosFecha(context: Context){
+    /*fun obtenerEventosFecha(context: Context){
         eventos = idUsuario.let { evento.obtenerEventos(it, context as Activity, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
-    }
+    }*/
 
     override fun onItemSeleccionado(context: Context, posicion: Int) {
         if (currentDialog != null && currentDialog!!.isShowing) {

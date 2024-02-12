@@ -1,6 +1,7 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.content.Context
 import java.time.LocalDate
 
 class Evento {
@@ -9,17 +10,19 @@ class Evento {
     var nombre: String? = null
     var fecha: LocalDate? = null
     var hora: String? = null
+    var duracion: String? = null
     var id_plan = 0
     var visible = 0
     var gestorEventos = GestionEventos()
 
     constructor()
-    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int) {
+    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, duracion: String?, id_plan: Int) {
         this.id = id
         this.idUsuario = idUsuario
         this.nombre = nombre
         this.fecha = fecha
         this.hora = hora
+        this.duracion = duracion
         this.id_plan = id_plan
     }
 
@@ -55,6 +58,10 @@ class Evento {
     //Comprobar el numero de eventos visibles
     fun comprobarEventosVisible(userId: String, fecha: String, actividad: Activity?): Int {
         return gestorEventos.comprobarEventosVisible(userId, fecha, actividad)
+    }
+
+    fun obtenerEventoPlan(idUsuario: String, fecha: String, context: Context?): Evento {
+        return gestorEventos.obtenerTituloEvento(idUsuario, fecha, context)
     }
 
     companion object {

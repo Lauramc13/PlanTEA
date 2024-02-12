@@ -5,125 +5,120 @@
     android:layout_height="wrap_content"
     android:background="@drawable/fondo_dialogo_login">
 
-    <TextView
-        android:id="@+id/lbl_NuevoPicto"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="@string/lbl_NuevoPicto"
-        android:textColor="?colorOnSurface"
-        android:fontFamily="@font/poppins_bold"
-        android:textSize="18sp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="35dp"
+        android:paddingEnd="35dp"
+        android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <ImageView
-        android:id="@+id/img_NuevoPicto"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="55dp"
-        style="@style/colorNewPhoto"
-        android:background="@drawable/ic_baseline_add_photo_alternate_128"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.155"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_NuevoPicto" />
+        <TextView
+            android:id="@+id/lbl_NuevoPicto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/lbl_NuevoPicto"
+            android:textColor="?colorOnSurface"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="@dimen/modalTitle" />
 
-    <!--<EditText
-        android:id="@+id/txt_Titulo"
-        android:layout_width="260dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="95dp"
-        android:background="@drawable/fondo_texto_login"
-        android:ems="10"
-        android:theme="@style/AppTheme.CursorBubble"
-        android:textColorHint="?colorOnSurface"
-        android:textColor="?colorOnSurface"
-        android:hint="Introduce un título "
-        android:fontFamily="@font/poppins_regular"
-        android:inputType="textPersonName"
-        android:maxLength="17"
-        android:maxLines="1"
-        android:paddingStart="10dp"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.392"
-        app:layout_constraintStart_toEndOf="@+id/img_NuevoPicto"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_NuevoPicto" />-->
+        <FrameLayout
+            android:id="@+id/id_card_Planificador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/borde_imagen_nueva"
+            android:alpha="0.5"
+            android:layout_gravity="center">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txt_Titulo"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        style="@style/customTextInputLayout"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="70dp"
-        android:ems="10"
-        android:inputType="text"
-        android:textColor="?colorOnSurface"
-        android:textColorHint="?colorOnSurface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.392"
-        app:layout_constraintStart_toEndOf="@+id/img_NuevoPicto"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_NuevoPicto"
-        app:shapeAppearance="@style/cornerRadiusLogin">
+            <ImageView
+                android:id="@+id/img_NuevoPicto"
+                style="@style/colorNewPhoto"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_add_photo_alternate_128" />
+        </FrameLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Titulo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/fondo_texto_login"
+            android:contentDescription="Campo de texto nombre de usuario"
+            android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_datosNombre"
-            style="@style/customTextInputLayout"
             android:inputType="text"
-            android:textColor="?colorOnSurface" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textColor="?colorOnSurface"
+            app:shapeAppearance="@style/cornerRadiusLogin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:inputType="text"
+                android:textSize="16sp"
+                android:textColor="?colorOnSurface" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Spinner
-        android:id="@+id/spinner_Categorias"
-        android:textColor="?colorOnSurface"
-        android:layout_width="220dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="15dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.398"
-        android:fontFamily="@font/poppins_regular"
-        android:background="@drawable/border_spinner"
-        android:popupBackground="@drawable/border_spinner"
-        app:layout_constraintStart_toEndOf="@+id/img_NuevoPicto"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
+        <FrameLayout
+            android:id="@+id/frameLayout_Categorias"
+            android:layout_width="250dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp">
 
-    <Button
-        android:id="@+id/btn_GuardarPicto"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/btn_Guardar"
-        android:textSize="14sp"
-        android:textColor="#203130"
-        android:fontFamily="@font/poppins_semibold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_Categorias"
-        app:layout_constraintVertical_bias="0.0" />
+            <Spinner
+                android:id="@+id/spinner_Categorias"
+                style="@style/dropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_spinner"
+                android:fontFamily="@font/poppins_regular"
+                android:popupBackground="@drawable/custom_popup_background"
+                android:spinnerMode="dropdown"
+                android:textColor="?colorOnSurface" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@null"
+                android:src="@drawable/svg_arrow_down" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btn_GuardarPicto"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:text="@string/btn_Guardar"
+            android:textSize="14sp"
+            android:textColor="#203130"
+            android:fontFamily="@font/poppins_semibold" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/icono_CerrarDialogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
         android:contentDescription="Cerrar dialogo"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.977"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.041"
         app:srcCompat="@drawable/ic_baseline_close_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

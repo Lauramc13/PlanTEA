@@ -1,34 +1,20 @@
 package com.example.plantea.presentacion.actividades
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
-import com.example.plantea.dominio.CalendarioUtilidades.formatoMesAnio
-import com.example.plantea.dominio.CalendarioUtilidades.obtenerDiasMes
-import com.example.plantea.dominio.Evento
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
-import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
-import com.example.plantea.presentacion.viewModels.TraductorViewModel
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 class CalendarioActivity : AppCompatActivity() {
     private lateinit var calendario: RecyclerView
