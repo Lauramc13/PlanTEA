@@ -23,8 +23,7 @@ class RegisterViewModel: ViewModel() {
     var objeto = ""
     var namePlanificado = ""
 
-    val _toastError = MutableLiveData<String>()
-    val _accountCreated = MutableLiveData<Boolean>()
+    val _accountCreated = SingleLiveEvent<Boolean>()
 
     fun updateButtonIcon(context: Context): Drawable?{
         // Actualizar el icono del botón segun el estado

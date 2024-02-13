@@ -31,10 +31,9 @@ import java.io.IOException
 class MenuAvataresViewModel : ViewModel() {
     var imagenSeleccionada : Boolean = false
     var idUsuario : String = ""
-    var firstTime: Boolean = true
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-    val _image = MutableLiveData<Uri?>()
-    var _ruta : MutableLiveData<String> = MutableLiveData<String>()
+    //val _image = MutableLiveData<Uri?>()
+    var _ruta : MutableLiveData<String> = SingleLiveEvent<String>()
     var bitmap : Bitmap? = null
 
     fun determineNextScreenPlan(prefs: SharedPreferences): Class<out AppCompatActivity> {

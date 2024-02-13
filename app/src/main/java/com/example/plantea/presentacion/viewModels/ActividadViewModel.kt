@@ -63,10 +63,4 @@ class ActividadViewModel: ViewModel() {
         iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
         dialogo.show()
     }
-
-    fun timerEnded(){
-        _timerEnded.value = true
-    }
-
-
 }

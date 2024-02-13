@@ -185,20 +185,4 @@
         tools:ignore="NotSibling"/>
 
 
-    <TextView
-        android:id="@+id/busquedaNula"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Título de la planificación"
-        android:fontFamily="@font/poppins_regular"
-        android:text="No se ha encontrado nada"
-        android:textColor="?colorOnSurface"
-        android:visibility="gone"
-        android:textSize="24sp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchViewPicto" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

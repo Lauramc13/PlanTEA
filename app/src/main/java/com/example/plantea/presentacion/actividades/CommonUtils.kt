@@ -114,7 +114,12 @@ class CommonUtils{
                     } else {
                         widthRecyclerView / 200
                     }
-                    recyclerView.layoutManager = GridLayoutManager(context, gridValue)
+
+                    if(gridValue == 0){
+                        recyclerView.layoutManager = GridLayoutManager(context, 1)
+                    }else{
+                        recyclerView.layoutManager = GridLayoutManager(context, gridValue)
+                    }
                 }
             }
 

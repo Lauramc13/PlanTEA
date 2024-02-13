@@ -8,7 +8,7 @@ import com.example.plantea.dominio.Usuario
 
 class ConfiguracionViewModel: ViewModel() {
 
-    val _toast = MutableLiveData<String>()
+    val _toast = SingleLiveEvent<String>()
 
     var email = ""
     var name = ""

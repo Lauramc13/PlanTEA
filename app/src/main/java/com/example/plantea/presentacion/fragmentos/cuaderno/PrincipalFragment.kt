@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -40,7 +41,7 @@ class PrincipalFragment : Fragment(){
     lateinit var adaptador : AdaptadorCategoriasCuaderno
     private lateinit var constraintLayout: ConstraintLayout
 
-    private val viewModel by viewModels<CuadernoViewModel>()
+    private val viewModel: CuadernoViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val vista = inflater.inflate(R.layout.fragment_cuaderno_principal, container, false)
@@ -79,14 +80,12 @@ class PrincipalFragment : Fragment(){
             mostrarDialogo()
         }
 
-        viewModel._posicionPictoClicked.observe(viewLifecycleOwner) {position ->
+        viewModel._posicionPictoClicked.observe(viewLifecycleOwner){
             val activity = requireActivity() as CuadernoActivity
             viewModel.listaPictogramas = viewModel.picto.obtenerPictogramasCuaderno(activity, viewModel.idCuaderno) as ArrayList<Pictograma>?
             viewModel.originalPictogramas = viewModel.listaPictogramas?.let { ArrayList(it) }
-            activity.iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[position].termometro, viewModel.listaPictoCuaderno[position].titulo!!)
+            activity.iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[it].termometro, viewModel.listaPictoCuaderno[it].titulo!!)
         }
-
-
     }
 
     fun menuCuaderno(cuaderno: Cuaderno, anchorView: View) {
@@ -120,7 +119,7 @@ class PrincipalFragment : Fragment(){
         btnBorrar.setOnClickListener {
             cuaderno.eliminarCuaderno(actividad, cuaderno.id)
             viewModel.listaPictoCuaderno.remove(cuaderno)
-            adaptador.notifyItemRemoved(position)
+            adaptador.notifyDataSetChanged()
             dialogo.dismiss()
         }
 
@@ -236,6 +235,8 @@ class PrincipalFragment : Fragment(){
         }
 
         adaptador.notifyItemChanged(index)
+        //adaptador.notifyDataSetChanged()
     }
+
 
 }

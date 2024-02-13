@@ -58,10 +58,8 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel._dismissDialog.postValue(true)
         viewModel._fechaActual.removeObservers(this)
         viewModel._diasMes.removeObservers(this)
-        viewModel._dismissDialog.removeObservers(this)
         CommonUtils.textToSpeech.stop()
         viewModel.dialog?.dismiss()
     }
@@ -205,6 +203,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
          viewModel.obtenerVistaMes()
 
          viewModel._fechaActual.observe(this) { fechaActual.text = it }
+
          viewModel._diasMes.observe(this) {
              calendario.layoutManager = GridLayoutManager(this, 7)
              val adaptadorCalendario = AdaptadorCalendario(it, viewModel.eventos, viewModel)

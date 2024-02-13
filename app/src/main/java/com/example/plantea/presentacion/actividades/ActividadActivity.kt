@@ -60,12 +60,7 @@ class ActividadActivity : AppCompatActivity() {
     fun observers(){
         viewModel._timerEnded.observe(this) {
             if (it) {
-                cardVideo.visibility = View.VISIBLE
-                cardObjeto.visibility = View.VISIBLE
-                frameVideo.visibility = View.INVISIBLE
-
-                cardObjeto.isEnabled= false
-                cardVideo.isEnabled= false
+                stopVideo()
             }
         }
     }
@@ -75,7 +70,7 @@ class ActividadActivity : AppCompatActivity() {
         cardObjeto.visibility = View.VISIBLE
         frameVideo.visibility = View.INVISIBLE
 
-        cardObjeto.isEnabled= false
-        cardVideo.isEnabled= false
+        cardObjeto.isEnabled = false
+        cardVideo.isEnabled = false
     }
 }

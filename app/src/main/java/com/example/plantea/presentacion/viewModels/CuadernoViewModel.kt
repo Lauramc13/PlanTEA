@@ -10,17 +10,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.MainThread
+import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CuadernoActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.google.android.material.imageview.ShapeableImageView
 
-class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelectedListener, AdaptadorPictogramasCuaderno.OnItemSelectedListener  {
+class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelectedListener, AdaptadorCategoriasCuaderno.OnItemSelectedListener{
 
     var picto = Pictograma()
     var cuaderno = Cuaderno()
@@ -39,13 +43,13 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
     var tituloCuaderno : String = ""
     lateinit var image: ShapeableImageView
 
-    val _lastPictoClicked = MutableLiveData<Boolean>()
-    val _posicionPictoClicked = MutableLiveData<Int>()
-    val _crearPictoClicked = MutableLiveData<Boolean>()
-    val _pictoBusquedaAdded = MutableLiveData<Pictograma>()
-    val _removePicto = MutableLiveData<Pictograma>()
-    val _cerrarFragment = MutableLiveData<Boolean>()
-    val _queryBusqueda = MutableLiveData<String>()
+    val _lastPictoClicked = SingleLiveEvent<Boolean>()
+    val _posicionPictoClicked = SingleLiveEvent<Int>()
+    val _cerrarFragment = SingleLiveEvent<Boolean>()
+    val _queryBusqueda = SingleLiveEvent<String>()
+    val _pictoBusquedaAdded = SingleLiveEvent<Pictograma>()
+    val _removePicto = SingleLiveEvent<Pictograma>()
+    val _crearPictoClicked = SingleLiveEvent<Boolean>()
 
     @SuppressLint("IntentReset")
     fun abrirGaleria() {
@@ -75,19 +79,11 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
         }
     }
 
-    override fun categoriaCuaderno(posicion: Int, cuadernoId: Int){
-        if(posicion == listaPictoCuaderno.lastIndex && isPlanificador){
-            _lastPictoClicked.value = true
-        }else {
-            idCuaderno = cuadernoId
-            _posicionPictoClicked.value = posicion
-         }
-        }
-
+    //AdaptadorPictogramasCuaderno
     override fun pictogramaCuaderno(posicion: Int) {
-        if(posicion == listaPictogramas?.lastIndex && isPlanificador){
+       if(posicion == listaPictogramas?.lastIndex && isPlanificador){
             _crearPictoClicked.value = true
-        }
+       }
     }
 
     override fun addPicto(pictograma: Pictograma) {
@@ -100,6 +96,13 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
         _removePicto.value = pictograma
     }
 
-
-
+    //AdaptadorCategoriasCuaderno
+    override fun categoriaCuaderno(position: Int, cuadernoId: Int){
+        if(position == listaPictoCuaderno.lastIndex && isPlanificador){
+            _lastPictoClicked.value = true
+        }else {
+            idCuaderno = cuadernoId
+            _posicionPictoClicked.value = position
+        }
+    }
 }

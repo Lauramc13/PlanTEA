@@ -49,11 +49,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     var ruta : String? = null
     var posicionSelected = -1
 
-
-    val _dialogMessage: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
-
+    val _dialogMessage = SingleLiveEvent<String>()
     val _listaPictogramas = MutableLiveData<ArrayList<Pictograma>>()
     var textInputContent = ""
 

@@ -42,17 +42,14 @@ import java.util.Stack
 
 
 class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener, AdaptadorPresentacion.OnItemSelectedListener {
-
-    var itemList = ArrayList<Pictograma>()
-
     var fechaSeleccionada : LocalDate = LocalDate.now()
     var _diaText = MutableLiveData<String>()
-    val _planLiveData: MutableLiveData<ArrayList<Pictograma>> = MutableLiveData()
     val _tituloLiveData: MutableLiveData<String> = MutableLiveData()
     val _fechaActual = MutableLiveData<String>()
     val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
-    //val _imageAvatar = MutableLiveData<Uri>()
-    val _dismissDialog = MutableLiveData<Boolean>()
+    val _planLiveData: MutableLiveData<ArrayList<Pictograma>> = MutableLiveData()
+    var _pasosCompletados = SingleLiveEvent<Stack<Int>>()
+
     var speechInProgress = false
 
     lateinit var recyclerView: RecyclerView
@@ -61,7 +58,6 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     var plan = Planificacion()
     lateinit var adaptador: AdaptadorPresentacion
     var currentDialog: Dialog? = null
-    var _pasosCompletados = MutableLiveData<Stack<Int>>()
 
     var dialog: Dialog? = null
 

@@ -17,16 +17,18 @@ import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CuadernoActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.UUID
 
@@ -43,42 +45,6 @@ class CuadernoPictoEditFragment : Fragment(){
 
     private val viewModel: CuadernoViewModel by activityViewModels()
 
-    fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?, listaPicto: ArrayList<String>){
-        adaptador.isBusqueda = true
-        adaptador.listaPictosAgregados = listaPicto
-        viewModel.listaPictogramas = newPictogramasList!!
-        adaptador.notifyDataSetChanged()
-        imageCerrar.visibility = View.INVISIBLE
-        imageAtras.visibility = View.VISIBLE
-    }
-
-    fun updateDataRemove(pictograma: Pictograma){
-        adaptador.isBusqueda = false
-        viewModel.listaPictogramas!!.remove(pictograma)
-        adaptador.notifyDataSetChanged()
-        imageCerrar.visibility = View.VISIBLE
-        imageAtras.visibility = View.INVISIBLE
-    }
-
-    private fun updateData(newPictogramasList: ArrayList<Pictograma>?){
-        viewModel.listaPictogramas!!.clear()
-        if (newPictogramasList != null) {
-            viewModel.listaPictogramas!!.addAll(newPictogramasList)
-        }
-
-        if(viewModel.listaPictogramas!!.lastIndex != 0) {
-            viewModel.listaPictogramas!!.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
-        }
-
-        adaptador.isBusqueda = false
-        activity?.runOnUiThread {
-            adaptador.notifyDataSetChanged()
-        }
-
-        imageCerrar.visibility = View.VISIBLE
-        imageAtras.visibility = View.INVISIBLE
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
@@ -89,8 +55,8 @@ class CuadernoPictoEditFragment : Fragment(){
         viewModel.idCuaderno =  (bundle["idCuaderno"] as Int)
         viewModel.tituloCuaderno = (bundle["tituloCuaderno"] as String)
 
-        if(viewModel.listaPictogramas!!.lastIndex != 0) {
-            viewModel.listaPictogramas!!.add(Pictograma("AAÑADIR PICTOGRAMA", "archivo", 0, 0))
+        if(viewModel.listaPictogramas!!.lastIndex != 0 && viewModel.listaPictogramas!![viewModel.listaPictogramas!!.lastIndex].titulo != "AÑADIR PICTOGRAMA") {
+            viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
         }
 
         searchBar = vista.findViewById(R.id.searchViewPicto)
@@ -105,6 +71,8 @@ class CuadernoPictoEditFragment : Fragment(){
 
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true
+
+        val parentActivity = activity as CuadernoActivity?
 
         adaptador = viewModel.isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, viewModel, it1) }}!!
         adaptador.isBusqueda = viewModel.isBusqueda
@@ -143,15 +111,9 @@ class CuadernoPictoEditFragment : Fragment(){
         }
         viewModel.createPickMedia(this, context)
 
-        observers()
+        //observers()
 
         return vista
-    }
-
-    fun observers(){
-        viewModel._crearPictoClicked.observe(viewLifecycleOwner){
-            mostrarDialogoCrearPicto()
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -175,7 +137,44 @@ class CuadernoPictoEditFragment : Fragment(){
         })
     }
 
-    private fun mostrarDialogoCrearPicto(){
+    fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?, listaPicto: ArrayList<String>){
+        adaptador.isBusqueda = true
+        adaptador.listaPictosAgregados = listaPicto
+        viewModel.listaPictogramas = newPictogramasList!!
+        adaptador.notifyDataSetChanged()
+        imageCerrar.visibility = View.INVISIBLE
+        imageAtras.visibility = View.VISIBLE
+    }
+
+    fun updateDataRemove(pictograma: Pictograma){
+        adaptador.isBusqueda = false
+        if(!viewModel.isBusqueda){
+            adaptador.notifyItemRemoved(viewModel.listaPictogramas!!.indexOf(pictograma))
+        }
+        viewModel.listaPictogramas!!.remove(pictograma)
+    }
+
+
+    private fun updateData(newPictogramasList: ArrayList<Pictograma>?){
+        viewModel.listaPictogramas!!.clear()
+        if (newPictogramasList != null) {
+            viewModel.listaPictogramas!!.addAll(newPictogramasList)
+        }
+
+        if(viewModel.listaPictogramas!!.lastIndex != 0) {
+            viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+        }
+
+        adaptador.isBusqueda = false
+        activity?.runOnUiThread {
+            adaptador.notifyDataSetChanged()
+        }
+
+        imageCerrar.visibility = View.VISIBLE
+        imageAtras.visibility = View.INVISIBLE
+    }
+
+    fun mostrarDialogoCrearPicto(){
         val dialogo = context?.let { Dialog(it) }
         dialogo!!.setContentView(R.layout.dialogo_crear_pictograma_cuaderno)
         dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -218,9 +217,9 @@ class CuadernoPictoEditFragment : Fragment(){
             val lastIndex = viewModel.listaPictogramas!!.size - 1
             viewModel.listaPictogramas!!.add(lastIndex, newPictograma)
             viewModel.originalPictogramas?.add(newPictograma)
-
         }
-        adaptador.notifyDataSetChanged()
+
+        adaptador.notifyItemChanged(viewModel.listaPictogramas!!.lastIndex-1)
     }
 
 }

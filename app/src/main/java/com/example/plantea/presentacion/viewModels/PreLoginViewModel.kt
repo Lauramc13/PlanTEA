@@ -26,8 +26,8 @@ class PreLoginViewModel: ViewModel() {
     var email =""
     var password = ""
 
-    val _errorEmail = MutableLiveData<String>()
-    val _errorPassword = MutableLiveData<String>()
+    val _errorEmail = SingleLiveEvent<String>()
+    val _errorPassword = SingleLiveEvent<String>()
 
     fun initGoogleSignInClient(context: Context) {
         auth = Firebase.auth

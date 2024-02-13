@@ -7,9 +7,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
@@ -25,7 +27,6 @@ class CuadernoActivity : AppCompatActivity() {
     private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
     private var fragmentCuadernoPictoEdit = CuadernoPictoEditFragment()
     private var fragmentPrincipal = PrincipalFragment()
-
 
     private val viewModel by viewModels<CuadernoViewModel>()
 
@@ -75,23 +76,6 @@ class CuadernoActivity : AppCompatActivity() {
     }
 
     fun observers(){
-        viewModel._pictoBusquedaAdded.observe(this) {
-            viewModel.originalPictogramas?.add(it)
-            viewModel.picto.guardarPictoCuaderno(this, it.id, it.titulo, it.imagen, viewModel.idCuaderno)
-        }
-
-        viewModel._removePicto.observe(this) {
-            if(viewModel.sourceAPI){
-                viewModel.picto.borrarPictoCuadernoBusqueda(this, it.id, viewModel.idCuaderno)
-            }else{
-                viewModel.picto.borrarPictoCuaderno(this, it.id, viewModel.idCuaderno)
-            }
-            viewModel.originalPictogramas?.remove(it)
-            if(!viewModel.isBusqueda){
-                fragmentCuadernoPictoEdit.updateDataRemove(it)
-            }
-        }
-
         viewModel._cerrarFragment.observe(this) {
             val bundle = Bundle()
             val fragment = PrincipalFragment()
@@ -101,12 +85,42 @@ class CuadernoActivity : AppCompatActivity() {
             transaction = supportFragmentManager.beginTransaction()
             transaction!!.replace(R.id.layout_fragments, fragment)
             transaction!!.commit()
+
         }
 
         viewModel._queryBusqueda.observe(this) {
             viewModel.listaPictogramas?.clear()
             getPictogramas(it)
             viewModel.isBusqueda = true
+        }
+
+        viewModel._pictoBusquedaAdded.observe(this) {
+            viewModel.originalPictogramas?.add(it)
+            viewModel.picto.guardarPictoCuaderno(this, it.id, it.titulo, it.imagen, viewModel.idCuaderno)
+        }
+
+        viewModel._crearPictoClicked.observe(this) {
+            fragmentCuadernoPictoEdit.mostrarDialogoCrearPicto()
+        }
+
+        viewModel._removePicto.observe(this) {
+             if(viewModel.sourceAPI){
+                viewModel.picto.borrarPictoCuadernoBusqueda(this, it.id, viewModel.idCuaderno)
+            }else{
+                viewModel.picto.borrarPictoCuaderno(this, it.id, viewModel.idCuaderno)
+            }
+            viewModel.listaPictosAgregados.remove(it.id)
+
+            for (i in 0 until viewModel.originalPictogramas!!.size) {
+                if (viewModel.originalPictogramas!![i].id == it.id) {
+                    viewModel.originalPictogramas?.removeAt(i)
+                    break
+                }
+            }
+
+            if(!viewModel.isBusqueda){
+                fragmentCuadernoPictoEdit.updateDataRemove(it)
+            }
         }
     }
 
@@ -158,4 +172,6 @@ class CuadernoActivity : AppCompatActivity() {
         transaction!!.addToBackStack(null)
         transaction!!.commit()
     }
+
+
 }

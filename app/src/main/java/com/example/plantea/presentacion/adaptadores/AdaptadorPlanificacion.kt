@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, private val listener: OnItemSelectedListener) : RecyclerView.Adapter<ViewHolderPlanificacion>() {
     interface OnItemSelectedListener{
-        fun onHistoriaClick(position: Int) : Boolean
+        fun onHistoriaClick(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanificacion {
@@ -87,10 +87,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
 
             //obtenemos la posicion del pictograma y guardamos en el objeto Pictograma la historia, si el pictograma tenia historia de antes tambien la mostramos
             historia.setOnClickListener {
-                val position = bindingAdapterPosition
-                if(listener.onHistoriaClick(position)){
-                    notifyItemChanged(position)
-                }
+                listener.onHistoriaClick(bindingAdapterPosition)
             }
         }
 
