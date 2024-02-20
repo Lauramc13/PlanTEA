@@ -63,7 +63,12 @@
         <item name="greenLight">@color/md_theme_dark_inversePrimary</item>
         <item name="subColorBackground">@color/md_theme_dark_background2</item>
         <item name="shadow">@color/md_theme_dark_scrim</item>
-
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
+        <item name="celdaCalendario">@color/md_theme_dark_inversePrimary</item>
+        <item name="celdaCalendarioStroke">@color/md_theme_dark_secondaryContainer</item>
+        <item name="celdaCalendario2">@color/yellowDark</item>
+        <item name="celdaCalendarioStroke2">@color/yellowDarkest</item>
 
     </style>
 
@@ -111,6 +116,13 @@
         <item name="elevation">0dp</item>
         <item name="android:backgroundTint">@color/md_theme_dark_primary</item>
         <item name="tint">@color/md_theme_dark_onPrimary</item>
+    </style>
+
+    <style name="buttonsColorsCategorias" parent="Widget.Material3.FloatingActionButton.Secondary">
+        <item name="elevation">0dp</item>
+        <item name="android:backgroundTint">@color/md_theme_dark_primary</item>
+        <item name="tint">@color/md_theme_dark_inverseOnSurface</item>
+
     </style>
 
 
@@ -221,6 +233,19 @@
     <style name="cards2" parent="@style/Widget.Material3.Button.ElevatedButton">
         <item name="colorSurface">#258F8B</item>
         <item name="android:solidColor">#258F8B</item>
+    </style>
+
+
+    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
+        <!-- <item name="backgroundTint">@color/md_theme_light_inverseSurface</item> -->
+        <item name="backgroundTint">@color/md_theme_dark_secondary</item>
+        <item name="shapeAppearance">@style/snackbarShape</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="Widget.App.Snackbar.TextView" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:textColor">@color/md_theme_dark_surfaceVariant</item>
+        <item name="android:textSize">@dimen/snackBarText</item>
     </style>
 
 </resources>

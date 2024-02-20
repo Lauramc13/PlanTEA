@@ -1,7 +1,6 @@
 package com.example.plantea.presentacion.viewModels
 
 import android.graphics.drawable.Drawable
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Usuario

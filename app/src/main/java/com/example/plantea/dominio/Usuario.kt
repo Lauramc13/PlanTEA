@@ -62,8 +62,8 @@ class Usuario {
         return imagenObjeto
     }
 
-    fun crearUsuario(name:String?, email: String?, username: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.crearUsuario(name, email, username, objeto, nameTEA, actividad)
+    fun crearUsuario(name:String?, email: String?, password: String?, username: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.crearUsuario(name, email, password, username, objeto, nameTEA, actividad)
         return resultado!!
     }
 
@@ -75,12 +75,8 @@ class Usuario {
     fun confirmarPass(email: String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
         resultado = gestorUsuario.cambiarPassword(email, passwordVieja, passwordNueva, actividad)
         return resultado!!
-    }
-
-    fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
-        return gestorUsuario.comprobarUsuario(email, password, actividad)
     }*/
-
+    
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario{
         return gestorUsuario.obtenerUsuario(email, actividad)
     }
@@ -104,6 +100,10 @@ class Usuario {
 
     fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario:String?, actividad: Activity?) {
         return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, actividad)
+    }
+
+    fun checkCredentials(email: String, password: String, actividad: Activity?): Boolean {
+        return gestorUsuario.checkCredentials(email, password, actividad)
     }
 
    /* fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {

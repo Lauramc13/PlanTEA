@@ -375,6 +375,4 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     override fun onSpeechDone() {
         iconoEscuchar.text = getString(R.string.str_escuchar)
     }
-
-
 }

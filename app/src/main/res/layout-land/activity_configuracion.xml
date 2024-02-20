@@ -185,6 +185,21 @@
                             android:textColor="?colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+
+
+                    <Button
+                        android:id="@+id/buttonContrasenia"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:contentDescription="Boton para cambiar contraseña del usuario"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/item_password"
+                        android:textColor="#203130"
+                        android:textSize="@dimen/button"
+                        android:textAllCaps="true"
+                        app:cornerRadius="25dp"
+                        android:layout_marginTop="20dp" />
                 </LinearLayout>
 
 

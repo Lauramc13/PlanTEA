@@ -9,10 +9,10 @@ class GestionUsuarios {
     private var resultado = false
 
 
-    fun crearUsuario( name: String?, email: String?, username: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
+    fun crearUsuario( name: String?, email: String?, password: String?, username: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarUsuario(email, username, name, objeto, nameTEA)
+        resultado = conectorBD!!.insertarUsuario(email, password, username, name, objeto, nameTEA)
         conectorBD!!.cerrar()
         return resultado
     }
@@ -86,6 +86,14 @@ class GestionUsuarios {
         conectorBD!!.abrir()
         conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario)
         conectorBD!!.cerrar()
+    }
+
+    fun checkCredentials(email: String, password: String, actividad: Activity?): Boolean{
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        val resultado = conectorBD!!.checkCredentials(email, password)
+        conectorBD!!.cerrar()
+        return resultado
     }
 
    /* fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {

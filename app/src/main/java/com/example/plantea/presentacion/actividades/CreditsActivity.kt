@@ -4,9 +4,7 @@ import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 
@@ -25,12 +23,13 @@ class CreditsActivity : AppCompatActivity(){
 
         terms.paintFlags = terms.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         terms.setOnClickListener{
-            Toast.makeText(this, "TODO: ESTA PANTALLA NO ESTA DISPONIBLE", Toast.LENGTH_LONG).show()
+            CommonUtils.showSnackbar(it, this, "TODO: ESTA PANTALLA NO ESTA DISPONIBLE")
+
             //HACER UN DIALOGO CON LOS TERMINOS DE SERVICIO
         }
         privacy.paintFlags = privacy.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         privacy.setOnClickListener{
-            Toast.makeText(this, "TODO: ESTA PANTALLA NO ESTA DISPONIBLE", Toast.LENGTH_LONG).show()
+            CommonUtils.showSnackbar(it, this, "TODO: ESTA PANTALLA NO ESTA DISPONIBLE")
             //HACER UN DIALOGO CON LA POLITICA DE PRIVACIDAD
         }
 

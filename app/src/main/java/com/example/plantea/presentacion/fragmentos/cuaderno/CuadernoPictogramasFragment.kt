@@ -52,7 +52,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
 
         lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
         constraintLayout = vista.findViewById(R.id.frameLayout)
-        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout)
+        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout, 150, 200)
 
         context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val adaptador = viewModel.isPlanificador?.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
@@ -114,7 +114,6 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 // Write code to perform some action when touch is stopped.
-                // Toast.makeText(getContext(), "Progress is " + seekBar.getProgress() + "%", Toast.LENGTH_SHORT).show();
             }
         })
         dialog.show()

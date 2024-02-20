@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/lbl_nuevoEvento"
                 android:fontFamily="@font/poppins_medium"
                 android:textAlignment="center"
@@ -48,7 +48,6 @@
                 style="@style/cornerRadiusEvento"
                 android:layout_marginBottom="10dp"
                 android:textSize="18sp" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -192,6 +191,18 @@
                 </androidx.appcompat.widget.SwitchCompat>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/lbl_planificacionesDisponibles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Planificaciones disponibles:"
+                android:textColor="?colorOnSurface"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout"
@@ -209,7 +220,7 @@
                     android:text="@string/lbl_mensaje"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

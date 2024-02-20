@@ -39,6 +39,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     var idUsuario = "0"
     val _fechaActual = MutableLiveData<String>()
+    val _fechaSeleccionada = MutableLiveData<LocalDate>()
 
     var isDiaSeleccionado = false
 
@@ -137,7 +138,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         if(checkBoxMin || checkBoxHora || checkBoxDia || checkBoxPer){
             crearNotificacion(context, cita.fecha, CalendarioUtilidades.formatoHoraAviso(cita.hora), cita.nombre, id)
         }
-
     }
 
     fun planificar(context: Context) {
@@ -166,8 +166,10 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     override fun diaSeleccionado(context: Context?, fecha: LocalDate) {
         CalendarioUtilidades.fechaSeleccionada = fecha
+        _fechaSeleccionada.value = fecha
         isDiaSeleccionado = true
         obtenerVistaMes()
+
     }
 
     fun configureUser(prefs : android.content.SharedPreferences, context: Context){

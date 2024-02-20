@@ -16,8 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.ConfiguracionViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 
 import java.util.*
@@ -67,7 +69,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         txtObjeto = findViewById(R.id.txt_nombreObjeto)
 
         val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
-        //val btnPassword : Button= findViewById(R.id.buttonContrasenia)
+        val btnPassword : Button= findViewById(R.id.buttonContrasenia)
         //val btnNotificacion : SwitchCompat = findViewById(R.id.switch_notificacion)
         val lblInfoUsuario : SwitchCompat = findViewById(R.id.lbl_infoUsuarioTEA)
         val lblObjeto : SwitchCompat = findViewById(R.id.lbl_objeto)
@@ -107,6 +109,12 @@ class ConfiguracionActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, CreditsActivity::class.java)
             startActivity(intent)
         }
+
+        btnPassword.setOnClickListener {
+            val intent = Intent(applicationContext, PasswordActivity::class.java)
+            startActivity(intent)
+        }
+
 
         //Notificaciones
         /*val notificacionActiva = prefs.getBoolean("notificaciones", false)
@@ -168,9 +176,9 @@ class ConfiguracionActivity : AppCompatActivity() {
     }
 
     fun observers(){
-        viewModel._toast.observe(this, androidx.lifecycle.Observer {
-            Toast.makeText(applicationContext, it, Toast.LENGTH_LONG).show()
-        })
+        viewModel._toast.observe(this) {
+            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, it)
+        }
     }
 
     fun imgClick(activity: Class<*>){
@@ -262,7 +270,8 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val usuario = Usuario()
                 usuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
             }catch (e: Exception){
-                Toast.makeText(applicationContext, "Error al guardar la configuración", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al guardar la configuración")
+
             }
             finish()
         }

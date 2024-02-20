@@ -5,23 +5,19 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.ContextCompat.getString
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.EncryptionUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class PreLoginViewModel: ViewModel() {
     var usuario = Usuario()
-    private lateinit var auth: FirebaseAuth
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
+   // private lateinit var firebaseAuth: FirebaseAuth
 
     var email =""
     var password = ""
@@ -30,16 +26,16 @@ class PreLoginViewModel: ViewModel() {
     val _errorPassword = SingleLiveEvent<String>()
 
     fun initGoogleSignInClient(context: Context) {
-        auth = Firebase.auth
+        //auth = Firebase.auth
 
-        FirebaseApp.initializeApp(context)
+      //  FirebaseApp.initializeApp(context)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(context, R.string.client_id_google))
             .requestEmail()
             .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(context, gso)
-        firebaseAuth = FirebaseAuth.getInstance()
+        //firebaseAuth = FirebaseAuth.getInstance()
     }
 
     fun comprobarTextViewsVacios(emailText: String, passwordText: String): Boolean {
@@ -55,31 +51,11 @@ class PreLoginViewModel: ViewModel() {
         return true
     }
 
-    fun iniciarSesion(activity: Activity, emailText: String, passwordText: String, callback: (Boolean) -> Unit = { _ -> }) {
-        auth.signInWithEmailAndPassword(emailText, passwordText)
-        .addOnCompleteListener(activity) { task ->
-            if (task.isSuccessful) {
-                Log.d("pruebas", "signInWithEmail:success")
-                callback(true)
-            } else {
-                Log.w("pruebas", "signInWithEmail:failure", task.exception)
-                callback(false)
-            }
-        }
+    fun iniciarSesion(activity: Activity, context: Context, emailText: String, passwordText: String): Boolean {
+        val passwordCifrada = EncryptionUtils.getEncrypt(passwordText, context)
+        return usuario.checkCredentials(emailText, passwordCifrada, activity)
     }
 
-    fun restablecerContrasesnia(): Boolean{
-        var suscessful = false
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-            .addOnCompleteListener{task ->
-                suscessful = if(task.isSuccessful){
-                    true
-                }else{
-                    true
-                }
-            }
-        return suscessful
-    }
 
     fun configurarDatos(email: String, prefs: SharedPreferences, activity: Activity){
         val user = usuario.obtenerUsuario(email, activity)

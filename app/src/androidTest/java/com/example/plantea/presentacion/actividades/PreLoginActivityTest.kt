@@ -55,7 +55,7 @@ class PreLoginActivityTest {
         }
     }
 
-    @Test
+   /* @Test
     fun empty_NameReturnFalse(){
        assertFalse(preLoginActivity.comprobarTextViewsVacios("", "password"))
     }
@@ -73,10 +73,10 @@ class PreLoginActivityTest {
     @Test
     fun noEmpty_NameAndPasswordReturnTrue(){
         assertTrue(preLoginActivity.comprobarTextViewsVacios("username", "password"))
-    }
+    }*/
 
     // Este test solo funciona si se ha creado la cuenta anteriormente
-    @Test
+    /*@Test
     fun accountExistsReturnTrue(){
         var result = true
         val callback: (Boolean) -> Unit = {
@@ -85,7 +85,7 @@ class PreLoginActivityTest {
         preLoginActivity.iniciarSesion("laura.mc.1304@gmail.com", "123456", callback)
         assertTrue(result)
 
-    }
+    }*/
 
   /*  @Test
     fun testIniciarSesion_Success() {

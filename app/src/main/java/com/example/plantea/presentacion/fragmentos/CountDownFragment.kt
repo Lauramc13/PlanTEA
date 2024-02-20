@@ -10,12 +10,12 @@ import android.view.ViewGroup
 import android.view.animation.PathInterpolator
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ActividadActivity
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.viewModels.ActividadViewModel
 import com.example.plantea.presentacion.viewModels.CountDownViewModel
 import com.google.android.material.button.MaterialButton
@@ -107,7 +107,7 @@ class CountDownFragment: Fragment() {
                 val parentActivity = requireActivity() as ActividadActivity
                 parentActivity.stopVideo()
                 stopTimer()
-                Toast.makeText(requireContext(), "Se ha acabado el tiempo!", Toast.LENGTH_SHORT).show()
+                CommonUtils.showSnackbar(vista, requireContext(), "Se ha acabado el tiempo!")
             }
         }
         countDownTimer.start()

@@ -7,45 +7,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.Categoria
+import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.adaptadores.AdaptadorCategorias
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
 
 class CategoriasFragment : Fragment() {
     lateinit var actividad: Activity
+    private lateinit var adaptador : AdaptadorCategorias
 
     private val viewModel: CrearPlanViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val vista = inflater.inflate(R.layout.fragment_categorias, container, false)
 
-        val cardMedico = vista.findViewById<CardView>(R.id.categoria_medico)
-        val cardCompra = vista.findViewById<CardView>(R.id.categoria_compra)
-        val cardPeluqueria = vista.findViewById<CardView>(R.id.categoria_peluqueria)
-        val cardColegio = vista.findViewById<CardView>(R.id.categoria_colegio)
-        val cardFavoritos = vista.findViewById<CardView>(R.id.categoria_favoritos)
-        val cardAccion = vista.findViewById<CardView>(R.id.categoria_accion)
-        val cardDesplazamiento = vista.findViewById<CardView>(R.id.categoria_desplazamiento)
-        val cardEntretenimiento = vista.findViewById<CardView>(R.id.categoria_entretenimiento)
-        val cardLugares = vista.findViewById<CardView>(R.id.categoria_lugares)
-        val cardRecompensa = vista.findViewById<CardView>(R.id.categoria_recompensa)
-
         if(savedInstanceState == null) {
             val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
             viewModel.setIdUsuario(prefs)
         }
 
-        cardMedico.setOnClickListener { viewModel.mostrarCategoria(1, this.requireContext()) }
-        cardPeluqueria.setOnClickListener { viewModel.mostrarCategoria(2, this.requireContext()) }
-        cardCompra.setOnClickListener { viewModel.mostrarCategoria(3, this.requireContext())}
-        cardColegio.setOnClickListener { viewModel.mostrarCategoria(4, this.requireContext())}
-        cardLugares.setOnClickListener { viewModel.mostrarCategoria(5, this.requireContext())}
-        cardDesplazamiento.setOnClickListener { viewModel.mostrarCategoria(6, this.requireContext())}
-        cardAccion.setOnClickListener { viewModel.mostrarCategoria(7, this.requireContext())}
-        cardEntretenimiento.setOnClickListener { viewModel.mostrarCategoria(8, this.requireContext())}
-        cardRecompensa.setOnClickListener { viewModel.mostrarCategoria(9, this.requireContext())}
-        cardFavoritos.setOnClickListener { viewModel.mostrarCategoria(10, this.requireContext())}
+        val categoria = Categoria()
+        viewModel.listaCategorias = categoria.obtenerCategorias(actividad, viewModel.idUsuario)
+        categoria.titulo = "Añadir categoria"
+        categoria.color = "default"
+        viewModel.listaCategorias.add(viewModel.listaCategorias.size, categoria)
+
+        adaptador = AdaptadorCategorias(viewModel.listaCategorias, viewModel)
+        val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
+        val recyclerCategorias = vista.findViewById<RecyclerView>(R.id.lst_categorias)
+        CommonUtils.getGridValueCuaderno(vista, context, recyclerCategorias, constraintLayout, 140, 180)
+
+        //recyclerCategorias.layoutManager =  GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        recyclerCategorias.adapter = adaptador
+
+        viewModel._createdCategoria.observe(viewLifecycleOwner) {
+            if (it) {
+                adaptador.notifyItemInserted(viewModel.listaCategorias.size-2)
+            }
+        }
+
+        viewModel._deletedCategoria.observe(viewLifecycleOwner) {
+            if (it != -1) {
+                adaptador.notifyItemRemoved(it)
+            }
+        }
 
         return vista
     }

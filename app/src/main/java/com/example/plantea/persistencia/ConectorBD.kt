@@ -171,8 +171,16 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar una nueva subcategoria*/
-    fun insertarSubcategoria(nombre: String?) {
+    /*fun insertarSubcategoria(nombre: String?, idUsuario: String) {
         db!!.execSQL("INSERT INTO Categoria (titulo) VALUES ('$nombre')")
+    }*/
+
+    fun insertarCategoria(nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String) {
+        db!!.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color, id_usuario) VALUES ('$nombre', '$imagen', '$principal', '$color', '$idUsuario')")
+    }
+
+    fun eliminarCategoria(idUsuario: String, idCategoria: Int) {
+        db!!.execSQL("DELETE FROM Categoria WHERE id = '$idCategoria' AND id_usuario = '$idUsuario'")
     }
 
     /*Obtener identificador de una categoria*/
@@ -185,6 +193,11 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT titulo from Categoria", null)
     }
 
+    fun listarCategoriasPrincipales(idUsuario: String): Cursor {
+        return db!!.rawQuery("SELECT id, titulo, imagen, color from Categoria WHERE principal is true AND (id_usuario = '$idUsuario' OR id_usuario IS NULL)", null)
+    }
+
+
     /*Insertamos la contraseña del usuario*/
     /*fun insertarPass(pass: String?): Boolean {
         //Creamos el registro a insertar como objeto ContentValues
@@ -196,11 +209,12 @@ class ConectorBD(ctx: Context?) {
     }*/
 
     /*Insertamos el usuario*/
-    fun insertarUsuario(email: String?, username:String?, name: String?, objeto:String?, nameTEA:String?): Boolean {
+    fun insertarUsuario(email: String?, password:String?, username:String?, name: String?, objeto:String?, nameTEA:String?): Boolean {
         //Creamos el registro a insertar como objeto ContentValues
         val nuevoUsuario = ContentValues()
         nuevoUsuario.put("email", email)
         nuevoUsuario.put("username", username)
+        nuevoUsuario.put("password", password)
         nuevoUsuario.put("name", name)
         nuevoUsuario.put("objeto", objeto)
         nuevoUsuario.put("nameTEA", nameTEA)
@@ -409,6 +423,14 @@ class ConectorBD(ctx: Context?) {
     fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?) {
         val query = "UPDATE Usuario SET name = '$nombreUsuarioPlanificador', username = '$username', nameTEA = '$nombreUsuarioTEA', objeto = '$nombreObjeto', imagen = '$rutaPlanificador', imagenTEA = '$rutaUsuarioTEA', imagenObjeto = '$rutaObjeto' WHERE id = '$idUsuario'"
         db?.execSQL(query)
+    }
+
+    fun checkCredentials(email: String, password: String): Boolean {
+        val cursor = db!!.rawQuery("SELECT COUNT(*) FROM Usuario WHERE email = ? AND password = ?", arrayOf(email, password))
+        cursor.moveToFirst()
+        val count = cursor.getInt(0)
+        cursor.close()
+        return count > 0
     }
 
 

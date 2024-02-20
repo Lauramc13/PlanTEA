@@ -16,6 +16,7 @@ class GestionCategorias {
         if (c.moveToFirst()) {
             do {
                 listaCategorias!!.add(c.getString(0))
+
             } while (c.moveToNext())
         }
         c.close()
@@ -36,10 +37,45 @@ class GestionCategorias {
         return categoria
     }
 
-    fun insertarSubcategoria(actividad: Activity?, nombre: String?) {
+    fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario:String): ArrayList<Categoria> {
+        conectorBD = ConectorBD(actividad)
+        val listCategorias = ArrayList<Categoria>()
+        conectorBD!!.abrir()
+        val c = conectorBD!!.listarCategoriasPrincipales(idUsuario)
+        if (c.moveToFirst()) {
+            do {
+                val categoria = Categoria()
+                categoria.categoria = c.getInt(0)
+                categoria.titulo = c.getString(1)
+                categoria.imagen = c.getString(2)
+                categoria.color = c.getString(3)
+                listCategorias.add(categoria)
+
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD!!.cerrar()
+        return listCategorias
+    }
+
+   /* fun insertarSubcategoria(actividad: Activity?, nombre: String?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         conectorBD!!.insertarSubcategoria(nombre)
+        conectorBD!!.cerrar()
+    }*/
+
+    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.insertarCategoria(nombre, imagen, principal, color, idUsuario)
+        conectorBD!!.cerrar()
+    }
+
+    fun eliminarCategoria(actividad: Activity?, idUsuario: String, idCategoria: Int) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.eliminarCategoria(idUsuario, idCategoria)
         conectorBD!!.cerrar()
     }
 }

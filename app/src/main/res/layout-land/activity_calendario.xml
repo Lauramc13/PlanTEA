@@ -50,14 +50,20 @@
                 android:contentDescription="Mes y flechas de navegación atras/delante"
                 android:orientation="horizontal">
 
-                <ImageView
+                <Button
                     android:id="@+id/image_calendar_anterior"
+                    style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:layout_weight="1"
-                    android:contentDescription="Flecha mes anterior"
-                    app:srcCompat="@drawable/ic_baseline_arrow_back_32"
-                    app:tint="?colorOnSurface" />
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    app:icon="@drawable/svg_chevron_left"
+                    app:iconGravity="textStart"
+                    app:iconSize="25dp"
+                    android:contentDescription="Flecha mes siguiente"
+                    />
 
                 <TextView
                     android:id="@+id/lbl_mes"
@@ -72,109 +78,21 @@
                     android:textColor="?colorOnSurface"
                     android:textSize="@dimen/subtitle" />
 
-                <ImageView
+                <Button
                     android:id="@+id/image_calendar_siguiente"
+                    style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    app:icon="@drawable/svg_chevron_right"
+                    app:iconGravity="textStart"
+                    app:iconSize="25dp"
                     android:contentDescription="Flecha mes siguiente"
-                    app:srcCompat="@drawable/ic_baseline_arrow_forward_32"
-                    app:tint="?colorOnSurface" />
+                    />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/lbl_lunes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Lunes"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="LUN"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <TextView
-                    android:id="@+id/lbl_martes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Martes"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="MAR"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <TextView
-                    android:id="@+id/lbl_miercoles"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Miércoles"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="MIE"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <TextView
-                    android:id="@+id/lbl_jueves"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Jueves"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="JUE"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <TextView
-                    android:id="@+id/lbl_viernes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:autoSizeTextType="uniform"
-                    android:contentDescription="Viernes"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="VIE"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <TextView
-                    android:id="@+id/lbl_sabado"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Sábado"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="SAB"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <TextView
-                    android:id="@+id/lbl_domingo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="Domingo"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="DOM"
-                    android:textAlignment="center"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.fragmentos
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -110,7 +111,7 @@ class NavigationTopFragment: Fragment() {
                     activity?.finish()
                     activity?.finishAffinity()
                 }else{
-                    navigationHandler.crearDialogoLogin(this.requireContext())
+                    navigationHandler.crearDialogoLogin(this.requireContext(), this.requireActivity())
             }
         }
 

@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -93,6 +92,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         diaEvento.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){
             crearEvento.visibility = View.GONE
+            mensaje.text = "No se pueden crear eventos en fechas pasadas"
         }
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
@@ -117,7 +117,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         icono_cerrar_login = dialogEvento.findViewById(R.id.icono_CerrarDialogo)
         btn_cancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
         btn_eliminar.setOnClickListener {
-            Toast.makeText(context, "Evento eliminado", Toast.LENGTH_SHORT).show()
+            CommonUtils.showSnackbar(vista, actividad, "Evento eliminado")
             context?.let { it1 -> viewModel.cancelarNotificacion(it1, viewModel.eventos[posicion].id) }
             viewModel.evento.eliminarEvento(actividad, viewModel.eventos[posicion].id)
             viewModel.eventos.removeAt(posicion)
@@ -149,7 +149,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
             if (contador == 0) {
                 viewModel.evento.cambiarVisibilidad(actividad, 1, viewModel.eventos[posicion].id)
             } else {
-                Toast.makeText(context, "Solo un evento puede ser visible", Toast.LENGTH_SHORT).show()
+                CommonUtils.showSnackbar(vista, actividad, "Solo un evento puede ser visible")
             }
         }
         iniciarAdaptadorEvento()
@@ -168,7 +168,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         if (intent.resolveActivity(actividad.packageManager) != null) {
             startActivity(intent)
         } else {
-            Toast.makeText(context, "No hay aplicaciones a las que exportar el evento", Toast.LENGTH_SHORT).show()
+            CommonUtils.showSnackbar(vista, actividad, "No hay aplicaciones a las que exportar el evento")
         }
     }
 }

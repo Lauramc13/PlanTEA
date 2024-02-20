@@ -12,20 +12,24 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 import com.example.plantea.presentacion.viewModels.PreLoginViewModel
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
 
 class PreLoginActivity : AppCompatActivity(){
     private lateinit var btnLogin: Button
     private lateinit var btnRegister: TextView
-    private lateinit var btnOlvidarPass: TextView
+   // private lateinit var btnOlvidarPass: TextView
     private lateinit var email: TextInputLayout
     private lateinit var password: TextInputLayout
     private lateinit var background: ImageView
@@ -58,16 +62,16 @@ class PreLoginActivity : AppCompatActivity(){
         }
 
         signin.setOnClickListener {
-            Toast.makeText(this, "Iniciando sesión", Toast.LENGTH_SHORT).show()
-            GoogleSignIn.getLastSignedInAccount(this)
+            CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "Iniciando sesión")
+           // GoogleSignIn.getLastSignedInAccount(this)
             signInGoogle()
         }
 
         btnLogin = findViewById(R.id.btn_login)
         btnRegister = findViewById(R.id.btn_registrar)
-        btnOlvidarPass = findViewById(R.id.btn_olvidar)
+        //btnOlvidarPass = findViewById(R.id.btn_olvidar)
         btnRegister.paintFlags = btnRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        btnOlvidarPass.paintFlags = btnRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+       //btnOlvidarPass.paintFlags = btnRegister.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         btnLogin.setOnClickListener {
             email.error = null
@@ -76,22 +80,18 @@ class PreLoginActivity : AppCompatActivity(){
             val noTextViewVacios = viewModel.comprobarTextViewsVacios(email.editText?.text.toString(), password.editText?.text.toString())
 
             if (!noTextViewVacios) {
-                Toast.makeText(applicationContext, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),applicationContext, "Tienes que rellenar todos los campos")
             } else {
 
                 val emailText = email.editText?.text.toString().lowercase()
                 val passwordText = password.editText?.text.toString()
-                viewModel.iniciarSesion(this, emailText, passwordText) { success ->
-                    if (success) {
-                        viewModel.configurarDatos(emailText, prefs, this)
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        viewModel._errorEmail.value = "Correo o contraseña incorrectos"
-                        viewModel._errorPassword.value = "Correo o contraseña incorrectos"
-                        Toast.makeText(baseContext, "Las credenciales son incorrectas", Toast.LENGTH_SHORT).show()
-                    }
+                if(viewModel.iniciarSesion(this, this, emailText, passwordText)) {
+                    viewModel.configurarDatos(emailText, prefs, this)
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
+                    finish()
+                }else{
+                    viewModel._errorEmail.value = "El usuario o la contraseña son incorrectos"
+                    viewModel._errorPassword.value = "El usuario o la contraseña son incorrectos"
                 }
             }
         }
@@ -101,7 +101,7 @@ class PreLoginActivity : AppCompatActivity(){
             startActivity(intent)
         }
 
-        btnOlvidarPass.setOnClickListener{
+       /* btnOlvidarPass.setOnClickListener{
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dialogo_olvidar_password)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -115,17 +115,17 @@ class PreLoginActivity : AppCompatActivity(){
                     correo.error = "No puedes dejar el campo vacío"
                 }else{
                    if(viewModel.restablecerContrasesnia()){
-                       Toast.makeText(this, "Si el usuario existe se enviará un correo para restablecer la contraseña", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
+                       CommonUtils.showSnackbar(findViewById(android.R.id.content),applicationContext, "Si el usuario existe se enviará un correo para restablecer la contraseña")
+                       dialog.dismiss()
                    }else{
-                          Toast.makeText(this, "El correo introducido no es válido", Toast.LENGTH_LONG).show()
+                       CommonUtils.showSnackbar(findViewById(android.R.id.content),applicationContext, "El correo introducido no está registrado en la aplicación")
                    }
                 }
             }
 
             iconoCerrar.setOnClickListener { dialog.dismiss() }
             dialog.show()
-        }
+        }*/
 
         observers()
     }
@@ -171,5 +171,7 @@ class PreLoginActivity : AppCompatActivity(){
             Log.d("pruebas", "El resultado es: " + result.resultCode.toString() )
         }
     }
+
+
 
 }

@@ -83,53 +83,35 @@
 
     <FrameLayout
         android:id="@+id/contenedor_fragments"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="25dp"
+        app:layout_constraintWidth_percent="0.85"
         android:contentDescription="Contenedor de categorias de pictogramas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchViewPicto" />
 
-    <TextView
-        android:id="@+id/lbl_CrearPlanActividad"
-        android:fontFamily="@font/poppins_regular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="80dp"
-        android:text="@string/lbl_CrearPlanActividad"
-        android:contentDescription="Título de la planificación"
-        android:textColor="?colorOnSurface"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
-        app:layout_constraintEnd_toStartOf="@+id/txt_TituloPlan"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
     <EditText
         android:id="@+id/txt_TituloPlan"
         android:fontFamily="@font/poppins_medium"
-        android:layout_width="230dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="75dp"
-        android:ems="10"
-        android:theme="@style/AppTheme.CursorBubble"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:hint="Introduce un titulo..."
+        android:layout_marginTop="10dp"
+        style="@style/editTextPlan"
         android:contentDescription="Campo de texto de la planificación"
         android:textCursorDrawable="@null"
         android:textColor="?colorOnSurface"
         android:maxLength="14"
         android:inputType="textPersonName"
         android:textSize="22sp"
-        app:layout_constraintStart_toEndOf="@+id/lbl_CrearPlanActividad"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
     <Button
         android:id="@+id/btn_guardarPlan"
         style="@style/Widget.Material3.Button"

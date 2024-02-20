@@ -1,17 +1,12 @@
 package com.example.plantea.presentacion.actividades
 
-import android.content.Context
-import android.content.ContextWrapper
+
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
-import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +14,7 @@ import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+
 
 class MenuAvataresTEActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
@@ -120,7 +112,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
                 viewModel._ruta.value = CommonUtils.getPathFromUri(this, uri)
             } else {
-                Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
             }
         }
     }

@@ -1,7 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
+import com.example.plantea.dominio.Evento
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
@@ -36,8 +39,8 @@ class CalendarioActivity : AppCompatActivity() {
         viewModel.crearCanalNotificacion(this)
         calendario = findViewById(R.id.recycler_calendario)
         fechaActual = findViewById(R.id.lbl_mes)
-        val btnSiguienteMes = findViewById<ImageView>(R.id.image_calendar_siguiente)
-        val btnAnteriorMes = findViewById<ImageView>(R.id.image_calendar_anterior)
+        val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
+        val btnAnteriorMes = findViewById<Button>(R.id.image_calendar_anterior)
 
         //set up the fragments
         if (this.intent.extras != null) {
@@ -71,6 +74,7 @@ class CalendarioActivity : AppCompatActivity() {
 
         viewModel._dias.observe(this) {
             calendario.layoutManager = GridLayoutManager(this, 7)
+
             val adaptadorCalendario = AdaptadorCalendario(it, viewModel.eventos, viewModel)
             calendario.adapter = adaptadorCalendario
 
@@ -80,6 +84,12 @@ class CalendarioActivity : AppCompatActivity() {
                 ft.commit()
             }
         }
+
+        viewModel._fechaSeleccionada.observe(this) {
+            CalendarioUtilidades.fechaSeleccionada = it
+
+        }
+
     }
 
 

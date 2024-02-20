@@ -7,7 +7,6 @@ import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -71,7 +70,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 viewModel._visibilityButtons.value = true
                 CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
             }else{
-                Toast.makeText(applicationContext, "No puedes dejar el campo vacío", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No puedes dejar el campo vacío")
             }
         }
 
@@ -120,7 +119,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             if(viewModel.listaPictogramas.isNotEmpty()){
                 viewModel.dialogGuardar(this)
             }else{
-                Toast.makeText(applicationContext, "No se puede guardar una traducción sin pictogramas", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se puede guardar una traducción sin pictogramas")
             }
         }
 
@@ -132,9 +131,9 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             recyclerView.adapter = viewModel.adaptador
         }
 
-        //Si hay un mensaje de error o de éxito, lo mostramos a traves de un Toast
+        //Si hay un mensaje de error o de éxito, lo mostramos a traves de un Snackbar
         viewModel._dialogMessage.observe(this){ message ->
-            Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
+            CommonUtils.showSnackbar(findViewById(android.R.id.content),applicationContext, message)
         }
 
         //Si hay pictogramas, mostramos los botones
@@ -171,7 +170,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 viewModel.ruta = CommonUtils.guardarImagen(applicationContext, nombreFile, viewModel.bitmap!!)
                 viewModel.imageSelected()
             } else {
-                Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
             }
         }
     }

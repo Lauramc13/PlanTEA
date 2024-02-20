@@ -21,5 +21,6 @@
     <dimen name="errorText">12sp</dimen>
     <dimen name="formText">15sp</dimen>
     <dimen name="titleSmall">18sp</dimen>
+    <dimen name="snackBarText">15sp</dimen>
 
 </resources>

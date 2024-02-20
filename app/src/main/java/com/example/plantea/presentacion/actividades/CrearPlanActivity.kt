@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
@@ -14,7 +15,6 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -40,7 +40,6 @@ import java.util.Locale
 
 
 class CrearPlanActivity : AppCompatActivity(){
-    private lateinit var labelTitulo: TextView
     private lateinit var transaction: FragmentTransaction
 
     private lateinit var searchBar: SearchView
@@ -67,7 +66,6 @@ class CrearPlanActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_plan)
 
-        labelTitulo = findViewById(R.id.lbl_CrearPlanActividad)
         btnGuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
         backButton = findViewById(R.id.goBackButton)
@@ -106,8 +104,6 @@ class CrearPlanActivity : AppCompatActivity(){
             viewModel.opcionEditar = true
             txtTituloPlan.text = intent.getStringExtra("titulo")
             viewModel.listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-        }else{
-            txtTituloPlan.text = getString(R.string.btn_add)
         }
 
         //Iniciar RecyclerView de planificaciones
@@ -131,6 +127,12 @@ class CrearPlanActivity : AppCompatActivity(){
         btnGuardarPlanificacion.setOnClickListener {
             clickGuardarPicto()
         }
+
+        viewModel._image.observe(this){
+            viewModel.image?.setImageURI(it)
+            viewModel.image?.background = null
+        }
+        createPickMedia()
 
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -184,7 +186,7 @@ class CrearPlanActivity : AppCompatActivity(){
             imgPicto.setImageURI(image)
             imgPicto.background = null
         } else {
-            Toast.makeText(this, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No se ha seleccionado ninguna imagen")
         }
     }
 
@@ -236,28 +238,23 @@ class CrearPlanActivity : AppCompatActivity(){
 
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categorias as ArrayList<String>)
                 spinnerDialogo.adapter = adapter
-
+                if(viewModel.subcategoriaOpen){
+                    spinnerDialogo.setSelection(viewModel.identificadorSubCategoria-1)
+                }else{
+                    spinnerDialogo.setSelection(viewModel.identificadorCategoria-1)
+                }
 
                 btnGuardar.setOnClickListener {
                     if (tituloDialogo.editText?.text.toString().isEmpty()) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Se necesita un título para el nuevo pictograma",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Se necesita un título para el nuevo pictograma")
                     } else if (imgPicto.drawable == null) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Se necesita una imagen para el nuevo pictograma",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Se necesita una imagen para el nuevo pictograma")
                     } else {
                         val imagen = tituloDialogo.editText?.text.toString() //Nombre de la imagen
                         val image = (imgPicto.drawable as BitmapDrawable).bitmap
 
                         val ruta = viewModel.guardarImagen(applicationContext, imagen, image)
-
-                        Toast.makeText(applicationContext, "Nuevo pictograma creado", Toast.LENGTH_LONG).show()
+                        CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Nuevo pictograma creado")
                         dialogNuevoPictograma.dismiss() //Cerrar dialogo
 
                         //Añadir pictograma
@@ -269,15 +266,14 @@ class CrearPlanActivity : AppCompatActivity(){
                             viewModel.idUsuario
                         )
 
-                        //Si la categoria es consultas, estaremos creando una nueva subcategoria
-                        if (spinnerDialogo.selectedItem.toString() == "CONSULTAS") {
-                            viewModel.categoria.crearCategoria(
-                                this@CrearPlanActivity,
-                                tituloDialogo.editText?.text.toString()
-                                    .uppercase(Locale.getDefault())
-                            )
-                        }
-                        viewModel.mostrarCategoria(viewModel.identificadorCategoria, this)
+                        val pictograma = Pictograma()
+                        pictograma.titulo = tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault())
+                        pictograma.imagen = ruta
+                        pictograma.categoria = spinnerDialogo.selectedItemPosition + 1
+                        viewModel._listaPictogramas.value?.add(pictograma)
+                       // categoriasPictoFragment.recyclerPictogramas.adapter?.notifyDataSetChanged()
+
+                        viewModel.categoria.crearCategoria(this@CrearPlanActivity, tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault()), ruta, 0,"default", viewModel.idUsuario)
                     }
                 }
 
@@ -293,21 +289,23 @@ class CrearPlanActivity : AppCompatActivity(){
     }
 
     private fun clickGuardarPicto(){
-        if (txtTituloPlan.text.toString().isEmpty() || viewModel.listaPlanificacion.isEmpty()) {
-            Toast.makeText(applicationContext, "Necesita añadir un título y pictogramas", Toast.LENGTH_LONG).show()
-        } else {
+        if (txtTituloPlan.text.toString().isEmpty()) {
+            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No puedes dejar el campo de título vacío")
+        }else if(viewModel.listaPlanificacion.isEmpty()){
+            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No puedes dejar la planificación vacía")
+        }else {
             //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
             if (viewModel.opcionEditar) {
                 viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, intent.getIntExtra("identificador", 0), txtTituloPlan.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
-                Toast.makeText(applicationContext, "Planificación " + txtTituloPlan.text.toString() + " actualizada", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Planificación " + txtTituloPlan.text.toString() + " actualizada")
             } else {
                 val idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario,txtTituloPlan.text.toString().uppercase(Locale.getDefault()))
                 val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
 
                 if (creada == true) {
-                    Toast.makeText(applicationContext, "Planificación " + txtTituloPlan.text.toString() + " creada", Toast.LENGTH_LONG).show()
+                    CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Planificación " + txtTituloPlan.text.toString() + " creada")
                 } else {
-                    Toast.makeText(applicationContext, "Error al crear la planificación", Toast.LENGTH_LONG).show()
+                    CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al crear la planificación")
                 }
             }
 
@@ -334,5 +332,21 @@ class CrearPlanActivity : AppCompatActivity(){
             }
         }
 
+    }
+
+
+    fun createPickMedia() {
+        viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+                val inputStream = this.contentResolver?.openInputStream(uri)
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                val ruta =  CommonUtils.getPathFromUri(this, uri)
+                CommonUtils.guardarImagen(this, ruta, bitmap)
+                viewModel._image.value = uri
+
+            } else {
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
+            }
+        }
     }
 }

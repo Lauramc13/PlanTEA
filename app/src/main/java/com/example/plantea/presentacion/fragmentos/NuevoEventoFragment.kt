@@ -3,7 +3,6 @@ package com.example.plantea.presentacion.fragmentos
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -13,9 +12,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentContainerView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -25,13 +24,14 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.setIcon
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.*
+
 
 class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.OnItemSelectedListener {
     lateinit var actividad: Activity
@@ -50,8 +50,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     private lateinit var switchReminder : SwitchCompat
    // private lateinit var reminderview: FragmentContainerView
 
-    private val viewModel by viewModels<CalendarioViewModel>()
-
+    private val viewModel by activityViewModels<CalendarioViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
@@ -74,7 +73,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         switchReminder = vista.findViewById(R.id.switch_recordatorio)
         //reminderview = vista.findViewById(R.id.fragment_container_view)
 
-        iniciarListaPlanificaciones()
+       // iniciarListaPlanificaciones()
 
         //if(viewModel.isClickedReloj){
         if(viewModel.isPlanSeleccionado){
@@ -180,8 +179,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             //si no se ha seleccionado ningun checkbox poner el switch a false
             if(!checkBoxPersonalizar.isChecked && !checkboxMin.isChecked && !checkboxHora.isChecked && !checkboxDia.isChecked){
                 switchReminder.isChecked = false
-            }else{
-                Toast.makeText(context, "Recordatorio creado", Toast.LENGTH_SHORT).show()
             }
             //delete dialog
             dialogReminder.dismiss()
@@ -221,14 +218,14 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         dialogReminder.show()
     }
 
+
+
     private fun iniciarListaPlanificaciones() {
         listaPlanificaciones.layoutManager = LinearLayoutManager(context)
         viewModel.planes = viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>
         adaptador = AdaptadorListaPlanes(viewModel.planes, this)
         listaPlanificaciones.adapter = adaptador
-
         visibilityPlan()
-
     }
 
     private fun mostrarReloj() {
@@ -278,10 +275,10 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         val btnCancelar = dialogPlan.findViewById<Button>(R.id.btn_cancelarPlan)
 
         btnEliminar.setOnClickListener {
-            Toast.makeText(context, "Planificación eliminada", Toast.LENGTH_SHORT).show()
+            CommonUtils.showSnackbar(vista, requireContext(), "Planificación eliminada")
             viewModel.plan.eliminarPlanificacion(actividad, viewModel.planes[posicion].id)
+            adaptador.notifyItemRemoved(posicion)
             viewModel.planes.removeAt(posicion)
-            adaptador.notifyDataSetChanged()
             //Mostramos un mensaje informando si la lista está vacía
             visibilityPlan()
             dialogPlan.dismiss()
@@ -302,13 +299,19 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.planes[posicion].id) as ArrayList<Pictograma>
         val creada = viewModel.idUsuario.let { viewModel.plan.crearPlanificacion(actividad, it, viewModel.planes[posicion].titulo + " " + viewModel.counter.toString()) }
         viewModel.plan.addPictogramasPlan(creada, actividad, pictogramas)
-        viewModel.counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
         if (creada != 0) {
-            Toast.makeText(context, "Planificación duplicada", Toast.LENGTH_LONG).show()
-            iniciarListaPlanificaciones()
+            CommonUtils.showSnackbar(vista, requireContext(), "Planificación duplicada")
+            val planificacion = viewModel.planes[posicion]
+            planificacion.titulo = planificacion.titulo + " " + viewModel.counter.toString()
+            viewModel.planes.add(planificacion)
+            adaptador.notifyItemInserted(viewModel.planes.size)
+            listaPlanificaciones.scrollToPosition(adaptador.itemCount - 1)
         } else {
-            Toast.makeText(context, "Error al duplicar planificación", Toast.LENGTH_LONG).show()
+            CommonUtils.showSnackbar(vista, requireContext(), "Error al duplicar planificación")
+
         }
+        viewModel.counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
+
     }
 
     override fun planSeleccionado(posicion: Int) {
@@ -329,9 +332,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
 
     override fun onResume() {
         super.onResume()
+        iniciarListaPlanificaciones()
         viewModel.planes.clear()
         viewModel.planes.addAll(viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>)
-        visibilityPlan()
         adaptador.notifyDataSetChanged()
     }
 }

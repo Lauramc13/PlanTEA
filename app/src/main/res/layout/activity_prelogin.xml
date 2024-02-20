@@ -138,7 +138,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/btn_olvidar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
             android:gravity="center"
             android:textSize="@dimen/body"
             android:text="@string/lbl_contraseniaOlvidada"
-            android:textColor="?colorOnSurface" />
+            android:textColor="?colorOnSurface" />-->
 
         <ImageView
             android:layout_width="wrap_content"

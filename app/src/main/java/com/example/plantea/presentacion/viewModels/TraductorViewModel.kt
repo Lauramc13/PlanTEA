@@ -5,14 +5,12 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -145,7 +143,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
             //if tituloString is empty -> error
             if(tituloString.isEmpty()){
                 titulo.error = "El campo no puede estar vacío"
-                Toast.makeText(context, "No puedes dejar el campo vacío", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(dialog.findViewById(android.R.id.content), context, "No puedes dejar el campo vacío")
             }else{
                 crearPlanificacion(context, tituloString)
                 dialog.dismiss()

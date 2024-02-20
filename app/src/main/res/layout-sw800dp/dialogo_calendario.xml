@@ -64,9 +64,6 @@
                 android:layout_gravity="center"
                 android:contentDescription="Flecha mes siguiente"
                 app:srcCompat="@drawable/svg_chevron_right" />
-
-
-
         </LinearLayout>
 
         <com.google.android.material.divider.MaterialDivider
@@ -76,98 +73,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout11"
             android:layout_height="2dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:contentDescription="Columna con los dias de la semana"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/lbl_lunes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Lunes"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="L"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/lbl_martes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Martes"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="M"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/lbl_miercoles"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Miércoles"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="X"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/lbl_jueves"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Jueves"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="J"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/lbl_viernes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Viernes"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="V"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/lbl_sabado"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Sábado"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="S"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/lbl_domingo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="Domingo"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="D"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
-        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_calendario"

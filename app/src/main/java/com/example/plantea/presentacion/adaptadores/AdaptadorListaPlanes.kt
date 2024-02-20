@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -48,6 +50,7 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
                 }
             )
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -77,6 +80,7 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
                 if (listener != null) {
                     val position = bindingAdapterPosition
                     listener.editClick(position)
+                    notifyItemChanged(position)
                 }
             }
             eliminar.setOnClickListener {

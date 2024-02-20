@@ -8,7 +8,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.provider.MediaStore
@@ -21,22 +23,34 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plantea.R
 import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.Locale
 import java.util.UUID
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 
 
 class CommonUtils{
@@ -49,6 +63,7 @@ class CommonUtils{
         lateinit var textToSpeech: TextToSpeech
         val handler = Handler()
         var listener: TextToSpeechListener? = null
+
         //var pictogramasCuaderno = ArrayList<Pictograma>()
 
         private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
@@ -91,7 +106,7 @@ class CommonUtils{
         }
 
 
-        fun getGridValueCuaderno(vista: View, context: Context?, recyclerView: RecyclerView, constraintLayout: ConstraintLayout){
+        fun getGridValueCuaderno(vista: View, context: Context?, recyclerView: RecyclerView, constraintLayout: ConstraintLayout, widthItem: Int, widthItemTablet: Int){
             vista.viewTreeObserver.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -110,9 +125,9 @@ class CommonUtils{
                     val widthRecyclerView = (constraintLayout.width / density).toInt()
 
                     val gridValue: Int = if (context?.let { isMobile(it) } == true) {
-                        widthRecyclerView / 150
+                        widthRecyclerView / widthItem
                     } else {
-                        widthRecyclerView / 200
+                        widthRecyclerView / widthItemTablet
                     }
 
                     if(gridValue == 0){
@@ -125,7 +140,6 @@ class CommonUtils{
 
             // Add the global layout listener
             constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
-
         }
 
 
@@ -224,7 +238,7 @@ class CommonUtils{
             }
         }
 
-        private fun textAsBitmap(text: String?): Bitmap {
+        fun textAsBitmap(text: String?): Bitmap {
             val paint = Paint(Paint.ANTI_ALIAS_FLAG)
             paint.textSize = 100f
             paint.color = Color.BLACK
@@ -347,7 +361,38 @@ class CommonUtils{
             return pronombres.any { it.equals(query.lowercase(Locale.getDefault()), ignoreCase = true) }
         }
 
+        fun Snackbar.setIcon(drawable: Drawable, @ColorInt colorTint: Int): Snackbar {
+            return this.apply {
+                setAction(" ") {dismiss()}
+                val textView = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
+                textView.text = ""
+
+                drawable.setTint(colorTint)
+                drawable.setTintMode(PorterDuff.Mode.SRC_ATOP)
+                textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+            }
+        }
+
+        fun showSnackbar(view: View, context: Context, message: String){
+            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+            var color = ContextCompat.getColor(context, R.color.md_theme_light_primary)
+
+            if(Configuration.UI_MODE_NIGHT_YES == context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                color = ContextCompat.getColor(context, R.color.md_theme_dark_onTertiary)
+            }
+
+            val drawable = ContextCompat.getDrawable(context, R.drawable.svg_close)
+            if (drawable != null) {
+                snackbar.setIcon(drawable, color)
+            }
+            snackbar.show()
+        }
+
+
+
     }
+
+
 
 
 }

@@ -12,8 +12,8 @@ import com.example.plantea.R
 class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFactory?, versionBD: Int) : SQLiteOpenHelper(contexto, nombreBD, factory, versionBD) {
     /*Sentencia SQL para crear las tablas*/
 
-    var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, username TEXT, name TEXT, imagen TEXT, objeto TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
-    var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT)"
+    var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, password TEXT, username TEXT, name TEXT, imagen TEXT, objeto TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
+    var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, principal BOOLEAN, color TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT)"
     var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_pictograma) REFERENCES PictogramaAPI(id))"
@@ -65,16 +65,17 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
 
     fun meterDatos(db: SQLiteDatabase) {
         //Categoria
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('CONSULTAS')") // 1
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('PELUQUERIA')") // 2
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('COMPRA')") // 3
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('COLEGIO')") // 4
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('LUGARES')") // 5
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('DESPLAZAMIENTO')") // 6 
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('ACCION')") // 7
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('ENTRETENIMIENTO')") // 8
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('RECOMPENSA')") // 9 
-        db.execSQL("INSERT INTO Categoria (titulo) VALUES('FAVORITOS')") // 10 
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('IR AL MEDICO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_consultas + "', true, 'default')") // 1
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('CORTARSE EL PELO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_peluqueria + "', true, 'default')") // 2
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('HACER LA COMPRA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_hacer_la_compra + "', true, 'default')") // 3
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('IR AL COLEGIO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_colegio + "', true, 'default')") // 4
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('LUGARES', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_lugares + "', true, 'default')") // 5
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('DESPLAZAMIENTO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_desplazamiento + "', true, 'default')") // 6
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('ACCION', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_accion + "', true, 'default')") // 7
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('ENTRETENIMIENTO', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_entretenimiento + "', true, 'blue')") // 8
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('RECOMPENSA', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_recompensa + "', true, 'blue')") // 9
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('FAVORITOS', '" + "android.resource://com.example.plantea" + "/" + R.drawable.categoria_favorito + "', true, 'yellow')") // 10
+
         db.execSQL("INSERT INTO Categoria (titulo) VALUES('REVISIÓN')") // 11 
         db.execSQL("INSERT INTO Categoria (titulo) VALUES('PROFESIONALES')") // 12 
         db.execSQL("INSERT INTO Categoria (titulo) VALUES('VACUNACIÓN')") // 13 

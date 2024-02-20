@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.actividades.CommonUtils
 import java.util.Stack
 
 
@@ -122,7 +122,8 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 card.alpha = 0.7f
 
             }else{
-                Toast.makeText(view.context, "No se ha realizado el paso anterior", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(view,view.context, "No se ha realizado el paso anterior")
+
             }
         }
 

@@ -6,20 +6,16 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import android.widget.Toast
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.MainThread
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.CuadernoActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.google.android.material.imageview.ShapeableImageView
@@ -58,7 +54,7 @@ class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelecte
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    fun createPickMedia(fragment: Fragment, context: Context?) {
+    fun createPickMedia(fragment: Fragment, context: Context?, view: View) {
         pickMedia = fragment.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 val inputStream = context?.contentResolver?.openInputStream(uri)
@@ -74,7 +70,9 @@ class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelecte
                 }
 
             } else {
-                Toast.makeText(context, "No se ha seleccionado una imagen", Toast.LENGTH_SHORT).show()
+                if (context != null) {
+                    CommonUtils.showSnackbar(view, context, "No se ha seleccionado ninguna imagen")
+                }
             }
         }
     }

@@ -13,7 +13,6 @@ import android.view.animation.PathInterpolator
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -133,7 +132,7 @@ class RegisterActivity : AppCompatActivity(){
 
             val errorMessage = createAccount()
             if (errorMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content), applicationContext, errorMessage)
             }
         }
 
@@ -192,20 +191,8 @@ class RegisterActivity : AppCompatActivity(){
 
         if (isAccountValid.isValid) {
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            viewModel.registerUser(checkObjeto.isChecked, checkUserPlanificado.isChecked, prefs, this)
-
-
-            /*if(viewModel.createUserWithEmailAndPassword(viewModel.email, viewModel.password)){
-                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                viewModel.accountCreated(this, prefs, checkObjeto.isChecked, checkUserPlanificado.isChecked)
-                val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
-                startActivity(intent)
-                finish()
-            }else{
-                Log.w("Registration", "createUserWithEmail:failure")
-                txtUsername.error = "El nombre de usuario o correo introducido ya existe"
-                txtEmail.error = "El nombre de usuario o correo introducido ya existe"
-            }*/
+            //viewModel.registerUser(checkObjeto.isChecked, checkUserPlanificado.isChecked, prefs, this)
+            viewModel.accountCreated(this, prefs, checkUserPlanificado.isChecked, checkObjeto.isChecked)
         }
 
         return isAccountValid.errorMessage ?: ""

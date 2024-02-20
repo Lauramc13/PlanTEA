@@ -5,33 +5,48 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.media.Image
+import android.net.Uri
+import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Categoria
+import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.CrearPlanActivity
+import com.example.plantea.presentacion.adaptadores.AdaptadorCategorias
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 
-class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener{
+class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener{
 
     var identificadorCategoria : Int = -1
     var identificadorSubCategoria : Int = -1
@@ -40,6 +55,17 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     val _pictogramaSeleccionado = SingleLiveEvent<Pictograma>()
     val _nuevoPictoDialog = SingleLiveEvent<Boolean>()
     var _historiaClicked = SingleLiveEvent<Int>()
+    val _image = MutableLiveData<Uri?>()
+    lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+    var image : ImageView? = null
+
+    //Buttons colors
+    lateinit var buttonMorado: FloatingActionButton
+    lateinit var buttonRosa: FloatingActionButton
+    lateinit var buttonVerde: FloatingActionButton
+    lateinit var buttonAzul: FloatingActionButton
+    lateinit var buttonDefault: FloatingActionButton
+    lateinit var buttonAmarillo: FloatingActionButton
 
     var subcategoriaOpen = false
     var busquedaOpen = false
@@ -50,6 +76,9 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     var pictograma = Pictograma()
     var categoria = Categoria()
     val planificacion = Planificacion()
+    var _createdCategoria = SingleLiveEvent<Boolean>()
+    var _deletedCategoria = SingleLiveEvent<Int>()
+    var listaCategorias = ArrayList<Categoria>()
 
     var fragmentCategoriasPictogramas = CategoriasPictogramasFragment()
 
@@ -67,16 +96,6 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
     fun setIdUsuario(prefs: android.content.SharedPreferences) {
         idUsuario = prefs.getString("idUsuario", "").toString()
-    }
-
-    //Método para mostrar categoria correspondiente
-    fun mostrarCategoria(idCategoria: Int, context: Context) {
-        _listaPictogramas.value = if (idCategoria == 10) {
-            pictograma.obtenerFavoritos(context, idUsuario)
-        } else {
-            pictograma.obtenerPictogramas(context, idCategoria, idUsuario) as ArrayList<Pictograma>
-        }
-        identificadorCategoria = idCategoria
     }
 
 
@@ -155,4 +174,141 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     override fun onHistoriaClick(position: Int){
         _historiaClicked.value = position
     }
+
+    override fun onItemSeleccionado(idCategoria: Int, context: Context) {
+        _listaPictogramas.value = if (idCategoria == 10) {
+            pictograma.obtenerFavoritos(context, idUsuario)
+        } else {
+            pictograma.obtenerPictogramas(context, idCategoria, idUsuario) as ArrayList<Pictograma>
+        }
+        identificadorCategoria = idCategoria
+    }
+
+    override fun addCategoria(view: View?){
+        val dialogo = Dialog(view!!.context)
+        var colorSelected = ""
+        dialogo.setContentView(R.layout.dialogo_crear_categoria_plan)
+        dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val title : TextInputLayout = dialogo.findViewById(R.id.txt_title)
+        image = dialogo.findViewById(R.id.img)
+
+        val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
+        val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
+
+
+        //Colores buttons
+        buttonMorado = dialogo.findViewById(R.id.fab1)
+        buttonRosa = dialogo.findViewById(R.id.fab2)
+        buttonVerde = dialogo.findViewById(R.id.fab3)
+        buttonAmarillo = dialogo.findViewById(R.id.fab4)
+        buttonAzul = dialogo.findViewById(R.id.fab5)
+        buttonDefault = dialogo.findViewById(R.id.fab6)
+
+        buttonAmarillo.setOnClickListener{
+            clearButtonsSelected()
+            buttonAmarillo.setImageResource(R.drawable.svg_check)
+            colorSelected = "yellow"
+        }
+
+        buttonAzul.setOnClickListener{
+            clearButtonsSelected()
+            buttonAzul.setImageResource(R.drawable.svg_check)
+            colorSelected = "blue"
+        }
+
+        buttonMorado.setOnClickListener{
+            clearButtonsSelected()
+            buttonMorado.setImageResource(R.drawable.svg_check)
+            colorSelected = "purple"
+        }
+
+        buttonRosa.setOnClickListener{
+            clearButtonsSelected()
+            buttonRosa.setImageResource(R.drawable.svg_check)
+            colorSelected = "pink"
+        }
+
+        buttonVerde.setOnClickListener{
+            clearButtonsSelected()
+            buttonVerde.setImageResource(R.drawable.svg_check)
+            colorSelected = "green"
+        }
+
+        buttonDefault.setOnClickListener{
+            clearButtonsSelected()
+            buttonDefault.setImageResource(R.drawable.svg_check)
+            colorSelected = "default"
+        }
+
+        image?.setOnClickListener {
+            abrirGaleria()
+        }
+
+        //el termometro por ahora no hace nada
+        btnCrear.setOnClickListener{
+           title.error = null
+            if (title.editText?.text.toString().isEmpty() || image?.drawable == null) {
+                title.error = "Obligatorio"
+                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), view.context, "Tienes que rellenar todos los campos")
+            }else{
+                crearCategoria(title,false, Categoria(),colorSelected, view.context as Activity)
+                dialogo.dismiss()
+            }
+        }
+
+        iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
+        dialogo.show()
+    }
+
+    @SuppressLint("IntentReset")
+    fun abrirGaleria() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    fun crearCategoria(title: TextInputLayout, isEdit: Boolean, categoria: Categoria, colorSelected: String, activity: Activity){
+        val titulo = title.editText?.text.toString()
+        val imagen = (image!!.drawable as BitmapDrawable).bitmap
+        val ruta = guardarImagen(title.context, titulo, imagen)
+        categoria.crearCategoria(activity, titulo, ruta, 1, colorSelected, idUsuario)
+        //update data
+        categoria.titulo = titulo
+        categoria.imagen = ruta
+        categoria.color = colorSelected
+        listaCategorias.add(listaCategorias.size-1, categoria)
+        _createdCategoria.value = true
+    }
+
+    override fun borrarCategoria(posicion: Int, idCategoria: Int, view: View?){
+        //dialog
+        val dialogo = Dialog(view!!.context)
+        dialogo.setContentView(R.layout.dialogo_borrar_categoria)
+        dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnBorrar : Button = dialogo.findViewById(R.id.btn_eliminarCategoria)
+        val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
+
+        btnBorrar.setOnClickListener{
+            categoria.eliminarCategoria(view?.context as Activity, idUsuario, idCategoria)
+            listaCategorias.removeAt(posicion)
+            _deletedCategoria.value = posicion
+            dialogo.dismiss()
+        }
+
+        iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
+
+        dialogo.show()
+
+    }
+
+    private fun clearButtonsSelected(){
+        buttonMorado.setImageResource(0)
+        buttonRosa.setImageResource(0)
+        buttonVerde.setImageResource(0)
+        buttonAzul.setImageResource(0)
+        buttonDefault.setImageResource(0)
+        buttonAmarillo.setImageResource(0)
+    }
+
+
 }

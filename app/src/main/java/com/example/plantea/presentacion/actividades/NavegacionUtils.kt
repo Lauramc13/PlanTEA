@@ -58,9 +58,8 @@ class NavegacionUtils {
     lateinit var btn_logout : Button
     var popupView : View? = null
 
-    fun crearDialogoLogin(context: Context) {
+    fun crearDialogoLogin(context: Context, activity: Activity) {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
-        firebaseAuth = FirebaseAuth.getInstance()
 
         val dialogLogin = Dialog(context)
         dialogLogin.setContentView(R.layout.dialogo_login)
@@ -75,21 +74,19 @@ class NavegacionUtils {
             } else {
                 val email = prefs.getString("email", "")
                 if(email != null){
-                   // val passCifrada = hashPassword(password.editText?.text.toString())
-                    //val passCorrecta = usuario.comprobarPass(email, passCifrada, context)
-                    firebaseAuth.signInWithEmailAndPassword(email, password.editText?.text.toString())
-                        .addOnCompleteListener { task ->
-                        if(task.isSuccessful){
-                            val editor = prefs.edit()
-                            editor.putBoolean("PlanificadorLogged", true)
-                            editor.apply()
-                            context.startActivity(Intent((context as? Activity)?.baseContext, PlanActivity::class.java))
-                            (context as? Activity)?.finish()
-                            (context as? Activity)?.finishAffinity()
-                            dialogLogin.dismiss()
-                        }else{
-                            password.error = "La contraseña introducida no es correcta"
-                        }
+
+                    val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context)
+
+                    if(usuario.checkCredentials(email, passwordCifrada, activity)){
+                        val editor = prefs.edit()
+                        editor.putBoolean("PlanificadorLogged", true)
+                        editor.apply()
+                        context.startActivity(Intent((context as? Activity)?.baseContext, PlanActivity::class.java))
+                        (context as? Activity)?.finish()
+                        (context as? Activity)?.finishAffinity()
+                        dialogLogin.dismiss()
+                    }else{
+                        password.error = "Contraseña incorrecta"
                     }
 
                 }
@@ -137,7 +134,7 @@ class NavegacionUtils {
                         fragment.activity?.finish()
                         fragment.activity?.finishAffinity()
                     }else{
-                        crearDialogoLogin(fragment.requireContext())
+                        crearDialogoLogin(fragment.requireContext(), fragment.requireActivity())
                     }
                 }
             }
@@ -155,8 +152,8 @@ class NavegacionUtils {
         btn_logout = dialogLogout.findViewById(R.id.btn_logout)
         icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
         btn_logout.setOnClickListener {
-            firebaseAuth = FirebaseAuth.getInstance()
-            firebaseAuth.signOut()
+          //  firebaseAuth = FirebaseAuth.getInstance()
+          //  firebaseAuth.signOut()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .build()
 

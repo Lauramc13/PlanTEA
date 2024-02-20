@@ -16,7 +16,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -29,6 +28,7 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CuadernoActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import java.util.UUID
 
@@ -67,7 +67,7 @@ class CuadernoPictoEditFragment : Fragment(){
         txtCuaderno.text = viewModel.tituloCuaderno
 
         constraintLayout = vista.findViewById(R.id.frameLayout)
-        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout)
+        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout, 150, 200)
 
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true
@@ -109,7 +109,7 @@ class CuadernoPictoEditFragment : Fragment(){
             viewModel.image.setImageURI(it)
             viewModel.image.background = null
         }
-        viewModel.createPickMedia(this, context)
+        viewModel.createPickMedia(this, context, vista)
 
         //observers()
 
@@ -192,7 +192,7 @@ class CuadernoPictoEditFragment : Fragment(){
             nombre.error = null
             if (nombre.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
                 nombre.error = "Obligatorio"
-                Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), requireContext(), "Tienes que rellenar todos los campos")
             }else{
                 crearPicto(nombre)
                 dialogo.dismiss()

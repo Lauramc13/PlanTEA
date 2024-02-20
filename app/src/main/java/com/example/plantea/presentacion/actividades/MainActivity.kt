@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, PlanActivity::class.java)
                 startActivity(intent)
             }else{
-                 navigationHandler.crearDialogoLogin(this)
+                 navigationHandler.crearDialogoLogin(this, this)
             }
         }
 
@@ -107,7 +107,13 @@ class MainActivity : AppCompatActivity() {
         val btnLogout: Button = dialogLogout.findViewById(R.id.btn_logout)
         iconoCerrar = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
         btnLogout.setOnClickListener {
+            val secretKey = prefs.getString("secret_key", "")
+            val iv = prefs.getString("initialization_vector", "")
             prefs.edit().clear().apply()
+            prefs.edit()
+                .putString("secret_key", secretKey)
+                .putString("initialization_vector", iv)
+                .apply()
             val intent = Intent(this, PreLoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)

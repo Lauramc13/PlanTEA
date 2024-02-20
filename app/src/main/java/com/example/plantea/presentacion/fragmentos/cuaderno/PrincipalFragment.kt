@@ -15,22 +15,18 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CuadernoActivity
-import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.UUID
 
@@ -51,12 +47,12 @@ class PrincipalFragment : Fragment(){
         recycler_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
 
         constraintLayout = vista.findViewById(R.id.frameLayout)
-        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recycler_Pictogramas, constraintLayout) }
+        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recycler_Pictogramas, constraintLayout, 150, 200) }
 
         adaptador = AdaptadorCategoriasCuaderno(viewModel.listaPictoCuaderno, viewModel.isPlanificador, viewModel, requireContext(), this)
         recycler_Pictogramas.adapter = adaptador
 
-        viewModel.createPickMedia(this, requireContext())
+        viewModel.createPickMedia(this, requireContext(), vista)
 
         observers()
 
@@ -161,7 +157,7 @@ class PrincipalFragment : Fragment(){
             title.error = null
             if (title.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
                 title.error = "Obligatorio"
-                Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), requireContext(), "Tienes que rellenar todos los campos")
             }else{
                 crearEditarCuaderno(title, termometro, true, cuaderno)
                 dialogo.dismiss()
@@ -191,7 +187,7 @@ class PrincipalFragment : Fragment(){
             title.error = null
             if (title.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
                 title.error = "Obligatorio"
-                Toast.makeText(context, "Tienes que rellenar todos los campos", Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), requireContext(), "Tienes que rellenar todos los campos")
             }else{
                 crearEditarCuaderno(title, termometro, false, cuaderno = Cuaderno())
                 dialogo.dismiss()

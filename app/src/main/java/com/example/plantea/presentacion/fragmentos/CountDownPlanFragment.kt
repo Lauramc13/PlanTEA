@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.plantea.R
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.PlanActivity
 import com.example.plantea.presentacion.viewModels.CountDownViewModel
 import com.google.android.material.button.MaterialButton
@@ -90,7 +90,7 @@ class CountDownPlanFragment : Fragment() {
 
             override fun onFinish() {
                 stopTimer()
-                Toast.makeText(requireContext(), "Se ha acabado el tiempo!", Toast.LENGTH_SHORT).show()
+                CommonUtils.showSnackbar(requireView(), requireContext(), "Se ha acabado el tiempo!")
             }
         }
         countDownTimer.start()

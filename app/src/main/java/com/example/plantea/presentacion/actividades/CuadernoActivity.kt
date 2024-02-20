@@ -2,7 +2,6 @@ package com.example.plantea.presentacion.actividades
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictogramasFragment
 import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment

@@ -14,13 +14,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramas
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
@@ -87,11 +87,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
             iconoCerrar.setOnClickListener { dialog.dismiss() }
             btnGuardar.setOnClickListener { view ->
                 if (historiaText.editText?.text.toString() == "") {
-                    Toast.makeText(
-                        requireContext(),
-                        "No se puede crear una historia vacía",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    CommonUtils.showSnackbar(view, requireContext(), "No puedes dejar el campo vacío")
                 } else {
                     viewModel.listaPlanificacion[it].historia = historiaText.editText?.text.toString()
                     val parentActivity = activity as CrearPlanActivity

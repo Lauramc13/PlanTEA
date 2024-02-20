@@ -84,8 +84,16 @@
     <color name="md_theme_dark_scrim">#000000</color>
     <color name="transparent">#00000000</color>
     <color name="link">#00b4d8</color>
+    <color name="yellow">#FBFC9E</color>
+    <color name="yellowDarker">#AEAF56</color>
+    <color name="yellowDark">#A6A800</color>
+    <color name="yellowDarkest">#757701</color>
 
-
+    <color name="blueCategoria">#CDEDFF</color>
+    <color name="yellowCategoria">#FEFFBE</color>
+    <color name="greenCategoria">#B0E8E8</color>
+    <color name="purpleCategoria">#D9C8E4</color>
+    <color name="pinkCategoria">#FFC2D8</color>
 
     <color name="pizarraBorde">#C1C1C1</color>
     <color name="pizarraContenido">#F4F4F4</color>
@@ -93,4 +101,5 @@
     <color name="pizarraContenido2">#8051EEE9</color>
 
     <color name="veryLight">#C1EBEB</color>
+
 </resources>
