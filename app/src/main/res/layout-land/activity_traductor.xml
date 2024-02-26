@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundColor"
+    android:background="?customBgColorCuaderno"
     tools:context=".presentacion.actividades.TraductorActivity">
 
     <ImageView
@@ -32,6 +32,7 @@
         app:layout_constraintWidth_percent="0.8"
         android:orientation="vertical"
         android:gravity="center"
+        android:layout_marginStart="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
@@ -182,13 +183,49 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/atras"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/svg_chevron_left" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Traductor"
+            android:textSize="@dimen/title" />
+
+    </LinearLayout>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewSide"
         android:name="com.example.plantea.presentacion.fragmentos.NavigationSideFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:elevation="7dp"
+        app:shapeAppearance="@style/cornersNavigation"
+        android:background="?colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,18 +8,17 @@
     app:cardElevation="0dp"
     app:cardUseCompatPadding="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?backgroundTint"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="?backgroundTint">
 
         <LinearLayout
             android:id="@+id/leftLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/rightLayout"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -28,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_weight="1"
                 android:fontFamily="@font/poppins_regular"
                 android:text="Cita"
                 android:textAlignment="viewStart"
@@ -46,13 +44,16 @@
                 android:textSize="17sp" />
         </LinearLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
         <LinearLayout
             android:id="@+id/rightLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
@@ -77,5 +78,5 @@
                 app:srcCompat="@drawable/svg_export" />
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

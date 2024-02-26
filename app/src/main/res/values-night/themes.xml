@@ -61,14 +61,16 @@
         <item name="gray">@color/md_theme_dark_background2</item>
         <item name="grayStroke">@color/md_theme_dark_surfaceVariant</item>
         <item name="greenLight">@color/md_theme_dark_inversePrimary</item>
-        <item name="subColorBackground">@color/md_theme_dark_background2</item>
+        <item name="subColorBackground">@color/md_theme_dark_surfaceVariant</item>
         <item name="shadow">@color/md_theme_dark_scrim</item>
-        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
-        <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
         <item name="celdaCalendario">@color/md_theme_dark_inversePrimary</item>
         <item name="celdaCalendarioStroke">@color/md_theme_dark_secondaryContainer</item>
         <item name="celdaCalendario2">@color/yellowDark</item>
         <item name="celdaCalendarioStroke2">@color/yellowDarkest</item>
+
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
+
 
     </style>
 

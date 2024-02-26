@@ -23,6 +23,8 @@ class CalendarioActivity : AppCompatActivity() {
     private lateinit var calendario: RecyclerView
     private lateinit var fechaActual: TextView
     lateinit var prefs: SharedPreferences
+    private var atras : ImageView? = null
+
 
     private val viewModel by viewModels<CalendarioViewModel>()
 
@@ -41,6 +43,8 @@ class CalendarioActivity : AppCompatActivity() {
         fechaActual = findViewById(R.id.lbl_mes)
         val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
         val btnAnteriorMes = findViewById<Button>(R.id.image_calendar_anterior)
+        atras = findViewById(R.id.atras)
+
 
         //set up the fragments
         if (this.intent.extras != null) {
@@ -65,6 +69,10 @@ class CalendarioActivity : AppCompatActivity() {
             CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
             viewModel.obtenerVistaMes()
         }
+
+        atras?.setOnClickListener {
+            finish()
+        }
     }
 
     private fun observer(savedInstanceState: Bundle?){
@@ -75,7 +83,13 @@ class CalendarioActivity : AppCompatActivity() {
         viewModel._dias.observe(this) {
             calendario.layoutManager = GridLayoutManager(this, 7)
 
-            val adaptadorCalendario = AdaptadorCalendario(it, viewModel.eventos, viewModel)
+            val listaDays = if(CommonUtils.isMobile(this)){
+                arrayOf("L", "M", "X", "J", "V", "S", "D")
+            }else{
+                arrayOf("LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM")
+            }
+
+            val adaptadorCalendario = AdaptadorCalendario(it, listaDays, viewModel.eventos, viewModel)
             calendario.adapter = adaptadorCalendario
 
             if (savedInstanceState == null || viewModel.isDiaSeleccionado) {

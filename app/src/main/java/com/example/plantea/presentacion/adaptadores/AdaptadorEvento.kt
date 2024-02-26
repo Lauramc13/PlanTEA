@@ -28,8 +28,8 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
         holder.nombre.text = eventos[position].nombre
         holder.hora.text = eventos[position].hora.toString()
         when (eventos[position].visible) {
-            0 -> holder.visibilidad.setImageResource(R.drawable.ic_baseline_visibility_off_40)
-            1 -> holder.visibilidad.setImageResource(R.drawable.ic_baseline_visibility_40)
+            0 -> holder.visibilidad.setImageResource(R.drawable.svg_eye_off)
+            1 -> holder.visibilidad.setImageResource(R.drawable.svg_eye_on)
         }
     }
 

@@ -14,9 +14,13 @@ import android.graphics.drawable.ColorDrawable
 import android.media.Image
 import android.net.Uri
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
@@ -41,10 +45,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Calendar
 
 class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener{
 
@@ -55,6 +62,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     val _pictogramaSeleccionado = SingleLiveEvent<Pictograma>()
     val _nuevoPictoDialog = SingleLiveEvent<Boolean>()
     var _historiaClicked = SingleLiveEvent<Int>()
+    var _onDuracionClicked = SingleLiveEvent<Int>()
     val _image = MutableLiveData<Uri?>()
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var image : ImageView? = null
@@ -171,8 +179,23 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         _clearBusqueda.value = true
     }
 
-    override fun onHistoriaClick(position: Int){
-        _historiaClicked.value = position
+    override fun onMenuClick(position: Int, anchorView: View, context: Context){
+       val inflater = LayoutInflater.from(context)
+        val customView = inflater.inflate(R.layout.popup_menu_crear_plan, null)
+        val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+
+        customView.findViewById<TextView>(R.id.item_historia).setOnClickListener {
+            _historiaClicked.value = position
+            popupWindow.dismiss()
+        }
+
+        customView.findViewById<TextView>(R.id.item_duracion).setOnClickListener {
+            _onDuracionClicked.value = position
+
+            popupWindow.dismiss()
+        }
+
+        popupWindow.showAsDropDown(anchorView)
     }
 
     override fun onItemSeleccionado(idCategoria: Int, context: Context) {
@@ -299,6 +322,22 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
         dialogo.show()
 
+    }
+
+    fun createReloj(): MaterialTimePicker {
+        val currentTime = Calendar.getInstance()
+        val currentHour = currentTime[Calendar.HOUR_OF_DAY]
+        val currentMinute = currentTime[Calendar.MINUTE]
+
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(currentHour)
+            .setMinute(currentMinute)
+            .setTheme(R.style.TimePicker)
+            .setTitleText("Selecciona una hora")
+            .build()
+
+        return picker
     }
 
     private fun clearButtonsSelected(){

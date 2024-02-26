@@ -57,6 +57,11 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         if(animatedPositions.contains(position)){
             animateCard(holder, position)
         }
+
+        if(listaPictogramas!![position].duracion.toString() != "null") {
+            holder.duracion.text = listaPictogramas!![position].duracion
+            holder.duracion.visibility = View.VISIBLE
+        }
     }
 
     //si el reproductor se para a medias es posible que no se haya terminado la animacion y el cardview se quede en un estado intermedio con alpha 0.7
@@ -100,6 +105,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var cardLayout : RelativeLayout
         var card: View
         var historia: ImageView
+        var duracion : TextView
 
 
         init {
@@ -109,6 +115,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             // premio = itemView.findViewById<View>(R.id.id_recompensa) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
             historia = itemView.findViewById(R.id.btn_historiaPictoOn)
+            duracion = itemView.findViewById(R.id.duracionPicto)
             itemView.setOnClickListener(this)
         }
 
@@ -126,6 +133,5 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
             }
         }
-
     }
 }

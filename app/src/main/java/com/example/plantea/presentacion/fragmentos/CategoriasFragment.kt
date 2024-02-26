@@ -43,7 +43,7 @@ class CategoriasFragment : Fragment() {
         adaptador = AdaptadorCategorias(viewModel.listaCategorias, viewModel)
         val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)
         val recyclerCategorias = vista.findViewById<RecyclerView>(R.id.lst_categorias)
-        CommonUtils.getGridValueCuaderno(vista, context, recyclerCategorias, constraintLayout, 140, 180)
+        CommonUtils.getGridValueCuaderno(vista, context, recyclerCategorias, constraintLayout, 140, 200)
 
         //recyclerCategorias.layoutManager =  GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recyclerCategorias.adapter = adaptador

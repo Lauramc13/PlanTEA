@@ -15,8 +15,6 @@ class Usuario {
     private var resultado: Boolean? = null
 
     constructor()
-
-
     constructor(nombre:String?, correo: String?, nombreUsuario:String?, objet:String?, image:String?, nombreTEA:String?, imageTEA:String?, imageObjeto:String? ){
         name = nombre
         email = correo
@@ -70,12 +68,12 @@ class Usuario {
    /* fun comprobarPass(email: String, password: String, actividad: Activity?): Boolean {
         resultado = gestorUsuario.comprobarPassword(email, password, actividad)
         return resultado!!
-    }
-
-    fun confirmarPass(email: String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.cambiarPassword(email, passwordVieja, passwordNueva, actividad)
-        return resultado!!
     }*/
+
+    fun actualizarPass(idUsuario: String, passwordNueva: String, actividad: Activity?): Boolean {
+        resultado = gestorUsuario.actualizarPass(idUsuario, passwordNueva, actividad)
+        return resultado!!
+    }
     
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario{
         return gestorUsuario.obtenerUsuario(email, actividad)
@@ -105,10 +103,5 @@ class Usuario {
     fun checkCredentials(email: String, password: String, actividad: Activity?): Boolean {
         return gestorUsuario.checkCredentials(email, password, actividad)
     }
-
-   /* fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
-        return gestorUsuario.crearPassword(email, passCifrada, actividad)
-
-    }*/
 
 }

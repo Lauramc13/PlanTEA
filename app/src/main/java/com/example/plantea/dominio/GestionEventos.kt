@@ -2,7 +2,6 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import java.time.LocalDate
 
@@ -12,7 +11,7 @@ class GestionEventos {
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.duracion, evento.id_plan)
+        val identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan)
         conectorBD!!.cerrar()
         return identificador
     }
@@ -29,9 +28,8 @@ class GestionEventos {
                 evento.nombre = c.getString(2)
                 evento.fecha = LocalDate.parse(c.getString(3))
                 evento.hora = c.getString(4)
-                evento.duracion = c.getString(5)
-                evento.id_plan = c.getInt(6)
-                evento.visible = c.getInt(7)
+                evento.id_plan = c.getInt(5)
+                evento.visible = c.getInt(6)
                 eventos!!.add(evento)
             } while (c.moveToNext())
         }
@@ -76,7 +74,6 @@ class GestionEventos {
 
         if (c.moveToFirst()) {
             evento.nombre = c.getString(0)
-            evento.duracion = c.getString(1)
         }
         conectorBD!!.cerrar()
         return evento

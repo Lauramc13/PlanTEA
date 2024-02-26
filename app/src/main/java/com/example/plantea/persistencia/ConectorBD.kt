@@ -97,8 +97,8 @@ class ConectorBD(ctx: Context?) {
 
 
 
-    fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?, idPictoAPI: String?, historiaPicto: String?): Boolean {
-        db!!.execSQL("INSERT INTO RelacionPictogramaPlan (id_plan, id_pictograma, id_pictogramaAPI, historia) VALUES ('$idPlan', '$idPicto', '$idPictoAPI', '$historiaPicto')")
+    fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?, idPictoAPI: String?, historiaPicto: String?, duracionPicto: String?): Boolean {
+        db!!.execSQL("INSERT INTO RelacionPictogramaPlan (id_plan, id_pictograma, id_pictogramaAPI, historia, duracion) VALUES ('$idPlan', '$idPicto', '$idPictoAPI', '$historiaPicto', '$duracionPicto')")
         return true
     }
 
@@ -146,7 +146,7 @@ class ConectorBD(ctx: Context?) {
 
     fun obtenerPlanificacion(idUsuario: String, fecha: String): Cursor {
         return db!!.rawQuery(
-            "SELECT CombinedPictograms.nombre, CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.id_pictogramaAPI " +
+            "SELECT CombinedPictograms.nombre, CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.duracion, RelacionPictogramaPlan.id_pictogramaAPI " +
                     "FROM (SELECT id, nombre, imagen, id_categoria FROM Pictograma UNION SELECT id, nombre, imagen, NULL AS id_categoria FROM PictogramaAPI) AS CombinedPictograms " +
                     "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id OR RelacionPictogramaPlan.id_pictogramaAPI = CombinedPictograms.id " +
                     "INNER JOIN Evento ON RelacionPictogramaPlan.id_plan = Evento.id_plan " +
@@ -167,7 +167,7 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun listarTituloEvento(idUsuario: String, fecha: String): Cursor {
-        return db!!.rawQuery("SELECT nombre, duracion from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
+        return db!!.rawQuery("SELECT nombre from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
     }
 
     /*Insertar una nueva subcategoria*/
@@ -240,15 +240,10 @@ class ConectorBD(ctx: Context?) {
         return resultado
     }*/
     /*Cambiar contraseña del usuario*/
-    /*fun actualizarPass(email:String, passVieja: String, passNueva: String): Boolean {
-        val actualizado: Boolean = if (consultarPass(email, passVieja)) {
-            db!!.execSQL("UPDATE Usuario SET password ='$passNueva' WHERE Usuario.email = '$email'")
-            true
-        } else {
-            false
-        }
-        return actualizado
-    }*/
+    fun actualizarPass(idUsuario:String, passNueva: String): Boolean {
+        db!!.execSQL("UPDATE Usuario SET password =? WHERE Usuario.id = ?", arrayOf(passNueva, idUsuario))
+        return true
+    }
 
     /*Listar pictogramas para el cuaderno*/
     /*fun listarPictogramasCuadernoOLD(identificador: Int): Cursor {
@@ -271,9 +266,9 @@ class ConectorBD(ctx: Context?) {
 
 
     /*Insertar nueva cita en la tabla eventos*/
-    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, duracion: String?, idPlan: Int): Int {
+    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?, idPlan: Int): Int {
         var id = 0
-        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora, duracion,id_plan,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$duracion', '$idPlan', 0)")
+        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora,id_plan,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', '$idPlan', 0)")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
         if (c.moveToFirst()) {
             id = c.getInt(0)
@@ -290,7 +285,7 @@ class ConectorBD(ctx: Context?) {
     fun listarEventosPorUsuario(idUsuario: String): Cursor {
         val selectionArgs = arrayOf(idUsuario)
         return db!!.rawQuery(
-            "SELECT id, id_usuario, nombre, fecha, hora, duracion, id_plan, visible " +
+            "SELECT id, id_usuario, nombre, fecha, hora, id_plan, visible " +
             "FROM Evento " +
             "WHERE id_usuario = ?",
             selectionArgs

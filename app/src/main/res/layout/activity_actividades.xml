@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundColor"
+    android:background="?customBgColorCuaderno"
     tools:context=".presentacion.actividades.ActividadActivity">
 
     <ImageView
@@ -48,10 +48,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            app:cardBackgroundColor="?cardBackgroundColor"
             android:layout_marginBottom="30dp"
             android:contentDescription="Tarjeta de actividad tranquilizadora"
-            android:elevation="1dp"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="?cardBackgroundColor"
             app:cardCornerRadius="20dp">
 
             <LinearLayout
@@ -86,10 +88,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
-            android:elevation="1dp"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="?cardBackgroundColor"
             app:cardCornerRadius="20dp"
-            android:contentDescription="Tarjeta de youtube"
-            app:cardBackgroundColor="?cardBackgroundColor">
+            android:contentDescription="Tarjeta de youtube">
 
             <LinearLayout
                 android:layout_width="match_parent"

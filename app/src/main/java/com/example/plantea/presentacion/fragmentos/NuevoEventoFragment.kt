@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
+import com.example.plantea.dominio.CalendarioUtilidades.formatoDiaMes
 import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
@@ -37,10 +38,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     lateinit var actividad: Activity
     lateinit var vista: View
     private lateinit var btnHora: TextView
-    private lateinit var btnDuracion: TextView
     private lateinit var btnGuardar: Button
     private lateinit var btnPlanificar: Button
-    private lateinit var tituloEvento : EditText
+   // private lateinit var tituloEvento : EditText
     private lateinit var fechaEvento: TextView
     private lateinit var mensajePlanes: TextView
     private lateinit var cancelarEvento: ImageView
@@ -62,24 +62,20 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
 
         cancelarEvento = vista.findViewById(R.id.img_cancelarEvento)
         btnHora = vista.findViewById(R.id.btn_horaEvento)
-        btnDuracion = vista.findViewById(R.id.btn_duracionEvento)
         btnGuardar = vista.findViewById(R.id.btn_guardarEvento)
         btnPlanificar = vista.findViewById(R.id.btn_planificar)
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
         mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
         listaPlanificaciones = vista.findViewById(R.id.recycler_planificaciones)
         layout_planificaciones = vista.findViewById(R.id.layout)
-        tituloEvento = vista.findViewById(R.id.txt_tituloEvento)
+        //tituloEvento = vista.findViewById(R.id.txt_tituloEvento)
         switchReminder = vista.findViewById(R.id.switch_recordatorio)
         //reminderview = vista.findViewById(R.id.fragment_container_view)
 
        // iniciarListaPlanificaciones()
 
         //if(viewModel.isClickedReloj){
-        if(viewModel.isPlanSeleccionado){
-            adaptador.setItemSelected(viewModel.posicionPlan)
-            btnGuardar.isEnabled = true
-        }
+
        /* }else{
             layout_planificaciones.visibility = View.GONE
         }*/
@@ -90,14 +86,13 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         //consultas = pictograma.obtenerConsultas(actividad, 1) as ArrayList<String>
         btnHora.setOnClickListener { mostrarReloj() }
-        btnDuracion.setOnClickListener { mostrarRelojDuracion() }
 
         btnGuardar.setOnClickListener {
 
-            if(tituloEvento.text.toString().isEmpty()){
+          /*  if(tituloEvento.text.toString().isEmpty()){
                 tituloEvento.error = "Introduce un título"
                 return@setOnClickListener
-            }
+            }*/
 
             if(btnHora.text.toString().isEmpty()){
                 //color de texto
@@ -105,7 +100,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
                 return@setOnClickListener
             }
 
-            val evento = Evento(0, viewModel.idUsuario, tituloEvento.text.toString(), CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(), btnDuracion.text.toString(),viewModel.planSeleccionado)
+            val tituloEvento = viewModel.planes[viewModel.posicionPlan].titulo + " - " + formatoDiaMes(CalendarioUtilidades.fechaSeleccionada)
+
+            val evento = Evento(0, viewModel.idUsuario, tituloEvento, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado)
             context?.let { it1 -> viewModel.nuevoEvento(it1, evento) }
             dismiss()
         }
@@ -244,19 +241,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         picker.show(requireFragmentManager(), "TimePicker")
     }
 
-
-    private fun mostrarRelojDuracion() {
-        val picker = viewModel.createRelojDuracion()
-
-        picker.addOnPositiveButtonClickListener {
-            val hora = picker.hour
-            val minuto = picker.minute
-            btnDuracion.text = String.format(Locale.getDefault(), "%02d:%02d", hora, minuto)
-
-        }
-
-        picker.show(requireFragmentManager(), "TimePicker")
-    }
    /* private fun mostrarPlanificaciones(){
         btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
 
@@ -333,6 +317,10 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     override fun onResume() {
         super.onResume()
         iniciarListaPlanificaciones()
+        if(viewModel.isPlanSeleccionado){
+            adaptador.setItemSelected(viewModel.posicionPlan)
+            btnGuardar.isEnabled = true
+        }
         viewModel.planes.clear()
         viewModel.planes.addAll(viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>)
         adaptador.notifyDataSetChanged()

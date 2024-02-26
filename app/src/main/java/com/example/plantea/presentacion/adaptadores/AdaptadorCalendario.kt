@@ -1,19 +1,11 @@
 package com.example.plantea.presentacion.adaptadores
 
 
-import android.app.Activity
 import android.content.Context
-import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
@@ -23,12 +15,11 @@ import com.google.android.material.card.MaterialCardView
 import java.time.LocalDate
 
 
-class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private val listaEventos: ArrayList<Evento>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<ViewHolderCalendario>() {
+class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, days: Array<String>, private val listaEventos: ArrayList<Evento>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<ViewHolderCalendario>() {
 
-    private val daysOfWeek = arrayOf("LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM")
+    private val daysOfWeek = days
     private val VIEW_TYPE_DAY_OF_MONTH = 1
     private val VIEW_TYPE_DAY_OF_WEEK = 2
-
 
     interface OnItemSelectedListener {
         fun diaSeleccionado(context: Context?, fecha: LocalDate)
@@ -44,8 +35,8 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
         if (viewType == VIEW_TYPE_DAY_OF_MONTH) {
             layoutParams.height = (parent.height * 0.125).toInt()
             view.setBackgroundResource(R.drawable.round_bg)
-
         }
+
         return ViewHolderCalendario(view)
     }
 
@@ -53,7 +44,7 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, private va
         if (position < daysOfWeek.size) {
             // Bind the days of the week to the corresponding positions
             holder.diaMes.text = daysOfWeek[position]
-            holder.diaMes.textSize = 15f
+            holder.vistaPrincipal.isClickable = false
         } else {
             val fecha = diasMes[position-daysOfWeek.size]
             //holder.diaMes.setTextColor(holder.itemView.context.resources.getColor(R.color.md_theme_dark_surface))

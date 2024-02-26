@@ -29,10 +29,10 @@
         android:id="@+id/layout_fragments"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintWidth_percent="0.9"
         android:foregroundGravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentContainerViewBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView" />

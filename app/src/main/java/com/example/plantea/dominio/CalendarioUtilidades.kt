@@ -33,6 +33,12 @@ object CalendarioUtilidades {
     }
 
     @JvmStatic
+    fun formatoDiaMes(fecha: LocalDate): String {
+        val formato = DateTimeFormatter.ofPattern("dd/MM", Locale("es", "ES"))
+        return fecha.format(formato)
+    }
+
+    @JvmStatic
     fun formatoMesAnio(fecha: LocalDate): String {
         val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("es", "ES"))
         return fecha.format(formato)
@@ -56,6 +62,12 @@ object CalendarioUtilidades {
                 diasMes.add(LocalDate.of(fechaSeleccionada.year, fechaSeleccionada.month, dia++))
             }
         }
+
+        // Elimina la última semana si es nula
+        if (diasMes.subList(diasMes.size - 7, diasMes.size).all { it == null }) {
+            diasMes.subList(diasMes.size - 7, diasMes.size).clear()
+        }
+
         return diasMes
     }
 }

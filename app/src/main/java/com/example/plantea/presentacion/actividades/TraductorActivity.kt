@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
     lateinit var guardarButton : Button
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
+    private var atras : ImageView? = null
 
     private val viewModel by viewModels<TraductorViewModel>()
 
@@ -39,6 +41,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         viewModel.textInputContent = textoATraducir.editText?.text.toString()
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
@@ -49,6 +52,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         guardarButton = findViewById(R.id.guardarButton)
         textoATraducir = findViewById(R.id.textoTraducir)
         textoATraducir.editText?.setText(viewModel.textInputContent)
+        atras = findViewById(R.id.atras)
 
         if(textoATraducir.editText?.text.toString().isNotEmpty()){
             textoATraducir.requestFocus()
@@ -72,6 +76,10 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             }else{
                 CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No puedes dejar el campo vacío")
             }
+        }
+
+        atras?.setOnClickListener {
+            finish()
         }
 
         escucharButtonPalabra.setOnClickListener {

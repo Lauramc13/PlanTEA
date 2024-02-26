@@ -10,19 +10,17 @@ class Evento {
     var nombre: String? = null
     var fecha: LocalDate? = null
     var hora: String? = null
-    var duracion: String? = null
     var id_plan = 0
     var visible = 0
     var gestorEventos = GestionEventos()
 
     constructor()
-    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, duracion: String?, id_plan: Int) {
+    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, id_plan: Int) {
         this.id = id
         this.idUsuario = idUsuario
         this.nombre = nombre
         this.fecha = fecha
         this.hora = hora
-        this.duracion = duracion
         this.id_plan = id_plan
     }
 

@@ -33,7 +33,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
-        android:layout_marginBottom="30dp"
         android:background="@drawable/fragment_personalizado2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

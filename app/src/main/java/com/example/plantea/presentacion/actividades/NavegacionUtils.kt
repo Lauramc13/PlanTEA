@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
 import android.app.Activity
+import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -222,7 +223,10 @@ class NavegacionUtils {
         if (currentActivity == targetActivityClass) {
             return true
         }
-        fragment.startActivity(Intent(fragment.requireContext().applicationContext, targetActivityClass))
+        val intent = Intent(fragment.requireContext().applicationContext, targetActivityClass)
+       // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        fragment.requireContext().startActivity(intent)
+
         return true
     }
 

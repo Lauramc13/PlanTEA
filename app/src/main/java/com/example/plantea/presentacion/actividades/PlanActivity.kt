@@ -43,6 +43,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     private lateinit var iconoMarcar: Button
     private lateinit var iconoMarcarTodas: Button
     private lateinit var dia: TextView
+    private var atras : ImageView? = null
 
     private lateinit var planificacionesFuturas: RecyclerView
     private lateinit var calendarButton: Button
@@ -85,6 +86,8 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel.recyclerView = findViewById(R.id.recycler_plan)
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         dia = findViewById(R.id.lbl_dia)
+        atras = findViewById(R.id.atras)
+
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)
@@ -113,6 +116,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         }
 
         //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------
+
+        atras?.setOnClickListener {
+            finish()
+        }
 
         calendarButton.setOnClickListener {
             crearDialogo()
@@ -206,7 +213,13 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
          viewModel._diasMes.observe(this) {
              calendario.layoutManager = GridLayoutManager(this, 7)
-             val adaptadorCalendario = AdaptadorCalendario(it, viewModel.eventos, viewModel)
+             val listaDays = if(CommonUtils.isMobile(this)){
+                 arrayOf("L", "M", "X", "J", "V", "S", "D")
+             }else{
+                 arrayOf("LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM")
+             }
+
+             val adaptadorCalendario = AdaptadorCalendario(it,listaDays, viewModel.eventos, viewModel)
              calendario.adapter = adaptadorCalendario
          }
 
@@ -263,7 +276,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                 val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
                 layoutPlanificaciones.visibility = View.VISIBLE
                 val imageDecoration = findViewById<ImageView>(R.id.imageDecoration)
-                imageDecoration.visibility = View.GONE
+              //  imageDecoration.visibility = View.GONE
             }else{
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcarTodas.visibility = View.INVISIBLE

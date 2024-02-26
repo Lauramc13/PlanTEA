@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="?backgroundSplit"
     tools:layout_editor_absoluteX="6dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:layout_editor_absoluteY="0dp"
+    tools:context=".presentacion.actividades.RegisterActivity">
 
     <ImageView
         android:id="@+id/imageView7"

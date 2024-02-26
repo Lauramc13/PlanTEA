@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundColor"
+    android:background="?customBgColorCuaderno"
     tools:context=".presentacion.actividades.CalendarioActivity">
 
     <ImageView
@@ -28,15 +28,16 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="70dp"
         android:orientation="horizontal"
-        app:layout_constraintWidth_max="1200dp"
-        app:layout_constraintHeight_max="600dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="70dp"
+        app:layout_constraintHeight_max="600dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        app:layout_constraintWidth_max="1200dp"
         app:layout_constraintWidth_percent="0.85">
 
         <LinearLayout
@@ -62,15 +63,14 @@
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:contentDescription="Flecha mes siguiente"
+                    android:gravity="center"
                     android:scaleType="centerInside"
                     app:icon="@drawable/svg_chevron_left"
                     app:iconGravity="textStart"
-                    app:iconSize="30dp"
-                    android:contentDescription="Flecha mes siguiente"
-                    />
+                    app:iconSize="30dp" />
 
                 <TextView
                     android:id="@+id/lbl_mes"
@@ -90,15 +90,14 @@
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:contentDescription="Flecha mes siguiente"
+                    android:gravity="center"
                     android:scaleType="centerInside"
                     app:icon="@drawable/svg_chevron_right"
                     app:iconGravity="textStart"
-                    app:iconSize="30dp"
-                    android:contentDescription="Flecha mes siguiente"
-                    />
+                    app:iconSize="30dp" />
 
             </LinearLayout>
 
@@ -108,8 +107,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:overScrollMode="never"
                 android:contentDescription="Contenedor con los días del mes"
+                android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,15 +124,51 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/atras"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Cerrar seccion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/svg_chevron_left" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Calendario"
+            android:textSize="@dimen/displaySmall" />
+
+    </LinearLayout>
+
+
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewSide"
         android:name="com.example.plantea.presentacion.fragmentos.NavigationSideFragment"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:elevation="5dp"
+        android:elevation="7dp"
         app:shapeAppearance="@style/cornersNavigation"
         android:background="?colorAccent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

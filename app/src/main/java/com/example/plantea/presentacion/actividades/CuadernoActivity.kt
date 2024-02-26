@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ class CuadernoActivity : AppCompatActivity() {
     private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
     private var fragmentCuadernoPictoEdit = CuadernoPictoEditFragment()
     private var fragmentPrincipal = PrincipalFragment()
+    private var atras : ImageView? = null
 
     private val viewModel by viewModels<CuadernoViewModel>()
 
@@ -45,6 +47,9 @@ class CuadernoActivity : AppCompatActivity() {
         if(viewModel.isPlanificador){
             viewModel.listaCuadernos!!.add(Cuaderno(0, "AÑADIR CUADERNO", "archivo", false))
         }
+
+        atras = findViewById(R.id.atras)
+
 
         if (savedInstanceState == null) {
             // La primera vez que se crea la actividad, se añade el fragmento principal
@@ -68,6 +73,10 @@ class CuadernoActivity : AppCompatActivity() {
                 transaction!!.commit()
             }
 
+        }
+
+        atras?.setOnClickListener {
+            finish()
         }
 
         observers()

@@ -11,6 +11,7 @@ class Pictograma : Serializable {
     var categoria = 0
     var cuaderno = 0
     var historia: String? = null
+    var duracion: String? = null
     var favorito: Boolean = false
     var sourceAPI: Boolean = false
     var listaPictogramas: ArrayList<Pictograma>? = null

@@ -199,16 +199,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         return picker
     }
 
-    fun createRelojDuracion():MaterialTimePicker{
-        val picker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
-            .setTheme(R.style.TimePicker)
-            .setTitleText("Selecciona una duración para el evento")
-            .build()
-        return picker
-    }
-
     fun configureDataPlanSeleccionado(posicion: Int){
         isPlanSeleccionado = true
         posicionPlan = posicion

@@ -166,6 +166,7 @@ class CommonUtils{
             val dict = mutableMapOf<Bitmap, Pair<String, Int>>()
             val listaIds = mutableListOf<Int>()
             val listaTitulos = mutableListOf<String>()
+
             try {
                 var retrofitData = retrofitBuilder.getData(query)
                 var response = retrofitData.execute()

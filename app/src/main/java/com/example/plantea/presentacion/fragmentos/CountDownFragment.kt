@@ -1,7 +1,5 @@
 package com.example.plantea.presentacion.fragmentos
 
-import android.animation.ValueAnimator
-import android.app.Activity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -16,14 +14,10 @@ import androidx.fragment.app.viewModels
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ActividadActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.viewModels.ActividadViewModel
 import com.example.plantea.presentacion.viewModels.CountDownViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.google.android.material.transition.MaterialSharedAxis
-import java.util.Calendar
 import java.util.Locale
 
 

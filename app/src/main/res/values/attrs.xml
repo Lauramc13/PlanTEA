@@ -17,6 +17,7 @@
 
     <attr name="celdaCalendario2" format="reference" />
     <attr name="celdaCalendarioStroke2" format="reference" />
+    <attr name="bg_container_plan" format="reference" />
 
 
 </resources>

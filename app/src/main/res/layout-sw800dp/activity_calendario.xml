@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?backgroundColor"
+    android:background="?customBgColorCuaderno"
     tools:context=".presentacion.actividades.CalendarioActivity">
 
     <ImageView
@@ -38,7 +38,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="500dp"
             android:background="@drawable/bg_calendario"
             android:orientation="vertical">
 

@@ -25,13 +25,13 @@ class GestionUsuarios {
         return resultado
     }*/
 
-   /* fun cambiarPassword(email:String, passwordVieja: String, passwordNueva: String, actividad: Activity?): Boolean {
+    fun actualizarPass(idUsuario:String, passwordNueva: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.actualizarPass(email, passwordVieja, passwordNueva)
+        resultado = conectorBD!!.actualizarPass(idUsuario, passwordNueva)
         conectorBD!!.cerrar()
         return resultado
-    }*/
+    }
 
     /*fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
         conectorBD = ConectorBD(actividad)

@@ -150,6 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/white"
         android:importantForAccessibility="no" />
 
     <ImageView
@@ -159,6 +160,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/svg_blob2"
+        app:tint="@color/white"
         android:importantForAccessibility="no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

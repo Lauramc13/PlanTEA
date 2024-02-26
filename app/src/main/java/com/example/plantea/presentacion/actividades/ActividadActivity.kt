@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentContainerView
 import com.example.plantea.R
-import com.example.plantea.presentacion.fragmentos.CountDownFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.ActividadViewModel
 import com.google.android.material.transition.MaterialSharedAxis
@@ -21,6 +20,8 @@ class ActividadActivity : AppCompatActivity() {
     private lateinit var cardVideo: CardView
     private lateinit var cardObjeto: CardView
     private lateinit var frameVideo: FrameLayout
+    private var atras : ImageView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,8 @@ class ActividadActivity : AppCompatActivity() {
         cardObjeto = findViewById(R.id.card_objeto)
         frameVideo = findViewById(R.id.webViewFrame)
         val closeButton : Button = findViewById(R.id.closeYoutube)
+        atras = findViewById(R.id.atras)
+
 
         closeButton.setOnClickListener {
             //stop the webview from playing
@@ -54,6 +57,10 @@ class ActividadActivity : AppCompatActivity() {
 
         cardObjeto.setOnClickListener{
             viewModel.dialogObjeto(this)
+        }
+
+        atras?.setOnClickListener {
+            finish()
         }
     }
 

@@ -31,7 +31,7 @@
             android:padding="15dp"
             android:orientation="vertical">
 
-                <EditText
+                <!--<EditText
                     android:id="@+id/txt_tituloEvento"
                     android:hint="Titulo"
                     android:theme="@style/AppTheme.CursorBubble"
@@ -43,22 +43,21 @@
                     android:inputType="textCapSentences"
                     style="@style/cornerRadiusEvento"
                     android:layout_marginBottom="10dp"
-                    android:textSize="20sp" />
+                    android:textSize="20sp" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="3dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+
                 android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:padding="2dp"
-                    android:src="@drawable/svg_calendar3"/>
+                    android:src="@drawable/svg_calendar3" />
 
                 <TextView
                     android:id="@+id/textView11"
@@ -85,8 +84,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="3dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -118,42 +115,7 @@
                     android:fontFamily="@font/poppins_regular"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:padding="2dp"
-                    android:src="@drawable/svg_duration"/>
-
-                <TextView
-                    android:id="@+id/lbl_duracion"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="10dp"
-                    android:layout_height="wrap_content"
-                    android:text="Duración:"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/btn_duracionEvento"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Seleccionar duración"
-                    android:gravity="end"
-                    android:contentDescription="Boton seleccionar hora"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/poppins_regular"/>
-            </LinearLayout>
 
 
             <LinearLayout
@@ -161,8 +123,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:padding="3dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

@@ -1,44 +1,23 @@
-package com.example.plantea.presentacion.actividades.planificador
+package com.example.plantea.presentacion.actividades
 
-import android.app.Dialog
-import android.content.Intent
-import android.content.res.Configuration
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
-import com.example.plantea.dominio.Usuario
-import com.example.plantea.presentacion.actividades.ConfiguracionActivity
-import com.example.plantea.presentacion.actividades.ManualActivity
-import com.example.plantea.presentacion.actividades.PreLoginActivity
+import com.example.plantea.presentacion.viewModels.PasswordViewModel
 import com.google.android.material.textfield.TextInputLayout
-import java.security.MessageDigest
 
 class PasswordActivity : AppCompatActivity() {
     private lateinit var viejaPass: TextInputLayout
     private lateinit var nuevaPass: TextInputLayout
     private lateinit var confirmaPass: TextInputLayout
     private lateinit var btn_guardar: Button
-    private var actualizado: Boolean = false
-    var usuario = Usuario()
     private lateinit var backButton: Button
+    val emptyTextViews = mutableListOf<TextView>()
 
-    lateinit var btn_logout: Button
-    private lateinit var icono_cerrar_login: ImageView
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
+    private val viewModel by viewModels<PasswordViewModel>()
 
-        // Comprobamos la orientacion de la pantalla
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "Horizontal", Toast.LENGTH_SHORT).show()
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Toast.makeText(this, "Vertical", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +29,11 @@ class PasswordActivity : AppCompatActivity() {
         btn_guardar = findViewById(R.id.btn_Guardar)
         backButton = findViewById(R.id.goBackButton)
 
+        if(savedInstanceState != null){
+            viejaPass.editText?.setText(viewModel.viejaPass)
+            nuevaPass.editText?.setText(viewModel.nuevaPass)
+            confirmaPass.editText?.setText(viewModel.confirmaPass)
+        }
 
         backButton.setOnClickListener{
             finish()
@@ -57,139 +41,61 @@ class PasswordActivity : AppCompatActivity() {
 
         //Este método se ejecutará al seleccionar el boton guardar
         btn_guardar.setOnClickListener {
-
-            viejaPass.error = null
-            nuevaPass.error = null
-            confirmaPass.error = null
-
-            val emptyTextViews = mutableListOf<TextView>()
-
-            if (viejaPass.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(viejaPass.editText!!)
-                viejaPass.error = "ESTO ES UN ERROR"
-            }
-
-            if (nuevaPass.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(nuevaPass.editText!!)
-                nuevaPass.error = "ESTO ES UN ERROR"
-            }
-
-            if (confirmaPass.editText?.text.toString().isEmpty()) {
-                emptyTextViews.add(confirmaPass.editText!!)
-                confirmaPass.error = "ESTO ES UN ERROR"
-            }
-
+            checkTextViews()
             if (emptyTextViews.isNotEmpty()) {
-                Toast.makeText(applicationContext, "Debes completar todos los campos",  Toast.LENGTH_LONG).show()
+                CommonUtils.showSnackbar(findViewById(android.R.id.content), applicationContext, "No puedes dejar campos vacíos")
             } else {
                 if(nuevaPass.editText?.text.toString() != confirmaPass.editText?.text.toString()){
-                    Toast.makeText(applicationContext, "Las contraseñas no coinciden",  Toast.LENGTH_LONG).show()
+                    CommonUtils.showSnackbar(findViewById(android.R.id.content), applicationContext, "Las contraseñas no coinciden")
                     nuevaPass.error = "ESTO ES UN ERROR"
                     confirmaPass.error = "ESTO ES UN ERROR"
                 }
                 else {
                     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+                    val idUsuario = prefs.getString("idUsuario", "")
                     val email = prefs.getString("email", "")
-                    if (email != null) {
-                        val passCifrada = hashPassword(viejaPass.editText?.text.toString())
-                        val nuevaPassCifrada = hashPassword(nuevaPass.editText?.text.toString())
-                       /* actualizado = usuario.confirmarPass(
-                            email,
-                            passCifrada,
-                            nuevaPassCifrada,
-                            this@PasswordActivity
-                        )*/
+
+                    if (idUsuario != null && email != null) {
+                        if (viewModel.currentPasswordCorrect(this, applicationContext, email, viejaPass.editText?.text.toString())) {
+                            viewModel.actualizarPassword(idUsuario, nuevaPass.editText?.text.toString(), this)
+                            CommonUtils.showSnackbar(findViewById(android.R.id.content), applicationContext, "Contraseña actualizada")
+                            finish()
+                        } else {
+                            CommonUtils.showSnackbar(findViewById(android.R.id.content), applicationContext, "Error al actualizar. Introduce de nuevo los datos. ")
+                        }
                     }
-                    if (actualizado) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Contraseña actualizada",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                        finish()
-                    } else {
-                        Toast.makeText(
-                            applicationContext,
-                            "Error al actualizar. Introduce de nuevo los datos. ",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+
                 }
             }
         }
     }
 
-    //Menu principal
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
-        return true
-    }
+    private fun checkTextViews(){
+        viejaPass.error = null
+        nuevaPass.error = null
+        confirmaPass.error = null
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.item_ayuda -> {
-                val i = Intent(applicationContext, ManualActivity::class.java)
-                startActivity(i)
-            }
-            R.id.item_perfil -> {
-                val popupMenu = PopupMenu(this@PasswordActivity, findViewById(R.id.item_ayuda) )
-                popupMenu.inflate(R.menu.popup_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.option_1 -> {
-                            val perfil = Intent(applicationContext, ConfiguracionActivity::class.java)
-                            startActivity(perfil)
-                            true
-                        }
-                        // R.id.option_2 -> {
-                        //     val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                        //     val isPlanificadorLogged = prefs.getBoolean("PlanificadorLogged", false)
-                        //     if(isPlanificadorLogged){
-                        //         val editor = prefs.edit()
-                        //         editor.putBoolean("PlanificadorLogged", false)
-                        //         editor.commit()
-                        //         val plan = Intent(applicationContext, PlanActivity::class.java)
-                        //         startActivity(plan)
-                        //     }else{
-                        //         crearDialogoLogin()
-                        //     }
-                        //     true
-                        // }
-                        R.id.option_3 -> {
-                            val dialogLogout = Dialog(this)
-                            dialogLogout.setContentView(R.layout.dialogo_logout)
-                            dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-                            icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-                            btn_logout.setOnClickListener {
-                                val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-                                prefs.edit().clear().commit()
-                                // val editor = prefs.edit()
-                                // editor.putBoolean("userAccount", false)
-                                // editor.apply()
-                                val login = Intent(applicationContext, PreLoginActivity::class.java)
-                                startActivity(login)
-                            }
-                            icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
-                            dialogLogout.show()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-                popupMenu.show()
-            }
-            android.R.id.home -> finish()
+        if (viejaPass.editText?.text.toString().isEmpty()) {
+            emptyTextViews.add(viejaPass.editText!!)
+            viejaPass.error = "ESTO ES UN ERROR"
         }
-        return true
+
+        if (nuevaPass.editText?.text.toString().isEmpty()) {
+            emptyTextViews.add(nuevaPass.editText!!)
+            nuevaPass.error = "ESTO ES UN ERROR"
+        }
+
+        if (confirmaPass.editText?.text.toString().isEmpty()) {
+            emptyTextViews.add(confirmaPass.editText!!)
+            confirmaPass.error = "ESTO ES UN ERROR"
+        }
     }
-    private fun hashPassword(password: String): String {
-        val bytes = password.toByteArray()
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(bytes)
-        return digest.fold("", { str, it -> str + "%02x".format(it) })
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.viejaPass = viejaPass.editText?.text.toString()
+        viewModel.nuevaPass = nuevaPass.editText?.text.toString()
+        viewModel.confirmaPass = confirmaPass.editText?.text.toString()
     }
 
 }

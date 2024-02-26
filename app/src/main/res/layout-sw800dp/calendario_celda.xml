@@ -9,6 +9,8 @@
     android:layout_marginRight="5dp"
     app:cardElevation="0dp"
     android:clickable="true"
+    app:layout_gravity="center"
+    android:layout_gravity="center"
     app:cardBackgroundColor="?cardBackgroundColor">
 
     <TextView
@@ -20,6 +22,7 @@
         android:text="1"
         android:clickable="false"
         android:gravity="center"
+        android:maxLines="1"
         android:elevation="0dp"
         android:textColor="?colorOnSurface"
         android:fontFamily="@font/poppins_regular"

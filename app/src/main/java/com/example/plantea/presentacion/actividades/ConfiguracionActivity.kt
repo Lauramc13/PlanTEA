@@ -1,14 +1,11 @@
 package com.example.plantea.presentacion.actividades
 
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -16,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
-import com.example.plantea.presentacion.actividades.planificador.PasswordActivity
-import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.ConfiguracionViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 
 import java.util.*

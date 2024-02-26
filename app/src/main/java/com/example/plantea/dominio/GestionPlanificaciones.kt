@@ -26,9 +26,9 @@ class GestionPlanificaciones : Serializable {
             for(pictogram in listaPlanificacion){
                 if(pictogram.sourceAPI){
                     conectorBD.addPictogramaAPI(pictogram.id, pictogram.titulo, pictogram.imagen)
-                    conectorBD.addPictogramasPlanificacion(idPlan, null, pictogram.id, pictogram.historia)
+                    conectorBD.addPictogramasPlanificacion(idPlan, null, pictogram.id, pictogram.historia, pictogram.duracion)
                 }else{
-                    conectorBD.addPictogramasPlanificacion(idPlan, pictogram.id, null, pictogram.historia)
+                    conectorBD.addPictogramasPlanificacion(idPlan, pictogram.id, null, pictogram.historia, pictogram.duracion)
                 }
             }
         }catch (e: Exception){
@@ -106,9 +106,9 @@ class GestionPlanificaciones : Serializable {
             for(pictogram in pictogramas){
                 if(pictogram.sourceAPI){
                     conectorBD.addPictogramaAPI(pictogram.id, pictogram.titulo, pictogram.imagen)
-                    conectorBD.addPictogramasPlanificacion(idPlan, null, pictogram.id, pictogram.historia)
+                    conectorBD.addPictogramasPlanificacion(idPlan, null, pictogram.id, pictogram.historia, pictogram.duracion)
                 }else{
-                    conectorBD.addPictogramasPlanificacion(idPlan, pictogram.id, null, pictogram.historia)
+                    conectorBD.addPictogramasPlanificacion(idPlan, pictogram.id, null, pictogram.historia, pictogram.duracion)
                 }
             }
         }catch (e: Exception){
@@ -130,6 +130,7 @@ class GestionPlanificaciones : Serializable {
                 pictograma.imagen = c.getString(1)
                 pictograma.categoria = c.getInt(2)
                 pictograma.historia = c.getString(3)
+                pictograma.duracion = c.getString(4)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }
