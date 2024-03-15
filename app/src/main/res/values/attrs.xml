@@ -18,6 +18,19 @@
     <attr name="celdaCalendario2" format="reference" />
     <attr name="celdaCalendarioStroke2" format="reference" />
     <attr name="bg_container_plan" format="reference" />
+    <attr name="cardBackgroundColorPersonalized" format="reference" />
+    <attr name="colorBG" format="reference" />
+    <attr name="bgEvento" format="reference" />
+    <attr name="bgDisabled" format="reference" />
+
+    <attr name="colorBG0" format="reference" />
+    <attr name="colorBG1" format="reference" />
+    <attr name="colorBG2" format="reference" />
+    <attr name="colorBG3" format="reference" />
+    <attr name="stroke1" format="reference" />
+    <attr name="pizzaraBorde" format="reference" />
+    <attr name="pizzaraFondo" format="reference" />
+
 
 
 </resources>

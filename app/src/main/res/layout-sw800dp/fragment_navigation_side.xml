@@ -2,21 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorAccent"
+    android:background="?colorBG1"
     android:id="@+id/fragment_navigation_side"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <Button
         android:id="@+id/item_menu"
+        style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:padding="8dp"
-        android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:iconSize="24dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:src="@drawable/svg_menu"
-        android:layout_marginStart="15dp"/>
+        app:iconGravity="textEnd"
+        app:iconTint="?colorOnSurface"
+        app:icon="@drawable/svg_menu" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
@@ -24,8 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="start"
-        android:background="?colorAccent"
-        android:backgroundTint="?colorAccent"
+        android:background="?colorBG1"
+        android:backgroundTint="?colorBG1"
         android:fontFamily="@font/poppins_light"
         app:elevation="3dp"
         app:itemIconPadding="10dp"
@@ -48,12 +50,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/roundedImageView"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="5dp"
             app:cardCornerRadius="40dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             app:cardElevation="0dp">
 
             <ImageView
@@ -63,7 +68,7 @@
                 android:background="@color/white"
                 android:scaleType="centerCrop"
                 android:src="@drawable/user" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/textRol"

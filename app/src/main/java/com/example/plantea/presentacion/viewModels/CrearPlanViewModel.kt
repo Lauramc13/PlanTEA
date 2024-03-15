@@ -191,7 +191,6 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
         customView.findViewById<TextView>(R.id.item_duracion).setOnClickListener {
             _onDuracionClicked.value = position
-
             popupWindow.dismiss()
         }
 
@@ -312,7 +311,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
 
         btnBorrar.setOnClickListener{
-            categoria.eliminarCategoria(view?.context as Activity, idUsuario, idCategoria)
+            categoria.eliminarCategoria(view.context as Activity, idUsuario, idCategoria)
             listaCategorias.removeAt(posicion)
             _deletedCategoria.value = posicion
             dialogo.dismiss()
@@ -333,6 +332,19 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setHour(currentHour)
             .setMinute(currentMinute)
+            .setTheme(R.style.TimePicker)
+            .setTitleText("Selecciona una hora")
+            .build()
+
+        return picker
+    }
+
+    fun createReloj24(): MaterialTimePicker{
+
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(0)
+            .setMinute(0)
             .setTheme(R.style.TimePicker)
             .setTitleText("Selecciona una hora")
             .build()

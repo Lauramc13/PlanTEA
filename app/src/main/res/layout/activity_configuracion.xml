@@ -165,6 +165,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                     android:layout_height="60dp"
                     android:contentDescription="Campo de texto con correo del planificador"
                     android:ems="10"
+                    android:enabled="false"
                     android:fontFamily="@font/poppins_medium"
                     android:hint="Correo electrónico"
                     android:inputType="textPersonName"

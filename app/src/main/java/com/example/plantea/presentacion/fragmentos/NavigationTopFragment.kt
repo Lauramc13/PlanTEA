@@ -26,6 +26,9 @@ import com.example.plantea.presentacion.actividades.PlanActivity
 import com.example.plantea.presentacion.actividades.TraductorActivity
 import com.example.plantea.presentacion.actividades.CalendarioActivity
 import com.example.plantea.presentacion.actividades.CreditsActivity
+import com.example.plantea.presentacion.actividades.ManualActivity
+import com.example.plantea.presentacion.actividades.PasswordActivity
+import com.example.plantea.presentacion.actividades.PoliticaActivity
 
 class NavigationTopFragment: Fragment() {
     lateinit var vista: View
@@ -49,6 +52,9 @@ class NavigationTopFragment: Fragment() {
             CuadernoActivity::class.java -> "Cuaderno"
             CreditsActivity::class.java -> "Acerca de la aplicación"
             ConfiguracionActivity::class.java -> "Configuración"
+            ManualActivity::class.java -> "Manual de usuario"
+            PoliticaActivity::class.java -> "Política de privacidad"
+            PasswordActivity::class.java -> "Cambiar contraseña"
             else -> "PlanTEA"
         }
 
@@ -57,16 +63,18 @@ class NavigationTopFragment: Fragment() {
         }
 
         backButton.setOnClickListener {
-          /*  if (parentFragmentManager.backStackEntryCount == 0) {
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-            } else {
-                parentFragmentManager.popBackStack()
-            }*/
+            if(hostingActivityClass == ConfiguracionActivity::class.java){
+                val editor = prefs.edit()
+                editor.putString("imagenPlanificadorConfig", null)
+                editor.putString("imageUsuarioTEAConfig", null)
+                editor.putString("imageObjetoConfig", null)
+                editor.apply()
+            }
             activity?.finish()
         }
 
         iconoRol.setOnClickListener {
-            menuUsuario(it)
+            navigationHandler.menuUsuario(this, vista)
         }
 
         prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
@@ -78,51 +86,6 @@ class NavigationTopFragment: Fragment() {
         }
 
     return vista
-    }
-
-    private fun menuUsuario(anchorView: View) {
-        val inflater = LayoutInflater.from(requireContext())
-        val isUsuarioTEA = prefs.getBoolean("info_usuario", false)
-        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
-        customView = inflater.inflate(R.layout.popup_menu_usuario, null)
-        val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
-        popupWindow.showAtLocation(anchorView, Gravity.END  or Gravity.TOP, 20, 120)
-
-        //Si estamos en el usuarioTEA
-        if(!infoUsuario) {
-            customView.findViewById<LinearLayout>(R.id.item_user).visibility = View.GONE
-            customView.findViewById<LinearLayout>(R.id.item_cerarSesion).visibility = View.GONE
-            customView.findViewById<View>(R.id.divider).visibility = View.GONE
-            customView.findViewById<View>(R.id.divider2).visibility = View.GONE
-        }
-
-        //Si no existe usuario TEA
-        if(!isUsuarioTEA && infoUsuario) {
-            customView.findViewById<LinearLayout>(R.id.item_cuenta).visibility = View.GONE
-            customView.findViewById<View>(R.id.divider).visibility = View.GONE
-        }
-
-        customView.findViewById<LinearLayout>(R.id.item_cuenta).setOnClickListener {
-                if(isUsuarioTEA && infoUsuario){
-                    val editor = prefs.edit()
-                    editor.putBoolean("PlanificadorLogged", false)
-                    editor.apply()
-                    requireContext().startActivity(Intent(activity?.baseContext, PlanActivity::class.java))
-                    activity?.finish()
-                    activity?.finishAffinity()
-                }else{
-                    navigationHandler.crearDialogoLogin(this.requireContext(), this.requireActivity())
-            }
-        }
-
-        customView.findViewById<LinearLayout>(R.id.item_cerarSesion).setOnClickListener {
-            navigationHandler.cerrarSesion(this)
-        }
-        customView.findViewById<LinearLayout>(R.id.item_user).setOnClickListener {
-            startActivity(Intent(requireContext().applicationContext, ConfiguracionActivity::class.java))
-        }
-
-        popupWindow.showAsDropDown(anchorView)
     }
 
 }

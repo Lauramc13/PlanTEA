@@ -1,30 +1,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-android:background="?backgroundStacked"
+android:background="?customBgColor"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="180"
+        android:layout_marginEnd="-30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
 
-<ImageView
-    android:id="@+id/imageView7"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    android:rotationY="180"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/blob3" />
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
+
 
 <TextView
     android:id="@+id/lbl_planificacion"
     android:layout_width="0dp"
     app:layout_constraintWidth_percent="0.5"
     android:layout_height="wrap_content"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="60dp"
     android:fontFamily="@font/poppins_semibold"
     android:gravity="center"
     android:text="@string/lbl_seleccionaAvatar"
     android:textColor="?colorOnSurface"
-    android:textSize="34sp"
+    android:textSize="25sp"
     android:maxLines="1"
     app:autoSizeTextType="uniform"
     app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +48,7 @@ android:layout_height="match_parent">
     android:id="@+id/lbl_planificacion2"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="10dp"
     android:fontFamily="@font/poppins_medium"
     android:gravity="center"
     android:maxLines="1"
@@ -57,8 +70,8 @@ android:layout_height="match_parent">
     android:contentDescription="Boton para seleccionar foto de la galeria"
     android:fontFamily="@font/poppins_semibold"
     android:maxLines="1"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
     android:text="@string/lbl_seleccionarFoto"
     android:textAllCaps="true"
     android:textColor="#203130"
@@ -73,7 +86,7 @@ android:layout_height="match_parent">
 <Button
     android:id="@+id/btn_saltar"
     style="@style/Widget.Material3.Button.IconButton.Outlined"
-    android:textSize="13sp"
+    android:textSize="14sp"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:backgroundTint="#FFFFFF"
@@ -110,7 +123,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 1 chica pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -127,7 +143,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 2 chica pelo rubio"
             app:cardCornerRadius="20dp">
 
@@ -144,7 +163,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 3 chica pelo negro"
             app:cardCornerRadius="20dp">
 
@@ -161,7 +183,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 4 chica pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -178,7 +203,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 5 chica pelo moreno corto"
             app:cardCornerRadius="20dp">
 
@@ -203,7 +231,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 1 chico pelo moreno barba"
             app:cardCornerRadius="20dp">
 
@@ -220,7 +251,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 2 chico pelo rubio"
             app:cardCornerRadius="20dp">
 
@@ -237,7 +271,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 3 chico pelo moreno largo barba"
             app:cardCornerRadius="20dp">
 
@@ -255,7 +292,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 4 chico pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -272,7 +312,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 5 chico pelo moreno gafas"
             app:cardCornerRadius="20dp">
 

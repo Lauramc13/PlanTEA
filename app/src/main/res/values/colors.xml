@@ -86,7 +86,7 @@
     <color name="link">#00b4d8</color>
     <color name="yellow">#FBFC9E</color>
     <color name="yellowDarker">#AEAF56</color>
-    <color name="yellowDark">#A6A800</color>
+    <color name="yellowDark">#C3C606</color>
     <color name="yellowDarkest">#757701</color>
 
     <color name="blueCategoria">#CDEDFF</color>
@@ -101,5 +101,7 @@
     <color name="pizarraContenido2">#8051EEE9</color>
 
     <color name="veryLight">#C1EBEB</color>
+
+    <color name="blue">#32B3DB</color>
 
 </resources>

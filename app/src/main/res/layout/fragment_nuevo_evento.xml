@@ -269,12 +269,14 @@
 
     <ImageView
         android:id="@+id/img_cancelarEvento"
-        android:layout_width="40dp"
+        android:layout_width="48dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
         android:layout_margin="10dp"
-        android:padding="7dp"
+        android:padding="12dp"
+        android:background="@drawable/bg_close_button"
         android:contentDescription="Cerrar configuración nuevo evento"
         app:srcCompat="@drawable/ic_baseline_close_24" />
+
 
 </FrameLayout>

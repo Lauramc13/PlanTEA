@@ -78,4 +78,13 @@ class GestionCategorias {
         conectorBD!!.eliminarCategoria(idUsuario, idCategoria)
         conectorBD!!.cerrar()
     }
+
+   /* fun obtenerTituloCategoria(context: Context, idCategoria: Int): String {
+        conectorBD = ConectorBD(context)
+        conectorBD!!.abrir()
+        var titulo = ""
+        titulo = conectorBD!!.obtenerTituloCategoria(idCategoria).toString()
+        conectorBD!!.cerrar()
+        return titulo
+    }*/
 }

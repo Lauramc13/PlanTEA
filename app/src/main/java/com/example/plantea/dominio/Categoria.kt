@@ -11,12 +11,7 @@ class Categoria {
     var color: String? = null
     var listaCategorias: ArrayList<String>? = null
     var gestorCategorias = GestionCategorias()
-
     constructor()
-    constructor(titulo: String?, imagen: String?) {
-        this.titulo = titulo
-        this.imagen = imagen
-    }
 
     fun consultarCategorias(actividad: Activity?): ArrayList<*>? {
         listaCategorias = ArrayList()
@@ -33,10 +28,6 @@ class Categoria {
         return gestorCategorias.obtenerCategoriasPrincipales(actividad, idUsuario)
     }
 
-    /*fun crearSubcategoria(actividad: Activity?, nombre: String?) {
-        gestorCategorias.insertarSubcategoria(actividad, nombre)
-    }*/
-
     fun crearCategoria(actividad: Activity?, nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String) {
         gestorCategorias.insertarCategoria(actividad, nombre, imagen, principal, color, idUsuario)
     }
@@ -44,5 +35,6 @@ class Categoria {
     fun eliminarCategoria(actividad: Activity?, idUsuario: String, idCategoria: Int) {
         gestorCategorias.eliminarCategoria(actividad, idUsuario, idCategoria)
     }
+
 
 }

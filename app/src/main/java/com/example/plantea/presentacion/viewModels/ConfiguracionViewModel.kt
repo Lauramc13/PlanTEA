@@ -9,7 +9,7 @@ class ConfiguracionViewModel: ViewModel() {
 
     val _toast = SingleLiveEvent<String>()
 
-    var email = ""
+    //var email = ""
     var name = ""
     var username = ""
     var nameTEA = ""

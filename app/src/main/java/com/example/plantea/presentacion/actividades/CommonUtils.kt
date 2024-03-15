@@ -300,6 +300,15 @@ class CommonUtils{
            textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
         }
 
+        fun crearRuta(context: Context, image: Bitmap, nombreImagen: String): String{
+            //Escalar imagen
+            val proporcion = 500 / image.width.toFloat()
+            val imagenFinal = Bitmap.createScaledBitmap(image, 500, (image.height * proporcion).toInt(), false)
+
+            //Guardar imagen
+            return guardarImagen(context, nombreImagen, imagenFinal)
+        }
+
         fun crearRuta(context: Context, imagen: ImageView?, nombreImagen: String): String {
             val image = (imagen!!.drawable as BitmapDrawable).bitmap
 

@@ -258,20 +258,18 @@ class CrearPlanActivity : AppCompatActivity(){
                         dialogNuevoPictograma.dismiss() //Cerrar dialogo
 
                         //Añadir pictograma
-                        viewModel.pictograma.nuevoPictograma(
-                            this@CrearPlanActivity,
-                            tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault()),
-                            ruta,
-                            spinnerDialogo.selectedItem.toString(),
-                            viewModel.idUsuario
-                        )
+                        val id = viewModel.pictograma.nuevoPictograma(this@CrearPlanActivity, tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault()), ruta, spinnerDialogo.selectedItem.toString(), viewModel.idUsuario)
 
                         val pictograma = Pictograma()
+                        pictograma.id = id
                         pictograma.titulo = tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault())
                         pictograma.imagen = ruta
                         pictograma.categoria = spinnerDialogo.selectedItemPosition + 1
                         viewModel._listaPictogramas.value?.add(pictograma)
-                       // categoriasPictoFragment.recyclerPictogramas.adapter?.notifyDataSetChanged()
+                        //find current fragment and update the recycler
+                        val categoriasPictoFragment = supportFragmentManager.findFragmentById(R.id.contenedor_fragments) as CategoriasPictogramasFragment
+
+                        categoriasPictoFragment.recyclerPictogramas.adapter?.notifyItemInserted(viewModel._listaPictogramas.value!!.size - 1)
 
                         viewModel.categoria.crearCategoria(this@CrearPlanActivity, tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault()), ruta, 0,"default", viewModel.idUsuario)
                     }
@@ -285,6 +283,49 @@ class CrearPlanActivity : AppCompatActivity(){
                     abrirGaleria()
                 }
             }
+        }
+
+        viewModel._historiaClicked.observe(this) {
+            var historiaSaved = false
+            val tituloCard = viewModel.listaPlanificacion[it].titulo
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialogo_historiasocial)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val btnGuardar = dialog.findViewById<Button>(R.id.btn_eliminarEvento)
+            val cardtitulo = dialog.findViewById<TextView>(R.id.cardName)
+            cardtitulo.text = tituloCard
+            val iconoCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+            val historiaText = dialog.findViewById<TextInputLayout>(R.id.historiaText)
+
+            if (viewModel.listaPlanificacion[it].historia.toString() == "null") {
+                historiaText.editText?.setText("")
+            } else {
+                historiaText.editText?.setText(viewModel.listaPlanificacion[it].historia)
+            }
+
+            iconoCerrar.setOnClickListener { dialog.dismiss() }
+
+            btnGuardar.setOnClickListener { view ->
+                if (historiaText.editText?.text.toString() == "") {
+                    CommonUtils.showSnackbar(view, this, "No puedes dejar el campo vacío")
+                } else {
+                    viewModel.listaPlanificacion[it].historia = historiaText.editText?.text.toString()
+                    adaptador.notifyItemChanged(it)
+                    dialog.dismiss()
+                }
+            }
+
+            dialog.show()
+        }
+
+        viewModel._onDuracionClicked.observe(this) {position->
+
+            val picker = viewModel.createReloj24()
+            picker.addOnPositiveButtonClickListener {
+                viewModel.listaPlanificacion[position].duracion = picker.hour.toString() + ":" + picker.minute.toString()
+            }
+            picker.show(supportFragmentManager, picker.toString())
+
         }
     }
 

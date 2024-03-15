@@ -23,6 +23,8 @@ class MenuObjetosActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     private lateinit var btn_galeria: Button
     private val viewModel by viewModels<MenuAvataresViewModel>()
+    private var isConfiguration = false
+    private var uri : Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,15 +39,25 @@ class MenuObjetosActivity : AppCompatActivity() {
             viewModel.abrirGaleria()
         }
 
+        val extras = intent.extras
+        if (extras != null) {
+            isConfiguration = extras.getBoolean("editPreferences")
+        }else{
+            isConfiguration = false
+        }
+
+
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
-        if(prefs.getBoolean("editPreferences", false)){
+        if(isConfiguration){
             btnSaltar.text = getString(R.string.str_cancelar)
         }else{
             btnSaltar.text = getString(R.string.str_saltar)
         }
 
         btnSaltar.setOnClickListener{
-            if(!prefs.getBoolean("editPreferences", false)) {
+            if(isConfiguration) {
+                uri = null
+            }else{
                 val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val editor = prefs.edit()
@@ -75,24 +87,34 @@ class MenuObjetosActivity : AppCompatActivity() {
             val packageName = applicationContext.packageName
             val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
             val avatar = findViewById<CardView>(cardViewId)
+            val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+
             avatar.setOnClickListener {
-                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
-                val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val idUsuario = prefs.getString("idUsuario", "")
-                if (idUsuario != null) {
-                    val usuario = Usuario()
-                    usuario.aniadirImagenObjeto(uri.toString(), idUsuario, this@MenuObjetosActivity)
+                uri = Uri.parse("android.resource://$packageName/$drawableId")
+                if(!isConfiguration) {
+                    val idUsuario = prefs.getString("idUsuario", "")
+                    if (idUsuario != null) {
+                        val usuario = Usuario()
+                        usuario.aniadirImagenObjeto(
+                            uri.toString(),
+                            idUsuario,
+                            this@MenuObjetosActivity
+                        )
+                    }
+                    val editor = prefs.edit()
+                    editor.putString("imagenObjeto", uri.toString())
+                    editor.apply()
                 }
-                val editor = prefs.edit()
-                editor.putString("imagenObjeto", uri.toString())
-                editor.apply()
                 next()
             }
         }
     }
 
     private fun next(){
-        if(prefs.getBoolean("editPreferences", false)){
+        if(isConfiguration){
+            val editor = prefs.edit()
+            editor.putString("imageObjetoConfig", uri.toString())
+            editor.apply()
             finish()
         }else{
             val intent = Intent(applicationContext, TutorialActivity::class.java)
@@ -107,11 +129,10 @@ class MenuObjetosActivity : AppCompatActivity() {
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value =  CommonUtils.getPathFromUri(this, uri)
+                viewModel._ruta.value =  CommonUtils.crearRuta(this, viewModel.bitmap!!, "Objeto")
             } else {
                 CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
             }
         }
     }
-
 }

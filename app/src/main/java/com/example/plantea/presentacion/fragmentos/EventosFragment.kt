@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,6 +41,7 @@ import java.util.Locale
 class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var vista: View
     lateinit var diaEvento: TextView
+    lateinit var layoutMensaje : LinearLayout
     lateinit var mensaje: TextView
     lateinit var crearEvento: FloatingActionButton
     lateinit var listaEventos: RecyclerView
@@ -63,6 +65,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         diaEvento = vista.findViewById(R.id.txt_dia_eventos)
         crearEvento = vista.findViewById(R.id.btn_nuevo_evento)
         mensaje = vista.findViewById(R.id.lbl_mensaje_evento)
+        layoutMensaje = vista.findViewById(R.id.linearLayout3)
         listaEventos = vista.findViewById(R.id.recycler_eventos)
 
         iniciarAdaptadorEvento()
@@ -102,10 +105,10 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         adaptadorEvento = AdaptadorEvento(viewModel.eventos, this)
         if (viewModel.eventos.isEmpty()) {
             listaEventos.visibility = View.GONE
-            mensaje.visibility = View.VISIBLE
+            layoutMensaje.visibility = View.VISIBLE
         } else {
             listaEventos.visibility = View.VISIBLE
-            mensaje.visibility = View.GONE
+            layoutMensaje.visibility = View.GONE
         }
         listaEventos.adapter = adaptadorEvento
     }
@@ -125,10 +128,10 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
                     //Mostramos un mensaje informando si la lista está vacía
                     if (viewModel.eventos.isEmpty()) {
                         listaEventos.visibility = View.GONE
-                        mensaje.visibility = View.VISIBLE
+                        layoutMensaje.visibility = View.VISIBLE
                     } else {
                         listaEventos.visibility = View.VISIBLE
-                        mensaje.visibility = View.GONE
+                        layoutMensaje.visibility = View.GONE
                     }
             dialogEvento.dismiss()
             }
@@ -141,17 +144,15 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
 
     override fun viewClick(posicion: Int) {
         val fecha = CalendarioUtilidades.fechaSeleccionada.toString()
+        val eventoVisible = viewModel.idUsuario.let { viewModel.evento.comprobarEventoVisible(it, fecha, actividad) }
 
-        val contador = viewModel.idUsuario.let { viewModel.evento.comprobarEventosVisible(it, fecha, actividad) }
         if (viewModel.eventos[posicion].visible == 1) {
             viewModel.evento.cambiarVisibilidad(actividad, 0, viewModel.eventos[posicion].id)
         } else {
-            if (contador == 0) {
-                viewModel.evento.cambiarVisibilidad(actividad, 1, viewModel.eventos[posicion].id)
-            } else {
-                CommonUtils.showSnackbar(vista, actividad, "Solo un evento puede ser visible")
-            }
+            viewModel.evento.cambiarVisibilidad(actividad, 0, eventoVisible)
+            viewModel.evento.cambiarVisibilidad(actividad, 1, viewModel.eventos[posicion].id)
         }
+
         iniciarAdaptadorEvento()
     }
 

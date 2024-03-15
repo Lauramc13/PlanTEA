@@ -48,8 +48,8 @@ class Pictograma : Serializable {
         return listaPictogramas!!
     }
 
-    fun nuevoPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
-        gestorPictogramas.insertarPictograma(actividad, nombre, imagen, categoria, idUsuario)
+    fun nuevoPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?): String {
+       return gestorPictogramas.insertarPictograma(actividad, nombre, imagen, categoria, idUsuario)
     }
 
     fun nuevoPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {

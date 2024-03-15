@@ -23,5 +23,7 @@
     <dimen name="formText">15sp</dimen>
     <dimen name="titleSmall">18sp</dimen>
     <dimen name="snackBarText">15sp</dimen>
+    <dimen name="titleNavigation">17sp</dimen>
+
 
 </resources>

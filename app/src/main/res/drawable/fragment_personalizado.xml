@@ -3,13 +3,13 @@
 
     <!-- Color de fondo de la vista -->
     <solid
-        android:color="?android:solidColor" >
+        android:color="?pizzaraFondo" >
     </solid>
 
     <!-- Color y ancho del borde del elemento-->
     <stroke
         android:width="1dp"
-        android:color="?android:colorControlNormal" >
+        android:color="?pizzaraBorde" >
     </stroke>
     <!-- Aquí indicamos el radio a aplicar a las esquinas -->
     <corners

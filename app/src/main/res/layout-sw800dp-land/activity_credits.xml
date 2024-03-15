@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="600dp"
-        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintHeight_percent="0.65"
         app:layout_constraintHorizontal_bias="0.16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_regular"
                 android:justificationMode="inter_word"
                 android:text="@string/str_parrafo1"
                 android:textColor="?colorOnSurface"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_regular"
                 android:justificationMode="inter_word"
                 android:text="@string/str_parrafo2"
                 android:textColor="?colorOnSurface"
@@ -105,19 +105,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:fontFamily="@font/poppins_medium"
-                android:justificationMode="inter_word"
-                android:text="@string/str_parrafo3"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Sobre el Grupo CHICO"
+                android:text="@string/str_parrafo3"
                 android:textColor="?colorOnSurface"
                 android:textSize="17sp" />
 
@@ -125,18 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_regular"
                 android:justificationMode="inter_word"
                 android:text="@string/str_parrafo4"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:justificationMode="inter_word"
-                android:text="@string/str_parrafo5"
                 android:textColor="?colorOnSurface"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -152,7 +133,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_max="600dp"
-        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintHeight_percent="0.65"
         app:layout_constraintStart_toEndOf="@+id/scrollview"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
         app:layout_constraintWidth_percent="0.3">
@@ -210,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Centro Aragonés para la Comunicación Aumentativa y Alternativa"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp" />
@@ -221,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Condiciones de uso, Noviembre 2023"
                     android:textColor="?customLinkColor"
                     android:textSize="15sp" />
@@ -231,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="manypixels"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp" />
@@ -242,7 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Terms of Service, 25 de Enero, 2019"
                     android:textColor="?customLinkColor"
                     android:textSize="15sp" />
@@ -252,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Freepik"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp" />
@@ -263,7 +244,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Terms of Use, Marzo, 2023"
                     android:textColor="?customLinkColor"
                     android:textSize="15sp" />
@@ -282,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="SVG Repo"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp" />
@@ -293,7 +274,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="SVG Repo License, 03 de Enero, 2023"
                     android:textColor="?customLinkColor"
                     android:textSize="15sp" />
@@ -303,7 +284,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="3dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Flaticon"
                     android:textColor="?colorOnSurface"
                     android:textSize="16sp" />
@@ -313,7 +294,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Terms of Use, Junio, 2022"
                     android:textColor="?customLinkColor"
                     android:textSize="15sp" />
@@ -328,41 +309,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/fondo_cuaderno_tiempo"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/svg_terms" />
-
-                <TextView
-                    android:id="@+id/txt_terms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Términos de servicio"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="35dp"
@@ -379,8 +331,6 @@
                     android:text="Política de privacidad"
                     android:textColor="?colorOnSurface"
                     android:textSize="18sp" />
-
-            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

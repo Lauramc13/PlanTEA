@@ -1,18 +1,19 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?backgroundStacked"
+    android:background="?customBgColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:rotation="180"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/svg_blob2" />
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/lbl_planificacion"
@@ -117,7 +118,9 @@
                     app:cardCornerRadius="20dp"
                     android:contentDescription="Opción 1 chica pelo moreno"
                     android:id="@+id/avatar1chica"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView
@@ -133,7 +136,9 @@
                     android:layout_height="150dp"
                     android:id="@+id/avatar2chica"
                     android:contentDescription="Opción 2 chica pelo rubio"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     android:layout_margin="15dp">
                     <ImageView
@@ -157,7 +162,9 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar3chica"
                     android:contentDescription="Opción 3 chica pelo negro"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -174,7 +181,9 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar4chica"
                     android:contentDescription="Opción 4 chica pelo moreno"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView
@@ -198,7 +207,9 @@
                 app:cardCornerRadius="20dp"
                 android:id="@+id/avatar5chica"
                 android:contentDescription="Opción 5 chica pelo moreno corto"
-                android:backgroundTint="@color/white"
+                app:strokeColor="?color"
+                app:strokeWidth="1.5dp"
+                app:cardBackgroundColor="@color/white"
                 android:layout_margin="15dp">
 
                 <ImageView
@@ -215,7 +226,9 @@
                 app:cardCornerRadius="20dp"
                 android:id="@+id/avatar1chico"
                 android:contentDescription="Opción 1 chico pelo moreno barba"
-                android:backgroundTint="@color/white"
+                app:strokeColor="?color"
+                app:strokeWidth="1.5dp"
+                app:cardBackgroundColor="@color/white"
                 android:layout_margin="15dp">
 
                 <ImageView
@@ -238,7 +251,9 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar2chico"
                     android:contentDescription="Opción 2 chico pelo rubio"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -254,7 +269,9 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar3chico"
                     android:contentDescription="Opción 3 chico pelo moreno largo barba"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
 
@@ -278,7 +295,9 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar4chico"
                     android:contentDescription="Opción 4 chico pelo moreno"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -294,7 +313,9 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar5chico"
                     android:contentDescription="Opción 5 chico pelo moreno gafas"
-                    android:backgroundTint="@color/white"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView

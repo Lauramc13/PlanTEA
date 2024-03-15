@@ -48,7 +48,6 @@
         android:layout_gravity="center"
         android:background="?color" />
 
-
     <LinearLayout
         android:id="@+id/item_cuenta"
         android:layout_width="wrap_content"
@@ -74,8 +73,42 @@
             android:padding="5dp"
             android:textColor="?colorOnSurfaceVariant"
             android:gravity="center"
-            android:fontFamily="@font/roboto_medium"
-             />
+            android:fontFamily="@font/roboto_medium" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="140dp"
+        android:layout_height="1dp"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:background="?color" />
+
+    <LinearLayout
+        android:id="@+id/item_ayuda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:src="@drawable/question_simple"
+            app:tint="?colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:text="Ayuda"
+            android:textSize="13sp"
+            android:padding="5dp"
+            android:textColor="?colorOnSurfaceVariant"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_medium" />
     </LinearLayout>
 
     <View

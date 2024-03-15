@@ -1,10 +1,13 @@
 package com.example.plantea.presentacion.fragmentos
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.CommonUtils
@@ -22,6 +25,10 @@ class NavigationSideFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
+        val hostingActivityClass = activity?.javaClass
+        if (hostingActivityClass != null) {
+            navigationHandler.inicializarVariables(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
+        }
         navigationHandler.restoreNavigationItemClicked(navigationHandler.hostingId(activity?.javaClass!!))
     }
 
@@ -29,6 +36,7 @@ class NavigationSideFragment: Fragment() {
         vista = inflater.inflate(R.layout.fragment_navigation_side, container, false)
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
+        val rol : LinearLayout = vista.findViewById(R.id.accountButton)
 
         val navigationView = vista.findViewById<NavigationView>(R.id.navigationView)
         if (infoUsuario) {
@@ -37,10 +45,8 @@ class NavigationSideFragment: Fragment() {
             navigationView.inflateMenu(R.menu.navigation_rail_menu_tea)
         }
 
-        val hostingActivityClass = activity?.javaClass
-
-        if (hostingActivityClass != null) {
-            navigationHandler.inicializarVariables(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
+        rol.setOnClickListener {
+            navigationHandler.menuUsuario(this, it)
         }
 
         return vista

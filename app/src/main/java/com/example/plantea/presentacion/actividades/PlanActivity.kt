@@ -43,7 +43,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     private lateinit var iconoMarcar: Button
     private lateinit var iconoMarcarTodas: Button
     private lateinit var dia: TextView
-    private var atras : ImageView? = null
+    private var atras : Button? = null
 
     private lateinit var planificacionesFuturas: RecyclerView
     private lateinit var calendarButton: Button
@@ -63,6 +63,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel._diasMes.removeObservers(this)
         CommonUtils.textToSpeech.stop()
         viewModel.dialog?.dismiss()
+
+        if(viewModel.currentDialog != null){
+            viewModel.currentDialog!!.dismiss()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +91,6 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         dia = findViewById(R.id.lbl_dia)
         atras = findViewById(R.id.atras)
-
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)
@@ -265,6 +268,9 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                 iconoMarcarTodas.visibility = View.VISIBLE
                 iconoEscuchar.visibility = View.VISIBLE
                 iconoReproducir.visibility = View.VISIBLE
+
+                iconoMarcar.isEnabled = true
+                iconoMarcarTodas.isEnabled = true
             }
 
             viewModel.adaptador = AdaptadorPresentacion(it, viewModel)
@@ -320,16 +326,6 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel._tituloLiveData.value = intent.getStringExtra("titulo")
         viewModel.listaPictogramas = intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>
         viewModel._planLiveData.value = viewModel.listaPictogramas
-     /*   viewModel.adaptador = AdaptadorPresentacion(viewModel.listaPictogramas, viewModel)
-        viewModel.recyclerView.adapter = viewModel.adaptador
-        lblMensaje.visibility = View.INVISIBLE
-        buttonPlanNuevo.visibility = View.INVISIBLE
-        iconoDeshacer.visibility = View.VISIBLE
-        iconoDeshacerTodas.visibility = View.VISIBLE
-        iconoMarcar.visibility = View.VISIBLE
-        iconoMarcarTodas.visibility = View.VISIBLE
-        iconoEscuchar.visibility = View.VISIBLE
-        iconoReproducir.visibility = View.VISIBLE*/
     }
 
     private fun reproducirEvento(tiempo: Long) {

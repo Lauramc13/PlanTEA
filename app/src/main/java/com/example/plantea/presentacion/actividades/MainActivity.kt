@@ -56,6 +56,13 @@ class MainActivity : AppCompatActivity() {
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
+       val accesoConfiguracion = prefs.getBoolean("userAccount", false)
+        if (!accesoConfiguracion) {
+            val intent = Intent(this@MainActivity, PreLoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         imagePlanificador = findViewById(R.id.image_RolPlanificador)
         imageUsuarioTEA = findViewById(R.id.image_RolTEA)
         nombrePlanificador = findViewById(R.id.lbl_nombrePlanificador)

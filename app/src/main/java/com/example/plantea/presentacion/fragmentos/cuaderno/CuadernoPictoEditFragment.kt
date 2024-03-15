@@ -72,8 +72,6 @@ class CuadernoPictoEditFragment : Fragment(){
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.isPlanificador = prefs?.getBoolean("PlanificadorLogged", false) == true
 
-        val parentActivity = activity as CuadernoActivity?
-
         adaptador = viewModel.isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, viewModel, it1) }}!!
         adaptador.isBusqueda = viewModel.isBusqueda
         adaptador.listaPictosAgregados = viewModel.listaPictosAgregados
@@ -138,6 +136,7 @@ class CuadernoPictoEditFragment : Fragment(){
     }
 
     fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?, listaPicto: ArrayList<String>){
+
         adaptador.isBusqueda = true
         adaptador.listaPictosAgregados = listaPicto
         viewModel.listaPictogramas = newPictogramasList!!

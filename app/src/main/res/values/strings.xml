@@ -169,11 +169,12 @@
 
 
     <!-- Credits-->
-    <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el Grupo de Investigación de la Universidad de Castilla-La Mancha ....</string>
-    <string name="str_parrafo2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin erat elit, vulputate pulvinar interdum sed, sagittis a enim. Quisque velit diam, euismod eget ornare sed, imperdiet ut ex.</string>
-    <string name="str_parrafo3">Sed interdum purus ac est sodales scelerisque. In sed interdum diam. In gravida nunc eu dignissim placerat. Donec a fermentum orci, nec egestas felis. Aenean porta enim sed leo commodo venenatis. Donec ut odio at nulla scelerisque rhoncus.</string>
-    <string name="str_parrafo4">CHICO es un Grupo de Investigación de la Universidad de Castilla-La Mancha con sede en la Escuela Superior de Informática del Campus de Ciudad Real que cuenta también con investigadores en la Facultad de Educación de Ciudad Real, en la Escuela de Ingeniería Minera e Industrial de Almadén, y en la Facultad de Ciencias Sociales de Talavera de la Reina.</string>
-    <string name="str_parrafo5">El interés investigador del grupo se focaliza, principalmente, en los nuevos métodos, técnicas, herramientas y procesos de Ingeniería Informática para la mejora de las tareas interactivas y colaborativas.</string>
+    <string name="str_titulo1">Sobre la organización</string>
+    <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el grupo CHICO. CHICO es un grupo de investigación de la Universidad de Castilla-La Mancha con sede en la Escuela Superior de Informática del Campus de Ciudad Real que cuenta también con investigadores en la Facultad de Educación de Ciudad Real, en la Escuela de Ingeniería Minera e Industrial de Almadén, y en la Facultad de Ciencias Sociales de Talavera de la Reina.</string>
+    <string name="str_parrafo2">El interés investigador del grupo se focaliza, principalmente, en los nuevos métodos, técnicas, herramientas y procesos de Ingeniería Informática para la mejora de las tareas interactivas y colaborativas.</string>
+    <string name="str_parrafo3">Financiación</string>
+    <string name="str_parrafo4">Este trabajo ha sido desarrollado en el contexto del Proyecto APTEA, financiado por el MICIN/AEI y los fondos de la Unión Europea "NextGenerationEU" del Proyecto PlanTEAAF en el marco del Plan Propio de Investigación de la Universidad de Castilla - La Mancha, cofinanciadas por el Fondo Europeo de Desarrollo Regional y de los convenios de colaboración con AUTRADE y FACLM.</string>
+
     <string name="cuaderno_de_com">Cuaderno de comunicación</string>
     <string name="lbl_tulo">Título</string>
     <string name="lbl_borrarCuaderno">¿Estas seguro que quiere borrar el cuaderno seleccionado?</string>
@@ -193,5 +194,99 @@
     <string name="planificaciones">Planificaciones</string>
     <string name="planificaciones_futuras">Eventos futuros</string>
 
+
+    <!-- Strings utilizados para el manual -->
+    <string-array name="str_crearEvento">
+      <item>Ve a <b><u>Calendario</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
+        <item>Selecciona una <b><u>hora</u></b> y, opcionalmente, <b><u>recordatorio</u></b> para el evento. </item>
+      <item>Si no hay ninguna planificación disponible, puedes hacer clic en <b><u>+ Nueva planificación</u></b> para crear una nueva.</item>
+        <item>Si ya tienes una planificación creada, selecciona la planificación deseada para utlizar en el evento.</item>
+        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el evento.</item>
+        <item>Para visualizar el evento, cambia la visibilidad de este haciendo clic en el icono de <b><u>ojo</u></b></item>
+    </string-array>
+
+    <string-array name="str_crearPlanificacion">
+        <item>Ve a <b><u>Calendario</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
+        <item>Haz clic en el botón + Nueva planificación.</item>
+        <item>Introduce un <b><u>título</u></b> para la planificación.</item>
+        <item>Para añadir un pictograma a la planificación, haz clic en una categoría y después en el pictograma deseado.</item>
+        <item>Para buscar un pictograma, haz clic en la barra de búsqueda y escribe el nombre del pictograma.</item>
+        <item>Si desea guardar un pictograma como favorito, haz clic en el icono de <b><u>corazón</u></b> situado en la esquina superior derecha del pictograma.</item>
+        <item>Para añadir texto adicional al pictograma, haz clic en los tres puntos situados en la supeior derecha del pictograma y selecciona <b><u>Añadir texto adicional</u></b>.</item>
+        <item>Para añadir una duración a la planificación, haz clic en los tres puntos situados en la supeior derecha del pictograma y selecciona <b><u>Añadir duración</u></b>.</item>
+    </string-array>
+
+    <string-array name="str_cuaderno">
+        <item>Ve a <b><u>Cuadernos de comunicación</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
+        <item>Introduce un <b><u>título</u></b> para el cuaderno.</item>
+        <item>Selecciona un <b><u>pictograma</u></b> para añadir al cuaderno.</item>
+        <item>Opcionalmente, si se desesa tener un termometro en los pictogramas del cuaderno, haz clic en el switch de <b><u>termometro</u></b>.</item>
+        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el cuaderno. </item>
+        <item>sadsdf</item>
+    </string-array>
+
+    <string-array name="str_traductor">
+        <item>Ve a <b><u>Cuadernos de comunicación</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
+        <item>Introduce un <b><u>título</u></b> para el cuaderno.</item>
+        <item>Selecciona un <b><u>pictograma</u></b> para añadir al cuaderno.</item>
+        <item>Opcionalmente, si se desesa tener un termometro en los pictogramas del cuaderno, haz clic en el switch de <b><u>termometro</u></b>.</item>
+        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el cuaderno. </item>
+        <item>sadsdf</item>
+    </string-array>
+
+    <string-array name="str_configuracion">
+        <item>Ve a <b><u>Cuadernos de comunicación</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
+        <item>Introduce un <b><u>título</u></b> para el cuaderno.</item>
+        <item>Selecciona un <b><u>pictograma</u></b> para añadir al cuaderno.</item>
+        <item>Opcionalmente, si se desesa tener un termometro en los pictogramas del cuaderno, haz clic en el switch de <b><u>termometro</u></b>.</item>
+        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el cuaderno. </item>
+        <item>sadsdf</item>
+    </string-array>
+
+    <!-- Strings utilizados para la politica de privacidad -->
+
+    <string name="lbl_politica_privacidad">Política de privacidad</string>
+    <string name="lbl_ultima_actualizacion">Última actualización: 8 de marzo, 2024</string>
+    <string name="lbl_politica_parrafo1">Esta política de privacidad describe las políticas y procedimientos de PlanTEA sobre la recopilación, uso y divulgación de su información en la aplicación móvil PlanTEA y los servicios, características, contenido o aplicaciones relacionadas con ello (colectivamente, "PlanTEA"). En relación con su uso de PlanTEA, recibimos información sobre usted de diversas fuentes, que incluyen a través de su cuenta de usuario de PlanTEA y el uso de nuestra aplicación móvil, o cualquier otra aplicación nuestra que este vinculada a este aviso de privacidad.</string>
+    <string name="lbl_politica_parrafo2">Al utilizar PlanTEA usted está dando su consentimiento para la recopilación, transferencia, manipulación, almacenamiento, transmisión, divulgación y otros usos de su información según se describe en esta Política de privacidad.</string>
+    <string name="lbl_politica_titulo_parrafo3">1. ¿Preguntas o dudas?</string>
+    <string name="lbl_politica_parrafo3">Leer este aviso de privacidad le ayudará a comprender sus derechos y opciones de privacidad. Si no está de acuerdo con nuestras políticas y prácticas, por favor, no utilice nuestros servicios. Si aún tiene alguna pregunta o inquietud, por favor contáctenos en plantea.asistencia@gmail.com</string>
+    <string name="lbl_politica_titulo_parrafo4">2. ¿Qué cubre esta política de privacidad?</string>
+    <string name="lbl_politica_parrafo4">Esta Política de privacidad abarca el tratamiento de la información personal identificable ("Información personal") que recopilamos cuando está utilizando o accediendo a PlanTEA. Esta Política de privacidad no se aplica a las prácticas de terceros que no poseemos o controlamos, incluyendo, pero no limitándose a, cualquier sitio web de terceros, fuentes de contenido, servicios y aplicaciones ("Servicios de terceros") a los que elija acceder a través de PlanTEA, o a individuos que no administramos ni empleamos. Aunque intentamos facilitar el acceso solo a aquellos servicios de terceros que comparten nuestro respeto por su privacidad, no podemos asumir la responsabilidad por el contenido o las políticas de privacidad de esos servicios de terceros. Le animamos a revisar cuidadosamente las políticas de privacidad de cualquier servicio de terceros al que acceda.</string>
+    <string name="lbl_politica_titulo_parrafo5">3. ¿Qué información recopila PlanTEA?</string>
+    <string name="lbl_politica_parrafo5">Recopilamos información personal que usted nos proporciona voluntariamente cuando se registra en los servicios, muestra interés en obtener información sobre nosotros o nuestros productos y servicios, participa en actividades en los servicios o de otra manera cuando se pone en contacto con nosotros.</string>
+    <string name="lbl_politica_subtitulo_parrafo6">Información personal proporcionada por usted</string>
+    <string name="lbl_politica_parrafo6">La información personal que recopilamos depende del contexto de sus interacciones con nosotros y los servicios, las elecciones que realice y los productos y funciones que utilice. La información personal que recopilamos puede incluir lo siguiente: Nombres, direcciones de correo electrónico, nombres de usuario, contraseñas, datos de contacto o autenticación.</string>
+    <string name="lbl_politica_subtitulo_parrafo7">Información delicada</string>
+    <string name="lbl_politica_parrafo7">No procesamos información delicada.</string>
+    <string name="lbl_politica_subtitulo_parrafo8">Datos de la aplicación</string>
+    <string name="lbl_politica_parrafo8">Si utiliza nuestra(s) aplicación(es), también podemos recopilar la siguiente información si elige proporcionarnos acceso o permisos:</string>
+    <string name="lbl_politica_parrafo9"><u>Acceso al dispositivo móvil</u>. Podemos solicitar acceso o permisos a ciertas funciones de su dispositivo móvil, incluido el calendario, recordatorios, almacenamiento y otras funciones. Si desea cambiar nuestro acceso o permisos, puede hacerlo en la configuración de su dispositivo.</string>
+    <string name="lbl_politica_parrafo10"><u>Datos del dispositivo móvil</u>. Recopilamos automáticamente información del dispositivo (como su ID de dispositivo móvil, modelo y fabricante), sistema operativo, información de versión y configuración del sistema, números de identificación del dispositivo y la aplicación, tipo y versión del navegador, modelo de hardware, proveedor de servicios de Internet y/o operador móvil, y dirección de Protocolo de Internet (IP) (o servidor proxy). Si está utilizando nuestra(s) aplicación(es), también podemos recopilar información sobre la red telefónica asociada con su dispositivo móvil, el sistema operativo o plataforma de su dispositivo móvil, el tipo de dispositivo móvil que utiliza, el ID único de su dispositivo móvil y la información sobre las funciones de nuestra(s) aplicación(es) a las que accedió.</string>
+    <string name="lbl_politica_parrafo11"><u>Notificaciones push</u>. Podemos solicitar enviarle notificaciones push sobre su cuenta o ciertas funciones de la(s) aplicación(es). Si desea optar por no recibir este tipo de comunicaciones, puede desactivarlas en la configuración de su dispositivo.</string>
+    <string name="lbl_politica_parrafo12">Esta información se necesita principalmente para mantener la seguridad y operación de nuestra(s) aplicación(es), para la solución de problemas y para nuestros fines internos de análisis e informes.</string>
+
+    <string name="lbl_politica_parrafo13">Toda la información personal que nos proporcione debe ser verdadera, completa y precisa, y debe notificarnos cualquier cambio en dicha información personal.</string>
+    <string name="lbl_politica_subtitulo_parrafo14">Información recopilada automáticamente</string>
+    <string name="lbl_politica_parrafo14">Recopilamos automáticamente cierta información cuando visita, utiliza o navega por los servicios. Esta información no revela su identidad específica (como su nombre o información de contacto), pero puede incluir información sobre el dispositivo y el uso, como su dirección de Protocolo de Internet (IP), características del navegador y del dispositivo, sistema operativo, preferencias de idioma, URL de referencia, nombre del dispositivo, país, ubicación, información sobre cómo y cuándo utiliza nuestros servicios, y otra información técnica. Esta información se necesita principalmente para mantener la seguridad y operación de nuestros servicios, así como para nuestros fines internos de análisis e informes.</string>
+    <string name="lbl_politica_titulo_parrafo15">4. ¿Está segura la información sobre mí?</string>
+    <string name="lbl_politica_parrafo15">La información sensible se almacena exclusivamente en el dispositivo de manera loca, garantizando así un nivel adicional de seguridad y privacidad. Además, la información es cifrada mediante algoritmos de encriptación seguros.</string>
+    <string name="lbl_politica_titulo_parrafo16">5. ¿En qué bases legales nos basamos para procesar su información?</string>
+
+    <string name="lbl_politica_parrafo16">El Reglamento General de Protección de Datos (RGPD) y el GDPR del Reino Unido nos exigen explicar las bases legales válidas en las que confiamos para procesar su información personal. Por lo tanto, podemos depender de las siguientes bases legales para procesar su información personal:</string>
+    <string name="lbl_politica_parrafo17"><u>Consentimiento</u>: Podemos procesar su información si nos ha dado permiso (es decir, consentimiento) para utilizar su información personal para un propósito específico. Puede retirar su consentimiento en cualquier momento.</string>
+    <string name="lbl_politica_parrafo18"><u>Intereses legítimos</u>: Podemos procesar su información cuando creemos que es razonablemente necesario para alcanzar nuestros legítimos intereses comerciales, y esos intereses no superan sus intereses, derechos fundamentales y libertades. Por ejemplo, podemos procesar su información personal para algunos de los propósitos mencionados a continuación:</string>
+    <string name="lbl_politica_parrafo181">&#8226; Analizar cómo se utilizan nuestros servicios para mejorarlos y atraer y retener a los usuarios.</string>
+    <string name="lbl_politica_parrafo182">&#8226; Apoyar nuestras actividades de marketing.</string>
+    <string name="lbl_politica_parrafo183">&#8226; Diagnosticar problemas y/o prevenir actividades fraudulentas.</string>
+    <string name="lbl_politica_parrafo184">&#8226; Comprender cómo nuestros usuarios utilizan nuestros productos y servicios para mejorar la experiencia del usuario.</string>
+    <string name="lbl_politica_parrafo19"><u>Obligaciones legales</u>: Podemos procesar su información cuando consideramos que es necesario cumplir con nuestras obligaciones legales, como cooperar con un cuerpo policial o una agencia reguladora, ejercer o defender nuestros derechos legales, o divulgar su información como evidencia en litigios en los que estemos involucrados.</string>
+    <string name="lbl_politica_parrafo20"><u>Intereses vitales</u>: Podemos procesar su información cuando consideramos que es necesario para proteger sus intereses vitales o los intereses vitales de un tercero, como situaciones que involucren posibles amenazas a la seguridad de cualquier persona.</string>
+    <string name="lbl_politica_titulo_parrafo21">6. Cambios en la política de privacidad</string>
+    <string name="lbl_politica_parrafo21">Podemos actualizar nuestra política de privacidad cuando sea necesario. Le notificaremos sobre cualquier cambio publicando la nueva política de privacidad en esta página.</string>
+    <string name="lbl_politica_parrafo22">Le informaremos por correo electrónico y/o mediante un aviso destacado en nuestro servicio, antes de que el cambio entre en vigor, y actualizaremos la fecha "Última actualización" en la parte superior de esta política de privacidad.</string>
+    <string name="lbl_politica_parrafo23">Se le recomienda revisar periódicamente esta política de privacidad para conocer cualquier cambio. Los cambios en esta política de privacidad son efectivos cuando se publican en esta página.</string>
+    <string name="lbl_politica_titulo_parrafo24">7. Métodos de contacto</string>
+    <string name="lbl_politica_parrafo24">Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos por correo electrónico: plantea.asistencia@gmail.com</string>
 
 </resources>

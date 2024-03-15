@@ -26,7 +26,7 @@ class EncryptionUtils {
 
             val sb = StringBuilder()
             for (b in cipherText) {
-                sb.append(b.toChar())
+                sb.append(b.toInt().toChar())
             }
 
             return cipherText.toString(Charsets.UTF_8)
@@ -41,7 +41,7 @@ class EncryptionUtils {
 
             val sb = StringBuilder()
             for (b in cipherText) {
-                sb.append(b.toChar())
+                sb.append(b.toInt().toChar())
             }
             return cipherText.toString(Charsets.UTF_8)
 

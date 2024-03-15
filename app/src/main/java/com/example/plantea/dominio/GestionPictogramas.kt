@@ -56,11 +56,12 @@ class GestionPictogramas : Serializable {
     }
 
 
-    fun insertarPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
+    fun insertarPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?): String {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarPictograma(nombre, imagen, categoria, idUsuario)
+        val id = conectorBD!!.insertarPictograma(nombre, imagen, categoria, idUsuario)
         conectorBD!!.cerrar()
+        return id
     }
 
     fun insertarPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
@@ -136,6 +137,7 @@ class GestionPictogramas : Serializable {
                 pictograma.id = c.getString(0)
                 pictograma.titulo = c.getString(1)
                 pictograma.imagen = c.getString(2)
+                pictograma.categoria = 10
                 pictograma.favorito = true
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())

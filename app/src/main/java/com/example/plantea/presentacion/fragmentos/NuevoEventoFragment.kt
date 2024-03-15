@@ -24,6 +24,10 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
+import android.app.NotificationManager
+import android.content.Intent
+import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CommonUtils.Companion.setIcon
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
@@ -123,11 +127,30 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
                 showReminderFragment(isChecked)
             } else{
                 if(isChecked){
-                    createDialogReminder()
+                    val requestPermissionLauncher =
+                        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                            if (isGranted) {
+                                // Permission granted, create the reminder dialog
+                                createDialogReminder()
+                            } else {
+                                // Permission not granted, handle accordingly
+                                switchReminder.isChecked = false
+                                CommonUtils.showSnackbar(
+                                    vista,
+                                    requireContext(),
+                                    "No se puede activar el recordatorio sin permisos de notificación"
+                                )
+                            }
+                        }
+                    requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_NOTIFICATION_POLICY)
+
                 }
+
             }
 
+
         }
+
 
         dialog?.setOnCancelListener { switchReminder.isChecked = false }
 
@@ -214,8 +237,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         }
         dialogReminder.show()
     }
-
-
 
     private fun iniciarListaPlanificaciones() {
         listaPlanificaciones.layoutManager = LinearLayoutManager(context)

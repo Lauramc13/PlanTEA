@@ -53,16 +53,16 @@ class GestionEventos {
     }
 
     //Comprobar el numero de eventos visibles
-    fun comprobarEventosVisible(userId: String, fecha: String, actividad: Activity?): Int {
-         var contador = 0
+    fun comprobarEventoVisible(userId: String, fecha: String, actividad: Activity?): Int {
+         var idEvento = 0
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         val c = conectorBD!!.contarEventoVisible(userId, fecha)
         if (c.moveToFirst()) {
-            contador = c.getInt(0)
+            idEvento = c.getInt(0)
         }
         conectorBD!!.cerrar()
-        return contador
+        return idEvento
     }
 
     fun obtenerTituloEvento(idUsuario: String, fecha: String, context: Context?): Evento {

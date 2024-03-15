@@ -1,8 +1,12 @@
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/md_theme_light_onPrimary</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/icon_launcher</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
+
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
@@ -30,33 +34,17 @@
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_tertiary</item>
         <item name="customLinkColor">@color/link</item>
-
-        <!-- ARREGLAR ESTO  -->
-        <item name="cardBackgroundColor">@color/white</item>
-        <item name="background">@color/seedLight</item>
-        <item name="backgroundTint">@color/background2</item>
-        <item name="backgroundColor">@color/background2</item>
-        <item name="backgroundSplit">@color/white</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="backgroundStacked">@color/background2</item>
-        <item name="color">@color/md_theme_light_surfaceVariant</item>
-        <item name="colorOnContainer">@color/md_theme_light_primaryContainer</item>
-        <item name="colorBackgroundFloating">@color/md_theme_light_surfaceVariant</item>
-        <item name="colorContainer">@color/white</item>
-        <item name="colorControlHighlight">@color/md_theme_light_surfaceVariant</item>
         <item name="android:textColor">@color/md_theme_light_onSurface</item>
         <item name="android:queryHint">@color/md_theme_light_onSurface</item>
-        <item name="android:popupBackground">@color/transparent</item>
-        <item name="android:colorControlNormal">@color/pizarraBorde</item>
-        <item name="android:solidColor">@color/pizarraContenido</item>
         <item name="boxBackgroundColor">@color/md_theme_light_primary</item>
+        <item name="android:popupBackground">@color/transparent</item>
+        <item name="color">@color/md_theme_light_surfaceVariant</item>
 
         <!-- CUSTOM ITEMS -->
         <item name="customBgColor">@color/lightGray</item>
         <item name="customBgTermometro">@color/darkerGray</item>
         <item name="customBgColorCuaderno">@color/white</item>
         <item name="customColorGray">@color/md_theme_light_outline</item>
-
         <item name="configuracionCardBg">@color/white</item>
         <item name="configuracionCardBorder">@color/md_theme_light_surfaceVariant</item>
         <item name="gray">@color/semiGray</item>
@@ -68,7 +56,17 @@
         <item name="celdaCalendarioStroke">@color/md_theme_light_primary</item>
         <item name="celdaCalendario2">@color/yellow</item>
         <item name="celdaCalendarioStroke2">@color/yellowDarker</item>
-
+        <item name="cardBackgroundColorPersonalized">@color/white</item>
+        <item name="colorBG">@color/seedLight</item>
+        <item name="bgEvento">@color/background2</item>
+        <item name="bgDisabled">@color/background2</item>
+        <item name="colorBG0">@color/white</item>
+        <item name="colorBG1">@color/white</item>
+        <item name="colorBG2">@color/background2</item>
+        <item name="stroke1">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorBG3">@color/md_theme_light_surfaceVariant</item>
+        <item name="pizzaraBorde">@color/pizarraBorde</item>
+        <item name="pizzaraFondo">@color/pizarraContenido</item>
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
     </style>
@@ -105,6 +103,12 @@
         <item name="elevation">0dp</item>
         <item name="android:backgroundTint">@color/md_theme_light_primary</item>
         <item name="tint">@color/md_theme_dark_onPrimary</item>
+    </style>
+
+    <style name="buttonFABReproducir" parent="Widget.Material3.FloatingActionButton.Secondary">
+        <item name="elevation">0dp</item>
+        <item name="android:backgroundTint">@color/md_theme_light_primary</item>
+        <item name="tint">#203130</item>
     </style>
 
     <style name="buttonsColorsCategorias" parent="Widget.Material3.FloatingActionButton.Secondary">
@@ -239,8 +243,7 @@
         <item name="android:editTextColor">@color/md_theme_light_onSurface</item>
         <item name="queryHint">@color/md_theme_light_onSurface</item>
         <item name="colorAccent">@color/md_theme_light_primary</item>
-        <item name="backgroundColor">@color/white</item>
-
+        <item name="android:backgroundTint">@color/transparent</item>
     </style>
 
     <style name="backgroundEventos">

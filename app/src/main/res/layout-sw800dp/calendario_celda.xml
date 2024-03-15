@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/vistaPrincipal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
+    app:layout_gravity="center"
+    android:maxWidth="60dp"
+    android:layout_gravity="center">
+
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/vistaPrincipal"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
     app:cardElevation="0dp"
     android:clickable="true"
-    app:layout_gravity="center"
-    android:layout_gravity="center"
-    app:cardBackgroundColor="?cardBackgroundColor">
+    app:cardCornerRadius="100dp"
+    app:layout_constraintDimensionRatio="1:1"
+    app:cardBackgroundColor="@color/transparent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
 
     <TextView
         style="@style/Widget.Material3.Button.IconButton"
@@ -26,6 +38,7 @@
         android:elevation="0dp"
         android:textColor="?colorOnSurface"
         android:fontFamily="@font/poppins_regular"
-        android:textSize="20sp" />
+        android:textSize="17sp" />
 
 </com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

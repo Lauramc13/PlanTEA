@@ -3,8 +3,7 @@
 
     <!-- Color de fondo de la vista -->
     <solid
-        android:color="?backgroundColor" >
-    </solid>
+        android:color="?colorBG1" />
 
     <!-- Color y ancho del borde del elemento-->
     <stroke

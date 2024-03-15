@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?customBgColorCuaderno"
+    android:background="?customBgColor"
     tools:context=".presentacion.actividades.ActividadActivity">
 
     <ImageView
@@ -55,7 +55,7 @@
             android:elevation="0dp"
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
-            app:cardBackgroundColor="?cardBackgroundColor"
+            app:cardBackgroundColor="?cardBackgroundColorPersonalized"
             app:cardCornerRadius="20dp">
 
             <LinearLayout
@@ -93,7 +93,7 @@
             android:elevation="0dp"
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
-            app:cardBackgroundColor="?cardBackgroundColor"
+            app:cardBackgroundColor="?cardBackgroundColorPersonalized"
             app:cardCornerRadius="20dp">
 
             <LinearLayout
@@ -137,22 +137,28 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
         app:layout_constraintWidth_percent="0.85">
 
-        <Button
-            android:id="@+id/closeYoutube"
-            style="@style/Widget.Material3.Button"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="6dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/cerrar_reproductor"
-            android:textColor="#181F25"
-            android:textSize="16sp"
-            app:cornerRadius="25dp"
-            app:icon="@drawable/svg_close"
-            app:iconGravity="textEnd"
-            app:iconSize="25dp"
-            app:iconTint="#181F25" />
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:fontFamily="@font/poppins_regular"
+            android:text="Navegador de YouTube"/>
+
+        <ImageView
+            android:id="@+id/closeYoutube"
+            android:layout_width="48dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:contentDescription="Cerrar seccion"
+            android:background="@drawable/bg_close_button"
+            android:src="@drawable/ic_baseline_close_24"
+            android:padding="12dp"
+            android:alpha="0.9"
+            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <WebView
             android:id="@+id/webView"
@@ -171,7 +177,7 @@
         android:layout_height="match_parent"
         android:elevation="5dp"
         app:shapeAppearance="@style/cornersNavigation"
-        android:background="?colorAccent"
+        android:background="?colorBG1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -189,19 +195,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <Button
             android:id="@+id/atras"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/svg_chevron_left" />
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/svg_chevron_left"
+            app:iconSize="35dp" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Actividades"
             android:textSize="@dimen/displaySmall" />

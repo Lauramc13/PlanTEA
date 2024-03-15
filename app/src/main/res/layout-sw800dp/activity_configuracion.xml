@@ -38,9 +38,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_cards_configuracion"
                 android:contentDescription="Contenedor del planificador"
                 android:elevation="0dp">
@@ -180,6 +181,7 @@
                         android:hint="Correo electrónico"
                         android:inputType="textPersonName"
                         android:maxLength="14"
+                        android:enabled="false"
                         android:textColor="?colorOnSurface"
                         android:textCursorDrawable="@null"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -234,9 +236,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="15dp"
                 android:background="@drawable/bg_cards_configuracion"
                 android:contentDescription="Contenedor del planificado"
                 android:elevation="0dp">
@@ -339,9 +341,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/bg_cards_configuracion"
                 android:contentDescription="Contenedor de la actividad tranquilizadora"
                 android:elevation="0dp">

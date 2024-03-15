@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorAccent"
+    android:background="?colorBG1"
     tools:context=".presentacion.actividades.TutorialActivity">
 
     <ImageView
@@ -59,28 +59,26 @@
 
         <Button
             android:id="@+id/btn_skip"
+            style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:elevation="0dp"
-            android:textSize="@dimen/buttonBig"
-            android:layout_marginEnd="5dp"
-            android:layout_marginTop="20dp"
-            android:onClick="onSkipButtonClick"
-            android:fontFamily="@font/poppins_semibold"
-            android:textColor="?colorOnSurface"
-            android:paddingStart="16dp"
-            app:iconSize="20dp"
+            android:padding="15dp"
             android:layout_gravity="end"
-            android:textAllCaps="false"
-            android:background="@drawable/button_transparent_bg"
-            app:icon="@drawable/ic_baseline_arrow_forward_32"
             app:iconGravity="end"
-            app:iconTint="?colorOnSurface"
-            android:paddingEnd="16dp"
-            android:text="Saltar" />
+            app:backgroundTint="@color/transparent"
+            app:cornerRadius="60dp"
+            app:iconSize="25dp"
+            android:layout_margin="5dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Saltar   "
+            app:icon="@drawable/ic_baseline_arrow_forward_32"
 
-    <androidx.viewpager.widget.ViewPager
+            android:textColor="?colorOnSurface"
+            app:iconTint="?colorOnSurface" />
+
+
+        <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/view_pager"
@@ -119,36 +117,39 @@
 
             <Button
                 android:id="@+id/btn_previous"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:textAllCaps="false"
-                android:layout_marginEnd="20dp"
-                android:textSize="@dimen/buttonBig"
-                android:onClick="onPreviousButtonClick"
+                android:padding="15dp"
+                app:backgroundTint="@color/transparent"
+                app:cornerRadius="60dp"
+                app:iconSize="25dp"
+                android:textSize="16sp"
                 android:fontFamily="@font/poppins_semibold"
-                android:background="@drawable/button_transparent_bg"
-                android:textColor="?colorOnSecondaryContainer"
-                android:text="@string/str_anterior"
-                style="?android:attr/buttonBarButtonStyle" />
+                android:text="Anterior"
+                android:textColor="?colorOnSurface"
+                app:iconTint="?colorOnSurface" />
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+
 
             <Button
                 android:id="@+id/btn_next"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
-                android:gravity="start"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_transparent_bg"
+                android:padding="15dp"
+                app:backgroundTint="@color/transparent"
+                app:cornerRadius="60dp"
+                app:iconSize="25dp"
+                android:textSize="16sp"
                 android:fontFamily="@font/poppins_semibold"
-                android:onClick="onNextButtonClick"
-                android:text="@string/str_siguiente"
-                android:textAllCaps="false"
-                android:textColor="?colorOnSecondaryContainer"
-                android:textSize="@dimen/buttonBig" />
+                android:text="Siguiente"
+                android:textColor="?colorOnSurface"
+                app:iconTint="?colorOnSurface" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

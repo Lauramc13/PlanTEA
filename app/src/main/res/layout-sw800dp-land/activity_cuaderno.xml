@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentacion.actividades.CuadernoActivity"
-    android:background="?customBgColorCuaderno">
+    android:background="?customBgColor">
 
     <ImageView
         android:id="@+id/imageView7"
@@ -38,19 +38,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <Button
             android:id="@+id/atras"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/svg_chevron_left" />
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/svg_chevron_left"
+            app:iconSize="35dp" />
+
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Cuadernos de comunicación"
             android:textSize="@dimen/displaySmall" />
@@ -79,7 +80,7 @@
         android:layout_height="match_parent"
         android:elevation="7dp"
         app:shapeAppearance="@style/cornersNavigation"
-        android:background="?colorAccent"
+        android:background="?colorBG1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

@@ -37,6 +37,7 @@ class RegisterViewModel: ViewModel() {
         val id = usuario.consultarId(email, activity)
         val editor = prefs.edit()
         editor.putString("idUsuario", id)
+        editor.putBoolean("userAccount", true)
         editor.putString("nombreUsuarioPlanificador", username)
         editor.putBoolean("info_usuario", isCheckedUsuarioPlan)
         editor.putBoolean("info_objeto", isCheckedObjeto)
@@ -44,7 +45,6 @@ class RegisterViewModel: ViewModel() {
         editor.putString("nombrePlanificador", name)
         editor.putString("nombreUsuarioTEA", namePlanificado)
         editor.putString("nombreObjeto", objeto)
-        editor.putBoolean("editPreferences", false)
         editor.apply()
         _accountCreated.value = true
     }

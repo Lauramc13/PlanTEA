@@ -23,7 +23,7 @@ class CalendarioActivity : AppCompatActivity() {
     private lateinit var calendario: RecyclerView
     private lateinit var fechaActual: TextView
     lateinit var prefs: SharedPreferences
-    private var atras : ImageView? = null
+    private var atras : Button? = null
 
 
     private val viewModel by viewModels<CalendarioViewModel>()
@@ -96,6 +96,12 @@ class CalendarioActivity : AppCompatActivity() {
                 val ft = supportFragmentManager.beginTransaction()
                 ft.replace(R.id.fragment_calendario, EventosFragment())
                 ft.commit()
+            }
+        }
+
+        viewModel._newEvent.observe(this) {
+            if (it) {
+               calendario.adapter?.notifyDataSetChanged()
             }
         }
 

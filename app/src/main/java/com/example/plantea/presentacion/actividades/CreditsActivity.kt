@@ -13,7 +13,6 @@ class CreditsActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_credits)
 
-        val terms : TextView = findViewById(R.id.txt_terms)
         val privacy : TextView = findViewById(R.id.txt_privacy)
         val arasaacLink : TextView = findViewById(R.id.arasaacLink)
         val manyLink : TextView = findViewById(R.id.manypixelsLink)
@@ -21,16 +20,9 @@ class CreditsActivity : AppCompatActivity(){
         val freepikLink : TextView = findViewById(R.id.freepikLink)
         val svgRepoLink: TextView = findViewById(R.id.svgRepoLink)
 
-        terms.paintFlags = terms.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        terms.setOnClickListener{
-            CommonUtils.showSnackbar(it, this, "TODO: ESTA PANTALLA NO ESTA DISPONIBLE")
-
-            //HACER UN DIALOGO CON LOS TERMINOS DE SERVICIO
-        }
         privacy.paintFlags = privacy.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         privacy.setOnClickListener{
-            CommonUtils.showSnackbar(it, this, "TODO: ESTA PANTALLA NO ESTA DISPONIBLE")
-            //HACER UN DIALOGO CON LA POLITICA DE PRIVACIDAD
+            startActivity(Intent(this, PoliticaActivity::class.java))
         }
 
         arasaacLink.paintFlags = arasaacLink.paintFlags or Paint.UNDERLINE_TEXT_FLAG

@@ -8,17 +8,18 @@
     app:cardElevation="0dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="?backgroundTint">
+        android:background="?bgEvento"
+        android:gravity="center">
 
         <LinearLayout
             android:id="@+id/leftLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/rightLayout"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -27,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_weight="1"
                 android:fontFamily="@font/poppins_regular"
                 android:text="Cita"
                 android:textAlignment="viewStart"
@@ -41,19 +43,16 @@
                 android:fontFamily="@font/poppins_regular"
                 android:text="Hora"
                 android:textColor="?colorOnSurface"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
         </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
 
         <LinearLayout
             android:id="@+id/rightLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
@@ -78,5 +77,5 @@
                 app:srcCompat="@drawable/svg_export" />
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

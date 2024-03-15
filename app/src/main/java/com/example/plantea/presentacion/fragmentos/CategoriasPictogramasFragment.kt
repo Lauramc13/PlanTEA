@@ -56,55 +56,10 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         //Este método se ejecutará al pinchar sobre la imagen de cerrar
         image_Cerrar.setOnClickListener {
             viewModel._closeFragment.value = true
-            Log.d("TAG", "image_Cerrar.setOnClickListener")
         }
 
         //Este método se ejecutará al seleccionar añadir nuevo pictograma.
         image_add.setOnClickListener { viewModel.nuevoPictogramaDialogo() }
-
-        viewModel._historiaClicked.observe(viewLifecycleOwner) {
-            var historiaSaved = false
-            val tituloCard = viewModel.listaPlanificacion[it].titulo
-            val dialog = Dialog(requireContext())
-            dialog.setContentView(R.layout.dialogo_historiasocial)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val btnGuardar = dialog.findViewById<Button>(R.id.btn_eliminarEvento)
-            val cardtitulo = dialog.findViewById<TextView>(R.id.cardName)
-            cardtitulo.text = tituloCard
-            val iconoCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-            val historiaText = dialog.findViewById<TextInputLayout>(R.id.historiaText)
-
-            if (viewModel.listaPlanificacion[it].historia.toString() == "null") {
-                historiaText.editText?.setText("")
-            } else {
-                historiaText.editText?.setText(viewModel.listaPlanificacion[it].historia)
-            }
-
-            iconoCerrar.setOnClickListener { dialog.dismiss() }
-            btnGuardar.setOnClickListener { view ->
-                if (historiaText.editText?.text.toString() == "") {
-                    CommonUtils.showSnackbar(view, requireContext(), "No puedes dejar el campo vacío")
-                } else {
-                    viewModel.listaPlanificacion[it].historia = historiaText.editText?.text.toString()
-                    val parentActivity = activity as CrearPlanActivity
-                    parentActivity.adaptador.notifyItemChanged(it)
-                    dialog.dismiss()
-                }
-            }
-
-            dialog.show()
-        }
-
-        viewModel._onDuracionClicked.observe(viewLifecycleOwner) {position->
-
-            val picker = viewModel.createReloj()
-            picker.addOnPositiveButtonClickListener {
-                viewModel.listaPlanificacion[position].duracion = picker.hour.toString() + ":" + picker.minute.toString()
-            }
-            picker.show(requireFragmentManager(), "TimePicker")
-
-        }
-
 
         return vista
     }
@@ -132,8 +87,6 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     fun removeFavorite(pictogram: Pictograma) {
         viewModel.pictograma.borrarFavorito(this.requireContext(), viewModel.idUsuario, pictogram.id)
     }
-
-
 }
 
 

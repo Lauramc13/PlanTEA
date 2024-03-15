@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?customBgColorCuaderno"
+    android:background="?customBgColor"
     tools:context=".presentacion.actividades.CalendarioActivity">
 
     <ImageView
@@ -20,8 +20,9 @@
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fragmentContainerViewSide"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout
@@ -98,6 +99,7 @@
                 android:id="@+id/recycler_calendario"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="5dp"
                 android:overScrollMode="never" />
         </LinearLayout>
 
@@ -122,20 +124,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <Button
             android:id="@+id/atras"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:contentDescription="Cerrar seccion"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/svg_chevron_left" />
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/svg_chevron_left"
+            app:iconSize="30dp" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Calendario"
             android:textSize="@dimen/title" />
@@ -150,7 +150,7 @@
         android:layout_height="match_parent"
         android:elevation="7dp"
         app:shapeAppearance="@style/cornersNavigation"
-        android:background="?colorAccent"
+        android:background="?colorBG1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

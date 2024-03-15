@@ -50,10 +50,10 @@ class NavegacionUtils {
     lateinit var navigationViewBottom: BottomNavigationView
     lateinit var fragmentSide : ConstraintLayout
     lateinit var popupWindow: PopupWindow
-    lateinit var buttonMenu : ImageView
+    lateinit var buttonMenu : Button
     lateinit var buttonAccount: LinearLayout
     lateinit var prefs: SharedPreferences
-    private var isExpanded = true
+    private var isExpanded = false
     private lateinit var firebaseAuth: FirebaseAuth
 
     lateinit var btn_logout : Button
@@ -104,47 +104,6 @@ class NavegacionUtils {
             return digest.fold("", { str, it -> str + "%02x".format(it) })
         }*/
 
-        private fun buttonAccountNavigation(fragment: Fragment, it: View, buttonAccount: LinearLayout){
-            if (popupView?.visibility == View.GONE){
-                popupView!!.visibility = View.VISIBLE
-            }else{
-                popupView?.visibility = View.GONE
-            }
-
-            val buttonLocation = IntArray(2)
-            it.getLocationOnScreen(buttonLocation)
-            val x = buttonLocation[0] + buttonAccount.width / 2 + 50
-            val y = buttonLocation[1] - 50
-            popupWindow.elevation = 3f
-
-            popupWindow.update(x, y, -1, -1)
-            popupWindow.showAtLocation(it, Gravity.NO_GRAVITY, x, y)
-
-            val isUsuarioTEA = prefs.getBoolean("info_usuario", false)
-
-            if(isUsuarioTEA){
-                val rol = popupView?.findViewById<LinearLayout>(R.id.cambiarRol)
-                rol?.setOnClickListener{
-                    val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
-                    if(infoUsuario){
-                        val editor = prefs.edit()
-                        editor.putBoolean("PlanificadorLogged", false)
-                        editor.apply()
-                        popupView?.visibility = View.INVISIBLE
-                        fragment.requireContext().startActivity(Intent(fragment.activity?.baseContext, PlanActivity::class.java))
-                        fragment.activity?.finish()
-                        fragment.activity?.finishAffinity()
-                    }else{
-                        crearDialogoLogin(fragment.requireContext(), fragment.requireActivity())
-                    }
-                }
-            }
-
-            val logout = popupView?.findViewById<LinearLayout>(R.id.logout)
-            logout?.setOnClickListener{
-                cerrarSesion(fragment)
-            }
-        }
 
     fun cerrarSesion(fragment: Fragment){
         val dialogLogout = Dialog(fragment.requireContext())
@@ -171,10 +130,11 @@ class NavegacionUtils {
         dialogLogout.show()
     }
 
-    fun configurarDatos(vista: View, fragment: Fragment, id: Int){
+    fun configurarDatos(vista: View){
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
 
         iconoRol = vista.findViewById(R.id.iconoRol)
+        iconoRol.setImageURI(null)
         textoRol = vista.findViewById(R.id.textRol)
         if (infoUsuario) {
             textoRol.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
@@ -183,15 +143,6 @@ class NavegacionUtils {
             textoRol.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
         }
-
-        val isUsuarioTEA = prefs.getBoolean("info_usuario", false)
-        if (isUsuarioTEA) {
-            popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.header_navigation_drawer_tea, null)
-        }else{
-            popupView = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.header_navigation_drawer, null)
-        }
-        popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        popupView?.visibility = View.GONE
 
     }
 
@@ -280,31 +231,103 @@ class NavegacionUtils {
         iconoRol = view.findViewById(R.id.iconoRol)
         textoRol = view.findViewById(R.id.textRol)
 
-        val initialWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
-        setNavigationViewWidth(initialWidth)
-        configurarDatos(view, fragment, id)
+        if(isExpanded){
+            val initialWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.new_navigation_width)
+            setNavigationViewWidth(initialWidth)
+        }else{
+            val initialWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
+            setNavigationViewWidth(initialWidth)
+        }
+
+        configurarDatos(view)
 
         buttonMenu.setOnClickListener {
             var targetWidth: Int
             if(isExpanded){
-                textoRol.visibility = View.VISIBLE
-                targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.new_navigation_width)
-                buttonMenu.setImageResource(R.drawable.svg_close)
-            }else{
                 textoRol.visibility = View.GONE
                 popupView?.visibility = View.INVISIBLE
                 targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
-                buttonMenu.setImageResource(R.drawable.svg_menu)
+                buttonMenu.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.svg_menu, 0, 0)
+            }else{
+                textoRol.visibility = View.VISIBLE
+                targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.new_navigation_width)
+                buttonMenu.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.svg_close, 0)
             }
             animateNavigationViewWidth(targetWidth)
             isExpanded = !isExpanded
         }
 
-        buttonAccount.setOnClickListener {
-            buttonAccountNavigation(fragment, it, buttonAccount)
-        }
         val menu: Menu = navigationView.menu
         menu.findItem(id).isChecked = true
+    }
+
+    fun closeDrawer(fragment: Fragment){
+        val contextFragment = fragment.requireContext()
+        textoRol.visibility = View.GONE
+        popupView?.visibility = View.INVISIBLE
+        val targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
+        buttonMenu.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.svg_menu, 0, 0)
+        animateNavigationViewWidth(targetWidth)
+        isExpanded = false
+
+    }
+
+    fun menuUsuario(fragment: Fragment, anchorView: View){
+        val inflater = LayoutInflater.from(fragment.requireContext())
+        prefs = fragment.requireContext().getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+        val isUsuarioTEA = prefs.getBoolean("info_usuario", false)
+        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
+        var customView = inflater.inflate(R.layout.popup_menu_usuario, null)
+        val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        //si la pantalla esta en horizontal
+        if(fragment.requireContext().resources.configuration.orientation == 1){
+            popupWindow.showAtLocation(anchorView, Gravity.END  or Gravity.TOP, 20, 100)
+        }else{
+            popupWindow.showAtLocation(anchorView, Gravity.START  or Gravity.BOTTOM, 100, 120)
+
+        }
+
+        //Si estamos en el usuarioTEA
+        if(!infoUsuario) {
+            customView.findViewById<LinearLayout>(R.id.item_user).visibility = View.GONE
+            customView.findViewById<LinearLayout>(R.id.item_cerarSesion).visibility = View.GONE
+            customView.findViewById<View>(R.id.divider).visibility = View.GONE
+            customView.findViewById<View>(R.id.divider2).visibility = View.GONE
+        }
+
+        //Si no existe usuario TEA
+        if(!isUsuarioTEA && infoUsuario) {
+            customView.findViewById<LinearLayout>(R.id.item_cuenta).visibility = View.GONE
+            customView.findViewById<View>(R.id.divider).visibility = View.GONE
+        }
+
+        customView.findViewById<LinearLayout>(R.id.item_cuenta).setOnClickListener {
+            if(isUsuarioTEA && infoUsuario){
+                val editor = prefs.edit()
+                editor.putBoolean("PlanificadorLogged", false)
+                editor.apply()
+
+                fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, PlanActivity::class.java))
+                fragment.activity?.finish()
+                fragment.activity?.finishAffinity()
+            }else{
+                crearDialogoLogin(fragment.requireContext(), fragment.requireActivity())
+            }
+        }
+
+        customView.findViewById<LinearLayout>(R.id.item_cerarSesion).setOnClickListener {
+            cerrarSesion(fragment)
+        }
+
+        customView.findViewById<LinearLayout>(R.id.item_user).setOnClickListener {
+            fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, ConfiguracionActivity::class.java))
+        }
+
+        customView.findViewById<LinearLayout>(R.id.item_ayuda).setOnClickListener {
+            fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, ManualActivity::class.java))
+        }
+
+        popupWindow.showAsDropDown(anchorView)
     }
 
 

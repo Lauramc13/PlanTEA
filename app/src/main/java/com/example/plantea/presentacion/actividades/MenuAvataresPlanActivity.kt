@@ -27,7 +27,10 @@ import java.io.IOException
 class MenuAvataresPlanActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     private lateinit var btnGaleria: Button
+    val usuario = Usuario()
     private val viewModel by viewModels<MenuAvataresViewModel>()
+    private var isConfiguration = false
+    private var uri : Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,24 +48,31 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         }
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
-        if(prefs.getBoolean("editPreferences", false)){
+        val extras = intent.extras
+        isConfiguration = if (extras != null) {
+            extras.getBoolean("editPreferences")
+        }else{
+            false
+        }
+
+        if(isConfiguration){
             btnSaltar.text = getString(R.string.str_cancelar)
         }else{
             btnSaltar.text = getString(R.string.str_saltar)
         }
 
         btnSaltar.setOnClickListener{
-            if(!prefs.getBoolean("editPreferences", false)) {
+            if(isConfiguration) {
+                uri = null
+            }else{
                 val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val editor = prefs.edit()
                 editor.putString("imagenPlanificador", uri.toString())
-                editor.putString("imagenPlanificadorDraw", drawableId.toString())
                 editor.apply()
             }
             next()
         }
-
         observers()
     }
 
@@ -72,7 +82,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 viewModel.imagenSeleccionada = true
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value = CommonUtils.getPathFromUri(this, uri)
+                viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Planificador")
             } else {
                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
             }
@@ -84,6 +94,10 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putString("imagenPlanificador", it)
             editor.apply()
+            val idUsuario = prefs.getString("idUsuario", "")
+            if (idUsuario != null) {
+                usuario.aniadirImagenPlanificador(it.toString(), idUsuario, this@MenuAvataresPlanActivity)
+            }
             viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
             viewModel.imagenSeleccionada = true
             next()
@@ -99,23 +113,28 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
 
             avatar.setOnClickListener {
-                val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val idUsuario = prefs.getString("idUsuario", "")
-                if (idUsuario != null) {
-                    val usuario = Usuario()
-                    usuario.aniadirImagenPlanificador(uri.toString(), idUsuario, this@MenuAvataresPlanActivity)
+                uri = Uri.parse("android.resource://$packageName/$drawableId")
+                if(!isConfiguration){
+                    val idUsuario = prefs.getString("idUsuario", "")
+                    if (idUsuario != null) {
+                        val usuario = Usuario()
+                        usuario.aniadirImagenPlanificador(uri.toString(), idUsuario, this@MenuAvataresPlanActivity)
+                    }
+
+                    val editor = prefs.edit()
+                    editor.putString("imagenPlanificador", uri.toString())
+                    editor.apply()
                 }
-                val editor = prefs.edit()
-                editor.putString("imagenPlanificador", uri.toString())
-                editor.putString("imagenPlanificadorDraw", avatarId)
-                editor.apply()
                 next()
             }
         }
     }
 
     private fun next(){
-        if(prefs.getBoolean("editPreferences", false)){
+        if(isConfiguration){
+            val editor = prefs.edit()
+            editor.putString("imagenPlanificadorConfig", uri.toString())
+            editor.apply()
             finish()
         }else{
             val nextActivity = viewModel.determineNextScreenPlan(prefs)

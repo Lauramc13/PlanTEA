@@ -1,19 +1,32 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
-android:background="?backgroundStacked"
+android:background="?customBgColor"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
 
 
-<ImageView
-    android:id="@+id/imageView7"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    android:rotationY="180"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/blob3" />
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="180"
+        android:layout_marginEnd="-30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
 
 <TextView
     android:id="@+id/lbl_planificacion"
@@ -111,7 +124,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 1 niña pelo moreno gafas"
             app:cardCornerRadius="20dp">
 
@@ -128,7 +144,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 2 niña pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -145,7 +164,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 3 niña pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -162,7 +184,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 4 niña pelo negro"
             app:cardCornerRadius="20dp">
 
@@ -179,7 +204,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 5 niña pelo rubio trenzas"
             app:cardCornerRadius="20dp">
 
@@ -204,7 +232,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 1 niño pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -221,7 +252,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 2 niño pelo moreno"
             app:cardCornerRadius="20dp">
 
@@ -238,7 +272,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 3 niño pelo moreno gafas"
             app:cardCornerRadius="20dp">
 
@@ -256,7 +293,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 4 niño pelo rubio gafas"
             app:cardCornerRadius="20dp">
 
@@ -273,7 +313,10 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            app:cardBackgroundColor="@color/white"
             android:contentDescription="Opción 5 niño pelo moreno"
             app:cardCornerRadius="20dp">
 

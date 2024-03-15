@@ -15,10 +15,9 @@ import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
+import com.example.plantea.dominio.OnAlarmReceiver
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
-import com.example.plantea.dominio.onAlarmReceiver
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
@@ -40,6 +39,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var idUsuario = "0"
     val _fechaActual = MutableLiveData<String>()
     val _fechaSeleccionada = MutableLiveData<LocalDate>()
+    val _newEvent = SingleLiveEvent<Boolean>()
 
     var isDiaSeleccionado = false
 
@@ -69,8 +69,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
 
     private fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
-        val intent = Intent()
-        intent.setClass(context, onAlarmReceiver::class.java)
+        val intent = Intent(context, OnAlarmReceiver::class.java)
         intent.putExtra("Evento", evento)
         intent.putExtra("Dia", fecha!!.dayOfMonth)
         intent.putExtra("Mes", CalendarioUtilidades.formatoMesEvento(fecha))
@@ -82,28 +81,33 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val aviso = Calendar.getInstance()
         aviso.timeInMillis = System.currentTimeMillis()
 
+        val onAlarm = OnAlarmReceiver()
+        onAlarm.onReceive(context, intent)
+
         if (checkBoxDia) {
             val nuevafecha = fecha.minusDays(1)
-            aviso[nuevafecha.year, nuevafecha.month.value - 1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
-            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            aviso[nuevafecha.year, nuevafecha.month.value -1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
+            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
         }
         if (checkBoxHora) {
-            aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, hora.hour - 1, hora.minute] = 0
-            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            aviso[fecha.year, fecha.month.value -1, fecha.dayOfMonth, hora.hour - 1, hora.minute] = 0
+            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
         }
         if(checkBoxMin){
-            aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, hora.hour, hora.minute - 5] = 0
-            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            aviso[fecha.year, fecha.month.value -1, fecha.dayOfMonth, hora.hour, hora.minute - 5] = 0
+            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
         }
         if(checkBoxPer){
-            aviso[fecha.year, fecha.month.value - 1, fecha.dayOfMonth, selectedHour, selectedMin] = 0
-            alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            aviso[fecha.year, fecha.month.value -1, fecha.dayOfMonth, selectedHour, selectedMin] = 0
+           // alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
+            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
+
         }
     }
 
     fun cancelarNotificacion(context: Context, identificador: Int) {
         val intent = Intent()
-        intent.setClass(context, onAlarmReceiver::class.java)
+        intent.setClass(context, OnAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, identificador, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
@@ -124,13 +128,13 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
-        //if(!CommonUtils.isMobile(context)){
-            //TODO: CAMBIAR ESTO PARA ACTUALIZAR EL FRAGMENT EN VEZ DE CREAR UNO NUEVO
-            val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-            ft.replace(R.id.fragment_calendario, EventosFragment())
-            ft.addToBackStack(null)
-            ft.commit()
-        //}
+        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        ft.replace(R.id.fragment_calendario, EventosFragment())
+        ft.addToBackStack(null)
+        ft.commit()
+
+        eventos.add(cita)
+        _newEvent.value = true
 
         /*val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         val notificacion = prefs.getBoolean("notificaciones", false)

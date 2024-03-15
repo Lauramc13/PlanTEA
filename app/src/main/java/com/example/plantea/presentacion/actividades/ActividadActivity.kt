@@ -20,7 +20,7 @@ class ActividadActivity : AppCompatActivity() {
     private lateinit var cardVideo: CardView
     private lateinit var cardObjeto: CardView
     private lateinit var frameVideo: FrameLayout
-    private var atras : ImageView? = null
+    private var atras : Button? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +33,7 @@ class ActividadActivity : AppCompatActivity() {
         cardVideo = findViewById(R.id.card_video)
         cardObjeto = findViewById(R.id.card_objeto)
         frameVideo = findViewById(R.id.webViewFrame)
-        val closeButton : Button = findViewById(R.id.closeYoutube)
+        val closeButton : ImageView = findViewById(R.id.closeYoutube)
         atras = findViewById(R.id.atras)
 
 

@@ -20,6 +20,8 @@ class MenuAvataresTEActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     private lateinit var btnGaleria: Button
     private val viewModel by viewModels<MenuAvataresViewModel>()
+    private var isConfiguration = false
+    private var uri : Uri? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,17 +35,24 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         btnGaleria.setOnClickListener{
             viewModel.abrirGaleria()
         }
+        val extras = intent.extras
+        isConfiguration = if (extras != null) {
+            extras.getBoolean("editPreferences")
+        }else{
+            false
+        }
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
-        if(prefs.getBoolean("editPreferences", false)){
+        if(isConfiguration){
             btnSaltar.text = getString(R.string.str_cancelar)
         }else{
             btnSaltar.text = getString(R.string.str_saltar)
         }
 
-
         btnSaltar.setOnClickListener{
-            if(!prefs.getBoolean("editPreferences", false)) {
+            if(isConfiguration) {
+                uri = null
+            }else{
                 val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
                 val uri = Uri.parse("android.resource://$packageName/$drawableId")
                 val editor = prefs.edit()
@@ -61,7 +70,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         viewModel._ruta.observe(this){
             val editor = prefs.edit()
             editor.putString("imagenUsuarioTEA", it)
-            editor.commit()
+            editor.apply()
             viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
             viewModel.imagenSeleccionada = true
             next()
@@ -74,25 +83,34 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             val packageName = applicationContext.packageName
             val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
             val avatar = findViewById<CardView>(cardViewId)
+            val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
 
             avatar.setOnClickListener {
-                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
-                val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val idUsuario = prefs.getString("idUsuario", "")
-                if (idUsuario != null) {
-                    val usuario = Usuario()
-                    usuario.aniadirImagenPlanificado(uri.toString(), idUsuario, this@MenuAvataresTEActivity)
+                uri = Uri.parse("android.resource://$packageName/$drawableId")
+                if(!isConfiguration) {
+                    val idUsuario = prefs.getString("idUsuario", "")
+                    if (idUsuario != null) {
+                        val usuario = Usuario()
+                        usuario.aniadirImagenPlanificado(
+                            uri.toString(),
+                            idUsuario,
+                            this@MenuAvataresTEActivity
+                        )
+                    }
+                    val editor = prefs.edit()
+                    editor.putString("imagenUsuarioTEA", uri.toString())
+                    editor.apply()
                 }
-                val editor = prefs.edit()
-                editor.putString("imagenUsuarioTEA", uri.toString())
-                editor.apply()
                 next()
             }
         }
     }
 
     private fun next(){
-        if(prefs.getBoolean("editPreferences", false)){
+        if(isConfiguration){
+            val editor = prefs.edit()
+            editor.putString("imageUsuarioTEAConfig", uri.toString())
+            editor.apply()
             finish()
         }else{
             val nextActivity = viewModel.determineNextScreenTEA(prefs)
@@ -110,7 +128,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value = CommonUtils.getPathFromUri(this, uri)
+                viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Usuario")
             } else {
                 CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
             }

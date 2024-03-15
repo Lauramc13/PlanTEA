@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="400dp"/>
-    <solid android:color="?cardBackgroundColor"/>
+    <solid android:color="?cardBackgroundColorPersonalized"/>
 </shape>

@@ -58,7 +58,7 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar un pictograma nuevo*/
-    fun insertarPictograma(nombre: String?, imagen: String?, categoria: String?, idUsuario: String?) {
+    fun insertarPictograma(nombre: String?, imagen: String?, categoria: String?, idUsuario: String?): String {
         var categoria = categoria
         val c = db!!.rawQuery("SELECT id from Categoria where Categoria.titulo = '$categoria'", null)
         if (c.moveToFirst()) {
@@ -66,6 +66,14 @@ class ConectorBD(ctx: Context?) {
         }
         c.close()
         db!!.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria, id_usuario) VALUES ('$nombre', '$imagen','$categoria', '$idUsuario')")
+
+        val c2= db!!.rawQuery("SELECT last_insert_rowid()", null)
+        var id = ""
+        if (c2.moveToFirst()) {
+            id = c2.getString(0)
+        }
+        c2.close()
+        return id
     }
 
 
@@ -158,7 +166,7 @@ class ConectorBD(ctx: Context?) {
 
     /*Obtener el numero de planficaciones visibles*/
     fun contarEventoVisible(idUsuario: String, fecha: String): Cursor {
-        return db!!.rawQuery("SELECT count(visible) FROM Evento WHERE visible = 1 AND id_usuario = '$idUsuario' AND fecha = '$fecha'", null)
+        return db!!.rawQuery("SELECT id FROM Evento WHERE visible = 1 AND id_usuario = '$idUsuario' AND fecha = '$fecha'", null)
     }
 
     /*Obtener el titulo de la planificacion a seguir*/
@@ -520,6 +528,15 @@ class ConectorBD(ctx: Context?) {
         db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$idPicto', '$nombre', '$imagen')")
     }
 
+  /*  fun obtenerTituloCategoria(idCategoria: Int): Any {
+        val c = db!!.rawQuery("SELECT titulo from Categoria where Categoria.id = $idCategoria", null)
+        var titulo = ""
+        if (c.moveToFirst()) {
+            titulo = c.getString(0)
+        }
+        c.close()
+        return titulo
+    }*/
 
 
     companion object {

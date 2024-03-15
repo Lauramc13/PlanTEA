@@ -75,7 +75,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             ?.withEndAction {
                 Handler(Looper.getMainLooper()).postDelayed({
                     background(holder, position)
-                    holder.card?.animate()
+                    holder.card.animate()
                         ?.setDuration(350)
                         ?.scaleX(1f)
                         ?.scaleY(1f)

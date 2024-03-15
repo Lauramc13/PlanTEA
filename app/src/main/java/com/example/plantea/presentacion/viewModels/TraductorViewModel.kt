@@ -48,6 +48,8 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     var posicionSelected = -1
 
     val _dialogMessage = SingleLiveEvent<String>()
+    val _traduccionEnded = SingleLiveEvent<Boolean>()
+
     val _listaPictogramas = MutableLiveData<ArrayList<Pictograma>>()
     var textInputContent = ""
 
@@ -70,7 +72,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     }
 
     private fun getPictogramas(context: Context) {
-        CoroutineScope(Dispatchers.IO).launch {
+       val job = CoroutineScope(Dispatchers.IO).launch {
             for (word in listaTraducir) {
                 val dict = CommonUtils.getDataApi(word)
 
@@ -84,7 +86,13 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 }
                 listaPictoBuscador.add(dict)
             }
-        }
+       }
+
+       job.invokeOnCompletion {
+            CoroutineScope(Dispatchers.Main).launch {
+                _traduccionEnded.value = true
+            }
+       }
     }
 
     private fun crearPictoTraduccion(bitmap: Bitmap, titulo: String?, posicion: Int?, context: Context) {

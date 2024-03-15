@@ -46,16 +46,20 @@
             android:text="@string/lbl_cerrarSesionBotton" />
     </LinearLayout>
 
-       
+
 
     <ImageView
         android:id="@+id/icono_CerrarDialogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
         android:layout_margin="20dp"
-        app:srcCompat="@drawable/ic_baseline_close_24" />
+        android:contentDescription="Cerrar seccion"
+        android:background="@drawable/bg_close_button"
+        android:src="@drawable/ic_baseline_close_24"
+        android:padding="12dp"
+        android:alpha="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

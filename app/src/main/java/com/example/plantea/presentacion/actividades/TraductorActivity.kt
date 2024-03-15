@@ -27,7 +27,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
     lateinit var guardarButton : Button
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
-    private var atras : ImageView? = null
+    private var atras : Button? = null
 
     private val viewModel by viewModels<TraductorViewModel>()
 
@@ -40,7 +40,6 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         super.onDestroy()
         viewModel.textInputContent = textoATraducir.editText?.text.toString()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +57,9 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             textoATraducir.requestFocus()
         }
 
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
+
         createPickMedia()
 
         recyclerView = findViewById(R.id.recycler_plan)
@@ -71,6 +73,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
 
         traducirButton.setOnClickListener {
             if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim(), this)){
+                traducirButton.isEnabled = false
                 viewModel._visibilityButtons.value = true
                 CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
             }else{
@@ -149,12 +152,18 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             if(visibility){
                 escucharButtonPalabra.visibility = View.VISIBLE
                 escucharButtonFrase.visibility = View.VISIBLE
-                guardarButton.visibility = View.VISIBLE
+                if(isPlanificador){
+                    guardarButton.visibility = View.VISIBLE
+                }
             }else{
                 escucharButtonPalabra.visibility = View.GONE
                 escucharButtonFrase.visibility = View.GONE
                 guardarButton.visibility = View.GONE
             }
+        }
+
+        viewModel._traduccionEnded.observe(this) {
+            traducirButton.isEnabled = true
         }
 
     }

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:theme="@style/cards"
-        app:cardBackgroundColor="?android:solidColor"
+        app:cardBackgroundColor="?pizzaraFondo"
         app:cardCornerRadius="30dp"
         android:gravity="center"
         android:orientation="vertical"

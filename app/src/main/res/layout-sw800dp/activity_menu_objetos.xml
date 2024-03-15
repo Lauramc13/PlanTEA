@@ -1,7 +1,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?backgroundStacked"
+    android:background="?customBgColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,11 +9,23 @@
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        android:rotationY="180"
+        android:rotation="180"
+        android:layout_marginEnd="-30dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/blob3" />
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        app:tint="@color/seedLight"
+        android:importantForAccessibility="no" />
     <TextView
         android:id="@+id/lbl_planificacion"
         android:layout_width="0dp"
@@ -116,7 +128,10 @@
                     app:cardCornerRadius="20dp"
                     android:contentDescription="Opción 1 Bicicleta"
                     android:id="@+id/bici"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView
@@ -132,7 +147,10 @@
                     android:layout_height="150dp"
                     android:id="@+id/recompensa"
                     android:contentDescription="Opción 2 Recompensa"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     android:layout_margin="15dp">
 
@@ -157,7 +175,10 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/juegos"
                     android:contentDescription="Opción 3 Juegos"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -174,7 +195,10 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/comida"
                     android:contentDescription="Opción 4 Comida"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView
@@ -198,7 +222,10 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/futbol"
                     android:contentDescription="Opción 5 Futbol"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView
@@ -215,7 +242,10 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/libros"
                     android:contentDescription="Opción 6 Libros"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
                     <ImageView
@@ -238,7 +268,10 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/movil"
                     android:contentDescription="Opción 7 Movil"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
                         android:layout_width="match_parent"
@@ -254,7 +287,10 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/musica"
                     android:contentDescription="Opción 8 Musica"
-                    android:backgroundTint="@color/white"
+                    android:elevation="0dp"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp"
+                    app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
 

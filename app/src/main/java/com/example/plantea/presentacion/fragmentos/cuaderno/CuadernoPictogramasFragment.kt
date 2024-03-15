@@ -55,7 +55,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout, 150, 200)
 
         context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val adaptador = viewModel.isPlanificador?.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
+        val adaptador = viewModel.isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
         lst_Pictogramas.adapter = adaptador
         image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
         image_Cerrar.setOnClickListener { viewModel._cerrarFragment.value = true}

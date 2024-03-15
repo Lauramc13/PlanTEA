@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Color de fondo de la vista -->
     <solid
-        android:color="?colorControlHighlight"  >
+        android:color="?colorBG3"  >
     </solid>
 
     <!-- Color y ancho del borde del elemento -->

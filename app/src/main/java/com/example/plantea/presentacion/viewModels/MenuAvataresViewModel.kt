@@ -45,8 +45,8 @@ class MenuAvataresViewModel : ViewModel() {
 
     fun determineNextScreenTEA(prefs: SharedPreferences): Class<out AppCompatActivity> {
         return when {
-            prefs.getBoolean("info_usuario", false) -> TutorialActivity::class.java
-            else -> MenuObjetosActivity::class.java
+            prefs.getBoolean("info_objeto", false) -> MenuObjetosActivity::class.java
+            else -> TutorialActivity::class.java
         }
     }
 
@@ -56,23 +56,4 @@ class MenuAvataresViewModel : ViewModel() {
         intent.type = "image/*"
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
-
-    /*fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
-        val cw = ContextWrapper(context)
-        val dirImages = cw.getDir("Imagenes", AppCompatActivity.MODE_PRIVATE)
-        val myPath = File(dirImages, "$nombre.png")
-        val fos: FileOutputStream?
-        try {
-            fos = FileOutputStream(myPath)
-            imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
-            fos.flush()
-        } catch (ex: FileNotFoundException) {
-            ex.printStackTrace()
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-        return myPath.absolutePath
-    }*/
-
-
 }

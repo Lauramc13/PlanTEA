@@ -86,13 +86,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     private lateinit var imagenConfeti: ImageView
     private lateinit var mensajePremio: TextView
 
-    fun dpToPx(dp: Int, context: Context): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
-    }
+
 
     override fun diaSeleccionado(context: Context?, fecha: LocalDate) {
         fechaSeleccionada = fecha
@@ -186,7 +180,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         _diasMes.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
     }
 
-    fun configureUser(prefs : android.content.SharedPreferences, context: Context){
+    fun configureUser(prefs : SharedPreferences, context: Context){
         val userId = prefs.getString("idUsuario", "")
         idUsuario = userId.toString()
         planificaciones = userId?.let { evento.obtenerTodosEventos(it, context as Activity) } as ArrayList<Evento>

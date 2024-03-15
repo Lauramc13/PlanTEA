@@ -1,6 +1,8 @@
 package com.example.plantea.presentacion.adaptadores
 
 
+import android.R.attr.height
+import android.R.attr.width
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -30,11 +32,11 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, days: Arra
         val view = inflater.inflate(R.layout.calendario_celda, parent, false)
 
         val layoutParams = view.layoutParams
-        layoutParams.width = (parent.height * 0.125).toInt()
 
         if (viewType == VIEW_TYPE_DAY_OF_MONTH) {
-            layoutParams.height = (parent.height * 0.125).toInt()
             view.setBackgroundResource(R.drawable.round_bg)
+            //set item height to the same width
+           // layoutParams.height = layoutParams.width
         }
 
         return ViewHolderCalendario(view)
@@ -45,6 +47,7 @@ class AdaptadorCalendario(private val diasMes: ArrayList<LocalDate?>, days: Arra
             // Bind the days of the week to the corresponding positions
             holder.diaMes.text = daysOfWeek[position]
             holder.vistaPrincipal.isClickable = false
+
         } else {
             val fecha = diasMes[position-daysOfWeek.size]
             //holder.diaMes.setTextColor(holder.itemView.context.resources.getColor(R.color.md_theme_dark_surface))

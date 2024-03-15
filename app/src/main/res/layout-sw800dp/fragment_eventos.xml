@@ -32,29 +32,50 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.95" />
 
-        <TextView
-            android:id="@+id/lbl_mensaje_evento"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="50dp"
-            android:text="@string/lbl_mensaje_evento"
-            android:textAlignment="center"
-            android:textColor="?colorOnSurface"
-            android:textSize="18sp"
-            android:visibility="gone" />
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:src="@drawable/checklist_png"
+                android:layout_marginBottom="20dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/lbl_mensaje_evento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="50dp"
+                android:text="@string/lbl_mensaje_evento"
+                android:textAlignment="center"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="18sp" />
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_eventos"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
             android:nestedScrollingEnabled="true"
             android:transitionGroup="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

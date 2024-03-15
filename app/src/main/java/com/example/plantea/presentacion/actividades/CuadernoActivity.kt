@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,7 @@ class CuadernoActivity : AppCompatActivity() {
     private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
     private var fragmentCuadernoPictoEdit = CuadernoPictoEditFragment()
     private var fragmentPrincipal = PrincipalFragment()
-    private var atras : ImageView? = null
+    private var atras : Button? = null
 
     private val viewModel by viewModels<CuadernoViewModel>()
 

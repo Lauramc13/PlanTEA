@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?customBgColorCuaderno"
+    android:background="?customBgColor"
     tools:context=".presentacion.actividades.TraductorActivity">
 
     <ImageView
@@ -37,40 +37,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fondo_cuaderno_tiempo"
+            android:orientation="vertical">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textoTraducir"
                 style="@style/backgroundTraduccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/fondo_cuaderno_tiempo"
-
                 android:layout_margin="5dp"
-                android:layout_weight="1"
                 android:hint="Escribe tu frase aqui..."
                 android:inputType="text"
                 android:textColor="?colorOnSurface"
                 app:boxBackgroundColor="@android:color/transparent"
-                app:hintTextColor="?colorAccent">
+                app:hintTextColor="?colorBG1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
                     android:textColor="?colorOnSurface"
                     android:textSize="@dimen/subtitle" />
             </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/traducirButton"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="TRADUCIR"
-            android:textColor="#203130"
-            android:textSize="@dimen/button"
-            app:cornerRadius="25dp" />
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
+
+
+            <Button
+                android:id="@+id/traducirButton"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="5dp"
+                app:strokeColor="@color/transparent"
+                app:icon="@drawable/svg_short_arrow"
+                app:iconSize="30dp"
+                app:iconTint="?customColorGray" />
+
+        </LinearLayout>
+
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"

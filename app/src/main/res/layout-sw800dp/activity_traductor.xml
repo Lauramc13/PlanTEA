@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?customBgColorCuaderno"
+    android:background="?customBgColor"
     tools:context=".presentacion.actividades.TraductorActivity">
 
     <ImageView
@@ -55,7 +55,7 @@
                 android:inputType="text"
                 android:textColor="?colorOnSurface"
                 app:boxBackgroundColor="@android:color/transparent"
-                app:hintTextColor="?colorAccent">
+                app:hintTextColor="?colorBG1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

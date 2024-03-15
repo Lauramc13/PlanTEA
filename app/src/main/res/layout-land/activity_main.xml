@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?background"
+    android:background="@drawable/background_main"
     tools:context=".presentacion.actividades.MainActivity">
 
     <Button
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:backgroundTint="?background"
+        android:backgroundTint="@color/transparent"
         android:contentDescription="Preferencias"
         android:padding="8dp"
         app:icon="@drawable/user"
@@ -31,7 +31,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="?background"
+        android:backgroundTint="@color/transparent"
         android:contentDescription="Preferencias"
         app:icon="@drawable/svg_logout"
         app:iconSize="40dp"
@@ -68,7 +68,7 @@
         android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
         app:cardCornerRadius="20dp"
         android:gravity="center"
-        app:cardBackgroundColor="?cardBackgroundColor"
+        app:cardBackgroundColor="?cardBackgroundColorPersonalized"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                 android:id="@+id/image_RolPlanificador"
                 style="@style/editText"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
@@ -110,7 +110,7 @@
         app:layout_constraintWidth_percent="0.3"
         android:layout_height="wrap_content"
         app:layout_constraintHeight_percent="0.5"
-        app:cardBackgroundColor="?cardBackgroundColor"
+        app:cardBackgroundColor="?cardBackgroundColorPersonalized"
         app:cardCornerRadius="20dp"
         android:contentDescription="Tarjeta del planificado para iniciar sesión"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -128,7 +128,7 @@
                 android:id="@+id/image_RolTEA"
                 style="@style/editText"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
@@ -156,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:tint="@color/white"
-        app:srcCompat="@drawable/svg_blob" />
+        app:srcCompat="@drawable/svg_blob_white" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -165,6 +165,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="wrap_content"
         app:tint="@color/white"
-        app:srcCompat="@drawable/svg_blob2" />
+        app:srcCompat="@drawable/svg_blob2_white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

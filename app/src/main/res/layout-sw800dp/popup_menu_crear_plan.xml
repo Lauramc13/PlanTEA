@@ -1,0 +1,51 @@
+<!-- res/layout/custom_popup_cuaderno.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="15dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="@drawable/bg_popup">
+
+    <TextView
+        android:id="@+id/item_historia"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/bocadillo_historia_off"
+        android:drawableTint="?colorPrimary"
+        android:drawablePadding="8dp"
+        android:text="Añadir texto adicional"
+        android:height="44dp"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:fontFamily="@font/poppins_regular"
+        android:clickable="true"
+        android:textColor="?colorOnSurface" />
+
+    <!-- Divider-->
+    <View
+        android:layout_width="210dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="?color" />
+
+    <TextView
+        android:id="@+id/item_duracion"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/svg_clock_2"
+        android:drawablePadding="8dp"
+        android:text="Añadir duración"
+        android:drawableTint="?colorPrimary"
+        android:textSize="16sp"
+        android:height="44dp"
+        android:padding="10dp"
+        android:textColor="?colorOnSurface"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/poppins_regular"
+        android:clickable="true" />
+
+
+</LinearLayout>
