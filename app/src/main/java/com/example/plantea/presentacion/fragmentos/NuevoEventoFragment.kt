@@ -1,20 +1,25 @@
 package com.example.plantea.presentacion.fragmentos
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -24,19 +29,13 @@ import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
-import android.app.NotificationManager
-import android.content.Intent
-import android.provider.Settings
-import androidx.activity.result.contract.ActivityResultContracts
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.CommonUtils.Companion.setIcon
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
-import java.util.*
-
+import java.util.Locale
 
 class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.OnItemSelectedListener {
     lateinit var actividad: Activity
@@ -55,6 +54,13 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
    // private lateinit var reminderview: FragmentContainerView
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
+    var permisosGranted = false
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        permisosGranted = isGranted
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
@@ -121,40 +127,48 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             }
         }
 
+        askNotificationPermission()
+
         switchReminder.setOnCheckedChangeListener { _, isChecked ->
-
-            if(CommonUtils.isMobile(requireContext())) {
-                showReminderFragment(isChecked)
-            } else{
-                if(isChecked){
-                    val requestPermissionLauncher =
-                        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                            if (isGranted) {
-                                // Permission granted, create the reminder dialog
-                                createDialogReminder()
-                            } else {
-                                // Permission not granted, handle accordingly
-                                switchReminder.isChecked = false
-                                CommonUtils.showSnackbar(
-                                    vista,
-                                    requireContext(),
-                                    "No se puede activar el recordatorio sin permisos de notificación"
-                                )
-                            }
-                        }
-                    requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_NOTIFICATION_POLICY)
-
+            if (isChecked){
+                if(permisosGranted){
+                    if(CommonUtils.isMobile(requireContext())) {
+                        showReminderFragment(isChecked)
+                    } else{
+                        createDialogReminder()
+                    }
+                }else{
+                    switchReminder.isChecked = false
+                    CommonUtils.showSnackbar(vista, requireContext(), "Plantea necesita permisos para mostrar notificaciones")
                 }
-
+            }else{
+                showReminderFragment(isChecked)
             }
-
-
         }
-
 
         dialog?.setOnCancelListener { switchReminder.isChecked = false }
 
         return vista
+    }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                permisosGranted = true
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                val rootView = activity?.window?.decorView?.findViewById<View>(android.R.id.content)
+
+                val snackbar = rootView?.let { Snackbar.make(it, "Plantea necesita permisos para mostrar notificaciones", Snackbar.LENGTH_INDEFINITE) }
+                snackbar?.setAction("OK") {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+                snackbar?.show()
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

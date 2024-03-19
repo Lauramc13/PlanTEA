@@ -52,6 +52,7 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
+import java.util.Locale
 
 class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener{
 
@@ -88,8 +89,6 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     var _deletedCategoria = SingleLiveEvent<Int>()
     var listaCategorias = ArrayList<Categoria>()
 
-    var fragmentCategoriasPictogramas = CategoriasPictogramasFragment()
-
     @SuppressLint("StaticFieldLeak")
     var activity: Activity = Activity()
     var idUsuario = "0"
@@ -118,9 +117,9 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     }
 
     fun pictogramaSeleccionado(posicion: Int) {
-        _listaPictogramas.value?.let { listaPlanificacion.add(it[posicion]) }
+        _listaPictogramas.value?.let { listaPlanificacion.add(it[posicion].copy()) }
         isEdited = true
-        _pictogramaSeleccionado.value = _listaPictogramas.value?.get(posicion)
+        _pictogramaSeleccionado.value = _listaPictogramas.value?.get(posicion)?.copy()
     }
 
     fun nuevoPictogramaDialogo(){
@@ -271,10 +270,14 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
            title.error = null
             if (title.editText?.text.toString().isEmpty() || image?.drawable == null) {
                 title.error = "Obligatorio"
-                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), view.context, "Tienes que rellenar todos los campos")
             }else{
-                crearCategoria(title,false, Categoria(),colorSelected, view.context as Activity)
-                dialogo.dismiss()
+                val titulo = title.editText?.text.toString().toUpperCase().trim()
+                if(categoria.checkCategoriaExiste(view.context, titulo, idUsuario)) {
+                    CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), view.context, "La categoría ya existe")
+                }else{
+                    crearCategoria(title,false, Categoria(),colorSelected, view.context as Activity)
+                    dialogo.dismiss()
+                }
             }
         }
 
@@ -339,12 +342,12 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         return picker
     }
 
-    fun createReloj24(): MaterialTimePicker{
+    fun createReloj24(hora: Int, minutos: Int): MaterialTimePicker{
 
         val picker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(0)
-            .setMinute(0)
+            .setHour(hora)
+            .setMinute(minutos)
             .setTheme(R.style.TimePicker)
             .setTitleText("Selecciona una hora")
             .build()

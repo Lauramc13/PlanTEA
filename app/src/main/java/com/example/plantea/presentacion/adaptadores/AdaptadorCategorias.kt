@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.adaptadores
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -49,15 +50,17 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
         if(listaCategorias!![position].color == "default") {
             // if its dark mode
             if(context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES){
-                holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_dark_background2))
+                holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_light_onSurfaceVariant))
             }else{
-                holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_light_surfaceVariant))
+                holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_dark_onSurfaceVariant))
             }
         }else{
             val color = getColor(listaCategorias!![position].color!!)
+            val darkColor = getColorDark(listaCategorias!![position].color!!)
+
+            holder.borrar.setColorFilter(ContextCompat.getColor(context, darkColor), PorterDuff.Mode.SRC_IN)
             holder.card.setCardBackgroundColor(ContextCompat.getColor(context, color))
             holder.titulo.setTextColor(ContextCompat.getColor(context, R.color.md_theme_light_onSurface))
-
         }
     }
 
@@ -71,6 +74,18 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
             else -> R.color.md_theme_light_surfaceVariant
         }
     }
+
+    private fun getColorDark(color: String): Int {
+        return when(color) {
+            "blue" -> R.color.blueCategoriaDark
+            "green" -> R.color.greenCategoriaDark
+            "purple" -> R.color.purpleCategoriaDark
+            "pink" -> R.color.pinkCategoriaDark
+            "yellow" -> R.color.yellowCategoriaDark
+            else -> R.color.md_theme_light_onSurfaceVariant
+        }
+    }
+
 
     override fun getItemCount(): Int {
         return listaCategorias!!.size

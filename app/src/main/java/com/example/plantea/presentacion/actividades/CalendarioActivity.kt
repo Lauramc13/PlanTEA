@@ -27,8 +27,6 @@ class CalendarioActivity : AppCompatActivity() {
 
 
     private val viewModel by viewModels<CalendarioViewModel>()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario)

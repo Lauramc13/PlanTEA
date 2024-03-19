@@ -36,5 +36,10 @@ class Categoria {
         gestorCategorias.eliminarCategoria(actividad, idUsuario, idCategoria)
     }
 
+    fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String): Boolean {
+        return gestorCategorias.checkCategoriaExiste(context, toString, idUsuario)
+
+    }
+
 
 }

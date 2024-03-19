@@ -95,4 +95,8 @@ class Pictograma : Serializable {
     fun borrarPictoCuaderno(actividad: Activity?, id: String?, idCuaderno: Int) {
         return gestorPictogramas.borrarPictoCuaderno(actividad, id, idCuaderno)
     }
+
+    fun copy(): Pictograma {
+        return Pictograma(this.id, this.titulo, this.imagen, this.categoria, this.cuaderno, this.favorito, this.sourceAPI)
+    }
 }

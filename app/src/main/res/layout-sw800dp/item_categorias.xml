@@ -42,9 +42,7 @@
                 android:textAllCaps="true"
                 android:textAlignment="center"
                 android:textColor="?colorOnSurface"
-                android:textSize="16sp">
-
-            </TextView>
+                android:textSize="16sp"/>
         </LinearLayout>
 
         <ImageView
@@ -53,10 +51,9 @@
             android:layout_height="40dp"
             android:elevation="4dp"
             android:padding="5dp"
-            app:tint="@color/md_theme_light_onSurface"
+            app:tint="?colorOnSurfaceVariant"
             android:visibility="visible"
             app:srcCompat="@drawable/svg_trash"/>
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-

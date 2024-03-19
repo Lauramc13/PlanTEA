@@ -30,7 +30,6 @@ import java.util.Calendar
 import java.util.Locale
 
 class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener {
-    private lateinit var alarmManager: AlarmManager
     private var isNuevoEventoSelected = false
     var evento = Evento()
     var _dias = MutableLiveData<ArrayList<LocalDate?>>()
@@ -69,48 +68,41 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
 
     private fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
-        val intent = Intent(context, OnAlarmReceiver::class.java)
-        intent.putExtra("Evento", evento)
-        intent.putExtra("Dia", fecha!!.dayOfMonth)
-        intent.putExtra("Mes", CalendarioUtilidades.formatoMesEvento(fecha))
-        intent.putExtra("Hora", hora)
-        intent.putExtra("Id", id)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent(context, OnAlarmReceiver::class.java)
+        notificationIntent.putExtra("Evento", evento)
+        notificationIntent.putExtra("Id", id)
+        val pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        val pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_MUTABLE)
-        alarmManager = context.applicationContext.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val aviso = Calendar.getInstance()
-        aviso.timeInMillis = System.currentTimeMillis()
-
-        val onAlarm = OnAlarmReceiver()
-        onAlarm.onReceive(context, intent)
+        aviso.clear()
+        aviso.set(fecha!!.year, fecha.monthValue - 1, fecha.dayOfMonth, hora.hour, hora.minute)
 
         if (checkBoxDia) {
-            val nuevafecha = fecha.minusDays(1)
-            aviso[nuevafecha.year, nuevafecha.month.value -1, nuevafecha.dayOfMonth, hora.hour, hora.minute] = 0
-            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
+            aviso.add(Calendar.DAY_OF_MONTH, -1)
         }
         if (checkBoxHora) {
-            aviso[fecha.year, fecha.month.value -1, fecha.dayOfMonth, hora.hour - 1, hora.minute] = 0
-            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
+            aviso.add(Calendar.HOUR_OF_DAY, -1)
         }
         if(checkBoxMin){
-            aviso[fecha.year, fecha.month.value -1, fecha.dayOfMonth, hora.hour, hora.minute - 5] = 0
-            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
-        }
-        if(checkBoxPer){
-            aviso[fecha.year, fecha.month.value -1, fecha.dayOfMonth, selectedHour, selectedMin] = 0
-           // alarmManager[AlarmManager.RTC_WAKEUP, aviso.timeInMillis] = pendingIntent
-            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
+            aviso.add(Calendar.MINUTE, -5)
 
         }
+        if(checkBoxPer){
+            aviso.set(Calendar.HOUR_OF_DAY, selectedHour)
+            aviso.set(Calendar.MINUTE, selectedMin)
+        }
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
     }
 
     fun cancelarNotificacion(context: Context, identificador: Int) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent()
         intent.setClass(context, OnAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, identificador, intent, PendingIntent.FLAG_IMMUTABLE)
-        alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
+        pendingIntent.cancel()
     }
 
     fun crearEventoFragment(context: Context) {
@@ -227,7 +219,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val calendar = Calendar.getInstance()
         calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, time.hour, time.minute, time.second)
 
-        //TODO: cuando este hehco lo del recordatorio meterlo aqui tambien
         return Intent(Intent.ACTION_INSERT)
             .setData(CalendarContract.Events.CONTENT_URI)
             .putExtra(CalendarContract.Events.TITLE, eventos[posicion].nombre)

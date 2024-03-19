@@ -79,12 +79,28 @@ class GestionCategorias {
         conectorBD!!.cerrar()
     }
 
-   /* fun obtenerTituloCategoria(context: Context, idCategoria: Int): String {
+    fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String): Boolean {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
-        var titulo = ""
-        titulo = conectorBD!!.obtenerTituloCategoria(idCategoria).toString()
+        val c = conectorBD!!.checkCategoriaExiste(toString, idUsuario)
+        var existe = true
+        if (c.moveToFirst()) {
+            //if count is 1, then the entry was found
+            if(c.getInt(0) == 0){
+                existe = false
+            }
+        }
+        c.close()
         conectorBD!!.cerrar()
-        return titulo
-    }*/
+        return existe
+    }
+
+    /* fun obtenerTituloCategoria(context: Context, idCategoria: Int): String {
+         conectorBD = ConectorBD(context)
+         conectorBD!!.abrir()
+         var titulo = ""
+         titulo = conectorBD!!.obtenerTituloCategoria(idCategoria).toString()
+         conectorBD!!.cerrar()
+         return titulo
+     }*/
 }

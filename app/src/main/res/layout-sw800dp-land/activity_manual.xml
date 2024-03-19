@@ -97,7 +97,7 @@
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
                                 android:textSize="@dimen/modalText"
-                                android:text="Creación de un evento"/>
+                                android:text="@string/titulo_crearEvento"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -149,7 +149,7 @@
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
                                 android:textSize="@dimen/modalText"
-                                android:text="Crear una planificación"/>
+                                android:text="@string/titulo_crearPlanificacion"/>
 
                             <View
                                 android:layout_width="0dp"
@@ -202,7 +202,8 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/poppins_regular"
                             android:textSize="@dimen/modalText"
-                            android:text="Cuaderno de comunicación"/>
+                            android:text="@string/titulo_cuaderno"
+                            />
 
                         <View
                             android:layout_width="0dp"
@@ -254,7 +255,7 @@
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
                                 android:textSize="@dimen/modalText"
-                                android:text="Traductor"/>
+                                android:text="@string/titulo_traductor" />
 
                             <View
                                 android:layout_width="0dp"
@@ -282,7 +283,7 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.card.MaterialCardView
+               <!--     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_configuracion"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
@@ -307,7 +308,8 @@
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
                                 android:textSize="@dimen/modalText"
-                                android:text="Configuración"/>
+                                android:text="@string/titulo_configuracion"
+                                />
 
                             <View
                                 android:layout_width="0dp"
@@ -332,7 +334,7 @@
                             android:paddingEnd="20dp"
                             android:clickable="false"
                             android:scrollbars="none" />
-                    </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView>-->
 
                     <Button
                         android:id="@+id/btn_tutorial"
@@ -355,7 +357,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
-            app:cardElevation="2dp"
+            app:cardElevation="0dp"
             android:layout_gravity="center"
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"

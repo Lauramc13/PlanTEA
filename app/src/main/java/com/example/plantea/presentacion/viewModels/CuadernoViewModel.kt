@@ -18,6 +18,7 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
+import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
 import com.google.android.material.imageview.ShapeableImageView
 
 class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelectedListener, AdaptadorCategoriasCuaderno.OnItemSelectedListener{

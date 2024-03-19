@@ -25,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintWidth_percent="0.92"
         app:layout_constraintHeight_percent="0.75"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +91,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Creación de un evento"
+                                android:text="@string/titulo_crearEvento"
                                 android:textSize="@dimen/modalText" />
 
                             <View
@@ -123,9 +124,10 @@
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="30dp"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="40dp"
                             android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
                             android:layout_gravity="center_horizontal|bottom"
                             app:cardBackgroundColor="@color/transparent">
 
@@ -170,7 +172,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Crear una planificación"
+                                android:text="@string/titulo_crearPlanificacion"
                                 android:textSize="@dimen/modalText" />
 
                             <View
@@ -198,14 +200,15 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="370dp"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="30dp"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="40dp"
                             android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
                             android:layout_gravity="center_horizontal|bottom"
                             app:cardBackgroundColor="@color/transparent">
 
@@ -250,7 +253,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Crear una planificación"
+                                android:text="@string/titulo_cuaderno"
                                 android:textSize="@dimen/modalText" />
 
                             <View
@@ -278,14 +281,15 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="370dp"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="30dp"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="40dp"
                             android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
                             android:layout_gravity="center_horizontal|bottom"
                             app:cardBackgroundColor="@color/transparent">
 
@@ -331,7 +335,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Crear una planificación"
+                                android:text="@string/titulo_traductor"
                                 android:textSize="@dimen/modalText" />
 
                             <View
@@ -359,14 +363,15 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="370dp"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginEnd="30dp"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="40dp"
                             android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
                             android:layout_gravity="center_horizontal|bottom"
                             app:cardBackgroundColor="@color/transparent">
 
@@ -383,7 +388,7 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
+            <!--    <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_configuracion"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
@@ -411,7 +416,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Crear una planificación"
+                                android:text="@string/titulo_configuracion"
                                 android:textSize="@dimen/modalText" />
 
                             <View
@@ -461,7 +466,7 @@
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>-->
 
                 <Button
                     android:id="@+id/btn_tutorial"

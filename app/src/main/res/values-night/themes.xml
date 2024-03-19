@@ -34,6 +34,7 @@
         <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
         <item name="android:popupBackground">@color/transparent</item>
 
+
         <!-- CUSTOM ITEMS -->
         <item name="customBgColor">@color/md_theme_dark_surface</item>
         <item name="customBgTermometro">@color/md_theme_dark_background2</item>
@@ -61,6 +62,8 @@
         <item name="colorBG3">@color/md_theme_dark_onSecondaryContainer</item>
         <item name="pizzaraBorde">@color/md_theme_dark_primary</item>
         <item name="pizzaraFondo">@color/pizarraContenido2</item>
+        <item name="stroke2">@color/transparent</item>
+
 
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>

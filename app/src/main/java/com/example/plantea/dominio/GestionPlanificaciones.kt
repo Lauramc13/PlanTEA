@@ -90,6 +90,7 @@ class GestionPlanificaciones : Serializable {
                 pictograma.imagen = c.getString(2)
                 pictograma.categoria = c.getInt(3)
                 pictograma.historia = c.getString(4)
+                pictograma.duracion = c.getString(5)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }

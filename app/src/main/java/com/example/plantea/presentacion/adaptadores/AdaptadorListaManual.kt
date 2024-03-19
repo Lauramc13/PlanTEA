@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,24 +20,11 @@ class AdaptadorListaManual(private val lista: List<String>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ViewHolderManual, position: Int) {
         holder.numero.text = (position + 1).toString() + "."
-        holder.titulo.text = lista[position]
+        holder.titulo.text = Html.fromHtml(lista[position], Html.FROM_HTML_MODE_COMPACT)
     }
 
     override fun getItemCount(): Int {
         return lista.size
-    }
-
-    fun getTotalHeightRecyclerView(recyclerView: RecyclerView): Int {
-        val adapter = recyclerView.adapter
-        val itemCount = adapter!!.itemCount
-        val holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(0))
-        var height = 0
-        for (i in 0 until itemCount) {
-            adapter.onBindViewHolder(holder, i)
-            holder.itemView.measure(View.MeasureSpec.makeMeasureSpec(recyclerView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
-            height += holder.itemView.measuredHeight
-        }
-        return height
     }
 
     class ViewHolderManual(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,4 +1,5 @@
 <resources>
+
     <string name="open_drawer">pen navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
     <string name="app_name">PlanTEA</string>
@@ -196,51 +197,48 @@
 
 
     <!-- Strings utilizados para el manual -->
+
+    <string name="titulo_crearEvento">Creación de un evento</string>
+    <string name="titulo_crearPlanificacion">Crear una planificación</string>
+    <string name="titulo_cuaderno">Cuaderno de comunicación</string>
+    <string name="titulo_traductor">Traductor</string>
+    <string name="titulo_configuracion">Configuración</string>
+
     <string-array name="str_crearEvento">
-      <item>Ve a <b><u>Calendario</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
-        <item>Selecciona una <b><u>hora</u></b> y, opcionalmente, <b><u>recordatorio</u></b> para el evento. </item>
-      <item>Si no hay ninguna planificación disponible, puedes hacer clic en <b><u>+ Nueva planificación</u></b> para crear una nueva.</item>
+      <item>Ve a <b><u>"Calendario"</u></b> y haz clic en el botón <b><u>"+"</u></b> situado en la esquina inferior derecha.</item>
+        <item>Selecciona una <b><u>"hora"</u></b> y, opcionalmente, <b><u>"recordatorio"</u></b> para el evento. </item>
+      <item>Si no hay ninguna planificación disponible, puedes hacer clic en <b><u>"+ Nueva planificación"</u></b> para crear una nueva.</item>
         <item>Si ya tienes una planificación creada, selecciona la planificación deseada para utlizar en el evento.</item>
-        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el evento.</item>
-        <item>Para visualizar el evento, cambia la visibilidad de este haciendo clic en el icono de <b><u>ojo</u></b></item>
+        <item>Por último, haz clic en <b><u>"Guardar"</u></b> para crear el evento.</item>
+        <item>Para visualizar el evento, cambia la visibilidad de este haciendo clic en el icono de <b><u>"ojo"</u></b></item>
     </string-array>
 
     <string-array name="str_crearPlanificacion">
-        <item>Ve a <b><u>Calendario</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
-        <item>Haz clic en el botón + Nueva planificación.</item>
+        <item>Ve a <b><u>"Calendario"</u></b> y haz clic en el botón <b><u>"+"</u></b> situado en la esquina inferior derecha.</item>
+        <item>Haz clic en el botón "+ Nueva planificación".</item>
         <item>Introduce un <b><u>título</u></b> para la planificación.</item>
         <item>Para añadir un pictograma a la planificación, haz clic en una categoría y después en el pictograma deseado.</item>
-        <item>Para buscar un pictograma, haz clic en la barra de búsqueda y escribe el nombre del pictograma.</item>
-        <item>Si desea guardar un pictograma como favorito, haz clic en el icono de <b><u>corazón</u></b> situado en la esquina superior derecha del pictograma.</item>
-        <item>Para añadir texto adicional al pictograma, haz clic en los tres puntos situados en la supeior derecha del pictograma y selecciona <b><u>Añadir texto adicional</u></b>.</item>
-        <item>Para añadir una duración a la planificación, haz clic en los tres puntos situados en la supeior derecha del pictograma y selecciona <b><u>Añadir duración</u></b>.</item>
+        <item>Para buscar un pictograma, haz clic en la barra de búsqueda y escribe el nombre del pictograma que se desea buscar. </item>
+        <item>Si desea guardar un pictograma como favorito, haz clic en el icono de "corazón" situado en la esquina superior derecha del pictograma. Estos pictogramas se guardarán en la categoría de "Favoritos".</item>
+        <item>Para añadir texto adicional al pictograma o añadir una duración al pictograma, haz clic en los 3 puntos situados en la esquina superior derecha de los pictogramas de la lista y selecciona la opción deseada.</item>
+        <item>Por último, haz clic en el botón "Guardar" para guardar la planificación.</item>
     </string-array>
 
     <string-array name="str_cuaderno">
-        <item>Ve a <b><u>Cuadernos de comunicación</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
-        <item>Introduce un <b><u>título</u></b> para el cuaderno.</item>
-        <item>Selecciona un <b><u>pictograma</u></b> para añadir al cuaderno.</item>
-        <item>Opcionalmente, si se desesa tener un termometro en los pictogramas del cuaderno, haz clic en el switch de <b><u>termometro</u></b>.</item>
-        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el cuaderno. </item>
-        <item>sadsdf</item>
+        <item>Ve a "Cuadernos de comunicación" y selecciona el cuaderno que desea editar.</item>
+        <item>Para añadir un cuaderno nuevo, haz clic en "Añadir cuaderno". Si se desea que el cuaderno tenga la posibilidad de poder expresar la intensidad de un pictograma, haz clic en interruptor de "Termómetro".</item>
+        <item>Para añadir un pictograma nuevo, haz clic en "Añadir pictograma" situado al final del cuaderno.</item>
+        <item>Para añadir un pictograma de la colección de ARASAAC, escribe en la barra de búsqueda el pictograma que se desea añadir  y haz clic en el botón "+" situado en la esquina superior derecha.</item>
+        <item>Para eliminar un pictograma, haz clic en el icono de la papelera situado en la esquina superior izquierda.</item>
     </string-array>
 
     <string-array name="str_traductor">
-        <item>Ve a <b><u>Cuadernos de comunicación</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
-        <item>Introduce un <b><u>título</u></b> para el cuaderno.</item>
-        <item>Selecciona un <b><u>pictograma</u></b> para añadir al cuaderno.</item>
-        <item>Opcionalmente, si se desesa tener un termometro en los pictogramas del cuaderno, haz clic en el switch de <b><u>termometro</u></b>.</item>
-        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el cuaderno. </item>
-        <item>sadsdf</item>
-    </string-array>
-
-    <string-array name="str_configuracion">
-        <item>Ve a <b><u>Cuadernos de comunicación</u></b> y haz clic en el botón <b><u>+</u></b> situado en la esquina inferior derecha.</item>
-        <item>Introduce un <b><u>título</u></b> para el cuaderno.</item>
-        <item>Selecciona un <b><u>pictograma</u></b> para añadir al cuaderno.</item>
-        <item>Opcionalmente, si se desesa tener un termometro en los pictogramas del cuaderno, haz clic en el switch de <b><u>termometro</u></b>.</item>
-        <item>Por último, haz clic en <b><u>Guardar</u></b> para crear el cuaderno. </item>
-        <item>sadsdf</item>
+        <item>Ve a "Traductor" y escribe la frase que se desee traducir en campo de texto superior.</item>
+        <item>Una vez escrita la frase, haz clic en el botón "Traducir" ubicado al final del campo de texto.</item>
+        <item>En la parte inferior, cada palabra se mostrará como un pictograma.</item>
+        <item>Si necesitas eliminar un pictograma de la traducción, haz clic en el icono de la papelera que se encuentra en la esquina superior derecha del pictograma.</item>
+        <item>Para cambiar la imagen de un pictograma, selecciona otro de los disponibles con un clic simple, o bien, mantén pulsado para elegir una imagen de la galería.</item>
+        <item>Si deseas guardar la traducción, haz clic en el botón "Guardar" ubicado debajo de la traducción.</item>
     </string-array>
 
     <!-- Strings utilizados para la politica de privacidad -->
@@ -288,5 +286,7 @@
     <string name="lbl_politica_parrafo23">Se le recomienda revisar periódicamente esta política de privacidad para conocer cualquier cambio. Los cambios en esta política de privacidad son efectivos cuando se publican en esta página.</string>
     <string name="lbl_politica_titulo_parrafo24">7. Métodos de contacto</string>
     <string name="lbl_politica_parrafo24">Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos por correo electrónico: plantea.asistencia@gmail.com</string>
+
+
 
 </resources>

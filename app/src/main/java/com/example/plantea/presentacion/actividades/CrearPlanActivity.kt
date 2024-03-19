@@ -83,14 +83,20 @@ class CrearPlanActivity : AppCompatActivity(){
         val callback = viewModel.callBackActivity(this)
         onBackPressedDispatcher.addCallback(this, callback)
 
-
         // SearchView para buscar pictogramas
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                getPictogramas(query.trim())
+                if (!CommonUtils.isNetworkAvailable(this@CrearPlanActivity)) {
+                    CommonUtils.showSnackbar(findViewById(android.R.id.content), this@CrearPlanActivity, "No hay conexión a internet")
+                    searchBar.setQuery("", false)
+                    searchBar.clearFocus()
+                }else {
+                    getPictogramas(query.trim())
+                }
                 CommonUtils.hideKeyboard(this@CrearPlanActivity, searchBar)
                 return true
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 newText.trim()
                 return true
@@ -286,7 +292,6 @@ class CrearPlanActivity : AppCompatActivity(){
         }
 
         viewModel._historiaClicked.observe(this) {
-            var historiaSaved = false
             val tituloCard = viewModel.listaPlanificacion[it].titulo
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dialogo_historiasocial)
@@ -319,13 +324,20 @@ class CrearPlanActivity : AppCompatActivity(){
         }
 
         viewModel._onDuracionClicked.observe(this) {position->
+            var duracion = viewModel.listaPlanificacion[position].duracion
+            if(duracion == null){
+                duracion = "00:00"
+            }
+            val duracionArray = duracion.split(":")
 
-            val picker = viewModel.createReloj24()
+            val picker = viewModel.createReloj24(duracionArray[0].toInt(), duracionArray[1].toInt())
             picker.addOnPositiveButtonClickListener {
-                viewModel.listaPlanificacion[position].duracion = picker.hour.toString() + ":" + picker.minute.toString()
+                val hora = if (picker.hour < 10) "0" + picker.hour else picker.hour
+                val min = if (picker.minute < 10) "0" + picker.minute else picker.minute
+
+                viewModel.listaPlanificacion[position].duracion = "$hora:$min"
             }
             picker.show(supportFragmentManager, picker.toString())
-
         }
     }
 

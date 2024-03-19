@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -45,18 +46,22 @@ class CuadernoPictoEditFragment : Fragment(){
 
     private val viewModel: CuadernoViewModel by activityViewModels()
 
+    private lateinit var vista: View
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
+        vista = inflater.inflate(R.layout.fragment_cuaderno_pictogramas_edit, container, false)
         val bundle = arguments
 
         viewModel.listaPictogramas = (bundle?.get("key") as ArrayList<Pictograma>?)!!
         viewModel.isTermometro = (bundle?.get("termometro") as Boolean)
-        viewModel.idCuaderno =  (bundle["idCuaderno"] as Int)
-        viewModel.tituloCuaderno = (bundle["tituloCuaderno"] as String)
 
-        if(viewModel.listaPictogramas!!.lastIndex != 0 && viewModel.listaPictogramas!![viewModel.listaPictogramas!!.lastIndex].titulo != "AÑADIR PICTOGRAMA") {
+        if(viewModel.listaPictogramas?.isEmpty() == true){
             viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+        }else{
+            if(viewModel.listaPictogramas?.last()?.titulo != "AÑADIR PICTOGRAMA" ) {
+                viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+            }
         }
 
         searchBar = vista.findViewById(R.id.searchViewPicto)
@@ -78,15 +83,13 @@ class CuadernoPictoEditFragment : Fragment(){
 
         lst_Pictogramas.adapter = adaptador
 
-        if(savedInstanceState != null){
-            if(viewModel.isBusqueda){
-                imageCerrar.visibility = View.INVISIBLE
-                imageAtras.visibility = View.VISIBLE
-                viewModel.listaPictogramas!!.removeAt(viewModel.listaPictogramas!!.lastIndex)
-                adaptador.notifyDataSetChanged()
-                searchBar.setQuery(viewModel._queryBusqueda.value, false) //TODO: No funciona
-            }
+        if(viewModel.isBusqueda){
+            imageCerrar.visibility = View.INVISIBLE
+            imageAtras.visibility = View.VISIBLE
+            viewModel.listaPictogramas!!.removeAt(viewModel.listaPictogramas!!.lastIndex)
+            adaptador.notifyDataSetChanged()
         }
+
 
         imageCerrar.setOnClickListener {
             viewModel._cerrarFragment.value = true
@@ -124,25 +127,22 @@ class CuadernoPictoEditFragment : Fragment(){
     private fun busqueda(){
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel._queryBusqueda.value = query.trim()
+                if (!CommonUtils.isNetworkAvailable(requireContext())) {
+                    CommonUtils.showSnackbar(vista, requireContext(), "No hay conexión a internet")
+                    searchBar.setQuery("", false)
+                    searchBar.clearFocus()
+                }else {
+                    viewModel._queryBusqueda.value = query.trim()
+                }
                 context?.let { CommonUtils.hideKeyboard(it, searchBar) }
                 return true
+
             }
             override fun onQueryTextChange(newText: String): Boolean {
                 newText.trim()
                 return true
             }
         })
-    }
-
-    fun mostrarPictogramasBusqueda(newPictogramasList: ArrayList<Pictograma>?, listaPicto: ArrayList<String>){
-
-        adaptador.isBusqueda = true
-        adaptador.listaPictosAgregados = listaPicto
-        viewModel.listaPictogramas = newPictogramasList!!
-        adaptador.notifyDataSetChanged()
-        imageCerrar.visibility = View.INVISIBLE
-        imageAtras.visibility = View.VISIBLE
     }
 
     fun updateDataRemove(pictograma: Pictograma){

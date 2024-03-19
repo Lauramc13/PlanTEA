@@ -48,9 +48,8 @@
             android:layout_height="45dp"
             app:cardCornerRadius="40dp"
             android:layout_margin="15dp"
-            app:strokeColor="?color"
+            app:strokeColor="?stroke2"
             app:strokeWidth="1.5dp"
-            app:cardBackgroundColor="@color/white"
             app:cardElevation="0dp">
 
             <ImageView

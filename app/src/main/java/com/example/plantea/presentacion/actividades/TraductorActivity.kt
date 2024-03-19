@@ -72,12 +72,17 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         CommonUtils.listener = this
 
         traducirButton.setOnClickListener {
-            if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim(), this)){
-                traducirButton.isEnabled = false
-                viewModel._visibilityButtons.value = true
-                CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
+            // if there is no internet connection, show a snackbar
+            if (!CommonUtils.isNetworkAvailable(this)) {
+                CommonUtils.showSnackbar(findViewById(android.R.id.content), context = this, "No hay conexión a internet")
             }else{
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No puedes dejar el campo vacío")
+                if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim(), this)) {
+                    traducirButton.isEnabled = false
+                    viewModel._visibilityButtons.value = true
+                    CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
+                }else{
+                    CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No puedes dejar el campo vacío")
+                }
             }
         }
 

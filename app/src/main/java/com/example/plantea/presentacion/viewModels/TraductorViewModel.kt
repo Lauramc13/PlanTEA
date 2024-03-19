@@ -154,6 +154,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 CommonUtils.showSnackbar(dialog.findViewById(android.R.id.content), context, "No puedes dejar el campo vacío")
             }else{
                 crearPlanificacion(context, tituloString)
+                CommonUtils.hideKeyboard(context, titulo)
                 dialog.dismiss()
             }
         }

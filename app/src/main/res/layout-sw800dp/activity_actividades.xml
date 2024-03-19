@@ -50,7 +50,7 @@
             android:layout_weight="0.5"
             android:layout_marginBottom="30dp"
             android:contentDescription="Tarjeta de actividad tranquilizadora"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="?cardBackgroundColorPersonalized"
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="?cardBackgroundColorPersonalized"
@@ -204,7 +204,8 @@
         android:name="com.example.plantea.presentacion.fragmentos.CountDownFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

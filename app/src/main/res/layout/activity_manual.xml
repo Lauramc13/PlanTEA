@@ -90,7 +90,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Creación de un evento"
+                                android:text="@string/titulo_crearEvento"
                                 android:textSize="@dimen/body" />
 
                             <View
@@ -126,6 +126,7 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginEnd="30dp"
                             android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
                             android:layout_gravity="center_horizontal|bottom"
                             app:cardBackgroundColor="@color/transparent">
 
@@ -139,8 +140,6 @@
                         </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
-
-
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -172,7 +171,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="Crear una planificación"
+                                android:text="@string/titulo_crearPlanificacion"
                                 android:textSize="@dimen/body" />
 
                             <View
@@ -208,6 +207,7 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginEnd="30dp"
                             android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
                             android:layout_gravity="center_horizontal|bottom"
                             app:cardBackgroundColor="@color/transparent">
 
@@ -229,7 +229,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_close_button"
                     android:clickable="true"
                     app:cardBackgroundColor="?configuracionCardBg"
                     app:cardCornerRadius="20dp"
@@ -239,49 +238,78 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:orientation="horizontal"
-                        android:padding="20dp">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:text="@string/titulo_cuaderno"
+                                android:textSize="@dimen/body" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:id="@+id/icon_cuaderno"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_cuaderno"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="Cuaderno de comunicación"
-                            android:textSize="@dimen/body" />
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:clickable="false"
+                            android:scrollbars="none" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="170dp"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="?color"
+                            app:strokeWidth="1.5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
+                            android:layout_gravity="center_horizontal|bottom"
+                            app:cardBackgroundColor="@color/transparent">
 
-                        <ImageView
-                            android:id="@+id/icon_cuaderno"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/svg_chevron_right"
-                            app:tint="?colorOnSurface" />
+                            <pl.droidsonroids.gif.GifImageView
+                                android:id="@+id/fragment_imagen_cuaderno"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scaleType="fitXY"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/paleta_colores" />
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/text_cuaderno"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:clickable="false"
-                        android:scrollbars="none" />
-
-          </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_traductor"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_close_button"
                     android:clickable="true"
                     app:cardBackgroundColor="?configuracionCardBg"
                     app:cardCornerRadius="20dp"
@@ -291,94 +319,73 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:orientation="horizontal"
-                        android:padding="20dp">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:text="@string/titulo_traductor"
+                                android:textSize="@dimen/body" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:id="@+id/icon_traductor"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_traductor"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="Traductor"
-                            android:textSize="@dimen/body" />
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:clickable="false"
+                            android:scrollbars="none" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="170dp"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="?color"
+                            app:strokeWidth="1.5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginBottom="20dp"
+                            app:cardElevation="0dp"
+                            android:layout_gravity="center_horizontal|bottom"
+                            app:cardBackgroundColor="@color/transparent">
 
-                        <ImageView
-                            android:id="@+id/icon_traductor"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/svg_chevron_right"
-                            app:tint="?colorOnSurface" />
+                            <pl.droidsonroids.gif.GifImageView
+                                android:id="@+id/fragment_imagen_traductor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scaleType="fitXY"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/paleta_colores" />
+                        </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/text_traductor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:clickable="false"
-                        android:scrollbars="none" />
-
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/card_configuracion"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_close_button"
-                    android:clickable="true"
-                    app:cardBackgroundColor="?configuracionCardBg"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="?color"
-                    app:strokeWidth="1.5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:orientation="horizontal"
-                        android:padding="20dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="Configuración"
-                            android:textSize="@dimen/body" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <ImageView
-                            android:id="@+id/icon_configuracion"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/svg_chevron_right"
-                            app:tint="?colorOnSurface" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/text_configuracion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:clickable="false"
-                        android:scrollbars="none" />
-                 </com.google.android.material.card.MaterialCardView>
 
                 <Button
                     android:id="@+id/btn_tutorial"

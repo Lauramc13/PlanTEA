@@ -32,7 +32,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas_presentacion, null, false)
         return ViewHolderPictogramas(view)
     }
 
@@ -59,7 +59,9 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         }
 
         if(listaPictogramas!![position].duracion.toString() != "null") {
-            holder.duracion.text = listaPictogramas!![position].duracion
+            val duracion = formatTime(listaPictogramas!![position].duracion.toString())
+
+            holder.duracion.text = duracion
             holder.duracion.visibility = View.VISIBLE
         }
     }
@@ -84,6 +86,18 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 }, 450)
             }
         animatedPositions.remove(position)
+    }
+
+    private fun formatTime(input: String): String {
+        val parts = input.split(":")
+        val hours = parts[0].toInt()
+        val minutes = parts[1].toInt()
+
+        return if (hours > 0) {
+            "$hours:${String.format("%02d", minutes)}h"
+        } else {
+            "$minutes" + "m"
+        }
     }
 
     fun background(holder: ViewHolderPictogramas, position: Int){

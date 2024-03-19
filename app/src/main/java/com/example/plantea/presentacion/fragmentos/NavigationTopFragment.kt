@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.plantea.R
@@ -34,12 +35,24 @@ class NavigationTopFragment: Fragment() {
     lateinit var vista: View
     private var navigationHandler = NavegacionUtils()
     lateinit var prefs: SharedPreferences
-    lateinit var customView: View
+    lateinit var iconoRol: ImageView
+    var infoUsuario = false
 
+    override fun onResume() {
+        super.onResume()
+        prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
+        iconoRol.setImageURI(null)
+        if (infoUsuario) {
+            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+        } else {
+            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+        }
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_navigation_top, container, false)
         val backButton: Button = vista.findViewById(R.id.goBackButton)
-        val iconoRol : ImageView = vista.findViewById(R.id.iconoRol)
+        iconoRol  = vista.findViewById(R.id.iconoRol)
         val rol: CardView = vista.findViewById(R.id.roundedImageView)
         val title: TextView = vista.findViewById(R.id.titleActivity)
         val hostingActivityClass = activity?.javaClass
@@ -77,15 +90,7 @@ class NavigationTopFragment: Fragment() {
             navigationHandler.menuUsuario(this, vista)
         }
 
-        prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
-        if (infoUsuario) {
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
-        } else {
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
-        }
-
-    return vista
+        return vista
     }
 
 }

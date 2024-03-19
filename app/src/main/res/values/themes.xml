@@ -69,6 +69,8 @@
         <item name="pizzaraFondo">@color/pizarraContenido</item>
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
+        <item name="stroke2">@color/md_theme_light_surfaceVariant</item>
+
     </style>
 
     <style name="colorsCalendar" parent="">

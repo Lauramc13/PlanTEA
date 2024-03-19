@@ -28,6 +28,7 @@ class CountDownFragment: Fragment() {
     private lateinit var countDownTimer: CountDownTimer
     private lateinit var timerTextView: TextView
     private lateinit var startButton: MaterialButton
+    private lateinit var closeButton: MaterialButton
     private lateinit var progressBar: CircularProgressIndicator
     private lateinit var temporizadorButton: Button
     private lateinit var contrainLayout: ConstraintLayout
@@ -41,6 +42,7 @@ class CountDownFragment: Fragment() {
         timerTextView = vista.findViewById(R.id.timerTextView)
         progressBar = vista.findViewById(R.id.progressBar)
         startButton = vista.findViewById(R.id.startButton)
+        closeButton = vista.findViewById(R.id.closeButton)
         temporizadorButton = vista.findViewById(R.id.showTemporizador)
         contrainLayout = vista.findViewById(R.id.timer)
 
@@ -63,10 +65,9 @@ class CountDownFragment: Fragment() {
 
         startButton.setOnClickListener {
             if(viewModel.isRunning) {
-                stopTimer()
+                endTimer()
             } else {
                 val picker = viewModel.createReloj()
-
                 picker.addOnPositiveButtonClickListener {
                     if(picker.hour == 0 && picker.minute == 0){
                         return@addOnPositiveButtonClickListener
@@ -77,12 +78,27 @@ class CountDownFragment: Fragment() {
                         startButton.setIconResource(R.drawable.svg_close)
                         startTimer()
                         viewModel.isRunning = true
+                        closeButton.visibility = View.INVISIBLE
                     }
 
                 }
 
                 picker.show(requireFragmentManager(), "TimePicker")
             }
+        }
+
+        closeButton.setOnClickListener {
+            contrainLayout.visibility = View.INVISIBLE
+            temporizadorButton.alpha = 0f
+            temporizadorButton.translationY = temporizadorButton.height.toFloat()/ 6
+            temporizadorButton.visibility = View.VISIBLE
+
+            temporizadorButton.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(400)
+                .start()
+
         }
         return vista
     }
@@ -100,19 +116,19 @@ class CountDownFragment: Fragment() {
             override fun onFinish() {
                 val parentActivity = requireActivity() as ActividadActivity
                 parentActivity.stopVideo()
-                stopTimer()
+                endTimer()
                 CommonUtils.showSnackbar(vista, requireContext(), "Se ha acabado el tiempo!")
             }
         }
         countDownTimer.start()
     }
 
-    //TODO: Mejorar las animaciones
-    private fun stopTimer(){
+    private fun endTimer(){
         contrainLayout.visibility = View.INVISIBLE
         temporizadorButton.alpha = 0f
         temporizadorButton.translationY = temporizadorButton.height.toFloat()/ 6
         temporizadorButton.visibility = View.VISIBLE
+        closeButton.visibility = View.VISIBLE
 
         temporizadorButton.animate()
             .translationY(0f)
@@ -120,6 +136,14 @@ class CountDownFragment: Fragment() {
             .setDuration(400)
             .start()
 
+        countDownTimer.cancel()
+        viewModel.isRunning = false
+        timerTextView.text = "00:00:00"
+        startButton.setIconResource(R.drawable.svg_play)
+        progressBar.progress = 0
+    }
+
+    private fun stopTimer(){
         countDownTimer.cancel()
         viewModel.isRunning = false
         timerTextView.text = "00:00:00"
