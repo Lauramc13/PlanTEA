@@ -44,7 +44,7 @@ class TutorialActivity : AppCompatActivity() {
         }
 
         btnNext.setOnClickListener {
-            if(viewPager.currentItem == 2){
+            if(viewPager.currentItem == 3){
                 btnNext.text = getString(R.string.str_finalizar)
                 isFromManual()
             }else{

@@ -20,7 +20,7 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanificacion {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas_plan, null, false)
         return ViewHolderPlanificacion(view)
     }
 
@@ -56,7 +56,6 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
     inner class ViewHolderPlanificacion(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView
         var imagen: ImageView
-        //var premio: ImageView
         var borrar: ImageView
         var menu: ImageView
         var card: View

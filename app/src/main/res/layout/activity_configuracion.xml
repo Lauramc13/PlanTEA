@@ -105,17 +105,20 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
 
             <LinearLayout
                 android:id="@+id/linearLayout10"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:layout_marginBottom="35dp"
+                android:gravity="center"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
                 android:orientation="vertical"
                 android:layout_gravity="center">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txt_nombrePlanificador"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="340dp"
+                    android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:contentDescription="Campo de texto con nombre del planificador"
                     android:ems="10"
@@ -138,7 +141,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txt_nombreUsuarioPlanificador"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="340dp"
+                    android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:contentDescription="Campo de texto con nombre de usuario del planificador"
                     android:ems="10"
@@ -161,7 +164,7 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txt_correoPlanificador"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="340dp"
+                    android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:contentDescription="Campo de texto con correo del planificador"
                     android:ems="10"
@@ -271,10 +274,12 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_nombreUsuarioTEA"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginBottom="35dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="Campo de texto con nombre del usuario TEA"
                 android:ems="10"
@@ -374,10 +379,12 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_nombreObjeto"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="340dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginBottom="35dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="Campo de texto con nombre del usuario TEA"
                 android:ems="10"

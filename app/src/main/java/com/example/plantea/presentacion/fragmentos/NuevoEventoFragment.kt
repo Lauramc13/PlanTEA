@@ -132,18 +132,18 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         switchReminder.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
                 if(permisosGranted){
-                    if(CommonUtils.isMobile(requireContext())) {
+                  /*  if(CommonUtils.isMobile(requireContext())) {
                         showReminderFragment(isChecked)
-                    } else{
+                    } else{*/
                         createDialogReminder()
-                    }
+                //}
                 }else{
                     switchReminder.isChecked = false
                     CommonUtils.showSnackbar(vista, requireContext(), "Plantea necesita permisos para mostrar notificaciones")
                 }
-            }else{
-                showReminderFragment(isChecked)
-            }
+            }/*else{
+                showReminderFragment(isChecked)*/
+            //}
         }
 
         dialog?.setOnCancelListener { switchReminder.isChecked = false }
@@ -178,7 +178,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         }
     }
 
-    private fun showReminderFragment(isChecked: Boolean) {
+   /* private fun showReminderFragment(isChecked: Boolean) {
         val transaction = childFragmentManager.beginTransaction()
 
         if (isChecked) {
@@ -195,7 +195,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             }
         }
         transaction.commit()
-    }
+    }*/
 
     private fun createDialogReminder(){
         val dialogReminder = Dialog(actividad)

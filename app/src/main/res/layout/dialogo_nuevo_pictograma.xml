@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:textSize="16sp"
+                android:layout_marginEnd="1dp"
                 android:textColor="?colorOnSurface" />
         </com.google.android.material.textfield.TextInputLayout>
 

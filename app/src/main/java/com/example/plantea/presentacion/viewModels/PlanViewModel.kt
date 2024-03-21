@@ -47,8 +47,8 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     val _tituloLiveData: MutableLiveData<String> = MutableLiveData()
     val _fechaActual = MutableLiveData<String>()
     val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
-    val _planLiveData: MutableLiveData<ArrayList<Pictograma>> = MutableLiveData()
-    var _pasosCompletados = SingleLiveEvent<Stack<Int>>()
+    val _planLiveData: MutableLiveData<ArrayList<Pictograma>?> = MutableLiveData()
+    var _pasosCompletados = SingleLiveEvent<Stack<Int>?>()
 
     var speechInProgress = false
 

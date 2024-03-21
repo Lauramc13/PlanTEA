@@ -6,20 +6,9 @@
 
 
     <ImageView
-        android:id="@+id/frame_light"
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/frame2"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/frame_night"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/frame2_night"
-        android:visibility="gone"/>
-
-
-
+        android:src="@drawable/frame2" />
 
 </LinearLayout>

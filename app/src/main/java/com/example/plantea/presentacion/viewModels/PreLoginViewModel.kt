@@ -39,16 +39,17 @@ class PreLoginViewModel: ViewModel() {
     }
 
     fun comprobarTextViewsVacios(emailText: String, passwordText: String): Boolean {
+        var textViewsFilled = true
         if (emailText.isEmpty()) {
             _errorEmail.value = "No puedes dejar el campo vacío"
-            return false
+            textViewsFilled = false
         }
 
         if (passwordText.isEmpty()) {
             _errorPassword.value = "No puedes dejar el campo vacío"
-            return false
+            textViewsFilled = false
         }
-        return true
+        return textViewsFilled
     }
 
     fun iniciarSesion(activity: Activity, context: Context, emailText: String, passwordText: String): Boolean {

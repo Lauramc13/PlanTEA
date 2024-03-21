@@ -248,29 +248,32 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel._planLiveData.observe(this){
             val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
 
-            if(it.isEmpty()){
-                lblMensaje.visibility = View.VISIBLE
-                iconoDeshacer.visibility = View.INVISIBLE
-                iconoDeshacerTodas.visibility = View.INVISIBLE
-                iconoMarcar.visibility = View.INVISIBLE
-                iconoMarcarTodas.visibility = View.INVISIBLE
-                iconoEscuchar.visibility = View.INVISIBLE
-                iconoReproducir.visibility = View.INVISIBLE
-                if(isPlanificador) {
-                    buttonPlanNuevo.visibility = View.VISIBLE
-                }
-            }else{
-                lblMensaje.visibility = View.INVISIBLE
-                buttonPlanNuevo.visibility = View.INVISIBLE
-                iconoDeshacer.visibility = View.VISIBLE
-                iconoDeshacerTodas.visibility = View.VISIBLE
-                iconoMarcar.visibility = View.VISIBLE
-                iconoMarcarTodas.visibility = View.VISIBLE
-                iconoEscuchar.visibility = View.VISIBLE
-                iconoReproducir.visibility = View.VISIBLE
+            //TODO: PETA AQUI CUANDO ARRAYlIST ES NULL
+            if (it != null) {
+                if(it.isEmpty()){
+                    lblMensaje.visibility = View.VISIBLE
+                    iconoDeshacer.visibility = View.INVISIBLE
+                    iconoDeshacerTodas.visibility = View.INVISIBLE
+                    iconoMarcar.visibility = View.INVISIBLE
+                    iconoMarcarTodas.visibility = View.INVISIBLE
+                    iconoEscuchar.visibility = View.INVISIBLE
+                    iconoReproducir.visibility = View.INVISIBLE
+                    if(isPlanificador) {
+                        buttonPlanNuevo.visibility = View.VISIBLE
+                    }
+                }else{
+                    lblMensaje.visibility = View.INVISIBLE
+                    buttonPlanNuevo.visibility = View.INVISIBLE
+                    iconoDeshacer.visibility = View.VISIBLE
+                    iconoDeshacerTodas.visibility = View.VISIBLE
+                    iconoMarcar.visibility = View.VISIBLE
+                    iconoMarcarTodas.visibility = View.VISIBLE
+                    iconoEscuchar.visibility = View.VISIBLE
+                    iconoReproducir.visibility = View.VISIBLE
 
-                iconoMarcar.isEnabled = true
-                iconoMarcarTodas.isEnabled = true
+                    iconoMarcar.isEnabled = true
+                    iconoMarcarTodas.isEnabled = true
+                }
             }
 
             viewModel.adaptador = AdaptadorPresentacion(it, viewModel)
@@ -290,20 +293,22 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         }
 
         viewModel._pasosCompletados.observe(this){
-            if(it.isEmpty()){
-                iconoDeshacer.isEnabled = false
-                iconoDeshacerTodas.isEnabled = false
-            }else{
-                iconoDeshacer.isEnabled = true
-                iconoDeshacerTodas.isEnabled = true
-            }
+            if (it != null) {
+                if(it.isEmpty()){
+                    iconoDeshacer.isEnabled = false
+                    iconoDeshacerTodas.isEnabled = false
+                }else{
+                    iconoDeshacer.isEnabled = true
+                    iconoDeshacerTodas.isEnabled = true
+                }
 
-            if (it.size == viewModel.listaPictogramas.size){
-                iconoMarcar.isEnabled = false
-                iconoMarcarTodas.isEnabled = false
-            }else{
-                iconoMarcar.isEnabled = true
-                iconoMarcarTodas.isEnabled = true
+                if (it.size == viewModel.listaPictogramas.size){
+                    iconoMarcar.isEnabled = false
+                    iconoMarcarTodas.isEnabled = false
+                }else{
+                    iconoMarcar.isEnabled = true
+                    iconoMarcarTodas.isEnabled = true
+                }
             }
         }
 

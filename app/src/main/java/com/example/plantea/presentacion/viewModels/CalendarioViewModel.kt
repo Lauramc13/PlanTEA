@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
@@ -81,18 +82,25 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         if (checkBoxDia) {
             aviso.add(Calendar.DAY_OF_MONTH, -1)
         }
+
         if (checkBoxHora) {
             aviso.add(Calendar.HOUR_OF_DAY, -1)
         }
-        if(checkBoxMin){
-            aviso.add(Calendar.MINUTE, -5)
+
+        if(checkBoxMin) {
+            if (aviso.get(Calendar.MINUTE) < 5) {
+                aviso.add(Calendar.HOUR_OF_DAY, -1)
+                aviso.add(Calendar.MINUTE, 55)
+            } else {
+                aviso.add(Calendar.MINUTE, -5)
+            }
 
         }
+
         if(checkBoxPer){
             aviso.set(Calendar.HOUR_OF_DAY, selectedHour)
             aviso.set(Calendar.MINUTE, selectedMin)
         }
-
         alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
     }
 

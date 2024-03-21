@@ -21,22 +21,18 @@
         <activity
             android:name=".presentacion.actividades.CalendarioActivity"
             android:label="Calendario"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ConfiguracionActivity"
             android:label="Preferencias"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ManualActivity"
             android:label="Manual de usuario"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MainActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,12 +43,10 @@
         <activity
             android:name=".presentacion.actividades.CuadernoActivity"
             android:label="Cuaderno de comunicación"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.PlanActivity"
             android:label="Planificación"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
 
@@ -66,60 +60,48 @@
         <activity
             android:name=".presentacion.actividades.CrearPlanActivity"
             android:label="Crear planificación"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentacion.actividades.PreLoginActivity"
-            android:label="Inicio"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.RegisterActivity"
             android:label=""
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MenuAvataresPlanActivity"
             android:label="Elige avatar planificador"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MenuObjetosActivity"
             android:label="Elige avatar planificador"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MenuAvataresTEActivity"
             android:label="Elige avatar planificador"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.ActividadActivity"
             android:label="Actividades"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.TutorialActivity"
             android:label="Tutorial"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.CreditsActivity"
-            android:screenOrientation="fullSensor"
             android:label="Acerca de la aplicacion"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.TraductorActivity"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.PasswordActivity"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.PoliticaActivity"
-            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
+
         <receiver android:name=".dominio.OnAlarmReceiver" />
     </application>
 </manifest>

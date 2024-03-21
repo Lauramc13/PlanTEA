@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_calendario2">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="20dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-      <!--  <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:text="Recordar..."
             android:layout_marginBottom="10dp"
-            android:textSize="16sp" /> -->
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.SwitchCompat
             style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
             android:id="@+id/checkBox_min"
             android:layout_width="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_medium"
             android:text="5 minutos antes"
-            android:textSize="@dimen/body"
+            android:textSize="14sp"
             android:textColor="?colorOnSurface"
             app:buttonTint="?colorPrimary" />
 
@@ -42,9 +43,11 @@
             android:id="@+id/checkBox_hora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_medium"
             android:text="1 hora antes"
-            android:textSize="@dimen/body"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:textSize="14sp"
             android:textColor="?colorOnSurface"
             app:buttonTint="?colorPrimary" />
 
@@ -53,9 +56,11 @@
             android:id="@+id/checkBox_dia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_medium"
             android:text="1 día antes"
-            android:textSize="@dimen/body"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:textSize="14sp"
             android:textColor="?colorOnSurface"
             app:buttonTint="?colorPrimary" />
 
@@ -64,20 +69,21 @@
             android:id="@+id/checkBox_personalizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_medium"
             android:text="A las ..."
-            android:textSize="@dimen/body"
-
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:textSize="14sp"
             android:textColor="?colorOnSurface"
             app:buttonTint="?colorPrimary" />
 
 
-       <!-- <Button
+        <Button
             android:id="@+id/btn_aceptarRecordatorio"
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:backgroundTint="?colorPrimary"
             android:fontFamily="@font/poppins_semibold"
@@ -85,8 +91,23 @@
             android:text="Aceptar"
             android:textAllCaps="true"
             android:textColor="#203130"
-            android:textSize="13dp" /> -->
+            android:textSize="13dp" />
     </LinearLayout>
 
+
+
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="Cerrar seccion"
+        android:background="@drawable/bg_close_button"
+        android:src="@drawable/ic_baseline_close_24"
+        android:padding="12dp"
+        android:alpha="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

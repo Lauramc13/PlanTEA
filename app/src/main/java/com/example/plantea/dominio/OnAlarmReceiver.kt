@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.example.plantea.R
 
@@ -18,8 +19,6 @@ class OnAlarmReceiver : BroadcastReceiver() {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(channelId, channelName, importance)
             notificationManager.createNotificationChannel(channel)
-
-            Log.d("notifications", "gadfasdfa")
 
             val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.logo_plantea)

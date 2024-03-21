@@ -71,7 +71,7 @@ class NavigationTopFragment: Fragment() {
             else -> "PlanTEA"
         }
 
-        if(hostingActivityClass == CreditsActivity::class.java || hostingActivityClass == ConfiguracionActivity::class.java){
+        if(hostingActivityClass == CreditsActivity::class.java || hostingActivityClass == ConfiguracionActivity::class.java || hostingActivityClass == ManualActivity::class.java){
             rol.visibility = View.GONE
         }
 

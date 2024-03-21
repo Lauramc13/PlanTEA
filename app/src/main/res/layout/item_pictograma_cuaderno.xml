@@ -48,7 +48,6 @@
                 android:autoSizeTextType="uniform"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
-                android:maxLines="1"
                 android:text="@string/lbl_Consultas"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp" />

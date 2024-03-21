@@ -13,25 +13,12 @@ class AdaptadorPaginas(private val context: Context) : PagerAdapter() {
     private val slideLayouts = arrayOf(
         R.layout.fragment_imagen1,
         R.layout.fragment_imagen2,
-        R.layout.fragment_imagen3
+        R.layout.fragment_imagen3,
+        R.layout.fragment_imagen4
     )
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(context)
         val slideLayout = inflater.inflate(slideLayouts[position], container, false)
-
-        val imageViewLight = slideLayout.findViewById<ImageView>(R.id.frame_light)
-        val imageViewNight = slideLayout.findViewById<ImageView>(R.id.frame_night)
-
-        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val isDarkMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
-
-        if (isDarkMode) {
-            imageViewLight.visibility = View.GONE
-            imageViewNight.visibility = View.VISIBLE
-        } else {
-            imageViewLight.visibility = View.VISIBLE
-            imageViewNight.visibility = View.GONE
-        }
         container.addView(slideLayout)
         return slideLayout
     }

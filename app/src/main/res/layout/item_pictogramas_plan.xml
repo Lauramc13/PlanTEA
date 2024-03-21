@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/id_card_picto"
+        android:layout_width="160dp"
+        android:layout_height="115dp"
+        android:layout_margin="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/id_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_personalizado"
+            android:elevation="0dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/id_Imagen"
+                style="@style/pictogramas"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                android:contentDescription="@string/lbl_Consultas"
+                android:foregroundGravity="center"
+                app:shapeAppearance="@style/cornerRadius"
+                app:srcCompat="@drawable/categoria_consultas" />
+
+            <TextView
+                android:id="@+id/id_Texto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/id_Imagen"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="5dp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_regular"
+                android:foregroundGravity="bottom|center_vertical"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/lbl_Consultas"
+                android:textColor="?colorOnSurface"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_borrarPicto"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/svg_trash">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/btn_menu"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:elevation="4dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/svg_options" />
+
+        <ImageView
+            android:id="@+id/btn_historiaPicto"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="3dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="3dp"
+            android:elevation="4dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/bocadillo_historia_off" />
+
+        <ImageView
+            android:id="@+id/btn_historiaPictoOn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="3dp"
+            android:elevation="4dp"
+            android:padding="3dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/bocadillo_historia_on" />
+
+        <ImageView
+            android:id="@+id/btn_removePicto"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="3dp"
+            android:padding="3dp"
+            android:visibility="invisible"
+            app:tint="?customColorGray"
+            app:srcCompat="@drawable/svg_trash" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
