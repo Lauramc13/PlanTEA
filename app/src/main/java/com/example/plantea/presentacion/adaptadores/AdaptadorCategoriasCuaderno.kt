@@ -33,7 +33,13 @@ class AdaptadorCategoriasCuaderno(var listaPictogramas: ArrayList<Cuaderno>?, pr
             holder.borde.background = drawable
             holder.menu.visibility = View.INVISIBLE
         }else{
-            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+            //holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+            val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
+            if(identifier == 0) {
+                holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+            }else{
+                holder.imagen.setImageResource(identifier)
+            }
             val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno)
             holder.borde.background = drawable
             holder.menu.visibility = View.VISIBLE

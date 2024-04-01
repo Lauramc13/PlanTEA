@@ -2,9 +2,7 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
-import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import java.io.Serializable
 
 class GestionPictogramas : Serializable {

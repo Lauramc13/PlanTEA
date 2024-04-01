@@ -26,9 +26,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
     interface OnItemSelectedListener {
         fun onItemSeleccionado(context: Context, posicion: Int)
-
         fun checkPosition(posicion: Int) : Boolean
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -37,8 +35,15 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     }
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
+        context = holder.itemView.context
         holder.titulo.text = listaPictogramas!![position].titulo
-        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+      //  holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
+        if(identifier == 0) {
+            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        }else{
+            holder.imagen.setImageResource(identifier)
+        }
 
         if(optionMarcar || listMarcados.contains(position)) {
             holder.card.setBackgroundResource(R.drawable.card_disabled)
@@ -120,7 +125,6 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var card: View
         var historia: ImageView
         var duracion : TextView
-
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView

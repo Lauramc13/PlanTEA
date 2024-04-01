@@ -116,7 +116,7 @@
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/bg_close_button"
-                android:padding="12dp"
+                android:padding="9dp"
                 android:layout_margin="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -116,7 +116,13 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
     }
 
     fun mostrarPicto(holder : ViewHolderPictogramas, position: Int){
-        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
+        if(identifier == 0) {
+            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        }else{
+            holder.imagen.setImageResource(identifier)
+        }
+        //holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
         val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno)
         holder.borde.background = drawable
     }

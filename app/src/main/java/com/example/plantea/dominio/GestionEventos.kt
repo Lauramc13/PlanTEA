@@ -66,7 +66,6 @@ class GestionEventos {
     }
 
     fun obtenerTituloEvento(idUsuario: String, fecha: String, context: Context?): Evento {
-        var titulo = ""
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
         val c = conectorBD!!.listarTituloEvento(idUsuario, fecha)

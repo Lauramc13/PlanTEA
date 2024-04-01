@@ -210,7 +210,12 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         imagenConfeti = dialog.findViewById(R.id.img_confeti)
         mensajePremio = dialog.findViewById(R.id.txt_premio)
         val  dialogoPresentacion = dialog.findViewById<ConstraintLayout>(R.id.dialogo_presentacion_2)
-        pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
+        val identifier = context.resources.getIdentifier(listaPictogramas[posicion].imagen, "drawable", context.packageName)
+        if(identifier == 0) {
+            pictograma.setImageURI(Uri.parse(listaPictogramas[posicion].imagen))
+        }else{
+            pictograma.setImageResource(identifier)
+        }
         tituloPictograma.text = listaPictogramas[posicion].titulo
 
         dialogoPresentacion.clearAnimation()

@@ -75,7 +75,7 @@
                 android:textSize="@dimen/button"
                 android:alpha="0.8"
                 android:textColor="?colorSecondary"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:text="5m"/>
 
             <ImageView

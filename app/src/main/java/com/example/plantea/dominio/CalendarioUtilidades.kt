@@ -14,11 +14,11 @@ object CalendarioUtilidades {
         return LocalTime.parse(fecha, formato)
     }
 
-    @JvmStatic
+  /*  @JvmStatic
     fun formatoMesEvento(fecha: LocalDate): String {
         val formato = DateTimeFormatter.ofPattern("MMMM", Locale("es", "ES"))
         return fecha.format(formato)
-    }
+    }*/
 
     @JvmStatic
     fun formatoFechaEvento(fecha: LocalDate): String {

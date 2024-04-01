@@ -9,7 +9,7 @@ class Cuaderno() : Parcelable {
     var titulo: String? = null
     var imagen: String? = null
     var termometro: Boolean? = null
-    var gestorCuadernos = GestionCuadernos()
+    private var gestorCuadernos = GestionCuadernos()
 
     constructor(id: Int, titulo: String, imagen: String?, termometro: Boolean) : this() {
         this.id = id

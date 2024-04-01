@@ -44,7 +44,7 @@ class GestionUsuarios {
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.obtenerUsuarioExistente(email)
+        val usuario = conectorBD!!.obtenerUsuarioExistente(email)
         conectorBD!!.cerrar()
         return usuario
     }
@@ -52,7 +52,7 @@ class GestionUsuarios {
     fun addImagen(imagen: String, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.addImagen(imagen, idUsuario)
+        val usuario = conectorBD!!.addImagen(imagen, idUsuario)
         conectorBD!!.cerrar()
         return usuario
     }
@@ -60,7 +60,7 @@ class GestionUsuarios {
     fun addImagenTEA(imagen: String, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.addImagenTEA(imagen, idUsuario)
+        val usuario = conectorBD!!.addImagenTEA(imagen, idUsuario)
         conectorBD!!.cerrar()
         return usuario
     }
@@ -68,7 +68,7 @@ class GestionUsuarios {
     fun addImagenObjeto(imagen: String, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = conectorBD!!.addImagenObjeto(imagen, idUsuario)
+        val usuario = conectorBD!!.addImagenObjeto(imagen, idUsuario)
         conectorBD!!.cerrar()
         return usuario
     }
@@ -76,7 +76,7 @@ class GestionUsuarios {
     fun consultarId(email: String,  actividad: Activity?): String? {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuarioId = conectorBD!!.consultarId(email)
+        val usuarioId = conectorBD!!.consultarId(email)
         conectorBD!!.cerrar()
         return usuarioId
     }

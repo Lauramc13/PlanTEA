@@ -42,9 +42,9 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria, favorito FROM Pictograma WHERE id_categoria = $categoria AND (id_usuario IS NULL OR id_usuario = $userId)", null)
     }*/
 
-    fun listarPictogramas(categoria: Int, userId: String?): Cursor {
+    /*fun listarPictogramas(categoria: Int, userId: String?): Cursor {
         return db!!.rawQuery("SELECT id, nombre, imagen, id_categoria FROM Pictograma WHERE id_categoria = $categoria AND (id_usuario IS NULL OR id_usuario = $userId)", null)
-    }
+    }*/
 
     fun listarPictogramasPrueba(categoria: Int, userId: String?): Cursor {
         return db!!.rawQuery(
@@ -100,6 +100,7 @@ class ConectorBD(ctx: Context?) {
         if (c.moveToFirst()) {
             id = c.getInt(0)
         }
+        c.close()
         return id
     }
 
@@ -170,9 +171,9 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Obtener el titulo de la planificacion a seguir*/
-    fun listarTituloPlan(idUsuario: String, fecha: String): Cursor {
+   /* fun listarTituloPlan(idUsuario: String, fecha: String): Cursor {
         return db!!.rawQuery("SELECT titulo from Planificacion Inner JOIN Evento where Evento.id_plan = Planificacion.id AND Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
-    }
+    }*/
 
     fun listarTituloEvento(idUsuario: String, fecha: String): Cursor {
         return db!!.rawQuery("SELECT nombre from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
@@ -281,6 +282,7 @@ class ConectorBD(ctx: Context?) {
         if (c.moveToFirst()) {
             id = c.getInt(0)
         }
+        c.close()
         return id
     }
 
@@ -362,13 +364,13 @@ class ConectorBD(ctx: Context?) {
     @SuppressLint("Range")
     fun consultarId(email: String): String? {
         val cursor = db!!.rawQuery("SELECT id FROM Usuario WHERE email = ?", arrayOf(email))
-        if (cursor.moveToFirst()) {
+        return if (cursor.moveToFirst()) {
             val id = cursor.getString(cursor.getColumnIndex("id"))
             cursor.close()
-            return id
+            id
         } else {
             cursor.close()
-            return null
+            null
         }
     }
 

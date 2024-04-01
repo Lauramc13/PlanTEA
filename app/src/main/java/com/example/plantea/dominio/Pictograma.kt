@@ -15,9 +15,8 @@ class Pictograma : Serializable {
     var favorito: Boolean = false
     var sourceAPI: Boolean = false
     var listaPictogramas: ArrayList<Pictograma>? = null
-    private var listaConsultas: ArrayList<String>? = null
     private var gestorPictogramas = GestionPictogramas()
-
+    //private var listaConsultas: ArrayList<String>? = null
     constructor()
     constructor(titulo: String?, imagen: String?, categoria: Int, cuaderno: Int) {
         this.titulo = titulo
@@ -62,13 +61,13 @@ class Pictograma : Serializable {
         return listaPictogramas
     }
 
-    fun obtenerConsultas(actividad: Activity?, idcategoria: Int): ArrayList<*>? {
+    /*fun obtenerConsultas(actividad: Activity?, idcategoria: Int): ArrayList<*>? {
         listaConsultas = ArrayList()
         listaConsultas = gestorPictogramas.listarConsultas(actividad, idcategoria)
         return listaConsultas
     }
 
-    /*fun obtenerImagenEvento(actividad: Activity?, idCategoria: Int): String? {
+    fun obtenerImagenEvento(actividad: Activity?, idCategoria: Int): String? {
         return gestorPictogramas.obtenerImagenPictograma(actividad, idCategoria)
     }*/
 

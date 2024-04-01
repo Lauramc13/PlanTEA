@@ -325,7 +325,7 @@ class CrearPlanActivity : AppCompatActivity(){
 
         viewModel._onDuracionClicked.observe(this) {position->
             var duracion = viewModel.listaPlanificacion[position].duracion
-            if(duracion == null){
+            if(duracion == null || duracion == "null"){
                 duracion = "00:00"
             }
             val duracionArray = duracion.split(":")

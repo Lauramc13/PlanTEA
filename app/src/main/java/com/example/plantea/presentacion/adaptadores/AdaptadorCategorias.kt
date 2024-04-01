@@ -3,11 +3,13 @@ package com.example.plantea.presentacion.adaptadores
 import android.content.Context
 import android.graphics.PorterDuff
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +23,6 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, context: Context)
         fun addCategoria(view: View?)
-
         fun borrarCategoria(posicion: Int, categoria: Int, view: View?)
 
     }
@@ -41,7 +42,12 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
             holder.card.background = drawable
             holder.borrar.visibility = View.GONE
         }else{
-            holder.imagen.setImageURI(Uri.parse(listaCategorias!![position].imagen))
+            val identifier = context.resources.getIdentifier(listaCategorias!![position].imagen, "drawable", context.packageName)
+            if(identifier == 0) {
+                holder.imagen.setImageURI(Uri.parse(listaCategorias!![position].imagen))
+            }else{
+                holder.imagen.setImageResource(identifier)
+            }
         }
         if(position in 0..9){
             holder.borrar.visibility = View.GONE

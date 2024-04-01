@@ -32,7 +32,13 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
         context = holder.itemView.context
 
         holder.titulo.text = listaPictogramas!![position].titulo
-        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+       // holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
+        if(identifier == 0) {
+            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        }else{
+            holder.imagen.setImageResource(identifier)
+        }
 
         if(listaPictogramas!![position].categoria in 1..4){
             holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)

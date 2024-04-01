@@ -25,8 +25,15 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
     }
 
     override fun onBindViewHolder(holder: ViewHolderPlanificacion, position: Int) {
+        val context = holder.itemView.context
         holder.titulo.text = listaPlanificacion[position].titulo
-        holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
+        //holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
+        val identifier = context.resources.getIdentifier(listaPlanificacion[position].imagen, "drawable", context.packageName)
+        if(identifier == 0) {
+            holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
+        }else{
+            holder.imagen.setImageResource(identifier)
+        }
 
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
         holder.borrar.visibility = View.VISIBLE

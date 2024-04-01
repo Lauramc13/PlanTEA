@@ -2,16 +2,14 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import android.content.Context
-import android.media.Image
 
 class Categoria {
     var categoria = 0
     var titulo: String? = null
     var imagen: String? = null
     var color: String? = null
-    var listaCategorias: ArrayList<String>? = null
-    var gestorCategorias = GestionCategorias()
-    constructor()
+    private var listaCategorias: ArrayList<String>? = null
+    private var gestorCategorias = GestionCategorias()
 
     fun consultarCategorias(actividad: Activity?): ArrayList<*>? {
         listaCategorias = ArrayList()

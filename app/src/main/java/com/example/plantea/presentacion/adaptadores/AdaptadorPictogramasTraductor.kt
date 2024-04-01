@@ -21,7 +21,7 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas_traductor, null, false)
         return ViewHolderPictogramas(view)
     }
 
