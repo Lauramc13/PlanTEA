@@ -1,16 +1,11 @@
 package com.example.plantea.presentacion.actividades
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,11 +16,10 @@ import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
 
 class MenuObjetosActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
-    private lateinit var btn_galeria: Button
+    private lateinit var btnGaleria: Button
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
     private var uri : Uri? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,18 +28,13 @@ class MenuObjetosActivity : AppCompatActivity() {
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         createPickMedia()
 
-        btn_galeria = findViewById(R.id.btn_galeria)
-        btn_galeria.setOnClickListener{
+        btnGaleria = findViewById(R.id.btn_galeria)
+        btnGaleria.setOnClickListener{
             viewModel.abrirGaleria()
         }
 
         val extras = intent.extras
-        if (extras != null) {
-            isConfiguration = extras.getBoolean("editPreferences")
-        }else{
-            isConfiguration = false
-        }
-
+        isConfiguration = extras?.getBoolean("editPreferences") ?: false
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
         if(isConfiguration){
@@ -74,7 +63,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         viewModel._ruta.observe(this) {
             val editor = prefs.edit()
             editor.putString("imagenObjeto", it)
-            editor.commit()
+            editor.apply()
             viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
             viewModel.imagenSeleccionada = true
             next()
@@ -124,7 +113,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         }
     }
 
-    fun createPickMedia() {
+    private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)

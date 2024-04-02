@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import java.util.Calendar
 import java.util.Locale
 
 class CountDownViewModel: ViewModel() {
@@ -14,14 +13,12 @@ class CountDownViewModel: ViewModel() {
 
     fun createReloj(): MaterialTimePicker {
 
-        val picker = MaterialTimePicker.Builder()
+        return MaterialTimePicker.Builder()
             .setTheme(R.style.TimePicker)
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setInputMode(MaterialTimePicker.INPUT_MODE_CLOCK)
             .setTitleText("Temporizador")
             .build()
-
-        return picker
     }
 
     fun tick(millisUntilFinished: Long): String{

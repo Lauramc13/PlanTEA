@@ -7,11 +7,9 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.media.Image
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -26,24 +24,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Categoria
-import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategorias
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
-import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -52,7 +44,6 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
-import java.util.Locale
 
 class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener{
 
@@ -69,12 +60,12 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     var image : ImageView? = null
 
     //Buttons colors
-    lateinit var buttonMorado: FloatingActionButton
-    lateinit var buttonRosa: FloatingActionButton
-    lateinit var buttonVerde: FloatingActionButton
-    lateinit var buttonAzul: FloatingActionButton
-    lateinit var buttonDefault: FloatingActionButton
-    lateinit var buttonAmarillo: FloatingActionButton
+    private lateinit var buttonMorado: FloatingActionButton
+    private lateinit var buttonRosa: FloatingActionButton
+    private lateinit var buttonVerde: FloatingActionButton
+    private lateinit var buttonAzul: FloatingActionButton
+    private lateinit var buttonDefault: FloatingActionButton
+    private lateinit var buttonAmarillo: FloatingActionButton
 
     var subcategoriaOpen = false
     var busquedaOpen = false
@@ -98,8 +89,6 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
     //Opcion para indicar funcionalidad editar o crear
     var opcionEditar = false
-
-    var historiaSaved = false
 
     fun setIdUsuario(prefs: android.content.SharedPreferences) {
         idUsuario = prefs.getString("idUsuario", "").toString()
@@ -292,7 +281,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
-    fun crearCategoria(title: TextInputLayout, isEdit: Boolean, categoria: Categoria, colorSelected: String, activity: Activity){
+    private fun crearCategoria(title: TextInputLayout, isEdit: Boolean, categoria: Categoria, colorSelected: String, activity: Activity){
         val titulo = title.editText?.text.toString()
         val imagen = (image!!.drawable as BitmapDrawable).bitmap
         val ruta = guardarImagen(title.context, titulo, imagen)
@@ -326,7 +315,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
     }
 
-    fun createReloj(): MaterialTimePicker {
+   /* fun createReloj(): MaterialTimePicker {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
@@ -340,19 +329,17 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
             .build()
 
         return picker
-    }
+    }*/
 
-    fun createReloj24(hora: Int, minutos: Int): MaterialTimePicker{
+    fun createReloj24(hora: Int, minutos: Int): MaterialTimePicker {
 
-        val picker = MaterialTimePicker.Builder()
+        return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(hora)
             .setMinute(minutos)
             .setTheme(R.style.TimePicker)
             .setTitleText("Selecciona una hora")
             .build()
-
-        return picker
     }
 
     private fun clearButtonsSelected(){

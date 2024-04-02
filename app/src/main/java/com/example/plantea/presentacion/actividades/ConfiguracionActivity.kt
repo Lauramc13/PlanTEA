@@ -6,8 +6,6 @@ import android.content.SharedPreferences
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -93,7 +91,6 @@ class ConfiguracionActivity : AppCompatActivity() {
         lblObjeto.isChecked = false
 
         if(savedInstanceState != null){
-           // txtCorreoPlanificador.editText?.setText(viewModel.email)
             txtPlanificador.editText?.setText(viewModel.name)
             txtUsernamePlanificador.editText?.setText(viewModel.username)
             txtUsuarioTEA.editText?.setText(viewModel.nameTEA)
@@ -106,7 +103,6 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         txtCorreoPlanificador.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
-
 
         credits.paintFlags = credits.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         credits.setOnClickListener{
@@ -158,9 +154,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
 
         btnGuardar.setOnClickListener {
-           // guardarConfiguracionOLD(lblInfoUsuario, lblObjeto, btnNotificacion, semana, dia, hora)
            guardarConfiguracion(lblInfoUsuario, lblObjeto)
-
         }
 
         observers()
@@ -197,8 +191,8 @@ class ConfiguracionActivity : AppCompatActivity() {
         }
     }
 
-    fun guardarConfiguracion(lblInfoUsuario : SwitchCompat, lblObjeto : SwitchCompat){
-        //Obtener nombres de los usuarios y objeto
+    private fun guardarConfiguracion(lblInfoUsuario : SwitchCompat, lblObjeto : SwitchCompat){
+        //Obtain values from the fields
         val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
         var nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
         val username = txtUsernamePlanificador.editText?.text.toString()
@@ -253,6 +247,7 @@ class ConfiguracionActivity : AppCompatActivity() {
             }catch (e: Exception){
                 CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al guardar la configuración")
             }
+
             finish()
         }
     }

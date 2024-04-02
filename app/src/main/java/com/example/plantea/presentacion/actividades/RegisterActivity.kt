@@ -24,7 +24,7 @@ import com.google.android.material.textfield.TextInputLayout
 class RegisterActivity : AppCompatActivity(){
     lateinit var prefs: SharedPreferences
     private lateinit var btnRegister: Button
-    lateinit var txtName : TextInputLayout
+    private lateinit var txtName : TextInputLayout
     private lateinit var txtEmail: TextInputLayout
     private lateinit var txtUsername : TextInputLayout
     private lateinit var txtPassword : TextInputLayout
@@ -32,7 +32,7 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txtNameplanificado : TextInputLayout
     private lateinit var txtObjeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
-    lateinit var checkObjeto: SwitchCompat
+    private lateinit var checkObjeto: SwitchCompat
     private lateinit var botonAyuda: MaterialButton
     private lateinit var tooltipText: TextView
     private lateinit var backButton: Button

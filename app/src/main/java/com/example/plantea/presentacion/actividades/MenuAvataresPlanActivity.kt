@@ -1,11 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -17,11 +13,6 @@ import androidx.cardview.widget.CardView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
-import com.google.android.material.snackbar.Snackbar
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 
 
 class MenuAvataresPlanActivity : AppCompatActivity() {
@@ -31,7 +22,6 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
     private var uri : Uri? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +39,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
         val extras = intent.extras
-        isConfiguration = if (extras != null) {
-            extras.getBoolean("editPreferences")
-        }else{
-            false
-        }
+        isConfiguration = extras?.getBoolean("editPreferences") ?: false
 
         if(isConfiguration){
             btnSaltar.text = getString(R.string.str_cancelar)

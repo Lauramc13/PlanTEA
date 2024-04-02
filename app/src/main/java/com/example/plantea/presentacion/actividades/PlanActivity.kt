@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -29,7 +30,6 @@ import com.example.plantea.presentacion.viewModels.PlanViewModel
 import com.google.android.material.button.MaterialButton
 import java.time.LocalDate
 import java.util.Stack
-
 
 class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     lateinit var prefs: SharedPreferences
@@ -105,7 +105,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
         viewModel.initializeAnimations(applicationContext)
 
-        observe(savedInstanceState)
+        observe()
 
         //Comprobar si hay parametros en caso de llamada desde el planificador
         if (this.intent.extras != null) {
@@ -192,12 +192,12 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         }
 
         iconoReproducir.setOnClickListener {
-            reproducirEvento(1500L)
+            reproducirEvento()
         }
     }
 
 
-     fun crearDialogo(){
+     private fun crearDialogo(){
          viewModel.dialog = Dialog(this)
          viewModel.dialog!!.setContentView(R.layout.dialogo_calendario)
          viewModel.dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -241,7 +241,8 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
          viewModel.dialog!!.show()
     }
 
-    private fun observe(savedInstanceState : Bundle?){
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observe(){
         viewModel._diaText.observe(this) { dia.text = it }
         viewModel._tituloLiveData.observe(this) { titulo.text = it }
 
@@ -284,7 +285,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
             if(isPlanificador) {
                 val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
                 layoutPlanificaciones.visibility = View.VISIBLE
-                val imageDecoration = findViewById<ImageView>(R.id.imageDecoration)
+                //val imageDecoration = findViewById<ImageView>(R.id.imageDecoration)
               //  imageDecoration.visibility = View.GONE
             }else{
                 iconoDeshacerTodas.visibility = View.INVISIBLE
@@ -319,7 +320,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         CommonUtils.listener = this
     }
 
-    fun initNotificationList(){
+    private fun initNotificationList(){
         val notificationList : ArrayList<PlanificacionItem> = viewModel.mostrarPlanificaciones()
         planificacionesFuturas.layoutManager = LinearLayoutManager(this)
         val adaptadorNot = AdaptadorPlanificacionesFuturas(notificationList, viewModel)
@@ -333,7 +334,8 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel._planLiveData.value = viewModel.listaPictogramas
     }
 
-    private fun reproducirEvento(tiempo: Long) {
+    private fun reproducirEvento() {
+        val tiempo = 1500L
 
         if(viewModel.isRunning){
             configureIsNotRunning()
@@ -360,6 +362,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun configureIsNotRunning(){
         viewModel.isRunning = false
         viewModel.adaptador.animatedPositions.clear()
@@ -370,6 +373,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel.stopReproductor()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun configureIsRunning(){
         iconoReproducir.setIconResource(R.drawable.svg_stop)
         viewModel.adaptador.optionMarcar = false

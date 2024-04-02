@@ -14,9 +14,7 @@ class PasswordActivity : AppCompatActivity() {
     private lateinit var confirmaPass: TextInputLayout
     private lateinit var btnGuardar: Button
     private val emptyTextViews = mutableListOf<TextView>()
-
     private val viewModel by viewModels<PasswordViewModel>()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,5 +106,4 @@ class PasswordActivity : AppCompatActivity() {
         viewModel.nuevaPass = nuevaPass.editText?.text.toString()
         viewModel.confirmaPass = confirmaPass.editText?.text.toString()
     }
-
 }

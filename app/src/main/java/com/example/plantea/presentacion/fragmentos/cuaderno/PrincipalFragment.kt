@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.fragmentos.cuaderno
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -33,7 +34,7 @@ import java.util.UUID
 
 class PrincipalFragment : Fragment(){
     lateinit var actividad: Activity
-    lateinit var recycler_Pictogramas: RecyclerView
+    private lateinit var recyclerPictogramas: RecyclerView
     lateinit var adaptador : AdaptadorCategoriasCuaderno
     private lateinit var constraintLayout: ConstraintLayout
 
@@ -44,13 +45,13 @@ class PrincipalFragment : Fragment(){
         val bundle = this.arguments
         viewModel.listaPictoCuaderno = (bundle!!["key"] as ArrayList<Cuaderno>?)!!
         viewModel.isPlanificador = (bundle["isPlan"] as Boolean)
-        recycler_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
+        recyclerPictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
 
         constraintLayout = vista.findViewById(R.id.frameLayout)
-        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recycler_Pictogramas, constraintLayout, 150, 200) }
+        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recyclerPictogramas, constraintLayout, 150, 200) }
 
         adaptador = AdaptadorCategoriasCuaderno(viewModel.listaPictoCuaderno, viewModel.isPlanificador, viewModel, requireContext(), this)
-        recycler_Pictogramas.adapter = adaptador
+        recyclerPictogramas.adapter = adaptador
 
         viewModel.createPickMedia(this, requireContext(), vista)
 
@@ -88,7 +89,7 @@ class PrincipalFragment : Fragment(){
         val inflater = LayoutInflater.from(requireContext())
         val customView = inflater.inflate(R.layout.popup_cuaderno, null)
         val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
-        val position = viewModel.listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
+       // val position = viewModel.listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
 
         customView.findViewById<TextView>(R.id.item_editar).setOnClickListener {
             editarCuaderno(cuaderno)
@@ -96,14 +97,15 @@ class PrincipalFragment : Fragment(){
         }
 
         customView.findViewById<TextView>(R.id.item_borrar).setOnClickListener {
-            eliminarCuaderno(cuaderno, position)
+            eliminarCuaderno(cuaderno)
             popupWindow.dismiss()
         }
 
         popupWindow.showAsDropDown(anchorView)
     }
 
-    fun eliminarCuaderno(cuaderno: Cuaderno, position: Int) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun eliminarCuaderno(cuaderno: Cuaderno) {
         //crear dialogo estas seguro que quiere borrar el cuaderno
         val dialogo = Dialog(requireContext())
         dialogo.setContentView(R.layout.dialogo_borrar_cuaderno)
@@ -167,7 +169,7 @@ class PrincipalFragment : Fragment(){
         dialogo.show()
     }
 
-    fun mostrarDialogo(){
+    private fun mostrarDialogo(){
         val dialogo = context?.let { Dialog(it) }
         dialogo!!.setContentView(R.layout.dialogo_crear_categoria_cuaderno)
         dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -198,7 +200,7 @@ class PrincipalFragment : Fragment(){
         dialogo.show()
     }
 
-    fun crearEditarCuaderno(title: TextInputLayout, termometro: SwitchCompat, isEditar: Boolean, cuaderno: Cuaderno){
+    private fun crearEditarCuaderno(title: TextInputLayout, termometro: SwitchCompat, isEditar: Boolean, cuaderno: Cuaderno){
         val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
         val idUsuario = prefs?.getString("idUsuario", "")
         val numero = UUID.randomUUID()
@@ -208,8 +210,7 @@ class PrincipalFragment : Fragment(){
         var index = -1
 
         if (idUsuario != null) {
-            var id = 0
-            id = if(isEditar){
+            val id = if(isEditar){
                 cuaderno.editarCuaderno(activity, idUsuario, cuaderno.id.toString(), title.editText?.text.toString(), imagen, isTermometro)
                 cuaderno.id
             }else{

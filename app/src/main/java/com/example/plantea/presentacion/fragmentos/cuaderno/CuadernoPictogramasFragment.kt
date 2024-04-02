@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
@@ -30,8 +29,8 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener {
     lateinit var actividad: Activity
-    private lateinit var lst_Pictogramas: RecyclerView
-    private lateinit var image_Cerrar: ImageView
+    private lateinit var lstPictogramas: RecyclerView
+    private lateinit var imageCerrar: ImageView
     private lateinit var seekbar: SeekBar
     lateinit var termometro: LinearLayout
     private lateinit var constraintLayout: ConstraintLayout
@@ -50,15 +49,15 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val txtCuaderno = vista.findViewById<TextView>(R.id.titulo_cuaderno)
         txtCuaderno.text = viewModel.tituloCuaderno
 
-        lst_Pictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
+        lstPictogramas = vista.findViewById(R.id.lst_cuaderno_pictogramas)
         constraintLayout = vista.findViewById(R.id.frameLayout)
-        CommonUtils.getGridValueCuaderno(vista, context, lst_Pictogramas, constraintLayout, 150, 200)
+        CommonUtils.getGridValueCuaderno(vista, context, lstPictogramas, constraintLayout, 150, 200)
 
         context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val adaptador = viewModel.isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
-        lst_Pictogramas.adapter = adaptador
-        image_Cerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
-        image_Cerrar.setOnClickListener { viewModel._cerrarFragment.value = true}
+        lstPictogramas.adapter = adaptador
+        imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
+        imageCerrar.setOnClickListener { viewModel._cerrarFragment.value = true}
         context?.let { CommonUtils.initializeTextToSpeech(it) }
 
         return vista
@@ -91,8 +90,8 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         }
 
         //Botón cerrar
-        image_Cerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-        image_Cerrar.setOnClickListener { dialog.dismiss() }
+        imageCerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+        imageCerrar.setOnClickListener { dialog.dismiss() }
         dialog.show()
 
         //Funcionalidad termómetro: cambio de color según el progreso

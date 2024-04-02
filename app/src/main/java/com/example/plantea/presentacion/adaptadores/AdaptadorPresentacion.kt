@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -119,9 +118,9 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        private var cardLayout : RelativeLayout
         var titulo: TextView
         var imagen: ImageView
-        var cardLayout : RelativeLayout
         var card: View
         var historia: ImageView
         var duracion : TextView

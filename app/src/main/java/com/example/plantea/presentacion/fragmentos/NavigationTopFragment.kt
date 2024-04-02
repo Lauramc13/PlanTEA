@@ -1,21 +1,15 @@
 package com.example.plantea.presentacion.fragmentos
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.plantea.R
@@ -35,8 +29,8 @@ class NavigationTopFragment: Fragment() {
     lateinit var vista: View
     private var navigationHandler = NavegacionUtils()
     lateinit var prefs: SharedPreferences
-    lateinit var iconoRol: ImageView
-    var infoUsuario = false
+    private lateinit var iconoRol: ImageView
+    private var infoUsuario = false
 
     override fun onResume() {
         super.onResume()

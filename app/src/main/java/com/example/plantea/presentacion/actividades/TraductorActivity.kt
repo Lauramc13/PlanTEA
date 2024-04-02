@@ -7,7 +7,6 @@ import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,14 +16,13 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
 import com.google.android.material.textfield.TextInputLayout
-import java.util.Random
 import java.util.UUID
 
 
 class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
-    lateinit var escucharButtonPalabra : Button
-    lateinit var escucharButtonFrase : Button
-    lateinit var guardarButton : Button
+    private lateinit var escucharButtonPalabra : Button
+    private lateinit var escucharButtonFrase : Button
+    private lateinit var guardarButton : Button
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
     private var atras : Button? = null

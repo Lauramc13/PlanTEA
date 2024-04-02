@@ -3,12 +3,10 @@ package com.example.plantea.presentacion.viewModels
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EncryptionUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

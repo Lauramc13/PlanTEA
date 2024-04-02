@@ -101,9 +101,9 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
 
         //Si sabemos la posicion del pictograma, estamos cambiando la imagen del pictograma
         if(posicion != null){
-            listaPictogramas[posicion] = Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, false, true)
+            listaPictogramas[posicion] = Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, favorito = false, sourceAPI = true)
         }else {
-            listaPictogramas.add(Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, false, true))
+            listaPictogramas.add(Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, favorito = false, sourceAPI = true))
         }
     }
 

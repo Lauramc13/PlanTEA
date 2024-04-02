@@ -118,7 +118,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="wrap_content"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
@@ -134,8 +134,8 @@
                                 android:id="@+id/fragment_imagen_evento"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:scaleType="fitXY"
                                 android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
                                 android:src="@drawable/paleta_colores" />
                         </com.google.android.material.card.MaterialCardView>
 
@@ -199,7 +199,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="wrap_content"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
@@ -280,7 +280,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="wrap_content"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"
@@ -361,7 +361,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="170dp"
+                            android:layout_height="wrap_content"
                             app:cardCornerRadius="10dp"
                             app:strokeColor="?color"
                             app:strokeWidth="1.5dp"

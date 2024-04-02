@@ -10,7 +10,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Handler
-import android.util.TypedValue
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -61,8 +60,8 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
 
     var dialog: Dialog? = null
 
-    lateinit var animFondo: Animation
-    lateinit var animCard: Animation
+    private lateinit var animFondo: Animation
+    private lateinit var animCard: Animation
 
     var idUsuario = ""
 
@@ -71,13 +70,13 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     var currentPosition: Int = 0
     val handler = Handler()
 
-    val calendar = Calendar.getInstance()
-    var selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
-    val dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-    val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
-    val dayOfWeek = dateFormat.format(calendar.time)
+    private val calendar: Calendar = Calendar.getInstance()
+    private var selectedDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+    private val dateFormat = SimpleDateFormat("EEEE", Locale.getDefault())
+    private val monthFormat = SimpleDateFormat("MMMM", Locale.getDefault())
+    val dayOfWeek: String = dateFormat.format(calendar.time)
     val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toString()
-    val month = monthFormat.format(calendar.time)
+    val month: String = monthFormat.format(calendar.time)
 
     var planificaciones = ArrayList<Evento>()
     var evento = Evento()
@@ -86,9 +85,15 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
     private lateinit var imagenConfeti: ImageView
     private lateinit var mensajePremio: TextView
 
-
+    override fun diaSeleccionado(context: Context?, fecha: LocalDate, position: Int, selectedDay: Int) {
+        selectedDate(context, fecha)
+    }
 
     override fun diaSeleccionado(context: Context?, fecha: LocalDate) {
+        selectedDate(context, fecha)
+    }
+
+    private fun selectedDate(context: Context?, fecha: LocalDate){
         fechaSeleccionada = fecha
         CalendarioUtilidades.fechaSeleccionada = fecha
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
@@ -264,7 +269,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         }
     }
 
-    fun animacionesConfeti(context: Context, categoria: Int) {
+    private fun animacionesConfeti(context: Context, categoria: Int) {
         imagenConfeti.visibility = View.VISIBLE
         mensajePremio.visibility = View.VISIBLE
 

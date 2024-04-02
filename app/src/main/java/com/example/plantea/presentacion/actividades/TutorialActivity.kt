@@ -59,7 +59,7 @@ class TutorialActivity : AppCompatActivity() {
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                // No se usa
+                // Not used
             }
 
             override fun onPageSelected(position: Int) {
@@ -67,7 +67,7 @@ class TutorialActivity : AppCompatActivity() {
             }
 
             override fun onPageScrollStateChanged(state: Int) {
-                // No se usa
+                // Not used
             }
         })
     }

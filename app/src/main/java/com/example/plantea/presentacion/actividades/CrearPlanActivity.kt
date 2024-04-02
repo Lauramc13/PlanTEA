@@ -121,14 +121,8 @@ class CrearPlanActivity : AppCompatActivity(){
             transaction.replace(R.id.contenedor_fragments, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
-        }/*else{
-            fragment =  supportFragmentManager.findFragmentById(R.id.contenedor_fragments)!!
         }
-        transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.contenedor_fragments, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-*/
+
         //Este método se ejecutará al seleccionar el icono guardar para crear la planificación
         btnGuardarPlanificacion.setOnClickListener {
             clickGuardarPicto()
@@ -145,7 +139,6 @@ class CrearPlanActivity : AppCompatActivity(){
 
         searchBar.clearFocus()
     }
-
 
     // Callback para el drag and drop de la planificacion y el swipe para eliminar
     private var simpleCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END, ItemTouchHelper.UP) {
@@ -188,8 +181,7 @@ class CrearPlanActivity : AppCompatActivity(){
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         // Handle the returned URI here
         if (uri != null) {
-            val image = uri
-            imgPicto.setImageURI(image)
+            imgPicto.setImageURI(uri)
             imgPicto.background = null
         } else {
             CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No se ha seleccionado ninguna imagen")
@@ -388,7 +380,7 @@ class CrearPlanActivity : AppCompatActivity(){
     }
 
 
-    fun createPickMedia() {
+    private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)

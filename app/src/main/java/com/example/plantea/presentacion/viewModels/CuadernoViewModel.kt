@@ -18,10 +18,9 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
-import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
 import com.google.android.material.imageview.ShapeableImageView
 
-class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelectedListener, AdaptadorCategoriasCuaderno.OnItemSelectedListener{
+class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelectedListener{
 
     var picto = Pictograma()
     var cuaderno = Cuaderno()
@@ -34,7 +33,7 @@ class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelecte
     var originalPictogramas: ArrayList<Pictograma>? = null
     var listaCuadernos: ArrayList<Cuaderno>? = ArrayList()
     val _image = MutableLiveData<Uri?>()
-    lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     lateinit var listaPictoCuaderno: ArrayList<Cuaderno>
     var isTermometro: Boolean = true
     var tituloCuaderno : String = ""
@@ -46,7 +45,6 @@ class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelecte
     val _queryBusqueda = SingleLiveEvent<String>()
     val _pictoBusquedaAdded = SingleLiveEvent<Pictograma>()
     val _removePicto = SingleLiveEvent<Pictograma>()
-    val _crearPictoClicked = SingleLiveEvent<Boolean>()
 
     @SuppressLint("IntentReset")
     fun abrirGaleria() {
@@ -78,22 +76,6 @@ class CuadernoViewModel: ViewModel(), AdaptadorPictogramasCuaderno.OnItemSelecte
         }
     }
 
-    //AdaptadorPictogramasCuaderno
-    override fun pictogramaCuaderno(posicion: Int) {
-       if(posicion == listaPictogramas?.lastIndex && isPlanificador){
-            _crearPictoClicked.value = true
-       }
-    }
-
-    override fun addPicto(pictograma: Pictograma) {
-        _pictoBusquedaAdded.value = pictograma
-    }
-
-    override fun removePicto(pictograma: Pictograma, APIsource: Boolean, busqueda: Boolean) {
-        isBusqueda = busqueda
-        sourceAPI = APIsource
-        _removePicto.value = pictograma
-    }
 
     //AdaptadorCategoriasCuaderno
     override fun categoriaCuaderno(position: Int, cuadernoId: Int){

@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EncryptionUtils
 
 class RegisterViewModel: ViewModel() {

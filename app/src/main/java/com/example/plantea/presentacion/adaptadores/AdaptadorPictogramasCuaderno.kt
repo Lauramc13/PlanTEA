@@ -2,13 +2,11 @@ package com.example.plantea.presentacion.adaptadores
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -109,13 +107,13 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
         }
     }
 
-    fun mostrarAniadir(holder : ViewHolderPictogramas){
+    private fun mostrarAniadir(holder : ViewHolderPictogramas){
         holder.imagen.setImageResource(R.drawable.svg_add)
         val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno_dotted)
         holder.borde.background = drawable
     }
 
-    fun mostrarPicto(holder : ViewHolderPictogramas, position: Int){
+    private fun mostrarPicto(holder : ViewHolderPictogramas, position: Int){
         val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
         if(identifier == 0) {
             holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))

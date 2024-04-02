@@ -1,19 +1,14 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,13 +16,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.plantea.R
 import com.example.plantea.presentacion.fragmentos.LoginFragment
 import com.example.plantea.presentacion.viewModels.PreLoginViewModel
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
-
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputLayout
 
 class PreLoginActivity : AppCompatActivity(){
@@ -139,7 +129,7 @@ class PreLoginActivity : AppCompatActivity(){
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }else{
-                    //IR A REGISTER PERO CON ALGUNOS DATOS YA COMPLETOS
+                    // If the user is not registered, we will redirect him to the registration activity with the email and name fields filled in
                     val intent = Intent(applicationContext, RegisterActivity::class.java)
                     intent.putExtra("EMAIL", account?.email.toString())
                     intent.putExtra("NAME", account?.givenName.toString())

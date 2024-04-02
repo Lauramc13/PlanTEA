@@ -1,16 +1,12 @@
 package com.example.plantea.presentacion.actividades
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
@@ -23,10 +19,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class CuadernoActivity : AppCompatActivity() {
     //private var transaction: FragmentTransaction? = null
-    private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
+    //private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
     private var atras : Button? = null
     private lateinit var transaction: FragmentTransaction
     var fragment = CuadernoPictoEditFragment()
@@ -57,7 +52,7 @@ class CuadernoActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putSerializable("key", viewModel.listaCuadernos)
             bundle.putSerializable("isPlan", viewModel.isPlanificador)
-            var fragmentPrincipal = PrincipalFragment()
+            val fragmentPrincipal = PrincipalFragment()
             fragmentPrincipal.arguments = bundle
             transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.layout_fragments, fragmentPrincipal)
@@ -104,11 +99,8 @@ class CuadernoActivity : AppCompatActivity() {
 
         viewModel._pictoBusquedaAdded.observe(this) {
             viewModel.originalPictogramas?.add(it)
+            it.id?.let { it1 -> viewModel.listaPictosAgregados.add(it1) }
             viewModel.picto.guardarPictoCuaderno(this, it.id, it.titulo, it.imagen, viewModel.idCuaderno)
-        }
-
-        viewModel._crearPictoClicked.observe(this) {
-            fragment.mostrarDialogoCrearPicto()
         }
 
         viewModel._removePicto.observe(this) {
@@ -135,23 +127,7 @@ class CuadernoActivity : AppCompatActivity() {
     }
 
 
-   /* private fun getPictogramas(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val dict = CommonUtils.getDataApi(query)
-
-            withContext(Dispatchers.Main) {
-                dict.keys.forEach { key ->
-                    dict[key]?.let { (value, id) ->
-                        crearPictoBusqueda(key, value, id)
-                            viewModel.fragmentCuadernoPictoEdit.mostrarPictogramasBusqueda(viewModel.listaPictogramas, viewModel.listaPictosAgregados)
-
-                    }
-                }
-            }
-        }
-    }*/
-
-    fun getPictogramas(query: String) {
+    private fun getPictogramas(query: String) {
         viewModel.isBusqueda = true
         viewModel.listaPictogramas?.clear()
         CoroutineScope(Dispatchers.IO).launch {
@@ -186,7 +162,7 @@ class CuadernoActivity : AppCompatActivity() {
         if(exite != null){
             exite.id?.let { viewModel.listaPictosAgregados.add(it) }
         }
-        return Pictograma(id.toString(), tituloMayus, archivo, 0, 0, false, true)
+        return Pictograma(id.toString(), tituloMayus, archivo, 0, 0, favorito = false, sourceAPI = true)
 
     }
 
@@ -197,8 +173,6 @@ class CuadernoActivity : AppCompatActivity() {
         bundle.putSerializable("termometro", termometro)
         bundle.putString("tituloCuaderno", tituloCuaderno)
         viewModel.tituloCuaderno = tituloCuaderno
-        //bundle.putSerializable("idCuaderno", viewModel.idCuaderno)
-        //bundle.putSerializable("isBusqueda", viewModel.isBusqueda)
 
          if (viewModel.isPlanificador) {
              fragment = CuadernoPictoEditFragment()
@@ -215,6 +189,4 @@ class CuadernoActivity : AppCompatActivity() {
         transaction.addToBackStack(null)
         transaction.commit()
     }
-
-
 }

@@ -2,7 +2,6 @@ package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
 import android.app.Activity
-import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -15,8 +14,6 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.view.animation.PathInterpolator
 import android.widget.Button
 import android.widget.ImageView
@@ -35,29 +32,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
 
 
 class NavegacionUtils {
     var usuario = Usuario()
     private lateinit var password: TextInputLayout
-    private lateinit var btn_acceder: Button
-    private lateinit var icono_cerrar_login: ImageView
-    lateinit var iconoRol: ImageView
-    lateinit var textoRol: TextView
-    lateinit var navigationView: NavigationView
-    lateinit var navigationViewBottom: BottomNavigationView
-    lateinit var fragmentSide : ConstraintLayout
-    lateinit var popupWindow: PopupWindow
-    lateinit var buttonMenu : Button
-    lateinit var buttonAccount: LinearLayout
+    private lateinit var btnAcceder: Button
+    private lateinit var iconoCerrarLogin: ImageView
+    private lateinit var iconoRol: ImageView
+    private lateinit var textoRol: TextView
+    private lateinit var navigationView: NavigationView
+    private lateinit var navigationViewBottom: BottomNavigationView
+    private lateinit var fragmentSide : ConstraintLayout
+    //private lateinit var popupWindow: PopupWindow
+    private lateinit var buttonMenu : Button
+    private lateinit var buttonAccount: LinearLayout
     lateinit var prefs: SharedPreferences
     private var isExpanded = false
-    private lateinit var firebaseAuth: FirebaseAuth
 
-    lateinit var btn_logout : Button
-    var popupView : View? = null
+    private lateinit var btnLogout : Button
+    private var popupView : View? = null
 
     fun crearDialogoLogin(context: Context, activity: Activity) {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
@@ -66,9 +61,9 @@ class NavegacionUtils {
         dialogLogin.setContentView(R.layout.dialogo_login)
         dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         password = dialogLogin.findViewById(R.id.txt_Password)
-        btn_acceder = dialogLogin.findViewById(R.id.btn_login)
-        icono_cerrar_login = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
-        btn_acceder.setOnClickListener {
+        btnAcceder = dialogLogin.findViewById(R.id.btn_login)
+        iconoCerrarLogin = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
+        btnAcceder.setOnClickListener {
             if (password.editText?.text.toString() == "") {
                 password.error = "El campo no puede estar vacío"
 
@@ -93,25 +88,17 @@ class NavegacionUtils {
                 }
             }
         }
-        icono_cerrar_login.setOnClickListener { dialogLogin.dismiss() }
+        iconoCerrarLogin.setOnClickListener { dialogLogin.dismiss() }
         dialogLogin.show()
     }
 
-       /* fun hashPassword(password: String): String {
-            val bytes = password.toByteArray()
-            val md = MessageDigest.getInstance("SHA-256")
-            val digest = md.digest(bytes)
-            return digest.fold("", { str, it -> str + "%02x".format(it) })
-        }*/
-
-
-    fun cerrarSesion(fragment: Fragment){
+    private fun cerrarSesion(fragment: Fragment){
         val dialogLogout = Dialog(fragment.requireContext())
         dialogLogout.setContentView(R.layout.dialogo_logout)
         dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        btn_logout = dialogLogout.findViewById(R.id.btn_logout)
-        icono_cerrar_login = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-        btn_logout.setOnClickListener {
+        btnLogout = dialogLogout.findViewById(R.id.btn_logout)
+        iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
+        btnLogout.setOnClickListener {
           //  firebaseAuth = FirebaseAuth.getInstance()
           //  firebaseAuth.signOut()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -126,11 +113,11 @@ class NavegacionUtils {
             fragment.activity?.finish()
             fragment.activity?.finishAffinity()
         }
-        icono_cerrar_login.setOnClickListener { dialogLogout.dismiss() }
+        iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
         dialogLogout.show()
     }
 
-    fun configurarDatos(vista: View){
+    private fun configurarDatos(vista: View){
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
 
         iconoRol = vista.findViewById(R.id.iconoRol)
@@ -171,11 +158,12 @@ class NavegacionUtils {
             R.id.traductor -> TraductorActivity::class.java
             else -> return true
         }
+
         if (currentActivity == targetActivityClass) {
             return true
         }
+
         val intent = Intent(fragment.requireContext().applicationContext, targetActivityClass)
-       // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         fragment.requireContext().startActivity(intent)
 
         return true
@@ -242,7 +230,7 @@ class NavegacionUtils {
         configurarDatos(view)
 
         buttonMenu.setOnClickListener {
-            var targetWidth: Int
+            val targetWidth: Int
             if(isExpanded){
                 textoRol.visibility = View.GONE
                 popupView?.visibility = View.INVISIBLE
@@ -261,7 +249,7 @@ class NavegacionUtils {
         menu.findItem(id).isChecked = true
     }
 
-    fun closeDrawer(fragment: Fragment){
+    /*fun closeDrawer(fragment: Fragment){
         val contextFragment = fragment.requireContext()
         textoRol.visibility = View.GONE
         popupView?.visibility = View.INVISIBLE
@@ -270,14 +258,14 @@ class NavegacionUtils {
         animateNavigationViewWidth(targetWidth)
         isExpanded = false
 
-    }
+    }*/
 
     fun menuUsuario(fragment: Fragment, anchorView: View){
         val inflater = LayoutInflater.from(fragment.requireContext())
         prefs = fragment.requireContext().getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
         val isUsuarioTEA = prefs.getBoolean("info_usuario", false)
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
-        var customView = inflater.inflate(R.layout.popup_menu_usuario, null)
+        val customView = inflater.inflate(R.layout.popup_menu_usuario, null)
         val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         //si la pantalla esta en horizontal
         if(fragment.requireContext().resources.configuration.orientation == 1){
@@ -344,11 +332,11 @@ class NavegacionUtils {
         menu.findItem(id).isChecked = true
     }
 
-    fun destroyPopup(){
+    /*fun destroyPopup(){
         if (popupWindow.isShowing) {
             popupWindow.dismiss()
         }
-    }
+    }*/
 
 
 }

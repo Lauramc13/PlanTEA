@@ -1,9 +1,7 @@
 package com.example.plantea.presentacion.viewModels
 
 import android.graphics.drawable.Drawable
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.plantea.dominio.Usuario
 
 class ConfiguracionViewModel: ViewModel() {
 

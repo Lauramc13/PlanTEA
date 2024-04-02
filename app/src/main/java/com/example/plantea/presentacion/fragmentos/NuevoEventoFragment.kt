@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.fragmentos
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
-import com.example.plantea.dominio.CalendarioUtilidades.formatoDiaMes
 import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
@@ -49,12 +49,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     private lateinit var cancelarEvento: ImageView
     private lateinit var listaPlanificaciones: RecyclerView
     private lateinit var adaptador: AdaptadorListaPlanes
-    private lateinit var layout_planificaciones: ConstraintLayout
+    private lateinit var layoutPlanificaciones: ConstraintLayout
     private lateinit var switchReminder : SwitchCompat
    // private lateinit var reminderview: FragmentContainerView
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
-    var permisosGranted = false
+    private var permisosGranted = false
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -77,18 +77,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
         mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
         listaPlanificaciones = vista.findViewById(R.id.recycler_planificaciones)
-        layout_planificaciones = vista.findViewById(R.id.layout)
+        layoutPlanificaciones = vista.findViewById(R.id.layout)
         //tituloEvento = vista.findViewById(R.id.txt_tituloEvento)
         switchReminder = vista.findViewById(R.id.switch_recordatorio)
-        //reminderview = vista.findViewById(R.id.fragment_container_view)
-
-       // iniciarListaPlanificaciones()
-
-        //if(viewModel.isClickedReloj){
-
-       /* }else{
-            layout_planificaciones.visibility = View.GONE
-        }*/
 
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         viewModel.setIdUsario(prefs)
@@ -98,21 +89,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         btnHora.setOnClickListener { mostrarReloj() }
 
         btnGuardar.setOnClickListener {
-
-          /*  if(tituloEvento.text.toString().isEmpty()){
-                tituloEvento.error = "Introduce un título"
-                return@setOnClickListener
-            }*/
-
             if(btnHora.text.toString().isEmpty()){
-                //color de texto
                 btnHora.setHintTextColor(Color.RED)
                 return@setOnClickListener
             }
 
-            val tituloEvento = viewModel.planes[viewModel.posicionPlan].titulo + " - " + formatoDiaMes(CalendarioUtilidades.fechaSeleccionada)
-
-            val evento = Evento(0, viewModel.idUsuario, tituloEvento, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado)
+            val evento = Evento(0, viewModel.idUsuario, viewModel.planes[viewModel.posicionPlan].titulo, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado)
             context?.let { it1 -> viewModel.nuevoEvento(it1, evento) }
             dismiss()
         }
@@ -177,25 +159,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             actividad = context
         }
     }
-
-   /* private fun showReminderFragment(isChecked: Boolean) {
-        val transaction = childFragmentManager.beginTransaction()
-
-        if (isChecked) {
-            // createDialogReminder()
-            val fragment = ReminderFragment()
-            transaction.replace(R.id.fragment_container_view, fragment)
-            transaction.addToBackStack(null)
-
-        }else{
-            val existingFragment = childFragmentManager.findFragmentById(R.id.fragment_container_view)
-            if (existingFragment is ReminderFragment) {
-                transaction.remove(existingFragment)
-                transaction.addToBackStack(null)  // Optional: Add to back stack if you want to navigate back
-            }
-        }
-        transaction.commit()
-    }*/
 
     private fun createDialogReminder(){
         val dialogReminder = Dialog(actividad)
@@ -276,14 +239,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         picker.show(requireFragmentManager(), "TimePicker")
     }
 
-   /* private fun mostrarPlanificaciones(){
-        btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
-
-        //layout_planificaciones.visibility = View.VISIBLE
-        iniciarListaPlanificaciones()
-    }
-*/
-
     override fun deleteClick(posicion: Int) {
         val dialogPlan = Dialog(actividad)
         dialogPlan.setContentView(R.layout.dialogo_eliminar_planificacion)
@@ -349,6 +304,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         iniciarListaPlanificaciones()

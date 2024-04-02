@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.Evento
-import java.time.LocalDate
 
 class AdaptadorListaManual(private val lista: List<String>) : RecyclerView.Adapter<AdaptadorListaManual.ViewHolderManual>() {
 

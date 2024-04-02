@@ -37,21 +37,12 @@ import com.example.plantea.presentacion.ApiInterface
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
 import java.util.Locale
 import java.util.UUID
-import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
-
 
 class CommonUtils{
 
@@ -64,12 +55,9 @@ class CommonUtils{
         val handler = Handler()
         var listener: TextToSpeechListener? = null
 
-        //var pictogramasCuaderno = ArrayList<Pictograma>()
-
+        // to call the listener when the speech is done
         private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
-                Log.i("prueba", "TextToSpeech initialization success")
-
                 textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String) {
                         Log.d("prueba", "onStart: $utteranceId")
@@ -90,8 +78,7 @@ class CommonUtils{
             }
         }
 
-
-
+        // check if the device is a mobile or a tablet
         fun isMobile(context: Context): Boolean {
             val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val display = windowManager.defaultDisplay
@@ -142,7 +129,6 @@ class CommonUtils{
             constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
         }
 
-
         private fun getRetrofitBuilder(): ApiInterface {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -183,7 +169,7 @@ class CommonUtils{
                     }
                 }
             } catch (e: IOException) {
-                // Handle exception
+                Log.d("ERROR", e.toString())
             }
 
             for (id in listaIds) {
@@ -239,7 +225,7 @@ class CommonUtils{
             }
         }
 
-        fun textAsBitmap(text: String?): Bitmap {
+        private fun textAsBitmap(text: String?): Bitmap {
             val paint = Paint(Paint.ANTI_ALIAS_FLAG)
             paint.textSize = 100f
             paint.color = Color.BLACK
@@ -337,16 +323,6 @@ class CommonUtils{
             return myPath.absolutePath
         }
 
-       /*  fun cambioOrientacion(context: Context): Int {
-            val orientation = context.resources.configuration.orientation
-            val gridValueManager: Int = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                2
-            } else {
-                4
-            }
-            return gridValueManager
-        }*/
-
          fun getPathFromUri(context: Context, uri: Uri): String {
             val filePath: String?
             val cursor = context.contentResolver.query(uri, null, null, null, null)
@@ -371,7 +347,7 @@ class CommonUtils{
             return pronombres.any { it.equals(query.lowercase(Locale.getDefault()), ignoreCase = true) }
         }
 
-        fun Snackbar.setIcon(drawable: Drawable, @ColorInt colorTint: Int): Snackbar {
+        private fun Snackbar.setIcon(drawable: Drawable, @ColorInt colorTint: Int): Snackbar {
             return this.apply {
                 setAction(" ") {dismiss()}
                 val textView = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
@@ -403,11 +379,5 @@ class CommonUtils{
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
-
-
     }
-
-
-
-
 }

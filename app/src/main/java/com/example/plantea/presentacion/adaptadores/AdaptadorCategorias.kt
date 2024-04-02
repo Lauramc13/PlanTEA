@@ -3,19 +3,16 @@ package com.example.plantea.presentacion.adaptadores
 import android.content.Context
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Categoria
-import com.example.plantea.dominio.Pictograma
 
 class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorCategorias.ViewHolderCategorias>() {
     lateinit var context: Context

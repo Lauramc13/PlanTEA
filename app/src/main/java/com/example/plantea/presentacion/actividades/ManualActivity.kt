@@ -167,6 +167,7 @@ class ManualActivity : AppCompatActivity() {
         }*/
     }
 
+    // function to toggle the card height based on the device
     private fun toggleCardHeight(cardView: MaterialCardView, icon: ImageView, view: RecyclerView, fragmentImgen: GifImageView?) {
         if(cardOpened == cardView){
             cardOpened = null
@@ -180,11 +181,12 @@ class ManualActivity : AppCompatActivity() {
             view.measure(View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
             val height = view.measuredHeight
             if(CommonUtils.isMobile(this)){
-                val totalHeight = height + dpToPx(270)
+                //height of the cardView
+                val totalHeight = height + (cardView.width*0.60).toInt() + dpToPx(70)
                 animateCard(cardView, icon, totalHeight, 90f)
             }else{
                 val totalHeight2 = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    height + dpToPx(470)
+                    height + (cardView.width*0.62).toInt() + dpToPx(30)
                 }else{
                     height + dpToPx(90)
                 }
@@ -196,7 +198,7 @@ class ManualActivity : AppCompatActivity() {
         }
     }
 
-    // Función para abrir o cerrar la card con animación y girar el icono correspondiente
+    // Function to animate the card
     private fun animateCard(cardView: MaterialCardView, icon: ImageView, newHeight: Int, degrees: Float){
 
         val animator = ValueAnimator.ofInt(cardView.height, newHeight)
@@ -213,7 +215,7 @@ class ManualActivity : AppCompatActivity() {
         animator.start()
     }
 
-    fun dpToPx(dp: Int): Int {
+    private fun dpToPx(dp: Int): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp.toFloat(),

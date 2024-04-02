@@ -36,11 +36,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             viewModel.abrirGaleria()
         }
         val extras = intent.extras
-        isConfiguration = if (extras != null) {
-            extras.getBoolean("editPreferences")
-        }else{
-            false
-        }
+        isConfiguration = extras?.getBoolean("editPreferences") ?: false
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
         if(isConfiguration){
@@ -123,7 +119,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         }
     }
 
-    fun createPickMedia() {
+    private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)

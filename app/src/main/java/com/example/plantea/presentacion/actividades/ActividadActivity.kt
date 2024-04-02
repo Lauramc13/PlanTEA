@@ -7,11 +7,8 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentContainerView
 import com.example.plantea.R
-import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.ActividadViewModel
-import com.google.android.material.transition.MaterialSharedAxis
 
 class ActividadActivity : AppCompatActivity() {
 
@@ -21,7 +18,6 @@ class ActividadActivity : AppCompatActivity() {
     private lateinit var cardObjeto: CardView
     private lateinit var frameVideo: FrameLayout
     private var atras : Button? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +29,8 @@ class ActividadActivity : AppCompatActivity() {
         cardVideo = findViewById(R.id.card_video)
         cardObjeto = findViewById(R.id.card_objeto)
         frameVideo = findViewById(R.id.webViewFrame)
-        val closeButton : ImageView = findViewById(R.id.closeYoutube)
         atras = findViewById(R.id.atras)
-
+        val closeButton : ImageView = findViewById(R.id.closeYoutube)
 
         closeButton.setOnClickListener {
             //stop the webview from playing

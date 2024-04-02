@@ -8,7 +8,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
@@ -35,11 +34,12 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var evento = Evento()
     var _dias = MutableLiveData<ArrayList<LocalDate?>>()
     lateinit var eventos: ArrayList<Evento>
+    var eventosDia = ArrayList<Evento>()
 
     var idUsuario = "0"
     val _fechaActual = MutableLiveData<String>()
     val _fechaSeleccionada = MutableLiveData<LocalDate>()
-    val _newEvent = SingleLiveEvent<Boolean>()
+    val _changedEvent = SingleLiveEvent<Boolean>()
 
     var isDiaSeleccionado = false
 
@@ -52,6 +52,8 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var minuto = 0
     var isPlanSeleccionado = false
     var posicionPlan = 0
+    var posicionCalendario = 0
+    var lastPositionCalendario = 0
     var planSeleccionado = 0
     lateinit var planes: ArrayList<Planificacion>
     var counter: Int = 1
@@ -67,7 +69,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     private var bottomSheetDialogFragment = NuevoEventoFragment()
 
-
+    //Create the notification based on the checkbox selected
     private fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent(context, OnAlarmReceiver::class.java)
@@ -94,16 +96,17 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             } else {
                 aviso.add(Calendar.MINUTE, -5)
             }
-
         }
 
         if(checkBoxPer){
             aviso.set(Calendar.HOUR_OF_DAY, selectedHour)
             aviso.set(Calendar.MINUTE, selectedMin)
         }
+
         alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
     }
 
+    //Cancel the notification
     fun cancelarNotificacion(context: Context, identificador: Int) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent()
@@ -128,20 +131,34 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
+        cita.id = id
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
         ft.commit()
 
         eventos.add(cita)
-        _newEvent.value = true
+        _changedEvent.value = true
 
-        /*val prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
-        val notificacion = prefs.getBoolean("notificaciones", false)
-        if (notificacion) {*/
         if(checkBoxMin || checkBoxHora || checkBoxDia || checkBoxPer){
             crearNotificacion(context, cita.fecha, CalendarioUtilidades.formatoHoraAviso(cita.hora), cita.nombre, id)
         }
+    }
+
+    fun deleteEvento(actividad: Activity, context: Context, posicion: Int){
+        cancelarNotificacion(context, eventosDia[posicion].id)
+        evento.eliminarEvento(actividad, eventosDia[posicion].id)
+        //eventos.remove(eventosDia[posicion])
+
+        // remove where eventosDia[posicion].id == eventos.id
+        for (i in eventos.indices) {
+            if (eventos[i].id == eventosDia[posicion].id) {
+                eventos.removeAt(i)
+                break
+            }
+        }
+        eventosDia.removeAt(posicion)
+        _changedEvent.value = true
     }
 
     fun planificar(context: Context) {
@@ -168,12 +185,12 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         _dias.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
     }
 
-    override fun diaSeleccionado(context: Context?, fecha: LocalDate) {
+    override fun diaSeleccionado(context: Context?, fecha: LocalDate, posicion: Int, selectedDay: Int) {
+        lastPositionCalendario = selectedDay
+        posicionCalendario = posicion
         CalendarioUtilidades.fechaSeleccionada = fecha
         _fechaSeleccionada.value = fecha
         isDiaSeleccionado = true
-        obtenerVistaMes()
-
     }
 
     fun configureUser(prefs : android.content.SharedPreferences, context: Context){
@@ -187,27 +204,24 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         idUsuario = userId.toString()
     }
 
-    fun createReloj(): MaterialTimePicker{
+    fun createReloj(): MaterialTimePicker {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
 
-        val picker = MaterialTimePicker.Builder()
+        return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setHour(currentHour)
             .setMinute(currentMinute)
             .setTheme(R.style.TimePicker)
             .setTitleText("Selecciona una hora")
             .build()
-
-        return picker
     }
 
     fun configureDataPlanSeleccionado(posicion: Int){
         isPlanSeleccionado = true
         posicionPlan = posicion
         planSeleccionado = planes[posicion].id
-        //nombreEvento = planes[posicion].titulo
     }
 
     fun editarClick(actividad: Activity, posicion: Int){

@@ -143,11 +143,11 @@ class CountDownFragment: Fragment() {
         progressBar.progress = 0
     }
 
-    private fun stopTimer(){
+    /*private fun stopTimer(){
         countDownTimer.cancel()
         viewModel.isRunning = false
         timerTextView.text = "00:00:00"
         startButton.setIconResource(R.drawable.svg_play)
         progressBar.progress = 0
-    }
+    }*/
 }

@@ -23,6 +23,7 @@ class ActividadViewModel: ViewModel() {
     val _timerEnded = MutableLiveData<Boolean>()
     @SuppressLint("SetJavaScriptEnabled")
 
+    // Function to configure the WebView
     fun configureWebView(webView: WebView) {
         webView.settings.javaScriptEnabled = true
 
@@ -38,6 +39,7 @@ class ActividadViewModel: ViewModel() {
         }
     }
 
+    // Function to show the dialog with the object information
     fun dialogObjeto(context: Context){
         val dialogo = Dialog(context)
         dialogo.setContentView(R.layout.dialogo_actividad)
