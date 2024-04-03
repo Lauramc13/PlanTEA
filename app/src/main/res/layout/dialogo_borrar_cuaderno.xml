@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="400dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
     android:background="@drawable/fondo_dialogo_login">
 
     <LinearLayout
@@ -30,8 +29,8 @@
             android:textColor="?colorOnSurface"
             android:textSize="@dimen/modalTitle"
             android:maxLines="2"
-            android:autoSizeMinTextSize="20sp"
             app:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="16sp"
             android:gravity="center"
             android:paddingEnd="40dp"
             android:paddingStart="40dp" />

@@ -104,8 +104,6 @@ class ConectorBD(ctx: Context?) {
         return id
     }
 
-
-
     fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?, idPictoAPI: String?, historiaPicto: String?, duracionPicto: String?): Boolean {
         db!!.execSQL("INSERT INTO RelacionPictogramaPlan (id_plan, id_pictograma, id_pictogramaAPI, historia, duracion) VALUES ('$idPlan', '$idPicto', '$idPictoAPI', '$historiaPicto', '$duracionPicto')")
         return true
@@ -258,7 +256,6 @@ class ConectorBD(ctx: Context?) {
     /*fun listarPictogramasCuadernoOLD(identificador: Int): Cursor {
         return db!!.rawQuery("SELECT nombre, imagen, id_cuaderno from Pictograma where id_cuaderno = $identificador", null)
     }*/
-
 
     fun listarPictogramasCuaderno(idCuaderno: Int): Cursor {
         return db!!.rawQuery(

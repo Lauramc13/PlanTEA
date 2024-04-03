@@ -208,7 +208,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
          val calendario = viewModel.dialog!!.findViewById<RecyclerView>(R.id.recycler_calendario)
          val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
          CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
-
+         
          viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuario, this) as ArrayList<Evento>
          viewModel.obtenerVistaMes()
 

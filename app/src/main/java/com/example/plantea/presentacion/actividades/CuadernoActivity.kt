@@ -109,7 +109,13 @@ class CuadernoActivity : AppCompatActivity() {
             }else{
                 viewModel.picto.borrarPictoCuaderno(this, it.id, viewModel.idCuaderno)
             }
-            viewModel.listaPictosAgregados.remove(it.id)
+
+            for (i in 0 until viewModel.listaPictosAgregados.size) {
+                if (viewModel.listaPictosAgregados[i] == it.id) {
+                    viewModel.listaPictosAgregados.removeAt(i)
+                    break
+                }
+            }
 
             for (i in 0 until viewModel.originalPictogramas!!.size) {
                 if (viewModel.originalPictogramas!![i].id == it.id) {
@@ -118,11 +124,6 @@ class CuadernoActivity : AppCompatActivity() {
                 }
             }
 
-            if(!viewModel.isBusqueda){
-                // retrieve fragment from backstack
-                val fragmentBackstack = supportFragmentManager.findFragmentById(R.id.layout_fragments) as CuadernoPictoEditFragment
-                fragmentBackstack.updateDataRemove(it)
-            }
         }
     }
 
@@ -130,6 +131,7 @@ class CuadernoActivity : AppCompatActivity() {
     private fun getPictogramas(query: String) {
         viewModel.isBusqueda = true
         viewModel.listaPictogramas?.clear()
+        viewModel.listaPictosAgregados.clear()
         CoroutineScope(Dispatchers.IO).launch {
             val dict = CommonUtils.getDataApi(query)
 
@@ -163,18 +165,16 @@ class CuadernoActivity : AppCompatActivity() {
             exite.id?.let { viewModel.listaPictosAgregados.add(it) }
         }
         return Pictograma(id.toString(), tituloMayus, archivo, 0, 0, favorito = false, sourceAPI = true)
-
     }
 
-
-    fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String) {
+    fun iniciarFragment(pictogramas: ArrayList<Pictograma>?, termometro: Boolean?, tituloCuaderno: String, posicion: Int) {
         val bundle = Bundle()
         bundle.putSerializable("key", pictogramas ?: ArrayList<Pictograma>())
         bundle.putSerializable("termometro", termometro)
         bundle.putString("tituloCuaderno", tituloCuaderno)
         viewModel.tituloCuaderno = tituloCuaderno
 
-         if (viewModel.isPlanificador) {
+         if (viewModel.isPlanificador && posicion > 2) {
              fragment = CuadernoPictoEditFragment()
              transaction = supportFragmentManager.beginTransaction()
              fragment.arguments = bundle

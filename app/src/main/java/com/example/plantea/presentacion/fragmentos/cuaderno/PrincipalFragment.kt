@@ -81,7 +81,7 @@ class PrincipalFragment : Fragment(){
             val activity = requireActivity() as CuadernoActivity
             viewModel.listaPictogramas = viewModel.picto.obtenerPictogramasCuaderno(activity, viewModel.idCuaderno) as ArrayList<Pictograma>?
             viewModel.originalPictogramas = viewModel.listaPictogramas?.let { ArrayList(it) }
-            activity.iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[it].termometro, viewModel.listaPictoCuaderno[it].titulo!!)
+            activity.iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[it].termometro, viewModel.listaPictoCuaderno[it].titulo!!, it)
         }
     }
 

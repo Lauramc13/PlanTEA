@@ -67,6 +67,8 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
             holder.duracion.text = duracion
             holder.duracion.visibility = View.VISIBLE
+        }else{
+            holder.duracion.visibility = View.INVISIBLE
         }
     }
 

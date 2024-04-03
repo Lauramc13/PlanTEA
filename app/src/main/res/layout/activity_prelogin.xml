@@ -41,11 +41,11 @@
         android:text="En PlanTEA podrás planificar tus eventos y actividades de manera sencilla y rápida."
         android:textColor="?colorOnSurface"
         android:textSize="@dimen/subtitle"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/texto"
         app:layout_constraintWidth_percent="0.85" />
-
 
     <ImageView
         android:id="@+id/imageView7"
@@ -76,10 +76,9 @@
         <Button
             android:id="@+id/comenzar"
             style="@style/Widget.Material3.Button"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="58dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:contentDescription="Boton iniciar sesion"
             android:elevation="0dp"
             android:fontFamily="@font/poppins_semibold"
@@ -95,7 +94,7 @@
             android:id="@+id/btn_registrar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
             android:contentDescription="Boton registrarse"
             android:fontFamily="@font/poppins_semibold"

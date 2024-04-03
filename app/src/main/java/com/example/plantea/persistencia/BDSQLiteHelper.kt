@@ -56,6 +56,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
 
             /*Se crea la nueva versión de la table*/
             onCreate(db)
+
         } catch (e: SQLException) {
             e.printStackTrace()
         }
@@ -92,8 +93,6 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
 
         //Cuaderno
         //var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
-
-
 
 
         db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('ESCALA', 'cuaderno_sintomas', 0)")
@@ -331,7 +330,6 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('ORIENTACION',  'categoria_profesores_servicio_orientacion'  , 25)")
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('ORIENTACION',  'categoria_profesores_servicio_orientacion1'  , 25)")
 
-        //PICTOGRAMAS CORRESPONDIENTES AL CUADERNO DE COMUNICACIÓN
         insertarPictoCuaderno(db, "IZQUIERDA", "cuaderno_escala_izquierda", 1)
         insertarPictoCuaderno(db, "DERECHA", "cuaderno_escala_derecha", 1)
         insertarPictoCuaderno(db, "SI", "cuaderno_escala_bien", 1)
@@ -400,6 +398,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertarPictoCuaderno(db, "TRANQUILO", "cuaderno_sentimientos_tranquilo1", 4)
         insertarPictoCuaderno(db, "VERGUENZA", "cuaderno_sentimientos_verguenza", 4)
      }
+
 
     @SuppressLint("Range")
     fun insertarPictoCuaderno(db: SQLiteDatabase, nombre: String, image: String, idCuaderno: Int){

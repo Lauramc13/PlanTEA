@@ -54,7 +54,7 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         CommonUtils.getGridValueCuaderno(vista, context, lstPictogramas, constraintLayout, 150, 200)
 
         context?.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val adaptador = viewModel.isPlanificador.let { context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, it, this, it1) }}!!
+        val adaptador = context?.let { it1 -> AdaptadorPictogramasCuaderno(viewModel.listaPictogramas, false, this, it1) }
         lstPictogramas.adapter = adaptador
         imageCerrar = vista.findViewById(R.id.icono_cuaderno_fragment)
         imageCerrar.setOnClickListener { viewModel._cerrarFragment.value = true}
@@ -79,7 +79,14 @@ class CuadernoPictogramasFragment : Fragment(), AdaptadorPictogramasCuaderno.OnI
         val iconoEscuchar = dialog.findViewById<ImageView>(R.id.icono_escuchar)
         seekbar = dialog.findViewById(R.id.seekBar_termometro)
         termometro = dialog.findViewById(R.id.termometro)
-        pictograma.setImageURI(Uri.parse(viewModel.listaPictogramas?.get(posicion)?.imagen ))
+        val identifier = context?.resources?.getIdentifier(viewModel.listaPictogramas?.get(posicion)?.imagen, "drawable", context!!.packageName)
+        if(identifier == 0) {
+            pictograma.setImageURI(Uri.parse(viewModel.listaPictogramas?.get(posicion)?.imagen))
+        }else{
+            if (identifier != null) {
+                pictograma.setImageResource(identifier)
+            }
+        }
         tituloPictograma.text = viewModel.listaPictogramas?.get(posicion)?.titulo
         if(!viewModel.isTermometro){
             termometro.visibility = View.GONE

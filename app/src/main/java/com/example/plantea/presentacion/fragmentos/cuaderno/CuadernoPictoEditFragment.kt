@@ -228,53 +228,73 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
     }
 
     override fun pictogramaCuaderno(posicion: Int) {
-        if(posicion == viewModel.listaPictogramas?.lastIndex && viewModel.isPlanificador){
-            mostrarDialogoCrearPicto()
-        }else{
-            val dialog = Dialog(requireContext())
-            dialog.setContentView(R.layout.dialogo_termometro)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
-            val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
-            val iconoEscuchar = dialog.findViewById<ImageView>(R.id.icono_escuchar)
-            seekbar = dialog.findViewById(R.id.seekBar_termometro)
-            termometro = dialog.findViewById(R.id.termometro)
-            pictograma.setImageURI(Uri.parse(viewModel.listaPictogramas?.get(posicion)?.imagen ))
-            tituloPictograma.text = viewModel.listaPictogramas?.get(posicion)?.titulo
-            if(!viewModel.isTermometro){
-                termometro.visibility = View.GONE
-            }
-
-            iconoEscuchar.setOnClickListener {
-                CommonUtils.textToSpeechWord(viewModel.listaPictogramas?.get(posicion)?.titulo )
-            }
-
-            //Botón cerrar
-            imageCerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
-            imageCerrar.setOnClickListener { dialog.dismiss() }
-
-            //Funcionalidad termómetro: cambio de color según el progreso
-            seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    // Write code to perform some action when progress is changed.
-                    if (progress < 45) {
-                        seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(138, 255, 126))
-                    } else if (progress < 90) {
-                        seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(255, 193, 79))
-                    } else if (progress < 100) {
-                        seekBar.progressTintList = ColorStateList.valueOf(Color.rgb(239, 35, 60))
+        if(!viewModel.isBusqueda) {
+            if (posicion == viewModel.listaPictogramas?.lastIndex && viewModel.isPlanificador) {
+                mostrarDialogoCrearPicto()
+            } else {
+                val dialog = Dialog(requireContext())
+                dialog.setContentView(R.layout.dialogo_termometro)
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                val pictograma = dialog.findViewById<ShapeableImageView>(R.id.img_pictograma)
+                val tituloPictograma = dialog.findViewById<TextView>(R.id.lbl_pictograma)
+                val iconoEscuchar = dialog.findViewById<ImageView>(R.id.icono_escuchar)
+                seekbar = dialog.findViewById(R.id.seekBar_termometro)
+                termometro = dialog.findViewById(R.id.termometro)
+                val identifier = context?.resources?.getIdentifier(
+                    viewModel.listaPictogramas?.get(posicion)?.imagen,
+                    "drawable",
+                    requireContext().packageName
+                )
+                if (identifier == 0) {
+                    pictograma.setImageURI(Uri.parse(viewModel.listaPictogramas?.get(posicion)?.imagen))
+                } else {
+                    if (identifier != null) {
+                        pictograma.setImageResource(identifier)
                     }
                 }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar) {
-                    // Write code to perform some action when touch is started.
+                tituloPictograma.text = viewModel.listaPictogramas?.get(posicion)?.titulo
+                if (!viewModel.isTermometro) {
+                    termometro.visibility = View.GONE
                 }
 
-                override fun onStopTrackingTouch(seekBar: SeekBar) {
-                    // Write code to perform some action when touch is stopped.
+                iconoEscuchar.setOnClickListener {
+                    CommonUtils.textToSpeechWord(viewModel.listaPictogramas?.get(posicion)?.titulo)
                 }
-            })
-            dialog.show()
+
+                //Botón cerrar
+                imageCerrar = dialog.findViewById(R.id.icono_CerrarDialogoEvento)
+                imageCerrar.setOnClickListener { dialog.dismiss() }
+
+                //Funcionalidad termómetro: cambio de color según el progreso
+                seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        // Write code to perform some action when progress is changed.
+                        if (progress < 45) {
+                            seekBar.progressTintList =
+                                ColorStateList.valueOf(Color.rgb(138, 255, 126))
+                        } else if (progress < 90) {
+                            seekBar.progressTintList =
+                                ColorStateList.valueOf(Color.rgb(255, 193, 79))
+                        } else if (progress < 100) {
+                            seekBar.progressTintList =
+                                ColorStateList.valueOf(Color.rgb(239, 35, 60))
+                        }
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar) {
+                        // Write code to perform some action when touch is started.
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar) {
+                        // Write code to perform some action when touch is stopped.
+                    }
+                })
+                dialog.show()
+            }
         }
     }
 

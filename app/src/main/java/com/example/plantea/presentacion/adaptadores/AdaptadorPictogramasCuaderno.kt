@@ -71,11 +71,6 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
             holder.btnAniadir.visibility = View.INVISIBLE
             listener?.addPicto(listaPictogramas!![position])
         }
-
-        holder.borrar.setOnClickListener {
-            val sourceAPI = listaPictogramas!![position].sourceAPI
-            listener?.removePicto(listaPictogramas!![position], sourceAPI, false)
-        }
     }
 
     override fun getItemCount(): Int {
@@ -99,6 +94,19 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
             btnNoAniair = itemView.findViewById<View>(R.id.btn_aniadido) as Button
             borrar = itemView.findViewById<View>(R.id.btn_borrarPicto) as ImageView
             itemView.setOnClickListener(this)
+
+            borrar.setOnClickListener {
+                val posicion = bindingAdapterPosition
+                val sourceAPI = listaPictogramas!![posicion].sourceAPI
+                listener?.removePicto(listaPictogramas!![posicion], sourceAPI, false)
+
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listaPictogramas!!.removeAt(position)
+                    notifyItemRemoved(position)
+                }
+            }
+
         }
 
         override fun onClick(view: View) {

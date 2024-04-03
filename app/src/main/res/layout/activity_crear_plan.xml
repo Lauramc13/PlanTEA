@@ -34,7 +34,7 @@
             android:layout_marginStart="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Planificación"
-            android:textSize="@dimen/title" />
+            android:textSize="@dimen/titleNavigation" />
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
