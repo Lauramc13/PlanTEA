@@ -3,6 +3,7 @@ package com.example.plantea.dominio
 import android.app.Activity
 import android.content.Context
 import java.io.Serializable
+import java.time.LocalDate
 
 class Planificacion : Serializable {
     lateinit var titulo: String
@@ -47,9 +48,9 @@ class Planificacion : Serializable {
     }
 
     //Mostrar la planificacion a seguir
-    fun mostrarPlanificacion(idUsuario: String, fecha: String, context: Context?): ArrayList<*> {
+    fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?): ArrayList<*> {
         listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, fecha, context) as ArrayList<Planificacion>
+        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, id, context) as ArrayList<Planificacion>
         return listaPlanes
     }
 

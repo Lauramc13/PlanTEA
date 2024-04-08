@@ -62,6 +62,10 @@ class Evento {
         return gestorEventos.obtenerTituloEvento(idUsuario, fecha, context)
     }
 
+    fun checkEventosDia(idUsuario: String, fecha: String, context: Context?): Int {
+        return gestorEventos.checkEventosDia(idUsuario, fecha, context)
+    }
+
     companion object {
         @JvmField
         var listaEventos: ArrayList<Evento>? = ArrayList()

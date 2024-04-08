@@ -9,6 +9,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -225,7 +226,7 @@ class CommonUtils{
             }
         }
 
-        private fun textAsBitmap(text: String?): Bitmap {
+        private fun textAsBitmapOLD(text: String?): Bitmap {
             val paint = Paint(Paint.ANTI_ALIAS_FLAG)
             paint.textSize = 100f
             paint.color = Color.BLACK
@@ -236,6 +237,29 @@ class CommonUtils{
             val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(image)
             canvas.drawText(text!!, 0f, baseline, paint)
+            return image
+        }
+
+        private fun textAsBitmap(text: String?): Bitmap {
+            val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+            paint.textSize = 100f
+            paint.color = Color.BLACK
+            paint.textAlign = Paint.Align.LEFT
+            val textBounds = Rect()
+            paint.getTextBounds(text, 0, text!!.length, textBounds)
+            var width = (paint.measureText(text) + 0.5f).toInt()
+
+            if (width > 300) {
+                val textSize = 300f / width * 100
+                paint.textSize = textSize
+                width = 300
+            }
+
+
+            val image = Bitmap.createBitmap(width, 300, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(image)
+            canvas.drawText(text, 0f, 150f - textBounds.exactCenterY(), paint)
+
             return image
         }
 
@@ -312,8 +336,9 @@ class CommonUtils{
             val myPath = File(dirImages, "$nombre.png")
             val fos: FileOutputStream?
             try {
+                val resizedBitmap = Bitmap.createScaledBitmap(imagen, 300, 300, false)
                 fos = FileOutputStream(myPath)
-                imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
+                resizedBitmap.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
                 fos.flush()
             } catch (ex: FileNotFoundException) {
                 ex.printStackTrace()

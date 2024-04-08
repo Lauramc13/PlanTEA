@@ -140,6 +140,24 @@
                     app:iconSize="25dp"
                     app:iconTint="?colorOnSurface" />
 
+                <Button
+                    android:id="@+id/guardarButtonPDF"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="20dp"
+                    android:visibility="invisible"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="GUARDAR PDF"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="13sp"
+                    app:cornerRadius="25dp"
+                    app:icon="@drawable/ic_baseline_save_24"
+                    app:iconSize="25dp"
+                    app:iconTint="?colorOnSurface" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"

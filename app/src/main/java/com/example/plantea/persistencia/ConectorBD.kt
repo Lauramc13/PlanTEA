@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.util.Log
 import com.example.plantea.dominio.Usuario
 
@@ -93,7 +94,7 @@ class ConectorBD(ctx: Context?) {
     }*/
 
     /*Insertar una nueva planificacion*/
-    fun insertarPlanificacion(idUsuario: String, titulo: String?): Int {
+    fun insertarPlanificacionOLD(idUsuario: String, titulo: String?): Int {
         var id = 0
         db!!.execSQL("INSERT INTO Planificacion (titulo, id_usuario) VALUES ('$titulo', '$idUsuario')")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
@@ -101,6 +102,25 @@ class ConectorBD(ctx: Context?) {
             id = c.getInt(0)
         }
         c.close()
+        return id
+    }
+
+    fun insertarPlanificacion(idUsuario: String, titulo: String?): Int {
+        var id = 0
+        val values = ContentValues()
+        values.put("titulo", titulo)
+        values.put("id_usuario", idUsuario)
+
+        try {
+            val insertedId = db?.insertOrThrow("Planificacion", null, values)
+            if (insertedId != null) {
+                id = insertedId.toInt()
+            }
+        } catch (e: SQLiteException) {
+            // Handle any potential exceptions
+            e.printStackTrace()
+        }
+
         return id
     }
 
@@ -151,15 +171,15 @@ class ConectorBD(ctx: Context?) {
 
     /*Listar pictogramas de un plan a seguir*/
 
-    fun obtenerPlanificacion(idUsuario: String, fecha: String): Cursor {
+    fun obtenerPlanificacion(idUsuario: String, id: String): Cursor {
         return db!!.rawQuery(
             "SELECT CombinedPictograms.nombre, CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.duracion, RelacionPictogramaPlan.id_pictogramaAPI " +
                     "FROM (SELECT id, nombre, imagen, id_categoria FROM Pictograma UNION SELECT id, nombre, imagen, NULL AS id_categoria FROM PictogramaAPI) AS CombinedPictograms " +
                     "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id OR RelacionPictogramaPlan.id_pictogramaAPI = CombinedPictograms.id " +
                     "INNER JOIN Evento ON RelacionPictogramaPlan.id_plan = Evento.id_plan " +
-                    "WHERE Evento.fecha = ? AND Evento.visible = 1 AND Evento.id_usuario = ? " +
+                    "WHERE Evento.id = ? AND Evento.visible = 1 AND Evento.id_usuario = ? " +
                     "ORDER BY RelacionPictogramaPlan.id",
-            arrayOf(fecha, idUsuario)
+            arrayOf(id, idUsuario)
         )
     }
 
@@ -174,7 +194,7 @@ class ConectorBD(ctx: Context?) {
     }*/
 
     fun listarTituloEvento(idUsuario: String, fecha: String): Cursor {
-        return db!!.rawQuery("SELECT nombre from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
+        return db!!.rawQuery("SELECT id, nombre from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
     }
 
     /*Insertar una nueva subcategoria*/
@@ -529,6 +549,10 @@ class ConectorBD(ctx: Context?) {
 
     fun checkCategoriaExiste(titulo: String, idUsuario: String): Cursor {
         return db!!.rawQuery("SELECT COUNT(*) FROM Categoria WHERE titulo = '$titulo' AND (id_usuario = '$idUsuario' OR id_usuario IS NULL)", null)
+    }
+
+    fun existsVisibleEventoDia(idUsuario: String, fecha: String): Cursor {
+        return db!!.rawQuery("SELECT id_plan FROM Evento WHERE visible = 1 AND id_usuario = '$idUsuario' AND fecha = '$fecha'", null)
     }
 
     /*  fun obtenerTituloCategoria(idCategoria: Int): Any {

@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -274,9 +275,11 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         val creada = viewModel.idUsuario.let { viewModel.plan.crearPlanificacion(actividad, it, viewModel.planes[posicion].titulo + " " + viewModel.counter.toString()) }
         viewModel.plan.addPictogramasPlan(creada, actividad, pictogramas)
         if (creada != 0) {
+            Log.d("idPlan", creada.toString())
             CommonUtils.showSnackbar(vista, requireContext(), "Planificación duplicada")
             val planificacion = viewModel.planes[posicion]
             planificacion.titulo = planificacion.titulo + " " + viewModel.counter.toString()
+            planificacion.id = creada
             viewModel.planes.add(planificacion)
             adaptador.notifyItemInserted(viewModel.planes.size)
             listaPlanificaciones.scrollToPosition(adaptador.itemCount - 1)

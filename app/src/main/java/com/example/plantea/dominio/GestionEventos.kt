@@ -73,9 +73,21 @@ class GestionEventos {
         val evento = Evento()
 
         if (c.moveToFirst()) {
-            evento.nombre = c.getString(0)
+            evento.id = c.getInt(0)
+            evento.nombre = c.getString(1)
         }
         conectorBD!!.cerrar()
         return evento
+    }
+
+    fun checkEventosDia(idUsuario: String, fecha: String, context: Context?): Int {
+        conectorBD = ConectorBD(context)
+        conectorBD!!.abrir()
+        val c = conectorBD!!.existsVisibleEventoDia(idUsuario, fecha)
+        if (c.moveToFirst()) {
+            return c.getInt(0)
+        }
+        conectorBD!!.cerrar()
+        return -1
     }
 }

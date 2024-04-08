@@ -176,6 +176,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_plan"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/guardarButtonPDF"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="GUARDAR PDF"
+                android:textColor="?colorOnSurface"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_baseline_save_24"
+                app:iconSize="25dp"
+                app:iconTint="?colorOnSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guardarButton"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan"
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

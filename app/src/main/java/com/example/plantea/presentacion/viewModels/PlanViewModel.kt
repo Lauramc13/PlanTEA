@@ -10,11 +10,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -43,10 +45,11 @@ import java.util.Stack
 class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener, AdaptadorPresentacion.OnItemSelectedListener {
     var fechaSeleccionada : LocalDate = LocalDate.now()
     var _diaText = MutableLiveData<String>()
-    val _tituloLiveData: MutableLiveData<String> = MutableLiveData()
+    var tituloPlan = String()
     val _fechaActual = MutableLiveData<String>()
     val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
     val _planLiveData: MutableLiveData<ArrayList<Pictograma>?> = MutableLiveData()
+    val _noEvents = SingleLiveEvent<Boolean>()
     var _pasosCompletados = SingleLiveEvent<Stack<Int>?>()
 
     var speechInProgress = false
@@ -100,7 +103,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         selectedDate = dateFormatter.format(fecha)
 
         val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
-        val dayOfWeek = dayOfWeekFormatter.format(fecha)
+        val dayOfWeek = dayOfWeekFormatter.format(fecha).replaceFirstChar{ if (it.isLowerCase()) it.titlecase() else it.toString() }
         val dayOfMonth = fecha.dayOfMonth.toString()
         val monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.getDefault())
         val month = monthFormatter.format(fecha)
@@ -116,19 +119,31 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
 
     fun mostrarPlan(context: Context?) {
         _pasosCompletados.value = Stack()
-        listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, selectedDate, context) } as ArrayList<Pictograma>
+        //check if there is a plan for the selected date with visibility 1
+        val check = evento.checkEventosDia(idUsuario, selectedDate, context)
 
-        //Mostrar título de la planificación
-        evento = evento.obtenerEventoPlan(idUsuario, selectedDate, context)
-
-        _tituloLiveData.value = evento.nombre
-        _planLiveData.value = listaPictogramas
+        if(check > -1){
+            //existe un evento visible para este dia
+            Toast.makeText(context, "Evento encontrado id_plan: $check", Toast.LENGTH_SHORT).show()
+            evento = evento.obtenerEventoPlan(idUsuario, selectedDate, context)
+            listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, evento.id.toString(), context) } as ArrayList<Pictograma>
+            tituloPlan = evento.nombre.toString()
+            _planLiveData.value = listaPictogramas
+        }else{
+            _noEvents.value = true
+        }
     }
 
-    fun configureDataEvento(){
-        _tituloLiveData.value = _tituloLiveData.value
-        _planLiveData.value = _planLiveData.value
-        _pasosCompletados.value = _pasosCompletados.value
+    fun configureDataEvento(context: Context?){
+        val check = evento.checkEventosDia(idUsuario, selectedDate, context as Activity)
+
+        if(check > -1){
+            _planLiveData.value = _planLiveData.value
+            _pasosCompletados.value = _pasosCompletados.value
+        }else{
+            _noEvents.value = true
+
+        }
     }
 
     fun mostrarPlanificaciones(): ArrayList<PlanificacionItem> {

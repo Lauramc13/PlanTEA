@@ -1,21 +1,31 @@
 package com.example.plantea.presentacion.actividades
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
 import com.google.android.material.textfield.TextInputLayout
+import java.io.File
+import java.io.FileOutputStream
 import java.util.UUID
 
 
@@ -23,6 +33,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
     private lateinit var escucharButtonPalabra : Button
     private lateinit var escucharButtonFrase : Button
     private lateinit var guardarButton : Button
+    private lateinit var guardarPDFButton : Button
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
     private var atras : Button? = null
@@ -47,6 +58,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
         escucharButtonFrase = findViewById(R.id.escucharButtonFrase)
         guardarButton = findViewById(R.id.guardarButton)
+        guardarPDFButton = findViewById(R.id.guardarButtonPDF)
         textoATraducir = findViewById(R.id.textoTraducir)
         textoATraducir.editText?.setText(viewModel.textInputContent)
         atras = findViewById(R.id.atras)
@@ -137,6 +149,16 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             }
         }
 
+        guardarPDFButton.setOnClickListener {
+            if(viewModel.listaPictogramas.isNotEmpty()){
+                viewModel.dialogoTraduccion(this, findViewById(android.R.id.content))
+            }else{
+                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se puede guardar una traducción sin pictogramas")
+            }
+        }
+
+
+
         /////////////  Observers  //////////////
 
         //Cuando se actualiza la lista de pictogramas, actualizamos el adaptador
@@ -157,11 +179,13 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 escucharButtonFrase.visibility = View.VISIBLE
                 if(isPlanificador){
                     guardarButton.visibility = View.VISIBLE
+                    guardarPDFButton.visibility = View.VISIBLE
                 }
             }else{
                 escucharButtonPalabra.visibility = View.GONE
                 escucharButtonFrase.visibility = View.GONE
                 guardarButton.visibility = View.GONE
+                guardarPDFButton.visibility = View.GONE
             }
         }
 
@@ -187,6 +211,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 val nombreFile = viewModel.listaPictogramas[viewModel.posicionSelected].titulo + UUID.randomUUID().toString()
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
+
                 viewModel.ruta = CommonUtils.guardarImagen(applicationContext, nombreFile, viewModel.bitmap!!)
                 viewModel.imageSelected()
             } else {

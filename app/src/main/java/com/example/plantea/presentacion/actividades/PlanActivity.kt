@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -29,6 +30,8 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.example.plantea.presentacion.viewModels.PlanViewModel
 import com.google.android.material.button.MaterialButton
 import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 import java.util.Stack
 
 class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
@@ -114,7 +117,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
             if(savedInstanceState == null){
                 viewModel.mostrarPlan(this)
             }else{
-                viewModel.configureDataEvento()
+                viewModel.configureDataEvento(this)
             }
         }
 
@@ -208,7 +211,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
          val calendario = viewModel.dialog!!.findViewById<RecyclerView>(R.id.recycler_calendario)
          val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
          CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
-         
+
          viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuario, this) as ArrayList<Evento>
          viewModel.obtenerVistaMes()
 
@@ -244,25 +247,13 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
     @SuppressLint("NotifyDataSetChanged")
     private fun observe(){
         viewModel._diaText.observe(this) { dia.text = it }
-        viewModel._tituloLiveData.observe(this) { titulo.text = it }
+        //viewModel._tituloLiveData.observe(this) { titulo.text = it }
 
         viewModel._planLiveData.observe(this){
             val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
 
-            //TODO: PETA AQUI CUANDO ARRAYlIST ES NULL
             if (it != null) {
-                if(it.isEmpty()){
-                    lblMensaje.visibility = View.VISIBLE
-                    iconoDeshacer.visibility = View.INVISIBLE
-                    iconoDeshacerTodas.visibility = View.INVISIBLE
-                    iconoMarcar.visibility = View.INVISIBLE
-                    iconoMarcarTodas.visibility = View.INVISIBLE
-                    iconoEscuchar.visibility = View.INVISIBLE
-                    iconoReproducir.visibility = View.INVISIBLE
-                    if(isPlanificador) {
-                        buttonPlanNuevo.visibility = View.VISIBLE
-                    }
-                }else{
+                    titulo.text = viewModel.tituloPlan
                     lblMensaje.visibility = View.INVISIBLE
                     buttonPlanNuevo.visibility = View.INVISIBLE
                     iconoDeshacer.visibility = View.VISIBLE
@@ -271,10 +262,13 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                     iconoMarcarTodas.visibility = View.VISIBLE
                     iconoEscuchar.visibility = View.VISIBLE
                     iconoReproducir.visibility = View.VISIBLE
-
                     iconoMarcar.isEnabled = true
                     iconoMarcarTodas.isEnabled = true
-                }
+                    viewModel.recyclerView.visibility = View.VISIBLE
+
+
+            }else{
+                Toast.makeText(this, "Error al cargar los pictogramas", Toast.LENGTH_SHORT).show()
             }
 
             viewModel.adaptador = AdaptadorPresentacion(it, viewModel)
@@ -290,6 +284,26 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
             }else{
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcarTodas.visibility = View.INVISIBLE
+            }
+        }
+
+        viewModel._noEvents.observe(this){
+            val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
+            if(it){
+                titulo.text = ""
+                lblMensaje.visibility = View.VISIBLE
+                iconoDeshacer.visibility = View.INVISIBLE
+                iconoDeshacerTodas.visibility = View.INVISIBLE
+                iconoMarcar.visibility = View.INVISIBLE
+                iconoMarcarTodas.visibility = View.INVISIBLE
+                iconoEscuchar.visibility = View.INVISIBLE
+                iconoReproducir.visibility = View.INVISIBLE
+
+                if(isPlanificador) {
+                    buttonPlanNuevo.visibility = View.VISIBLE
+                }
+
+                viewModel.recyclerView.visibility = View.INVISIBLE
             }
         }
 
@@ -329,8 +343,12 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
     private fun configureParameters(){
         viewModel._pasosCompletados.value = Stack()
-        viewModel._tituloLiveData.value = intent.getStringExtra("titulo")
+        viewModel.tituloPlan = intent.getStringExtra("titulo")!!
         viewModel.listaPictogramas = intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>
+        val fecha = intent.getSerializableExtra("fecha") as LocalDate
+        val diaSemana = fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("es")).replaceFirstChar { it.uppercase() }
+        val mes = fecha.month.getDisplayName(TextStyle.FULL, Locale("es"))
+        dia.text = "$diaSemana, ${fecha.dayOfMonth} de $mes"
         viewModel._planLiveData.value = viewModel.listaPictogramas
     }
 

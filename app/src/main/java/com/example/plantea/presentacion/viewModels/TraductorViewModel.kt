@@ -5,16 +5,25 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.graphics.pdf.PdfDocument
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Pictograma
@@ -32,6 +41,8 @@ import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.Locale
 import com.example.plantea.R
+import java.io.File
+import java.io.FileOutputStream
 
 
 class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSelectedListener{
@@ -163,6 +174,31 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         dialog.show()
     }
 
+    fun dialogoTraduccion(context: Context, view: View){
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.dialogo_historia_traduccion)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val titulo : TextInputLayout = dialog.findViewById(R.id.txt_title)
+        val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
+        val btnCrear : Button = dialog.findViewById(R.id.btn_create)
+
+        btnCrear.setOnClickListener{
+            var tituloString = titulo.editText?.text.toString()
+
+            //if tituloString is empty -> error
+            if(tituloString.isEmpty()){
+                tituloString = ""
+            }
+
+            guardarPDF(context, view, tituloString.uppercase())
+            CommonUtils.hideKeyboard(context, titulo)
+            dialog.dismiss()
+        }
+
+        iconoCerrar.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
     override fun onItemSeleccionado(posicion: Int, context: Context){
         try {
             val entryList =  listaPictoBuscador[posicion].entries.toList()
@@ -203,4 +239,85 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         listaPictogramas[posicionSelected].imagen = ruta
         adaptador.notifyItemChanged(posicionSelected)
     }
+
+    fun guardarPDF(context: Context, view: View, title: String){
+        // Create a new PDF document
+        val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val baseFilename = "Traduccion.pdf"
+        var filename = baseFilename
+        var counter = 1
+        val pdfDocument = PdfDocument()
+
+        while (File(downloadsDirectory, filename).exists()) {
+            filename = "${baseFilename.substringBeforeLast(".pdf")}_$counter.pdf"
+            counter++
+        }
+
+        val outputPath = File(downloadsDirectory, filename).absolutePath
+
+        // Create a new page and
+        var columna = 0
+        var fila = 0
+
+        try {
+            val pageInfo = PdfDocument.PageInfo.Builder(2480, 3508, 1).create()
+            val page = pdfDocument.startPage(pageInfo)
+            val canvas = page.canvas
+
+            val paint = android.graphics.Paint()
+            paint.color = Color.BLACK
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD))
+
+            var top= 50f
+
+            if(title != ""){
+                paint.textSize = 100f
+                val textWidth = paint.measureText(title)
+                val textX = (2480 - textWidth) / 2 // para calcular el centro del texto
+                canvas.drawText(title, textX, 200f, paint)
+                top = 300f
+            }
+
+
+            for (pictograma in listaPictogramas) {
+
+                val drawableString = pictograma.imagen
+                val bitmap = BitmapFactory.decodeFile(drawableString)
+                val imageWidth = bitmap.width.toFloat()
+                val imageX = columna * 400f + (400f - imageWidth) / 2
+
+                bitmap?.let {
+                    canvas.drawBitmap(it, imageX+50f, fila*450f+top, null)
+                }
+
+                paint.textSize = 50f
+                val textWidth = paint.measureText(pictograma.titulo!!)
+
+                val textX = columna * 400f + (400f - textWidth) / 2 // para calcular el centro del texto
+                canvas.drawText(pictograma.titulo!!, textX+50f, (fila*450f)+350f+top, paint)
+
+                //if pictograma.titulo ends with .
+                if (columna == 5 || pictograma.titulo!!.endsWith(".") ) {
+                    columna = 0
+                    fila++
+                }else{
+                    columna++
+                }
+            }
+
+            pdfDocument.finishPage(page)
+            val file = FileOutputStream(outputPath)
+            pdfDocument.writeTo(file)
+            pdfDocument.close()
+            file.close()
+
+            Log.d("PDF", "PDF creado en $outputPath")
+            CommonUtils.showSnackbar(view, context, "PDF creado en /Download/$filename")
+
+        } catch (e: Exception) {
+            Log.e("ERROR", "Error creating PDF: ${e.message}", e)
+        }
+
+    }
+
 }

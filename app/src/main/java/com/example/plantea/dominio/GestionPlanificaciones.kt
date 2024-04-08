@@ -118,12 +118,11 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramas(idUsuario: String, fecha: String, context: Context?): ArrayList<*> {
-
+    fun obtenerPictogramas(idUsuario: String, id: String, context: Context?): ArrayList<*> {
         conectorBD = ConectorBD(context)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
-        val c = conectorBD.obtenerPlanificacion(idUsuario, fecha)
+        val c = conectorBD.obtenerPlanificacion(idUsuario, id)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()

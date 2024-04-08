@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -348,9 +349,11 @@ class CrearPlanActivity : AppCompatActivity(){
                 val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
 
                 if (creada == true) {
-                    CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Planificación " + txtTituloPlan.text.toString() + " creada")
+                    Toast.makeText(this, "Planificación " + txtTituloPlan.text.toString() + " creada", Toast.LENGTH_SHORT).show()
+                    // CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Planificación " + txtTituloPlan.text.toString() + " creada")
                 } else {
-                    CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al crear la planificación")
+                    Toast.makeText(this, "Error al crear la planificación", Toast.LENGTH_SHORT).show()
+                //    CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al crear la planificación")
                 }
             }
 
