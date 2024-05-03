@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -122,7 +123,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
                 //}
                 }else{
                     switchReminder.isChecked = false
-                    CommonUtils.showSnackbar(vista, requireContext(), "Plantea necesita permisos para mostrar notificaciones")
+                    Toast.makeText(requireContext(), R.string.toast_permisos, Toast.LENGTH_SHORT).show()
                 }
             }/*else{
                 showReminderFragment(isChecked)*/
@@ -142,7 +143,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 val rootView = activity?.window?.decorView?.findViewById<View>(android.R.id.content)
 
-                val snackbar = rootView?.let { Snackbar.make(it, "Plantea necesita permisos para mostrar notificaciones", Snackbar.LENGTH_INDEFINITE) }
+                val snackbar = rootView?.let { Snackbar.make(it, R.string.toast_permisos, Snackbar.LENGTH_INDEFINITE) }
                 snackbar?.setAction("OK") {
                     requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
@@ -185,7 +186,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         checkBoxPersonalizar.setOnCheckedChangeListener { _, isChecked ->
             viewModel.checkBoxPer = isChecked
             if (isChecked) {
-                val picker = viewModel.createReloj()
+                val picker = viewModel.createReloj(requireContext())
                 picker.addOnPositiveButtonClickListener {
                     viewModel.selectedHour = picker.hour
                     viewModel.selectedMin = picker.minute
@@ -225,7 +226,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     }
 
     private fun mostrarReloj() {
-        val picker = viewModel.createReloj()
+        val picker = viewModel.createReloj(requireContext())
 
         picker.addOnPositiveButtonClickListener {
             viewModel.isClickedReloj = true
@@ -250,7 +251,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         val btnCancelar = dialogPlan.findViewById<Button>(R.id.btn_cancelarPlan)
 
         btnEliminar.setOnClickListener {
-            CommonUtils.showSnackbar(vista, requireContext(), "Planificación eliminada")
+            Toast.makeText(actividad, R.string.toast_planificacion_eliminada, Toast.LENGTH_SHORT).show()
             viewModel.plan.eliminarPlanificacion(actividad, viewModel.planes[posicion].id)
             adaptador.notifyItemRemoved(posicion)
             viewModel.planes.removeAt(posicion)
@@ -271,12 +272,13 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     }
 
     override fun duplicateClick(posicion: Int) {
-        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.planes[posicion].id) as ArrayList<Pictograma>
+        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.planes[posicion].id, Locale.getDefault().language) as ArrayList<Pictograma>
         val creada = viewModel.idUsuario.let { viewModel.plan.crearPlanificacion(actividad, it, viewModel.planes[posicion].titulo + " " + viewModel.counter.toString()) }
         viewModel.plan.addPictogramasPlan(creada, actividad, pictogramas)
+
         if (creada != 0) {
             Log.d("idPlan", creada.toString())
-            CommonUtils.showSnackbar(vista, requireContext(), "Planificación duplicada")
+            Toast.makeText(actividad, R.string.toast_planificacion_duplicada, Toast.LENGTH_SHORT).show()
             val planificacion = viewModel.planes[posicion]
             planificacion.titulo = planificacion.titulo + " " + viewModel.counter.toString()
             planificacion.id = creada
@@ -284,9 +286,10 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             adaptador.notifyItemInserted(viewModel.planes.size)
             listaPlanificaciones.scrollToPosition(adaptador.itemCount - 1)
         } else {
-            CommonUtils.showSnackbar(vista, requireContext(), "Error al duplicar planificación")
+            Toast.makeText(actividad, R.string.toast_error_planificacion_duplicada, Toast.LENGTH_SHORT).show()
 
         }
+
         viewModel.counter++ //Incrementamos el contador para que el título de la planificación duplicada sea diferente
 
     }

@@ -14,6 +14,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import java.time.LocalDate
+import java.util.Locale
 
 class CalendarioActivity : AppCompatActivity() {
     private lateinit var calendario: RecyclerView
@@ -72,11 +73,16 @@ class CalendarioActivity : AppCompatActivity() {
         viewModel._dias.observe(this) {
             calendario.layoutManager = GridLayoutManager(this, 7)
 
-            val listaDays = if(CommonUtils.isMobile(this)){
+            val listaDays = if(CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
                 arrayOf("L", "M", "X", "J", "V", "S", "D")
-            }else{
+            }else if (CommonUtils.isMobile(this) && Locale.getDefault().language == "en"){
+                arrayOf("M", "T", "W", "T", "F", "S", "S")
+            }else if (!CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
                 arrayOf("LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM")
+            }else{
+                arrayOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
             }
+
 
             val adaptadorCalendario = AdaptadorCalendario(it, listaDays, viewModel.eventos, viewModel)
             calendario.adapter = adaptadorCalendario

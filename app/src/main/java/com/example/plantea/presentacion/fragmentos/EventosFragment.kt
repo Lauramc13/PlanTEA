@@ -2,11 +2,13 @@ package com.example.plantea.presentacion.fragmentos
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +16,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -64,7 +66,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         listaEventos = vista.findViewById(R.id.recycler_eventos)
 
         if(savedInstanceState != null){
-            CalendarioUtilidades.fechaSeleccionada = viewModel._fechaSeleccionada.value!!
+            CalendarioUtilidades.fechaSeleccionada = viewModel._fechaSeleccionada.value!! // NULLPOINTEREXCEPTION
         }
 
         iniciarAdaptadorEvento()
@@ -120,7 +122,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         btnCancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
 
         btnEliminar.setOnClickListener {
-            CommonUtils.showSnackbar(vista, actividad, "Evento eliminado")
+            Toast.makeText(actividad, R.string.toast_evento_eliminado, Toast.LENGTH_SHORT).show()
             adaptadorEvento.notifyItemRemoved(posicion)
             viewModel.deleteEvento(actividad, requireContext(), posicion)
 
@@ -157,7 +159,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     override fun viewEventClick(posicion: Int) {
-        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventosDia[posicion].id_plan) as ArrayList<Pictograma>
+        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventosDia[posicion].id_plan, Locale.getDefault().language) as ArrayList<Pictograma>
         val intent = Intent(actividad, PlanActivity::class.java)
         intent.putExtra("titulo", viewModel.eventosDia[posicion].nombre)
         intent.putExtra("pictogramas", pictogramas)
@@ -167,10 +169,18 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
 
     override fun viewExportClick(posicion: Int) {
         val intent = viewModel.exportEventCalendar(posicion)
-        if (intent.resolveActivity(actividad.packageManager) != null) {
-            startActivity(intent)
+        //filter my own package
+        val resolvedActivities = actividad.packageManager.queryIntentActivities(intent, 0)
+
+        if (resolvedActivities.isNotEmpty()) {
+            val chooserIntent = Intent.createChooser(intent, R.string.toast_exportar_evento.toString())
+            val excludeComponentNames = resolvedActivities.map { ComponentName(it.activityInfo.packageName, it.activityInfo.name) }.toTypedArray() //Exclude self
+            chooserIntent.putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, excludeComponentNames)
+            startActivity(chooserIntent)
         } else {
-            CommonUtils.showSnackbar(vista, actividad, "No hay aplicaciones a las que exportar el evento")
+            Toast.makeText(actividad, R.string.toast_error_exportar_evento, Toast.LENGTH_SHORT).show()
+
         }
     }
+
 }

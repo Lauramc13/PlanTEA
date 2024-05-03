@@ -276,7 +276,7 @@
                                 android:layout_marginBottom="2dp"
                                 android:background="@drawable/fragment_personalizado"
                                 android:padding="@dimen/caption"
-                                android:text="La actividad tranquilizadora representa el objeto que calma a la persona con TEA"
+                                android:text="@string/explicacion_actividad"
                                 android:textColor="?colorOnSurface"
                                 android:theme="@style/cards2"
                                 android:visibility="gone" />

@@ -1,76 +1,60 @@
 <!-- res/layout/custom_popup_cuaderno.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp"
+    android:paddingStart="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:background="@drawable/bg_popup">
 
-    <LinearLayout
-        android:layout_width="220dp"
+    <TextView
+        android:id="@+id/item_historia"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:drawableLeft="@drawable/bocadillo_historia_off"
+        android:drawableTint="?colorOnSurface"
+        android:drawablePadding="8dp"
+        android:text="@string/texto_adicional"
+        android:gravity="center_vertical"
+        android:textSize="13sp"
+        android:padding="2dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_regular"
+        android:clickable="true"
+        android:textColor="?colorOnSurface" />
 
-        <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_gravity="center"
-            android:src="@drawable/bocadillo_historia_off"
-            app:tint="?colorPrimary" />
-
-        <TextView
-            android:id="@+id/item_historia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Añadir texto adicional"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:padding="6dp"
-            android:fontFamily="@font/poppins_regular"
-            android:clickable="true"
-            android:textColor="?colorOnSurface"
-            android:onClick="onEliminarClicked" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="200dp"
-        android:layout_height="1dp"
-        android:layout_gravity="center"
-        android:background="?color" />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/item_duracion"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:drawableLeft="@drawable/svg_clock_2"
+        android:drawablePadding="8dp"
+        android:text="@string/duracion"
+        android:gravity="center_vertical"
+        android:drawableTint="?colorOnSurface"
+        android:textSize="13sp"
+        android:padding="2dp"
+        android:textColor="?colorOnSurface"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/poppins_regular"
+        android:clickable="true" />
 
-        <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_gravity="center"
-            android:src="@drawable/svg_clock_2"
-            app:tint="?colorPrimary" />
-
-        <TextView
-            android:id="@+id/item_duracion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Añadir duración"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:padding="6dp"
-            android:textColor="?colorOnSurface"
-            android:layout_marginEnd="30dp"
-            android:fontFamily="@font/poppins_regular"
-            android:clickable="true"
-            android:onClick="onEliminarClicked"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/item_entretenimiento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/svg_game"
+        android:drawablePadding="8dp"
+        android:text="@string/actividad_entre"
+        android:drawableTint="?colorOnSurface"
+        android:textSize="13sp"
+        android:padding="2dp"
+        android:layout_marginEnd="15dp"
+        android:textColor="?colorOnSurface"
+        android:fontFamily="@font/poppins_regular"
+        android:clickable="true" />
 
 </LinearLayout>

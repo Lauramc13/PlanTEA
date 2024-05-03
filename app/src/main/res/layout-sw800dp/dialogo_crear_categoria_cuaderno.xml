@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Crear nuevo cuaderno"
+            android:text="@string/crear_nuevo_cuaderno"
             android:textColor="?colorOnSurface"
             android:textSize="22sp" />
 
@@ -74,7 +74,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center_vertical"
             android:padding="15dp"
-            android:text="Termometro"
+            android:text="@string/termometro"
             android:textColor="?colorOnSurface"
             android:textSize="17sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
             android:elevation="0dp"
             android:fontFamily="@font/poppins_semibold"
             android:maxWidth="10dp"
-            android:text="@string/crear_categoria"
+            android:text="@string/crear_cuaderno"
             android:textColor="#203130"
             android:textSize="14sp"
             app:cornerRadius="10dp"

@@ -81,7 +81,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Sobre la organización"
+                        android:text="@string/str_titulo1"
                         android:textColor="?colorOnSurface"
                         android:textSize="18sp" />
 
@@ -164,7 +164,7 @@
                             android:layout_gravity="center"
                             android:layout_marginStart="10dp"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="Licencias de código abierto"
+                            android:text="@string/licencias"
                             android:textColor="?colorOnSurface"
                             android:textSize="18sp" />
 
@@ -175,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Ilustraciones"
+                        android:text="@string/ilustraciones"
                         android:textColor="?colorOnSurface"
                         android:textSize="17sp" />
 
@@ -185,7 +185,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Centro Aragonés para la Comunicación Aumentativa y Alternativa"
+                        android:text="@string/arasaac"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp" />
 
@@ -196,7 +196,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Condiciones de uso, Noviembre 2023"
+                        android:text="@string/arasaac_terms"
                         android:textColor="?customLinkColor"
                         android:textSize="15sp" />
 
@@ -206,7 +206,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="manypixels"
+                        android:text="@string/manypixels"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp" />
 
@@ -217,7 +217,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Terms of Service, 25 de Enero, 2019"
+                        android:text="@string/manypixels_terms"
                         android:textColor="?customLinkColor"
                         android:textSize="15sp" />
 
@@ -227,7 +227,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Freepik"
+                        android:text="@string/freepik"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp" />
 
@@ -238,7 +238,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Terms of Use, Marzo, 2023"
+                        android:text="@string/freepik_terms"
                         android:textColor="?customLinkColor"
                         android:textSize="15sp" />
 
@@ -247,7 +247,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="7dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Iconos"
+                        android:text="@string/iconos"
                         android:textColor="?colorOnSurface"
                         android:textSize="17sp" />
 
@@ -257,7 +257,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="SVG Repo"
+                        android:text="@string/svg_repo"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp" />
 
@@ -268,7 +268,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="SVG Repo License, 03 de Enero, 2023"
+                        android:text="@string/svg_repo_terms"
                         android:textColor="?customLinkColor"
                         android:textSize="15sp" />
 
@@ -278,7 +278,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Flaticon"
+                        android:text="@string/flaticon"
                         android:textColor="?colorOnSurface"
                         android:textSize="16sp" />
 
@@ -288,7 +288,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="Terms of Use, Junio, 2022"
+                        android:text="@string/flaticon_terms"
                         android:textColor="?customLinkColor"
                         android:textSize="15sp" />
 
@@ -315,7 +315,7 @@
                             android:layout_gravity="top"
                             android:layout_marginStart="10dp"
                             android:fontFamily="@font/poppins_bold"
-                            android:text="Política de privacidad"
+                            android:text="@string/pantalla_politica"
                             android:textColor="?colorOnSurface"
                             android:textSize="18sp" />
 

@@ -135,7 +135,7 @@
             android:backgroundTint="?configuracionCardBg"
             android:contentDescription="Boton iniciar sesion"
             android:fontFamily="@font/poppins_semibold"
-            android:text="INICIAR SESIÓN CON GOOGLE"
+            android:text="@string/sesion_google"
             android:textColor="?colorOnSurface"
             android:textSize="14sp"
             app:cornerRadius="10dp"

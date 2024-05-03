@@ -13,6 +13,7 @@ import android.view.animation.PathInterpolator
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -131,8 +132,9 @@ class RegisterActivity : AppCompatActivity(){
             txtNameplanificado.error = null
 
             val errorMessage = createAccount()
-            if (errorMessage.isNotEmpty()) {
-                CommonUtils.showSnackbar(findViewById(android.R.id.content), applicationContext, errorMessage)
+            if (errorMessage != 0) {
+                Toast.makeText(this, getString(errorMessage), Toast.LENGTH_SHORT).show()
+
             }
         }
 
@@ -154,12 +156,12 @@ class RegisterActivity : AppCompatActivity(){
         }
     }
 
-    data class ValidationResult(val isValid: Boolean, var errorMessage: String? = null)
+    data class ValidationResult(val isValid: Boolean, var errorMessage: Int? = null)
 
     fun isAccountValid(email: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             runOnUiThread { txtEmail.error = "ESTO ES UN ERROR" }
-            return  ValidationResult(false, "La dirección de correo electrónico no es válida")
+            return  ValidationResult(false, R.string.toast_error_correo_valido)
         }
 
         if (password != password2) {
@@ -167,23 +169,23 @@ class RegisterActivity : AppCompatActivity(){
                 txtPassword.error = "ESTO ES UN ERROR"
                 txtPassword2.error = "ESTO ES UN ERROR"
             }
-            return ValidationResult(false, "Las contraseñas no coinciden")
+            return ValidationResult(false, R.string.toast_cotrasenias_diferentes)
         }
 
         //la contraseña tiene que tener minimo 6 caracteres
         if (password.length < 6) {
             runOnUiThread {txtPassword.error = "ESTO ES UN ERROR"}
-            return ValidationResult(false, "La contraseña debe tener al menos 6 caracteres")
+            return ValidationResult(false, R.string.toast_cotrasenias_6)
         }
 
         if (!notextViewsVacios) {
-            return ValidationResult(false, "Tienes que rellenar todos los campos")
+            return ValidationResult(false, R.string.toast_rellenar_campos )
         }
         return ValidationResult(true)
     }
 
 
-    private fun createAccount(): String {
+    private fun createAccount(): Int {
         textInput()
 
         val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
@@ -195,7 +197,7 @@ class RegisterActivity : AppCompatActivity(){
             viewModel.accountCreated(this, prefs, checkUserPlanificado.isChecked, checkObjeto.isChecked)
         }
 
-        return isAccountValid.errorMessage ?: ""
+        return isAccountValid.errorMessage ?: 0
     }
 
     fun comprobarTextViewsVacios(username: String, password: String, password2: String, name: String, email: String, objeto: String, namePlanificado: String, checkedObjeto: Boolean, checkedUserTea: Boolean): Boolean {

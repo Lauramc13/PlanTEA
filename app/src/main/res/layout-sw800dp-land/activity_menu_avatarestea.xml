@@ -124,7 +124,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -144,7 +145,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -164,7 +166,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -184,7 +187,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -204,7 +208,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -232,7 +237,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -252,7 +258,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -272,7 +279,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -293,7 +301,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"
@@ -313,7 +322,8 @@ android:layout_height="match_parent">
             android:layout_height="180dp"
             android:layout_margin="15dp"
             android:layout_weight="1"
-            android:elevation="0dp"
+            app:cardElevation="0dp"
+
             app:strokeColor="?color"
             app:strokeWidth="1.5dp"
             app:cardBackgroundColor="@color/white"

@@ -14,34 +14,54 @@ object CalendarioUtilidades {
         return LocalTime.parse(fecha, formato)
     }
 
-  /*  @JvmStatic
-    fun formatoMesEvento(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("MMMM", Locale("es", "ES"))
-        return fecha.format(formato)
-    }*/
-
     @JvmStatic
     fun formatoFechaEvento(fecha: LocalDate): String {
+        return if(Locale.getDefault().language == "es") {
+            val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("es", "ES"))
+            fecha.format(formato)
+        } else {
+            val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("en", "US"))
+            fecha.format(formato)
+        }
+    }
+
+    fun formatoFechaEventoOLD(fecha: LocalDate): String {
         val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("es", "ES"))
         return fecha.format(formato)
     }
 
     @JvmStatic
-    fun formatoDiaEvento(fecha: LocalDate): String {
+    fun formatoDiaEventoOLD(fecha: LocalDate): String {
         val formato = DateTimeFormatter.ofPattern("EEEE  d", Locale("es", "ES"))
+
         return fecha.format(formato)
     }
 
+    fun formatoDiaEvento(fecha: LocalDate): String {
+        return if (Locale.getDefault().language == "es") {
+            val formato = DateTimeFormatter.ofPattern("EEEE  d", Locale("es", "ES"))
+            fecha.format(formato)
+        } else {
+            val formato = DateTimeFormatter.ofPattern("EEEE  d", Locale("en", "US"))
+            fecha.format(formato)
+        }
+    }
+
     @JvmStatic
-    fun formatoDiaMes(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("dd/MM", Locale("es", "ES"))
+    fun formatoMesAnioOLD(fecha: LocalDate): String {
+        val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("es", "ES"))
         return fecha.format(formato)
     }
 
     @JvmStatic
     fun formatoMesAnio(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("es", "ES"))
-        return fecha.format(formato)
+        return if (Locale.getDefault().language == "es") {
+            val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("es", "ES"))
+            fecha.format(formato)
+        } else {
+            val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("en", "US"))
+            fecha.format(formato)
+        }
     }
 
     //En este método se calcula los días para el mes seleccionado

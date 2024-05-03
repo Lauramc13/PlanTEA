@@ -37,20 +37,20 @@ class Planificacion : Serializable {
         gestionPlan.eliminarPlanificacion(actividad, idPlan)
     }
 
-    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int): ArrayList<*> {
+    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int, language: String): ArrayList<*> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan)
+        listaPictogramas = gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan, language)
         return listaPictogramas
     }
 
-    fun actualizarPlanificacion(actividad: Activity?, idPlan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
-        gestionPlan.actualizarPlanificacion(actividad, idPlan, nombre, pictogramas)
+    fun actualizarPlanificacion(actividad: Activity?, idUsuario: String, idPlan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
+        gestionPlan.actualizarPlanificacion(actividad, idUsuario, idPlan, nombre, pictogramas)
     }
 
     //Mostrar la planificacion a seguir
-    fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?): ArrayList<*> {
+    fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?, language: String): ArrayList<*> {
         listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, id, context) as ArrayList<Planificacion>
+        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, id, context, language) as ArrayList<Planificacion>
         return listaPlanes
     }
 

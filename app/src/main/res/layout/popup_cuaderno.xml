@@ -51,6 +51,4 @@
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         android:onClick="onEliminarClicked"/>
-
-
 </LinearLayout>

@@ -9,12 +9,12 @@
 
     <RelativeLayout
         android:id="@+id/id_card_picto"
-        android:layout_width="230dp"
+        android:layout_width="wrap_content"
         android:layout_height="170dp">
 
         <RelativeLayout
             android:id="@+id/id_card"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -143,18 +143,21 @@
 
         </RelativeLayout>
 
-        <!--<ImageView
-            android:id="@+id/id_recompensa"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="-3dp"
-            android:layout_marginEnd="-22dp"
+
+        <ImageView
+            android:id="@+id/entretenimiento"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/id_card"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="-50dp"
+            android:padding="5dp"
+            android:background="@drawable/card_personalizado"
             android:contentDescription="@string/lbl_Consultas"
-            android:elevation="4dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/categoria_recompensa">
-        </ImageView>-->
+            android:elevation="0dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/categoria_consultas"/>
 
 
     </RelativeLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.PathInterpolator
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -117,7 +118,7 @@ class CountDownFragment: Fragment() {
                 val parentActivity = requireActivity() as ActividadActivity
                 parentActivity.stopVideo()
                 endTimer()
-                CommonUtils.showSnackbar(vista, requireContext(), "Se ha acabado el tiempo!")
+                Toast.makeText(requireContext(), getString(R.string.toast_se_termino_tiempo), Toast.LENGTH_SHORT).show()
             }
         }
         countDownTimer.start()

@@ -15,6 +15,7 @@ import com.example.plantea.dominio.Categoria
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategorias
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import java.util.Locale
 
 class CategoriasFragment : Fragment() {
     lateinit var actividad: Activity
@@ -31,8 +32,8 @@ class CategoriasFragment : Fragment() {
         }
 
         val categoria = Categoria()
-        viewModel.listaCategorias = categoria.obtenerCategorias(actividad, viewModel.idUsuario)
-        categoria.titulo = "Añadir categoria"
+        viewModel.listaCategorias = categoria.obtenerCategoriasPrincipales(actividad, viewModel.idUsuario, Locale.getDefault().language)
+        categoria.titulo = getString(R.string.lbl_NuevaCategoria).uppercase()
         categoria.color = "default"
         viewModel.listaCategorias.add(viewModel.listaCategorias.size, categoria)
 

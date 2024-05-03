@@ -11,19 +11,19 @@ class Categoria {
     private var listaCategorias: ArrayList<String>? = null
     private var gestorCategorias = GestionCategorias()
 
-    fun consultarCategorias(actividad: Activity?): ArrayList<*>? {
+    fun consultarCategorias(actividad: Activity?, language: String): ArrayList<*>? {
         listaCategorias = ArrayList()
-        listaCategorias = gestorCategorias.listarCategorias(actividad)
+        listaCategorias = gestorCategorias.listarCategorias(actividad, language)
         return listaCategorias
     }
 
-    fun obtenerCategoria(context: Context, nombre: String?): Int {
-        categoria = gestorCategorias.obtenerIdCategoria(context, nombre)
+    fun obtenerCategoria(context: Context, nombre: String?, language: String): Int {
+        categoria = gestorCategorias.obtenerIdCategoria(context, nombre, language)
         return categoria
     }
 
-    fun obtenerCategorias(actividad: Activity?, idUsuario: String): ArrayList<Categoria> {
-        return gestorCategorias.obtenerCategoriasPrincipales(actividad, idUsuario)
+    fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario: String, language: String): ArrayList<Categoria> {
+        return gestorCategorias.obtenerCategoriasPrincipales(actividad, idUsuario, language)
     }
 
     fun crearCategoria(actividad: Activity?, nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String) {
@@ -34,8 +34,8 @@ class Categoria {
         gestorCategorias.eliminarCategoria(actividad, idUsuario, idCategoria)
     }
 
-    fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String): Boolean {
-        return gestorCategorias.checkCategoriaExiste(context, toString, idUsuario)
+    fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String, language: String): Boolean {
+        return gestorCategorias.checkCategoriaExiste(context, toString, idUsuario, language)
 
     }
 

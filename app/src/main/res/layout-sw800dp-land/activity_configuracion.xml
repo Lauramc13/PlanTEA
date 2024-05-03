@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Usuario responsable de crear y gestionar planificaciones"
+                    android:text="@string/lbl_infoplaificador_texto"
                     android:textColor="?colorOutline"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -158,7 +158,7 @@
                         android:contentDescription="Campo de texto con nombre del planificador"
                         android:ems="10"
                         android:fontFamily="@font/poppins_medium"
-                        android:hint="Nombre"
+                        android:hint="@string/lbl_datosNombre"
                         android:inputType="textPersonName"
                         android:maxLength="14"
                         android:layout_marginBottom="5dp"
@@ -184,7 +184,7 @@
                         android:contentDescription="Campo de texto con nombre de usuario del planificador"
                         android:ems="10"
                         android:fontFamily="@font/poppins_medium"
-                        android:hint="Nombre de usuario"
+                        android:hint="@string/lbl_nombreUsuario"
                         android:inputType="textPersonName"
                         android:maxLength="14"
                         android:textColor="?colorOnSurface"
@@ -211,7 +211,7 @@
                         android:contentDescription="Campo de texto con correo del planificador"
                         android:ems="10"
                         android:fontFamily="@font/poppins_medium"
-                        android:hint="Correo electrónico"
+                        android:hint="@string/lbl_email"
                         android:inputType="textPersonName"
                         android:maxLength="14"
                         android:enabled="false"
@@ -231,11 +231,6 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
-
-
-
-
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -306,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Usuario capaz de ver y seguir las planificaciones"
+                    android:text="@string/lbl_infoUsuarioTEA_texto"
                     android:textColor="?colorOutline"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -321,7 +316,7 @@
                     android:contentDescription="Campo de texto con nombre del usuario TEA"
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
-                    android:hint="Nombre"
+                    android:hint="@string/lbl_datosNombre"
                     android:inputType="textPersonName"
                     android:maxLength="14"
                     android:textColor="?colorOnSurface"
@@ -376,7 +371,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Representa el objeto que calma a la persona con TEA"
+                    android:text="@string/lbl_infoactividad_texto"
                     android:textColor="?colorOutline"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -426,7 +421,7 @@
                     android:contentDescription="Campo de texto con nombre del usuario TEA"
                     android:ems="10"
                     android:fontFamily="@font/poppins_medium"
-                    android:hint="Nombre"
+                    android:hint="@string/lbl_datosNombre"
                     android:inputType="textPersonName"
                     android:maxLength="14"
                     android:textColor="?colorOnSurface"
@@ -538,7 +533,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15.5sp"
                 android:padding="10dp"
-                android:text="Acerca de la aplicación"
+                android:text="@string/pantalla_acercade"
                 android:layout_gravity="center_horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

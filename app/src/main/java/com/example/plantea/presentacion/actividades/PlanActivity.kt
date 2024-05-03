@@ -86,12 +86,12 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         iconoMarcarTodas = findViewById(R.id.icon_marcarTodas)
         iconoEscuchar = findViewById(R.id.icon_escuchar)
         iconoReproducir = findViewById(R.id.icon_reproducir)
+        planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         calendarButton = findViewById(R.id.CalendarDate)
         buttonPlanNuevo = findViewById(R.id.crearPlan)
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.lbl_mensajeNinio)
         viewModel.recyclerView = findViewById(R.id.recycler_plan)
-        planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         dia = findViewById(R.id.lbl_dia)
         atras = findViewById(R.id.atras)
 
@@ -102,7 +102,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel.recyclerView.layoutManager = layoutManagerLinear
 
         initTextSpeech()
-        initNotificationList()
+        val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
+        if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
+            initNotificationList()
+        }
 
         dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
 
@@ -197,8 +200,17 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         iconoReproducir.setOnClickListener {
             reproducirEvento()
         }
-    }
 
+        //--------------- OBLIGAR A GIRAR PANTALLA ---------------
+     }
+
+    private fun showDialogRotate(): Int {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialogo_rotate_screen)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+        return 0
+    }
 
      private fun crearDialogo(){
          viewModel.dialog = Dialog(this)
@@ -219,10 +231,14 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
          viewModel._diasMes.observe(this) {
              calendario.layoutManager = GridLayoutManager(this, 7)
-             val listaDays = if(CommonUtils.isMobile(this)){
+             val listaDays = if(CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
                  arrayOf("L", "M", "X", "J", "V", "S", "D")
-             }else{
+             }else if (CommonUtils.isMobile(this) && Locale.getDefault().language == "en"){
+                 arrayOf("M", "T", "W", "T", "F", "S", "S")
+             }else if (!CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
                  arrayOf("LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM")
+             }else{
+                 arrayOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
              }
 
              val adaptadorCalendario = AdaptadorCalendario(it,listaDays, viewModel.eventos, viewModel)
@@ -266,6 +282,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                     iconoMarcarTodas.isEnabled = true
                     viewModel.recyclerView.visibility = View.VISIBLE
 
+                if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)){
+                    showDialogRotate()
+                }
+
 
             }else{
                 Toast.makeText(this, "Error al cargar los pictogramas", Toast.LENGTH_SHORT).show()
@@ -276,7 +296,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
             viewModel.recyclerView.adapter = viewModel.adaptador
             viewModel.adaptador.notifyDataSetChanged()
 
-            if(isPlanificador) {
+            if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
                 val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
                 layoutPlanificaciones.visibility = View.VISIBLE
                 //val imageDecoration = findViewById<ImageView>(R.id.imageDecoration)
@@ -299,8 +319,14 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                 iconoEscuchar.visibility = View.INVISIBLE
                 iconoReproducir.visibility = View.INVISIBLE
 
-                if(isPlanificador) {
+                if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
                     buttonPlanNuevo.visibility = View.VISIBLE
+                    val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
+                    layoutPlanificaciones.visibility = View.VISIBLE
+                }else{
+                    buttonPlanNuevo.visibility = View.INVISIBLE
+                    val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
+                    layoutPlanificaciones.visibility = View.GONE
                 }
 
                 viewModel.recyclerView.visibility = View.INVISIBLE
@@ -343,7 +369,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
     private fun configureParameters(){
         viewModel._pasosCompletados.value = Stack()
-        viewModel.tituloPlan = intent.getStringExtra("titulo")!!
+        viewModel.tituloPlan = intent.getStringExtra("titulo")!! //PETA AQUI CUANDO SE INTENTA COMPARTIR UN EVENTO
         viewModel.listaPictogramas = intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>
         val fecha = intent.getSerializableExtra("fecha") as LocalDate
         val diaSemana = fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("es")).replaceFirstChar { it.uppercase() }

@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Color:"
+                android:text="@string/color"
                 android:textColor="?colorOnSurface"
                 android:textSize="@dimen/modalText" />
 

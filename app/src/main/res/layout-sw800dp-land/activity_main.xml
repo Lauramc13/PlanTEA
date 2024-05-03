@@ -6,6 +6,38 @@
     android:background="@drawable/background_main"
     tools:context=".presentacion.actividades.MainActivity">
 
+    <FrameLayout
+        android:id="@+id/frameLayout_idiomas"
+        android:layout_width="60dp"
+        android:layout_height="52dp"
+        android:layout_margin="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner_idiomas"
+            style="@style/dropdownMenuIdioma"
+            android:layout_width="wrap_content"
+            android:backgroundTint="?colorOnSurfaceInverse"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:dropDownVerticalOffset="52dp"
+            android:popupElevation="1dp"
+            android:popupBackground="@drawable/custom_popup_background_idioma"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/image_idioma"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|bottom"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:background="?colorOnSurfaceInverse"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_es" />
+    </FrameLayout>
+
     <Button
         android:id="@+id/image_RolPlanificador2"
         style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -64,7 +96,7 @@
         app:cardCornerRadius="20dp"
         android:gravity="center"
         app:layout_constraintVertical_bias="0.4"
-        app:cardBackgroundColor="?cardBackgroundColorPersonalized"
+        app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,10 +112,10 @@
                 style="@style/editText"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:contentDescription="Imagen del planificador"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:background="@drawable/rounded_cardview"
+                android:contentDescription="Imagen del planificador"
                 app:srcCompat="@drawable/user" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -104,7 +136,7 @@
         android:clickable="true"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?cardBackgroundColorPersonalized"
+        app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:cardCornerRadius="20dp"
         app:layout_constraintVertical_bias="0.4"
         android:contentDescription="Tarjeta del planificado para iniciar sesión"

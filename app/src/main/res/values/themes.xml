@@ -119,10 +119,15 @@
 
     </style>
 
-    <style name="dropdownMenu" >
+    <style name="dropdownMenu">
         <item name="backgroundTint">@color/greenLight</item>
         <item name="android:background">@drawable/border_spinner</item>
 
+    </style>
+
+    <style name="dropdownMenuIdioma">
+        <item name="android:background">@drawable/border_spinner_idioma</item>
+        <item name="strokeColor" tools:targetApi="s">@color/md_theme_dark_primaryContainer</item>
     </style>
     
     <style name="customTextInputLayout" parent="Widget.Material3.NavigationView">

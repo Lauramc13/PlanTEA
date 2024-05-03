@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Planificación"
+            android:text="@string/pantalla_planificacion"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -99,7 +99,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:hint="Introduce un titulo..."
+        android:hint="@string/introduce_titulo"
         android:layout_marginTop="10dp"
         style="@style/editTextPlan"
         android:contentDescription="Campo de texto de la planificación"
@@ -165,7 +165,7 @@
             android:elevation="0dp"
             android:theme="@style/AppTheme.SearchBar"
             android:contentDescription="Barra de busqueda de pictogramas por nombre"
-            android:queryHint="Buscar pictograma"
+            android:queryHint="@string/buscar_pictos"
             android:closeIcon="@drawable/svg_close"
             android:iconifiedByDefault="false"
             tools:ignore="NotSibling"/>

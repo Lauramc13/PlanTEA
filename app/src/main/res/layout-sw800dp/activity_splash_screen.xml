@@ -35,7 +35,7 @@
             android:layout_weight="0.6"
             android:padding="10dp"
             android:maxLines="1"
-            android:text="@string/lblPlantea"
+            android:text="@string/app_name"
             android:textColor="#000000"
             app:autoSizeTextType="uniform"
             android:textStyle="bold" />

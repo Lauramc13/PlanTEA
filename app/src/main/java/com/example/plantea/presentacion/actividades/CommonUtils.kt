@@ -1,7 +1,10 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -11,7 +14,9 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.media.Image
 import android.net.Uri
 import android.os.Handler
 import android.provider.MediaStore
@@ -19,23 +24,44 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.SearchView
+import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
+import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
+import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
+import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.example.plantea.presentacion.viewModels.CuadernoViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
+import org.intellij.lang.annotations.Language
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -55,6 +81,8 @@ class CommonUtils{
         lateinit var textToSpeech: TextToSpeech
         val handler = Handler()
         var listener: TextToSpeechListener? = null
+        lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+        private lateinit var imgPicto: ImageView
 
         // to call the listener when the speech is done
         private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
@@ -155,13 +183,16 @@ class CommonUtils{
             val listaTitulos = mutableListOf<String>()
 
             try {
-                var retrofitData = retrofitBuilder.getData(query)
+                val language = Locale.getDefault().language
+                var retrofitData: retrofit2.Call<List<JsonPictogramaItem>>
+                retrofitData = retrofitBuilder.getData(query, language)
                 var response = retrofitData.execute()
                 if (response.isSuccessful) {
                     receiveDataFromAPI(response, query, listaIds, listaTitulos)
                 }else{
                     //intentar la busqueda completa
-                    retrofitData = retrofitBuilder.getAllData(query)
+                    retrofitData = retrofitBuilder.getAllData(query, language)
+
                     response = retrofitData.execute()
                     if(response.isSuccessful) {
                         receiveDataFromAPI(response, query, listaIds, listaTitulos)
@@ -286,8 +317,9 @@ class CommonUtils{
         }
 
         fun initializeTextToSpeech(context: Context) {
+            val language = Locale.getDefault().language
             textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
-            textToSpeech.language = Locale("es", "ES")
+            textToSpeech.language = Locale(language)
         }
 
         fun textToSpeechOn(listaPictogramas: ArrayList<Pictograma>){
@@ -372,7 +404,7 @@ class CommonUtils{
             return pronombres.any { it.equals(query.lowercase(Locale.getDefault()), ignoreCase = true) }
         }
 
-        private fun Snackbar.setIcon(drawable: Drawable, @ColorInt colorTint: Int): Snackbar {
+     /*   private fun Snackbar.setIcon(drawable: Drawable, @ColorInt colorTint: Int): Snackbar {
             return this.apply {
                 setAction(" ") {dismiss()}
                 val textView = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
@@ -382,9 +414,9 @@ class CommonUtils{
                 drawable.setTintMode(PorterDuff.Mode.SRC_ATOP)
                 textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
             }
-        }
+        }*/
 
-        fun showSnackbar(view: View, context: Context, message: String){
+       /* fun showSnackbar(view: View, context: Context, message: String){
             val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
             var color = ContextCompat.getColor(context, R.color.md_theme_light_primary)
 
@@ -397,12 +429,21 @@ class CommonUtils{
                 snackbar.setIcon(drawable, color)
             }
             snackbar.show()
-        }
+        }*/
 
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             return activeNetworkInfo != null && activeNetworkInfo.isConnected
         }
+
+        fun isPortrait(activity: Activity): Boolean {
+            return activity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+        }
+
+        fun isDarkMode(activity: Activity): Boolean {
+            return Configuration.UI_MODE_NIGHT_YES == activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        }
+
     }
 }

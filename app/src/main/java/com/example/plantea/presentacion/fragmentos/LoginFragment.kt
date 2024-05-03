@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -46,7 +47,8 @@ class LoginFragment: BottomSheetDialogFragment() {
         viewModel.initGoogleSignInClient(requireContext())
 
         signin?.setOnClickListener {
-            CommonUtils.showSnackbar(vista, requireContext(), "Iniciando sesión")
+            Toast.makeText(requireContext(), R.string.toast_iniciando_sesion, Toast.LENGTH_SHORT).show()
+
             signInGoogle()
         }
 
@@ -57,7 +59,7 @@ class LoginFragment: BottomSheetDialogFragment() {
             val noTextViewVacios = viewModel.comprobarTextViewsVacios(email?.editText?.text.toString(), password?.editText?.text.toString())
 
             if (!noTextViewVacios) {
-                CommonUtils.showSnackbar(vista, actividad.applicationContext, "Tienes que rellenar todos los campos")
+                Toast.makeText(requireContext(), R.string.toast_campos_vacios, Toast.LENGTH_SHORT).show()
             } else {
                 val emailText = email?.editText?.text.toString().lowercase()
                 val passwordText = password?.editText?.text.toString()

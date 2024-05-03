@@ -14,6 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/blob3"
+        android:importantForAccessibility="no"
         app:tint="?subColorBackground" />
 
     <ImageView
@@ -23,13 +24,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="80dp"
+        android:importantForAccessibility="no"
         app:srcCompat="@drawable/svg_blob" />
 
     <LinearLayout
         android:id="@+id/img_video"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:contentDescription="Contenedor con actividades"
+        android:importantForAccessibility="no"
         android:gravity="center"
         android:layout_marginStart="80dp"
         android:orientation="horizontal"
@@ -69,7 +71,8 @@
                     android:layout_marginTop="30dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/svg_happy" />
+                    app:srcCompat="@drawable/svg_happy"
+                    android:importantForAccessibility="no" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,6 +110,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_weight="1"
                     android:scaleType="centerCrop"
+                    android:importantForAccessibility="no"
                     app:srcCompat="@drawable/svg_video" />
 
                 <TextView
@@ -144,19 +148,19 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:fontFamily="@font/poppins_regular"
-            android:text="Navegador de YouTube"/>
+            android:text="@string/navegador"/>
 
         <ImageView
             android:id="@+id/closeYoutube"
             android:layout_width="48dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
-            android:contentDescription="Cerrar seccion"
             android:background="@drawable/bg_close_button"
             android:src="@drawable/ic_baseline_close_24"
             android:padding="12dp"
             android:alpha="0.9"
             android:layout_gravity="end"
+            android:importantForAccessibility="no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -209,7 +213,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Actividades"
+            android:text="@string/actividades"
             android:textSize="@dimen/displaySmall" />
 
     </LinearLayout>

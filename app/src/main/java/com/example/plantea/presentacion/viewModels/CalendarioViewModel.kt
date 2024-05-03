@@ -10,6 +10,7 @@ import android.content.Intent
 import android.provider.CalendarContract
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -133,7 +134,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
         cita.id = id
-        Toast.makeText(context, "Evento creado id: ${cita.id_plan}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "Evento creado id: ${cita.id_plan}", Toast.LENGTH_SHORT).show()
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
@@ -206,17 +207,19 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         idUsuario = userId.toString()
     }
 
-    fun createReloj(): MaterialTimePicker {
+    fun createReloj(context: Context): MaterialTimePicker {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
+        // get string from strings.xml
+        val title = getString(context, R.string.selecciona_hora)
 
         return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_12H)
             .setHour(currentHour)
             .setMinute(currentMinute)
             .setTheme(R.style.TimePicker)
-            .setTitleText("Selecciona una hora")
+            .setTitleText(title)
             .build()
     }
 
@@ -227,7 +230,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     }
 
     fun editarClick(actividad: Activity, posicion: Int){
-        val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id) as java.util.ArrayList<Pictograma>
+        val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id, Locale.getDefault().language) as java.util.ArrayList<Pictograma>
         val intent = Intent(actividad, CrearPlanActivity::class.java)
         intent.putExtra("identificador", planes[posicion].id)
         intent.putExtra("titulo", planes[posicion].titulo)

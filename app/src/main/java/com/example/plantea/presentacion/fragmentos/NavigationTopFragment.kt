@@ -52,20 +52,20 @@ class NavigationTopFragment: Fragment() {
         val hostingActivityClass = activity?.javaClass
 
         title.text = when (hostingActivityClass) {
-            PlanActivity::class.java -> "Eventos"
-            TraductorActivity::class.java -> "Traductor"
-            CalendarioActivity::class.java -> "Calendario"
-            ActividadActivity::class.java -> "Actividades"
-            CuadernoActivity::class.java -> "Cuaderno"
-            CreditsActivity::class.java -> "Acerca de la aplicación"
-            ConfiguracionActivity::class.java -> "Configuración"
-            ManualActivity::class.java -> "Manual de usuario"
-            PoliticaActivity::class.java -> "Política de privacidad"
-            PasswordActivity::class.java -> "Cambiar contraseña"
-            else -> "PlanTEA"
+            PlanActivity::class.java -> getString(R.string.pantalla_eventos)
+            TraductorActivity::class.java -> getString(R.string.pantalla_traductor)
+            CalendarioActivity::class.java -> getString(R.string.pantalla_calendario)
+            ActividadActivity::class.java -> getString(R.string.actividades)
+            CuadernoActivity::class.java -> getString(R.string.pantalla_cuaderno)
+            CreditsActivity::class.java -> getString(R.string.pantalla_acercade)
+            ConfiguracionActivity::class.java -> getString(R.string.pantalla_configuracion)
+            ManualActivity::class.java -> getString(R.string.pantalla_manual)
+            PoliticaActivity::class.java -> getString(R.string.pantalla_politica)
+            PasswordActivity::class.java -> getString(R.string.btn_CambiarPass)
+            else -> getString(R.string.app_name)
         }
 
-        if(hostingActivityClass == CreditsActivity::class.java || hostingActivityClass == ConfiguracionActivity::class.java || hostingActivityClass == ManualActivity::class.java){
+        if(hostingActivityClass == CreditsActivity::class.java || hostingActivityClass == ConfiguracionActivity::class.java || hostingActivityClass == ManualActivity::class.java || hostingActivityClass == PoliticaActivity::class.java || hostingActivityClass == PasswordActivity::class.java){
             rol.visibility = View.GONE
         }
 

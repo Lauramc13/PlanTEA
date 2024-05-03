@@ -7,11 +7,11 @@ class GestionCuadernos {
     private lateinit var listaCuadernos: ArrayList<Cuaderno>
     private lateinit var conectorBD: ConectorBD
 
-    fun consultarCuadernos(actividad: Activity?, idUsuario: String): ArrayList<Cuaderno> {
+    fun consultarCuadernos(actividad: Activity?, idUsuario: String, language: String): ArrayList<Cuaderno> {
         listaCuadernos = ArrayList()
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
-        val c = conectorBD.listarCuadernos(idUsuario)
+        val c = conectorBD.listarCuadernos(idUsuario, language)
         if (c.moveToFirst()) {
             do {
                 val cuaderno = Cuaderno()

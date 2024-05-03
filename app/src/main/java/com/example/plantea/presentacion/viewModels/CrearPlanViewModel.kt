@@ -19,11 +19,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,19 +35,26 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategorias
+import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
+import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntretenimiento
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
+import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.Calendar
+import java.util.Locale
 
-class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener{
+class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener, AdaptadorPictogramaEntretenimiento.OnItemSelectedListener, AdaptadorNuevoPicto.OnItemSelectedListener {
 
     var identificadorCategoria : Int = -1
     var identificadorSubCategoria : Int = -1
@@ -55,9 +64,15 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     val _nuevoPictoDialog = SingleLiveEvent<Boolean>()
     var _historiaClicked = SingleLiveEvent<Int>()
     var _onDuracionClicked = SingleLiveEvent<Int>()
+    var _onEntretenimientoClicked = SingleLiveEvent<Int>()
+    var _idPictoEntretenimiento = SingleLiveEvent<Int>()
+    var _imagenNuevoPicto = SingleLiveEvent<String?>()
+    var _listaPictoRandom = SingleLiveEvent<ArrayList<Pictograma>>()
     val _image = MutableLiveData<Uri?>()
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var image : ImageView? = null
+
+    lateinit var adaptador: AdaptadorNuevoPicto //Adaptador del recyclerview del dialogo añadir picto
 
     //Buttons colors
     private lateinit var buttonMorado: FloatingActionButton
@@ -98,11 +113,11 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     //Método para mostrar los pictogramas correspondientes a las categorias de consultas
     fun mostrarsubCategoria(tituloCategoria: String?, context: Context) {
         //labelBuscando.visibility = View.GONE
-        val categoria = categoria.obtenerCategoria(context, tituloCategoria)
+        val categoria = categoria.obtenerCategoria(context, tituloCategoria, Locale.getDefault().language)
         subcategoriaOpen = true
-        _listaPictogramas.value = pictograma.obtenerPictogramas(context, categoria, idUsuario) as ArrayList<Pictograma>
+        val language = Locale.getDefault().language
+        _listaPictogramas.value = pictograma.obtenerPictogramas(context, categoria, idUsuario, language) as ArrayList<Pictograma>
         identificadorSubCategoria = categoria
-
     }
 
     fun pictogramaSeleccionado(posicion: Int) {
@@ -156,7 +171,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
             busquedaOpen = false
         }else{
             if(subcategoriaOpen){
-                _listaPictogramas.value = pictograma.obtenerPictogramas(context, identificadorCategoria, idUsuario)  as ArrayList<Pictograma>
+                _listaPictogramas.value = pictograma.obtenerPictogramas(context, identificadorCategoria, idUsuario, Locale.getDefault().language)  as ArrayList<Pictograma>
                 subcategoriaOpen = false
             }else{
                 transaction.replace(R.id.contenedor_fragments, CategoriasFragment())
@@ -182,14 +197,19 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
             popupWindow.dismiss()
         }
 
+        customView.findViewById<TextView>(R.id.item_entretenimiento).setOnClickListener {
+            _onEntretenimientoClicked.value = position
+            popupWindow.dismiss()
+        }
+
         popupWindow.showAsDropDown(anchorView)
     }
 
     override fun onItemSeleccionado(idCategoria: Int, context: Context) {
         _listaPictogramas.value = if (idCategoria == 10) {
-            pictograma.obtenerFavoritos(context, idUsuario)
+            pictograma.obtenerFavoritos(context, idUsuario, Locale.getDefault().language)
         } else {
-            pictograma.obtenerPictogramas(context, idCategoria, idUsuario) as ArrayList<Pictograma>
+            pictograma.obtenerPictogramas(context, idCategoria, idUsuario, Locale.getDefault().language) as ArrayList<Pictograma>
         }
         identificadorCategoria = idCategoria
     }
@@ -258,11 +278,13 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         btnCrear.setOnClickListener{
            title.error = null
             if (title.editText?.text.toString().isEmpty() || image?.drawable == null) {
-                title.error = "Obligatorio"
+                title.error = view.context.getString(R.string.toast_obligatorio)
+
             }else{
-                val titulo = title.editText?.text.toString().toUpperCase().trim()
-                if(categoria.checkCategoriaExiste(view.context, titulo, idUsuario)) {
-                    CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), view.context, "La categoría ya existe")
+                val titulo = title.editText?.text.toString().uppercase().trim()
+                if(categoria.checkCategoriaExiste(view.context, titulo, idUsuario, Locale.getDefault().language)) {
+                    Toast.makeText(view.context, R.string.toast_categoria_existente, Toast.LENGTH_SHORT).show()
+
                 }else{
                     crearCategoria(title,false, Categoria(),colorSelected, view.context as Activity)
                     dialogo.dismiss()
@@ -272,6 +294,39 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
         iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
         dialogo.show()
+    }
+
+    override fun onItemSeleccionadoEntre(idPicto: Int) {
+        _idPictoEntretenimiento.value = idPicto
+    }
+
+    override fun onNuevoPicto(imagenPicto: String?) {
+        _imagenNuevoPicto.value = imagenPicto
+    }
+
+    fun getPictogramas(query: String, isNuevoPictoBusqueda: Boolean, activity: Activity) {
+        busquedaOpen = true
+        val pictogramasBusqueda = ArrayList<Pictograma>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val dict = CommonUtils.getDataApi(query)
+
+            withContext(Dispatchers.Main) {
+                dict.keys.mapNotNull { key ->
+                    dict[key]?.let { (value, id) ->
+                        pictogramasBusqueda.add(crearPictoBusqueda(key, value, id, activity))
+                    }
+                }
+            }
+
+            if (pictogramasBusqueda.isNotEmpty()) {
+                if(isNuevoPictoBusqueda){
+                    _listaPictoRandom.postValue(pictogramasBusqueda)
+                } else{
+                    _listaPictogramas.postValue(pictogramasBusqueda)
+                }
+
+            }
+        }
     }
 
     @SuppressLint("IntentReset")
@@ -315,30 +370,15 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
 
     }
 
-   /* fun createReloj(): MaterialTimePicker {
-        val currentTime = Calendar.getInstance()
-        val currentHour = currentTime[Calendar.HOUR_OF_DAY]
-        val currentMinute = currentTime[Calendar.MINUTE]
 
-        val picker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_12H)
-            .setHour(currentHour)
-            .setMinute(currentMinute)
-            .setTheme(R.style.TimePicker)
-            .setTitleText("Selecciona una hora")
-            .build()
-
-        return picker
-    }*/
-
-    fun createReloj24(hora: Int, minutos: Int): MaterialTimePicker {
+    fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
 
         return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(hora)
             .setMinute(minutos)
             .setTheme(R.style.TimePicker)
-            .setTitleText("Selecciona una hora")
+            .setTitleText(getString(context, R.string.selecciona_hora))
             .build()
     }
 

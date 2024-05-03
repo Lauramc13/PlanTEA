@@ -19,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -56,10 +57,10 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         viewModel.isTermometro = (bundle?.get("termometro") as Boolean)
 
         if(viewModel.listaPictogramas?.isEmpty() == true){
-            viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+            viewModel.listaPictogramas!!.add(Pictograma(getString(R.string.lbl_NuevoPicto).uppercase(), "archivo", 0, 0))
         }else{
-            if(viewModel.listaPictogramas?.last()?.titulo != "AÑADIR PICTOGRAMA" ) {
-                viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+            if(viewModel.listaPictogramas?.last()?.titulo != getString(R.string.lbl_NuevoPicto).uppercase() ) {
+                viewModel.listaPictogramas!!.add(Pictograma(getString(R.string.lbl_NuevoPicto).uppercase(), "archivo", 0, 0))
             }
         }
 
@@ -131,7 +132,7 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (!CommonUtils.isNetworkAvailable(requireContext())) {
-                    CommonUtils.showSnackbar(vista, requireContext(), "No hay conexión a internet")
+                    Toast.makeText(requireContext(), R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
                     searchBar.setQuery("", false)
                     searchBar.clearFocus()
                 }else {
@@ -165,7 +166,7 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         }
 
         if(viewModel.listaPictogramas!!.lastIndex != 0) {
-            viewModel.listaPictogramas!!.add(Pictograma("AÑADIR PICTOGRAMA", "archivo", 0, 0))
+            viewModel.listaPictogramas!!.add(Pictograma(getString(R.string.lbl_NuevoPicto).uppercase(), "archivo", 0, 0))
         }
 
         adaptador.isBusqueda = false
@@ -177,7 +178,7 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
         imageAtras.visibility = View.INVISIBLE
     }
 
-    fun mostrarDialogoCrearPicto(){
+    private fun mostrarDialogoCrearPicto(){
         checkIfFragmentAttached {
             val dialogo = Dialog(requireContext())
             dialogo.setContentView(R.layout.dialogo_crear_pictograma_cuaderno)
@@ -195,8 +196,8 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
             btnCrear.setOnClickListener{
                 nombre.error = null
                 if (nombre.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
-                    nombre.error = "Obligatorio"
-                    CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), requireContext(), "Tienes que rellenar todos los campos")
+                    nombre.error = requireContext().getString(R.string.toast_obligatorio)
+                    Toast.makeText(requireContext(), R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
                 }else{
                     crearPicto(nombre)
                     dialogo.dismiss()

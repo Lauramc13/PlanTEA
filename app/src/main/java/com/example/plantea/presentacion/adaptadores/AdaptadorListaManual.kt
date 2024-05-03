@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.graphics.Typeface
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View

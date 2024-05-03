@@ -46,8 +46,8 @@ class Cuaderno() : Parcelable {
             return arrayOfNulls(size)
         }
     }
-    fun consultarCuadernos(actividad: Activity?, idUsuario: String): ArrayList<Cuaderno> {
-        return gestorCuadernos.consultarCuadernos(actividad, idUsuario)
+    fun consultarCuadernos(actividad: Activity?, idUsuario: String, language: String): ArrayList<Cuaderno> {
+        return gestorCuadernos.consultarCuadernos(actividad, idUsuario, language)
     }
 
     fun crearCuaderno(actividad: Activity?, idUsuario: String, titulo: String, imagen: String?, termometro: Int): Int {

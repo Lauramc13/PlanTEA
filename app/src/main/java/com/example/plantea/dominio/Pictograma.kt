@@ -12,6 +12,7 @@ class Pictograma : Serializable {
     var cuaderno = 0
     var historia: String? = null
     var duracion: String? = null
+    var pictoEntretenimiento = 0
     var favorito: Boolean = false
     var sourceAPI: Boolean = false
     var listaPictogramas: ArrayList<Pictograma>? = null
@@ -35,15 +36,15 @@ class Pictograma : Serializable {
         this.sourceAPI = sourceAPI
     }
 
-    fun obtenerPictogramas(context: Context, idcategoria: Int, idUsuario: String?): ArrayList<*> {
+    fun obtenerPictogramas(context: Context, idcategoria: Int, idUsuario: String?, language: String): ArrayList<*> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.obtenerPictogramas(context, idcategoria, idUsuario)
+        listaPictogramas = gestorPictogramas.obtenerPictogramas(context, idcategoria, idUsuario, language)
         return listaPictogramas as ArrayList<Pictograma>
     }
 
-    fun obtenerFavoritos(actividad: Context?, idUsuario: String?): ArrayList<Pictograma> {
+    fun obtenerFavoritos(actividad: Context?, idUsuario: String?, language: String): ArrayList<Pictograma> {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.obtenerFavoritos(actividad, idUsuario)
+        listaPictogramas = gestorPictogramas.obtenerFavoritos(actividad, idUsuario, language)
         return listaPictogramas!!
     }
 
@@ -55,9 +56,9 @@ class Pictograma : Serializable {
         return gestorPictogramas.insertarPictogramaCuaderno(actividad, nombre, imagen, idCuaderno, idUsuario)
     }
 
-    fun obtenerPictogramasCuaderno(actividad: Activity?, idCuaderno: Int): ArrayList<*>? {
+    fun obtenerPictogramasCuaderno(actividad: Activity?, idCuaderno: Int, language: String): ArrayList<*>? {
         listaPictogramas = ArrayList()
-        listaPictogramas = gestorPictogramas.listarPictogramasCuaderno(actividad, idCuaderno)
+        listaPictogramas = gestorPictogramas.listarPictogramasCuaderno(actividad, idCuaderno, language)
         return listaPictogramas
     }
 
@@ -95,7 +96,16 @@ class Pictograma : Serializable {
         return gestorPictogramas.borrarPictoCuaderno(actividad, id, idCuaderno)
     }
 
+    fun obtenerPicto(context: Context?, id: String?): Pictograma {
+        return gestorPictogramas.obtenerPicto(context, id)
+    }
+
+    fun getRandomPictograms(context: Context?, idUsuario: String?, language: String): ArrayList<Pictograma> {
+        return gestorPictogramas.getRandomPictograms(context, idUsuario, language)
+    }
+
     fun copy(): Pictograma {
         return Pictograma(this.id, this.titulo, this.imagen, this.categoria, this.cuaderno, this.favorito, this.sourceAPI)
     }
+
 }

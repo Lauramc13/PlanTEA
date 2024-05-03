@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class CuadernoActivity : AppCompatActivity() {
     //private var transaction: FragmentTransaction? = null
@@ -36,14 +37,14 @@ class CuadernoActivity : AppCompatActivity() {
         val idUsuario = prefs.getString("idUsuario", "")
 
         if (idUsuario != null) {
-            viewModel.listaCuadernos = viewModel.cuaderno.consultarCuadernos(this, idUsuario)
+            viewModel.listaCuadernos = viewModel.cuaderno.consultarCuadernos(this, idUsuario, Locale.getDefault().language)
         }
 
         viewModel.listaCuadernos!!.removeAt(0)
 
         viewModel.isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
         if(viewModel.isPlanificador){
-            viewModel.listaCuadernos!!.add(Cuaderno(0, "AÑADIR CUADERNO", "archivo", false))
+            viewModel.listaCuadernos!!.add(Cuaderno(0, getString(R.string.aniadir_cuaderno), "archivo", false))
         }
 
         atras = findViewById(R.id.atras)

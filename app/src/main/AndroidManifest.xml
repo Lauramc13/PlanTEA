@@ -9,6 +9,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <queries>
+        <package android:name="com.example.calendar" />
+    </queries>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -60,13 +64,12 @@
         <activity
             android:name=".presentacion.actividades.CrearPlanActivity"
             android:label="Crear planificación"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize|stateUnchanged" />
         <activity
             android:name=".presentacion.actividades.PreLoginActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.RegisterActivity"
-            android:label=""
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.MenuAvataresPlanActivity"
@@ -94,7 +97,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.TraductorActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan|stateUnchanged" />
         <activity
             android:name=".presentacion.actividades.PasswordActivity"
             android:windowSoftInputMode="adjustPan" />

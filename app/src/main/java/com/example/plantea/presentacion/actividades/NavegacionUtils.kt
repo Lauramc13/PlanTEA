@@ -230,6 +230,7 @@ class NavegacionUtils {
         configurarDatos(view)
 
         buttonMenu.setOnClickListener {
+
             val targetWidth: Int
             if(isExpanded){
                 textoRol.visibility = View.GONE
@@ -237,6 +238,7 @@ class NavegacionUtils {
                 targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.old_navigation_width)
                 buttonMenu.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.svg_menu, 0, 0)
             }else{
+
                 textoRol.visibility = View.VISIBLE
                 targetWidth = contextFragment.resources.getDimensionPixelSize(R.dimen.new_navigation_width)
                 buttonMenu.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.svg_close, 0)

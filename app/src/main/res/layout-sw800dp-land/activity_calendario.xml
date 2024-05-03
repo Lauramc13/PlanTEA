@@ -162,7 +162,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Calendario"
+            android:text="@string/pantalla_calendario"
             android:textSize="@dimen/displaySmall" />
 
     </LinearLayout>

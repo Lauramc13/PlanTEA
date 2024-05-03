@@ -28,13 +28,13 @@
 
     <ScrollView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout16"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.8">
 
         <LinearLayout
@@ -46,7 +46,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@drawable/bg_cards_configuracion">
 
                 <LinearLayout
@@ -62,19 +62,39 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/lbl_dia"
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
-                        android:autoSizeTextType="uniform"
-                        android:fontFamily="@font/poppins_bold"
-                        android:maxLines="2"
-                        android:text="Viernes, 9 de septiembre"
-                        android:textColor="?colorTertiary"
-                        android:textSize="@dimen/subtitle" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl_dia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginEnd="10dp"
+                            android:autoSizeTextType="uniform"
+                            android:fontFamily="@font/poppins_bold"
+                            android:maxLines="2"
+                            android:text="Viernes, 9 de septiembre"
+                            android:textColor="?colorTertiary"
+                            android:textSize="@dimen/subtitle" />
+
+                        <TextView
+                            android:id="@+id/lbl_titulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Titulo"
+                            android:layout_marginTop="5dp"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="@dimen/titleSmall"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
+                    </LinearLayout>
+
+
 
                     <Button
                         android:id="@+id/CalendarDate"
@@ -188,25 +208,6 @@
                         app:iconTint="#203130" />
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/icon_escuchar"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="180dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
-                    android:contentDescription="Botón escuchar planificacion"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="ESCUCHAR"
-                    android:textColor="#203130"
-                    android:textSize="@dimen/button"
-                    app:cornerRadius="25dp"
-                    app:icon="@drawable/svg_sound"
-                    app:iconSize="25dp"
-                    app:iconTint="#203130"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout4" />
-
                 <!--  <Button
                   android:id="@+id/icon_deshacer"
                   style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -227,17 +228,26 @@
                   app:layout_constraintStart_toStartOf="parent"
                   app:layout_constraintTop_toBottomOf="@+id/linearLayout4" /> -->
 
-                <TextView
-                    android:id="@+id/lbl_titulo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Titulo"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/titleSmall"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
+
+                <Button
+                    android:id="@+id/icon_escuchar"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="Botón escuchar planificacion"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/str_escuchar2"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button"
+                    app:cornerRadius="25dp"
+                    app:icon="@drawable/svg_sound"
+                    app:iconSize="25dp"
+                    app:iconTint="#203130"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.384"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout4" />
 
                 <TextView
                     android:id="@+id/lbl_mensajeNinio"
@@ -269,7 +279,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_fecha"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <Button
@@ -336,7 +346,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/linearLayout16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -363,7 +373,7 @@
             android:text="Eventos"
             android:textSize="@dimen/title" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewSide"

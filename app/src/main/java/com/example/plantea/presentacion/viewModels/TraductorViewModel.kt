@@ -23,6 +23,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getString
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -58,7 +59,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     var ruta : String? = null
     var posicionSelected = -1
 
-    val _dialogMessage = SingleLiveEvent<String>()
+    val _dialogMessage = SingleLiveEvent<Int>()
     val _traduccionEnded = SingleLiveEvent<Boolean>()
 
     val _listaPictogramas = MutableLiveData<ArrayList<Pictograma>>()
@@ -142,9 +143,9 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         val creada = plan.addPictogramasPlan(idPlan, context as TraductorActivity, listaPictogramas)
 
         if (creada == true) {
-            _dialogMessage.value = "Planificación $titulo creada"
+            _dialogMessage.value = R.string.toast_planificacion_creada
         } else {
-            _dialogMessage.value = "Error al crear la planificación"
+            _dialogMessage.value = R.string.toast_error_crear_planificacion
         }
     }
 
@@ -162,7 +163,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
             //if tituloString is empty -> error
             if(tituloString.isEmpty()){
                 titulo.error = "El campo no puede estar vacío"
-                CommonUtils.showSnackbar(dialog.findViewById(android.R.id.content), context, "No puedes dejar el campo vacío")
+                Toast.makeText(context, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
             }else{
                 crearPlanificacion(context, tituloString)
                 CommonUtils.hideKeyboard(context, titulo)
@@ -190,7 +191,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 tituloString = ""
             }
 
-            guardarPDF(context, view, tituloString.uppercase())
+            guardarPDF(context, tituloString.uppercase())
             CommonUtils.hideKeyboard(context, titulo)
             dialog.dismiss()
         }
@@ -240,7 +241,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         adaptador.notifyItemChanged(posicionSelected)
     }
 
-    fun guardarPDF(context: Context, view: View, title: String){
+    private fun guardarPDF(context: Context, title: String){
         // Create a new PDF document
         val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val baseFilename = "Traduccion.pdf"
@@ -312,7 +313,8 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
             file.close()
 
             Log.d("PDF", "PDF creado en $outputPath")
-            CommonUtils.showSnackbar(view, context, "PDF creado en /Download/$filename")
+            val message = getString(context, R.string.toast_pdf_creado)
+            Toast.makeText(context, message + filename, Toast.LENGTH_SHORT).show()
 
         } catch (e: Exception) {
             Log.e("ERROR", "Error creating PDF: ${e.message}", e)

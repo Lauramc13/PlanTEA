@@ -1,20 +1,30 @@
 package com.example.plantea.presentacion.actividades
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.LocaleList
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
+import androidx.core.os.LocaleListCompat
 import com.example.plantea.R
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var imagePlanificador: ImageView
@@ -24,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cardUsuarioTEA: CardView
     private lateinit var cardUsuarioPlanificador: CardView
     private lateinit var iconoCerrar: ImageView
+    private lateinit var spinner : Spinner
+    private lateinit var imageSpinner : ImageView
 
     private var infoUsuario = false
     private var navigationHandler = NavegacionUtils()
@@ -69,6 +81,9 @@ class MainActivity : AppCompatActivity() {
         nombreUsuarioTEA = findViewById(R.id.lbl_nombreUsuarioTEA)
         cardUsuarioPlanificador = findViewById(R.id.cardViewPlanificador)
         cardUsuarioTEA = findViewById(R.id.cardViewUsuarioTEA)
+        spinner = findViewById(R.id.spinner_idiomas)
+        imageSpinner = findViewById(R.id.image_idioma)
+
         val preferencias: Button = findViewById(R.id.image_RolPlanificador2)
         val buttonLogout: Button = findViewById(R.id.btn_logout)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
@@ -105,6 +120,40 @@ class MainActivity : AppCompatActivity() {
 
         buttonLogout.setOnClickListener{
             dialogLogout()
+        }
+
+        val idiomas = ArrayList<String>()
+        idiomas.add("Español")
+        idiomas.add("English")
+        val adapter = ArrayAdapter(applicationContext, R.layout.simple_spinner_item_idioma, idiomas)
+        spinner.adapter = adapter
+
+        val currentLanguage = Locale.getDefault().displayLanguage
+        val position = adapter.getPosition(currentLanguage)
+        spinner.setSelection(position)
+        imageSpinner(currentLanguage)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(idiomas[position] == "English"){
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
+                }else{
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("es")))
+                }
+                imageSpinner(idiomas[position])
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                //do nothing
+            }
+        }
+    }
+
+    private fun imageSpinner(currntLanguage: String) {
+        if (currntLanguage == "English") {
+            imageSpinner.setImageResource(R.drawable.ic_en)
+        } else {
+            imageSpinner.setImageResource(R.drawable.ic_es)
         }
     }
 

@@ -8,14 +8,14 @@ class GestionCategorias {
     private var listaCategorias: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
 
-    fun listarCategorias(actividad: Activity?): ArrayList<String> {
+    fun listarCategorias(actividad: Activity?, language: String): ArrayList<String> {
         conectorBD = ConectorBD(actividad)
         listaCategorias = ArrayList()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarCategorias()
+        val c = conectorBD!!.listarCategorias(language)
         if (c.moveToFirst()) {
             do {
-                listaCategorias!!.add(c.getString(0))
+                listaCategorias!!.add(c.getString(1))
 
             } while (c.moveToNext())
         }
@@ -24,11 +24,11 @@ class GestionCategorias {
         return listaCategorias!!
     }
 
-    fun obtenerIdCategoria(context: Context, nombre: String?): Int {
+    fun obtenerIdCategoria(context: Context, nombre: String?, language: String): Int {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
         var categoria = 0
-        val c = conectorBD!!.obtenerIdCategoria(nombre)
+        val c = conectorBD!!.obtenerIdCategoria(nombre, language)
         if (c.moveToFirst()) {
             categoria = c.getInt(0)
         }
@@ -37,11 +37,11 @@ class GestionCategorias {
         return categoria
     }
 
-    fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario:String): ArrayList<Categoria> {
+    fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario:String, language: String): ArrayList<Categoria> {
         conectorBD = ConectorBD(actividad)
         val listCategorias = ArrayList<Categoria>()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarCategoriasPrincipales(idUsuario)
+        val c = conectorBD!!.listarCategoriasPrincipales(idUsuario, language)
         if (c.moveToFirst()) {
             do {
                 val categoria = Categoria()
@@ -79,10 +79,10 @@ class GestionCategorias {
         conectorBD!!.cerrar()
     }
 
-    fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String): Boolean {
+    fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String, language: String): Boolean {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
-        val c = conectorBD!!.checkCategoriaExiste(toString, idUsuario)
+        val c = conectorBD!!.checkCategoriaExiste(toString, idUsuario, language)
         var existe = true
         if (c.moveToFirst()) {
             //if count is 1, then the entry was found

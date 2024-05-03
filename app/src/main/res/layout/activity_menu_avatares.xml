@@ -120,6 +120,7 @@
                     android:id="@+id/avatar1chica"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
@@ -139,6 +140,7 @@
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
+                    app:cardElevation="0dp"
                     app:cardCornerRadius="20dp"
                     android:layout_margin="15dp">
                     <ImageView
@@ -164,6 +166,7 @@
                     android:contentDescription="Opción 3 chica pelo negro"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
@@ -183,6 +186,7 @@
                     android:contentDescription="Opción 4 chica pelo moreno"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 
@@ -209,6 +213,7 @@
                 android:contentDescription="Opción 5 chica pelo moreno corto"
                 app:strokeColor="?color"
                 app:strokeWidth="1.5dp"
+                app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/white"
                 android:layout_margin="15dp">
 
@@ -228,6 +233,7 @@
                 android:contentDescription="Opción 1 chico pelo moreno barba"
                 app:strokeColor="?color"
                 app:strokeWidth="1.5dp"
+                app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/white"
                 android:layout_margin="15dp">
 
@@ -253,6 +259,7 @@
                     android:contentDescription="Opción 2 chico pelo rubio"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
@@ -271,6 +278,7 @@
                     android:contentDescription="Opción 3 chico pelo moreno largo barba"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
@@ -297,6 +305,7 @@
                     android:contentDescription="Opción 4 chico pelo moreno"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
                     <ImageView
@@ -315,6 +324,7 @@
                     android:contentDescription="Opción 5 chico pelo moreno gafas"
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
                     android:layout_margin="15dp">
 

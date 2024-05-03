@@ -12,7 +12,8 @@ class GestionEventos {
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.id_plan)
+        val identificador = conectorBD!!.insertarCita(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora)
+        conectorBD!!.insertarCitaEvento(identificador, evento.id_plan)
         conectorBD!!.cerrar()
         return identificador
     }

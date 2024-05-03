@@ -30,12 +30,12 @@ class GestionPictogramas : Serializable {
     // }
 
 
-    fun obtenerPictogramas(context: Context, idcategoria: Int, userId: String?): ArrayList<Pictograma> {
+    fun obtenerPictogramas(context: Context, idcategoria: Int, userId: String?, language: String): ArrayList<Pictograma> {
         conectorBD = ConectorBD(context)
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
 
-        val c = conectorBD!!.listarPictogramasPrueba(idcategoria, userId)
+        val c = conectorBD!!.listarPictogramasPrueba(idcategoria, userId, language)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -70,11 +70,11 @@ class GestionPictogramas : Serializable {
         return id
     }
 
-    fun listarPictogramasCuaderno(actividad: Activity?, idCuaderno: Int): ArrayList<Pictograma> {
+    fun listarPictogramasCuaderno(actividad: Activity?, idCuaderno: Int, language: String): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarPictogramasCuaderno(idCuaderno)
+        val c = conectorBD!!.listarPictogramasCuaderno(idCuaderno, language)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -94,7 +94,7 @@ class GestionPictogramas : Serializable {
         return listaPictogramas as ArrayList<Pictograma>
     }
 
-    fun listarConsultas(actividad: Activity?, idcategoria: Int): ArrayList<String> {
+  /*  fun listarConsultas(actividad: Activity?, idcategoria: Int): ArrayList<String> {
         conectorBD = ConectorBD(actividad)
         listaConsultas = ArrayList()
         conectorBD!!.abrir()
@@ -107,7 +107,7 @@ class GestionPictogramas : Serializable {
         c.close()
         conectorBD!!.cerrar()
         return listaConsultas!!
-    }
+    }*/
 
    /* fun obtenerImagenPictograma(actividad: Activity?, idCategoria: Int): String? {
         conectorBD = ConectorBD(actividad)
@@ -124,11 +124,11 @@ class GestionPictogramas : Serializable {
         return ruta
     }*/
 
-    fun obtenerFavoritos(actividad: Context?, idUsuario: String?): ArrayList<Pictograma> {
+    fun obtenerFavoritos(actividad: Context?, idUsuario: String?, language: String): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
-        val c = conectorBD!!.obtenerFavoritos(idUsuario)
+        val c = conectorBD!!.obtenerFavoritos(idUsuario, language)
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
@@ -185,6 +185,42 @@ class GestionPictogramas : Serializable {
         conectorBD!!.abrir()
         conectorBD!!.borrarPictogramaCuaderno(id, idCuaderno)
         conectorBD!!.cerrar()
+    }
+
+    fun obtenerPicto(context: Context?, id: String?): Pictograma {
+        val pictograma = Pictograma()
+        conectorBD = ConectorBD(context)
+        conectorBD!!.abrir()
+        val c = conectorBD!!.obtenerPictograma(id)
+        if (c.moveToFirst()) {
+            do {
+                pictograma.id = c.getString(0)
+                pictograma.imagen = c.getString(2)
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD!!.cerrar()
+        return pictograma
+    }
+
+    fun getRandomPictograms(context: Context?, idUsuario: String?, language: String): ArrayList<Pictograma> {
+        conectorBD = ConectorBD(context)
+        listaPictogramas = ArrayList()
+        conectorBD!!.abrir()
+        val c = conectorBD!!.listarPictogramasAleatorios(idUsuario, language)
+        if (c.moveToFirst()) {
+            do {
+                val pictograma = Pictograma()
+                pictograma.id = c.getString(0)
+                pictograma.titulo = c.getString(1)
+                pictograma.imagen = c.getString(2)
+                listaPictogramas!!.add(pictograma)
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD!!.cerrar()
+        return listaPictogramas!!
+
     }
 
 

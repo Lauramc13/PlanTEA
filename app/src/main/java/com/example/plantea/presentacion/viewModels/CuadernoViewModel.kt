@@ -7,12 +7,14 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.plantea.R
 import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
@@ -38,6 +40,8 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
     var isTermometro: Boolean = true
     var tituloCuaderno : String = ""
     lateinit var image: ShapeableImageView
+
+    var _imagenNuevoPicto = SingleLiveEvent<String>()
 
     val _lastPictoClicked = SingleLiveEvent<Boolean>()
     val _posicionPictoClicked = SingleLiveEvent<Int>()
@@ -70,7 +74,8 @@ class CuadernoViewModel: ViewModel(), AdaptadorCategoriasCuaderno.OnItemSelected
 
             } else {
                 if (context != null) {
-                    CommonUtils.showSnackbar(view, context, "No se ha seleccionado ninguna imagen")
+                    Toast.makeText(context, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
+
                 }
             }
         }

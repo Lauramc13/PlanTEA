@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Recordar..."
+            android:text="@string/recordar"
             android:layout_marginBottom="10dp"
             android:textSize="16sp" />
 
@@ -33,7 +33,7 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="5 minutos antes"
+            android:text="@string/recordar_5min"
             android:textSize="14sp"
             android:textColor="?colorOnSurface"
             app:buttonTint="?colorPrimary" />
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="1 hora antes"
+            android:text="@string/recordar_1hora"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:textSize="14sp"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="1 día antes"
+            android:text="@string/recordar_1dia"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:textSize="14sp"
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="A las ..."
+            android:text="@string/recordar_personalizado"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:textSize="14sp"
@@ -88,7 +88,7 @@
             android:backgroundTint="?colorPrimary"
             android:fontFamily="@font/poppins_semibold"
             android:padding="12dp"
-            android:text="Aceptar"
+            android:text="@string/aceptar"
             android:textAllCaps="true"
             android:textColor="#203130"
             android:textSize="13dp" />

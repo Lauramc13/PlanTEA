@@ -11,8 +11,14 @@ import android.os.Bundle
 import android.os.Environment
 import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.PathInterpolator
+import android.view.animation.TranslateAnimation
 import android.widget.Button
+import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -33,7 +39,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
     private lateinit var escucharButtonPalabra : Button
     private lateinit var escucharButtonFrase : Button
     private lateinit var guardarButton : Button
-    private lateinit var guardarPDFButton : Button
+    //private lateinit var guardarPDFButton : Button
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
     private var atras : Button? = null
@@ -58,7 +64,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
         escucharButtonFrase = findViewById(R.id.escucharButtonFrase)
         guardarButton = findViewById(R.id.guardarButton)
-        guardarPDFButton = findViewById(R.id.guardarButtonPDF)
+        //guardarPDFButton = findViewById(R.id.guardarButtonPDF)
         textoATraducir = findViewById(R.id.textoTraducir)
         textoATraducir.editText?.setText(viewModel.textInputContent)
         atras = findViewById(R.id.atras)
@@ -84,14 +90,15 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         traducirButton.setOnClickListener {
             // if there is no internet connection, show a snackbar
             if (!CommonUtils.isNetworkAvailable(this)) {
-                CommonUtils.showSnackbar(findViewById(android.R.id.content), context = this, "No hay conexión a internet")
+                Toast.makeText(this, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
             }else{
                 if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim(), this)) {
                     traducirButton.isEnabled = false
                     viewModel._visibilityButtons.value = true
                     CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
                 }else{
-                    CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No puedes dejar el campo vacío")
+                    Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
+
                 }
             }
         }
@@ -142,21 +149,33 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         }
 
         guardarButton.setOnClickListener {
-            if(viewModel.listaPictogramas.isNotEmpty()){
-                viewModel.dialogGuardar(this)
-            }else{
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se puede guardar una traducción sin pictogramas")
-            }
-        }
 
-        guardarPDFButton.setOnClickListener {
-            if(viewModel.listaPictogramas.isNotEmpty()){
-                viewModel.dialogoTraduccion(this, findViewById(android.R.id.content))
-            }else{
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se puede guardar una traducción sin pictogramas")
-            }
-        }
+            val inflater = LayoutInflater.from(this)
+            val customView = inflater.inflate(R.layout.popup_guardar_traduccion, null)
+            val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+            popupWindow.width = guardarButton.width
 
+            customView.findViewById<TextView>(R.id.item_planificacion).setOnClickListener {
+                if(viewModel.listaPictogramas.isNotEmpty()){
+                    viewModel.dialogGuardar(this)
+                }else{
+                    Toast.makeText(this, R.string.toast_error_guardar_traduccion_vacia, Toast.LENGTH_SHORT).show()
+                }
+                popupWindow.dismiss()
+            }
+
+            customView.findViewById<TextView>(R.id.item_pdf).setOnClickListener {
+                if(viewModel.listaPictogramas.isNotEmpty()){
+                    viewModel.dialogoTraduccion(this, findViewById(android.R.id.content))
+                }else{
+                    Toast.makeText(this, R.string.toast_error_guardar_traduccion_vacia, Toast.LENGTH_SHORT).show()
+                }
+                popupWindow.dismiss()
+            }
+
+            popupWindow.showAsDropDown(guardarButton, 0, -10)
+
+        }
 
 
         /////////////  Observers  //////////////
@@ -169,7 +188,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
 
         //Si hay un mensaje de error o de éxito, lo mostramos a traves de un Snackbar
         viewModel._dialogMessage.observe(this){ message ->
-            CommonUtils.showSnackbar(findViewById(android.R.id.content),applicationContext, message)
+            Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show()
         }
 
         //Si hay pictogramas, mostramos los botones
@@ -179,13 +198,13 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 escucharButtonFrase.visibility = View.VISIBLE
                 if(isPlanificador){
                     guardarButton.visibility = View.VISIBLE
-                    guardarPDFButton.visibility = View.VISIBLE
+                //    guardarPDFButton.visibility = View.VISIBLE
                 }
             }else{
                 escucharButtonPalabra.visibility = View.GONE
                 escucharButtonFrase.visibility = View.GONE
                 guardarButton.visibility = View.GONE
-                guardarPDFButton.visibility = View.GONE
+                //guardarPDFButton.visibility = View.GONE
             }
         }
 
@@ -215,7 +234,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 viewModel.ruta = CommonUtils.guardarImagen(applicationContext, nombreFile, viewModel.bitmap!!)
                 viewModel.imageSelected()
             } else {
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
+                Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -19,14 +19,46 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="243dp"
+        android:layout_height="204dp"
+        android:layout_marginStart="-20dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:rotation="180"
-        app:tint="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/svg_blob2_white" />
+        app:srcCompat="@drawable/svg_blob2_white"
+        app:tint="@color/white" />
 
+    <FrameLayout
+        android:id="@+id/frameLayout_idiomas"
+        android:layout_width="60dp"
+        android:layout_height="52dp"
+        android:layout_margin="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner_idiomas"
+            style="@style/dropdownMenuIdioma"
+            android:layout_width="wrap_content"
+            android:backgroundTint="?colorOnSurfaceInverse"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:dropDownVerticalOffset="52dp"
+            android:popupElevation="1dp"
+            android:popupBackground="@drawable/custom_popup_background_idioma"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/image_idioma"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|bottom"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:background="?colorOnSurfaceInverse"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_es" />
+    </FrameLayout>
 
     <Button
         android:id="@+id/image_RolPlanificador2"
@@ -86,7 +118,7 @@
         app:cardCornerRadius="20dp"
         android:gravity="center"
         app:layout_constraintVertical_bias="0.4"
-        app:cardBackgroundColor="?cardBackgroundColorPersonalized"
+        app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +158,7 @@
         android:clickable="true"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?cardBackgroundColorPersonalized"
+        app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:cardCornerRadius="20dp"
         app:layout_constraintVertical_bias="0.4"
         android:contentDescription="Tarjeta del planificado para iniciar sesión"

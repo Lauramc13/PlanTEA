@@ -133,7 +133,8 @@
                     app:cardCornerRadius="20dp"
                     android:contentDescription="Opción 1 niña pelo moreno gafas"
                     android:id="@+id/avatar1nina"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -152,7 +153,8 @@
                     android:layout_height="150dp"
                     android:id="@+id/avatar2nina"
                     android:contentDescription="Opción 2 niña pelo moreno"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -172,7 +174,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar3nina"
                     android:contentDescription="Opción 3 niña pelo moreno"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -191,7 +194,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar4nina"
                     android:contentDescription="Opción 4 niña pelo negro"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -220,7 +224,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar5nina"
                     android:contentDescription="Opción 5 niña pelo rubio trenzas"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -240,7 +245,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar1nino"
                     android:contentDescription="Opción 1 niño pelo moreno"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -261,7 +267,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar2nino"
                     android:contentDescription="Opción 2 niño pelo moreno"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -280,7 +287,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar3nino"
                     android:contentDescription="Opción 3 niño pelo moreno gafas"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -307,7 +315,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar4nino"
                     android:contentDescription="Opción 4 niño pelo rubio gafas"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -326,7 +335,8 @@
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar5nino"
                     android:contentDescription="Opción 5 niño pelo moreno"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:strokeColor="?color"
                     app:strokeWidth="1.5dp"
                     app:cardBackgroundColor="@color/white"
@@ -345,7 +355,8 @@
                     android:layout_height="150dp"
                     android:backgroundTint="?colorBG2"
                     android:layout_margin="15dp"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:cardCornerRadius="20dp" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -353,7 +364,8 @@
                     android:layout_height="150dp"
                     android:backgroundTint="?colorBG2"
                     android:layout_margin="15dp"
-                    android:elevation="0dp"
+                    app:cardElevation="0dp"
+
                     app:cardCornerRadius="20dp" />
             </TableRow>
 

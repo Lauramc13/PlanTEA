@@ -1,25 +1,21 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.widget.ArrayAdapter
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -27,18 +23,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntretenimiento
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Collections
 import java.util.Locale
-
 
 class CrearPlanActivity : AppCompatActivity(){
     private lateinit var transaction: FragmentTransaction
@@ -47,14 +39,9 @@ class CrearPlanActivity : AppCompatActivity(){
     private lateinit var backButton: Button
 
     //Variables dialogo crear nuevo pictograma
-    private lateinit var tituloDialogo: TextInputLayout
-    private lateinit var spinnerDialogo: Spinner
-    private lateinit var imgPicto: ImageView
-    private lateinit var imgCerrar: ImageView
-    private lateinit var btnGuardar: Button
     private lateinit var btnGuardarPlanificacion: Button
     private lateinit var txtTituloPlan: TextView
-
+    private var dialogEntretenimiento: Dialog? = null
     //RecyclerView Planificacion
     lateinit var recyclerView: RecyclerView
     lateinit var adaptador: AdaptadorPlanificacion
@@ -73,10 +60,14 @@ class CrearPlanActivity : AppCompatActivity(){
         txtTituloPlan = findViewById(R.id.txt_TituloPlan)
 
         backButton.setOnClickListener{
+            dialogEntretenimiento?.dismiss()
             finish()
         }
 
         observers()
+
+        // Para el dialogo de crear nuevo pictograma
+        AniadirPictoUtils.createPickMedia(viewModel, this)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.setIdUsuario(prefs)
@@ -85,25 +76,7 @@ class CrearPlanActivity : AppCompatActivity(){
         onBackPressedDispatcher.addCallback(this, callback)
 
         // SearchView para buscar pictogramas
-        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                if (!CommonUtils.isNetworkAvailable(this@CrearPlanActivity)) {
-                    CommonUtils.showSnackbar(findViewById(android.R.id.content), this@CrearPlanActivity, "No hay conexión a internet")
-                    searchBar.setQuery("", false)
-                    searchBar.clearFocus()
-                }else {
-                    getPictogramas(query.trim())
-                }
-                CommonUtils.hideKeyboard(this@CrearPlanActivity, searchBar)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                newText.trim()
-                return true
-            }
-        })
-
+        AniadirPictoUtils.inializeSearch(searchBar, false, viewModel, this@CrearPlanActivity)
 
         //Comprobar si hay parametros en caso de llamada desde editar
         val parametros = this.intent.extras
@@ -133,6 +106,7 @@ class CrearPlanActivity : AppCompatActivity(){
             viewModel.image?.setImageURI(it)
             viewModel.image?.background = null
         }
+
         createPickMedia()
 
         val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -173,22 +147,6 @@ class CrearPlanActivity : AppCompatActivity(){
         recyclerView.scrollToPosition(adaptador.itemCount - 2)
     }
 
-    private fun abrirGaleria() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-        // Handle the returned URI here
-        if (uri != null) {
-            imgPicto.setImageURI(uri)
-            imgPicto.background = null
-        } else {
-            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No se ha seleccionado ninguna imagen")
-        }
-    }
-
     fun observers() {
         viewModel._closeFragment.observe(this) {
             if(it){
@@ -222,65 +180,7 @@ class CrearPlanActivity : AppCompatActivity(){
 
         viewModel._nuevoPictoDialog.observe(this) {
             if (it) {
-                //cerrarFragment(); //Cerrar fragmento al abrir dialogo
-                val dialogNuevoPictograma = Dialog(this)
-                dialogNuevoPictograma.setContentView(R.layout.dialogo_nuevo_pictograma)
-                dialogNuevoPictograma.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                dialogNuevoPictograma.show()
-                imgCerrar = dialogNuevoPictograma.findViewById(R.id.icono_CerrarDialogo)
-                btnGuardar = dialogNuevoPictograma.findViewById(R.id.btn_GuardarPicto)
-                imgPicto = dialogNuevoPictograma.findViewById(R.id.img_NuevoPicto)
-                tituloDialogo = dialogNuevoPictograma.findViewById(R.id.txt_Titulo)
-                spinnerDialogo = dialogNuevoPictograma.findViewById(R.id.spinner_Categorias)
-                val categorias = viewModel.categoria.consultarCategorias(this)
-               // spinner_Dialogo
-
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categorias as ArrayList<String>)
-                spinnerDialogo.adapter = adapter
-                if(viewModel.subcategoriaOpen){
-                    spinnerDialogo.setSelection(viewModel.identificadorSubCategoria-1)
-                }else{
-                    spinnerDialogo.setSelection(viewModel.identificadorCategoria-1)
-                }
-
-                btnGuardar.setOnClickListener {
-                    if (tituloDialogo.editText?.text.toString().isEmpty()) {
-                        CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Se necesita un título para el nuevo pictograma")
-                    } else if (imgPicto.drawable == null) {
-                        CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Se necesita una imagen para el nuevo pictograma")
-                    } else {
-                        val imagen = tituloDialogo.editText?.text.toString() //Nombre de la imagen
-                        val image = (imgPicto.drawable as BitmapDrawable).bitmap
-
-                        val ruta = viewModel.guardarImagen(applicationContext, imagen, image)
-                        CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Nuevo pictograma creado")
-                        dialogNuevoPictograma.dismiss() //Cerrar dialogo
-
-                        //Añadir pictograma
-                        val id = viewModel.pictograma.nuevoPictograma(this@CrearPlanActivity, tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault()), ruta, spinnerDialogo.selectedItem.toString(), viewModel.idUsuario)
-
-                        val pictograma = Pictograma()
-                        pictograma.id = id
-                        pictograma.titulo = tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault())
-                        pictograma.imagen = ruta
-                        pictograma.categoria = spinnerDialogo.selectedItemPosition + 1
-                        viewModel._listaPictogramas.value?.add(pictograma)
-                        //find current fragment and update the recycler
-                        val categoriasPictoFragment = supportFragmentManager.findFragmentById(R.id.contenedor_fragments) as CategoriasPictogramasFragment
-
-                        categoriasPictoFragment.recyclerPictogramas.adapter?.notifyItemInserted(viewModel._listaPictogramas.value!!.size - 1)
-
-                        viewModel.categoria.crearCategoria(this@CrearPlanActivity, tituloDialogo.editText?.text.toString().uppercase(Locale.getDefault()), ruta, 0,"default", viewModel.idUsuario)
-                    }
-                }
-
-                imgCerrar.setOnClickListener {
-                    dialogNuevoPictograma.dismiss()
-                }
-
-                imgPicto.setOnClickListener {
-                    abrirGaleria()
-                }
+                AniadirPictoUtils.dialogoNuevoPicto(viewModel, this)
             }
         }
 
@@ -305,7 +205,7 @@ class CrearPlanActivity : AppCompatActivity(){
 
             btnGuardar.setOnClickListener { view ->
                 if (historiaText.editText?.text.toString() == "") {
-                    CommonUtils.showSnackbar(view, this, "No puedes dejar el campo vacío")
+                    Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.listaPlanificacion[it].historia = historiaText.editText?.text.toString()
                     adaptador.notifyItemChanged(it)
@@ -323,7 +223,7 @@ class CrearPlanActivity : AppCompatActivity(){
             }
             val duracionArray = duracion.split(":")
 
-            val picker = viewModel.createReloj24(duracionArray[0].toInt(), duracionArray[1].toInt())
+            val picker = viewModel.createReloj24(duracionArray[0].toInt(), duracionArray[1].toInt(), this)
             picker.addOnPositiveButtonClickListener {
                 val hora = if (picker.hour < 10) "0" + picker.hour else picker.hour
                 val min = if (picker.minute < 10) "0" + picker.minute else picker.minute
@@ -332,56 +232,85 @@ class CrearPlanActivity : AppCompatActivity(){
             }
             picker.show(supportFragmentManager, picker.toString())
         }
+
+        // Open dialog to select pictograma for entretenimiento
+        viewModel._onEntretenimientoClicked.observe(this) { position->
+            dialogEntretenimiento = Dialog(this)
+            dialogEntretenimiento!!.setContentView(R.layout.dialogo_aniadir_actividad)
+            dialogEntretenimiento!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val recyclerActividad = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_actividad)
+            val recyclerEntretenimiento = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_entretenimiento)
+            val recyclerRecompensa = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_recompensa)
+            val btnClose = dialogEntretenimiento!!.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+            val pictograma = Pictograma()
+            val listaPictogramas = ArrayList<Pictograma>()
+
+            val idPictoEntretenimiento = viewModel.listaPlanificacion[position].pictoEntretenimiento
+
+            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+            if(prefs.getBoolean("info_objeto", false)) {
+                pictograma.id = "-1"
+                pictograma.titulo = prefs.getString("nombreObjeto", "default")!!.uppercase()
+                pictograma.imagen = prefs.getString("imagenObjeto", "default")
+                listaPictogramas.add(pictograma)
+                recyclerActividad(recyclerActividad, dialogEntretenimiento!!, listaPictogramas, idPictoEntretenimiento)
+            }else{
+               val title = dialogEntretenimiento!!.findViewById<TextView>(R.id.txt_actividad)
+                title.visibility = View.GONE
+                recyclerActividad.visibility = View.GONE
+            }
+
+            val language = Locale.getDefault().language
+            val pictoEntretenimiento =  pictograma.obtenerPictogramas(this, 8, viewModel.idUsuario, language) as ArrayList<Pictograma>
+            recyclerActividad(recyclerEntretenimiento, dialogEntretenimiento!!, pictoEntretenimiento, idPictoEntretenimiento)
+            val pictoRecompensa =  pictograma.obtenerPictogramas(this, 9, viewModel.idUsuario, language) as ArrayList<Pictograma>
+            recyclerActividad(recyclerRecompensa, dialogEntretenimiento!!, pictoRecompensa, idPictoEntretenimiento)
+
+            btnClose.setOnClickListener {
+                dialogEntretenimiento!!.dismiss()
+            }
+
+            dialogEntretenimiento!!.show()
+        }
+
+        viewModel._idPictoEntretenimiento.observe(this){
+            viewModel.listaPlanificacion[viewModel._onEntretenimientoClicked.value!!].pictoEntretenimiento = it
+            Thread.sleep(150)
+            dialogEntretenimiento?.dismiss()
+        }
+
+    }
+
+    private fun recyclerActividad(recyclerActividad : RecyclerView, dialog: Dialog, listaPictogramas: ArrayList<Pictograma>, idPicto: Int){
+        val constraintLayout = dialog.findViewById<ConstraintLayout>(R.id.frameLayout)
+        CommonUtils.getGridValueCuaderno(findViewById<View>(android.R.id.content), this, recyclerActividad, constraintLayout, 150, 200)
+        val adaptador = AdaptadorPictogramaEntretenimiento(listaPictogramas, idPicto, viewModel)
+        recyclerActividad.adapter = adaptador
     }
 
     private fun clickGuardarPicto(){
         if (txtTituloPlan.text.toString().isEmpty()) {
-            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No puedes dejar el campo de título vacío")
+            Toast.makeText(this, R.string.toast_titulo_vacio, Toast.LENGTH_SHORT).show()
         }else if(viewModel.listaPlanificacion.isEmpty()){
-            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "No puedes dejar la planificación vacía")
+            Toast.makeText(this, R.string.toast_planificacion_vacio, Toast.LENGTH_SHORT).show()
         }else {
             //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
             if (viewModel.opcionEditar) {
-                viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, intent.getIntExtra("identificador", 0), txtTituloPlan.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
-                CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Planificación " + txtTituloPlan.text.toString() + " actualizada")
+                viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, viewModel.idUsuario, intent.getIntExtra("identificador", 0), txtTituloPlan.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
+                Toast.makeText(this, R.string.toast_plan_actualizado, Toast.LENGTH_SHORT).show()
+
             } else {
                 val idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario,txtTituloPlan.text.toString().uppercase(Locale.getDefault()))
                 val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
 
-                if (creada == true) {
-                    Toast.makeText(this, "Planificación " + txtTituloPlan.text.toString() + " creada", Toast.LENGTH_SHORT).show()
-                    // CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Planificación " + txtTituloPlan.text.toString() + " creada")
-                } else {
-                    Toast.makeText(this, "Error al crear la planificación", Toast.LENGTH_SHORT).show()
-                //    CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al crear la planificación")
+                if (creada != true) {
+                   Toast.makeText(this, R.string.toast_error_crear_planificacion, Toast.LENGTH_SHORT).show()
                 }
             }
 
             finish()
         }
     }
-
-    fun getPictogramas(query: String) {
-        viewModel.busquedaOpen = true
-        val pictogramasBusqueda = ArrayList<Pictograma>()
-        CoroutineScope(Dispatchers.IO).launch {
-            val dict = CommonUtils.getDataApi(query)
-
-            withContext(Dispatchers.Main) {
-                dict.keys.mapNotNull { key ->
-                    dict[key]?.let { (value, id) ->
-                        pictogramasBusqueda.add(viewModel.crearPictoBusqueda(key, value, id, this@CrearPlanActivity))
-                    }
-                }
-            }
-
-            if (pictogramasBusqueda.isNotEmpty()) {
-                viewModel._listaPictogramas.postValue(pictogramasBusqueda)
-            }
-        }
-
-    }
-
 
     private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
@@ -393,8 +322,9 @@ class CrearPlanActivity : AppCompatActivity(){
                 viewModel._image.value = uri
 
             } else {
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
+                Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 }

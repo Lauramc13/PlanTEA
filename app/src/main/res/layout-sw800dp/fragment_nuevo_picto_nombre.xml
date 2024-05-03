@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:id="@+id/fragment_nuevo_picto_nombre"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/frameImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_textinputedit"
+            app:layout_constraintBottom_toBottomOf="@+id/frameLayout_Categorias"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.155"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txt_Titulo">
+
+            <ImageView
+                android:id="@+id/img_NuevoPicto"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_margin="5dp"
+                app:shapeAppearance="@style/cornerRadius" />
+        </FrameLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Titulo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/fondo_texto_login"
+            android:contentDescription="Campo de texto nombre de usuario"
+            android:ems="10"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="@string/lbl_datosNombre"
+            android:inputType="text"
+            android:textColor="?colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/frameImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/cornerRadiusLogin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="?colorOnSurface"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <FrameLayout
+            android:id="@+id/frameLayout_Categorias"
+            android:layout_width="250dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/frameImage"
+            app:layout_constraintTop_toBottomOf="@+id/txt_Titulo">
+
+            <Spinner
+                android:id="@+id/spinner_Categorias"
+                style="@style/dropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_spinner"
+                android:fontFamily="@font/poppins_regular"
+                android:popupBackground="@drawable/custom_popup_background"
+                android:spinnerMode="dropdown"
+                android:textColor="?colorOnSurface" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@null"
+                android:src="@drawable/svg_arrow_down" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btn_GuardarPicto"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/btn_Guardar"
+            android:textColor="#203130"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout_Categorias"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,8 +16,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,7 @@ import com.example.plantea.presentacion.actividades.CuadernoActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCategoriasCuaderno
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
 import com.google.android.material.textfield.TextInputLayout
+import java.util.Locale
 import java.util.UUID
 
 
@@ -79,7 +82,7 @@ class PrincipalFragment : Fragment(){
 
         viewModel._posicionPictoClicked.observe(viewLifecycleOwner){
             val activity = requireActivity() as CuadernoActivity
-            viewModel.listaPictogramas = viewModel.picto.obtenerPictogramasCuaderno(activity, viewModel.idCuaderno) as ArrayList<Pictograma>?
+            viewModel.listaPictogramas = viewModel.picto.obtenerPictogramasCuaderno(activity, viewModel.idCuaderno, Locale.getDefault().language) as ArrayList<Pictograma>?
             viewModel.originalPictogramas = viewModel.listaPictogramas?.let { ArrayList(it) }
             activity.iniciarFragment(viewModel.listaPictogramas, viewModel.listaPictoCuaderno[it].termometro, viewModel.listaPictoCuaderno[it].titulo!!, it)
         }
@@ -158,8 +161,9 @@ class PrincipalFragment : Fragment(){
         btnCrear.setOnClickListener{
             title.error = null
             if (title.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
-                title.error = "Obligatorio"
-                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), requireContext(), "Tienes que rellenar todos los campos")
+                title.error = requireContext().getString(R.string.toast_obligatorio)
+                Toast.makeText(requireContext(), R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
+
             }else{
                 crearEditarCuaderno(title, termometro, true, cuaderno)
                 dialogo.dismiss()
@@ -188,8 +192,8 @@ class PrincipalFragment : Fragment(){
         btnCrear.setOnClickListener{
             title.error = null
             if (title.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
-                title.error = "Obligatorio"
-                CommonUtils.showSnackbar(dialogo.findViewById(android.R.id.content), requireContext(), "Tienes que rellenar todos los campos")
+                title.error = requireContext().getString(R.string.toast_obligatorio)
+                Toast.makeText(requireContext(), R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
             }else{
                 crearEditarCuaderno(title, termometro, false, cuaderno = Cuaderno())
                 dialogo.dismiss()

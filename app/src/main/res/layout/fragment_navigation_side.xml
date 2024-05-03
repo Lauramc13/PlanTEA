@@ -35,7 +35,7 @@
         android:layout_marginTop="5dp"
         app:itemIconPadding="10dp"
         app:itemTextAppearance="@null"
-        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_menu"
         app:shapeAppearance="@style/cornersNavigation">

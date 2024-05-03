@@ -33,6 +33,7 @@ import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFuturas
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -124,9 +125,9 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
 
         if(check > -1){
             //existe un evento visible para este dia
-            Toast.makeText(context, "Evento encontrado id_plan: $check", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "Evento encontrado id_plan: $check", Toast.LENGTH_SHORT).show()
             evento = evento.obtenerEventoPlan(idUsuario, selectedDate, context)
-            listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, evento.id.toString(), context) } as ArrayList<Pictograma>
+            listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, evento.id.toString(), context, Locale.getDefault().language) } as ArrayList<Pictograma>
             tituloPlan = evento.nombre.toString()
             _planLiveData.value = listaPictogramas
         }else{
@@ -229,6 +230,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
         val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
         imagenConfeti = dialog.findViewById(R.id.img_confeti)
         mensajePremio = dialog.findViewById(R.id.txt_premio)
+
         val  dialogoPresentacion = dialog.findViewById<ConstraintLayout>(R.id.dialogo_presentacion_2)
         val identifier = context.resources.getIdentifier(listaPictogramas[posicion].imagen, "drawable", context.packageName)
         if(identifier == 0) {
@@ -260,6 +262,19 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
             }
         } else {
             historia.visibility = View.GONE
+        }
+
+        if(listaPictogramas[posicion].pictoEntretenimiento != 0){
+            val buttonEntretenimiento = dialog.findViewById<MaterialButton>(R.id.showEntretenimiento)
+            buttonEntretenimiento.visibility = View.VISIBLE
+            buttonEntretenimiento.setOnClickListener {
+                animacionEntretenimiento(context, posicion)
+                buttonEntretenimiento.visibility = View.GONE
+            }
+
+        }else{
+            val buttonEntretenimiento = dialog.findViewById<MaterialButton>(R.id.showEntretenimiento)
+            buttonEntretenimiento.visibility = View.GONE
         }
 
         if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
@@ -305,4 +320,36 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
             animCard.start()
         }
     }
+
+    private fun animacionEntretenimiento(context: Context, posicion: Int) {
+        val entretenimiento = currentDialog?.findViewById<ShapeableImageView>(R.id.img_pictograma)
+        val entretenimientoTitle = currentDialog?.findViewById<TextView>(R.id.lbl_pictograma)
+
+        var pictoEntretenimiento = Pictograma()
+        if(listaPictogramas[posicion].pictoEntretenimiento == -1){
+            val prefs = context.getSharedPreferences("Preferencias", MODE_PRIVATE)
+            pictoEntretenimiento.imagen = prefs.getString("imagenObjeto", "")
+            pictoEntretenimiento.titulo = prefs.getString("nombreObjeto", "")
+        }else{
+            pictoEntretenimiento = pictoEntretenimiento.obtenerPicto(context, listaPictogramas[posicion].pictoEntretenimiento.toString())
+        }
+
+        val identifier = context.resources.getIdentifier(pictoEntretenimiento.imagen, "drawable", context.packageName)
+        if (identifier == 0) {
+            entretenimiento?.setImageURI(Uri.parse(pictoEntretenimiento.imagen))
+        } else {
+            entretenimiento?.setImageResource(identifier)
+        }
+
+
+        // Add fade-in animation
+        entretenimiento?.alpha = 0f
+        entretenimiento?.animate()?.apply {
+            duration = 1000
+            alpha(1f)
+            start()
+        }
+        entretenimientoTitle?.text = pictoEntretenimiento.titulo
+    }
+
 }

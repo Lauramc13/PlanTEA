@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -59,7 +60,7 @@ class PreLoginActivity : AppCompatActivity(){
         }
 
         signin?.setOnClickListener {
-            CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "Iniciando sesión")
+            Toast.makeText(this, R.string.toast_iniciando_sesion, Toast.LENGTH_SHORT).show()
             signInGoogle()
         }
 
@@ -78,9 +79,8 @@ class PreLoginActivity : AppCompatActivity(){
             val noTextViewVacios = viewModel.comprobarTextViewsVacios(email?.editText?.text.toString(), password?.editText?.text.toString())
 
             if (!noTextViewVacios) {
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),applicationContext, "Tienes que rellenar todos los campos")
+                Toast.makeText(this, R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
             } else {
-
                 val emailText = email?.editText?.text.toString().lowercase()
                 val passwordText = password?.editText?.text.toString()
                 if(viewModel.iniciarSesion(this, this, emailText, passwordText)) {

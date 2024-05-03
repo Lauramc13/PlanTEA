@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Crear nueva categoría"
+            android:text="@string/crear_nueva_categoria"
             android:textColor="?colorOnSurface"
             android:textSize="22sp" />
 
@@ -66,7 +66,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Color:"
+            android:text="@string/color"
             android:layout_marginTop="10dp"
             android:textColor="?colorOnSurface"
             android:fontFamily="@font/poppins_regular"
@@ -142,7 +142,7 @@
             android:elevation="0dp"
             android:fontFamily="@font/poppins_semibold"
             android:maxWidth="10dp"
-            android:text="CREAR CATEGORÍA"
+            android:text="@string/crear_categoria"
             android:textColor="#203130"
             android:textSize="14sp"
             app:cornerRadius="10dp"

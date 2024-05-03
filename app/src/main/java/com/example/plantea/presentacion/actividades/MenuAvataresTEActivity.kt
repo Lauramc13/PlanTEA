@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -126,7 +127,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
                 viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Usuario")
             } else {
-                CommonUtils.showSnackbar(findViewById(android.R.id.content),this, "No se ha seleccionado ninguna imagen")
+                Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
         }
     }

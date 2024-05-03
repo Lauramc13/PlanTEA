@@ -162,7 +162,7 @@ class ConfiguracionActivity : AppCompatActivity() {
 
     fun observers(){
         viewModel._toast.observe(this) {
-            CommonUtils.showSnackbar(findViewById(android.R.id.content), this, it)
+            Toast.makeText(this, getString(it), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -245,7 +245,7 @@ class ConfiguracionActivity : AppCompatActivity() {
                 val usuario = Usuario()
                 usuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
             }catch (e: Exception){
-                CommonUtils.showSnackbar(findViewById(android.R.id.content), this, "Error al guardar la configuración")
+                Toast.makeText(this, getString(R.string.toast_error_guardar_configuracion), Toast.LENGTH_SHORT).show()
             }
 
             finish()
