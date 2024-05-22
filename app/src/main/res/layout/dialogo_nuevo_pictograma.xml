@@ -10,7 +10,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
-            android:text="Titulo"
+            android:text="@string/lbl_tulo"
             android:textColor="?colorOnSurface"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="16sp"
@@ -61,7 +61,7 @@
         <FrameLayout
             android:id="@+id/fragment_nuevoPicto"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:foregroundGravity="center"
@@ -74,7 +74,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_siguiente"
             style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:elevation="0dp"
@@ -86,6 +86,23 @@
             android:textSize="@dimen/button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_saltar"
+        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/str_saltar"
+        android:textAllCaps="true"
+        android:visibility="gone"
+        android:textSize="@dimen/button"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_siguiente" />
 
         <ImageView
             android:id="@+id/icono_CerrarDialogo"

@@ -19,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-
         <FrameLayout
             android:id="@+id/id_card_Planificador"
             android:layout_width="wrap_content"
@@ -30,9 +29,9 @@
             <ImageView
                 android:id="@+id/img_NuevoPicto"
                 style="@style/addPhotoBackground"
-                android:layout_width="110dp"
+                android:layout_width="140dp"
                 android:layout_margin="1dp"
-                android:layout_height="110dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center" />
         </FrameLayout>
 
@@ -89,13 +88,14 @@
         <Button
             android:id="@+id/btn_GuardarPicto"
             style="@style/Widget.Material3.Button"
-            android:layout_width="150dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:fontFamily="@font/poppins_semibold"
             android:text="@string/btn_Guardar"
-            android:textSize="14sp"
+            app:cornerRadius="10dp"
             android:textColor="#203130"
-            android:fontFamily="@font/poppins_semibold" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 

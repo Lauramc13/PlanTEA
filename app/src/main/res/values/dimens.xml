@@ -4,6 +4,7 @@
     <dimen name="new_navigation_width"> 300dp</dimen>
     <dimen name="old_navigation_width"> 80dp</dimen>
 
+    <dimen name="displayBig">30sp</dimen>
     <dimen name="display">25sp</dimen>
     <dimen name="displaySmall">22sp</dimen>
     <dimen name="title">20sp</dimen>

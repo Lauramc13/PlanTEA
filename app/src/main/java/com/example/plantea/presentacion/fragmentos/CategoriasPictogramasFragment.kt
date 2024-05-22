@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,6 +23,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     lateinit var actividad: Activity
 
     lateinit var recyclerPictogramas: RecyclerView
+    lateinit var textoVacio : TextView
     private lateinit var imageCerrar: ImageView
     private lateinit var imageAdd: Button
     private lateinit var constraintLayout: ConstraintLayout
@@ -39,12 +41,21 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
 
         imageCerrar = vista.findViewById(R.id.image_CerrarContenedor)
         imageAdd = vista.findViewById(R.id.image_add)
+        textoVacio = vista.findViewById(R.id.textoNoPictogramas)
         val adaptador = AdaptadorPictogramas(viewModel._listaPictogramas.value, this, this)
         recyclerPictogramas.adapter = adaptador
+
+        if(viewModel._listaPictogramas.value?.size == 0){
+            textoVacio.visibility = View.VISIBLE
+        }
 
         //Este método se ejecutará al pinchar sobre la imagen de cerrar
         imageCerrar.setOnClickListener {
             viewModel._closeFragment.value = true
+        }
+
+        if(viewModel.identificadorCategoria == 10){
+            imageAdd.visibility = View.GONE
         }
 
         //Este método se ejecutará al seleccionar añadir nuevo pictograma.

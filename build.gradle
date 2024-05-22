@@ -10,11 +10,26 @@ buildscript {
 
     }
 
+/*
+    configurations.configureEach {
+        resolutionStrategy {
+            // Force a consistent version of protobuf
+            force("com.google.protobuf:protobuf-java:3.21.7")
+            // Optionally, you can also force the exclusion of the problematic dependency globally
+            eachDependency {
+                if (requested.group == "com.google.protobuf" && requested.name == "protobuf-javalite") {
+                    useVersion("3.21.7")
+                    because("Avoid duplicate classes issue with protobuf-javalite")
+                }
+            }
+        }
+    }*/
+
     dependencies {
 
         classpath 'com.android.tools.build:gradle:8.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.4.0'
+        classpath 'com.google.gms:google-services:4.4.1'
 
 
         // NOTE: Do not place your application dependencies here; they belong

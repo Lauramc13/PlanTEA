@@ -145,8 +145,13 @@ class ConectorBD(ctx: Context?) {
         db!!.execSQL("UPDATE Planificacion SET es_actual ='$actual' WHERE id ='$id'")
     }
 
-    fun obtenerPictograma(idPicto: String?): Cursor{
-       return db!!.rawQuery("SELECT id, imagen FROM Pictograma WHERE id = '$idPicto'", null)
+    fun obtenerPictograma(idPicto: String?, language: String): Cursor{
+       return db!!.rawQuery("SELECT CombinedPictograms.id, CombinedPictograms.imagen, " +
+               "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre " +
+               "FROM (SELECT id, nombre, imagen FROM Pictograma UNION SELECT id, nombre, imagen FROM PictogramaAPI) AS CombinedPictograms " +
+               "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
+                "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = '$language' " +
+                "WHERE CombinedPictograms.id = '$idPicto'", null)
     }
 
     fun obtenerPlanificacion(idUsuario: String, idEvento: String, language: String): Cursor {
@@ -175,8 +180,9 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id, nombre from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
     }
 
-    fun insertarCategoria(nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String) {
+    fun insertarCategoria(nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String): Cursor {
         db!!.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color, id_usuario) VALUES ('$nombre', '$imagen', '$principal', '$color', '$idUsuario')")
+        return db!!.rawQuery("SELECT last_insert_rowid()", null)
     }
 
     fun eliminarCategoria(idUsuario: String, idCategoria: Int) {
@@ -188,11 +194,9 @@ class ConectorBD(ctx: Context?) {
             "SELECT Categoria.id " +
                     "FROM Categoria " +
                     "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_categoria = Categoria.id " +
-                    "LEFT JOIN Traduccion ON RelacionPictoTraduccion.id_traduccion = Traduccion.id " +
-                    "WHERE COALESCE(Traduccion.translation, Categoria.titulo) = ? " +
-                    "AND Traduccion.language = ?",
-            arrayOf(nombre, language)
-        )
+                    "LEFT JOIN Traduccion ON RelacionPictoTraduccion.id_traduccion = Traduccion.id AND Traduccion.language = ? " +
+                    "WHERE COALESCE(Traduccion.translation, Categoria.titulo) = ?",
+            arrayOf(language, nombre))
     }
 
     /*Listar todas las categorias*/
@@ -490,6 +494,18 @@ class ConectorBD(ctx: Context?) {
                     "ORDER BY RANDOM() LIMIT 6",
             arrayOf(language, idUsuario)
         )
+    }
+
+    fun obtenerCategoriaById(idCategoria: Int, language: String): Cursor {
+        return db!!.rawQuery(
+            "SELECT COALESCE(Traduccion.translation, titulo) AS titulo " +
+                    "FROM Categoria " +
+                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_categoria = Categoria.id " +
+                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
+                    "WHERE Categoria.id = ?",
+            arrayOf(language, idCategoria.toString())
+        )
+
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -16,6 +17,7 @@ import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
@@ -26,47 +28,66 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.Categoria
+import com.example.plantea.dominio.Cuaderno
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
-import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
+import com.example.plantea.presentacion.fragmentos.cuaderno.CuadernoPictoEditFragment
+import com.example.plantea.presentacion.fragmentos.cuaderno.PrincipalFragment
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.example.plantea.presentacion.viewModels.CuadernoViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
+import java.util.UUID
 
 class AniadirPictoUtils  {
     companion object {
-
-        private lateinit var buttonSiguiente: Button
-        private lateinit var imgPicto: ImageView
         lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+        private lateinit var imgPicto: ImageView
+        private lateinit var buttonSiguiente: MaterialButton
 
-        fun dialogoNuevoPicto(viewModel: CrearPlanViewModel, activity: Activity) {
-            val dialogNuevoPictograma = Dialog(activity)
-            dialogNuevoPictograma.setContentView(R.layout.dialogo_nuevo_pictograma)
-            dialogNuevoPictograma.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialogNuevoPictograma.findViewById<TextView>(R.id.lbl_NuevoPicto).text = activity.getString(R.string.lbl_NuevoPicto).uppercase()
+        fun initializeDialog(viewModel: ViewModel, activity: Activity, fragment: Fragment?, isCrearCategoria: Boolean, cuaderno: Cuaderno?) {
+            val dialog = Dialog(activity)
+            dialog.setContentView(R.layout.dialogo_nuevo_pictograma)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val titleDialog = dialog.findViewById<TextView>(R.id.lbl_NuevoPicto)
 
-            val imgCerrar = dialogNuevoPictograma.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-            val buttons = dialogNuevoPictograma.findViewById<LinearLayout>(R.id.buttons)
-            val buttonArasaac = dialogNuevoPictograma.findViewById<TextView>(R.id.btn_arasaac)
-            val buttonGaleria = dialogNuevoPictograma.findViewById<TextView>(R.id.btn_galeria)
-            buttonSiguiente = dialogNuevoPictograma.findViewById<MaterialButton>(R.id.btn_siguiente)
+            val imgCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+            val buttons = dialog.findViewById<LinearLayout>(R.id.buttons)
+            val buttonArasaac = dialog.findViewById<TextView>(R.id.btn_arasaac)
+            val buttonGaleria = dialog.findViewById<TextView>(R.id.btn_galeria)
+            buttonSiguiente = dialog.findViewById(R.id.btn_siguiente)
+            val buttonSaltar = dialog.findViewById<MaterialButton>(R.id.btn_saltar)
 
-            viewModel._imagenNuevoPicto.observe(activity as AppCompatActivity) {
-                buttonSiguiente.isEnabled = true
-            }
-
-            val view = dialogNuevoPictograma.findViewById<ViewGroup>(R.id.fragment_nuevoPicto)
+            val view = dialog.findViewById<ViewGroup>(R.id.fragment_nuevoPicto)
             val inflater = LayoutInflater.from(activity)
             val arasaacLayout = inflater.inflate(R.layout.fragment_nuevo_picto_busqueda, null, false)
             val chooseImageLayout = inflater.inflate(R.layout.fragment_nuevo_picto_galeria, null, false)
-            val datosLayout = inflater.inflate(R.layout.fragment_nuevo_picto_nombre, null, false)
             val searchBar = arasaacLayout.findViewById<SearchView>(R.id.searchViewPicto)
+
+            val datosLayoutPlan = inflater.inflate(R.layout.fragment_nuevo_picto_nombre, null, false)
+            val datosLayoutCuaderno = inflater.inflate(R.layout.dialogo_crear_pictograma_cuaderno, null, false)
+            val datosLayoutCrearCategoria = inflater.inflate(R.layout.dialogo_crear_categoria_plan, null, false)
+            val datosLayoutCrearCuaderno = inflater.inflate(R.layout.dialogo_crear_categoria_cuaderno, null, false)
+
+            // Si se esta editando el cuaderno
+            if(cuaderno != null && viewModel is CuadernoViewModel){
+                view.addView(datosLayoutCrearCuaderno)
+                titleDialog.text = activity.getString(R.string.str_editarCuaderno).uppercase()
+                editarCuaderno(viewModel, activity, cuaderno, view, dialog, buttonSaltar, buttons, arasaacLayout)
+            }else {
+                view.addView(arasaacLayout)
+                titleDialog.text = activity.getString(R.string.lbl_NuevoPicto).uppercase()
+            }
 
             if (searchBar.query.isEmpty()) {
                 searchBar.setQuery("", false)
@@ -80,12 +101,33 @@ class AniadirPictoUtils  {
                 recyclerViewBusqueda.layoutManager = GridLayoutManager(activity, 3)
             }
 
-            viewModel.adaptador = AdaptadorNuevoPicto(viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language), viewModel)
-            recyclerViewBusqueda.adapter = viewModel.adaptador
+            if (viewModel is CrearPlanViewModel) {
+                initializeAniadirPictoPlan(viewModel, activity, recyclerViewBusqueda)
+                buttonSiguiente.setOnClickListener {
+                    if (isCrearCategoria) {
+                        dialogoAniadirCategoriaPlan(dialog, view, datosLayoutCrearCategoria, buttons, viewModel, activity)
+                        titleDialog.text = activity.getString(R.string.crear_categoria)
+                    } else {
+                        dialogoAniadirPictoPlan(dialog, view, datosLayoutPlan, buttons, viewModel, activity)
+                    }
+                }
+            } else if (viewModel is CuadernoViewModel) {
+                initializeAniadirPictoCuaderno(viewModel, activity, recyclerViewBusqueda)
+                buttonSiguiente.setOnClickListener {
+                    if (fragment is CuadernoPictoEditFragment) {
+                        dialogoAniadirPictoCuaderno(dialog, view, datosLayoutCuaderno, buttons, viewModel, activity, fragment)
+                    } else if (fragment is PrincipalFragment) {
+                        dialogoAniadirCuaderno(dialog, view, datosLayoutCrearCuaderno, buttons, buttonSaltar, viewModel, activity, fragment)
+                         if(cuaderno == null) titleDialog.text = activity.getString(R.string.crear_nuevo_cuaderno).uppercase()
+                    }
+                }
 
-            viewModel._listaPictoRandom.observe(activity) {
-                viewModel.adaptador.listaPictogramas = it
-                viewModel.adaptador.notifyDataSetChanged()
+                buttonSaltar.setOnClickListener {
+                    view.removeAllViews()
+                    view.addView(datosLayoutCrearCuaderno)
+                    titleDialog.text = activity.getString(R.string.str_editarCuaderno).uppercase()
+                    editarCuaderno(viewModel, activity, cuaderno, view, dialog, buttonSaltar, buttons, arasaacLayout)
+                }
             }
 
             inializeSearch(searchBar, true, viewModel, activity)
@@ -107,6 +149,7 @@ class AniadirPictoUtils  {
             galeriaOUT.interpolator = AnimationUtils.loadInterpolator(activity, android.R.anim.decelerate_interpolator)
             arasaacOUT.interpolator = AnimationUtils.loadInterpolator(activity, android.R.anim.decelerate_interpolator)
 
+            //Funciones de los botones
             buttonArasaac.setOnClickListener {
                 buttonArasaac.isEnabled = false
                 buttonGaleria.isEnabled = true
@@ -125,21 +168,15 @@ class AniadirPictoUtils  {
                 view.removeView(arasaacLayout)
             }
 
-            buttonSiguiente.setOnClickListener {
-                dialogoAniadirPicto(dialogNuevoPictograma, view, datosLayout, buttons, viewModel, activity)
-            }
-
             imgPicto.setOnClickListener {
                 abrirGaleria()
             }
 
-            view.addView(arasaacLayout)
-
             imgCerrar.setOnClickListener {
-                dialogNuevoPictograma.dismiss()
+                dialog.dismiss()
             }
 
-            dialogNuevoPictograma.show()
+            dialog.show()
         }
 
         fun abrirGaleria() {
@@ -149,25 +186,47 @@ class AniadirPictoUtils  {
         }
 
         fun createPickMedia(viewModel: CrearPlanViewModel, activity: AppCompatActivity) {
-            pickMedia = activity.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            pickMedia =
+                activity.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+                    // Handle the returned URI here
+                    if (uri != null) {
+                        imgPicto.setImageURI(uri)
+                        viewModel._imagenNuevoPicto.value = uri.toString()
+
+                        //if is dark mode
+                        if (CommonUtils.isDarkMode(activity)) {
+                            imgPicto.background = ColorDrawable(Color.parseColor("#323F4B"))
+                        } else {
+                            imgPicto.background = ColorDrawable(Color.WHITE)
+                        }
+
+                    } else {
+                        Toast.makeText(activity, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+
+        fun createPickMedia(viewModel: CuadernoViewModel, fragment: Fragment) {
+            pickMedia = fragment.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
                 // Handle the returned URI here
                 if (uri != null) {
                     imgPicto.setImageURI(uri)
                     viewModel._imagenNuevoPicto.value = uri.toString()
+
                     //if is dark mode
-                    if (CommonUtils.isDarkMode(activity)) {
+                    if (CommonUtils.isDarkMode(fragment.requireActivity())) {
                         imgPicto.background = ColorDrawable(Color.parseColor("#323F4B"))
                     } else {
                         imgPicto.background = ColorDrawable(Color.WHITE)
                     }
 
                 } else {
-                    Toast.makeText(activity, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(fragment.requireActivity(), R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        private fun dialogoAniadirPicto(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: CrearPlanViewModel, activity: Activity) {
+        private fun dialogoAniadirPictoPlan(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: CrearPlanViewModel, activity: Activity) {
             view.removeAllViews()
             view.addView(datosLayout)
             val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
@@ -177,16 +236,26 @@ class AniadirPictoUtils  {
             } else {
                 imagenPicto.setImageResource(identifier)
             }
-            val categorias = viewModel.categoria.consultarCategorias(activity, Locale.getDefault().language)
+            val categorias =
+                viewModel.categoria.consultarCategorias(activity, Locale.getDefault().language)
             val spinnerDialogo = view.findViewById<Spinner>(R.id.spinner_Categorias)
             val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
 
-            spinnerDialogo.adapter = ArrayAdapter(activity.applicationContext, android.R.layout.simple_spinner_dropdown_item, categorias as ArrayList<String>)
+            spinnerDialogo.adapter = ArrayAdapter(
+                activity.applicationContext,
+                android.R.layout.simple_spinner_dropdown_item,
+                categorias as ArrayList<String>
+            )
 
             if (viewModel.subcategoriaOpen) {
                 spinnerDialogo.setSelection(viewModel.identificadorSubCategoria - 1)
             } else {
-                spinnerDialogo.setSelection(viewModel.identificadorCategoria - 1)
+                val nombreCategoria = viewModel.categoria.obtenerCategoriaById(
+                    activity.applicationContext,
+                    viewModel.identificadorCategoria,
+                    Locale.getDefault().language
+                )
+                spinnerDialogo.setSelection(categorias.indexOf(nombreCategoria))
             }
 
             buttonSiguiente.visibility = View.GONE
@@ -209,33 +278,211 @@ class AniadirPictoUtils  {
                     dialogNuevoPictograma.dismiss() //Cerrar dialogo
 
                     //Añadir pictograma
-                    val id = viewModel.pictograma.nuevoPictograma(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), ruta, spinnerDialogo.selectedItem.toString(), viewModel.idUsuario)
-
+                    val idCategoria = viewModel.categoria.obtenerCategoria(activity, spinnerDialogo.selectedItem.toString(), Locale.getDefault().language)
+                    val id = viewModel.pictograma.nuevoPictograma(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), ruta, idCategoria.toString(), viewModel.idUsuario)
                     val pictograma = Pictograma()
                     pictograma.id = id
                     pictograma.titulo = nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault())
                     pictograma.imagen = ruta
-                    pictograma.categoria = spinnerDialogo.selectedItemPosition + 1
+                    pictograma.categoria = idCategoria
                     viewModel._listaPictogramas.value?.add(pictograma)
 
                     //find current fragment and update the recycler
-                    val categoriasPictoFragment = (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.contenedor_fragments) as CategoriasPictogramasFragment
-                    categoriasPictoFragment.recyclerPictogramas.adapter?.notifyItemInserted(viewModel._listaPictogramas.value!!.size - 1)
-                    viewModel.categoria.crearCategoria(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), ruta, 0, "default", viewModel.idUsuario)
+                    val categoriasPictoFragment =
+                        (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.contenedor_fragments) as CategoriasPictogramasFragment
+                    categoriasPictoFragment.recyclerPictogramas.adapter?.notifyItemInserted(
+                        viewModel._listaPictogramas.value!!.size - 1
+                    )
+                    categoriasPictoFragment.textoVacio.visibility = View.GONE
                 }
             }
         }
 
-        fun inializeSearch(searchBar: SearchView, isNuevoPictoBusqueda: Boolean, viewModel: CrearPlanViewModel, activity: Activity) {
+        private fun dialogoAniadirPictoCuaderno(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: CuadernoViewModel, activity: Activity, cuadernoFragment: CuadernoPictoEditFragment?) {
+            view.removeAllViews()
+            view.addView(datosLayout)
+            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
+            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+            if (identifier == 0) {
+                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
+            } else {
+                imagenPicto.setImageResource(identifier)
+            }
+
+            val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
+
+            buttonSiguiente.visibility = View.GONE
+            buttons.visibility = View.GONE
+
+            val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
+
+            buttonGuardar.setOnClickListener {
+                if (nombrePictograma.editText?.text.toString().isEmpty()) {
+                    Toast.makeText(activity, R.string.toast_necesita_titulo, Toast.LENGTH_SHORT).show()
+                } else if (imagenPicto.drawable == null) {
+                    Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
+                } else {
+                    val nombreImagen = nombrePictograma.editText?.text.toString() //Nombre de la imagen
+                    val image = (imagenPicto.drawable as BitmapDrawable).bitmap
+
+                    val ruta = viewModel.guardarImagen(activity.applicationContext, nombreImagen, image)
+                    Toast.makeText(activity, R.string.toast_pictograma_creado, Toast.LENGTH_SHORT).show()
+
+                    dialogNuevoPictograma.dismiss() //Cerrar dialogo
+
+                    //Añadir pictograma
+                    val id = viewModel.picto.nuevoPictogramaCuaderno(activity, nombreImagen.uppercase(), ruta, viewModel.idCuaderno, viewModel.idUsuario)
+
+                    val pictograma = Pictograma()
+                    pictograma.id = id.toString()
+                    pictograma.titulo = nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault())
+                    pictograma.imagen = ruta
+                    pictograma.categoria = viewModel.idCuaderno
+                    val lastIndex = viewModel.listaPictogramas!!.size - 1
+                    viewModel.listaPictogramas!!.add(lastIndex, pictograma)
+                    viewModel.originalPictogramas?.add(pictograma)
+                    cuadernoFragment?.lstPictogramas?.adapter?.notifyItemChanged(viewModel.listaPictogramas!!.lastIndex - 1)
+                }
+            }
+        }
+
+        private fun dialogoAniadirCategoriaPlan(dialogNuevaCategoria: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: CrearPlanViewModel, activity: Activity) {
+            view.removeAllViews()
+            view.addView(datosLayout)
+            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
+            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+            if (identifier == 0) {
+                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
+            } else {
+                imagenPicto.setImageResource(identifier)
+            }
+
+            val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
+            var colorSelected = "default"
+
+            buttonSiguiente.visibility = View.GONE
+            buttons.visibility = View.GONE
+
+            val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
+
+            //Colores buttons
+            val buttonMorado = dialogNuevaCategoria.findViewById<FloatingActionButton>(R.id.fab1)
+            val buttonRosa = dialogNuevaCategoria.findViewById<FloatingActionButton>(R.id.fab2)
+            val buttonVerde = dialogNuevaCategoria.findViewById<FloatingActionButton>(R.id.fab3)
+            val buttonAmarillo = dialogNuevaCategoria.findViewById<FloatingActionButton>(R.id.fab4)
+            val buttonAzul = dialogNuevaCategoria.findViewById<FloatingActionButton>(R.id.fab5)
+            val buttonDefault = dialogNuevaCategoria.findViewById<FloatingActionButton>(R.id.fab6)
+
+            buttonAmarillo.setOnClickListener {
+                clearButtonsSelected(buttonMorado, buttonRosa, buttonVerde, buttonAmarillo, buttonDefault, buttonAzul)
+                buttonAmarillo.setImageResource(R.drawable.svg_check)
+                colorSelected = "yellow"
+            }
+
+            buttonAzul.setOnClickListener {
+                clearButtonsSelected(buttonMorado, buttonRosa, buttonVerde, buttonAmarillo, buttonDefault, buttonAzul)
+                buttonAzul.setImageResource(R.drawable.svg_check)
+                colorSelected = "blue"
+            }
+
+            buttonMorado.setOnClickListener {
+                clearButtonsSelected(buttonMorado, buttonRosa, buttonVerde, buttonAmarillo, buttonDefault, buttonAzul)
+                buttonMorado.setImageResource(R.drawable.svg_check)
+                colorSelected = "purple"
+            }
+
+            buttonRosa.setOnClickListener {
+                clearButtonsSelected(buttonMorado, buttonRosa, buttonVerde, buttonAmarillo, buttonDefault, buttonAzul)
+                buttonRosa.setImageResource(R.drawable.svg_check)
+                colorSelected = "pink"
+            }
+
+            buttonVerde.setOnClickListener {
+                clearButtonsSelected(buttonMorado, buttonRosa, buttonVerde, buttonAmarillo, buttonDefault, buttonAzul)
+                buttonVerde.setImageResource(R.drawable.svg_check)
+                colorSelected = "green"
+            }
+
+            buttonDefault.setOnClickListener {
+                clearButtonsSelected(buttonMorado, buttonRosa, buttonVerde, buttonAmarillo, buttonDefault, buttonAzul)
+                buttonDefault.setImageResource(R.drawable.svg_check)
+                colorSelected = "default"
+            }
+
+            val categoria = Categoria()
+            buttonGuardar.setOnClickListener {
+                if (nombrePictograma.editText?.text.toString().isEmpty()) {
+                    nombrePictograma.error = activity.getString(R.string.toast_obligatorio)
+                } else if (categoria.checkCategoriaExiste(view.context, nombrePictograma.editText?.text.toString(), viewModel.idUsuario, Locale.getDefault().language)) {
+                    Toast.makeText(view.context, R.string.toast_categoria_existente, Toast.LENGTH_SHORT).show()
+                } else {
+                    val nombreImagen = nombrePictograma.editText?.text.toString() //Nombre de la imagen
+                    val image = (imagenPicto.drawable as BitmapDrawable).bitmap
+
+                    val ruta = viewModel.guardarImagen(activity.applicationContext, nombreImagen, image)
+                    val idCategoria = categoria.crearCategoria(activity, nombrePictograma.editText?.text.toString().uppercase(), ruta, 1, colorSelected, viewModel.idUsuario)
+
+                    //update data
+                    categoria.titulo = nombrePictograma.editText?.text.toString().uppercase()
+                    categoria.imagen = ruta
+                    categoria.color = colorSelected
+                    categoria.categoria = idCategoria
+                    viewModel.listaCategorias.add(viewModel.listaCategorias.size - 1, categoria)
+                    viewModel._createdCategoria.value = true
+
+                    dialogNuevaCategoria.dismiss() //Cerrar dialogo
+                }
+            }
+        }
+
+        private fun dialogoAniadirCuaderno(dialog: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, buttonSaltar: MaterialButton, viewModel: CuadernoViewModel, activity: Activity, fragment: PrincipalFragment) {
+            view.removeAllViews()
+            view.addView(datosLayout)
+            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
+            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+
+            if (identifier == 0) {
+                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
+            } else {
+                imagenPicto.setImageResource(identifier)
+            }
+
+            buttonSiguiente.visibility = View.GONE
+            buttonSaltar.visibility = View.GONE
+            buttons.visibility = View.GONE
+
+            val buttonCrear = view.findViewById<Button>(R.id.btn_GuardarPicto)
+            val termometro: SwitchCompat = view.findViewById(R.id.switch_termometro)
+            val title: TextInputLayout = view.findViewById(R.id.txt_Titulo)
+
+            buttonCrear.setOnClickListener {
+                title.error = null
+                if (title.editText?.text.toString().isEmpty() || imagenPicto.drawable == null) {
+                    title.error = activity.getString(R.string.toast_rellenar_campos)
+                    Toast.makeText(activity, R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
+                } else {
+                    val nombreImagen = title.editText?.text.toString() + UUID.randomUUID().toString()
+                    val image = (imagenPicto.drawable as BitmapDrawable).bitmap
+                    val ruta = viewModel.guardarImagen(activity.applicationContext, nombreImagen, image)
+                    crearEditarCuaderno(title, termometro, false, cuaderno = Cuaderno(), ruta, viewModel, activity)
+                    dialog.dismiss()
+                }
+            }
+        }
+
+        fun inializeSearch(searchBar: SearchView, isNuevoPictoBusqueda: Boolean, viewModel: ViewModel, activity: Activity) {
             searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     if (!CommonUtils.isNetworkAvailable(activity)) {
                         Toast.makeText(activity, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
-
                         searchBar.setQuery("", false)
                         searchBar.clearFocus()
                     } else {
-                        viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
+                        if (viewModel is CrearPlanViewModel) {
+                            viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
+                        } else if (viewModel is CuadernoViewModel) {
+                            viewModel.getPictogramas(query.trim(), activity)
+                        }
                     }
                     CommonUtils.hideKeyboard(activity, searchBar)
                     return true
@@ -247,5 +494,114 @@ class AniadirPictoUtils  {
                 }
             })
         }
+
+        @SuppressLint("NotifyDataSetChanged")
+        private fun initializeAniadirPictoPlan(viewModel: CrearPlanViewModel, activity: Activity, recyclerViewBusqueda: RecyclerView) {
+            viewModel._imagenNuevoPicto.observe(activity as AppCompatActivity) {
+                buttonSiguiente.isEnabled = true
+            }
+
+            viewModel.adaptador = AdaptadorNuevoPicto(viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language),viewModel)
+            recyclerViewBusqueda.adapter = viewModel.adaptador
+
+            viewModel._listaPictoRandom.observe(activity) {
+                viewModel.adaptador.listaPictogramas = it
+                viewModel.adaptador.notifyDataSetChanged()
+            }
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        private fun initializeAniadirPictoCuaderno(viewModel: CuadernoViewModel, activity: Activity, recyclerViewBusqueda: RecyclerView) {
+            viewModel._imagenNuevoPicto.observe(activity as AppCompatActivity) {
+                buttonSiguiente.isEnabled = true
+            }
+
+            viewModel.adaptador = AdaptadorNuevoPicto(viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language), viewModel)
+            recyclerViewBusqueda.adapter = viewModel.adaptador
+
+            viewModel._listaPictoRandom.observe(activity) {
+                viewModel.adaptador.listaPictogramas = it
+                viewModel.adaptador.notifyDataSetChanged()
+            }
+        }
+
+        private fun clearButtonsSelected(buttonMorado: FloatingActionButton, buttonRosa: FloatingActionButton, buttonVerde: FloatingActionButton, buttonAmarillo: FloatingActionButton, buttonDefault: FloatingActionButton, buttonAzul: FloatingActionButton) {
+            buttonMorado.setImageResource(0)
+            buttonRosa.setImageResource(0)
+            buttonVerde.setImageResource(0)
+            buttonAzul.setImageResource(0)
+            buttonDefault.setImageResource(0)
+            buttonAmarillo.setImageResource(0)
+        }
+
+        private fun crearEditarCuaderno(title: TextInputLayout, termometro: SwitchCompat, isEditar: Boolean, cuaderno: Cuaderno, ruta: String?, viewModel: CuadernoViewModel, activity: Activity) {
+            val isTermometro = if (termometro.isChecked) 1 else 0
+            var index = -1
+
+            val id = if (isEditar) {
+                cuaderno.editarCuaderno(activity, viewModel.idUsuario, cuaderno.id.toString(), title.editText?.text.toString().uppercase(), ruta, isTermometro)
+                cuaderno.id
+            } else {
+                cuaderno.crearCuaderno(activity, viewModel.idUsuario, title.editText?.text.toString().uppercase(), ruta, isTermometro)
+            }
+
+            cuaderno.id = id
+            cuaderno.titulo = title.editText?.text.toString().uppercase()
+            cuaderno.imagen = ruta
+            cuaderno.termometro = termometro.isChecked
+
+            if (isEditar) {
+                index = viewModel.listaPictoCuaderno.indexOfFirst { it.id == cuaderno.id }
+                viewModel.listaPictoCuaderno[index] = cuaderno
+                viewModel.adaptadorCuaderno.notifyItemChanged(index)
+            } else {
+                index = viewModel.listaPictoCuaderno.size - 1
+                viewModel.listaPictoCuaderno.add(index, cuaderno)
+                viewModel.adaptadorCuaderno.notifyItemInserted(index)
+            }
+        }
+
+        fun editarCuaderno(viewModel: CuadernoViewModel, activity: Activity, cuaderno: Cuaderno?, view: ViewGroup, dialog: Dialog, buttonSaltar: MaterialButton, buttons: LinearLayout, arasaacLayout: View) {
+            buttonSiguiente.visibility = View.GONE
+            buttonSaltar.visibility = View.GONE
+            buttons.visibility = View.GONE
+            val identifier = activity.resources.getIdentifier(cuaderno!!.imagen, "drawable", activity.packageName)
+            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+            if (identifier == 0) {
+                imagenPicto.setImageURI(Uri.parse(cuaderno.imagen))
+            } else {
+                imagenPicto.setImageResource(identifier)
+            }
+
+            val buttonCrear = view.findViewById<Button>(R.id.btn_GuardarPicto)
+            val termometro: SwitchCompat = view.findViewById(R.id.switch_termometro)
+            val title: TextInputLayout = view.findViewById(R.id.txt_Titulo)
+            val cardImagen = view.findViewById<FrameLayout>(R.id.card_imagen)
+
+            termometro.isChecked = cuaderno.termometro == true
+            title.editText?.setText(cuaderno.titulo)
+            buttonCrear.text = activity.getString(R.string.str_editarCuaderno).uppercase()
+
+            cardImagen.setOnClickListener {
+                buttonSiguiente.visibility = View.VISIBLE
+                buttonSaltar.visibility = View.VISIBLE
+                buttons.visibility = View.VISIBLE
+                view.removeAllViews()
+                view.addView(arasaacLayout)
+            }
+
+            buttonCrear.setOnClickListener {
+                title.error = null
+                if (title.editText?.text.toString().isEmpty() || imagenPicto.drawable == null) {
+                    title.error = activity.getString(R.string.toast_rellenar_campos)
+                    Toast.makeText(activity, R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
+                } else {
+                    crearEditarCuaderno(title, termometro, true, cuaderno, cuaderno.imagen, viewModel, activity)
+                    dialog.dismiss()
+                }
+            }
+
+        }
+
     }
 }

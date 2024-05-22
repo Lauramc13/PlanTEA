@@ -7,12 +7,19 @@ import android.content.SharedPreferences
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.DialogFragment
 import com.example.plantea.R
 import com.example.plantea.presentacion.fragmentos.LoginFragment
@@ -20,6 +27,8 @@ import com.example.plantea.presentacion.viewModels.PreLoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputLayout
+import java.util.ArrayList
+import java.util.Locale
 
 class PreLoginActivity : AppCompatActivity(){
     private  var btnLogin: Button? = null
@@ -29,6 +38,8 @@ class PreLoginActivity : AppCompatActivity(){
     private  var password: TextInputLayout? = null
     private  var signin : Button? = null
     private var btnComenzar : Button? = null
+    private lateinit var spinner : Spinner
+    private lateinit var imageSpinner : ImageView
     private lateinit var prefs : SharedPreferences
     private val bottomSheetDialogFragment = LoginFragment()
 
@@ -49,6 +60,8 @@ class PreLoginActivity : AppCompatActivity(){
         email = findViewById(R.id.txt_Email)
         password = findViewById(R.id.txt_Password)
         btnComenzar = findViewById(R.id.comenzar)
+        spinner = findViewById(R.id.spinner_idiomas)
+        imageSpinner = findViewById(R.id.image_idioma)
 
         viewModel.initGoogleSignInClient(this)
 
@@ -100,6 +113,9 @@ class PreLoginActivity : AppCompatActivity(){
         }
 
         observers()
+
+        configurationLanguage()
+
     }
 
     fun observers(){
@@ -148,5 +164,42 @@ class PreLoginActivity : AppCompatActivity(){
         bottomSheetDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         bottomSheetDialogFragment.show((context as AppCompatActivity).supportFragmentManager, bottomSheetDialogFragment.tag)
     }
+
+    private fun configurationLanguage(){
+        val idiomas = ArrayList<String>()
+        idiomas.add("Español")
+        idiomas.add("English")
+        val adapter = ArrayAdapter(applicationContext, R.layout.simple_spinner_item_idioma, idiomas)
+        spinner.adapter = adapter
+
+        val currentLanguage = Locale.getDefault().displayLanguage
+        val position = adapter.getPosition(currentLanguage)
+        spinner.setSelection(position)
+        imageSpinner(currentLanguage)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(idiomas[position] == "English"){
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
+                }else{
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("es")))
+                }
+                imageSpinner(idiomas[position])
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                //do nothing
+            }
+        }
+    }
+
+    private fun imageSpinner(currntLanguage: String) {
+        if (currntLanguage == "English") {
+            imageSpinner.setImageResource(R.drawable.ic_en)
+        } else {
+            imageSpinner.setImageResource(R.drawable.ic_es)
+        }
+    }
+
 
 }

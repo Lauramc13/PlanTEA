@@ -23,7 +23,6 @@
     <string name="lbl_Accion">ACCIÓN</string>
     <string name="lbl_Entretenimiento">ENTRETENIMIENTO</string>
     <string name="lbl_Recompensa">RECOMPENSA</string>
-    <string name="lblPass">Cambiar Contraseña</string>
     <string name="lbl_NuevoPicto">Añadir pictograma</string>
     <string name="lbl_NuevaCategoria">Añadir categoría</string>
     <string name="lbl_Planes">Planificaciones Disponibles</string>
@@ -32,7 +31,6 @@
     <string name="lbl_RepitePass">Repite la contraseña</string>
     <string name="lbl_CrearPass">Crear contraseña</string>
     <string name="item_ayuda">Ayuda</string>
-    <string name="item_password">Cambiar contraseña</string>
     <string name="lbl_hora">HORAS</string>
     <string name="lbl_dia">DÍAS</string>
     <string name="lbl_semana">SEMANAS</string>
@@ -188,7 +186,7 @@
     <string name="crear_nueva_categoria">Crear nueva categoría</string>
     <string name="crear_categoria">CREAR CATEGORÍA</string>
     <string name="crear_nuevo_cuaderno">Crear nuevo cuaderno</string>
-
+    <string name="crear_nuevo_pictograma">Crear nuevo pictograma</string>
     <!-- Title pages -->
     <string name="pantalla_eventos">Eventos</string>
     <string name="pantalla_traductor">Traductor</string>
@@ -206,8 +204,6 @@
     <string name="next">Siguiente</string>
     <string name="previous">Anterior</string>
     <string name="lbl_mientras_esperamos">¡Mientras esperamos!</string>
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="client_id_google" translatable="false">554770088401-6kcbele1k48l73bh22ins82iqrd3ejpk.apps.googleusercontent.com</string>
 
@@ -216,7 +212,6 @@
     <string name="str_parar">PARAR</string>
     <string name="str_escuchar">ESCUCHAR POR PALABRA</string>
     <string name="str_escucharFrase">ESCUCHAR FRASE</string>
-    <string name="str_esperar">¡Mientras esperamos!</string>
     <string name="str_cancelar">Cancelar</string>
     <string name="str_saltar">Saltar</string>
     <string name="str_escuchar2">ESCUCHAR</string>
@@ -392,4 +387,9 @@
     <string name="termometro">Termometro</string>
     <string name="color">Color:</string>
     <string name="planificaci_n">Planificación</string>
+    <string name="crear_pictograma">CREAR PICTOGRAMA</string>
+    <string name="editar">Editar</string>
+    <string name="borrar">Borrar</string>
+    <string name="no_pictogramas_categoria">No hay pictogramas para esta categoría</string>
+    <string name="comenzar">COMENZAR</string>
 </resources>

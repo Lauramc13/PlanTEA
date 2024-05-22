@@ -1,6 +1,5 @@
 package com.example.plantea.presentacion.actividades
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.widget.Button
@@ -21,8 +20,7 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class CuadernoActivity : AppCompatActivity() {
-    //private var transaction: FragmentTransaction? = null
-    //private var fragmentCuadernoPictogramas = CuadernoPictogramasFragment()
+
     private var atras : Button? = null
     private lateinit var transaction: FragmentTransaction
     var fragment = CuadernoPictoEditFragment()
@@ -34,12 +32,9 @@ class CuadernoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cuaderno)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val idUsuario = prefs.getString("idUsuario", "")
+        viewModel.idUsuario = prefs.getString("idUsuario", "").toString()
 
-        if (idUsuario != null) {
-            viewModel.listaCuadernos = viewModel.cuaderno.consultarCuadernos(this, idUsuario, Locale.getDefault().language)
-        }
-
+        viewModel.listaCuadernos = viewModel.cuaderno.consultarCuadernos(this, viewModel.idUsuario, Locale.getDefault().language)
         viewModel.listaCuadernos!!.removeAt(0)
 
         viewModel.isPlanificador = prefs.getBoolean("PlanificadorLogged", false)

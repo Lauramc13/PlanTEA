@@ -195,7 +195,7 @@
                         android:layout_height="45dp"
                         android:contentDescription="Boton para cambiar contraseña del usuario"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/item_password"
+                        android:text="@string/btn_CambiarPass"
                         android:textColor="#203130"
                         android:textSize="@dimen/button"
                         android:textAllCaps="true"

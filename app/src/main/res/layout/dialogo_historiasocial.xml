@@ -65,11 +65,12 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_eliminarEvento"
             style="@style/Widget.Material3.Button"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/btn_Guardar"
+            app:cornerRadius="10dp"
             android:textColor="#203130"
             android:layout_marginBottom="20dp"
             android:textSize="@dimen/button" />

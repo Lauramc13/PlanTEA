@@ -23,10 +23,10 @@
         android:checkable="true"
         android:icon="@drawable/svg_cuadernocomunicacion"
         android:title="Cuaderno de comunicacion"/>
-    <item
+    <!--<item
         android:id="@+id/traductor"
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_translation"
-        android:title="Traductor"/>
+        android:title="Traductor"/>-->
 </menu>

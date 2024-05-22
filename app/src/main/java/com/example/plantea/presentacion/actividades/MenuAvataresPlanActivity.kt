@@ -3,6 +3,7 @@ package com.example.plantea.presentacion.actividades
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -69,7 +70,9 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 viewModel.imagenSeleccionada = true
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Planificador")
+                //viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Planificador")
+                viewModel._ruta.value =  CommonUtils.guardarImagen(this, "Planificador", viewModel.bitmap!!)
+
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }

@@ -27,12 +27,12 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_cerrarSesion"
             android:textColor="?colorOnSurface"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:gravity="center"
             android:paddingEnd="40dp"
             android:paddingStart="40dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_logout"
             style="@style/Widget.Material3.Button"
             android:layout_width="186dp"

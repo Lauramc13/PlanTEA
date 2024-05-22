@@ -11,86 +11,78 @@
         android:id="@+id/imageView6"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.6"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background_login_svg" />
 
+
     <TextView
         android:id="@+id/texto"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:contentDescription="Boton registrarse"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="@string/bienvenido"
         android:textColor="?colorOnSurface"
-        android:textSize="@dimen/display"
+        android:textSize="@dimen/displayBig"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:contentDescription="Boton registrarse"
         android:fontFamily="@font/poppins_regular"
         android:gravity="center"
         android:text="@string/bienvenido_texto"
         android:textColor="?colorOnSurface"
-        android:textSize="@dimen/subtitle"
-        android:layout_marginTop="20dp"
+        android:textSize="@dimen/modalTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/texto"
         app:layout_constraintWidth_percent="0.85" />
 
+
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="80dp"
         android:adjustViewBounds="true"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintEnd_toEndOf="@+id/imageView6"
-        app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.39"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
         app:srcCompat="@drawable/svg_problemsolving" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+    <Button
+        android:id="@+id/comenzar"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="180dp"
+        android:layout_height="78dp"
+        android:contentDescription="Boton iniciar sesion"
+        android:elevation="0dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:maxWidth="10dp"
+        android:text="@string/comenzar"
+        android:textColor="#203130"
+        android:layout_marginBottom="60dp"
+        android:textSize="@dimen/buttonBig"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_max="350dp"
-        app:layout_constraintWidth_percent="0.9">
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/comenzar"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="250dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="Boton iniciar sesion"
-            android:elevation="0dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:maxWidth="10dp"
-            android:text="@string/lbl_iniciarSesion"
-            android:textColor="#203130"
-            android:textSize="@dimen/button"
-            app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
-
-        <TextView
+       <!-- <TextView
             android:id="@+id/btn_registrar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -103,9 +95,40 @@
             android:textColor="?colorOnSurface"
             android:textSize="@dimen/body"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" /> -->
 
-    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout_idiomas"
+        android:layout_width="55dp"
+        android:layout_height="48dp"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner_idiomas"
+            style="@style/dropdownMenuIdioma"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="?colorOnSurfaceInverse"
+            android:dropDownVerticalOffset="48dp"
+            android:fontFamily="@font/poppins_regular"
+            android:popupBackground="@drawable/custom_popup_background_idioma"
+            android:popupElevation="1dp"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/image_idioma"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|bottom"
+            android:layout_margin="5dp"
+            android:background="?colorOnSurfaceInverse"
+            android:contentDescription="@null"
+            android:padding="5dp"
+            android:src="@drawable/ic_es" />
+    </FrameLayout>
 
 
 

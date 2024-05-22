@@ -16,4 +16,6 @@ interface ApiInterface {
 
    @GET("{query}/{query}_300.png")
    fun getImage(@Path("query") query: String): Call<ResponseBody>
+
+
 }

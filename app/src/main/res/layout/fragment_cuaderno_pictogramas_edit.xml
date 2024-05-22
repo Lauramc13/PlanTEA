@@ -29,7 +29,7 @@
         android:contentDescription="Barra de busqueda de pictogramas por nombre"
         android:elevation="0dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Buscar pictograma"
+        android:queryHint="@string/buscar_pictos"
         android:theme="@style/AppTheme.SearchBar"
         tools:ignore="NotSibling" />
     </FrameLayout>

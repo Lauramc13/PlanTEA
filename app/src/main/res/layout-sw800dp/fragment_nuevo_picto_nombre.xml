@@ -102,6 +102,7 @@
             android:text="@string/btn_Guardar"
             android:textColor="#203130"
             android:textSize="14sp"
+            app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

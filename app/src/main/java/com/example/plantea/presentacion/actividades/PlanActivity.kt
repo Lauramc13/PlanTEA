@@ -77,6 +77,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         setContentView(R.layout.activity_plan)
 
         // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
+
         val callback = viewModel.backCallBack(this)
         onBackPressedDispatcher.addCallback(this, callback)
 
@@ -127,6 +128,9 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------
 
         atras?.setOnClickListener {
+            if (isTaskRoot) {
+                startActivity(Intent(this@PlanActivity, MainActivity::class.java))
+            }
             finish()
         }
 

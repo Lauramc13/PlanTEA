@@ -46,5 +46,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/textoNoPictogramas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:gravity="center"
+        android:text="@string/no_pictogramas_categoria"
+        android:textSize="@dimen/body"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/image_add"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_Pictogramas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_Pictogramas" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

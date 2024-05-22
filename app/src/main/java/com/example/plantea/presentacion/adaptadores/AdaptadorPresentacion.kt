@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
+import java.util.Locale
 import java.util.Stack
 
 
@@ -85,7 +86,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 holder.entretenimiento.setImageURI(Uri.parse(imagen))
             }else{
                 val picto = Pictograma()
-                val image = picto.obtenerPicto(context,  idEntretenimiento.toString()).imagen
+                val image = picto.obtenerPicto(context,  idEntretenimiento.toString(), Locale.getDefault().language).imagen
                 val identifier = context.resources.getIdentifier(image, "drawable", context.packageName)
                 if(identifier == 0) {
                     holder.entretenimiento.setImageURI(Uri.parse(image))

@@ -26,6 +26,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+import com.example.plantea.presentacion.actividades.AniadirPictoUtils
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasCuaderno
 import com.example.plantea.presentacion.viewModels.CuadernoViewModel
@@ -35,7 +36,7 @@ import java.util.UUID
 
 class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnItemSelectedListener{
     lateinit var actividad: Activity
-    private lateinit var lstPictogramas: RecyclerView
+    lateinit var lstPictogramas: RecyclerView
     private lateinit var imageCerrar: ImageView
     private lateinit var imageAtras: ImageView
     private lateinit var adaptador: AdaptadorPictogramasCuaderno
@@ -106,11 +107,7 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
 
         context?.let { CommonUtils.initializeTextToSpeech(it) }
 
-        viewModel._image.observe(viewLifecycleOwner){
-            viewModel.image.setImageURI(it)
-            viewModel.image.background = null
-        }
-        viewModel.createPickMedia(this, context, vista)
+        AniadirPictoUtils.createPickMedia(viewModel, this)
 
         return vista
     }
@@ -180,52 +177,8 @@ class CuadernoPictoEditFragment : Fragment(), AdaptadorPictogramasCuaderno.OnIte
 
     private fun mostrarDialogoCrearPicto(){
         checkIfFragmentAttached {
-            val dialogo = Dialog(requireContext())
-            dialogo.setContentView(R.layout.dialogo_crear_pictograma_cuaderno)
-            dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val nombre : TextInputLayout = dialogo.findViewById(R.id.txt_title)
-            viewModel.image = dialogo.findViewById(R.id.img)
-
-            val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
-            val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
-
-            viewModel.image.setOnClickListener {
-                viewModel.abrirGaleria()
-            }
-
-            btnCrear.setOnClickListener{
-                nombre.error = null
-                if (nombre.editText?.text.toString().isEmpty() || viewModel.image.drawable == null) {
-                    nombre.error = requireContext().getString(R.string.toast_obligatorio)
-                    Toast.makeText(requireContext(), R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
-                }else{
-                    crearPicto(nombre)
-                    dialogo.dismiss()
-                }
-            }
-            iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
-            dialogo.show()
+            AniadirPictoUtils.initializeDialog(viewModel, requireActivity(), this@CuadernoPictoEditFragment, false, null)
         }
-    }
-
-    private fun crearPicto(nombre: TextInputLayout){
-        val prefs = context?.getSharedPreferences("Preferencias", MODE_PRIVATE)
-        val idUsuario = prefs?.getString("idUsuario", "")
-        val numero = UUID.randomUUID()
-        val imagen = context?.let { it1 -> CommonUtils.crearRuta(it1, viewModel.image, "ImgPictograma$numero") }
-
-        if (idUsuario != null) {
-            val id = viewModel.picto.nuevoPictogramaCuaderno(activity, nombre.editText?.text.toString(), imagen, viewModel.idCuaderno, idUsuario)
-            val newPictograma = Pictograma()
-            newPictograma.id = id.toString()
-            newPictograma.titulo = nombre.editText?.text.toString()
-            newPictograma.imagen = imagen
-            val lastIndex = viewModel.listaPictogramas!!.size - 1
-            viewModel.listaPictogramas!!.add(lastIndex, newPictograma)
-            viewModel.originalPictogramas?.add(newPictograma)
-        }
-
-        adaptador.notifyItemChanged(viewModel.listaPictogramas!!.lastIndex-1)
     }
 
     override fun pictogramaCuaderno(posicion: Int) {

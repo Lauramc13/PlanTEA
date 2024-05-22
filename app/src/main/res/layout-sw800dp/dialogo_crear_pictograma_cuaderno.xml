@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
+    android:layout_height="450dp"
     android:background="@drawable/fondo_dialogo_login"
     android:layout_margin="10dp">
 
@@ -13,39 +12,29 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Crear nuevo pictograma"
-            android:textColor="?colorOnSurface"
-            android:textSize="18sp" />
-
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_textinputedit"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="1dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="1dp">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/img"
+            <ImageView
+                android:id="@+id/img_NuevoPicto"
                 style="@style/addPhotoBackground"
                 android:layout_width="150dp"
-                android:layout_margin="2dp"
+                android:layout_margin="5dp"
                 android:layout_height="150dp"
-                android:background="@drawable/ic_baseline_add_photo_alternate_128"
                 android:contentDescription="Añadir imagen del planificador"
                 app:shapeAppearance="@style/cornerRadius" />
         </FrameLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_title"
+            android:id="@+id/txt_Titulo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
@@ -56,7 +45,7 @@
             app:shapeAppearance="@style/cornerRadiusLogin">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="62dp"
                 android:hint="@string/lbl_tulo"
                 android:inputType="text"
@@ -64,36 +53,18 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_create"
+            android:id="@+id/btn_GuardarPicto"
             style="@style/Widget.Material3.Button"
-            android:layout_width="300dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="Boton iniciar sesion"
-            android:elevation="0dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/poppins_semibold"
-            android:maxWidth="10dp"
-            android:text="CREAR PICTOGRAMA"
-            android:textColor="#203130"
-            android:textSize="14sp"
+            android:text="@string/btn_Guardar"
             app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
+            android:textColor="#203130"
+            android:textSize="14sp" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/icono_CerrarDialogo"
-        android:layout_width="48dp"
-        android:layout_height="40dp"
-        android:contentDescription="Cerrar seccion"
-        android:background="@drawable/bg_close_button"
-        android:src="@drawable/ic_baseline_close_24"
-        android:padding="12dp"
-        android:alpha="0.9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

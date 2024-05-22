@@ -66,7 +66,11 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         listaEventos = vista.findViewById(R.id.recycler_eventos)
 
         if(savedInstanceState != null){
-            CalendarioUtilidades.fechaSeleccionada = viewModel._fechaSeleccionada.value!! // NULLPOINTEREXCEPTION
+            if(viewModel._fechaSeleccionada.value != null){
+                CalendarioUtilidades.fechaSeleccionada = viewModel._fechaSeleccionada.value!! // NULLPOINTEREXCEPTION
+            }else{
+                CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
+            }
         }
 
         iniciarAdaptadorEvento()

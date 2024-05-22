@@ -40,6 +40,7 @@ import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -87,6 +88,7 @@ class CommonUtils{
         // to call the listener when the speech is done
         private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
+                textToSpeech.language = Locale(Locale.getDefault().language)
                 textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String) {
                         Log.d("prueba", "onStart: $utteranceId")
@@ -317,18 +319,16 @@ class CommonUtils{
         }
 
         fun initializeTextToSpeech(context: Context) {
-            val language = Locale.getDefault().language
             textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
-            textToSpeech.language = Locale(language)
         }
 
         fun textToSpeechOn(listaPictogramas: ArrayList<Pictograma>){
 
             listaPictogramas.forEachIndexed { index, pictograma ->
                     if (index == listaPictogramas.lastIndex) {
-                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+                        textToSpeech.speak(pictograma.titulo!!.lowercase(), TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
                     }else{
-                        textToSpeech.speak(pictograma.titulo, TextToSpeech.QUEUE_ADD, null, null)
+                        textToSpeech.speak(pictograma.titulo!!.lowercase(), TextToSpeech.QUEUE_ADD, null, null)
                     }
             }
         }
@@ -342,25 +342,14 @@ class CommonUtils{
            textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
         }
 
-        fun crearRuta(context: Context, image: Bitmap, nombreImagen: String): String{
+       /* fun crearRuta(context: Context, image: Bitmap, nombreImagen: String): String {
             //Escalar imagen
-            val proporcion = 500 / image.width.toFloat()
-            val imagenFinal = Bitmap.createScaledBitmap(image, 500, (image.height * proporcion).toInt(), false)
+            val proporcion = 2000 / image.width.toFloat()
+            val imagenFinal = Bitmap.createScaledBitmap(image, 2000, (image.height * proporcion).toInt(), false)
 
             //Guardar imagen
             return guardarImagen(context, nombreImagen, imagenFinal)
-        }
-
-        fun crearRuta(context: Context, imagen: ImageView?, nombreImagen: String): String {
-            val image = (imagen!!.drawable as BitmapDrawable).bitmap
-
-            //Escalar imagen
-            val proporcion = 500 / image.width.toFloat()
-            val imagenFinal = Bitmap.createScaledBitmap(image, 500, (image.height * proporcion).toInt(), false)
-
-            //Guardar imagen
-            return guardarImagen(context, nombreImagen, imagenFinal)
-        }
+        }*/
 
         fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
             val cw = ContextWrapper(context)
@@ -368,7 +357,7 @@ class CommonUtils{
             val myPath = File(dirImages, "$nombre.png")
             val fos: FileOutputStream?
             try {
-                val resizedBitmap = Bitmap.createScaledBitmap(imagen, 300, 300, false)
+                val resizedBitmap = Bitmap.createScaledBitmap(imagen, 700, 700, false)
                 fos = FileOutputStream(myPath)
                 resizedBitmap.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
                 fos.flush()

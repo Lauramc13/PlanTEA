@@ -109,7 +109,6 @@ class MainActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putBoolean("PlanificadorLogged", false)
             editor.apply()
-
             val intent = Intent(applicationContext, PlanActivity::class.java)
             startActivity(intent)
         }
@@ -122,6 +121,11 @@ class MainActivity : AppCompatActivity() {
             dialogLogout()
         }
 
+        configurationLanguage()
+
+    }
+
+    private fun configurationLanguage(){
         val idiomas = ArrayList<String>()
         idiomas.add("Español")
         idiomas.add("English")

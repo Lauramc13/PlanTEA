@@ -47,4 +47,17 @@
         app:icon="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textoNoPictogramas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_pictogramas_categoria"
+        android:visibility="invisible"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/titleNavigation"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_Pictogramas"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_Pictogramas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_Pictogramas" />
 </androidx.constraintlayout.widget.ConstraintLayout>

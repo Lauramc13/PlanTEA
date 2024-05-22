@@ -16,11 +16,10 @@
     <string name="lbl_IrMedico">GO TO THE DOCTOR</string>
     <string name="lbl_Comprar">MAKE THE PURCHASE</string>
     <string name="lbl_CortarsePelo">CUT YOUR HAIR</string>
-    <string name="lbl_Desplazamiento">DESPLACEMENT</string>
+    <string name="lbl_Desplazamiento">LOCATIONS</string>
     <string name="lbl_Accion">ACTION</string>
     <string name="lbl_Entretenimiento">ENTERTAINMENT</string>
-    <string name="lbl_Recompensa">REWARD</string>
-    <string name="lblPass">Change Password</string>
+    <string name="lbl_Recompensa">REWARDS</string>
     <string name="lbl_NuevoPicto">Add Pictogram</string>
     <string name="lbl_NuevaCategoria">Add Category</string>
     <string name="lbl_Planes">Available Plans</string>
@@ -29,7 +28,6 @@
     <string name="lbl_RepitePass">Repeat password</string>
     <string name="lbl_CrearPass">Create password</string>
     <string name="item_ayuda">Help</string>
-    <string name="item_password">Change password</string>
     <string name="lbl_hora">HOURS</string>
     <string name="lbl_dia">DAYS</string>
     <string name="lbl_semana">WEEKS</string>
@@ -41,19 +39,19 @@
     <string name="lbl_derecha">RIGHT</string>
     <string name="lbl_si">YES</string>
     <string name="lbl_mal">NO</string>
-    <string name="lbl_sintomas">WHAT IS WRONG WITH YOU?</string>
+    <string name="lbl_sintomas">WHAT\'S WRONG?</string>
     <string name="lbl_dolores">WHERE DOES IT HURT?</string>
     <string name="lbl_sentimientos">HOW DO YOU FEEL?</string>
     <string name="lbl_configuracion">Configuration</string>
-    <string name="lbl_infoPlanificador">Scheduler data</string>
-    <string name="lbl_infoplaificador_texto">User responsible for creating and managing schedules</string>
-    <string name="lbl_infoUsuarioTEA">TEA user data </string>
-    <string name="lbl_infoUsuarioTEA_texto">User able to view and follow schedules</string>
+    <string name="lbl_infoPlanificador">Planner data</string>
+    <string name="lbl_infoplaificador_texto">User responsible for creating and managing plans</string>
+    <string name="lbl_infoUsuarioTEA">ASD user data</string>
+    <string name="lbl_infoUsuarioTEA_texto">User able to view and follow plans</string>
     <string name="lbl_infoactividad">Soothing activity data </string>
     <string name="lbl_infoactividad_texto">Represents the object that calms the person with ASD</string>
 
     <string name="btn_add">Planning</string>
-    <string name="lbl_mensaje">There are no plans available. Click on \"New schedule\" to create a schedule</string>
+    <string name="lbl_mensaje">There are no plans available. Click on \"New plan\" to create a plan.</string>
     <string name="lbl_lunes">Monday</string>
     <string name="lbl_martes">Tuesday</string>
     <string name="lbl_miercoles">Wednesday</string>
@@ -80,13 +78,13 @@
     <string name="lbl_indice4_4">3.3 Description of the initial screen</string>
     <string name="lbl_indice4_5">3.4 Creating an event</string>
     <string name="lbl_indice4_6">- Event options</string>
-    <string name="lbl_indice4_7">3.5 Creating a schedule</string>
+    <string name="lbl_indice4_7">3.5 Creating a plan</string>
 
     <string name="lbl_indice4_8">- Pictograms</string>
     <string name="lbl_indice4_9">- Creation of a new pictogram</string>
     <string name="lbl_indice4_10">- Steps to create planning</string>
-    <string name="lbl_indice4_11">- Schedule options</string>
-    <string name="lbl_indice5">4. TEA User</string>
+    <string name="lbl_indice4_11">- Plan options</string>
+    <string name="lbl_indice5">4. ASD User</string>
     <string name="lbl_indice5_1">4.1 Description of the Initial Screen</string>
     <string name="lbl_indice5_2">4.2 Planning monitoring</string>
     <string name="lbl_indice5_3">4.3 Communication notebook</string>
@@ -107,7 +105,6 @@
     <string name="lbl_seleccionaAvatarTEA">Select the avatar of the planned</string>
     <string name="lbl_seleccionaActividad">Select the soothing activity</string>
     <string name="lbl_seleccionarFoto">SELECT PHOTO FROM GALLERY</string>
-    <string name="lbl_saltar">Jump</string>
     <string name="lbl_deshacer">UNDO</string>
     <string name="lbl_reproducir">Play</string>
 
@@ -129,9 +126,9 @@
     <string name="lbl_cancelar">CANCEL</string>
     <string name="lbl_eliminar">DELETE EVENT</string>
     <string name="lbl_eliminarPlanificacion">Delete planning</string>
-    <string name="lbl_eliminarPlanificacionMensaje">Are you sure you want to delete the selected schedule?</string>
-    <string name="lbl_eliminarPlanificacionMensaje2">If you want to delete the schedule, all associated events will also be deleted</string>
-    <string name="lbl_eliminarPlanificacionMensaje3">ELIMINATE PLANNING</string>
+    <string name="lbl_eliminarPlanificacionMensaje">Are you sure you want to delete the selected plan?</string>
+    <string name="lbl_eliminarPlanificacionMensaje2">If you want to delete the plan, all associated events will also be deleted</string>
+    <string name="lbl_eliminarPlanificacionMensaje3">DELETE PLANNING</string>
     <string name="lbl_historialSocial">Additional text for:</string>
     <string name="lbl_cerrarSesion">Are you sure you want to log out?</string>
     <string name="lbl_cerrarSesionBotton">Sign out</string>
@@ -150,7 +147,7 @@
     <string name="fecha">Date:</string>
     <string name="hora">Time:</string>
     <string name="recordatorio">Reminder:</string>
-    <string name="planificaciones_disponibles">Available schedules:</string>
+    <string name="planificaciones_disponibles">Available plans:</string>
     <string name="recordar">Remind me...</string>
     <string name="recordar_5min">5 minutes before</string>
     <string name="recordar_1hora">1 hour before</string>
@@ -178,6 +175,7 @@
     <string name="item_recompensa">Reward</string>
     <string name="crear_nueva_categoria">Create new category</string>
     <string name="crear_nuevo_cuaderno">Create new notebook</string>
+    <string name="crear_nuevo_pictograma">Create new pictogram</string>
     <string name="crear_categoria">CREATE CATEGORY</string>
     <string name="termometro">Thermometer</string>
 
@@ -194,7 +192,7 @@
     <string name="desde_galeria">From gallery</string>
     <string name="texto_adicional">Additional text</string>
     <string name="duracion">Duration</string>
-    <string name="actividad_entre">Entertainment</string>
+    <string name="actividad_entre">Entertainment activity</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -202,15 +200,12 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="lbl_mientras_esperamos">While we wait!</string>
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="noConfigurationActivity">There is no configured activity</string>
     <string name="formatted_date">%1$s, %2$s of %3$s</string>
     <string name="str_parar">STOP</string>
     <string name="str_escuchar">LISTEN BY WORD</string>
     <string name="str_escucharFrase">LISTEN PHRASE</string>
-    <string name="str_esperar">While we wait!</string>
     <string name="str_cancelar">Cancel</string>
     <string name="str_saltar">Skip</string>
     <string name="str_finalizar">Finish</string>
@@ -248,7 +243,7 @@
     <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Choose an avatar for the activity/object that calms the person with ASD</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Choose an avatar for the person who is going to create and manage the plans</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Choose an avatar for the person who is going to follow the plans</string>
-    <string name="planificaciones">Schedules</string>
+    <string name="planificaciones">Plans</string>
     <string name="planificaciones_futuras">Future events</string>
 
     <!-- Strings used for the manual -->
@@ -265,21 +260,21 @@
     <string-array name="str_crearEvento">
         <item>Go to &lt;b>&lt;u>"Calendar"&lt;/u>&lt;/b> and click the button &lt;b>&lt;u>+&lt;/u>&lt;/b > located in the lower right corner.</item>
         <item>Selects a &lt;b>&lt;u>"time"&lt;/u>&lt;/b> and optionally &lt;b>&lt;u>"reminder"&lt;/u>&lt;/b > for the event. </item>
-        <item>If no schedule is available, you can click &lt;b>&lt;u>"+ New schedule"&lt;/u>&lt;/b> to create a new one.</item>
-        <item>If you already have a schedule created, select the desired schedule to use in the event.</item>
+        <item>If no plan is available, you can click &lt;b>&lt;u>"+ New plan"&lt;/u>&lt;/b> to create a new one.</item>
+        <item>If you already have a plan created, select the desired plan to use in the event.</item>
         <item>Finally, click &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> to create the event.</item>
         <item>To view the event, change its visibility by clicking on the &lt;b>&lt;u>"eye" icon&lt;/u>&lt;/b></item>
     </string-array>
 
     <string-array name="str_crearPlanificacion">
         <item>Go to &lt;b>&lt;u>"Calendar"&lt;/u>&lt;/b> and click the button &lt;b>&lt;u>"+"&lt;/u>&lt; /b> located in the lower right corner.</item>
-        <item>Click the &lt;b>&lt;u>+ New schedule&lt;/u>&lt;/b> button.</item>
-        <item>Enter a &lt;b>&lt;u>title&lt;/u>&lt;/b> for the schedule.</item>
-        <item>To add a pictogram to the schedule, click on a &lt;b>&lt;u>"category"&lt;/u>&lt;/b> and then on the desired pictogram.</item>
+        <item>Click the &lt;b>&lt;u>+ New plan&lt;/u>&lt;/b> button.</item>
+        <item>Enter a &lt;b>&lt;u>title&lt;/u>&lt;/b> for the plan.</item>
+        <item>To add a pictogram to the plan, click on a &lt;b>&lt;u>"category"&lt;/u>&lt;/b> and then on the desired pictogram.</item>
         <item>To search for a pictogram, click the &lt;b>&lt;u>"search bar"&lt;/u>&lt;/b> and type the name of the pictogram you want to search for. </item>
         <item>If you want to save a pictogram as a favorite, click on the &lt;b>&lt;u>"heart&lt;/u>&lt;/b> icon located in the upper right corner of the pictogram. These pictograms will be saved to the category of &lt;b>&lt;u>"Favorites"&lt;/u>&lt;/b>.</item>
         <item>To add additional text to the pictogram or add a duration to the pictogram, click the &lt;b>&lt;u>3 dots&lt;/u>&lt;/b> located in the upper right corner of the pictograms on the list and select the desired option.</item>
-        <item>Finally, click the &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> button to save the schedule.</item>
+        <item>Finally, click the &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> button to save the plan.</item>
     </string-array>
 
     <string-array name="str_cuaderno">
@@ -381,5 +376,10 @@
     <string name="toast_no_paso_anterior">The previous step has not been performed</string>
     <string name="toast_categoria_existente">The category already exists</string>
     <string name="color">Colour:</string>
-    <string name="planificaci_n">Schedule</string>
+    <string name="planificaci_n">Plan</string>
+    <string name="crear_pictograma">CREATE PICTOGRAM</string>
+    <string name="editar">Edit</string>
+    <string name="borrar">Delete</string>
+    <string name="no_pictogramas_categoria">There are no pictograms in this category</string>
+    <string name="comenzar">GET STARTED</string>
 </resources>

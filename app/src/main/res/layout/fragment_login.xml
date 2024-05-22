@@ -19,17 +19,7 @@
         app:layout_constraintWidth_max="350dp"
         app:layout_constraintWidth_percent="0.8">
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginBottom="20dp"
-            android:autoSizeTextType="uniform"
-            android:fontFamily="@font/poppins_semibold"
-            android:gravity="center"
-            android:text="@string/bienvenido_de_nuevo"
-            android:textColor="?colorOnSurface"
-            app:autoSizeTextType="uniform" />
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Email"
@@ -123,15 +113,29 @@
             android:backgroundTint="?configuracionCardBg"
             android:contentDescription="Boton iniciar sesion"
             android:fontFamily="@font/poppins_semibold"
-            android:text="INICIAR SESIÓN CON GOOGLE"
+            android:text="@string/sesion_google"
             android:textColor="?colorOnSurface"
             android:textSize="@dimen/button"
             app:cornerRadius="10dp"
-            android:layout_marginBottom="60dp"
             app:icon="@drawable/svg_google_icon"
             app:iconSize="28dp"
             app:iconTint="@null"
             app:strokeWidth="1dp" />
+
+        <TextView
+            android:id="@+id/btn_registrar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:contentDescription="Boton registrarse"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="@string/lbl_noCuenta"
+            android:textColor="?colorOnSurface"
+            android:textSize="@dimen/body"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
       <!--  <TextView
             android:id="@+id/btn_registrar"

@@ -62,6 +62,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     var _clearBusqueda = SingleLiveEvent<Boolean>()
     val _pictogramaSeleccionado = SingleLiveEvent<Pictograma>()
     val _nuevoPictoDialog = SingleLiveEvent<Boolean>()
+    val _nuevoPictoDialogCategoria = SingleLiveEvent<Boolean>()
     var _historiaClicked = SingleLiveEvent<Int>()
     var _onDuracionClicked = SingleLiveEvent<Int>()
     var _onEntretenimientoClicked = SingleLiveEvent<Int>()
@@ -72,15 +73,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var image : ImageView? = null
 
-    lateinit var adaptador: AdaptadorNuevoPicto //Adaptador del recyclerview del dialogo añadir picto
-
-    //Buttons colors
-    private lateinit var buttonMorado: FloatingActionButton
-    private lateinit var buttonRosa: FloatingActionButton
-    private lateinit var buttonVerde: FloatingActionButton
-    private lateinit var buttonAzul: FloatingActionButton
-    private lateinit var buttonDefault: FloatingActionButton
-    private lateinit var buttonAmarillo: FloatingActionButton
+    lateinit var adaptador: AdaptadorNuevoPicto //Adaptador del recyclerview del dia
 
     var subcategoriaOpen = false
     var busquedaOpen = false
@@ -215,85 +208,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     }
 
     override fun addCategoria(view: View?){
-        val dialogo = Dialog(view!!.context)
-        var colorSelected = ""
-        dialogo.setContentView(R.layout.dialogo_crear_categoria_plan)
-        dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val title : TextInputLayout = dialogo.findViewById(R.id.txt_title)
-        image = dialogo.findViewById(R.id.img)
-
-        val btnCrear : Button = dialogo.findViewById(R.id.btn_create)
-        val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
-
-
-        //Colores buttons
-        buttonMorado = dialogo.findViewById(R.id.fab1)
-        buttonRosa = dialogo.findViewById(R.id.fab2)
-        buttonVerde = dialogo.findViewById(R.id.fab3)
-        buttonAmarillo = dialogo.findViewById(R.id.fab4)
-        buttonAzul = dialogo.findViewById(R.id.fab5)
-        buttonDefault = dialogo.findViewById(R.id.fab6)
-
-        buttonAmarillo.setOnClickListener{
-            clearButtonsSelected()
-            buttonAmarillo.setImageResource(R.drawable.svg_check)
-            colorSelected = "yellow"
-        }
-
-        buttonAzul.setOnClickListener{
-            clearButtonsSelected()
-            buttonAzul.setImageResource(R.drawable.svg_check)
-            colorSelected = "blue"
-        }
-
-        buttonMorado.setOnClickListener{
-            clearButtonsSelected()
-            buttonMorado.setImageResource(R.drawable.svg_check)
-            colorSelected = "purple"
-        }
-
-        buttonRosa.setOnClickListener{
-            clearButtonsSelected()
-            buttonRosa.setImageResource(R.drawable.svg_check)
-            colorSelected = "pink"
-        }
-
-        buttonVerde.setOnClickListener{
-            clearButtonsSelected()
-            buttonVerde.setImageResource(R.drawable.svg_check)
-            colorSelected = "green"
-        }
-
-        buttonDefault.setOnClickListener{
-            clearButtonsSelected()
-            buttonDefault.setImageResource(R.drawable.svg_check)
-            colorSelected = "default"
-        }
-
-        image?.setOnClickListener {
-            abrirGaleria()
-        }
-
-        //el termometro por ahora no hace nada
-        btnCrear.setOnClickListener{
-           title.error = null
-            if (title.editText?.text.toString().isEmpty() || image?.drawable == null) {
-                title.error = view.context.getString(R.string.toast_obligatorio)
-
-            }else{
-                val titulo = title.editText?.text.toString().uppercase().trim()
-                if(categoria.checkCategoriaExiste(view.context, titulo, idUsuario, Locale.getDefault().language)) {
-                    Toast.makeText(view.context, R.string.toast_categoria_existente, Toast.LENGTH_SHORT).show()
-
-                }else{
-                    crearCategoria(title,false, Categoria(),colorSelected, view.context as Activity)
-                    dialogo.dismiss()
-                }
-            }
-        }
-
-        iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
-        dialogo.show()
+        _nuevoPictoDialogCategoria.value = true
     }
 
     override fun onItemSeleccionadoEntre(idPicto: Int) {
@@ -329,26 +244,6 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         }
     }
 
-    @SuppressLint("IntentReset")
-    fun abrirGaleria() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    private fun crearCategoria(title: TextInputLayout, isEdit: Boolean, categoria: Categoria, colorSelected: String, activity: Activity){
-        val titulo = title.editText?.text.toString()
-        val imagen = (image!!.drawable as BitmapDrawable).bitmap
-        val ruta = guardarImagen(title.context, titulo, imagen)
-        categoria.crearCategoria(activity, titulo, ruta, 1, colorSelected, idUsuario)
-        //update data
-        categoria.titulo = titulo
-        categoria.imagen = ruta
-        categoria.color = colorSelected
-        listaCategorias.add(listaCategorias.size-1, categoria)
-        _createdCategoria.value = true
-    }
-
     override fun borrarCategoria(posicion: Int, idCategoria: Int, view: View?){
         //dialog
         val dialogo = Dialog(view!!.context)
@@ -367,12 +262,10 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }
 
         dialogo.show()
-
     }
 
 
     fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
-
         return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(hora)
@@ -381,15 +274,5 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
             .setTitleText(getString(context, R.string.selecciona_hora))
             .build()
     }
-
-    private fun clearButtonsSelected(){
-        buttonMorado.setImageResource(0)
-        buttonRosa.setImageResource(0)
-        buttonVerde.setImageResource(0)
-        buttonAzul.setImageResource(0)
-        buttonDefault.setImageResource(0)
-        buttonAmarillo.setImageResource(0)
-    }
-
 
 }

@@ -32,7 +32,7 @@
             android:paddingEnd="40dp"
             android:paddingStart="40dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_logout"
             style="@style/Widget.Material3.Button"
             android:layout_width="186dp"

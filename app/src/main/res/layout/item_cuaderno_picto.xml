@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/card_categoria"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="140dp"
         android:theme="@style/cards"
         app:cardBackgroundColor="?pizzaraFondo"
         app:cardCornerRadius="30dp"
@@ -58,8 +58,9 @@
             android:layout_height="45dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:padding="10dp"
-            android:layout_marginTop="-2dp"
+            android:padding="12dp"
+            android:layout_marginTop="-7dp"
+            android:layout_marginEnd="-5dp"
             android:visibility="visible"
             app:srcCompat="@drawable/svg_options" />
 

@@ -190,6 +190,37 @@
     </LinearLayout>
 
 
+    <FrameLayout
+        android:id="@+id/frameLayout_idiomas"
+        android:layout_width="55dp"
+        android:layout_height="48dp"
+        android:layout_margin="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner_idiomas"
+            style="@style/dropdownMenuIdioma"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="?colorOnSurfaceInverse"
+            android:dropDownVerticalOffset="48dp"
+            android:fontFamily="@font/poppins_regular"
+            android:popupBackground="@drawable/custom_popup_background_idioma"
+            android:popupElevation="1dp"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/image_idioma"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|bottom"
+            android:layout_margin="5dp"
+            android:background="?colorOnSurfaceInverse"
+            android:contentDescription="@null"
+            android:padding="5dp"
+            android:src="@drawable/ic_es" />
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

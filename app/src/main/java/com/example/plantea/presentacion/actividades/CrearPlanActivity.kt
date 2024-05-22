@@ -180,7 +180,13 @@ class CrearPlanActivity : AppCompatActivity(){
 
         viewModel._nuevoPictoDialog.observe(this) {
             if (it) {
-                AniadirPictoUtils.dialogoNuevoPicto(viewModel, this)
+                AniadirPictoUtils.initializeDialog(viewModel, this, null, false, null)
+            }
+        }
+
+        viewModel._nuevoPictoDialogCategoria.observe(this) {
+            if (it) {
+                AniadirPictoUtils.initializeDialog(viewModel, this, null, true, null)
             }
         }
 

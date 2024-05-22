@@ -187,15 +187,16 @@ class GestionPictogramas : Serializable {
         conectorBD!!.cerrar()
     }
 
-    fun obtenerPicto(context: Context?, id: String?): Pictograma {
+    fun obtenerPicto(context: Context?, id: String?, language: String): Pictograma {
         val pictograma = Pictograma()
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
-        val c = conectorBD!!.obtenerPictograma(id)
+        val c = conectorBD!!.obtenerPictograma(id, language)
         if (c.moveToFirst()) {
             do {
                 pictograma.id = c.getString(0)
-                pictograma.imagen = c.getString(2)
+                pictograma.imagen = c.getString(1)
+                pictograma.titulo = c.getString(2)
             } while (c.moveToNext())
         }
         c.close()

@@ -1,21 +1,13 @@
 package com.example.plantea.presentacion.actividades
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Typeface
-import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.PathInterpolator
-import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -23,15 +15,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
 import com.google.android.material.textfield.TextInputLayout
-import java.io.File
-import java.io.FileOutputStream
+
+
 import java.util.UUID
 
 
@@ -72,6 +63,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         if(textoATraducir.editText?.text.toString().isNotEmpty()){
             textoATraducir.requestFocus()
         }
+
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
@@ -238,4 +230,5 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             }
         }
     }
+
 }

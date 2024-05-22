@@ -30,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
@@ -37,21 +38,15 @@ import java.util.Locale
 
 class NavegacionUtils {
     var usuario = Usuario()
-    private lateinit var password: TextInputLayout
-    private lateinit var btnAcceder: Button
-    private lateinit var iconoCerrarLogin: ImageView
     private lateinit var iconoRol: ImageView
     private lateinit var textoRol: TextView
     private lateinit var navigationView: NavigationView
     private lateinit var navigationViewBottom: BottomNavigationView
     private lateinit var fragmentSide : ConstraintLayout
-    //private lateinit var popupWindow: PopupWindow
     private lateinit var buttonMenu : Button
     private lateinit var buttonAccount: LinearLayout
     lateinit var prefs: SharedPreferences
     private var isExpanded = false
-
-    private lateinit var btnLogout : Button
     private var popupView : View? = null
 
     fun crearDialogoLogin(context: Context, activity: Activity) {
@@ -60,17 +55,15 @@ class NavegacionUtils {
         val dialogLogin = Dialog(context)
         dialogLogin.setContentView(R.layout.dialogo_login)
         dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        password = dialogLogin.findViewById(R.id.txt_Password)
-        btnAcceder = dialogLogin.findViewById(R.id.btn_login)
-        iconoCerrarLogin = dialogLogin.findViewById(R.id.icono_CerrarDialogo)
+        val password = dialogLogin.findViewById<TextInputLayout>(R.id.txt_Password)
+        val btnAcceder = dialogLogin.findViewById<MaterialButton>(R.id.btn_login)
+        val iconoCerrarLogin = dialogLogin.findViewById<ImageView>(R.id.icono_CerrarDialogo)
         btnAcceder.setOnClickListener {
             if (password.editText?.text.toString() == "") {
                 password.error = "El campo no puede estar vacío"
-
             } else {
                 val email = prefs.getString("email", "")
                 if(email != null){
-
                     val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context)
 
                     if(usuario.checkCredentials(email, passwordCifrada, activity)){
@@ -96,16 +89,13 @@ class NavegacionUtils {
         val dialogLogout = Dialog(fragment.requireContext())
         dialogLogout.setContentView(R.layout.dialogo_logout)
         dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        btnLogout = dialogLogout.findViewById(R.id.btn_logout)
-        iconoCerrarLogin = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-        btnLogout.setOnClickListener {
-          //  firebaseAuth = FirebaseAuth.getInstance()
-          //  firebaseAuth.signOut()
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .build()
+        val btnLogout = dialogLogout.findViewById<MaterialButton>(R.id.btn_logout)
+        val iconoCerrarLogin = dialogLogout.findViewById<ImageView>(R.id.icono_CerrarDialogo)
 
-            val googleSignInClient: GoogleSignInClient =
-                GoogleSignIn.getClient(fragment.requireContext(), gso)
+        btnLogout.setOnClickListener {
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+
+            val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
             googleSignInClient.signOut()
             //prefs.edit().clear().apply()
             dialogLogout.dismiss()
@@ -130,7 +120,6 @@ class NavegacionUtils {
             textoRol.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
         }
-
     }
 
     fun hostingId(hostingActivityClass: Class<FragmentActivity>) : Int {
@@ -153,8 +142,8 @@ class NavegacionUtils {
             R.id.planificacion -> PlanActivity::class.java
             R.id.actividades -> ActividadActivity::class.java
             R.id.cuaderno -> CuadernoActivity::class.java
-            R.id.user -> ConfiguracionActivity::class.java
-            R.id.help -> ManualActivity::class.java
+            //R.id.user -> ConfiguracionActivity::class.java
+            //R.id.help -> ManualActivity::class.java
             R.id.traductor -> TraductorActivity::class.java
             else -> return true
         }

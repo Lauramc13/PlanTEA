@@ -125,7 +125,9 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Usuario")
+                //viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Usuario")
+                viewModel._ruta.value = CommonUtils.guardarImagen(this, "Usuario", viewModel.bitmap!!)
+
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }

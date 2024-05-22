@@ -75,11 +75,11 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertCategoria(db, "CORTARSE EL PELO", "categoria_peluqueria", true, "default","en", "CUT YOUR HAIR") // 2
         insertCategoria(db, "HACER LA COMPRA", "categoria_hacer_la_compra", true, "default", "en", "GO SHOPPING") // 3
         insertCategoria(db, "IR AL COLEGIO", "categoria_colegio", true, "default","en",  "GO TO SCHOOL") // 4
-        insertCategoria(db, "LUGARES", "categoria_lugares", true, "default", "en", "PLACES") // 5
+        insertCategoria(db, "LUGARES", "categoria_lugares", true, "default", "en", "LOCATIONS") // 5
         insertCategoria(db, "DESPLAZAMIENTO", "categoria_desplazamiento", true, "default", "en", "DISPLACEMENT") // 6
         insertCategoria(db, "ACCION", "categoria_accion", true, "default","en",  "ACTION") // 7
         insertCategoria(db, "ENTRETENIMIENTO", "categoria_entretenimiento", true, "blue", "en", "ENTERTAINMENT") // 8
-        insertCategoria(db, "RECOMPENSA", "categoria_recompensa", true, "blue", "en", "REWARD") // 9
+        insertCategoria(db, "RECOMPENSA", "categoria_recompensa", true, "blue", "en", "REWARDS") // 9
         insertCategoria(db, "FAVORITOS", "categoria_favorito", true, "yellow", "en", "FAVORITES") // 10
 
         insertCategoria(db, "REVISIÓN", null, false, null, "en",  "REVISION") // 11
@@ -191,7 +191,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictograma(db, "JUGAR", "categoria_recompensa_jugar", 9, "en", "PLAY")
         insertPictograma(db, "IR AL PARQUE", "categoria_recompensa_parque", 9, "en", "GO TO THE PARK")
         insertPictograma(db, "VER LA TELEVISIÓN", "categoria_recompensa_tele", 9, "en", "WATCH TV")
-        insertPictograma(db, "RECONOCIMIENTO", "categoria_revision_reconocimiento", 11, "en", "RECOGNITION")
+        insertPictograma(db, "RECONOCIMIENTO", "categoria_revision_reconocimiento", 11, "en", "MEDICAL EXAMINATION")
         insertPictograma(db, "AUSCULTAR", "categoria_revision_auscultar", 11, "en", "AUSCULTATE")
         insertPictograma(db, "CURAR", "categoria_revision_curar", 11, "en", "HEAL")
         insertPictograma(db, "MIRAR GARGANTA", "categoria_revision_mirargarganta", 11, "en", "LOOK THROAT")
@@ -210,7 +210,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictograma(db, "PRUEBA ALERGIA", "categoria_pruebas_alergia", 14, "en","ALLERGY TEST")
         insertPictograma(db, "PRUEBA DE SANGRE", "categoria_pruebas_sangre", 14, "en","BLOOD TEST")
         insertPictograma(db, "FROTIS GARGANTA", "categoria_pruebas_frotisgarganta", 14, "en","THROAT SWAB")
-        insertPictograma(db, "ANÁLISIS ORINA", "categorias_pruebas_frotisnasal", 14, "en","NASAL SPRAY")
+        insertPictograma(db, "ANÁLISIS ORINA", "categoria_pruebas_frotisnasal", 14, "en","NASAL SPRAY")
 
         insertPictograma(db, "EXAMEN VISTA", "categoria_oculista_examenvista", 15, "en","EYE EXAM")
         insertPictograma(db, "GRADUAR VISTA", "categoria_oculista_graduarvista", 15, "en","GRADUATE VIEW")
@@ -231,11 +231,11 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictograma(db, "RESPIRACIÓN", "categoria_logopeda_respiracion", 17, "en","BREATHING")
 
         insertPictograma(db, "CEPILLO", "categoria_kit_cepillo_pelo", 18, "en","BRUSH")
-        insertPictograma(db, "MAQUINILLA DE CORTAR EL PELO", "categoria_kit_maquinilla_cortar_pelo", 18, "en","HAIR CUTTING MACHINE")
+        insertPictograma(db, "MAQUINILLA DE CORTAR EL PELO", "categoria_kit_maquinilla_cortar_pelo", 18, "en","HAIR CLIPPER")
         insertPictograma(db, "PEINE Y TIJERAS", "categoria_kit_peine_tijeras", 18, "en","COMB AND SCISSORS")
         insertPictograma(db, "PLANCHA", "categoria_kit_plancha_pelo", 18, "en","IRON")
         insertPictograma(db, "RIZADOR", "categoria_kit_rizador", 18, "en","CURLING IRON")
-        insertPictograma(db, "SECADOR", "categoria_kit_secador", 18, "en","DRYER")
+        insertPictograma(db, "SECADOR", "categoria_kit_secador", 18, "en","HAIR DRYER")
         insertPictograma(db, "TIJERAS", "categoria_kit_tijeras", 18, "en","SCISSORS")
 
         insertPictograma(db, "FLEQUILLO", "categoria_cortes_flequillo", 19, "en","BANGS")
@@ -321,8 +321,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictograma(db, "MAESTRA DE MÚSICA", "categoria_profesores_profesora_musica", 25, "en","MUSIC TEACHER")
         insertPictograma(db, "MAESTRO DE TALLER", "categoria_profesores_profesor_taller", 25, "en","WORKSHOP TEACHER")
         insertPictograma(db, "MAESTRA DE TALLER", "categoria_profesores_profesora_taller", 25, "en","WORKSHOP TEACHER")
-        insertPictograma(db, "EDUCACIÓN FÍSICA", "categoria_profesores_profesora_educacion_fisica", 25, "en","PHYSICAL EDUCATION")
-        insertPictograma(db, "EDUCACIÓN FÍSICA", "categorias_profesores_profesor_educacion_fisica", 25, "en","PHYSICAL EDUCATION")
+        insertPictograma(db, "EDUCACIÓN FÍSICA", "categoria_profesores_profesora_educacion_fisica", 25, "en","GYM TEACHER")
+        insertPictograma(db, "EDUCACIÓN FÍSICA", "categorias_profesores_profesor_educacion_fisica", 25, "en","GYM TEACHER")
         insertPictograma(db, "ORIENTACIÓN", "categoria_profesores_servicio_orientacion", 25, "en","GUIDANCE")
         insertPictograma(db, "ORIENTACIÓN", "categoria_profesores_servicio_orientacion1", 25, "en","GUIDANCE")
 
@@ -341,7 +341,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertarPictoCuaderno(db, "ESCALOFRIOS", "cuaderno_sintomas_escalofrios", 2, "en","CHILLS")
         insertarPictoCuaderno(db, "TOS", "cuaderno_sintomas_tos", 2, "en","COUGH")
         insertarPictoCuaderno(db, "FIEBRE", "cuaderno_sintomas_fiebre", 2, "en","FEVER")
-        insertarPictoCuaderno(db, "NO VEO BIEN", "cuaderno_sintomas_noveobien", 2, "en","I CANNOT SEE WELL")
+        insertarPictoCuaderno(db, "NO VEO BIEN", "cuaderno_sintomas_noveobien", 2, "en","I CAN''T SEE WELL")
         insertarPictoCuaderno(db, "VOMITOS", "cuaderno_sintomas_vomitar", 2, "en","VOMIT")
         insertarPictoCuaderno(db, "ALERGIA", "cuaderno_sintomas_alergia", 2, "en","ALLERGY")
         insertarPictoCuaderno(db, "RESFRIADO", "cuaderno_sintomas_resfriado", 2, "en","COLD")
@@ -370,7 +370,6 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
 
         insertarPictoCuaderno(db, "ABURRIDO", "cuaderno_sentimientos_aburrir", 4, "en","BORED")
         insertarPictoCuaderno(db, "ALEGRE", "cuaderno_sentimientos_alegrar", 4, "en","HAPPY")
-        insertarPictoCuaderno(db, "AMADA", "cuaderno_sentimientos_amada", 4, "en","LOVED")
         insertarPictoCuaderno(db, "AMADO", "cuaderno_sentimientos_amado", 4, "en","LOVED")
         insertarPictoCuaderno(db, "ANSIOSO", "cuaderno_sentimientos_ansioso", 4, "en","ANXIOUS")
         insertarPictoCuaderno(db, "ASQUEADO", "cuaderno_sentimientos_asco", 4, "en","DISGUSTED")

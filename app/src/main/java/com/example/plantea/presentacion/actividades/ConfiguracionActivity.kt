@@ -4,6 +4,7 @@ package com.example.plantea.presentacion.actividades
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -171,6 +172,7 @@ class ConfiguracionActivity : AppCompatActivity() {
             imgUsuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
         } else {
             imgUsuarioPlanificador.background = null
+            //Glide.with(this).load("file://" + prefs.getString("imagenPlanificador", "")).into(imgUsuarioPlanificador)
             imgUsuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
         }
         if (prefs.getString("imagenUsuarioTEA", "") == "") {
@@ -202,7 +204,8 @@ class ConfiguracionActivity : AppCompatActivity() {
         val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, imgUsuarioPlanificador.drawable, imgUsuarioTEA.drawable, imgObjeto.drawable, lblInfoUsuario.isChecked, lblObjeto.isChecked)
 
         if(isValid){
-            val rutaPlanificador = CommonUtils.crearRuta(this, imgUsuarioPlanificador, "Planificador")
+            //val rutaPlanificador = CommonUtils.crearRuta(this, (imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap, )
+            val rutaPlanificador = CommonUtils.guardarImagen(this, "Planificador", (imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap)
             var rutaUsuarioTEA= ""
             var rutaObjeto = ""
 
@@ -220,7 +223,8 @@ class ConfiguracionActivity : AppCompatActivity() {
             editor.putString("imageObjetoConfig", null)
 
             if(lblObjeto.isChecked){
-                rutaObjeto = CommonUtils.crearRuta(this, imgObjeto, "Objeto")
+                //rutaObjeto = CommonUtils.crearRuta(this, (imgObjeto.drawable as BitmapDrawable).bitmap, "Objeto")
+                rutaObjeto = CommonUtils.guardarImagen(this, "Objeto", (imgObjeto.drawable as BitmapDrawable).bitmap)
                 editor.putString("imagenObjeto", rutaObjeto)
                 editor.putString("nombreObjeto", nombreObjeto)
             }else{
@@ -230,7 +234,8 @@ class ConfiguracionActivity : AppCompatActivity() {
             }
 
             if(lblInfoUsuario.isChecked){
-                rutaUsuarioTEA = CommonUtils.crearRuta(this, imgUsuarioTEA, "Usuario")
+                //rutaUsuarioTEA = CommonUtils.crearRuta(this, (imgUsuarioTEA.drawable as BitmapDrawable).bitmap, "Usuario")
+                rutaUsuarioTEA = CommonUtils.guardarImagen(this, "Usuario", (imgUsuarioTEA.drawable as BitmapDrawable).bitmap)
                 editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
                 editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
             }else{

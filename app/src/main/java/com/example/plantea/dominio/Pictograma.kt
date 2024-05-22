@@ -96,8 +96,8 @@ class Pictograma : Serializable {
         return gestorPictogramas.borrarPictoCuaderno(actividad, id, idCuaderno)
     }
 
-    fun obtenerPicto(context: Context?, id: String?): Pictograma {
-        return gestorPictogramas.obtenerPicto(context, id)
+    fun obtenerPicto(context: Context?, id: String?, language: String): Pictograma {
+        return gestorPictogramas.obtenerPicto(context, id, language)
     }
 
     fun getRandomPictograms(context: Context?, idUsuario: String?, language: String): ArrayList<Pictograma> {

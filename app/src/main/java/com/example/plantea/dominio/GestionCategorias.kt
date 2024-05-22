@@ -65,11 +65,16 @@ class GestionCategorias {
         conectorBD!!.cerrar()
     }*/
 
-    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String) {
+    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarCategoria(nombre, imagen, principal, color, idUsuario)
+        val cursor  = conectorBD!!.insertarCategoria(nombre, imagen, principal, color, idUsuario)
+        var idCategoria = 0
+        if (cursor.moveToFirst()) {
+            idCategoria = cursor.getInt(0)
+        }
         conectorBD!!.cerrar()
+        return idCategoria
     }
 
     fun eliminarCategoria(actividad: Activity?, idUsuario: String, idCategoria: Int) {
@@ -93,6 +98,19 @@ class GestionCategorias {
         c.close()
         conectorBD!!.cerrar()
         return existe
+    }
+
+    fun obtenerCategoriaById(context: Context, idCategoria: Int, language: String): String {
+        conectorBD = ConectorBD(context)
+        conectorBD!!.abrir()
+        var titulo = ""
+        val c = conectorBD!!.obtenerCategoriaById(idCategoria, language)
+        if (c.moveToFirst()) {
+            titulo = c.getString(0)
+        }
+        c.close()
+        conectorBD!!.cerrar()
+        return titulo
     }
 
     /* fun obtenerTituloCategoria(context: Context, idCategoria: Int): String {

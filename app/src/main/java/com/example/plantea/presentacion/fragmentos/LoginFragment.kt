@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +30,7 @@ class LoginFragment: BottomSheetDialogFragment() {
 
     lateinit var actividad: Activity
     private  var btnLogin: Button? = null
+    private  var btnRegister: TextView? = null
     private  var email: TextInputLayout? = null
     private  var password: TextInputLayout? = null
     private  var signin : Button? = null
@@ -43,6 +46,8 @@ class LoginFragment: BottomSheetDialogFragment() {
         email = vista.findViewById(R.id.txt_Email)
         password = vista.findViewById(R.id.txt_Password)
         btnLogin = vista.findViewById(R.id.btn_login)
+        btnRegister = vista.findViewById(R.id.btn_registrar)
+        btnRegister?.paintFlags = btnRegister?.paintFlags?.or(Paint.UNDERLINE_TEXT_FLAG)!!
 
         viewModel.initGoogleSignInClient(requireContext())
 
@@ -50,6 +55,11 @@ class LoginFragment: BottomSheetDialogFragment() {
             Toast.makeText(requireContext(), R.string.toast_iniciando_sesion, Toast.LENGTH_SHORT).show()
 
             signInGoogle()
+        }
+
+        btnRegister?.setOnClickListener {
+            val intent = Intent(actividad.applicationContext, RegisterActivity::class.java)
+            startActivity(intent)
         }
 
         btnLogin?.setOnClickListener {

@@ -313,7 +313,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
             animFondo.start()
         } else if (categoria == 8) {
             imagenConfeti.setImageResource(R.drawable.svg_espera)
-            mensajePremio.text = context.getString(R.string.str_esperar)
+            mensajePremio.text = context.getString(R.string.lbl_mientras_esperamos)
             imagenConfeti.animation = animCard
             animCard.start()
             mensajePremio.animation = animCard
@@ -331,7 +331,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
             pictoEntretenimiento.imagen = prefs.getString("imagenObjeto", "")
             pictoEntretenimiento.titulo = prefs.getString("nombreObjeto", "")
         }else{
-            pictoEntretenimiento = pictoEntretenimiento.obtenerPicto(context, listaPictogramas[posicion].pictoEntretenimiento.toString())
+            pictoEntretenimiento = pictoEntretenimiento.obtenerPicto(context, listaPictogramas[posicion].pictoEntretenimiento.toString(), Locale.getDefault().language)
         }
 
         val identifier = context.resources.getIdentifier(pictoEntretenimiento.imagen, "drawable", context.packageName)
