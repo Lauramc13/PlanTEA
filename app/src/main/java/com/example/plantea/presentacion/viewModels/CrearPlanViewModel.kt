@@ -199,7 +199,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
     }
 
     override fun onItemSeleccionado(idCategoria: Int, context: Context) {
-        _listaPictogramas.value = if (idCategoria == 10) {
+        _listaPictogramas.value = if (idCategoria == 5) {
             pictograma.obtenerFavoritos(context, idUsuario, Locale.getDefault().language)
         } else {
             pictograma.obtenerPictogramas(context, idCategoria, idUsuario, Locale.getDefault().language) as ArrayList<Pictograma>

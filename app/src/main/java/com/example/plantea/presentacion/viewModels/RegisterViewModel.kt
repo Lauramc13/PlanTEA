@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
+import com.example.plantea.dominio.Categoria
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.EncryptionUtils
 
@@ -34,6 +35,7 @@ class RegisterViewModel: ViewModel() {
         val passwordCifrada = EncryptionUtils.encrypt(password, activity.applicationContext)
         usuario.crearUsuario(name, email, passwordCifrada, username, objeto, namePlanificado, activity)
         val id = usuario.consultarId(email, activity)
+        // crear categorias por defecto
         val editor = prefs.edit()
         editor.putString("idUsuario", id)
         editor.putBoolean("userAccount", true)

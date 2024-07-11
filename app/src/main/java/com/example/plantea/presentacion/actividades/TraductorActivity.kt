@@ -3,7 +3,6 @@ package com.example.plantea.presentacion.actividades
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -21,14 +20,15 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
 import com.google.android.material.textfield.TextInputLayout
+import java.util.Locale
 
 
 import java.util.UUID
 
 
-class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
-    private lateinit var escucharButtonPalabra : Button
-    private lateinit var escucharButtonFrase : Button
+class TraductorActivity : AppCompatActivity() {
+   // private lateinit var escucharButtonPalabra : Button
+   // private lateinit var escucharButtonFrase : Button
     private lateinit var guardarButton : Button
     //private lateinit var guardarPDFButton : Button
     private lateinit var textoATraducir : TextInputLayout
@@ -47,13 +47,18 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         viewModel.textInputContent = textoATraducir.editText?.text.toString()
     }
 
+    override fun onStart() {
+        super.onStart()
+        CommonUtils.loadLemmatizer(Locale.getDefault().language.lowercase(), this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
         val traducirButton: Button = findViewById(R.id.traducirButton)
-        escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
-        escucharButtonFrase = findViewById(R.id.escucharButtonFrase)
+        /*escucharButtonPalabra = findViewById(R.id.escucharButtonPalabra)
+        escucharButtonFrase = findViewById(R.id.escucharButtonFrase)*/
         guardarButton = findViewById(R.id.guardarButton)
         //guardarPDFButton = findViewById(R.id.guardarButtonPDF)
         textoATraducir = findViewById(R.id.textoTraducir)
@@ -76,8 +81,8 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         textoATraducir.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
         recyclerView.layoutManager = layoutManagerLinear
 
-        CommonUtils.initializeTextToSpeech(this)
-        CommonUtils.listener = this
+       // CommonUtils.initializeTextToSpeech(this)
+       // CommonUtils.listener = this
 
         traducirButton.setOnClickListener {
             // if there is no internet connection, show a snackbar
@@ -99,7 +104,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
             finish()
         }
 
-        escucharButtonPalabra.setOnClickListener {
+       /* escucharButtonPalabra.setOnClickListener {
             if (!viewModel.speechInProgress) {
                 escucharButtonPalabra.text = getString(R.string.str_parar)
                 escucharButtonFrase.isEnabled = false
@@ -129,7 +134,7 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
                 escucharButtonPalabra.isEnabled = true
                 viewModel.speechInProgress = false
             }
-        }
+        }*/
 
         textoATraducir.editText?.setOnKeyListener{_, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -186,15 +191,15 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
         //Si hay pictogramas, mostramos los botones
         viewModel._visibilityButtons.observe(this) { visibility ->
             if(visibility){
-                escucharButtonPalabra.visibility = View.VISIBLE
-                escucharButtonFrase.visibility = View.VISIBLE
+               // escucharButtonPalabra.visibility = View.VISIBLE
+               // escucharButtonFrase.visibility = View.VISIBLE
                 if(isPlanificador){
                     guardarButton.visibility = View.VISIBLE
                 //    guardarPDFButton.visibility = View.VISIBLE
                 }
             }else{
-                escucharButtonPalabra.visibility = View.GONE
-                escucharButtonFrase.visibility = View.GONE
+               // escucharButtonPalabra.visibility = View.GONE
+               // escucharButtonFrase.visibility = View.GONE
                 guardarButton.visibility = View.GONE
                 //guardarPDFButton.visibility = View.GONE
             }
@@ -206,15 +211,15 @@ class TraductorActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener{
 
     }
 
-    override fun onSpeechDone() {
+   /* override fun onSpeechDone() {
         runOnUiThread {
-            escucharButtonPalabra.isEnabled = true
+          / escucharButtonPalabra.isEnabled = true
             escucharButtonFrase.isEnabled = true
             escucharButtonPalabra.text = getString(R.string.str_escuchar)
             escucharButtonFrase.text = getString(R.string.str_escucharFrase)
             viewModel.speechInProgress = false
         }
-    }
+    }*/
 
     private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->

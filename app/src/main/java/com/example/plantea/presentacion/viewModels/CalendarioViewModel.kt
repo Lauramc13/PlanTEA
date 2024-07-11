@@ -8,6 +8,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getString
@@ -28,6 +29,8 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Calendar
 import java.util.Locale
 
@@ -109,11 +112,19 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     }
 
     //Cancel the notification
-    fun cancelarNotificacion(context: Context, identificador: Int) {
+    private fun cancelarNotificacion(context: Context, identificador: Int) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent()
         intent.setClass(context, OnAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, identificador, intent, PendingIntent.FLAG_IMMUTABLE)
+        alarmManager.cancel(pendingIntent)
+        pendingIntent.cancel()
+    }
+
+    private fun cancelarVisibilidad(actividad: Activity, identificador: Int){
+        val intent = Intent(actividad, OnAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(actividad, identificador, intent, PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = actividad.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
         pendingIntent.cancel()
     }
@@ -134,7 +145,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     fun nuevoEvento(context: Context, cita: Evento) {
         val id = evento.crearEvento(context as Activity, cita)
         cita.id = id
-        //Toast.makeText(context, "Evento creado id: ${cita.id_plan}", Toast.LENGTH_SHORT).show()
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
@@ -143,15 +153,53 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         eventos.add(cita)
         _changedEvent.value = true
 
+        if(cita.cambiar_visibilidad){
+            programarVisibilidad(cita, context, id)
+        }
+
         if(checkBoxMin || checkBoxHora || checkBoxDia || checkBoxPer){
             crearNotificacion(context, cita.fecha, CalendarioUtilidades.formatoHoraAviso(cita.hora), cita.nombre, id)
         }
     }
 
+    private fun programarVisibilidad(cita: Evento, context: Context, id: Int){
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val notificationIntent = Intent(context, OnAlarmReceiver::class.java).apply {
+            putExtra("CambiarVisibilidad", true)
+            putExtra("IdEvento", id)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val eventCalendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, cita.fecha!!.year)
+            set(Calendar.MONTH, cita.fecha!!.monthValue - 1) // Calendar months are 0-based
+            set(Calendar.DAY_OF_MONTH, cita.fecha!!.dayOfMonth)
+            val (hour, minute) = cita.hora!!.split(":").map { it.toInt() }
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+            add(Calendar.MINUTE, -5)
+        }
+
+        val triggerTimeMillis = eventCalendar.timeInMillis
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTimeMillis, pendingIntent)
+        Log.d("AlarmScheduler", "Scheduled for: ${eventCalendar.time}")
+    }
+
+    fun cambiarVisibilidadEvento(eventoId: Int, context: Context){
+        val evento = Evento()
+
+        evento.cambiarVisibilidad(context, 1, eventoId)
+        val prefs = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val userId = prefs.getString("idUsuario", "")
+        evento.invisibiliarEvento(context, eventoId, userId)
+    }
+
     fun deleteEvento(actividad: Activity, context: Context, posicion: Int){
         cancelarNotificacion(context, eventosDia[posicion].id)
+        cancelarVisibilidad(actividad, eventosDia[posicion].id)
         evento.eliminarEvento(actividad, eventosDia[posicion].id)
-        //eventos.remove(eventosDia[posicion])
 
         // remove where eventosDia[posicion].id == eventos.id
         for (i in eventos.indices) {

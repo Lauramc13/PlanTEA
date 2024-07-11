@@ -167,7 +167,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -203,7 +203,7 @@
                 app:iconSize="25dp"
                 app:iconTint="?colorOnSurface" />
 
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView

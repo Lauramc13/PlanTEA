@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -34,12 +36,12 @@ import java.time.format.TextStyle
 import java.util.Locale
 import java.util.Stack
 
-class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
+class PlanActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     lateinit var titulo: TextView
     private lateinit var lblMensaje: TextView
     private lateinit var buttonPlanNuevo : Button
-    private lateinit var iconoEscuchar: Button
+    //private lateinit var iconoEscuchar: Button
     private lateinit var iconoReproducir: MaterialButton
     private lateinit var iconoDeshacer: Button
     private lateinit var iconoDeshacerTodas: Button
@@ -64,7 +66,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         super.onDestroy()
         viewModel._fechaActual.removeObservers(this)
         viewModel._diasMes.removeObservers(this)
-        CommonUtils.textToSpeech.stop()
+        //CommonUtils.textToSpeech.stop()
         viewModel.dialog?.dismiss()
 
         if(viewModel.currentDialog != null){
@@ -81,11 +83,15 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         val callback = viewModel.backCallBack(this)
         onBackPressedDispatcher.addCallback(this, callback)
 
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         iconoDeshacer = findViewById(R.id.icon_deshacer)
         iconoDeshacerTodas = findViewById(R.id.icon_deshacerTodas)
         iconoMarcar = findViewById(R.id.icon_marcar)
         iconoMarcarTodas = findViewById(R.id.icon_marcarTodas)
-        iconoEscuchar = findViewById(R.id.icon_escuchar)
+       // iconoEscuchar = findViewById(R.id.icon_escuchar)
         iconoReproducir = findViewById(R.id.icon_reproducir)
         planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         calendarButton = findViewById(R.id.CalendarDate)
@@ -102,7 +108,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         viewModel.recyclerView.layoutManager = layoutManagerLinear
 
-        initTextSpeech()
+        //initTextSpeech()
         val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
         if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
             initNotificationList()
@@ -189,7 +195,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
             }
         }
 
-        iconoEscuchar.setOnClickListener {
+       /* iconoEscuchar.setOnClickListener {
             if (!viewModel.speechInProgress) {
                 iconoEscuchar.text = getString(R.string.str_parar)
                 CommonUtils.textToSpeechOn(viewModel.listaPictogramas)
@@ -199,7 +205,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                 CommonUtils.textToSpeech.stop()
                 viewModel.speechInProgress = false
             }
-        }
+        }*/
 
         iconoReproducir.setOnClickListener {
             reproducirEvento()
@@ -280,16 +286,11 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                     iconoDeshacerTodas.visibility = View.VISIBLE
                     iconoMarcar.visibility = View.VISIBLE
                     iconoMarcarTodas.visibility = View.VISIBLE
-                    iconoEscuchar.visibility = View.VISIBLE
+                    //iconoEscuchar.visibility = View.VISIBLE
                     iconoReproducir.visibility = View.VISIBLE
                     iconoMarcar.isEnabled = true
                     iconoMarcarTodas.isEnabled = true
                     viewModel.recyclerView.visibility = View.VISIBLE
-
-                if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)){
-                    showDialogRotate()
-                }
-
 
             }else{
                 Toast.makeText(this, "Error al cargar los pictogramas", Toast.LENGTH_SHORT).show()
@@ -304,7 +305,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                 val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
                 layoutPlanificaciones.visibility = View.VISIBLE
                 //val imageDecoration = findViewById<ImageView>(R.id.imageDecoration)
-              //  imageDecoration.visibility = View.GONE
+                //imageDecoration.visibility = View.GONE
             }else{
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcarTodas.visibility = View.INVISIBLE
@@ -320,7 +321,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcar.visibility = View.INVISIBLE
                 iconoMarcarTodas.visibility = View.INVISIBLE
-                iconoEscuchar.visibility = View.INVISIBLE
+               // iconoEscuchar.visibility = View.INVISIBLE
                 iconoReproducir.visibility = View.INVISIBLE
 
                 if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
@@ -359,10 +360,10 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
 
     }
 
-    private fun initTextSpeech(){
+   /* private fun initTextSpeech(){
         CommonUtils.initializeTextToSpeech(this)
         CommonUtils.listener = this
-    }
+    }*/
 
     private fun initNotificationList(){
         val notificationList : ArrayList<PlanificacionItem> = viewModel.mostrarPlanificaciones()
@@ -438,7 +439,7 @@ class PlanActivity : AppCompatActivity(), CommonUtils.TextToSpeechListener {
         viewModel.isRunning = true
     }
 
-    override fun onSpeechDone() {
+   /* override fun onSpeechDone() {
         iconoEscuchar.text = getString(R.string.str_escuchar)
-    }
+    }*/
 }

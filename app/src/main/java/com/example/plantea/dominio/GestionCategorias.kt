@@ -65,10 +65,10 @@ class GestionCategorias {
         conectorBD!!.cerrar()
     }*/
 
-    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: String?, principal: Int, color: String, idUsuario: String): Int {
+    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: String?, color: String, idUsuario: String): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val cursor  = conectorBD!!.insertarCategoria(nombre, imagen, principal, color, idUsuario)
+        val cursor  = conectorBD!!.insertarCategoria(nombre, imagen, color, idUsuario)
         var idCategoria = 0
         if (cursor.moveToFirst()) {
             idCategoria = cursor.getInt(0)
@@ -112,6 +112,7 @@ class GestionCategorias {
         conectorBD!!.cerrar()
         return titulo
     }
+
 
     /* fun obtenerTituloCategoria(context: Context, idCategoria: Int): String {
          conectorBD = ConectorBD(context)

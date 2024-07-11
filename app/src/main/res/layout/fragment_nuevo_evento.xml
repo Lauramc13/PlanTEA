@@ -121,7 +121,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:padding="3dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -150,6 +149,44 @@
                     android:layout_height="35dp">
 
                 </androidx.appcompat.widget.SwitchCompat>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="3dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="2dp"
+                    android:src="@drawable/svg_eye"/>
+
+                <TextView
+                    android:id="@+id/lbl_hacer_visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hacer visible 5 min antes"
+                    android:layout_marginStart="10dp"
+                    android:textColor="?colorOnSurface"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switch_hacer_visible"
+                    android:checked="false"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton">
+                </CheckBox>
             </LinearLayout>
 
             <androidx.fragment.app.FragmentContainerView

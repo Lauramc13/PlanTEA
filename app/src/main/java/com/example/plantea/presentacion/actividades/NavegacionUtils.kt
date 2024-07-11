@@ -129,7 +129,8 @@ class NavegacionUtils {
             TraductorActivity::class.java -> R.id.traductor
             CalendarioActivity::class.java -> R.id.calendar
             ActividadActivity::class.java -> R.id.actividades
-            CuadernoActivity::class.java -> R.id.cuaderno
+            SemanaActivity::class.java -> R.id.semana
+            // CuadernoActivity::class.java -> R.id.cuaderno
             else -> R.id.planificacion
         }
         return idActivity
@@ -141,7 +142,8 @@ class NavegacionUtils {
             R.id.calendar -> CalendarioActivity::class.java
             R.id.planificacion -> PlanActivity::class.java
             R.id.actividades -> ActividadActivity::class.java
-            R.id.cuaderno -> CuadernoActivity::class.java
+            R.id.semana -> SemanaActivity::class.java
+            // R.id.cuaderno -> CuadernoActivity::class.java
             //R.id.user -> ConfiguracionActivity::class.java
             //R.id.help -> ManualActivity::class.java
             R.id.traductor -> TraductorActivity::class.java

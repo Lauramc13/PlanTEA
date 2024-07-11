@@ -149,6 +149,7 @@ class PreLoginActivity : AppCompatActivity(){
                     val intent = Intent(applicationContext, RegisterActivity::class.java)
                     intent.putExtra("EMAIL", account?.email.toString())
                     intent.putExtra("NAME", account?.givenName.toString())
+                    intent.putExtra("PASSWORD","123456")
                     startActivity(intent)
                     finish()
                 }

@@ -50,6 +50,11 @@ class CrearPlanActivity : AppCompatActivity(){
 
     private val viewModel by viewModels<CrearPlanViewModel>()
 
+    override fun onStart() {
+        super.onStart()
+        CommonUtils.loadLemmatizer(Locale.getDefault().language.lowercase(), this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_plan)
@@ -180,13 +185,13 @@ class CrearPlanActivity : AppCompatActivity(){
 
         viewModel._nuevoPictoDialog.observe(this) {
             if (it) {
-                AniadirPictoUtils.initializeDialog(viewModel, this, null, false, null)
+                AniadirPictoUtils.initializeDialog(viewModel, this, null, false)
             }
         }
 
         viewModel._nuevoPictoDialogCategoria.observe(this) {
             if (it) {
-                AniadirPictoUtils.initializeDialog(viewModel, this, null, true, null)
+                AniadirPictoUtils.initializeDialog(viewModel, this, null, true)
             }
         }
 

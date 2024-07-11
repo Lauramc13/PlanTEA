@@ -96,6 +96,7 @@ class GestionUsuarios {
         return resultado
     }
 
+
    /* fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()

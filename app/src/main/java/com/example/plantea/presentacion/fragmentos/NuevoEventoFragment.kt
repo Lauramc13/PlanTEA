@@ -15,7 +15,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,6 +55,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     private lateinit var adaptador: AdaptadorListaPlanes
     private lateinit var layoutPlanificaciones: ConstraintLayout
     private lateinit var switchReminder : SwitchCompat
+    private lateinit var radioButtonVista : CheckBox
    // private lateinit var reminderview: FragmentContainerView
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
@@ -82,6 +85,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         layoutPlanificaciones = vista.findViewById(R.id.layout)
         //tituloEvento = vista.findViewById(R.id.txt_tituloEvento)
         switchReminder = vista.findViewById(R.id.switch_recordatorio)
+        radioButtonVista = vista.findViewById(R.id.switch_hacer_visible)
 
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         viewModel.setIdUsario(prefs)
@@ -96,8 +100,8 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
                 return@setOnClickListener
             }
 
-            val evento = Evento(0, viewModel.idUsuario, viewModel.planes[viewModel.posicionPlan].titulo, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado)
-            context?.let { it1 -> viewModel.nuevoEvento(it1, evento) }
+            val evento = Evento(0, viewModel.idUsuario, viewModel.planes[viewModel.posicionPlan].titulo, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado, radioButtonVista.isChecked)
+            context?.let { it1 -> viewModel.nuevoEvento(it1, evento)}
             dismiss()
         }
 

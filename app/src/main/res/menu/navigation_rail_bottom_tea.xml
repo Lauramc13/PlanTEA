@@ -17,16 +17,25 @@
         android:checkable="true"
         android:icon="@drawable/svg_actividadesdado"
         android:title="Actividades"/>
+
     <item
-        android:id="@+id/cuaderno"
+        android:id="@+id/semana"
         android:enabled="true"
         android:checkable="true"
-        android:icon="@drawable/svg_cuadernocomunicacion"
-        android:title="Cuaderno de comunicacion"/>
-   <!-- <item
-        android:id="@+id/traductor"
-        android:enabled="true"
-        android:checkable="true"
-        android:icon="@drawable/svg_translation"
-        android:title="Traductor"/>-->
+        android:icon="@drawable/svg_semana"
+        android:title="Semana"/>
+
+
+    <!--<item
+       android:id="@+id/cuaderno"
+       android:enabled="true"
+       android:checkable="true"
+       android:icon="@drawable/svg_cuadernocomunicacion"
+       android:title="Cuaderno de comunicacion"/>
+   <item
+       android:id="@+id/traductor"
+       android:enabled="true"
+       android:checkable="true"
+       android:icon="@drawable/svg_translation"
+       android:title="Traductor"/>-->
 </menu>

@@ -2,6 +2,7 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import java.time.LocalDate
 
@@ -47,10 +48,18 @@ class GestionEventos {
         conectorBD!!.cerrar()
     }
 
-    fun cambiarVisibilidad(actividad: Activity?, valor: Int, idEvento: Int) {
-        conectorBD = ConectorBD(actividad)
+    fun cambiarVisibilidad(context: Context?, valor: Int, idEvento: Int) {
+        Log.d("AlarmScheduler", "cambiarVisibilidad: $idEvento")
+        conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
         conectorBD!!.modificarVisibilidad(valor, idEvento)
+        conectorBD!!.cerrar()
+    }
+
+    fun invisibiliarEvento(actividad: Context?, idEvento: Int, idUsuario: String) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.invisibiliarEvento(idEvento, idUsuario)
         conectorBD!!.cerrar()
     }
 

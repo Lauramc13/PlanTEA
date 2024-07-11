@@ -73,11 +73,11 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
 
     //Este método se ejecutará al seleccionar un pictograma para añadirlo en la planificacion
     override fun onItemSeleccionado(posicion: Int) {
-        if (viewModel._listaPictogramas.value?.get(posicion)?.categoria in 1..4) {
+       /* if (viewModel._listaPictogramas.value?.get(posicion)?.categoria in 1..4) {
             viewModel.mostrarsubCategoria(viewModel._listaPictogramas.value?.get(posicion)?.titulo, this.requireContext())
-        } else {
+        } else {*/
             viewModel.pictogramaSeleccionado(posicion)
-        }
+       // }
     }
 
     fun markAsFavorite(pictogram: Pictograma) {

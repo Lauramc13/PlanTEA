@@ -177,9 +177,9 @@
     </style>
 
     <style name="editTextPlan" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="backgroundTint">@color/md_theme_light_primary</item>
+        <item name="backgroundTint">@color/white</item>
         <item name="background">@color/white</item>
-        <item name="strokeColor">@color/md_theme_light_primary</item>
+        <item name="strokeColor">@color/white</item>
     </style>
 
 

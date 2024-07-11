@@ -83,6 +83,9 @@ class RegisterActivity : AppCompatActivity(){
 
         txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
         txtName.editText?.setText(intent.getStringExtra("NAME"))
+        txtUsername.editText?.setText(intent.getStringExtra("NAME"))
+        txtPassword.editText?.setText(intent.getStringExtra("PASSWORD"))
+        txtPassword2.editText?.setText(intent.getStringExtra("PASSWORD"))
 
         if(savedInstanceState != null){
             txtName.editText?.setText(viewModel.name)

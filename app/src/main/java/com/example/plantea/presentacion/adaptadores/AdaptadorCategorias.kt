@@ -46,9 +46,10 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
                 holder.imagen.setImageResource(identifier)
             }
         }
-        if(position in 0..9){
+
+        /*if(position in 0..9){
             holder.borrar.visibility = View.GONE
-        }
+        }*/
 
         if(listaCategorias!![position].color == "default") {
             // if its dark mode
@@ -113,8 +114,6 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
                 val posicion = bindingAdapterPosition
                 listener?.borrarCategoria(posicion, listaCategorias!![posicion].categoria, itemView)
             }
-
-
         }
 
         override fun onClick(view: View?) {

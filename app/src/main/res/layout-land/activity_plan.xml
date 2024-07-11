@@ -55,7 +55,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
                     android:contentDescription="Mes y flechas de navegación atras/delante"
                     android:orientation="horizontal"
                     app:cornerRadius="25dp"
@@ -64,8 +63,8 @@
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -85,15 +84,14 @@
                             android:id="@+id/lbl_titulo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                             android:fontFamily="@font/poppins_bold"
                             android:text="Titulo"
-                            android:layout_marginTop="5dp"
                             android:textColor="?colorOnSurface"
                             android:textSize="@dimen/titleSmall"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
                     </LinearLayout>
-
 
 
                     <Button
@@ -104,6 +102,7 @@
                         android:contentDescription="Botón calendario"
                         android:gravity="center"
                         app:cornerRadius="25dp"
+                        android:layout_marginEnd="15dp"
                         app:icon="@drawable/svg_calendardate"
                         app:iconSize="26dp"
                         app:iconTint="?colorOnSurface">
@@ -226,7 +225,7 @@
                   app:iconTint="?colorOnSurface"
                   app:layout_constraintBottom_toBottomOf="parent"
                   app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintTop_toBottomOf="@+id/linearLayout4" /> -->
+                  app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
 
                 <Button
@@ -247,12 +246,13 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.384"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout4" />
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout4" />-->
 
                 <TextView
                     android:id="@+id/lbl_mensajeNinio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:contentDescription="@string/lbl_mensajeNinio"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
@@ -263,7 +263,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/constraintLayout" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_plan"

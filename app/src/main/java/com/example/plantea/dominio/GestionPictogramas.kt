@@ -62,7 +62,7 @@ class GestionPictogramas : Serializable {
         return id
     }
 
-    fun insertarPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
+    /*fun insertarPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         val id = conectorBD!!.insertarPictogramaCuaderno(nombre, imagen, idCuaderno, idUsuario)
@@ -92,7 +92,7 @@ class GestionPictogramas : Serializable {
             print(listaPictogramas!![i].titulo + listaPictogramas!![i].cuaderno)
         }*/
         return listaPictogramas as ArrayList<Pictograma>
-    }
+    }*/
 
   /*  fun listarConsultas(actividad: Activity?, idcategoria: Int): ArrayList<String> {
         conectorBD = ConectorBD(actividad)
@@ -166,7 +166,7 @@ class GestionPictogramas : Serializable {
         return exists
     }
 
-    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
+    /*fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         conectorBD!!.insertarPictogramaCuadernoBusqueda(id, titulo, imagen, idCuaderno)
@@ -185,7 +185,7 @@ class GestionPictogramas : Serializable {
         conectorBD!!.abrir()
         conectorBD!!.borrarPictogramaCuaderno(id, idCuaderno)
         conectorBD!!.cerrar()
-    }
+    }*/
 
     fun obtenerPicto(context: Context?, id: String?, language: String): Pictograma {
         val pictograma = Pictograma()

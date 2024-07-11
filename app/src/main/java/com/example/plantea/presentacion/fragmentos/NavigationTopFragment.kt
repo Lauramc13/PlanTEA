@@ -16,7 +16,6 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.presentacion.actividades.ActividadActivity
-import com.example.plantea.presentacion.actividades.CuadernoActivity
 import com.example.plantea.presentacion.actividades.PlanActivity
 import com.example.plantea.presentacion.actividades.TraductorActivity
 import com.example.plantea.presentacion.actividades.CalendarioActivity
@@ -56,7 +55,7 @@ class NavigationTopFragment: Fragment() {
             TraductorActivity::class.java -> getString(R.string.pantalla_traductor)
             CalendarioActivity::class.java -> getString(R.string.pantalla_calendario)
             ActividadActivity::class.java -> getString(R.string.actividades)
-            CuadernoActivity::class.java -> getString(R.string.pantalla_cuaderno)
+            // CuadernoActivity::class.java -> getString(R.string.pantalla_cuaderno)
             CreditsActivity::class.java -> getString(R.string.pantalla_acercade)
             ConfiguracionActivity::class.java -> getString(R.string.pantalla_configuracion)
             ManualActivity::class.java -> getString(R.string.pantalla_manual)

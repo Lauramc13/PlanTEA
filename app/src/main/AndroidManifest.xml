@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.alarm.permission.SET_ALARM"/>
 
     <queries>
         <package android:name="com.example.calendar" />
@@ -45,13 +46,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentacion.actividades.CuadernoActivity"
-            android:label="Cuaderno de comunicación"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".presentacion.actividades.PlanActivity"
             android:label="Planificación"
             android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="unspecified"
             android:exported="true">
 
             <intent-filter>
@@ -103,6 +101,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentacion.actividades.PoliticaActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.SemanaActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <receiver android:name=".dominio.OnAlarmReceiver" />

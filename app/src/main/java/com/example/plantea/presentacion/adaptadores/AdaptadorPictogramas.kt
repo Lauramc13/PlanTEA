@@ -39,15 +39,15 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
             holder.imagen.setImageResource(identifier)
         }
 
-        if(listaPictogramas!![position].categoria in 1..4){
+        /*if(listaPictogramas!![position].categoria in 1..4){
             holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)
             holder.imagen.setBackgroundColor(Color.rgb(100, 100, 50))
-        }else{
+        }else{*/
             holder.heart!!.visibility = View.VISIBLE
             if(listaPictogramas!![position].favorito){
                 holder.heart!!.setImageResource(R.drawable.svg_heart_filled)
             }
-        }
+       // }
 
         holder.heart!!.setOnClickListener {
             if(listaPictogramas!![position].favorito){

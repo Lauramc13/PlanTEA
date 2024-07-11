@@ -52,7 +52,7 @@ class Pictograma : Serializable {
        return gestorPictogramas.insertarPictograma(actividad, nombre, imagen, categoria, idUsuario)
     }
 
-    fun nuevoPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
+    /*fun nuevoPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
         return gestorPictogramas.insertarPictogramaCuaderno(actividad, nombre, imagen, idCuaderno, idUsuario)
     }
 
@@ -62,7 +62,7 @@ class Pictograma : Serializable {
         return listaPictogramas
     }
 
-    /*fun obtenerConsultas(actividad: Activity?, idcategoria: Int): ArrayList<*>? {
+    fun obtenerConsultas(actividad: Activity?, idcategoria: Int): ArrayList<*>? {
         listaConsultas = ArrayList()
         listaConsultas = gestorPictogramas.listarConsultas(actividad, idcategoria)
         return listaConsultas
@@ -84,7 +84,7 @@ class Pictograma : Serializable {
         return gestorPictogramas.getFavorito(actividad, idPicto, idUsuario)
     }
 
-    fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
+    /*fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
         return gestorPictogramas.guardarPictoCuaderno(actividad, id, titulo, imagen, idCuaderno)
     }
 
@@ -94,7 +94,7 @@ class Pictograma : Serializable {
 
     fun borrarPictoCuaderno(actividad: Activity?, id: String?, idCuaderno: Int) {
         return gestorPictogramas.borrarPictoCuaderno(actividad, id, idCuaderno)
-    }
+    }*/
 
     fun obtenerPicto(context: Context?, id: String?, language: String): Pictograma {
         return gestorPictogramas.obtenerPicto(context, id, language)

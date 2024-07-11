@@ -9,34 +9,42 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFactory?, versionBD: Int) : SQLiteOpenHelper(contexto, nombreBD, factory, versionBD) {
     private var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, password TEXT, username TEXT, name TEXT, imagen TEXT, objeto TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT)"
-    private var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, principal BOOLEAN, color TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, color TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlRelacionCategoriaUser = "CREATE TABLE RelacionCategoriaUsuario(id INTEGER PRIMARY KEY AUTOINCREMENT, is_deleted BOOLEAN, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen TEXT)"
     private var sqlFavorito = "CREATE TABLE Favorito(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_pictograma) REFERENCES PictogramaAPI(id))"
-    private var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
-    private var sqlRelacionPictogramaCuaderno = "CREATE TABLE RelacionPictogramaCuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_pictogramaAPI INTEGER, id_cuaderno INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_pictogramaAPI) REFERENCES PictogramaAPI(id))"
     private var sqpPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, es_actual INTEGER, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
-    private var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, visible INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, visible INTEGER, mostrar_evento INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlRelacionPictogramaPlan = "CREATE TABLE RelacionPictogramaPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, historia TEXT, duracion TEXT, id_picto_entre, id_plan INTEGER, id_pictograma INTEGER, id_pictogramaAPI INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_pictogramaAPI) REFERENCES PictogramaAPI(id))"
     private var sqlRelacionEventoPlan = "CREATE TABLE RelacionEventoPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_evento INTEGER, id_plan INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     private var sqlTraduccion = "CREATE TABLE Traduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, translation TEXT)"
-    private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_cuaderno INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
+    private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
+    private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, day_week TEXT, pictograma_day BLOB, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+
+
+    //private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_cuaderno INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
+    // private var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    // private var sqlRelacionPictogramaCuaderno = "CREATE TABLE RelacionPictogramaCuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_pictogramaAPI INTEGER, id_cuaderno INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_pictogramaAPI) REFERENCES PictogramaAPI(id))"
+
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/
             db.execSQL(sqlUsuario)
             db.execSQL(sqlCategorias)
+            db.execSQL(sqlRelacionCategoriaUser)
             db.execSQL(sqlPictograma)
             db.execSQL(sqlPictogramaAPI)
             db.execSQL(sqlFavorito)
-            db.execSQL(sqlCuaderno)
-            db.execSQL(sqlRelacionPictogramaCuaderno)
             db.execSQL(sqpPlanificacion)
             db.execSQL(sqlRelacionPictogramaPlan)
             db.execSQL(sqlEvento)
             db.execSQL(sqlRelacionEventoPlan)
             db.execSQL(sqlTraduccion)
             db.execSQL(sqlRelacionPictoTraduccion)
+            db.execSQL(sqlSemana)
+            // db.execSQL(sqlCuaderno)
+            // db.execSQL(sqlRelacionPictogramaCuaderno)
             meterDatos(db)
         } catch (e: SQLException) {
             e.printStackTrace()
@@ -48,17 +56,19 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             /*Se elimina la versión anterior de la tablet*/
             db.execSQL("DROP TABLE IF EXISTS Usuario")
             db.execSQL("DROP TABLE IF EXISTS Categorias")
+            db.execSQL("DROP TABLE IF EXISTS RelacionCategoriaUsuario")
             db.execSQL("DROP TABLE IF EXISTS Pictograma")
             db.execSQL("DROP TABLE IF EXISTS PictogramaAPI")
             db.execSQL("DROP TABLE IF EXISTS Favorito")
             db.execSQL("DROP TABLE IF EXISTS Planificacion")
-            db.execSQL("DROP TABLE IF EXISTS Cuaderno")
-            db.execSQL("DROP TABLE IF EXISTS RelacionPictogramaCuaderno")
             db.execSQL("DROP TABLE IF EXISTS RelacionPictogramaPlan")
             db.execSQL("DROP TABLE IF EXISTS Evento")
             db.execSQL("DROP TABLE IF EXISTS RelacionEventoPlan")
             db.execSQL("DROP TABLE IF EXISTS Traduccion")
             db.execSQL("DROP TABLE IF EXISTS RelacionPictoTraduccion")
+            db.execSQL("DROP TABLE IF EXISTS Semana")
+            // db.execSQL("DROP TABLE IF EXISTS Cuaderno")
+            // db.execSQL("DROP TABLE IF EXISTS RelacionPictogramaCuaderno")
 
             /*Se crea la nueva versión de la table*/
             onCreate(db)
@@ -71,18 +81,88 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private fun meterDatos(db: SQLiteDatabase) {
 
         //Categoria
-        insertCategoria(db, "IR AL MEDICO", "categoria_consultas", true, "default", "en", "GO TO THE DOCTOR") // 1
+      /*  insertCategoria(db, "IR AL MEDICO", "categoria_consultas", true, "default", "en", "GO TO THE DOCTOR") // 1
         insertCategoria(db, "CORTARSE EL PELO", "categoria_peluqueria", true, "default","en", "CUT YOUR HAIR") // 2
         insertCategoria(db, "HACER LA COMPRA", "categoria_hacer_la_compra", true, "default", "en", "GO SHOPPING") // 3
-        insertCategoria(db, "IR AL COLEGIO", "categoria_colegio", true, "default","en",  "GO TO SCHOOL") // 4
-        insertCategoria(db, "LUGARES", "categoria_lugares", true, "default", "en", "LOCATIONS") // 5
-        insertCategoria(db, "DESPLAZAMIENTO", "categoria_desplazamiento", true, "default", "en", "DISPLACEMENT") // 6
-        insertCategoria(db, "ACCION", "categoria_accion", true, "default","en",  "ACTION") // 7
-        insertCategoria(db, "ENTRETENIMIENTO", "categoria_entretenimiento", true, "blue", "en", "ENTERTAINMENT") // 8
-        insertCategoria(db, "RECOMPENSA", "categoria_recompensa", true, "blue", "en", "REWARDS") // 9
-        insertCategoria(db, "FAVORITOS", "categoria_favorito", true, "yellow", "en", "FAVORITES") // 10
+        insertCategoria(db, "IR AL COLEGIO", "categoria_colegio", true, "default","en",  "GO TO SCHOOL") // 4*/
+        //insertCategoria(db, "RECOMPENSA", "categoria_recompensa", true, "blue", "en", "REWARDS") // 5
 
-        insertCategoria(db, "REVISIÓN", null, false, null, "en",  "REVISION") // 11
+        insertCategoria(db, "LUGARES", "categoria_lugares", "default", "en", "LOCATIONS") // 1
+        insertCategoria(db, "DESPLAZAMIENTO", "categoria_desplazamiento", "default", "en", "DISPLACEMENT") // 2
+        insertCategoria(db, "ACCION", "categoria_accion", "default","en",  "ACTION") // 3
+        insertCategoria(db, "ENTRETENIMIENTO", "categoria_entretenimiento", "blue", "en", "ENTERTAINMENT") // 4
+        insertCategoria(db, "FAVORITOS", "categoria_favorito", "yellow", "en", "FAVORITES") // 5
+
+        insertPictogramaCategoria(db, "CASA", "categoria_lugares_casa", 1, "en", "HOME")
+        insertPictogramaCategoria(db,"CASA", "categoria_lugares_casa", 1, "en", "HOME")
+        insertPictogramaCategoria(db,"CENTRO DE SALUD", "categoria_lugares_centrosalud", 1,"en",  "HEALTH CENTER")
+        insertPictogramaCategoria(db,"HOSPITAL", "categoria_lugares_hospital", 1, "en", "HOSPITAL")
+        insertPictogramaCategoria(db,"SALA DE ESPERA", "categoria_lugares_salaespera", 1, "en", "WAITING ROOM")
+        insertPictogramaCategoria(db,"RECEPCIÓN", "categoria_lugares_recepcion", 1, "en", "RECEPTION")
+        insertPictogramaCategoria(db,"CONSULTA", "categoria_lugares_consulta", 1, "en", "CONSULTATION")
+        insertPictogramaCategoria(db,"AULA", "categoria_lugares_aula", 1, "en", "CLASSROOM")
+        insertPictogramaCategoria(db,"COLEGIO BILINGÜE", "categoria_lugares_colegio_bilingue", 1, "en", "BILINGUAL SCHOOL")
+        insertPictogramaCategoria(db,"COLEGIO", "categoria_lugares_colegio_bilingue", 1, "en", "SCHOOL")
+        insertPictogramaCategoria(db,"CARNICERÍA", "categoria_lugares_carniceria", 1, "en", "BUTCHER SHOP")
+        insertPictogramaCategoria(db,"FRUTERÍA", "categoria_lugares_fruteria", 1, "en", "FRUIT SHOP")
+        insertPictogramaCategoria(db,"PELUQUERÍA", "categoria_peluqueria", 1, "en", "HAIRDRESSER")
+        insertPictogramaCategoria(db,"PESCADERÍA", "categoria_lugares_pescaderia", 1, "en", "FISH SHOP")
+        insertPictogramaCategoria(db,"SUPERMERCADO", "categoria_lugares_supermercado", 1, "en", "SUPERMARKET")
+
+        insertPictogramaCategoria(db,"COCHE", "categoria_desplazamiento_coche", 2, "en", "CAR")
+        insertPictogramaCategoria(db,"AUTOBÚS", "categoria_desplazamiento_autobus", 2, "en", "BUS")
+        insertPictogramaCategoria(db,"AMBULANCIA", "categoria_desplazamiento_ambulancia", 2, "en", "AMBULANCE")
+        insertPictogramaCategoria(db,"TREN", "categoria_desplazamiento_tren", 2, "en", "TRAIN")
+        insertPictogramaCategoria(db,"METRO", "categoria_desplazamiento_metro", 2, "en", "METRO")
+        insertPictogramaCategoria(db,"CAMINANDO", "categoria_desplazamiento_caminando", 2, "en", "WALKING")
+
+        insertPictogramaCategoria(db, "IR", "categoria_accion_ir", 3, "en", "GO")
+        insertPictogramaCategoria(db,"VOLVER", "categoria_accion_volver", 3, "en", "RETURN")
+        insertPictogramaCategoria(db,"ESPERAR", "categoria_accion_esperar", 3, "en", "WAIT")
+        insertPictogramaCategoria(db,"ENTRAR", "categoria_accion_entrar", 3, "en", "ENTER")
+        insertPictogramaCategoria(db,"SALUDAR", "categoria_accion_saludar", 3, "en", "GREET")
+        insertPictogramaCategoria(db,"DESPEDIRSE", "categoria_accion_despedirse", 3, "en", "GOODBYE")
+        insertPictogramaCategoria(db,"HABLAR", "categoria_accion_hablar", 3, "en", "TALK")
+        insertPictogramaCategoria(db,"ESCUCHAR", "categoria_accion_escuchar", 3, "en", "LISTEN")
+        insertPictogramaCategoria(db,"MIRAR", "categoria_accion_mirar", 3, "en", "LOOK")
+        insertPictogramaCategoria(db,"SENTARSE", "categoria_accion_sentarse", 3, "en", "SIT DOWN")
+        insertPictogramaCategoria(db,"BAJAR ESCALERA", "categoria_accion_bajar_escalera_mecanica", 3, "en", "GO DOWN ESCALATOR")
+        insertPictogramaCategoria(db,"SUBIR ESCALERA", "categoria_accion_subir_escalera_mecanica", 3, "en", "GO UP ESCALATOR")
+        insertPictogramaCategoria(db,"BAJAR RAMPA", "categoria_accion_bajar_rampa", 3, "en", "GO DOWN RAMP")
+        insertPictogramaCategoria(db,"SUBIR RAMPA", "categoria_accion_subir_rampa", 3, "en", "GO UP RAMP")
+        insertPictogramaCategoria(db,"CORTAR PELO", "categoria_accion_cortar_pelo", 3, "en", "CUT HAIR")
+        insertPictogramaCategoria(db,"CORTAR PELO", "categoria_accion_cortar_pelo1", 3, "en", "CUT HAIR")
+        insertPictogramaCategoria(db,"LAVAR PELO", "categoria_accion_lavar_pelo", 3, "en", "WASH HAIR")
+        insertPictogramaCategoria(db,"SECAR EL PELO", "categoria_accion_secar_pelo", 3, "en", "DRY HAIR")
+        insertPictogramaCategoria(db,"PAGAR", "categoria_accion_pagar", 3, "en", "PAY")
+        insertPictogramaCategoria(db,"COGER TICKET", "categoria_accion_coger_ticket", 3, "en", "TAKE TICKET")
+        insertPictogramaCategoria(db,"COGER TURNO", "categoria_accion_coger_turno", 3, "en", "TAKE TURN")
+        insertPictogramaCategoria(db,"ESPERAR", "categoria_accion_esperar1", 3, "en", "WAIT")
+        insertPictogramaCategoria(db,"PREGUNTAR", "categoria_accion_preguntar", 3, "en", "ASK")
+        insertPictogramaCategoria(db,"PREGUNTAR", "categoria_accion_preguntar1", 3, "en", "ASK")
+        insertPictogramaCategoria(db,"PREGUNTAR", "categoria_accion_preguntar2", 3, "en", "ASK")
+        insertPictogramaCategoria(db,"CERRAR MOCHILA", "categoria_accion_cerrar_mochila", 3, "en", "CLOSE BACKPACK")
+        insertPictogramaCategoria(db,"ABRIR MOCHILA", "categoria_accion_abrir_mochila", 3, "en", "OPEN BACKPACK")
+        insertPictogramaCategoria(db,"APROBAR", "categoria_accion_aprobar", 3, "en", "APPROVE")
+        insertPictogramaCategoria(db,"SUSPENDER", "categoria_accion_suspender", 3, "en", "SUSPEND")
+        insertPictogramaCategoria(db,"ENTRADA", "categoria_accion_entrada", 3, "en", "ENTRANCE")
+        insertPictogramaCategoria(db,"ENTRADA", "categoria_accion_entrada1", 3, "en", "ENTRANCE")
+        insertPictogramaCategoria(db,"SALIDA", "categoria_accion_salida", 3, "en", "EXIT")
+        insertPictogramaCategoria(db,"IR AL COLEGIO", "categoria_accion_ir_colegio", 3, "en", "GO TO SCHOOL")
+        insertPictogramaCategoria(db,"LEER", "categoria_accion_lectura", 3, "en", "READING")
+        insertPictogramaCategoria(db,"LEER", "categoria_accion_leer", 3, "en", "READ")
+        insertPictogramaCategoria(db,"LEER", "categoria_accion_leer1", 3, "en", "READ")
+        insertPictogramaCategoria(db,"LLEVAR AL COLEGIO", "categoria_accion_llevar_colegio", 3, "en", "TAKE TO SCHOOL")
+        insertPictogramaCategoria(db,"METER EL ALMUERZO", "categoria_accion_meter_almuerzo", 3, "en", "PUT LUNCH")
+        insertPictogramaCategoria(db,"PONERSE LA MOCHILA", "categoria_accion_poner_mochila", 3, "en", "PUT ON BACKPACK")
+        insertPictogramaCategoria(db,"SACAR EL ALMUERZO", "categoria_accion_sacar_almuerzo", 3, "en", "TAKE OUT LUNCH")
+        insertPictogramaCategoria(db,"SALIDA", "categoria_accion_salida", 3, "en", "EXIT")
+        insertPictogramaCategoria(db,"SALIDA", "categoria_accion_salida1", 3, "en", "EXIT")
+
+        insertPictogramaCategoria(db, "JUGAR", "categoria_entretenimiento_jugar", 4, "en", "PLAY")
+        insertPictogramaCategoria(db, "LEER", "categoria_entretenimiento_leer", 4, "en", "READ")
+
+        /*insertCategoria(db, "REVISIÓN", null, false, null, "en",  "REVISION") // 11
         insertCategoria(db, "PROFESIONALES", null, false, null, "en", "PROFESSIONALS") // 12
         insertCategoria(db, "VACUNACIÓN", null, false, null, "en", "VACCINATION") // 13
         insertCategoria(db, "PRUEBAS", null, false, null, "en", "TESTS") // 14
@@ -96,18 +176,18 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertCategoria(db, "OBJETOS", null, false, null, "en", "OBJECTS") // 22
         insertCategoria(db, "EMPLEADOS", null, false, null,"en", "EMPLOYEES") // 23
         insertCategoria(db, "UTILES", null, false, null, "en", "SUPPLIES") // 24
-        insertCategoria(db, "PROFESORES", null, false, null, "en", "TEACHERS") // 25
+        insertCategoria(db, "PROFESORES", null, false, null, "en", "TEACHERS") // 25*/
 
         //Cuaderno
         //var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario_Planificador(id))"
 
-        insertCuaderno(db, "ESCALA", "cuaderno_sintomas", 0, "en", "SCALE")
+        /*insertCuaderno(db, "ESCALA", "cuaderno_sintomas", 0, "en", "SCALE")
         insertCuaderno(db, "¿QUÉ TE PASA?", "cuaderno_sintomas", 1, "en", "WHAT''S WRONG?")
         insertCuaderno(db, "¿DÓNDE TE DUELE?", "cuaderno_dolores", 1, "en", "WHERE DOES IT HURT?")
-        insertCuaderno(db, "¿COMO TE SIENTES?", "card_sentimientos", 0,"en",  "HOW DO YOU FEEL?")
+        insertCuaderno(db, "¿COMO TE SIENTES?", "card_sentimientos", 0,"en",  "HOW DO YOU FEEL?")*/
 
         //Pictograma
-        insertPictograma(db, "REVISIÓN", "categoria_consultas", 1, "en", "REVISION")
+        /*insertPictograma(db, "REVISIÓN", "categoria_consultas", 1, "en", "REVISION")
         insertPictograma(db, "PROFESIONALES", "categoria_profesionales", 1, "en", "PROFESSIONALS")
         insertPictograma(db, "VACUNACIÓN", "categorias_consultas_vacunacion", 1,"en",  "VACCINATION")
         insertPictograma(db, "PRUEBAS", "categorias_consultas_pruebas", 1,"en",  "TESTS")
@@ -122,73 +202,9 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictograma(db, "OBJETOS", "categoria_objetos_dinero", 3,"en",  "OBJECTS")
         insertPictograma(db, "EMPLEADOS", "categoria_empleados_cajero", 3, "en", "EMPLOYEES")
         insertPictograma(db, "UTILES", "categoria_utiles_crayones", 4, "en", "SUPPLIES")
-        insertPictograma(db, "PROFESORES", "categoria_profesores_maestra", 4,"en",  "TEACHERS")
-        insertPictograma(db, "CASA", "categoria_lugares_casa", 5, "en", "HOME")
-        insertPictograma(db, "CENTRO DE SALUD", "categoria_lugares_centrosalud", 5,"en",  "HEALTH CENTER")
-        insertPictograma(db, "HOSPITAL", "categoria_lugares_hospital", 5, "en", "HOSPITAL")
-        insertPictograma(db, "SALA DE ESPERA", "categoria_lugares_salaespera", 5, "en", "WAITING ROOM")
-        insertPictograma(db, "RECEPCIÓN", "categoria_lugares_recepcion", 5, "en", "RECEPTION")
-        insertPictograma(db, "CONSULTA", "categoria_lugares_consulta", 5, "en", "CONSULTATION")
-        insertPictograma(db, "AULA", "categoria_lugares_aula", 5, "en", "CLASSROOM")
-        insertPictograma(db, "COLEGIO BILINGÜE", "categoria_lugares_colegio_bilingue", 5, "en", "BILINGUAL SCHOOL")
-        insertPictograma(db, "COLEGIO", "categoria_lugares_colegio_bilingue", 5, "en", "SCHOOL")
-        insertPictograma(db, "CARNICERÍA", "categoria_lugares_carniceria", 5, "en", "BUTCHER SHOP")
-        insertPictograma(db, "FRUTERÍA", "categoria_lugares_fruteria", 5, "en", "FRUIT SHOP")
-        insertPictograma(db, "PELUQUERÍA", "categoria_peluqueria", 5, "en", "HAIRDRESSER")
-        insertPictograma(db, "PESCADERÍA", "categoria_lugares_pescaderia", 5, "en", "FISH SHOP")
-        insertPictograma(db, "SUPERMERCADO", "categoria_lugares_supermercado", 5, "en", "SUPERMARKET")
-        insertPictograma(db, "COCHE", "categoria_desplazamiento_coche", 6, "en", "CAR")
-        insertPictograma(db, "AUTOBÚS", "categoria_desplazamiento_autobus", 6, "en", "BUS")
-        insertPictograma(db, "AMBULANCIA", "categoria_desplazamiento_ambulancia", 6, "en", "AMBULANCE")
-        insertPictograma(db, "TREN", "categoria_desplazamiento_tren", 6, "en", "TRAIN")
-        insertPictograma(db, "METRO", "categoria_desplazamiento_metro", 6, "en", "METRO")
-        insertPictograma(db, "CAMINANDO", "categoria_desplazamiento_caminando", 6, "en", "WALKING")
-        insertPictograma(db, "IR", "categoria_accion_ir", 7,"en",  "GO")
-        insertPictograma(db, "VOLVER", "categoria_accion_volver", 7, "en", "RETURN")
-        insertPictograma(db, "ESPERAR", "categoria_accion_esperar", 7, "en", "WAIT")
-        insertPictograma(db, "ENTRAR", "categoria_accion_entrar", 7,"en",  "ENTER")
-        insertPictograma(db, "SALUDAR", "categoria_accion_saludar", 7, "en", "GREET")
-        insertPictograma(db, "DESPEDIRSE", "categoria_accion_despedirse", 7,"en",  "GOODBYE")
-        insertPictograma(db, "HABLAR", "categoria_accion_hablar", 7, "en", "TALK")
-        insertPictograma(db, "ESCUCHAR", "categoria_accion_escuchar", 7, "en", "LISTEN")
-        insertPictograma(db, "MIRAR", "categoria_accion_mirar", 7, "en", "LOOK")
-        insertPictograma(db, "SENTARSE", "categoria_accion_sentarse", 7, "en", "SIT DOWN")
-        insertPictograma(db, "BAJAR ESCALERA MECÁNICA", "categoria_accion_bajar_escalera_mecanica", 7, "en", "GO DOWN ESCALATOR")
-        insertPictograma(db, "SUBIR ESCALERA MECÁNICA", "categoria_accion_subir_escalera_mecanica", 7, "en", "GO UP ESCALATOR")
-        insertPictograma(db, "BAJAR RAMPA", "categoria_accion_bajar_rampa", 7,"en",  "GO DOWN RAMP")
-        insertPictograma(db, "SUBIR RAMPA", "categoria_accion_subir_rampa", 7, "en", "GO UP RAMP")
-        insertPictograma(db, "CORTAR PELO", "categoria_accion_cortar_pelo", 7, "en", "CUT HAIR")
-        insertPictograma(db, "CORTAR PELO", "categoria_accion_cortar_pelo1", 7,"en",  "CUT HAIR")
-        insertPictograma(db, "LAVAR PELO", "categoria_accion_lavar_pelo", 7, "en", "WASH HAIR")
-        insertPictograma(db, "SECAR EL PELO", "categoria_accion_secar_pelo", 7, "en", "DRY HAIR")
-        insertPictograma(db, "PAGAR", "categoria_accion_pagar", 7, "en", "PAY")
-        insertPictograma(db, "COGER TICKET", "categoria_accion_coger_ticket", 7, "en", "TAKE TICKET")
-        insertPictograma(db, "COGER TURNO", "categoria_accion_coger_turno", 7, "en", "TAKE TURN")
-        insertPictograma(db, "ESPERAR", "categoria_accion_esperar1", 7, "en", "WAIT")
-        insertPictograma(db, "PREGUNTAR", "categoria_accion_preguntar", 7, "en", "ASK")
-        insertPictograma(db, "PREGUNTAR", "categoria_accion_preguntar1", 7, "en", "ASK")
-        insertPictograma(db, "PREGUNTAR", "categoria_accion_preguntar2", 7, "en", "ASK")
-        insertPictograma(db, "CERRAR MOCHILA", "categoria_accion_cerrar_mochila", 7, "en", "CLOSE BACKPACK")
-        insertPictograma(db, "ABRIR MOCHILA", "categoria_accion_abrir_mochila", 7, "en", "OPEN BACKPACK")
-        insertPictograma(db, "APROBAR", "categoria_accion_aprobar", 7, "en", "APPROVE")
-        insertPictograma(db, "SUSPENDER", "categoria_accion_suspender", 7, "en", "SUSPEND")
-        insertPictograma(db, "ENTRADA", "categoria_accion_entrada", 7, "en", "ENTRANCE")
-        insertPictograma(db, "ENTRADA", "categoria_accion_entrada1", 7, "en", "ENTRANCE")
-        insertPictograma(db, "SALIDA", "categoria_accion_salida", 7, "en", "EXIT")
-        insertPictograma(db, "IR AL COLEGIO", "categoria_accion_ir_colegio", 7, "en", "GO TO SCHOOL")
-        insertPictograma(db, "LECTURA", "categoria_accion_lectura", 7, "en", "READING")
-        insertPictograma(db, "LEER", "categoria_accion_leer", 7, "en", "READ")
-        insertPictograma(db, "LEER", "categoria_accion_leer1", 7, "en", "READ")
-        insertPictograma(db, "LLEVAR AL COLEGIO", "categoria_accion_llevar_colegio", 7, "en", "TAKE TO SCHOOL")
-        insertPictograma(db, "METER EL ALMUERZO", "categoria_accion_meter_almuerzo", 7, "en", "PUT LUNCH")
-        insertPictograma(db, "PONERSE LA MOCHILA", "categoria_accion_poner_mochila", 7, "en", "PUT ON BACKPACK")
-        insertPictograma(db, "SACAR EL ALMUERZO", "categoria_accion_sacar_almuerzo", 7, "en", "TAKE OUT LUNCH")
-        insertPictograma(db, "SALIDA", "categoria_accion_salida", 7, "en", "EXIT")
-        insertPictograma(db, "SALIDA", "categoria_accion_salida1", 7, "en", "EXIT")
+        insertPictograma(db, "PROFESORES", "categoria_profesores_maestra", 4,"en",  "TEACHERS")*/
 
-        insertPictograma(db, "JUGAR", "categoria_entretenimiento_jugar", 8, "en", "PLAY")
-        insertPictograma(db, "LEER", "categoria_entretenimiento_leer", 8, "en", "READ")
-        insertPictograma(db, "JUGAR", "categoria_recompensa_jugar", 9, "en", "PLAY")
+        /*insertPictograma(db, "JUGAR", "categoria_recompensa_jugar", 9, "en", "PLAY")
         insertPictograma(db, "IR AL PARQUE", "categoria_recompensa_parque", 9, "en", "GO TO THE PARK")
         insertPictograma(db, "VER LA TELEVISIÓN", "categoria_recompensa_tele", 9, "en", "WATCH TV")
         insertPictograma(db, "RECONOCIMIENTO", "categoria_revision_reconocimiento", 11, "en", "MEDICAL EXAMINATION")
@@ -324,9 +340,9 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictograma(db, "EDUCACIÓN FÍSICA", "categoria_profesores_profesora_educacion_fisica", 25, "en","GYM TEACHER")
         insertPictograma(db, "EDUCACIÓN FÍSICA", "categorias_profesores_profesor_educacion_fisica", 25, "en","GYM TEACHER")
         insertPictograma(db, "ORIENTACIÓN", "categoria_profesores_servicio_orientacion", 25, "en","GUIDANCE")
-        insertPictograma(db, "ORIENTACIÓN", "categoria_profesores_servicio_orientacion1", 25, "en","GUIDANCE")
+        insertPictograma(db, "ORIENTACIÓN", "categoria_profesores_servicio_orientacion1", 25, "en","GUIDANCE")*/
 
-        insertarPictoCuaderno(db, "IZQUIERDA", "cuaderno_escala_izquierda", 1, "en","LEFT")
+/*        insertarPictoCuaderno(db, "IZQUIERDA", "cuaderno_escala_izquierda", 1, "en","LEFT")
         insertarPictoCuaderno(db, "DERECHA", "cuaderno_escala_derecha", 1, "en","RIGHT")
         insertarPictoCuaderno(db, "SI", "cuaderno_escala_bien", 1, "en","YES")
         insertarPictoCuaderno(db, "NO", "cuaderno_escala_mal", 1, "en","NO")
@@ -391,10 +407,10 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertarPictoCuaderno(db, "TENER MIEDO", "cuaderno_sentimientos_tener_miedo", 4, "en","TO BE AFRAID")
         insertarPictoCuaderno(db, "TRANQUILO", "cuaderno_sentimientos_tranquilo", 4, "en","QUIET")
         insertarPictoCuaderno(db, "TRANQUILO", "cuaderno_sentimientos_tranquilo1", 4, "en","CALM")
-        insertarPictoCuaderno(db, "VERGUENZA", "cuaderno_sentimientos_verguenza", 4, "en","SHAME")
+        insertarPictoCuaderno(db, "VERGUENZA", "cuaderno_sentimientos_verguenza", 4, "en","SHAME")*/
     }
 
-    @SuppressLint("Range")
+   /* @SuppressLint("Range")
     fun insertarPictoCuaderno(db: SQLiteDatabase, nombre: String, image: String, idCuaderno: Int, language: String, translation: String){
         db.execSQL("INSERT INTO Pictograma (nombre, imagen) VALUES('$nombre', '$image')")
         //get id here
@@ -407,10 +423,10 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO RelacionPictogramaCuaderno (id_pictograma, id_cuaderno) VALUES('$id', '$idCuaderno')")
         db.execSQL("INSERT INTO Traduccion (language, translation) VALUES('$language', '$translation')")
         db.execSQL("INSERT INTO RelacionPictoTraduccion (id_pictograma, id_traduccion) VALUES('$id', (SELECT last_insert_rowid()))")
-    }
+    }*/
 
-    private fun insertCategoria(db: SQLiteDatabase, titulo: String, imagen: String?, principal: Boolean, color: String?, language: String, translation: String){
-        db.execSQL("INSERT INTO Categoria (titulo, imagen, principal, color) VALUES('$titulo', '$imagen', $principal, '$color')")
+    private fun insertCategoria(db: SQLiteDatabase, titulo: String, imagen: String?, color: String?, language: String, translation: String){
+        db.execSQL("INSERT INTO Categoria (titulo, imagen, color) VALUES('$titulo', '$imagen', '$color')")
         val cursor = db.rawQuery("SELECT last_insert_rowid()", null)
         var idCategoria: Long = -1 // Initialize id with a default value
         if (cursor != null && cursor.moveToFirst()) {
@@ -421,19 +437,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO RelacionPictoTraduccion (id_categoria, id_traduccion) VALUES('$idCategoria', (SELECT last_insert_rowid()))")
     }
 
-    private fun insertCuaderno(db: SQLiteDatabase, titulo: String, imagen: String, termometro: Int, language: String, translation: String) {
-        db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('$titulo', '$imagen', $termometro)")
-        val cursor = db.rawQuery("SELECT last_insert_rowid()", null)
-        var idCuaderno: Long = -1 // Initialize id with a default value
-        if (cursor != null && cursor.moveToFirst()) {
-            idCuaderno = cursor.getLong(0) // Get the value of the first column (which should be the id)
-            cursor.close() // Close the cursor when done
-        }
-        db.execSQL("INSERT INTO Traduccion (language, translation) VALUES('$language', '$translation')")
-        db.execSQL("INSERT INTO RelacionPictoTraduccion (id_cuaderno, id_traduccion) VALUES('$idCuaderno', (SELECT last_insert_rowid()))")
-    }
-
-    private fun insertPictograma(db: SQLiteDatabase, nombre: String, imagen: String, idCategoria: Int, language: String, translation: String) {
+    private fun insertPictogramaCategoria(db: SQLiteDatabase, nombre: String, imagen: String, idCategoria: Int, language: String, translation: String) {
         db.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria) VALUES('$nombre', '$imagen', $idCategoria)")
         val cursor = db.rawQuery("SELECT last_insert_rowid()", null)
         var idPictograma: Long = -1 // Initialize id with a default value
@@ -444,5 +448,17 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.execSQL("INSERT INTO Traduccion (language, translation) VALUES('$language', '$translation')")
         db.execSQL("INSERT INTO RelacionPictoTraduccion (id_pictograma, id_traduccion) VALUES('$idPictograma', (SELECT last_insert_rowid()))")
     }
+
+   /* private fun insertCuaderno(db: SQLiteDatabase, titulo: String, imagen: String, termometro: Int, language: String, translation: String) {
+        db.execSQL("INSERT INTO Cuaderno (titulo, imagen, termometro) VALUES('$titulo', '$imagen', $termometro)")
+        val cursor = db.rawQuery("SELECT last_insert_rowid()", null)
+        var idCuaderno: Long = -1 // Initialize id with a default value
+        if (cursor != null && cursor.moveToFirst()) {
+            idCuaderno = cursor.getLong(0) // Get the value of the first column (which should be the id)
+            cursor.close() // Close the cursor when done
+        }
+        db.execSQL("INSERT INTO Traduccion (language, translation) VALUES('$language', '$translation')")
+        db.execSQL("INSERT INTO RelacionPictoTraduccion (id_cuaderno, id_traduccion) VALUES('$idCuaderno', (SELECT last_insert_rowid()))")
+    }*/
 
 }

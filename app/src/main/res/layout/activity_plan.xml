@@ -184,7 +184,7 @@
                 app:iconTint="#203130"  />
         </LinearLayout>
 
-        <Button
+        <!--<Button
             android:id="@+id/icon_escuchar"
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="180dp"
@@ -203,7 +203,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" /> -->
 
       <!--  <Button
             android:id="@+id/icon_deshacer"

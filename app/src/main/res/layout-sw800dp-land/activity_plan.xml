@@ -97,7 +97,7 @@
                  app:iconTint="?colorOnSurface"
                  app:layout_constraintBottom_toBottomOf="parent"
                  app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />-->
+                 app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
 
             <Button
                 android:id="@+id/icon_escuchar"
@@ -116,7 +116,7 @@
                 app:iconTint="#203130"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />-->
 
             <LinearLayout
                 android:id="@+id/linearLayout4"

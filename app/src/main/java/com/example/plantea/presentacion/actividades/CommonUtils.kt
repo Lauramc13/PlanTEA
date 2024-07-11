@@ -1,22 +1,17 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.media.Image
 import android.net.Uri
 import android.os.Handler
 import android.provider.MediaStore
@@ -24,69 +19,52 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.SearchView
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.plantea.R
 import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
-import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
-import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
-import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
-import com.example.plantea.presentacion.viewModels.CuadernoViewModel
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
-import org.intellij.lang.annotations.Language
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.Locale
 import java.util.UUID
 
 class CommonUtils{
 
-    interface TextToSpeechListener {
-        fun onSpeechDone()
-    }
 
     companion object {
-        lateinit var textToSpeech: TextToSpeech
+        //lateinit var textToSpeech: TextToSpeech
         val handler = Handler()
-        var listener: TextToSpeechListener? = null
+        //var listener: TextToSpeechListener? = null
         lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
         private lateinit var imgPicto: ImageView
 
+        val wordToLemmaEs = mutableMapOf<String, String>()
+        val wordToLemmaEn = mutableMapOf<String, String>()
+
         // to call the listener when the speech is done
-        private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
+       /* private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
                 textToSpeech.language = Locale(Locale.getDefault().language)
                 textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
@@ -107,7 +85,7 @@ class CommonUtils{
                 Log.e("prueba", "TextToSpeech initialization failed")
 
             }
-        }
+        }*/
 
         // check if the device is a mobile or a tablet
         fun isMobile(context: Context): Boolean {
@@ -177,33 +155,20 @@ class CommonUtils{
         }
 
         fun getDataApi(query: String): MutableMap<Bitmap, Pair<String, Int>> {
-            val retrofitBuilder = getRetrofitBuilder()
             val retrofitBuilderImg = getRetrofitBuilderImg()
 
             val dict = mutableMapOf<Bitmap, Pair<String, Int>>()
             val listaIds = mutableListOf<Int>()
             val listaTitulos = mutableListOf<String>()
 
-            try {
-                val language = Locale.getDefault().language
-                var retrofitData: retrofit2.Call<List<JsonPictogramaItem>>
-                retrofitData = retrofitBuilder.getData(query, language)
-                var response = retrofitData.execute()
-                if (response.isSuccessful) {
-                    receiveDataFromAPI(response, query, listaIds, listaTitulos)
-                }else{
-                    //intentar la busqueda completa
-                    retrofitData = retrofitBuilder.getAllData(query, language)
+            val encodedQuery = encodeQuery(query)
+            pedirDatosAPI(encodedQuery, listaIds, listaTitulos)
 
-                    response = retrofitData.execute()
-                    if(response.isSuccessful) {
-                        receiveDataFromAPI(response, query, listaIds, listaTitulos)
-                    }else{
-                        Log.d("ERROR", "Error de la llamada a la API")
-                    }
-                }
-            } catch (e: IOException) {
-                Log.d("ERROR", e.toString())
+            Log.d("INFO", "Lista de ids: $listaIds")
+            if(listaIds.isEmpty()){
+                //lemmatizar query
+                val lemmatizedQuery = lemmatizar(query)
+                pedirDatosAPI(lemmatizedQuery, listaIds, listaTitulos)
             }
 
             for (id in listaIds) {
@@ -238,6 +203,52 @@ class CommonUtils{
             return id
         }
 
+        private fun lemmatizar(query: String): String{
+            return if(Locale.getDefault().language.lowercase() == "es"){
+                wordToLemmaEs[query].toString()
+            }else{
+                wordToLemmaEn[query].toString()
+            }
+        }
+
+        private fun pedirDatosAPI(query: String, listaIds: MutableList<Int>, listaTitulos: MutableList<String>) {
+            val retrofitBuilder = getRetrofitBuilder()
+
+            val encodedQuery = encodeQuery(query)
+
+            Log.d("DEBUG", "Query: $encodedQuery")
+
+
+            try {
+                val language = Locale.getDefault().language
+                var retrofitData: retrofit2.Call<List<JsonPictogramaItem>>
+                retrofitData = retrofitBuilder.getData(encodedQuery, language)
+                var response = retrofitData.execute()
+                if (response.isSuccessful) {
+                    receiveDataFromAPI(response, query, listaIds, listaTitulos)
+                }else{
+                    //intentar la busqueda completa
+                    retrofitData = retrofitBuilder.getAllData(query, language)
+                    response = retrofitData.execute()
+                    if(response.isSuccessful) {
+                        receiveDataFromAPI(response, query, listaIds, listaTitulos)
+                    }else{
+                        Log.d("ERROR", "Error de la llamada a la API")
+                    }
+                }
+
+            } catch (e: IOException) {
+                Log.d("ERROR", e.toString())
+            }
+        }
+
+        private fun encodeQuery(query: String): String {
+            val queryEncoded = URLEncoder.encode(query, "utf-8")
+            if(queryEncoded.contains(".")){
+                return queryEncoded.replace(".", "%2E")
+            }
+            return queryEncoded
+        }
 
         private fun receiveDataFromAPI(response: retrofit2.Response<List<JsonPictogramaItem>>, query: String, listaIds: MutableList<Int>, listaTitulos: MutableList<String>){
             val responseBody = response.body()
@@ -297,6 +308,7 @@ class CommonUtils{
         }
 
         fun crearImagen(bitmap: Bitmap, titulo: String?, context: Context): String {
+            val tituloEncoded = URLEncoder.encode(titulo, StandardCharsets.UTF_8.toString())
             val width = bitmap.width
             val height = bitmap.height
             val outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -305,7 +317,7 @@ class CommonUtils{
             canvas.drawBitmap(bitmap, 0f, 0f, null)
             val numero = UUID.randomUUID()
 
-            val filename = "$titulo$numero.jpg"
+            val filename = "$tituloEncoded$numero.jpg"
             val outputStream: FileOutputStream
             try {
                 outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
@@ -318,7 +330,7 @@ class CommonUtils{
             return context.getFileStreamPath(filename).absolutePath
         }
 
-        fun initializeTextToSpeech(context: Context) {
+       /* fun initializeTextToSpeech(context: Context) {
             textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
         }
 
@@ -333,13 +345,13 @@ class CommonUtils{
             }
         }
 
+         fun textToSpeechWord(word: String?){
+           textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
+        }*/
+
         fun hideKeyboard(context: Context, view: View){
             val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-
-        fun textToSpeechWord(word: String?){
-           textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
         }
 
        /* fun crearRuta(context: Context, image: Bitmap, nombreImagen: String): String {
@@ -420,6 +432,18 @@ class CommonUtils{
             snackbar.show()
         }*/
 
+       /* fun drawableToBitmap(image:Drawable): Bitmap {
+            if (image is BitmapDrawable) {
+                return image.bitmap
+            }
+
+            val bitmap = Bitmap.createBitmap(image.intrinsicWidth, image.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            image.setBounds(0, 0, canvas.width, canvas.height)
+            image.draw(canvas)
+            return bitmap
+        }*/
+
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
@@ -432,6 +456,39 @@ class CommonUtils{
 
         fun isDarkMode(activity: Activity): Boolean {
             return Configuration.UI_MODE_NIGHT_YES == activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        }
+
+        fun loadLemmatizer(language: String, context: Context) {
+            if(wordToLemmaEn.isNotEmpty() && language == "en" || wordToLemmaEs.isNotEmpty() && language == "es"){
+                return
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                try{
+                    withContext(Dispatchers.IO) {
+                        try {
+                            val dictLemmatizer: InputStream = context.assets.open("lemmatization-" + language + ".txt")
+                            for (line in dictLemmatizer.bufferedReader().readLines()) {
+                                val parts = line.split("\t")
+                                if (parts.size == 2) {
+                                    val lemma = parts[0]
+                                    val word = parts[1]
+
+                                    if (language == "es") {
+                                        wordToLemmaEs[word] = lemma
+                                    } else {
+                                        wordToLemmaEn[word] = lemma
+                                    }
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
+            }
         }
 
     }

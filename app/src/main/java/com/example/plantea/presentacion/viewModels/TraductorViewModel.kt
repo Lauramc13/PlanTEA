@@ -260,6 +260,22 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         var columna = 0
         var fila = 0
 
+
+        // join pictograma.titulo for each pictograma in listaPictogramas and when there is a . add a new line
+        val frases = ArrayList<String>()
+        var currentFrase = ""
+        for (pictograma in listaPictogramas) {
+            currentFrase += pictograma.titulo + " "
+            Log.d("Frase", currentFrase)
+
+            if (pictograma.titulo!!.endsWith(".")) {
+                frases.add(currentFrase)
+                currentFrase = ""
+            }else if(pictograma == listaPictogramas[listaPictogramas.size-1]){
+                frases.add(currentFrase)
+            }
+        }
+
         try {
             val pageInfo = PdfDocument.PageInfo.Builder(2480, 3508, 1).create()
             val page = pdfDocument.startPage(pageInfo)
@@ -269,7 +285,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
             paint.color = Color.BLACK
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD))
 
-            var top= 50f
+            var top = 200f
 
             if(title != ""){
                 paint.textSize = 100f
@@ -279,31 +295,49 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 top = 300f
             }
 
-
+            var contadorFrase = 0
             for (pictograma in listaPictogramas) {
-
                 val drawableString = pictograma.imagen
                 val bitmap = BitmapFactory.decodeFile(drawableString)
                 val imageWidth = bitmap.width.toFloat()
                 val imageX = columna * 400f + (400f - imageWidth) / 2
 
                 bitmap?.let {
-                    canvas.drawBitmap(it, imageX+50f, fila*450f+top, null)
+                    canvas.drawBitmap(it, imageX+50f, fila*520f+top, null)
                 }
 
                 paint.textSize = 50f
                 val textWidth = paint.measureText(pictograma.titulo!!)
 
                 val textX = columna * 400f + (400f - textWidth) / 2 // para calcular el centro del texto
-                canvas.drawText(pictograma.titulo!!, textX+50f, (fila*450f)+350f+top, paint)
+                canvas.drawText(pictograma.titulo!!, textX+50f, (fila*520f)+350f+top, paint)
 
-                //if pictograma.titulo ends with .
+                val shouldDrawNextLine = pictograma.titulo!!.endsWith(".")
+                val isFirstPictograma = pictograma == listaPictogramas[0]
+
+                try{
+                    if (isFirstPictograma) {
+                        canvas.drawText(frases[contadorFrase], 100f, fila * 520f + top - 30, paint)
+                        if (shouldDrawNextLine && pictograma != listaPictogramas[listaPictogramas.size - 1]) {
+                            canvas.drawText(frases[contadorFrase+1], 100f, (fila + 1) * 520f + top - 30, paint)
+                            contadorFrase++
+                        }
+                        contadorFrase++
+                    } else if (shouldDrawNextLine && frases.size != 2) {
+                        canvas.drawText(frases[contadorFrase], 100f, (fila + 1) * 520f + top - 30, paint)
+                        contadorFrase++
+                    }
+                }catch (e: Exception){
+                    Log.d("ERROR", e.toString())
+                }
+
                 if (columna == 5 || pictograma.titulo!!.endsWith(".") ) {
                     columna = 0
                     fila++
                 }else{
                     columna++
                 }
+
             }
 
             pdfDocument.finishPage(page)
