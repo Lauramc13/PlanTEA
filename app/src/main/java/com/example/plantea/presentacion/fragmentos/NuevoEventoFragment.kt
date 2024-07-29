@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -20,6 +21,8 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -34,6 +37,7 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaPlanes
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -56,7 +60,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     private lateinit var layoutPlanificaciones: ConstraintLayout
     private lateinit var switchReminder : SwitchCompat
     private lateinit var radioButtonVista : CheckBox
-   // private lateinit var reminderview: FragmentContainerView
+    private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
     private var permisosGranted = false
@@ -66,6 +70,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     ) { isGranted: Boolean ->
         permisosGranted = isGranted
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
@@ -105,7 +110,36 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
             dismiss()
         }
 
-        btnPlanificar.setOnClickListener { context?.let { it1 -> viewModel.planificar(it1) } }
+        configurarEvento()
+
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val idPlan = intent?.getIntExtra("idPlan", 0)
+                if (idPlan != null) {
+                    if(!intent.getBooleanExtra("isNuevo", false)){
+                        viewModel.posicionPlan = viewModel.planes.size
+                    }else{
+                        for (i in viewModel.planes.indices) {
+                            if (viewModel.planes[i].id == idPlan) {
+                                viewModel.posicionPlan = i
+                                break
+                            }
+                        }
+                    }
+                    btnGuardar.isEnabled = true
+                    viewModel.isPlanSeleccionado = true
+                    viewModel.planSeleccionado = idPlan
+                    adaptador.setItemSelected(viewModel.posicionPlan)
+                }
+            }
+        }
+
+        btnPlanificar.setOnClickListener {
+            val intent = Intent(context, CrearPlanActivity::class.java)
+            startForResult.launch(intent)
+        }
+
         cancelarEvento.setOnClickListener {
             if(CommonUtils.isMobile(requireContext())) {
                 switchReminder.isChecked = false
@@ -272,7 +306,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
     }
 
     override fun editClick(posicion: Int) {
-        viewModel.editarClick(actividad, posicion)
+        viewModel.editarClick(actividad, posicion, startForResult)
     }
 
     override fun duplicateClick(posicion: Int) {
@@ -313,10 +347,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onResume() {
-        super.onResume()
+    private fun configurarEvento() {
         iniciarListaPlanificaciones()
         if(viewModel.isPlanSeleccionado){
             adaptador.setItemSelected(viewModel.posicionPlan)
@@ -326,4 +357,11 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorListaPlanes.On
         viewModel.planes.addAll(viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>)
         adaptador.notifyDataSetChanged()
     }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        configurarEvento()
+     }
 }

@@ -20,8 +20,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlRelacionEventoPlan = "CREATE TABLE RelacionEventoPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_evento INTEGER, id_plan INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     private var sqlTraduccion = "CREATE TABLE Traduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, translation TEXT)"
     private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
-    private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, day_week TEXT, pictograma_day BLOB, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
-
+    private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlDiaSemana = "CREATE TABLE DiaSemana (id INTEGER PRIMARY KEY AUTOINCREMENT, semana_id INTEGER, pictograma_day BLOB, day_week TEXT, FOREIGN KEY (semana_id) REFERENCES Semana(id))"
 
     //private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_cuaderno INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_cuaderno) REFERENCES Cuaderno(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
     // private var sqlCuaderno = "CREATE TABLE Cuaderno(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen TEXT, termometro BOOLEAN, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
@@ -43,6 +43,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlTraduccion)
             db.execSQL(sqlRelacionPictoTraduccion)
             db.execSQL(sqlSemana)
+            db.execSQL(sqlDiaSemana)
             // db.execSQL(sqlCuaderno)
             // db.execSQL(sqlRelacionPictogramaCuaderno)
             meterDatos(db)
@@ -67,6 +68,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS Traduccion")
             db.execSQL("DROP TABLE IF EXISTS RelacionPictoTraduccion")
             db.execSQL("DROP TABLE IF EXISTS Semana")
+            db.execSQL("DROP TABLE IF EXISTS DiaSemana")
             // db.execSQL("DROP TABLE IF EXISTS Cuaderno")
             // db.execSQL("DROP TABLE IF EXISTS RelacionPictogramaCuaderno")
 

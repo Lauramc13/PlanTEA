@@ -1,6 +1,7 @@
 <!-- res/layout/custom_popup_cuaderno.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -15,7 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/svg_edit"
-        android:drawableTint="?colorPrimary"
         android:drawablePadding="8dp"
         android:text="@string/editar"
         android:height="44dp"
@@ -25,7 +25,7 @@
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         android:textColor="?colorOnSurface"
-        android:onClick="onEliminarClicked" />
+        app:drawableTint="?colorPrimary" />
 
     <!-- Divider-->
        <View
@@ -41,7 +41,6 @@
         android:drawableLeft="@drawable/svg_trash"
         android:drawablePadding="8dp"
         android:text="@string/borrar"
-        android:drawableTint="?colorPrimary"
         android:textSize="16sp"
         android:height="44dp"
         android:padding="10dp"
@@ -50,5 +49,5 @@
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
-        android:onClick="onEliminarClicked"/>
+        app:drawableTint="?colorPrimary" />
 </LinearLayout>

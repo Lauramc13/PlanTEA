@@ -21,6 +21,8 @@ class MenuObjetosActivity : AppCompatActivity() {
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
     private var uri : Uri? = null
+    val usuario = Usuario()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +65,15 @@ class MenuObjetosActivity : AppCompatActivity() {
     fun observers() {
         viewModel._ruta.observe(this) {
             val editor = prefs.edit()
-            editor.putString("imagenObjeto", it)
-            editor.apply()
-            viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
-            viewModel.imagenSeleccionada = true
+            if(isConfiguration){
+                editor.putString("imageObjetoConfig", it)
+                editor.apply()
+            }else{
+                editor.putString("imagenObjeto", it)
+                editor.apply()
+                viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
+                viewModel.imagenSeleccionada = true
+            }
             next()
         }
     }
@@ -75,23 +82,21 @@ class MenuObjetosActivity : AppCompatActivity() {
         avatarIds.forEach { avatarId ->
             val resources = applicationContext.resources
             val packageName = applicationContext.packageName
-            val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
-            val avatar = findViewById<CardView>(cardViewId)
-            val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+            val avatar = findViewById<CardView>(resources.getIdentifier(avatarId, "id", packageName))
 
             avatar.setOnClickListener {
+                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 uri = Uri.parse("android.resource://$packageName/$drawableId")
-                if(!isConfiguration) {
+                val editor = prefs.edit()
+                if(isConfiguration) {
+                    editor.putString("imageObjetoConfig", uri.toString())
+                    editor.apply()
+                }else{
                     val idUsuario = prefs.getString("idUsuario", "")
                     if (idUsuario != null) {
                         val usuario = Usuario()
-                        usuario.aniadirImagenObjeto(
-                            uri.toString(),
-                            idUsuario,
-                            this@MenuObjetosActivity
-                        )
+                        usuario.aniadirImagenObjeto(uri.toString(), idUsuario,this@MenuObjetosActivity)
                     }
-                    val editor = prefs.edit()
                     editor.putString("imagenObjeto", uri.toString())
                     editor.apply()
                 }
@@ -101,17 +106,12 @@ class MenuObjetosActivity : AppCompatActivity() {
     }
 
     private fun next(){
-        if(isConfiguration){
-            val editor = prefs.edit()
-            editor.putString("imageObjetoConfig", uri.toString())
-            editor.apply()
-            finish()
-        }else{
+        if(!isConfiguration){
             val intent = Intent(applicationContext, TutorialActivity::class.java)
             intent.putExtra("isFromManual", false)
             startActivity(intent)
-            finish()
         }
+        finish()
     }
 
     private fun createPickMedia() {
@@ -119,8 +119,7 @@ class MenuObjetosActivity : AppCompatActivity() {
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                //viewModel._ruta.value =  CommonUtils.crearRuta(this, viewModel.bitmap!!, "Objeto")
-                viewModel._ruta.value = CommonUtils.guardarImagen(this, "Objeto", viewModel.bitmap!!)
+                viewModel._ruta.value = CommonUtils.guardarImagen(this, "ObjetoGaleria", viewModel.bitmap!!)
 
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()

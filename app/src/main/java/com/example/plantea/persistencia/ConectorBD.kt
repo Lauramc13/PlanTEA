@@ -30,7 +30,7 @@ class ConectorBD(ctx: Context?) {
     }
     /*Cierra la conexión con la base de datos*/
     fun cerrar() {
-       // if (db != null) db!!.close()
+       //if (db != null) db!!.close()
     }
 
     /*************************************************************************************************************/
@@ -536,7 +536,7 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun obtenerImagenDia(idUsuario: String, dayWeek: String): ByteArray? {
-        val cursor = db!!.rawQuery("SELECT pictograma_day FROM Semana WHERE id_usuario = '$idUsuario' AND day_week = '$dayWeek'", null)
+        val cursor = db!!.rawQuery("SELECT pictograma_day FROM DiaSemana JOIN Semana ON DiaSemana.semana_id = Semana.id WHERE id_usuario = '$idUsuario' AND day_week = '$dayWeek'", null)
         var imagen : ByteArray? = null
         if (cursor.moveToFirst()) {
             imagen = cursor.getBlob(0)
@@ -545,13 +545,53 @@ class ConectorBD(ctx: Context?) {
         return imagen
     }
 
+
+    @SuppressLint("Range")
     fun guardarImagenSemana(idUsuario: String, imagen: ByteArray?, dayWeek: String) {
-        val cursor = db!!.rawQuery("SELECT id FROM Semana WHERE id_usuario = ? AND day_week = ?", arrayOf(idUsuario, dayWeek))
-        if(cursor.moveToFirst()){
-            db!!.execSQL("UPDATE Semana SET pictograma_day = ? WHERE id_usuario = ? AND day_week = ?", arrayOf(imagen, idUsuario, dayWeek))
-        }else{
-            db!!.execSQL("INSERT INTO Semana (id_usuario, day_week, pictograma_day) VALUES ('$idUsuario', '$dayWeek', ?)", arrayOf(imagen))
+        var semanaId: Int? = null
+        val cursorSemana = db!!.rawQuery("SELECT id FROM Semana WHERE id_usuario = ?", arrayOf(idUsuario))
+        if (cursorSemana.moveToFirst()) {
+            semanaId = cursorSemana.getInt(cursorSemana.getColumnIndex("id"))
+        } else {
+            // Insert a new record into Semana and get the generated id
+            db!!.execSQL("INSERT INTO Semana (id_usuario, configurationWeek) VALUES (?, ?)", arrayOf(idUsuario, 1))
+            val cursorNewSemana = db!!.rawQuery("SELECT last_insert_rowid() as id", null)
+            if (cursorNewSemana.moveToFirst()) {
+                semanaId = cursorNewSemana.getInt(cursorNewSemana.getColumnIndex("id"))
+            }
+            cursorNewSemana.close()
         }
+        cursorSemana.close()
+        if (semanaId != null) {
+
+            // Step 2: Check if an entry for the given day_week already exists in DiaSemana
+            val cursorDiaSemana = db!!.rawQuery("SELECT id FROM DiaSemana WHERE semana_id = ? AND day_week = ?", arrayOf(semanaId.toString(), dayWeek))
+            if (cursorDiaSemana.moveToFirst()) {
+                // Step 3: Update the pictograma_day if the entry exists
+                db!!.execSQL("UPDATE DiaSemana SET pictograma_day = ? WHERE semana_id = ? AND day_week = ?", arrayOf(imagen, semanaId.toString(), dayWeek))
+            } else {
+                // Step 4: Insert a new entry if it does not exist
+                db!!.execSQL("INSERT INTO DiaSemana (semana_id, day_week, pictograma_day) VALUES (?, ?, ?)", arrayOf(semanaId.toString(), dayWeek, imagen))
+            }
+            cursorDiaSemana.close()
+        }
+        cursorSemana.close()
+    }
+
+    fun borrarImagenSemana(idUsuario: String, dayWeek: String) {
+        db!!.execSQL("DELETE FROM DiaSemana WHERE semana_id IN (SELECT Semana.id FROM Semana WHERE Semana.id_usuario = ? AND DiaSemana.day_week = ?)", arrayOf(idUsuario, dayWeek))
+    }
+
+    fun guardarConfiguracionWeek(idUsuario: String, configurationWeek: Int){
+        val cursor = db!!.rawQuery("SELECT id FROM Semana WHERE id_usuario = ?", arrayOf(idUsuario))
+        if (cursor.moveToFirst()) {
+            // Step 3: Update the pictograma_day if the entry exists
+            db!!.execSQL("UPDATE Semana SET configurationWeek = ? WHERE id_usuario = ?", arrayOf(configurationWeek, idUsuario))
+        } else {
+            // Step 4: Insert a new entry if it does not exist
+            db!!.execSQL("INSERT INTO Semana (configurationWeek, id_usuario) VALUES (?, ?)", arrayOf(configurationWeek, idUsuario))
+        }
+        cursor.close()
     }
 
     companion object {

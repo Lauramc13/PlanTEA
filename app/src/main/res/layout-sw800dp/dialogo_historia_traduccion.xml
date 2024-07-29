@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:text="Titulo para la traducción"
+            android:text="@string/titulo_para_la_traducci_n"
             android:textColor="?colorOnSurface"
             android:textSize="22sp" />
 
@@ -62,7 +62,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Guardar traducción como pdf"
+            android:text="@string/guardar_traducci_n_como_pdf"
             android:textAllCaps="true"
             android:textColor="#203130"
             android:textSize="14sp"

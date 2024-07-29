@@ -10,6 +10,8 @@ import android.content.Intent
 import android.provider.CalendarContract
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.DialogFragment
@@ -212,10 +214,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         _changedEvent.value = true
     }
 
-    fun planificar(context: Context) {
-        val intent = Intent(context, CrearPlanActivity::class.java)
-        context.startActivity(intent)
-    }
 
     fun cancelarEvento(context: Context) {
         isNuevoEventoSelected = false
@@ -277,13 +275,13 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         planSeleccionado = planes[posicion].id
     }
 
-    fun editarClick(actividad: Activity, posicion: Int){
+    fun editarClick(actividad: Activity, posicion: Int, startForResult: ActivityResultLauncher<Intent>){
         val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id, Locale.getDefault().language) as java.util.ArrayList<Pictograma>
         val intent = Intent(actividad, CrearPlanActivity::class.java)
         intent.putExtra("identificador", planes[posicion].id)
         intent.putExtra("titulo", planes[posicion].titulo)
         intent.putExtra("pictogramas", pictogramas)
-        actividad.startActivity(intent)
+        startForResult.launch(intent)
     }
 
     fun exportEventCalendar(posicion: Int): Intent {

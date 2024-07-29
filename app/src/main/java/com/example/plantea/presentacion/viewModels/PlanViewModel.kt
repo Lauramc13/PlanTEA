@@ -154,7 +154,7 @@ class PlanViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, Ad
             planificacion.fecha?.let { fechaPlanificacion ->
                 val datePlanificacion = LocalDate.parse(fechaPlanificacion.toString())
 
-                if (!datePlanificacion.isBefore(LocalDate.now()) && planificacion.visible == 1) {
+                if (!datePlanificacion.isBefore(LocalDate.now().plusDays(1)) && planificacion.visible == 1) {
                     planificacion.nombre?.let {
                         lista.add(PlanificacionItem(it, fechaPlanificacion.toString()))
                     }

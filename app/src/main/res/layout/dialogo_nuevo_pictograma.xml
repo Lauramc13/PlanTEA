@@ -5,17 +5,19 @@
     android:layout_height="wrap_content"
     android:background="@drawable/fondo_dialogo_login">
 
-        <TextView
-            android:id="@+id/lbl_NuevoPicto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="25dp"
-            android:text="@string/lbl_tulo"
-            android:textColor="?colorOnSurface"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/lbl_NuevoPicto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/lbl_tulo"
+        android:textColor="?colorOnSurface"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/icono_CerrarDialogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/buttons"

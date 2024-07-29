@@ -48,7 +48,7 @@
     <string name="lbl_configuracion">Configuración</string>
     <string name="lbl_infoPlanificador">Datos del planificador</string>
     <string name="lbl_infoplaificador_texto">Usuario responsable de crear y gestionar planificaciones</string>
-    <string name="lbl_infoUsuarioTEA">Datos del usuario TEA </string>
+    <string name="lbl_infoUsuarioTEA">Datos de la persona supervisada </string>
     <string name="lbl_infoUsuarioTEA_texto">Usuario capaz de ver y seguir las planificaciones</string>
     <string name="lbl_infoactividad">Datos de la actividad tranquilizadora </string>
     <string name="lbl_infoactividad_texto">Representa el objeto que calma a la persona con TEA</string>
@@ -85,7 +85,7 @@
     <string name="lbl_indice4_9">- Creación de un nuevo pictograma</string>
     <string name="lbl_indice4_10">- Pasos para crear planificación</string>
     <string name="lbl_indice4_11">- Opciones de las planificaciones</string>
-    <string name="lbl_indice5">4. Usuario TEA</string>
+    <string name="lbl_indice5">4. Usuario supervisado</string>
     <string name="lbl_indice5_1">4.1 Descripción de la Pantalla inicial</string>
     <string name="lbl_indice5_2">4.2 Seguimiento de una planificación</string>
     <string name="lbl_indice5_3">4.3 Cuaderno de comunicación</string>
@@ -103,7 +103,7 @@
     <string name="lbl_nombre">NOMBRE</string>
 
     <string name="lbl_seleccionaAvatar">Selecciona el avatar del planificador</string>
-    <string name="lbl_seleccionaAvatarTEA">Selecciona el avatar del planificado</string>
+    <string name="lbl_seleccionaAvatarTEA">Selecciona el avatar de la persona supervisada</string>
     <string name="lbl_seleccionaActividad">Selecciona la actividad tranquilizadora</string>
     <string name="lbl_seleccionarFoto">SELECCIONAR FOTO DE LA GALERIA</string>
     <string name="lbl_saltar">SALTAR</string>
@@ -114,11 +114,11 @@
     <string name="lbl_iniciarSesion">INICIAR SESIÓN</string>
     <string name="lbl_noCuenta">¿No tienes cuenta? Regístrate aquí</string>
     <string name="lbl_nombreUsuario">Nombre de usuario</string>
-    <string name="lbl_email">Correo electónico</string>
+    <string name="lbl_email">Correo electrónico</string>
     <string name="lbl_contrasena">Contraseña</string>
     <string name="lbl_registrarse">Registrarse</string>
     <string name="lbl_datosPlanificador">Datos del planificador </string>
-    <string name="lbl_datosPlanificado">Datos del planificado</string>
+    <string name="lbl_datosPlanificado">Datos de la persona supervisada</string>
     <string name="lbl_datosNombre">Nombre</string>
     <string name="lbl_datosContraseña">Volver a introducir la contraseña</string>
     <string name="lbl_crearCuenta">CREAR CUENTA</string>
@@ -393,4 +393,16 @@
     <string name="borrar">Borrar</string>
     <string name="no_pictogramas_categoria">No hay pictogramas para esta categoría</string>
     <string name="comenzar">COMENZAR</string>
+    <string name="ayer">AYER</string>
+    <string name="hoy">HOY</string>
+    <string name="ma_ana">MAÑANA</string>
+    <string name="titulo_requirement">Introduce un nombre para la planificación</string>
+    <string name="str_notitle">Sin titulo</string>
+    <string name="guardar_pdf">Guardar PDF</string>
+    <string name="guardar_planificacion">Guardar planificación</string>
+    <string name="crear_nueva_planificaci_n">Crear nueva planificación</string>
+    <string name="crear_planificacion">CREAR PLANIFICACION</string>
+    <string name="guardar_traducci_n_como_pdf">Guardar traducción como pdf</string>
+    <string name="titulo_para_la_traducci_n">Titulo para la traducción</string>
+
 </resources>

@@ -15,7 +15,7 @@
             android:gravity="center"
             android:paddingStart="70dp"
             android:paddingEnd="70dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:text="@string/aniadir_picto_entre"
             android:textColor="?colorOnSurface"
             android:textSize="22sp"
@@ -26,8 +26,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="70dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="40dp"
             app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,6 +56,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
+                    android:layout_marginBottom="25dp"
+
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="40dp"
                     android:paddingEnd="40dp" />
@@ -65,7 +67,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="start"
-                    android:layout_marginTop="25dp"
                     android:paddingStart="40dp"
                     android:paddingEnd="40dp"
                     android:text="@string/item_entretenimiento"
@@ -82,29 +83,7 @@
                     android:paddingStart="40dp"
                     android:paddingEnd="40dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="start"
-                    android:layout_marginTop="25dp"
-                    android:paddingStart="40dp"
-                    android:paddingEnd="40dp"
-                    android:text="@string/item_recompensa"
-                    android:layout_gravity="start"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="20sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_recompensa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingStart="40dp"
-                    android:paddingEnd="40dp" />
             </LinearLayout>
-
 
         </ScrollView>
 
@@ -118,9 +97,7 @@
         android:src="@drawable/ic_baseline_close_24"
         android:padding="12dp"
         android:alpha="0.9"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

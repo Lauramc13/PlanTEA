@@ -23,6 +23,7 @@ import com.example.plantea.presentacion.actividades.CreditsActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PasswordActivity
 import com.example.plantea.presentacion.actividades.PoliticaActivity
+import com.example.plantea.presentacion.actividades.SemanaActivity
 
 class NavigationTopFragment: Fragment() {
     lateinit var vista: View
@@ -61,6 +62,7 @@ class NavigationTopFragment: Fragment() {
             ManualActivity::class.java -> getString(R.string.pantalla_manual)
             PoliticaActivity::class.java -> getString(R.string.pantalla_politica)
             PasswordActivity::class.java -> getString(R.string.btn_CambiarPass)
+            SemanaActivity::class.java -> getString(R.string.semana)
             else -> getString(R.string.app_name)
         }
 

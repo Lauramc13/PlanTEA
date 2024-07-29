@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -40,7 +41,7 @@ class CrearPlanActivity : AppCompatActivity(){
 
     //Variables dialogo crear nuevo pictograma
     private lateinit var btnGuardarPlanificacion: Button
-    private lateinit var txtTituloPlan: TextView
+    private lateinit var txtTituloPlan: TextInputLayout
     private var dialogEntretenimiento: Dialog? = null
     //RecyclerView Planificacion
     lateinit var recyclerView: RecyclerView
@@ -62,7 +63,6 @@ class CrearPlanActivity : AppCompatActivity(){
         btnGuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
         backButton = findViewById(R.id.goBackButton)
-        txtTituloPlan = findViewById(R.id.txt_TituloPlan)
 
         backButton.setOnClickListener{
             dialogEntretenimiento?.dismiss()
@@ -87,7 +87,6 @@ class CrearPlanActivity : AppCompatActivity(){
         val parametros = this.intent.extras
         if (parametros != null) {
             viewModel.opcionEditar = true
-            txtTituloPlan.text = intent.getStringExtra("titulo")
             viewModel.listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
         }
 
@@ -185,13 +184,13 @@ class CrearPlanActivity : AppCompatActivity(){
 
         viewModel._nuevoPictoDialog.observe(this) {
             if (it) {
-                AniadirPictoUtils.initializeDialog(viewModel, this, null, false)
+                AniadirPictoUtils.initializeDialog(viewModel, this, false)
             }
         }
 
         viewModel._nuevoPictoDialogCategoria.observe(this) {
             if (it) {
-                AniadirPictoUtils.initializeDialog(viewModel, this, null, true)
+                AniadirPictoUtils.initializeDialog(viewModel, this, true)
             }
         }
 
@@ -251,7 +250,6 @@ class CrearPlanActivity : AppCompatActivity(){
             dialogEntretenimiento!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             val recyclerActividad = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_actividad)
             val recyclerEntretenimiento = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_entretenimiento)
-            val recyclerRecompensa = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_recompensa)
             val btnClose = dialogEntretenimiento!!.findViewById<ImageView>(R.id.icono_CerrarDialogo)
             val pictograma = Pictograma()
             val listaPictogramas = ArrayList<Pictograma>()
@@ -272,10 +270,8 @@ class CrearPlanActivity : AppCompatActivity(){
             }
 
             val language = Locale.getDefault().language
-            val pictoEntretenimiento =  pictograma.obtenerPictogramas(this, 8, viewModel.idUsuario, language) as ArrayList<Pictograma>
+            val pictoEntretenimiento =  pictograma.obtenerPictogramas(this, 4, viewModel.idUsuario, language) as ArrayList<Pictograma>
             recyclerActividad(recyclerEntretenimiento, dialogEntretenimiento!!, pictoEntretenimiento, idPictoEntretenimiento)
-            val pictoRecompensa =  pictograma.obtenerPictogramas(this, 9, viewModel.idUsuario, language) as ArrayList<Pictograma>
-            recyclerActividad(recyclerRecompensa, dialogEntretenimiento!!, pictoRecompensa, idPictoEntretenimiento)
 
             btnClose.setOnClickListener {
                 dialogEntretenimiento!!.dismiss()
@@ -294,32 +290,59 @@ class CrearPlanActivity : AppCompatActivity(){
 
     private fun recyclerActividad(recyclerActividad : RecyclerView, dialog: Dialog, listaPictogramas: ArrayList<Pictograma>, idPicto: Int){
         val constraintLayout = dialog.findViewById<ConstraintLayout>(R.id.frameLayout)
-        CommonUtils.getGridValueCuaderno(findViewById<View>(android.R.id.content), this, recyclerActividad, constraintLayout, 150, 200)
+        CommonUtils.getGridValueCuaderno(findViewById(android.R.id.content), this, recyclerActividad, constraintLayout, 150, 200)
         val adaptador = AdaptadorPictogramaEntretenimiento(listaPictogramas, idPicto, viewModel)
         recyclerActividad.adapter = adaptador
     }
 
     private fun clickGuardarPicto(){
-        if (txtTituloPlan.text.toString().isEmpty()) {
-            Toast.makeText(this, R.string.toast_titulo_vacio, Toast.LENGTH_SHORT).show()
-        }else if(viewModel.listaPlanificacion.isEmpty()){
+        if(viewModel.listaPlanificacion.isEmpty()){
             Toast.makeText(this, R.string.toast_planificacion_vacio, Toast.LENGTH_SHORT).show()
         }else {
-            //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
-            if (viewModel.opcionEditar) {
-                viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, viewModel.idUsuario, intent.getIntExtra("identificador", 0), txtTituloPlan.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
-                Toast.makeText(this, R.string.toast_plan_actualizado, Toast.LENGTH_SHORT).show()
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialog_titulo_plan)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            txtTituloPlan = dialog.findViewById(R.id.txt_nombre)
+            val btnGuardar = dialog.findViewById<Button>(R.id.btn_guardar)
+            val cerrarDialgo = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
 
-            } else {
-                val idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario,txtTituloPlan.text.toString().uppercase(Locale.getDefault()))
-                val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
-
-                if (creada != true) {
-                   Toast.makeText(this, R.string.toast_error_crear_planificacion, Toast.LENGTH_SHORT).show()
-                }
+            if(viewModel.opcionEditar){
+                txtTituloPlan.editText?.setText(intent.getStringExtra("titulo"))
             }
 
-            finish()
+            cerrarDialgo.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            btnGuardar.setOnClickListener {
+                //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
+                if(txtTituloPlan.editText?.text.toString() == ""){
+                    txtTituloPlan.editText?.setText(getString(R.string.str_notitle))
+                }
+                var idPlan = 0
+                if (viewModel.opcionEditar) {
+                    idPlan = intent.getIntExtra("identificador", 0)
+
+                    viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, viewModel.idUsuario, idPlan, txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
+                    Toast.makeText(this, R.string.toast_plan_actualizado, Toast.LENGTH_SHORT).show()
+
+                } else {
+                    idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario,txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()))
+                    val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
+
+                    if (creada != true) {
+                        Toast.makeText(this, R.string.toast_error_crear_planificacion, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                //return to the previous activity with extra data
+                val intent = intent
+                intent.putExtra("idPlan", idPlan)
+                intent.putExtra("isNuevo", viewModel.opcionEditar)
+                setResult(RESULT_OK, intent)
+                finish()
+            }
+
+            dialog.show()
         }
     }
 

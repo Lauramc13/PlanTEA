@@ -1,6 +1,7 @@
 <!-- res/layout/custom_popup_cuaderno.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -13,8 +14,7 @@
         android:id="@+id/item_historia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/bocadillo_historia_off"
-        android:drawableTint="?colorOnSurface"
+        app:drawableLeftCompat="@drawable/bocadillo_historia_off"
         android:drawablePadding="8dp"
         android:text="@string/texto_adicional"
         android:gravity="center_vertical"
@@ -23,38 +23,39 @@
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_regular"
         android:clickable="true"
-        android:textColor="?colorOnSurface" />
+        android:textColor="?colorOnSurface"
+        app:drawableTint="?colorOnSurface" />
 
     <TextView
         android:id="@+id/item_duracion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/svg_clock_2"
+        app:drawableLeftCompat="@drawable/svg_clock_2"
         android:drawablePadding="8dp"
         android:text="@string/duracion"
         android:gravity="center_vertical"
-        android:drawableTint="?colorOnSurface"
         android:textSize="14sp"
         android:padding="5dp"
         android:textColor="?colorOnSurface"
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/poppins_regular"
-        android:clickable="true" />
+        android:clickable="true"
+        app:drawableTint="?colorOnSurface" />
 
     <TextView
         android:id="@+id/item_entretenimiento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:drawableLeft="@drawable/svg_game"
+        app:drawableLeftCompat="@drawable/svg_game"
         android:drawablePadding="8dp"
         android:text="@string/actividad_entre"
-        android:drawableTint="?colorOnSurface"
         android:textSize="14sp"
         android:padding="5dp"
         android:layout_marginEnd="15dp"
         android:textColor="?colorOnSurface"
         android:fontFamily="@font/poppins_regular"
-        android:clickable="true" />
+        android:clickable="true"
+        app:drawableTint="?colorOnSurface" />
 
 </LinearLayout>

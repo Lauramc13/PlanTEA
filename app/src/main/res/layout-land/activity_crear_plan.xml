@@ -70,10 +70,11 @@
         android:background="@drawable/fragment_personalizado"
         android:contentDescription="Contenedor de pictogramas"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_TituloPlan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout6"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="30dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lst_planificacion"
@@ -81,18 +82,17 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginEnd="10dp"
             android:clipToPadding="false"
+            android:contentDescription="Lista de pictogramas de la planificación"
             android:paddingRight="190dp"
             android:scrollbars="horizontal"
-            android:contentDescription="Lista de pictogramas de la planificación"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="0.0">
             <!--  quitar efecto lista  android:overScrollMode="never"-->
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -112,25 +112,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
-
-    <EditText
-        android:id="@+id/txt_TituloPlan"
-        style="@style/editTextPlan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:contentDescription="Campo de texto de la planificación"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="@string/introduce_titulo"
-        android:inputType="textPersonName"
-        android:maxLength="14"
-        android:gravity="center"
-        android:textColor="?colorOnSurface"
-        android:textCursorDrawable="@null"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
     <TextView
         android:id="@+id/lbl_buscando"

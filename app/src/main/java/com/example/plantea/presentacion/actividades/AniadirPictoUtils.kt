@@ -53,7 +53,7 @@ class AniadirPictoUtils  {
         private lateinit var imgPicto: ImageView
         private lateinit var buttonSiguiente: MaterialButton
 
-        fun initializeDialog(viewModel: ViewModel, activity: Activity, fragment: Fragment?, isCrearCategoria: Boolean) {
+        fun initializeDialog(viewModel: ViewModel, activity: Activity, isCrearCategoria: Boolean) {
             val dialog = Dialog(activity)
             dialog.setContentView(R.layout.dialogo_nuevo_pictograma)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -385,41 +385,6 @@ class AniadirPictoUtils  {
             }
         }
 
-        /*private fun dialogoAniadirCuaderno(dialog: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, buttonSaltar: MaterialButton, viewModel: CuadernoViewModel, activity: Activity, fragment: PrincipalFragment) {
-            view.removeAllViews()
-            view.addView(datosLayout)
-            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
-            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-
-            if (identifier == 0) {
-                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
-            } else {
-                imagenPicto.setImageResource(identifier)
-            }
-
-            buttonSiguiente.visibility = View.GONE
-            buttonSaltar.visibility = View.GONE
-            buttons.visibility = View.GONE
-
-            val buttonCrear = view.findViewById<Button>(R.id.btn_GuardarPicto)
-            val termometro: SwitchCompat = view.findViewById(R.id.switch_termometro)
-            val title: TextInputLayout = view.findViewById(R.id.txt_Titulo)
-
-            buttonCrear.setOnClickListener {
-                title.error = null
-                if (title.editText?.text.toString().isEmpty() || imagenPicto.drawable == null) {
-                    title.error = activity.getString(R.string.toast_rellenar_campos)
-                    Toast.makeText(activity, R.string.toast_rellenar_campos, Toast.LENGTH_SHORT).show()
-                } else {
-                    val nombreImagen = title.editText?.text.toString() + UUID.randomUUID().toString()
-                    val image = (imagenPicto.drawable as BitmapDrawable).bitmap
-                    val ruta = viewModel.guardarImagen(activity.applicationContext, nombreImagen, image)
-                    crearEditarCuaderno(title, termometro, false, cuaderno = Cuaderno(), ruta, viewModel, activity)
-                    dialog.dismiss()
-                }
-            }
-        }*/
-
         fun inializeSearch(searchBar: SearchView, isNuevoPictoBusqueda: Boolean, viewModel: ViewModel, activity: Activity) {
             searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
@@ -430,9 +395,9 @@ class AniadirPictoUtils  {
                     } else {
                         if (viewModel is CrearPlanViewModel) {
                             viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
-                        } /*else if (viewModel is CuadernoViewModel) {
-                            viewModel.getPictogramas(query.trim(), activity)
-                        }*/
+                        } else if (viewModel is SemanaViewModel) {
+                            viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
+                        }
                     }
                     CommonUtils.hideKeyboard(activity, searchBar)
                     return true

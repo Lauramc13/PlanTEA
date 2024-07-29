@@ -68,6 +68,7 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
             editar = itemView.findViewById(R.id.icon_edit)
             duplicar = itemView.findViewById(R.id.icon_copy)
             card = itemView.findViewById(R.id.card_plan)
+
             itemView.setOnClickListener{
                 val posicion = bindingAdapterPosition
                 listener?.planSeleccionado(posicion)

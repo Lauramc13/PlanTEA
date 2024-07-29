@@ -33,7 +33,7 @@ class ConfiguracionActivityTest {
 
     //    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, txtUsuarioTEAText: String, txtObjetoText: String, imgPlanificador: Drawable, imgUserTEA: Drawable, imageObjeto: Drawable, infoUserTEA: Boolean, infoObjeto: Boolean): Boolean {
 
-    @Test
+   /* @Test
     fun emptyFields_returnFalse(){
        // Assert.assertFalse(configuracionActivity.comprobarCampos("","","","",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
     }
@@ -46,7 +46,7 @@ class ConfiguracionActivityTest {
     @Test
     fun emptyUsername_returnFalse(){
       //  Assert.assertFalse(configuracionActivity.comprobarCampos("planificador","","userTEA","objeto",imgPlanificador,imgUserTEA,imgObjeto,isCheckUserTEA,isCheckObjeto))
-    }
+    }*/
 
     @Test
     fun emptyUserTEA_returnFalse(){

@@ -3,7 +3,7 @@ package com.example.plantea.dominio
 import android.app.Activity
 import android.graphics.Bitmap
 
-class Semana {
+class DiaSemana {
 
     var dia: String? = null
     var imagen: Bitmap? = null
@@ -27,5 +27,15 @@ class Semana {
     fun guardarImagen(idUsuario: String, imagen: ByteArray?, fecha: String, actividad: Activity?) {
         gestorSemana.guardarImagen(idUsuario, imagen, fecha, actividad)
     }
+
+    fun borrarImagen(idUsuario: String, fecha: String, actividad: Activity?) {
+        gestorSemana.borrarImagen(idUsuario, fecha, actividad)
+    }
+
+    fun guardarConfiguracionWeek(idUsuario: String, configurationWeek: Int, actividad: Activity?){
+        gestorSemana.guardarConfiguracionWeek(idUsuario, configurationWeek, actividad)
+    }
+
+
 
 }

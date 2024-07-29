@@ -57,7 +57,8 @@ class MainActivity : AppCompatActivity() {
         nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
         nombreUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
         imageUsuarioTEA.setImageDrawable(null)
-        imageUsuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+        val imagen = prefs.getString("imagenUsuarioTEA", "")
+        imageUsuarioTEA.setImageURI(Uri.parse(imagen))
         imagePlanificador.setImageDrawable(null)
         imagePlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
     }

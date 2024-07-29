@@ -70,8 +70,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 viewModel.imagenSeleccionada = true
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                //viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Planificador")
-                viewModel._ruta.value =  CommonUtils.guardarImagen(this, "Planificador", viewModel.bitmap!!)
+                viewModel._ruta.value =  CommonUtils.guardarImagen(this, "PlanificadorGaleria", viewModel.bitmap!!)
 
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
@@ -82,13 +81,19 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     fun observers(){
         viewModel._ruta.observe(this){
             val editor = prefs.edit()
-            editor.putString("imagenPlanificador", it)
-            editor.apply()
-            val idUsuario = prefs.getString("idUsuario", "")
-            if (idUsuario != null) {
-                usuario.aniadirImagenPlanificador(it.toString(), idUsuario, this@MenuAvataresPlanActivity)
-            }
+            if(isConfiguration){
+                editor.putString("imagenPlanificadorConfig", it)
+                editor.apply()
+                next()
+            }else{
+                editor.putString("imagenPlanificador", it)
+                editor.apply()
+                val idUsuario = prefs.getString("idUsuario", "")
+                if (idUsuario != null) {
+                    usuario.aniadirImagenPlanificador(it.toString(), idUsuario, this@MenuAvataresPlanActivity)
+                }
             viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
+        }
             viewModel.imagenSeleccionada = true
             next()
         }
@@ -98,20 +103,22 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         avatarIds.forEach { avatarId ->
             val resources = applicationContext.resources
             val packageName = applicationContext.packageName
-            val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
-            val avatar = findViewById<CardView>(cardViewId)
-            val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+            val avatar = findViewById<CardView>(resources.getIdentifier(avatarId, "id", packageName))
 
             avatar.setOnClickListener {
+                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+                val editor = prefs.edit()
                 uri = Uri.parse("android.resource://$packageName/$drawableId")
-                if(!isConfiguration){
+
+                if(isConfiguration){
+                    editor.putString("imagenPlanificadorConfig", uri.toString())
+                    editor.apply()
+                }else{
                     val idUsuario = prefs.getString("idUsuario", "")
                     if (idUsuario != null) {
                         val usuario = Usuario()
                         usuario.aniadirImagenPlanificador(uri.toString(), idUsuario, this@MenuAvataresPlanActivity)
                     }
-
-                    val editor = prefs.edit()
                     editor.putString("imagenPlanificador", uri.toString())
                     editor.apply()
                 }
@@ -121,20 +128,15 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     }
 
     private fun next(){
-        if(isConfiguration){
-            val editor = prefs.edit()
-            editor.putString("imagenPlanificadorConfig", uri.toString())
-            editor.apply()
-            finish()
-        }else{
+        if(!isConfiguration){
             val nextActivity = viewModel.determineNextScreenPlan(prefs)
             val intent = Intent(applicationContext, nextActivity)
             if(nextActivity == TutorialActivity::class.java){
                 intent.putExtra("isFromManual", false)
             }
             startActivity(intent)
-            finish()
         }
+        finish()
     }
 
 

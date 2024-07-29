@@ -22,7 +22,7 @@ class CrearPlanActivityTest {
         }
     }
 
-    @Test
+   /* @Test
     fun clickPicto(){
       /*  onView(withId(R.id.categoria_medico)).perform(click())
 
@@ -31,6 +31,6 @@ class CrearPlanActivityTest {
 */
 
         //resource.mostrarCategoria(1)
-    }
+    }*/
 
 }

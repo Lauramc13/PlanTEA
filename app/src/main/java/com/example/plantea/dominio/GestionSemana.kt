@@ -13,7 +13,10 @@ class GestionSemana {
         val cursor = conectorBD!!.obtenerConfiguracionSemana(idUsuario)
         var resultado = 0
         if (cursor.moveToFirst()) {
-            resultado = cursor.getInt(0)
+            resultado = cursor.getInt(0) // if its 0 change it to 1
+            if (resultado == 0) {
+                resultado = 1
+            }
         }
 
         conectorBD!!.cerrar()
@@ -36,6 +39,20 @@ class GestionSemana {
         conectorBD = ConectorBD(activity)
         conectorBD!!.abrir()
         conectorBD!!.guardarImagenSemana(idUsuario, imagen, fecha)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarImagen(idUsuario: String, fecha: String, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarImagenSemana(idUsuario, fecha)
+        conectorBD!!.cerrar()
+    }
+
+    fun guardarConfiguracionWeek(idUsuario: String, configurationWeek: Int, actividad: Activity?){
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.guardarConfiguracionWeek(idUsuario, configurationWeek)
         conectorBD!!.cerrar()
     }
 

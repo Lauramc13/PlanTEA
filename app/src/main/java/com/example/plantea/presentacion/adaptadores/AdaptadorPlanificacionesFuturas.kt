@@ -16,7 +16,6 @@ class AdaptadorPlanificacionesFuturas(var list : ArrayList<PlanificacionItem>, p
 
     interface OnItemSelectedListener {
         fun diaSeleccionado(context: Context?, fecha:LocalDate)
-
     }
 
     inner class ViewHolderPlanFuturos(itemView : View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

@@ -14,8 +14,6 @@
         android:id="@+id/item_planificacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/svg_plan_icon_24"
-        android:drawableTint="?colorPrimary"
         android:drawablePadding="8dp"
         android:text="@string/planificaci_n"
         android:height="44dp"
@@ -25,7 +23,8 @@
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         android:textColor="?colorOnSurface"
-        android:onClick="onEliminarClicked" />
+        app:drawableTint="?colorPrimary"
+        app:drawableLeftCompat="@drawable/svg_plan_icon_24" />
 
     <!-- Divider-->
     <View
@@ -40,10 +39,8 @@
         android:id="@+id/item_pdf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/svg_pdf"
         android:drawablePadding="8dp"
         android:text="PDF"
-        android:drawableTint="?colorPrimary"
         android:textSize="16sp"
         android:height="44dp"
         android:padding="10dp"
@@ -52,5 +49,6 @@
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
-        android:onClick="onEliminarClicked"/>
+        app:drawableTint="?colorPrimary"
+        app:drawableLeftCompat="@drawable/svg_pdf" />
 </LinearLayout>

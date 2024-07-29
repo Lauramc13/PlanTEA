@@ -45,10 +45,10 @@
     <string name="lbl_configuracion">Configuration</string>
     <string name="lbl_infoPlanificador">Planner data</string>
     <string name="lbl_infoplaificador_texto">User responsible for creating and managing plans</string>
-    <string name="lbl_infoUsuarioTEA">ASD user data</string>
+    <string name="lbl_infoUsuarioTEA">Supervised user data</string>
     <string name="lbl_infoUsuarioTEA_texto">User able to view and follow plans</string>
     <string name="lbl_infoactividad">Soothing activity data </string>
-    <string name="lbl_infoactividad_texto">Represents the object that calms the person with ASD</string>
+    <string name="lbl_infoactividad_texto">Represents the object that calms the supervised user</string>
 
     <string name="btn_add">Planning</string>
     <string name="lbl_mensaje">There are no plans available. Click on \"New plan\" to create a plan.</string>
@@ -84,7 +84,7 @@
     <string name="lbl_indice4_9">- Creation of a new pictogram</string>
     <string name="lbl_indice4_10">- Steps to create planning</string>
     <string name="lbl_indice4_11">- Plan options</string>
-    <string name="lbl_indice5">4. ASD User</string>
+    <string name="lbl_indice5">4. Supervised user</string>
     <string name="lbl_indice5_1">4.1 Description of the Initial Screen</string>
     <string name="lbl_indice5_2">4.2 Planning monitoring</string>
     <string name="lbl_indice5_3">4.3 Communication notebook</string>
@@ -157,7 +157,7 @@
     <string name="bienvenido">Welcome to PlanTEA!</string>
     <string name="bienvenido_texto">At PlanTEA you can plan your events and activities easily and quickly.</string>
     <string name="sesion_google">LOG IN WITH GOOGLE</string>
-    <string name="explicacion_actividad">The soothing activity represents the object that calms the person with ASD</string>
+    <string name="explicacion_actividad">The soothing activity represents the object that calms the supervised user</string>
     <string name="licencias">Open source licenses</string>
     <string name="ilustraciones">Illustrations</string>
     <string name="arasaac">Aragonese Center of Augmentative and Alternative Communication</string>
@@ -223,7 +223,7 @@
     <string name="str_titulo1">About the organization</string>
     <string name="str_parrafo1">This application has been developed by the CHICO group. CHICO is a research group of the University of Castilla-La Mancha based at the Higher School of Informatics of the Ciudad Real Campus that also has researchers at the Faculty of Education of Ciudad Real, at the School of Mining and Industrial Engineering of Almadén, and at the Faculty of Social Sciences of Talavera de la Reina.</string>
     <string name="str_parrafo2">The groups research interest is mainly focused on new methods, techniques, tools and processes of Computer Engineering for the improvement of interactive and collaborative tasks.</string>
-    <string name="str_parrafo3">Financing</string>
+    <string name="str_parrafo3">Financiation</string>
     <string name="str_parrafo4">This work has been developed in the context of the APTEA Project (Ref. TED2021–131956B-I00), funded by the MICIN/AEI/10.13039/501100000033 and the European Union funds "NextGenerationEU"/ PRTR; of the PlanTEAAF Project (Ref. 2022-GRIN-34175) within the framework of the Own Research Plan of the University of Castilla - La Mancha, co-financed by the European Regional Development Fund (ERDF); and the collaboration agreements with AUTRADE (Ref. 220413CONV) and FACLM (Ref. 230405CONV).</string>
 
     <string name="cuaderno_de_com">Communication notebook</string>
@@ -241,7 +241,7 @@
     <string name="crear_cuaderno">CREATE NOTEBOOK</string>
     <string name="aniadir_cuaderno">ADD NOTEBOOK</string>
     <string name="cerrar_dialogo">Close dialog</string>
-    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Choose an avatar for the activity/object that calms the person with ASD</string>
+    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Choose an avatar for the activity/object that calms the supervised user</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Choose an avatar for the person who is going to create and manage the plans</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Choose an avatar for the person who is going to follow the plans</string>
     <string name="planificaciones">Plans</string>
@@ -348,7 +348,7 @@
     <string name="toast_necesita_titulo">A title is needed for the new pictogram</string>
     <string name="toast_necesita_imagen">An image is needed for the new pictogram</string>
     <string name="toast_pictograma_creado">New pictogram created</string>
-    <string name="toast_sin_conexion">There is no Internet conection</string>
+    <string name="toast_sin_conexion">There is no Internet connection</string>
     <string name="toast_error_crear_planificacion">Error creating the plan</string>
     <string name="toast_titulo_vacio">You cannot leave the title field empty</string>
     <string name="toast_planificacion_vacio">You can\'t leave the plan empty</string>
@@ -383,4 +383,17 @@
     <string name="borrar">Delete</string>
     <string name="no_pictogramas_categoria">There are no pictograms in this category</string>
     <string name="comenzar">GET STARTED</string>
+    <string name="ayer">YESTERDAY</string>
+    <string name="hoy">TODAY</string>
+    <string name="ma_ana">TOMORROW</string>
+    <string name="lbl_saltar">SKIP</string>
+    <string name="titulo_requirement">Enter a name for the planification</string>
+    <string name="str_notitle">No title</string>
+    <string name="guardar_pdf">Save as PDF</string>
+    <string name="guardar_planificacion">Save as planning</string>
+    <string name="crear_nueva_planificaci_n">Create a new planning</string>
+    <string name="crear_planificacion">CREATE PLANNING</string>
+    <string name="guardar_traducci_n_como_pdf">Save translation as PDF</string>
+    <string name="titulo_para_la_traducci_n">Title for the translation</string>
+
 </resources>

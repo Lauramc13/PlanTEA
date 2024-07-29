@@ -21,6 +21,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     private lateinit var btnGaleria: Button
     private val viewModel by viewModels<MenuAvataresViewModel>()
+    val usuario = Usuario()
     private var isConfiguration = false
     private var uri : Uri? = null
 
@@ -65,12 +66,21 @@ class MenuAvataresTEActivity : AppCompatActivity() {
 
     fun observers(){
         viewModel._ruta.observe(this){
-            val editor = prefs.edit()
+        val editor = prefs.edit()
+        if(isConfiguration){
+                editor.putString("imageUsuarioTEAConfig", it)
+                editor.apply()
+        }else{
             editor.putString("imagenUsuarioTEA", it)
             editor.apply()
+            val idUsuario = prefs.getString("idUsuario", "")
+            if (idUsuario != null) {
+                usuario.aniadirImagenPlanificado(it.toString(), idUsuario, this@MenuAvataresTEActivity)
+            }
             viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
-            viewModel.imagenSeleccionada = true
-            next()
+        }
+        viewModel.imagenSeleccionada = true
+        next()
         }
     }
 
@@ -78,23 +88,21 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         avatarIds.forEach { avatarId ->
             val resources = applicationContext.resources
             val packageName = applicationContext.packageName
-            val cardViewId = resources.getIdentifier(avatarId, "id", packageName)
-            val avatar = findViewById<CardView>(cardViewId)
-            val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+            val avatar = findViewById<CardView>(resources.getIdentifier(avatarId, "id", packageName))
 
             avatar.setOnClickListener {
+                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 uri = Uri.parse("android.resource://$packageName/$drawableId")
-                if(!isConfiguration) {
+                val editor = prefs.edit()
+                if(isConfiguration) {
+                    editor.putString("imageUsuarioTEAConfig", uri.toString())
+                    editor.apply()
+                }else{
                     val idUsuario = prefs.getString("idUsuario", "")
                     if (idUsuario != null) {
                         val usuario = Usuario()
-                        usuario.aniadirImagenPlanificado(
-                            uri.toString(),
-                            idUsuario,
-                            this@MenuAvataresTEActivity
-                        )
+                        usuario.aniadirImagenPlanificado(uri.toString(), idUsuario, this@MenuAvataresTEActivity)
                     }
-                    val editor = prefs.edit()
                     editor.putString("imagenUsuarioTEA", uri.toString())
                     editor.apply()
                 }
@@ -104,20 +112,16 @@ class MenuAvataresTEActivity : AppCompatActivity() {
     }
 
     private fun next(){
-        if(isConfiguration){
-            val editor = prefs.edit()
-            editor.putString("imageUsuarioTEAConfig", uri.toString())
-            editor.apply()
-            finish()
-        }else{
+        if(!isConfiguration){
             val nextActivity = viewModel.determineNextScreenTEA(prefs)
             val intent = Intent(applicationContext, nextActivity)
             if(nextActivity == TutorialActivity::class.java){
                 intent.putExtra("isFromManual", false)
             }
             startActivity(intent)
-            finish()
         }
+
+        finish()
     }
 
     private fun createPickMedia() {
@@ -125,9 +129,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                //viewModel._ruta.value = CommonUtils.crearRuta(this, viewModel.bitmap!!, "Usuario")
-                viewModel._ruta.value = CommonUtils.guardarImagen(this, "Usuario", viewModel.bitmap!!)
-
+                viewModel._ruta.value = CommonUtils.guardarImagen(this, "UsuarioGaleria", viewModel.bitmap!!)
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
