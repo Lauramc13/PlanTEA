@@ -70,7 +70,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 viewModel.imagenSeleccionada = true
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value =  CommonUtils.guardarImagen(this, "PlanificadorGaleria", viewModel.bitmap!!)
+                viewModel._ruta.value =  CommonUtils.guardarImagen(this, "PlanificadorGaleria", viewModel.bitmap!!)  // TODO: CAMBIAR
 
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
@@ -131,9 +131,9 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         if(!isConfiguration){
             val nextActivity = viewModel.determineNextScreenPlan(prefs)
             val intent = Intent(applicationContext, nextActivity)
-            if(nextActivity == TutorialActivity::class.java){
+            /*if(nextActivity == TutorialActivity::class.java){
                 intent.putExtra("isFromManual", false)
-            }
+            }*/
             startActivity(intent)
         }
         finish()

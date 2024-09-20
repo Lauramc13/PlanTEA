@@ -56,6 +56,13 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_editarEvento"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="7dp"
+                app:srcCompat="@drawable/svg_edit_evento" />
+
+            <ImageView
                 android:id="@+id/img_eventoVisible"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

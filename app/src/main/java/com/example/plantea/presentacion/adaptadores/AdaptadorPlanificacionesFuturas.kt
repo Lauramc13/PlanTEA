@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.PlanificacionItem
+import com.example.plantea.dominio.Planificacion
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class AdaptadorPlanificacionesFuturas(var list : ArrayList<PlanificacionItem>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPlanificacionesFuturas.ViewHolderPlanFuturos>() {
+class AdaptadorPlanificacionesFuturas(var list : ArrayList<Planificacion.PlanificacionItem>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPlanificacionesFuturas.ViewHolderPlanFuturos>() {
 
     interface OnItemSelectedListener {
         fun diaSeleccionado(context: Context?, fecha:LocalDate)

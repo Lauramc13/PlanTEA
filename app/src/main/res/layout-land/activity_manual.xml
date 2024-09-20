@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationTopFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
+        app:srcCompat="@drawable/blob3"
+        app:tint="?subColorBackground" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="-20dp"
+        app:srcCompat="@drawable/svg_blob" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.8"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
+        app:layout_constraintWidth_max="1200dp"
+        app:layout_constraintWidth_percent="0.9">
+
+        <LinearLayout
+            android:layout_width="600dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/titulo_manual"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="@dimen/title" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/subtitulo_manual"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="14sp" />
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingEnd="10dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_evento"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:clickable="true"
+                        app:cardCornerRadius="20dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:padding="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:textSize="@dimen/body"
+                                android:text="@string/titulo_crearEvento"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"/>
+
+                            <ImageView
+                                android:id="@+id/icon_evento"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_evento"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:clickable="false"
+                            android:scrollbars="none" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_planificacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/bg_close_button"
+                        android:clickable="true"
+                        app:cardCornerRadius="20dp"
+                        android:layout_marginTop="15dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:padding="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:textSize="@dimen/body"
+                                android:text="@string/titulo_crearPlanificacion"/>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"/>
+
+                            <ImageView
+                                android:id="@+id/icon_planificacion"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_planificacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:clickable="false"
+                            android:scrollbars="none" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_cuaderno"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/bg_close_button"
+                        android:clickable="true"
+                        app:cardCornerRadius="20dp"
+                        android:layout_marginTop="15dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:padding="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:textSize="@dimen/body"
+                                android:text="@string/titulo_cuaderno"
+                                />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"/>
+
+                            <ImageView
+                                android:id="@+id/icon_cuaderno"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_cuaderno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:clickable="false"
+                            android:scrollbars="none" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_traductor"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/bg_close_button"
+                        android:clickable="true"
+                        app:cardCornerRadius="20dp"
+                        android:layout_marginTop="15dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:padding="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:textSize="@dimen/body"
+                                android:text="@string/titulo_traductor" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"/>
+
+                            <ImageView
+                                android:id="@+id/icon_traductor"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_traductor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:clickable="false"
+                            android:scrollbars="none" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!--     <com.google.android.material.card.MaterialCardView
+                             android:id="@+id/card_configuracion"
+                             android:layout_width="match_parent"
+                             android:layout_height="70dp"
+                             android:background="@drawable/bg_close_button"
+                             android:clickable="true"
+                             app:cardCornerRadius="20dp"
+                             android:layout_marginTop="15dp"
+                             app:strokeColor="?color"
+                             app:strokeWidth="1.5dp"
+                             app:cardBackgroundColor="?configuracionCardBg"
+                             app:cardElevation="0dp">
+
+                             <LinearLayout
+                                 android:layout_width="match_parent"
+                                 android:layout_height="70dp"
+                                 android:padding="20dp"
+                                 android:orientation="horizontal">
+
+                                 <TextView
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_gravity="center"
+                                     android:fontFamily="@font/poppins_regular"
+                                     android:textSize="@dimen/modalText"
+                                     android:text="@string/titulo_configuracion"
+                                     />
+
+                                 <View
+                                     android:layout_width="0dp"
+                                     android:layout_weight="1"
+                                     android:layout_height="match_parent"/>
+
+                                 <ImageView
+                                     android:id="@+id/icon_configuracion"
+                                     android:layout_width="30dp"
+                                     android:layout_height="30dp"
+                                     android:src="@drawable/svg_chevron_right"
+                                     app:tint="?colorOnSurface" />
+
+                             </LinearLayout>
+
+                             <androidx.recyclerview.widget.RecyclerView
+                                 android:id="@+id/text_configuracion"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:layout_marginTop="70dp"
+                                 android:paddingStart="20dp"
+                                 android:paddingEnd="20dp"
+                                 android:clickable="false"
+                                 android:scrollbars="none" />
+                         </com.google.android.material.card.MaterialCardView>-->
+
+                    <Button
+                        android:id="@+id/btn_tutorial"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textSize="@dimen/button"
+                        android:textAllCaps="true"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="?colorOnSurface"
+                        android:text="@string/repetir_tutorial"/>
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            android:layout_gravity="center"
+            app:strokeColor="?color"
+            app:strokeWidth="1.5dp"
+            android:layout_marginStart="50dp">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/fragment_imagen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/paleta_colores" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

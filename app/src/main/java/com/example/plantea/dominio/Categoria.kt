@@ -2,35 +2,44 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
 
 class Categoria {
-    var categoria = 0
-    var titulo: String? = null
-    var imagen: String? = null
-    var color: String? = null
-    private var listaCategorias: ArrayList<String>? = null
+    private var categoria = 0
+    private var titulo: String? = null
+    private var imagen: Bitmap? = null
+    private var color: String? = null
+
     private var gestorCategorias = GestionCategorias()
 
-    fun consultarCategorias(actividad: Activity?, language: String): ArrayList<*>? {
-        listaCategorias = ArrayList()
-        listaCategorias = gestorCategorias.listarCategorias(actividad, language)
-        return listaCategorias
+    //getters
+    fun getCategoria() = categoria
+    fun getTitulo() = titulo
+    fun getImagen() = imagen
+    fun getColor() = color
+
+    constructor()
+    constructor(categoria: Int = 0, titulo: String?, imagen: Bitmap?, color: String?) {
+        this.categoria = categoria
+        this.titulo = titulo
+        this.imagen = imagen
+        this.color = color
     }
+
 
     fun obtenerCategoria(context: Context, nombre: String?, language: String): Int {
-        categoria = gestorCategorias.obtenerIdCategoria(context, nombre, language)
-        return categoria
+        return gestorCategorias.obtenerIdCategoria(context, nombre, language)
     }
 
-    fun obtenerCategoriaById(context: Context, idCategoria: Int, language: String): String {
-        return gestorCategorias.obtenerCategoriaById(context, idCategoria, language)
+    fun duplicateCategoria(context: Context, idUsuario: String, idCategoria: Int): Int {
+        return gestorCategorias.duplicateCategoria(context, idUsuario, idCategoria)
     }
 
     fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario: String, language: String): ArrayList<Categoria> {
         return gestorCategorias.obtenerCategoriasPrincipales(actividad, idUsuario, language)
     }
 
-    fun crearCategoria(actividad: Activity?, nombre: String?, imagen: String?, color: String, idUsuario: String): Int {
+    fun crearCategoria(actividad: Activity?, nombre: String?, imagen: ByteArray?, color: String, idUsuario: String): Int {
         return gestorCategorias.insertarCategoria(actividad, nombre, imagen, color, idUsuario)
     }
 

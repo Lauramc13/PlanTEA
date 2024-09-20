@@ -10,6 +10,6 @@
             android:title="Preferencias"/>
         <item android:id="@+id/option_3"
             android:icon="@drawable/ic_baseline_add_24"
-            android:title="Cerrar sesión" />
+            android:title="@string/lbl_cerrarSesionBotton" />
 
     </menu>

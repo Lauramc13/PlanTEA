@@ -4,6 +4,7 @@
     <color name="seed">#238382</color>
     <color name="seedLight">#72C7C4</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#C10000</color>
     <color name="lightGray">#FAFAFA</color>
     <color name="semiGray">#4DE9ECEF</color>
     <color name="darkerGray">#e9ecef</color>
@@ -92,11 +93,18 @@
     <color name="blueCategoria">#CDEDFF</color>
     <color name="yellowCategoria">#FEFFBE</color>
     <color name="greenCategoria">#B0E8E8</color>
-    <color name="purpleCategoria">#D9C8E4</color>
+    <color name="purpleCategoria">#E5D3F2</color>
     <color name="pinkCategoria">#FFC2D8</color>
-    <color name="redCategoria">#EF8484</color>
-    <color name="orangeCategoria">#FFB48C</color>
+    <color name="redCategoria">#FFC2C2</color>
+    <color name="orangeCategoria">#FFE3C2</color>
 
+    <color name="DarkblueCategoria">#3D708F</color>
+    <color name="DarkyellowCategoria">#8D8F3D</color>
+    <color name="DarkgreenCategoria">#487070</color>
+    <color name="DarkpurpleCategoria">#69507C</color>
+    <color name="DarkpinkCategoria">#8F3D5B</color>
+    <color name="DarkredCategoria">#8F3D3D</color>
+    <color name="DarkorangeCategoria">#8F653D</color>
 
     <color name="blueCategoriaDark">#0081CC</color>
     <color name="yellowCategoriaDark">#8C8F00</color>

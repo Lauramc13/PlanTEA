@@ -3,20 +3,29 @@ package com.example.plantea.dominio
 import android.app.Activity
 import android.content.Context
 import java.io.Serializable
-import java.time.LocalDate
 
 class Planificacion : Serializable {
-    lateinit var titulo: String
-    var id = 0
-    //private var resultado = false
-    private lateinit var listaPlanes: ArrayList<Planificacion>
+    private lateinit var titulo: String
+    private var id = 0
+
     lateinit var listaPictogramas: ArrayList<Pictograma>
     private var gestionPlan = GestionPlanificaciones()
 
+    data class PlanificacionItem(val title: String, var date: String)
+
     constructor()
+
     constructor(titulo: String, id: Int) {
         this.titulo = titulo
         this.id = id
+    }
+
+    // Getters
+    fun getTitulo() = titulo
+    fun getId() = id
+
+    fun setTitulo(titulo: String) {
+        this.titulo = titulo
     }
 
     fun crearPlanificacion(actividad: Activity?,idUsuario: String, titulo: String?): Int {
@@ -27,20 +36,21 @@ class Planificacion : Serializable {
         return gestionPlan.addPictogramasPlan(actividad, idPlan, listaPlanificacion)
     }
 
+    fun addPictogramasPlanTraductor(idPlan: Int?, actividad: Activity?, listaPlanificacion: ArrayList<Pictograma>, idUsuario: String?): Any {
+        return gestionPlan.addPictogramasPlanTraductor(actividad, idPlan, listaPlanificacion, idUsuario)
+    }
+
     fun mostrarPlanificacionesDisponibles(idUsuario: String, actividad: Activity?): ArrayList<*> {
-        listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.listarPlanificaciones(idUsuario, actividad) as ArrayList<Planificacion>
-        return listaPlanes
+       // return gestionPlan.listarPlanificaciones(idUsuario, actividad) as ArrayList<Planificacion>
+        return gestionPlan.listarPlanificaciones(idUsuario, actividad)
     }
 
     fun eliminarPlanificacion(actividad: Activity?, idPlan: Int) {
         gestionPlan.eliminarPlanificacion(actividad, idPlan)
     }
 
-    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int, language: String): ArrayList<*> {
-        listaPictogramas = ArrayList()
-        listaPictogramas = gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan, language)
-        return listaPictogramas
+    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int, language: String, idUsuario: String): ArrayList<Pictograma> {
+        return gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan, language, idUsuario)
     }
 
     fun actualizarPlanificacion(actividad: Activity?, idUsuario: String, idPlan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
@@ -49,17 +59,9 @@ class Planificacion : Serializable {
 
     //Mostrar la planificacion a seguir
     fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?, language: String): ArrayList<*> {
-        listaPlanes = ArrayList()
-        listaPlanes = gestionPlan.obtenerPictogramas(idUsuario, id, context, language) as ArrayList<Planificacion>
-        return listaPlanes
+        return gestionPlan.obtenerPictogramas(idUsuario, id, context, language) as ArrayList<Planificacion>
     }
 
-
-    //Obtener el titulo de la planificacion a seguir
-   /* fun obtenerTituloPlan(idUsuario: String, fecha: String, context: Context?): String {
-        titulo = gestionPlan.obtenerTituloPlan(idUsuario, fecha, context)
-        return titulo
-    }*/
 
 
 }

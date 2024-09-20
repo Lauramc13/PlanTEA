@@ -14,9 +14,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
-import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
@@ -24,22 +23,25 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plantea.R
 import com.example.plantea.dominio.JsonPictogramaItem
-import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -55,7 +57,7 @@ class CommonUtils{
 
     companion object {
         //lateinit var textToSpeech: TextToSpeech
-        val handler = Handler()
+        val handler = Handler(Looper.getMainLooper())
         //var listener: TextToSpeechListener? = null
         lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
         private lateinit var imgPicto: ImageView
@@ -166,7 +168,6 @@ class CommonUtils{
 
             Log.d("INFO", "Lista de ids: $listaIds")
             if(listaIds.isEmpty()){
-                //lemmatizar query
                 val lemmatizedQuery = lemmatizar(query)
                 pedirDatosAPI(lemmatizedQuery, listaIds, listaTitulos)
             }
@@ -191,8 +192,8 @@ class CommonUtils{
             val image = textAsBitmap(query)
             val idImageCreated = wordToId(query)
             dict[image] = Pair(query, idImageCreated)
-            return dict
 
+            return dict
         }
 
         private fun wordToId(word: String): Int {
@@ -298,7 +299,6 @@ class CommonUtils{
                 paint.textSize = textSize
                 width = 300
             }
-
 
             val image = Bitmap.createBitmap(width, 300, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(image)
@@ -489,6 +489,78 @@ class CommonUtils{
                     e.printStackTrace()
                 }
             }
+        }
+
+        fun bitmapToByteArray(bitmap: Bitmap?): ByteArray {
+            val outputStream = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            return outputStream.toByteArray()
+        }
+
+        fun drawableToByteArray(drawable: Drawable): ByteArray {
+            val bitmap = (drawable as BitmapDrawable).bitmap
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            return stream.toByteArray()
+        }
+
+        fun byteArrayToBitmap(byteArray: ByteArray?): Bitmap? {
+            return if(byteArray == null){
+                null
+            }else{
+                BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            }
+        }
+
+        fun getImagenAPI(id: Int?): Bitmap? {
+            val retrofitBuilderImg = getRetrofitBuilderImg()
+            var bitmap : Bitmap? = null
+
+            try {
+                val retrofitImage = retrofitBuilderImg.getImage(id.toString())
+                val response = retrofitImage.execute()
+
+                if (response.isSuccessful) {
+                    bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                } else {
+                    Log.d("ERROR", "Error de la llamada a las imagenes")
+                }
+            } catch (e: IOException) {
+                Log.d("ERROR", e.toString())
+            }
+            return bitmap
+        }
+
+        fun formatTime(input: String): String {
+            val parts = input.split(":")
+            val hours = parts[0].toInt()
+            val minutes = parts[1].toInt()
+
+            return if (hours > 0) {
+                "$hours:${String.format("%02d", minutes)}h"
+            } else {
+                "$minutes" + "m"
+            }
+        }
+
+        fun formatTimeSeconds(input: String): Int {
+            val parts = input.split(":")
+            val hours = parts[0].toInt()
+            val minutes = parts[1].toInt()
+
+            return hours * 3600 + minutes * 60
+
+        }
+
+        fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
+            val reloj =  MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(hora)
+                .setMinute(minutos)
+                .setTheme(R.style.TimePicker)
+                .setTitleText(ContextCompat.getString(context, R.string.selecciona_hora))
+                .build()
+            return reloj
         }
 
     }

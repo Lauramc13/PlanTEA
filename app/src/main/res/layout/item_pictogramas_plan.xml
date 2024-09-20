@@ -29,7 +29,8 @@
                 style="@style/pictogramas"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="5dp"
                 android:background="@color/white"
                 android:contentDescription="@string/lbl_Consultas"
                 android:foregroundGravity="center"
@@ -69,6 +70,19 @@
             app:srcCompat="@drawable/svg_trash">
         </ImageView>
 
+
+        <TextView
+            android:id="@+id/duracionPicto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/button"
+            android:textColor="?colorOnSurface"
+            android:visibility="gone"
+            android:text="5m"/>
+
         <ImageView
             android:id="@+id/btn_menu"
             android:layout_width="35dp"
@@ -79,30 +93,6 @@
             android:elevation="4dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/svg_options" />
-
-        <ImageView
-            android:id="@+id/btn_historiaPicto"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:padding="3dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="3dp"
-            android:elevation="4dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/bocadillo_historia_off" />
-
-        <ImageView
-            android:id="@+id/btn_historiaPictoOn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="3dp"
-            android:elevation="4dp"
-            android:padding="3dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/bocadillo_historia_on" />
 
         <ImageView
             android:id="@+id/btn_removePicto"

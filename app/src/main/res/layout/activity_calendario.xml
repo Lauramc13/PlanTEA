@@ -112,6 +112,25 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_calendario" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_planificaciones"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/planificaciones"
+            android:textColor="#203130"
+            android:textAllCaps="true"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/button"
+            android:elevation="0dp"
+            app:icon="@drawable/svg_folder"
+            app:iconGravity="textStart"
+            app:iconTint="#203130"
+            app:iconPadding="20dp"
+            app:iconSize="30dp"
+            android:background="@drawable/bg_calendario_planificaciones" />
+
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView

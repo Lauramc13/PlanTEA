@@ -23,13 +23,17 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.OnAlarmReceiver
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
+import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CrearPlanActivity
+import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -65,6 +69,8 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     lateinit var planes: ArrayList<Planificacion>
     var counter: Int = 1
     var plan = Planificacion()
+    var isEditing = false
+    var eventoIdEdited = 0
 
     //Notificaciones
     var checkBoxMin = false
@@ -74,16 +80,19 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var selectedHour = 0
     var selectedMin = 0
 
-    private var bottomSheetDialogFragment = NuevoEventoFragment()
-
     //Create the notification based on the checkbox selected
-    private fun crearNotificacion(context: Context, fecha: LocalDate?, hora: LocalTime, evento: String?, id: Int){
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    private fun crearNotificacion(context: Context?, evento: String?, id: Int, aviso: Long?) {
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val notificationIntent = Intent(context, OnAlarmReceiver::class.java)
         notificationIntent.putExtra("Evento", evento)
         notificationIntent.putExtra("Id", id)
         val pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
+        if (aviso != null) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, aviso, pendingIntent)
+        }
+    }
 
+    private fun notificationTime(fecha: LocalDate?, hora: LocalTime,): LocalDateTime {
         val aviso = Calendar.getInstance()
         aviso.clear()
         aviso.set(fecha!!.year, fecha.monthValue - 1, fecha.dayOfMonth, hora.hour, hora.minute)
@@ -109,8 +118,8 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             aviso.set(Calendar.HOUR_OF_DAY, selectedHour)
             aviso.set(Calendar.MINUTE, selectedMin)
         }
+        return LocalDateTime.of(aviso.get(Calendar.YEAR), aviso.get(Calendar.MONTH) + 1, aviso.get(Calendar.DAY_OF_MONTH), aviso.get(Calendar.HOUR_OF_DAY), aviso.get(Calendar.MINUTE))
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, aviso.timeInMillis, pendingIntent)
     }
 
     //Cancel the notification
@@ -131,36 +140,57 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         pendingIntent.cancel()
     }
 
-    fun crearEventoFragment(context: Context) {
+    fun crearEventoFragment(context: Context, evento: Evento?) {
         isNuevoEventoSelected = true
+        val fragment = if (evento == null){
+            NuevoEventoFragment()
+        }else{
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.hora, evento.idPlan, evento.reminder, evento.cambiarVisibilidad)
+        }
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_calendario, NuevoEventoFragment())
+        ft.replace(R.id.fragment_calendario, fragment)
         ft.addToBackStack(null)
         ft.commit()
     }
 
-    fun bottomSheetDialog(context: Context){
-        bottomSheetDialogFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
-        bottomSheetDialogFragment.show((context as AppCompatActivity).supportFragmentManager, bottomSheetDialogFragment.tag)
+    fun bottomSheetDialog(context: Context, evento: Evento?){
+        val fragment = if (evento == null){
+           NuevoEventoFragment()
+        }else{
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.hora, evento.idPlan, evento.reminder, evento.cambiarVisibilidad)
+        }
+        fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
+        fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
     }
 
-    fun nuevoEvento(context: Context, cita: Evento) {
-        val id = evento.crearEvento(context as Activity, cita)
-        cita.id = id
-        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_calendario, EventosFragment())
-        ft.addToBackStack(null)
-        ft.commit()
-
-        eventos.add(cita)
-        _changedEvent.value = true
-
-        if(cita.cambiar_visibilidad){
-            programarVisibilidad(cita, context, id)
+    fun nuevoEventoEdit(context: Context, cita: Evento, parent: Activity?) {
+        if(checkBoxDia || checkBoxHora || checkBoxMin || checkBoxPer){
+            cita.reminder = notificationTime(cita.fecha, LocalTime.parse(cita.hora))
         }
 
-        if(checkBoxMin || checkBoxHora || checkBoxDia || checkBoxPer){
-            crearNotificacion(context, cita.fecha, CalendarioUtilidades.formatoHoraAviso(cita.hora), cita.nombre, id)
+        if(isEditing){
+            evento.editarEvento(context as Activity, cita)
+        }else{
+            cita.id = evento.crearEvento(context as Activity, cita)
+        }
+
+        crearNotificacion(context, planes[posicionPlan].getTitulo(), cita.id, cita.reminder?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli())
+
+        if(cita.cambiarVisibilidad){
+            programarVisibilidad(cita, context, cita.id)
+        }
+
+        if(parent is EventosPlanificadorActivity){
+            parent.expand(false, CommonUtils.isPortrait(parent))
+            parent.viewModel.eventos[parent.viewModel.posicionEvento] = cita
+            parent.listaEventos.adapter?.notifyItemChanged(parent.viewModel.posicionEvento)
+        }else{
+            val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+            ft.replace(R.id.fragment_calendario, EventosFragment())
+            ft.addToBackStack(null)
+            ft.commit()
+            eventos.add(cita)
+            _changedEvent.value = true
         }
     }
 
@@ -217,7 +247,11 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun cancelarEvento(context: Context) {
         isNuevoEventoSelected = false
-        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+        val ft = fragmentManager.beginTransaction()
+        fragmentManager.findFragmentById(R.id.fragment_calendario)?.let {
+            ft.remove(it)
+        }
         ft.replace(R.id.fragment_calendario, EventosFragment())
         ft.addToBackStack(null)
         ft.commit()
@@ -269,18 +303,27 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             .build()
     }
 
+    fun createCalendar(context: Context): MaterialDatePicker<Long> {
+        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select date").build()
+        datePicker.show((context as AppCompatActivity).supportFragmentManager, "DatePicker")
+        return datePicker
+    }
+
     fun configureDataPlanSeleccionado(posicion: Int){
         isPlanSeleccionado = true
         posicionPlan = posicion
-        planSeleccionado = planes[posicion].id
+        planSeleccionado = planes[posicion].getId()
     }
 
     fun editarClick(actividad: Activity, posicion: Int, startForResult: ActivityResultLauncher<Intent>){
-        val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].id, Locale.getDefault().language) as java.util.ArrayList<Pictograma>
+        val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].getId(), Locale.getDefault().language, idUsuario) as java.util.ArrayList<Pictograma>
         val intent = Intent(actividad, CrearPlanActivity::class.java)
-        intent.putExtra("identificador", planes[posicion].id)
-        intent.putExtra("titulo", planes[posicion].titulo)
+        intent.putExtra("identificador", planes[posicion].getId())
+        intent.putExtra("titulo", planes[posicion].getTitulo())
         intent.putExtra("pictogramas", pictogramas)
+        pictogramas.forEachIndexed { index, pictogram ->
+            intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
+        }
         startForResult.launch(intent)
     }
 

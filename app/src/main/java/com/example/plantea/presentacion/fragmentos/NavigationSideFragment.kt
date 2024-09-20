@@ -25,7 +25,9 @@ class NavigationSideFragment: Fragment() {
         super.onResume()
         val hostingActivityClass = activity?.javaClass
         if (hostingActivityClass != null) {
-            navigationHandler.inicializarVariables(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
+            val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+            val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
+            navigationHandler.inicializarVariables(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass), infoUsuario)
         }
         navigationHandler.restoreNavigationItemClicked(navigationHandler.hostingId(activity?.javaClass!!))
     }

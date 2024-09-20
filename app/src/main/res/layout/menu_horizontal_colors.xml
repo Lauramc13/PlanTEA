@@ -1,0 +1,79 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="@drawable/bg_popup">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab1"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorRed"
+        android:layout_margin="2dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorOrange"
+        android:layout_margin="2dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab3"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorYellow"
+        android:layout_margin="2dp" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab4"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorGreen"
+        android:layout_margin="2dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab5"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorBlue"
+        android:layout_margin="2dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab6"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorPink"
+        android:layout_margin="2dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab7"
+        style="@style/buttonsColorsCategorias"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorPurple"
+        android:layout_margin="2dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab8"
+        app:elevation="0dp"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorBG1"
+        app:borderWidth="1dp"
+        android:layout_margin="2dp" />
+
+</LinearLayout>

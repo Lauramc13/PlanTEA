@@ -31,7 +31,7 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
 
     override fun onBindViewHolder(holder: ViewHolderCategorias, position: Int) {
         context = holder.itemView.context
-        holder.titulo.text = listaCategorias!![position].titulo
+        holder.titulo.text = listaCategorias!![position].getTitulo()
 
         if(position == listaCategorias!!.size-1){
             holder.imagen.setImageResource(R.drawable.svg_add)
@@ -39,19 +39,14 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
             holder.card.background = drawable
             holder.borrar.visibility = View.GONE
         }else{
-            val identifier = context.resources.getIdentifier(listaCategorias!![position].imagen, "drawable", context.packageName)
-            if(identifier == 0) {
-                holder.imagen.setImageURI(Uri.parse(listaCategorias!![position].imagen))
-            }else{
-                holder.imagen.setImageResource(identifier)
-            }
+           holder.imagen.setImageBitmap(listaCategorias!![position].getImagen())
         }
 
         /*if(position in 0..9){
             holder.borrar.visibility = View.GONE
         }*/
 
-        if(listaCategorias!![position].color == "default") {
+        if(listaCategorias!![position].getColor() == "default") {
             // if its dark mode
             if(context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES){
                 holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_light_onSurfaceVariant))
@@ -59,8 +54,8 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
                 holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_dark_onSurfaceVariant))
             }
         }else{
-            val color = getColor(listaCategorias!![position].color!!)
-            val darkColor = getColorDark(listaCategorias!![position].color!!)
+            val color = getColor(listaCategorias!![position].getColor()!!)
+            val darkColor = getColorDark(listaCategorias!![position].getColor()!!)
 
             holder.borrar.setColorFilter(ContextCompat.getColor(context, darkColor), PorterDuff.Mode.SRC_IN)
             holder.card.setCardBackgroundColor(ContextCompat.getColor(context, color))
@@ -112,7 +107,7 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
 
             borrar.setOnClickListener{
                 val posicion = bindingAdapterPosition
-                listener?.borrarCategoria(posicion, listaCategorias!![posicion].categoria, itemView)
+                listener?.borrarCategoria(posicion, listaCategorias!![posicion].getCategoria(), itemView)
             }
         }
 
@@ -122,7 +117,7 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
             if(posicion == listaCategorias!!.size-1){
                 listener?.addCategoria(view)
             } else {
-                listener?.onItemSeleccionado(listaCategorias!![posicion].categoria, view!!.context)
+                listener?.onItemSeleccionado(listaCategorias!![posicion].getCategoria(), view!!.context)
             }
         }
     }

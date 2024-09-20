@@ -17,6 +17,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
         fun viewClick(posicion: Int)
         fun viewExportClick(posicion: Int)
         fun viewEventClick(posicion: Int)
+        fun editEvento(posicion: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderEvento {
@@ -43,6 +44,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
         private var eliminarEvento: ImageView
         private var export : ImageView
         var visibilidad: ImageView
+        private var edit: ImageView
         private var verPlan: CardView
 
         init {
@@ -51,6 +53,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
             eliminarEvento = itemView.findViewById(R.id.img_borrarEvento)
             export = itemView.findViewById(R.id.img_exportCalendar)
             visibilidad = itemView.findViewById(R.id.img_eventoVisible)
+            edit = itemView.findViewById(R.id.img_editarEvento)
             verPlan = itemView.findViewById(R.id.card_Evento)
             verPlan.setOnClickListener {
                if (listener != null) {
@@ -73,6 +76,13 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
                         visibilidad.setImageResource(R.drawable.ic_baseline_visibility_40)
                     }
                     listener.viewClick(position)
+                }
+            }
+
+            edit.setOnClickListener {
+                if (listener != null) {
+                    val position = bindingAdapterPosition
+                    listener.editEvento(position)
                 }
             }
 

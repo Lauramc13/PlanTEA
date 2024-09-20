@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.viewModels.ConfiguracionViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 
 import java.util.*
@@ -83,6 +84,7 @@ class ConfiguracionActivity : AppCompatActivity() {
         val credits : TextView = findViewById(R.id.btn_credits)
         iconEditUsuarioTEA = findViewById(R.id.id_editIconUsuario)
         iconEditObjeto = findViewById(R.id.id_editIconObjeto)
+        val configPictogramas = findViewById<MaterialButton>(R.id.btn_configuracionPictogramas)
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
@@ -156,6 +158,12 @@ class ConfiguracionActivity : AppCompatActivity() {
 
         btnGuardar.setOnClickListener {
            guardarConfiguracion(lblInfoUsuario, lblObjeto)
+        }
+
+        configPictogramas.setOnClickListener {
+            val intent = Intent(applicationContext, ConfiguracionPictogramasActivity::class.java)
+            intent.putExtra("editPreferences", true)
+            startActivity(intent)
         }
 
         observers()

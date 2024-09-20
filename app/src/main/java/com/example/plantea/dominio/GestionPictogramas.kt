@@ -3,6 +3,8 @@ package com.example.plantea.dominio
 import android.app.Activity
 import android.content.Context
 import com.example.plantea.persistencia.ConectorBD
+import com.example.plantea.presentacion.actividades.CommonUtils
+import com.google.firebase.installations.Utils
 import java.io.Serializable
 
 class GestionPictogramas : Serializable {
@@ -35,15 +37,27 @@ class GestionPictogramas : Serializable {
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
 
-        val c = conectorBD!!.listarPictogramasPrueba(idcategoria, userId, language)
+        /*val c = if(idcategoria <= 5){
+            conectorBD!!.listarPictogramasCategoria(idcategoria, userId, language)
+        }else{
+            conectorBD!!.listarPictogramasCategoriaUsuario(idcategoria, userId, language)
+
+        }
+*/
+        val c = conectorBD!!.listarPictogramasCategoria(idcategoria, userId, language)
+
         if (c.moveToFirst()) {
             do {
                 val pictograma = Pictograma()
                 pictograma.id = c.getString(0)
                 pictograma.titulo = c.getString(1)
-                pictograma.imagen = c.getString(2)
-                pictograma.categoria = c.getInt(3)
-                pictograma.favorito = c.getInt(4) == 1 // Convert favorito value to Boolean
+                if(c.getBlob(2) == null){
+                    pictograma.idAPI = c.getInt(3)
+                }else{
+                    pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
+                }
+                pictograma.categoria = c.getInt(4)
+                pictograma.favorito = c.getInt(5) == 1 // Convert favorito value to Boolean
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
         }
@@ -54,75 +68,21 @@ class GestionPictogramas : Serializable {
     }
 
 
-    fun insertarPictograma(actividad: Activity?, nombre: String?, imagen: String?, categoria: String?, idUsuario: String?): String {
+    fun insertarPictogramaLocal(actividad: Activity?, nombre: String?, imagen: ByteArray?, categoria: String?, idUsuario: String?): String {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val id = conectorBD!!.insertarPictograma(nombre, imagen, categoria, idUsuario)
+        val id = conectorBD!!.insertarPictogramaLocal(nombre, imagen, categoria, idUsuario)
         conectorBD!!.cerrar()
         return id
     }
 
-    /*fun insertarPictogramaCuaderno(actividad: Activity?, nombre: String, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
+    fun insertarPictogramaAPI(actividad: Activity?, nombre: String?, id: String?, categoria: String?): String {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val id = conectorBD!!.insertarPictogramaCuaderno(nombre, imagen, idCuaderno, idUsuario)
+        val id = conectorBD!!.insertarPictogramaAPI(nombre, id, categoria)
         conectorBD!!.cerrar()
         return id
     }
-
-    fun listarPictogramasCuaderno(actividad: Activity?, idCuaderno: Int, language: String): ArrayList<Pictograma> {
-        conectorBD = ConectorBD(actividad)
-        listaPictogramas = ArrayList()
-        conectorBD!!.abrir()
-        val c = conectorBD!!.listarPictogramasCuaderno(idCuaderno, language)
-        if (c.moveToFirst()) {
-            do {
-                val pictograma = Pictograma()
-                pictograma.id = c.getString(0)
-                pictograma.titulo = c.getString(1)
-                pictograma.imagen = c.getString(2)
-                pictograma.cuaderno = c.getInt(3)
-                pictograma.sourceAPI = c.getInt(4) == 1
-                listaPictogramas!!.add(pictograma)
-            } while (c.moveToNext())
-        }
-        c.close()
-        conectorBD!!.cerrar()
-        /*for (i in listaPictogramas!!.indices) {
-            print(listaPictogramas!![i].titulo + listaPictogramas!![i].cuaderno)
-        }*/
-        return listaPictogramas as ArrayList<Pictograma>
-    }*/
-
-  /*  fun listarConsultas(actividad: Activity?, idcategoria: Int): ArrayList<String> {
-        conectorBD = ConectorBD(actividad)
-        listaConsultas = ArrayList()
-        conectorBD!!.abrir()
-        val c = conectorBD!!.listarConsulta(idcategoria)
-        if (c.moveToFirst()) {
-            do {
-                listaConsultas!!.add(c.getString(0))
-            } while (c.moveToNext())
-        }
-        c.close()
-        conectorBD!!.cerrar()
-        return listaConsultas!!
-    }*/
-
-   /* fun obtenerImagenPictograma(actividad: Activity?, idCategoria: Int): String? {
-        conectorBD = ConectorBD(actividad)
-        var ruta: String? = null
-        conectorBD!!.abrir()
-        val c = conectorBD!!.obtenerRutaPictograma(idCategoria)
-        if (c.moveToFirst()) {
-            do {
-                ruta = c.getString(0)
-            } while (c.moveToNext())
-        }
-        c.close()
-        conectorBD!!.cerrar()
-        return ruta
-    }*/
 
     fun obtenerFavoritos(actividad: Context?, idUsuario: String?, language: String): ArrayList<Pictograma> {
         conectorBD = ConectorBD(actividad)
@@ -134,8 +94,12 @@ class GestionPictogramas : Serializable {
                 val pictograma = Pictograma()
                 pictograma.id = c.getString(0)
                 pictograma.titulo = c.getString(1)
-                pictograma.imagen = c.getString(2)
-                pictograma.categoria = 10
+                if(c.getBlob(2) == null){
+                    pictograma.idAPI = c.getInt(3)
+                }else{
+                    pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
+                }
+                pictograma.categoria = 5
                 pictograma.favorito = true
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
@@ -145,10 +109,10 @@ class GestionPictogramas : Serializable {
         return listaPictogramas!!
     }
 
-    fun insertarFavorito(context: Context?, idUsuario: String?, id:String?, titulo: String?, imagen: String?, sourceAPI: Boolean){
+    fun insertarFavorito(context: Context?, idUsuario: String?, id:String?, titulo: String?, idAPI: Int) {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
-        conectorBD!!.insertarFavorito(idUsuario, id, titulo, imagen, sourceAPI)
+        conectorBD!!.insertarFavorito(idUsuario, id, titulo, idAPI)
         conectorBD!!.cerrar()
     }
 
@@ -195,8 +159,14 @@ class GestionPictogramas : Serializable {
         if (c.moveToFirst()) {
             do {
                 pictograma.id = c.getString(0)
-                pictograma.imagen = c.getString(1)
-                pictograma.titulo = c.getString(2)
+                if(c.getBlob(1) == null){
+                    pictograma.idAPI = c.getInt(2)
+                    // pictograma.imagen = CommonUtils.getImagenAPI(pictograma.idAPI)
+                }else{
+                    pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(1))
+                }
+                pictograma.categoria = c.getInt(3)
+                pictograma.titulo = c.getString(4)
             } while (c.moveToNext())
         }
         c.close()
@@ -214,7 +184,11 @@ class GestionPictogramas : Serializable {
                 val pictograma = Pictograma()
                 pictograma.id = c.getString(0)
                 pictograma.titulo = c.getString(1)
-                pictograma.imagen = c.getString(2)
+                if(c.getBlob(2) == null){
+                    pictograma.idAPI = c.getInt(3)
+                }else{
+                    pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
+                }
                 listaPictogramas!!.add(pictograma)
             } while (c.moveToNext())
         }

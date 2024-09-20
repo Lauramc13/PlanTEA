@@ -3,7 +3,6 @@ package com.example.plantea.dominio
 import android.app.Activity
 import com.example.plantea.persistencia.ConectorBD
 
-
 class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
     private var resultado = false
@@ -17,14 +16,6 @@ class GestionUsuarios {
         return resultado
     }
 
-    /*fun comprobarPassword(email:String, password: String, actividad: Activity?): Boolean {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        resultado = conectorBD!!.consultarPass(email, password)
-        conectorBD!!.cerrar()
-        return resultado
-    }*/
-
     fun actualizarPass(idUsuario:String, passwordNueva: String, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
@@ -32,14 +23,6 @@ class GestionUsuarios {
         conectorBD!!.cerrar()
         return resultado
     }
-
-    /*fun comprobarUsuario(email: String, password: String, actividad: Activity?): Boolean? {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        resultado = conectorBD!!.consultarUsuario(email, password)
-        conectorBD!!.cerrar()
-        return resultado
-    }*/
 
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario {
         conectorBD = ConectorBD(actividad)
@@ -96,12 +79,11 @@ class GestionUsuarios {
         return resultado
     }
 
-
-   /* fun crearPassword(email: String, passCifrada: String, actividad: Activity?) {
+    fun cambiarConfiguracionPictogramas(config: String, idUsuario:String?, actividad: Activity?){
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.crearPassword(email, passCifrada)
+        conectorBD!!.cambiarConfiguracionPictogramas(config, idUsuario)
         conectorBD!!.cerrar()
-    }*/
+    }
 
 }

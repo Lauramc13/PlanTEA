@@ -31,13 +31,7 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
         context = holder.itemView.context
 
         holder.titulo.text = listaPictogramas!![position].titulo
-       // holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
-        if(identifier == 0) {
-            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-        }else{
-            holder.imagen.setImageResource(identifier)
-        }
+        holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
 
         /*if(listaPictogramas!![position].categoria in 1..4){
             holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)
@@ -54,7 +48,7 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
                 holder.heart!!.setImageResource(R.drawable.svg_heart)
                 listaPictogramas!![position].favorito = false
                 favourites.removeFavorite(listaPictogramas!![position])
-                if(listaPictogramas!![position].categoria == 10){
+                if(listaPictogramas!![position].categoria == 5){
                     listaPictogramas!!.removeAt(position)
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, listaPictogramas!!.size)
@@ -65,10 +59,30 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
                 favourites.markAsFavorite(listaPictogramas!![position])
             }
         }
+
+        configPicto(holder)
     }
 
     override fun getItemCount(): Int {
         return listaPictogramas!!.size
+    }
+
+    private fun configPicto(holder: ViewHolderPictogramas){
+        val sharedPreferences = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        when (sharedPreferences.getString("configPictogramas", "default")) {
+            "default" -> {
+                holder.imagen.visibility = View.VISIBLE
+                holder.titulo.visibility = View.VISIBLE
+            }
+            "imagen" -> {
+                holder.imagen.visibility = View.VISIBLE
+                holder.titulo.visibility = View.GONE
+            }
+            "texto" -> {
+                holder.imagen.visibility = View.GONE
+                holder.titulo.visibility = View.VISIBLE
+            }
+        }
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), OnClickListener {

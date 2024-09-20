@@ -1,9 +1,10 @@
 package com.example.plantea.presentacion.actividades
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,9 @@ import com.example.plantea.dominio.DiaSemana
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemana
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemanaHeader
 import com.example.plantea.presentacion.viewModels.SemanaViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class SemanaActivity: AppCompatActivity() {
 
@@ -42,7 +46,7 @@ class SemanaActivity: AppCompatActivity() {
         recyclerViewHeader.adapter = adaptadorHeader
 
         val recylerView = findViewById<RecyclerView>(R.id.recycler_view_images)
-        viewModel.week = viewModel.obtenerImagenes(this)
+        viewModel.week = viewModel.obtenerConfigDias(this)
         adaptador = AdaptadorTablaSemana(viewModel.week, viewModel.isEdit, viewModel)
         recylerView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 7)
         recylerView.adapter = adaptador
@@ -68,7 +72,7 @@ class SemanaActivity: AppCompatActivity() {
     fun observers(adapter: AdaptadorTablaSemana) {
         viewModel._imageSelected.observe(this) {
             for(i in 0..6){
-                if(viewModel.week[i].dia == viewModel.daySelected ){
+                if(viewModel.week[i].dia == viewModel.daySelected){
                     adapter.changeImage(i, it)
                 }
             }
@@ -77,6 +81,22 @@ class SemanaActivity: AppCompatActivity() {
         viewModel._itemBorrado.observe(this) {
             adapter.changeImage(it, null)
             viewModel.week[it].imagen = null
+        }
+
+        viewModel._itemColor.observe(this) {
+            viewModel.week[it].color = viewModel.colorSelected
+            adapter.changeColor(it, viewModel.colorSelected)
+        }
+
+        viewModel._diaClicked.observe(this) {
+            // it to localdate
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val localDate = LocalDate.parse(it, formatter)
+
+            val intent = Intent(this, EventosActivity::class.java)
+            intent.putExtra("dia", localDate)
+            intent.putExtra("isFromSemana", true)
+            startActivity(intent)
         }
     }
 
@@ -90,27 +110,31 @@ class SemanaActivity: AppCompatActivity() {
         }
 
         buttonCancelar.setOnClickListener {
-            val listaSemana = viewModel.obtenerImagenes(this)
+            val listaSemana = viewModel.obtenerConfigDias(this)
             viewModel.configuration = semana.obtenerconfig(viewModel.idUsuario, this)
             adaptador.listaDiaSemana = listaSemana
             viewModel.week = listaSemana
             viewModel.isEdit = false
             adaptador.isEdit = viewModel.isEdit
+            adaptador.notifyDataSetChanged() // probar a quitar una
             adaptador.notifyDataSetChanged()
-            adaptador.notifyDataSetChanged()
+            adaptador.currentPopupWindow?.dismiss()
             adaptadorHeader.updateList(viewModel.configurarDaysWeek(viewModel.configuration), viewModel.configuration)
             changeButtons(layoutOptions, buttonEditar, buttonSwitch)
         }
 
         buttonGuardar.setOnClickListener {
             for(i in 0..6){
-                if(viewModel.week[i].imagen != null){
-                    val imageBlob = viewModel.bitmapToByteArray(viewModel.week[i].imagen!!)
-                    viewModel.week[i].dia?.let { it1 ->
-                        semana.guardarImagen(viewModel.idUsuario, imageBlob, it1, this)
-                    }
-                }else{
+                if(viewModel.week[i].imagen != null || viewModel.week[i].color != null) {
+                    val imageBlob = CommonUtils.bitmapToByteArray(viewModel.week[i].imagen)
+                    semana.guardarSemana(viewModel.idUsuario, imageBlob, viewModel.week[i].color, viewModel.week[i].dia, this)
+                }
+               if(viewModel.week[i].imagen == null){
                     semana.borrarImagen(viewModel.idUsuario, viewModel.week[i].dia!!, this)
+               }
+
+                if(viewModel.week[i].color == null){
+                    semana.borrarColor(viewModel.idUsuario, viewModel.week[i].dia!!, this)
                 }
             }
 

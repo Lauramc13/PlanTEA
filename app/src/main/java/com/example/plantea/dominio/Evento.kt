@@ -3,6 +3,7 @@ package com.example.plantea.dominio
 import android.app.Activity
 import android.content.Context
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class Evento {
     var id = 0
@@ -10,27 +11,30 @@ class Evento {
     var nombre: String? = null
     var fecha: LocalDate? = null
     var hora: String? = null
-    var id_plan = 0
     var visible = 0
-    var cambiar_visibilidad = false
+    var cambiarVisibilidad = false
+    var reminder : LocalDateTime? = null
+    var idPlan = 0
+
     private var gestorEventos = GestionEventos()
 
     constructor()
-    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, idPlan: Int, cambiarVisibilidad: Boolean) {
+    constructor(id: Int, idUsuario: String, nombre: String?, fecha: LocalDate?, hora: String?, planId: Int, cambiarVisibilidad: Boolean, reminder : LocalDateTime?) {
         this.id = id
         this.idUsuario = idUsuario
         this.nombre = nombre
         this.fecha = fecha
         this.hora = hora
-        this.id_plan = idPlan
-        this.cambiar_visibilidad = cambiarVisibilidad
+        this.idPlan = planId
+        this.cambiarVisibilidad = cambiarVisibilidad
+        this.reminder = reminder
     }
 
-    fun obtenerEventos(idUsuario: String, actividad: Activity?, fechaSeleccionada: LocalDate): ArrayList<*> {
-        listaEventos = gestorEventos.listarEventos(actividad, idUsuario)
+    fun obtenerEventos(idUsuario: String, actividad: Activity?, fechaSeleccionada: LocalDate): ArrayList<Evento> {
+       val listaEventos = gestorEventos.listarEventos(actividad, idUsuario)
         //obtener eventos para una fecha determinada
         val eventos = ArrayList<Evento>()
-        for (evento in listaEventos!!) {
+        for (evento in listaEventos) {
             if (evento.fecha == fechaSeleccionada) {
                 eventos.add(evento)
             }
@@ -38,13 +42,20 @@ class Evento {
         return eventos
     }
 
-    fun obtenerTodosEventos(idUsuario: String, actividad: Activity?): ArrayList<*> {
-        listaEventos = gestorEventos.listarEventos(actividad, idUsuario)
-        return listaEventos as ArrayList<Evento>
+    fun obtenerInfoEvento(idEvento: Int, actividad: Activity?): Evento {
+        return gestorEventos.obtenerInfoEvento(actividad, idEvento)
+    }
+
+    fun obtenerTodosEventos(idUsuario: String, actividad: Activity?): ArrayList<Evento> {
+        return gestorEventos.listarEventos(actividad, idUsuario)
     }
 
     fun crearEvento(actividad: Activity?, evento: Evento): Int {
         return gestorEventos.crearEvento(actividad, evento)
+    }
+
+    fun editarEvento(actividad: Activity?, evento: Evento): Int {
+        return gestorEventos.editarEvento(actividad, evento)
     }
 
     fun eliminarEvento(actividad: Activity?, idEvento: Int) {
@@ -72,8 +83,4 @@ class Evento {
         return gestorEventos.checkEventosDia(idUsuario, fecha, context)
     }
 
-    companion object {
-        @JvmField
-        var listaEventos: ArrayList<Evento>? = ArrayList()
-    }
 }

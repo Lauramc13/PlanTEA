@@ -30,7 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,6 +65,7 @@
         android:textAllCaps="true"
         android:textSize="@dimen/button"
         app:cornerRadius="25dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@+id/tableLayout"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout"/>
 
@@ -120,7 +120,7 @@
         android:background="@drawable/bg_cards_configuracion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.65"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout16"
         app:layout_constraintWidth_percent="0.8">

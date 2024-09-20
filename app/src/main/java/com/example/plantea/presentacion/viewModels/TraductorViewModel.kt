@@ -5,8 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
@@ -22,9 +20,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getString
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Pictograma
@@ -53,7 +49,6 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     private var listaPictoBuscador: MutableList<MutableMap<Bitmap, Pair<String, Int>>> = mutableListOf()
     lateinit var adaptador: AdaptadorPictogramasTraductor
     var _visibilityButtons = MutableLiveData<Boolean>()
-    var speechInProgress = false
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var bitmap : Bitmap? = null
     var ruta : String? = null
@@ -77,25 +72,37 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         if (!texto.isNullOrBlank()) {
             val words = texto.split("\\s+".toRegex())
             listaTraducir.addAll(words)
-            getPictogramas(context)
+            getPictogramas()
             return true
         }
         return false
     }
 
-    private fun getPictogramas(context: Context) {
+    private fun getPictogramas() {
        val job = CoroutineScope(Dispatchers.IO).launch {
             for (word in listaTraducir) {
                 val dict = CommonUtils.getDataApi(word)
-
-                withContext(Dispatchers.Main) {
-                    dict.keys.first().let{ key ->
-                        dict[key]?.let {
-                            crearPictoTraduccion(key, word, null, context)
-                            _listaPictogramas.value = listaPictogramas
+                if(dict.size == 1){
+                    withContext(Dispatchers.Main) {
+                        dict.keys.first().let{ key ->
+                            dict[key]?.let {
+                                crearPictoTraduccion(key, word, 0, null)
+                                _listaPictogramas.value = listaPictogramas
+                            }
+                        }
+                    }
+                }else{
+                    withContext(Dispatchers.Main) {
+                        dict.keys.first().let{ key ->
+                            dict[key]?.let { (_, id) ->
+                                crearPictoTraduccion(key, word, id, null)
+                                _listaPictogramas.value = listaPictogramas
+                            }
                         }
                     }
                 }
+
+
                 listaPictoBuscador.add(dict)
             }
        }
@@ -107,15 +114,12 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
        }
     }
 
-    private fun crearPictoTraduccion(bitmap: Bitmap, titulo: String?, posicion: Int?, context: Context) {
-        val archivo = CommonUtils.crearImagen(bitmap, titulo, context)
+    private fun crearPictoTraduccion(bitmap: Bitmap, titulo: String?, idAPI: Int, posicion: Int?) {
         val id = generateBitmapId(bitmap)
-
-        //Si sabemos la posicion del pictograma, estamos cambiando la imagen del pictograma
         if(posicion != null){
-            listaPictogramas[posicion] = Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, favorito = false, sourceAPI = true)
+            listaPictogramas[posicion] = Pictograma(id.toString(), titulo?.uppercase(), bitmap,  idAPI, 0, false)
         }else {
-            listaPictogramas.add(Pictograma(id.toString(), titulo?.uppercase(), archivo, 0, 0, favorito = false, sourceAPI = true))
+            listaPictogramas.add(Pictograma(id.toString(), titulo?.uppercase(), bitmap, idAPI, 0,false))
         }
     }
 
@@ -140,7 +144,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         val idPlan = idUsuario?.let { it1 ->
             plan.crearPlanificacion(context as TraductorActivity,  it1, titulo.uppercase(Locale.getDefault()))
         }
-        val creada = plan.addPictogramasPlan(idPlan, context as TraductorActivity, listaPictogramas)
+        val creada = plan.addPictogramasPlanTraductor(idPlan, context as TraductorActivity, listaPictogramas, idUsuario)
 
         if (creada == true) {
             _dialogMessage.value = R.string.toast_planificacion_creada
@@ -220,7 +224,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 position++
             }
 
-            crearPictoTraduccion(entryList[position].key, listaPictogramas[posicion].titulo, posicion, context)
+            crearPictoTraduccion(entryList[position].key, listaPictogramas[posicion].titulo, listaPictogramas[posicion].idAPI, posicion)
             adaptador.notifyItemChanged(posicion)
 
         }catch (e: Exception){
@@ -237,7 +241,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     }
 
     fun imageSelected(){
-        listaPictogramas[posicionSelected].imagen = ruta
+         listaPictogramas[posicionSelected].imagen = bitmap!!
         adaptador.notifyItemChanged(posicionSelected)
     }
 
@@ -297,12 +301,11 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
 
             var contadorFrase = 0
             for (pictograma in listaPictogramas) {
-                val drawableString = pictograma.imagen
-                val bitmap = BitmapFactory.decodeFile(drawableString)
-                val imageWidth = bitmap.width.toFloat()
-                val imageX = columna * 400f + (400f - imageWidth) / 2
+                val bitmap = pictograma.imagen
+                val imageWidth = bitmap?.width?.toFloat()
+                val imageX = columna * 400f + (400f - imageWidth!!) / 2
 
-                bitmap?.let {
+                bitmap.let {
                     canvas.drawBitmap(it, imageX+50f, fila*520f+top, null)
                 }
 
@@ -353,7 +356,12 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         } catch (e: Exception) {
             Log.e("ERROR", "Error creating PDF: ${e.message}", e)
         }
+    }
 
+    override fun onItemEliminado(posicion: Int) {
+        listaPictogramas.removeAt(posicion)
+        listaPictoBuscador.removeAt(posicion)
+        adaptador.notifyItemRemoved(posicion)
     }
 
 }

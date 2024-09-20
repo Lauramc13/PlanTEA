@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -46,8 +47,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentacion.actividades.PlanActivity"
-            android:label="Planificación"
+            android:name=".presentacion.actividades.EventosActivity"
+            android:label="Eventos"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="unspecified"
             android:exported="true">
@@ -58,6 +59,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentacion.actividades.EventosPlanificadorActivity"
+            android:label="Crear planificación"
+            android:windowSoftInputMode="adjustResize|stateUnchanged" />
 
         <activity
             android:name=".presentacion.actividades.CrearPlanActivity"
@@ -105,6 +110,13 @@
         <activity
             android:name=".presentacion.actividades.SemanaActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.PlanificacionesActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.ConfiguracionPictogramasActivity"
+            android:windowSoftInputMode="adjustPan" />
+
 
         <receiver android:name=".dominio.OnAlarmReceiver" />
     </application>

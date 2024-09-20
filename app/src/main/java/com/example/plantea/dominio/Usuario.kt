@@ -11,11 +11,12 @@ class Usuario {
     private var imagenObjeto: String?=null
     private var imagenTEA: String?=null
     private var nameTEA: String?=null
+    private var configPictograma : String?=null
+
     private var gestorUsuario = GestionUsuarios()
-    private var resultado: Boolean? = null
 
     constructor()
-    constructor(nombre:String?, correo: String?, nombreUsuario:String?, objet:String?, image:String?, nombreTEA:String?, imageTEA:String?, imageObjeto:String? ){
+    constructor(nombre:String?, correo: String?, nombreUsuario:String?, objet:String?, image:String?, nombreTEA:String?, imageTEA:String?, imageObjeto:String?, configPicto:String?){
         name = nombre
         email = correo
         username = nombreUsuario
@@ -24,55 +25,29 @@ class Usuario {
         nameTEA = nombreTEA
         imagenTEA = imageTEA
         imagenObjeto = imageObjeto
+        configPictograma = configPicto
     }
+
 
     // Getters
-    fun getName(): String? {
-        return name
-    }
+    fun getName() = name
+    fun getEmail() = email
+    fun getUsername() = username
+    fun getImagen() = imagen
+    fun getObjeto() = objeto
+    fun getNameTEA() = nameTEA
+    fun getImagenTEA() = imagenTEA
+    fun getImagenObjeto() = imagenObjeto
 
-    fun getEmail(): String? {
-        return email
-    }
-
-
-    fun getUsername(): String? {
-        return username
-    }
-
-    fun getImagen(): String? {
-        return imagen
-    }
-
-    fun getObjeto(): String? {
-        return objeto
-    }
-
-    fun getNameTEA(): String? {
-        return nameTEA
-    }
-
-    fun getImagenTEA(): String?{
-        return imagenTEA
-    }
-
-    fun getImagenObjeto(): String?{
-        return imagenObjeto
-    }
+    fun getConfigPictograma() = configPictograma
 
     fun crearUsuario(name:String?, email: String?, password: String?, username: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.crearUsuario(name, email, password, username, objeto, nameTEA, actividad)
-        return resultado!!
+       return gestorUsuario.crearUsuario(name, email, password, username, objeto, nameTEA, actividad)
     }
 
-   /* fun comprobarPass(email: String, password: String, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.comprobarPassword(email, password, actividad)
-        return resultado!!
-    }*/
-
     fun actualizarPass(idUsuario: String, passwordNueva: String, actividad: Activity?): Boolean {
-        resultado = gestorUsuario.actualizarPass(idUsuario, passwordNueva, actividad)
-        return resultado!!
+        return gestorUsuario.actualizarPass(idUsuario, passwordNueva, actividad)
+
     }
     
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario{
@@ -93,7 +68,6 @@ class Usuario {
 
     fun consultarId(email: String, actividad: Activity?): String? {
         return gestorUsuario.consultarId(email, actividad)
-
     }
 
     fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario:String?, actividad: Activity?) {
@@ -102,6 +76,10 @@ class Usuario {
 
     fun checkCredentials(email: String, password: String, actividad: Activity?): Boolean {
         return gestorUsuario.checkCredentials(email, password, actividad)
+    }
+
+    fun cambiarConfiguracionPictogramas(config: String, idUsuario: String?, actividad: Activity?){
+        return gestorUsuario.cambiarConfiguracionPictogramas(config, idUsuario, actividad)
     }
 
 }

@@ -66,6 +66,8 @@ class PreLoginViewModel: ViewModel() {
         editor.putString("nombreUsuarioPlanificador", user.getUsername())
         editor.putString("email", user.getEmail())
         editor.putString("nombreUsuarioTEA", user.getNameTEA())
+        editor.putString("configPictogramas", user.getConfigPictograma())
+
 
         if (user.getNameTEA() != "") {
             editor.putBoolean("info_usuario", true)

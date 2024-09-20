@@ -88,7 +88,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/greenCategoria"
-
                     android:layout_margin="2dp" />
             </LinearLayout>
 

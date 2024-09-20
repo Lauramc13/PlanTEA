@@ -33,8 +33,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="600dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintHeight_percent="0.8"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintHeight_percent="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
         app:layout_constraintWidth_max="1200dp"
@@ -110,7 +110,6 @@
 
             </LinearLayout>
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_calendario"
                 android:layout_width="match_parent"
@@ -127,12 +126,39 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout17" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_calendario"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="50dp"
-            android:background="@drawable/bg_calendario" />
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/fragment_calendario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:background="@drawable/bg_calendario" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_planificaciones"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.95"
+                android:layout_marginTop="20dp"
+                android:text="@string/planificaciones"
+                android:textColor="#203130"
+                android:textAllCaps="true"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/buttonBig"
+                android:elevation="0dp"
+                app:icon="@drawable/svg_folder"
+                app:iconGravity="textStart"
+                app:iconTint="#203130"
+                app:iconPadding="20dp"
+                app:iconSize="30dp"
+                android:background="@drawable/bg_calendario_planificaciones" />
+        </LinearLayout>
 
     </LinearLayout>
 

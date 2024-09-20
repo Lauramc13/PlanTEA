@@ -24,6 +24,8 @@
     <string name="lbl_Entretenimiento">ENTRETENIMIENTO</string>
     <string name="lbl_Recompensa">RECOMPENSA</string>
     <string name="lbl_NuevoPicto">Añadir pictograma</string>
+    <string name="lbl_imprevistoPicto">Cambiar pictograma</string>
+    <string name="lbl_NuevoPictoSemana">Añadir pictograma a la semana</string>
     <string name="lbl_NuevaCategoria">Añadir categoría</string>
     <string name="lbl_Planes">Planificaciones Disponibles</string>
     <string name="lbl_CrearPlanActividad">Título:</string>
@@ -109,6 +111,8 @@
     <string name="lbl_saltar">SALTAR</string>
     <string name="lbl_deshacer">DESHACER</string>
     <string name="lbl_reproducir">Reproducir</string>
+    <string name="lbl_seleccionaPictograma">Selecciona la opción de visualización de los pictogramas</string>
+    <string name="lbl_seleccionaPictograma2">Los pictogramas se visualizarán según su preferencia</string>
 
     <string name="lbl_cuaderno">Cuaderno de comunicación</string>
     <string name="lbl_iniciarSesion">INICIAR SESIÓN</string>
@@ -149,6 +153,7 @@
     <string name="hora">Hora:</string>
     <string name="recordatorio">Recordatorio:</string>
     <string name="planificaciones_disponibles">Planificaciones disponibles:</string>
+    <string name="eventos_disponibles">Eventos disponibles:</string>
     <string name="recordar">Recordar...</string>
     <string name="recordar_5min">5 minutos antes</string>
     <string name="recordar_1hora">1 hora antes</string>
@@ -180,6 +185,7 @@
     <string name="duracion">Duración</string>
     <string name="actividad_entre">Actividad de entretenimiento</string>
     <string name="cambiar_rol">Cambiar rol</string>
+    <string name="cambiar">Cambiar</string>
     <string name="aniadir_picto_entre">AÑADIR PICTOGRAMA DE ENTRETENIMIENTO</string>
     <string name="item_entretenimiento">Entretenimiento</string>
     <string name="item_recompensa">Recompensa</string>
@@ -191,6 +197,7 @@
     <string name="pantalla_eventos">Eventos</string>
     <string name="pantalla_traductor">Traductor</string>
     <string name="pantalla_calendario">Calendario</string>
+    <string name="pantalla_planificaciones">Planiﬁcaciones</string>
     <string name="pantalla_cuaderno">Cuadernos de comunicación</string>
     <string name="pantalla_acercade">Acerca de la aplicación</string>
     <string name="pantalla_configuracion">Configuración</string>
@@ -404,5 +411,9 @@
     <string name="crear_planificacion">CREAR PLANIFICACION</string>
     <string name="guardar_traducci_n_como_pdf">Guardar traducción como pdf</string>
     <string name="titulo_para_la_traducci_n">Titulo para la traducción</string>
+    <string name="mensaje_eventos_pasados">No se pueden crear eventos en fechas pasadas</string>
+    <string name="toast_queda_poco_tiempo">Queda menos de 1 minuto</string>
+    <string name="importante">¡IMPORTANTE!</string>
+    <string name="no_eventos_disponibles">No existen eventos disponibles</string>
 
 </resources>

@@ -2,17 +2,21 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.os.Environment
 import com.example.plantea.persistencia.ConectorBD
+import com.example.plantea.presentacion.actividades.CommonUtils
+import java.io.FileOutputStream
 
 class GestionCategorias {
     private var listaCategorias: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
 
-    fun listarCategorias(actividad: Activity?, language: String): ArrayList<String> {
+   /* fun listarCategorias(actividad: Activity?, language: String, idUsuario: String?): ArrayList<String> {
         conectorBD = ConectorBD(actividad)
         listaCategorias = ArrayList()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarCategorias(language)
+        val c = conectorBD!!.listarCategoriasPrincipales(idUsuario, language)
         if (c.moveToFirst()) {
             do {
                 listaCategorias!!.add(c.getString(1))
@@ -22,7 +26,7 @@ class GestionCategorias {
         c.close()
         conectorBD!!.cerrar()
         return listaCategorias!!
-    }
+    }*/
 
     fun obtenerIdCategoria(context: Context, nombre: String?, language: String): Int {
         conectorBD = ConectorBD(context)
@@ -37,6 +41,14 @@ class GestionCategorias {
         return categoria
     }
 
+    fun duplicateCategoria(context: Context, idUsuario: String, idCategoria: Int): Int {
+        conectorBD = ConectorBD(context)
+        conectorBD!!.abrir()
+        val id =  conectorBD!!.duplicateCategoria(idUsuario, idCategoria)
+        conectorBD!!.cerrar()
+        return id
+    }
+
     fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario:String, language: String): ArrayList<Categoria> {
         conectorBD = ConectorBD(actividad)
         val listCategorias = ArrayList<Categoria>()
@@ -44,11 +56,9 @@ class GestionCategorias {
         val c = conectorBD!!.listarCategoriasPrincipales(idUsuario, language)
         if (c.moveToFirst()) {
             do {
-                val categoria = Categoria()
-                categoria.categoria = c.getInt(0)
-                categoria.titulo = c.getString(1)
-                categoria.imagen = c.getString(2)
-                categoria.color = c.getString(3)
+                val img = c.getBlob(2)
+                val imgBitmap = BitmapFactory.decodeByteArray(img, 0, img.size)
+                val categoria = Categoria(c.getInt(0), c.getString(1), imgBitmap, c.getString(3))
                 listCategorias.add(categoria)
 
             } while (c.moveToNext())
@@ -58,21 +68,11 @@ class GestionCategorias {
         return listCategorias
     }
 
-   /* fun insertarSubcategoria(actividad: Activity?, nombre: String?) {
+    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: ByteArray?, color: String, idUsuario: String): Int {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarSubcategoria(nombre)
-        conectorBD!!.cerrar()
-    }*/
+        val idCategoria  = conectorBD!!.insertarCategoria(nombre, imagen, color, idUsuario).toInt()
 
-    fun insertarCategoria(actividad: Activity?, nombre: String?, imagen: String?, color: String, idUsuario: String): Int {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        val cursor  = conectorBD!!.insertarCategoria(nombre, imagen, color, idUsuario)
-        var idCategoria = 0
-        if (cursor.moveToFirst()) {
-            idCategoria = cursor.getInt(0)
-        }
         conectorBD!!.cerrar()
         return idCategoria
     }
@@ -100,26 +100,4 @@ class GestionCategorias {
         return existe
     }
 
-    fun obtenerCategoriaById(context: Context, idCategoria: Int, language: String): String {
-        conectorBD = ConectorBD(context)
-        conectorBD!!.abrir()
-        var titulo = ""
-        val c = conectorBD!!.obtenerCategoriaById(idCategoria, language)
-        if (c.moveToFirst()) {
-            titulo = c.getString(0)
-        }
-        c.close()
-        conectorBD!!.cerrar()
-        return titulo
-    }
-
-
-    /* fun obtenerTituloCategoria(context: Context, idCategoria: Int): String {
-         conectorBD = ConectorBD(context)
-         conectorBD!!.abrir()
-         var titulo = ""
-         titulo = conectorBD!!.obtenerTituloCategoria(idCategoria).toString()
-         conectorBD!!.cerrar()
-         return titulo
-     }*/
 }

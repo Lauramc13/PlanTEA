@@ -32,6 +32,15 @@
     <attr name="pizzaraBorde" format="reference" />
     <attr name="pizzaraFondo" format="reference" />
 
+    <attr name="colorRed" format="reference" />
+    <attr name="colorOrange" format="reference" />
+    <attr name="colorYellow" format="reference" />
+    <attr name="colorGreen" format="reference" />
+    <attr name="colorBlue" format="reference" />
+    <attr name="colorPurple" format="reference" />
+    <attr name="colorPink" format="reference" />
+
+
 
 
 

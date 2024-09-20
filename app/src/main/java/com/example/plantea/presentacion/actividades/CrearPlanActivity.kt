@@ -45,7 +45,6 @@ class CrearPlanActivity : AppCompatActivity(){
     private var dialogEntretenimiento: Dialog? = null
     //RecyclerView Planificacion
     lateinit var recyclerView: RecyclerView
-    lateinit var adaptador: AdaptadorPlanificacion
 
     var fragment = Fragment()
 
@@ -83,15 +82,15 @@ class CrearPlanActivity : AppCompatActivity(){
         // SearchView para buscar pictogramas
         AniadirPictoUtils.inializeSearch(searchBar, false, viewModel, this@CrearPlanActivity)
 
-        //Comprobar si hay parametros en caso de llamada desde editar
-        val parametros = this.intent.extras
-        if (parametros != null) {
-            viewModel.opcionEditar = true
-            viewModel.listaPlanificacion = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
-        }
 
         //Iniciar RecyclerView de planificaciones
         initRecyclerViewPlan()
+
+        //Comprobar si hay parametros en caso de llamada desde editar
+        val parametros = this.intent.extras
+        if (parametros != null) {
+            viewModel.configurarParametros(intent, this)
+        }
 
         if(savedInstanceState == null){
             fragment = CategoriasFragment()
@@ -144,11 +143,11 @@ class CrearPlanActivity : AppCompatActivity(){
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_planificacion)
         recyclerView.layoutManager = layoutManager
-        adaptador = AdaptadorPlanificacion(viewModel.listaPlanificacion, viewModel)
-        recyclerView.adapter = adaptador
+        viewModel.adaptadorPlanificacion = AdaptadorPlanificacion(viewModel.listaPlanificacion, viewModel)
+        recyclerView.adapter = viewModel.adaptadorPlanificacion
 
         //Desplaza la lista para insertar un nuevo pictograma
-        recyclerView.scrollToPosition(adaptador.itemCount - 2)
+        recyclerView.scrollToPosition(viewModel.adaptadorPlanificacion.itemCount - 2)
     }
 
     fun observers() {
@@ -176,10 +175,10 @@ class CrearPlanActivity : AppCompatActivity(){
         viewModel._pictogramaSeleccionado.observe(this) {
             //initRecyclerViewPlan()
             viewModel.tituloPicto = it.titulo!!
-            viewModel.imagenPicto = it.imagen!!
+          //  viewModel.imagenPicto = it.imagen!! TODO uncomment
             viewModel.categoriaPicto = it.categoria
-            adaptador.notifyItemInserted(viewModel.listaPlanificacion.size - 1)
-            recyclerView.scrollToPosition(adaptador.itemCount -2)
+            viewModel.adaptadorPlanificacion.notifyItemInserted(viewModel.listaPlanificacion.size - 1)
+            recyclerView.scrollToPosition(viewModel.adaptadorPlanificacion.itemCount -2)
         }
 
         viewModel._nuevoPictoDialog.observe(this) {
@@ -218,7 +217,7 @@ class CrearPlanActivity : AppCompatActivity(){
                     Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.listaPlanificacion[it].historia = historiaText.editText?.text.toString()
-                    adaptador.notifyItemChanged(it)
+                    viewModel.adaptadorPlanificacion.notifyItemChanged(it)
                     dialog.dismiss()
                 }
             }
@@ -260,7 +259,7 @@ class CrearPlanActivity : AppCompatActivity(){
             if(prefs.getBoolean("info_objeto", false)) {
                 pictograma.id = "-1"
                 pictograma.titulo = prefs.getString("nombreObjeto", "default")!!.uppercase()
-                pictograma.imagen = prefs.getString("imagenObjeto", "default")
+                //pictograma.imagen = prefs.getString("imagenObjeto", "default") TODO uncomment
                 listaPictogramas.add(pictograma)
                 recyclerActividad(recyclerActividad, dialogEntretenimiento!!, listaPictogramas, idPictoEntretenimiento)
             }else{
@@ -307,7 +306,7 @@ class CrearPlanActivity : AppCompatActivity(){
             val cerrarDialgo = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
 
             if(viewModel.opcionEditar){
-                txtTituloPlan.editText?.setText(intent.getStringExtra("titulo"))
+                txtTituloPlan.editText?.setText(intent.getStringExtra("tituloPlan"))
             }
 
             cerrarDialgo.setOnClickListener {
@@ -319,9 +318,9 @@ class CrearPlanActivity : AppCompatActivity(){
                 if(txtTituloPlan.editText?.text.toString() == ""){
                     txtTituloPlan.editText?.setText(getString(R.string.str_notitle))
                 }
-                var idPlan = 0
+                var idPlan: Int
                 if (viewModel.opcionEditar) {
-                    idPlan = intent.getIntExtra("identificador", 0)
+                    idPlan = intent.getIntExtra("idPlan", 0)
 
                     viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, viewModel.idUsuario, idPlan, txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
                     Toast.makeText(this, R.string.toast_plan_actualizado, Toast.LENGTH_SHORT).show()
@@ -338,6 +337,7 @@ class CrearPlanActivity : AppCompatActivity(){
                 val intent = intent
                 intent.putExtra("idPlan", idPlan)
                 intent.putExtra("isNuevo", viewModel.opcionEditar)
+                intent.putExtra("tituloPlan", txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()))
                 setResult(RESULT_OK, intent)
                 finish()
             }
@@ -351,7 +351,7 @@ class CrearPlanActivity : AppCompatActivity(){
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
-                val ruta =  CommonUtils.getPathFromUri(this, uri)
+                val ruta =  CommonUtils.getPathFromUri(this, uri) // TODO: CAMBIAR
                 CommonUtils.guardarImagen(this, ruta, bitmap)
                 viewModel._image.value = uri
 

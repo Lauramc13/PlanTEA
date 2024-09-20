@@ -283,8 +283,8 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/lbl_infoUsuarioTEA"
                     style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:gravity="top"
@@ -440,6 +440,35 @@
                         android:inputType="text"
                         android:textColor="?colorOnSurface" />
                 </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/bg_cards_configuracion"
+                android:contentDescription="Contenedor de la actividad tranquilizadora"
+                android:elevation="0dp">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:id="@+id/btn_configuracionPictogramas"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Configuracion de los pictogramas"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button"
+                    android:maxLines="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
            <!-- <LinearLayout

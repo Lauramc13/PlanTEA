@@ -22,10 +22,6 @@ import com.example.plantea.presentacion.viewModels.TraductorViewModel
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
 
-
-import java.util.UUID
-
-
 class TraductorActivity : AppCompatActivity() {
    // private lateinit var escucharButtonPalabra : Button
    // private lateinit var escucharButtonFrase : Button
@@ -188,17 +184,13 @@ class TraductorActivity : AppCompatActivity() {
         viewModel._traduccionEnded.observe(this) {
             traducirButton.isEnabled = true
         }
-
     }
 
     private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
-                val nombreFile = viewModel.listaPictogramas[viewModel.posicionSelected].titulo + UUID.randomUUID().toString()
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-
-                viewModel.ruta = CommonUtils.guardarImagen(applicationContext, nombreFile, viewModel.bitmap!!)
                 viewModel.imageSelected()
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()

@@ -151,52 +151,50 @@ class ManualActivity : AppCompatActivity() {
 
             toggleCardHeight(cardTraductor, iconTraductor, textTraductor, fragmentImgenTraductor)
         }
-
-     /*   cardConfiguracion.setOnClickListener {
-            val pasos = resources.getStringArray(R.array.str_configuracion).toList()
-
-            val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            textCuaderno.layoutManager = layoutManagerLinear
-            val adapter = AdaptadorListaManual(pasos)
-            textCuaderno.adapter = adapter
-
-            val gif = GifDrawable(resources, R.drawable.gif_traductor)
-            fragmentImgenConfiguracion?.setImageDrawable(gif)
-            fragmentImagen?.setImageDrawable(gif)
-            toggleCardHeight(cardConfiguracion, iconConfiguracion, textConfiguracion, fragmentImgenConfiguracion)
-        }*/
     }
 
-    // function to toggle the card height based on the device
-    private fun toggleCardHeight(cardView: MaterialCardView, icon: ImageView, view: RecyclerView, fragmentImgen: GifImageView?) {
-        if(cardOpened == cardView){
+    private fun toggleCardHeight(cardView: MaterialCardView, icon: ImageView, textView: RecyclerView, gifImageView: GifImageView?) {
+        if (cardOpened == cardView) {
+            // Cierra la tarjeta si está abierta
             cardOpened = null
             iconOpened = null
             isOpen = false
             animateCard(cardView, icon, dpToPx(70), 0f)
-            fragmentImgen?.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.paleta_colores))
-        }else{
-            cardOpened?.let { iconOpened?.let { it1 -> animateCard(it, it1, dpToPx(70), 0f)}}
-            isOpen = true
-            view.measure(View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
-            val height = view.measuredHeight
-            if(CommonUtils.isMobile(this)){
-                //height of the cardView
-                val totalHeight = height + (cardView.width*0.60).toInt() + dpToPx(70)
-                animateCard(cardView, icon, totalHeight, 90f)
-            }else{
-                val totalHeight2 = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    height + (cardView.width*0.62).toInt() + dpToPx(30)
-                }else{
-                    height + dpToPx(90)
+        } else {
+            // Cierra la tarjeta previamente abierta si existe
+            cardOpened?.let { iconOpened?.let { it1 -> animateCard(it, it1, dpToPx(70), 0f) } }
+
+            textView.measure(View.MeasureSpec.makeMeasureSpec(textView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
+            val height = textView.measuredHeight
+
+            if (CommonUtils.isMobile(this)) {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    animateCard(cardView, icon, height + dpToPx(70) + dpToPx(210), 90f) // 210 por la altura del gif
+                } else {
+                    animateCard(cardView, icon, height + dpToPx(70) + dpToPx(20), 90f) // 20dp como margen inferior
                 }
-                animateCard(cardView, icon, totalHeight2, 90f)
+            } else {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    animateCard(cardView, icon, height + dpToPx(90) + dpToPx(400), 90f) // 400 por la altura del gif
+                } else {
+                    animateCard(cardView, icon,  height + dpToPx(90), 90f)
+                }
             }
 
             cardOpened = cardView
             iconOpened = icon
+            isOpen = true
         }
     }
+
+    // Función auxiliar para medir la vista
+    private fun measureView(view: View?) {
+        view?.measure(
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+    }
+
 
     // Function to animate the card
     private fun animateCard(cardView: MaterialCardView, icon: ImageView, newHeight: Int, degrees: Float){

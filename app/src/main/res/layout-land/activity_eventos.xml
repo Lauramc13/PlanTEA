@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?customBgColor"
+    tools:context=".presentacion.actividades.EventosActivity">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob3"
+        app:tint="?subColorBackground" />
+
+    <ImageView
+        android:id="@+id/imageDecoration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_cards_configuracion">
+
+                <LinearLayout
+                    android:id="@+id/layout_fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:contentDescription="Mes y flechas de navegación atras/delante"
+                    android:orientation="horizontal"
+                    app:cornerRadius="25dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl_dia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:layout_marginEnd="10dp"
+                            android:autoSizeTextType="uniform"
+                            android:fontFamily="@font/poppins_bold"
+                            android:maxLines="2"
+                            android:text="Viernes, 9 de septiembre"
+                            android:textColor="?colorTertiary"
+                            android:textSize="@dimen/subtitle" />
+
+                        <TextView
+                            android:id="@+id/lbl_titulo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Titulo"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="@dimen/titleSmall"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/CalendarDate"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Botón calendario"
+                        android:gravity="center"
+                        app:cornerRadius="25dp"
+                        android:layout_marginEnd="15dp"
+                        app:icon="@drawable/svg_calendardate"
+                        app:iconSize="26dp"
+                        app:iconTint="?colorOnSurface">
+
+                    </Button>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_plan">
+
+                    <Button
+                        android:id="@+id/icon_deshacerTodas"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="50dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="5dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:enabled="false"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/svg_rewind"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:iconTint="#203130" />
+
+                    <Button
+                        android:id="@+id/icon_deshacer"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="5dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:elevation="0dp"
+                        android:enabled="false"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/svg_play_goback"
+                        app:iconGravity="textEnd"
+                        app:iconSize="20dp"
+                        app:iconTint="#203130" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/icon_reproducir"
+                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:elevation="0dp"
+                        android:enabled="true"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        app:cornerRadius="100dp"
+                        app:icon="@drawable/svg_play"
+                        app:iconGravity="textEnd"
+                        app:iconSize="25dp"
+                        app:iconTint="#203130" />
+
+                    <Button
+                        android:id="@+id/icon_marcar"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="5dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:elevation="0dp"
+                        app:icon="@drawable/svg_play_gofoward"
+                        app:iconSize="20dp"
+                        app:iconTint="#203130" />
+
+                    <Button
+                        android:id="@+id/icon_marcarTodas"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="50dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="5dp"
+                        android:contentDescription="Botón reproducir lista"
+                        android:elevation="0dp"
+                        android:textColor="#203130"
+                        android:textSize="20sp"
+                        android:theme="@style/botonesSecundarios"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/svg_foward"
+                        app:iconGravity="textEnd"
+                        app:iconSize="22dp"
+                        app:iconTint="#203130" />
+                </LinearLayout>
+
+                <!--  <Button
+                  android:id="@+id/icon_deshacer"
+                  style="@style/Widget.Material3.Button.IconButton.Filled"
+                  android:textSize="16sp"
+                  android:layout_width="180dp"
+                  android:layout_height="48dp"
+                  android:layout_marginStart="20dp"
+                  android:contentDescription="Botón deshacer acción"
+                  android:text="@string/lbl_deshacer"
+                  android:textColor="?colorOnSurface"
+                  app:cornerRadius="25dp"
+                  android:enabled="false"
+                  android:fontFamily="@font/poppins_semibold"
+                  app:icon="@drawable/ic_baseline_undo_64"
+                  app:iconSize="32dp"
+                  app:iconTint="?colorOnSurface"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+
+                <Button
+                    android:id="@+id/icon_escuchar"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="Botón escuchar planificacion"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/str_escuchar2"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button"
+                    app:cornerRadius="25dp"
+                    app:icon="@drawable/svg_sound"
+                    app:iconSize="25dp"
+                    app:iconTint="#203130"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.384"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout4" />-->
+
+                <TextView
+                    android:id="@+id/lbl_mensajeNinio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/lbl_mensajeNinio"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:text="@string/lbl_mensajeNinio"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="@dimen/subtitle"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lbl_importante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/importante"
+                    android:textColor="@color/red"
+                    android:visibility="gone"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="-10dp"
+                    app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
+                    tools:ignore="MissingConstraints" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_plan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:contentDescription="Lista con la planificación actual"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:scrollbars="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_fecha"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
+                    android:id="@+id/crearPlan"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/lbl_nuevoEvento"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button"
+                    android:visibility="invisible"
+                    app:cornerRadius="25dp"
+                    app:icon="@drawable/ic_baseline_add_24"
+                    app:iconSize="25dp"
+                    app:iconTint="#203130"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_mensajeNinio" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+           <!-- <LinearLayout
+                android:id="@+id/layoutPlanificacionesFuturas"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_planificaciones_futuras"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/subtitle"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/planificaciones_futuras"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/planificacionRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:clipToPadding="false"
+                        android:contentDescription="Lista con la planificación actual"
+                        android:scrollbars="horizontal" />
+                </LinearLayout>
+
+            </LinearLayout>-->
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<LinearLayout
+        android:id="@+id/linearLayout16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/atras"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/svg_chevron_left"
+            app:iconSize="30dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Eventos"
+            android:textSize="@dimen/title" />
+
+    </LinearLayout>-->
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerViewSide"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationSideFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:elevation="7dp"
+        app:shapeAppearance="@style/cornersNavigation"
+        android:background="?colorBG1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

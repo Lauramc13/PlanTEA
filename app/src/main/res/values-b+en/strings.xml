@@ -21,6 +21,8 @@
     <string name="lbl_Entretenimiento">ENTERTAINMENT</string>
     <string name="lbl_Recompensa">REWARDS</string>
     <string name="lbl_NuevoPicto">Add Pictogram</string>
+    <string name="lbl_imprevistoPicto">Change pictogram</string>
+    <string name="lbl_NuevoPictoSemana">Add Weekly Pictogram</string>
     <string name="lbl_NuevaCategoria">Add Category</string>
     <string name="lbl_Planes">Available Plans</string>
     <string name="lbl_CrearPlanActividad">Title:</string>
@@ -107,6 +109,8 @@
     <string name="lbl_seleccionarFoto">SELECT PHOTO FROM GALLERY</string>
     <string name="lbl_deshacer">UNDO</string>
     <string name="lbl_reproducir">Play</string>
+    <string name="lbl_seleccionaPictograma">Select the pictogram display option</string>
+    <string name="lbl_seleccionaPictograma2">Pictograms will be displayed according to your preference</string>
 
     <string name="lbl_cuaderno">Communication notebook</string>
     <string name="lbl_iniciarSesion">LOG IN</string>
@@ -148,6 +152,7 @@
     <string name="hora">Time:</string>
     <string name="recordatorio">Reminder:</string>
     <string name="planificaciones_disponibles">Available plans:</string>
+    <string name="eventos_disponibles">Available events:</string>
     <string name="recordar">Remind me...</string>
     <string name="recordar_5min">5 minutes before</string>
     <string name="recordar_1hora">1 hour before</string>
@@ -170,6 +175,7 @@
     <string name="introduce_titulo" tools:ignore="TypographyEllipsis">Enter a title...</string>
     <string name="buscar_pictos">Search pictograms</string>
     <string name="cambiar_rol">Change role</string>
+    <string name="cambiar">Change</string>
     <string name="aniadir_picto_entre">ADD ENTERTAINMENT PICTOGRAM</string>
     <string name="item_entretenimiento">Entertainment</string>
     <string name="item_recompensa">Reward</string>
@@ -181,6 +187,7 @@
 
     <!-- Title pages -->
     <string name="pantalla_calendario">Calendar</string>
+    <string name="pantalla_planificaciones">Plannings</string>
     <string name="pantalla_eventos">Events</string>
     <string name="pantalla_traductor">Translator</string>
     <string name="pantalla_cuaderno">Communication notebook</string>
@@ -395,5 +402,8 @@
     <string name="crear_planificacion">CREATE PLANNING</string>
     <string name="guardar_traducci_n_como_pdf">Save translation as PDF</string>
     <string name="titulo_para_la_traducci_n">Title for the translation</string>
-
+    <string name="mensaje_eventos_pasados">Cannot create events on past dates</string>
+    <string name="toast_queda_poco_tiempo">Less than 1 minute left</string>
+    <string name="importante">IMPORTANT!</string>
+    <string name="no_eventos_disponibles">There are no available events</string>
 </resources>

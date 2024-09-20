@@ -34,6 +34,5 @@ class OnAlarmReceiver : BroadcastReceiver() {
 
                 notificationManager.notify(intent.extras!!.getInt("Id"), builder.build())
             }
-
     }
 }

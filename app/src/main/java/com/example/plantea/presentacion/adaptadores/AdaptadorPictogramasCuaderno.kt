@@ -97,8 +97,8 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
 
             borrar.setOnClickListener {
                 val posicion = bindingAdapterPosition
-                val sourceAPI = listaPictogramas!![posicion].sourceAPI
-                listener?.removePicto(listaPictogramas!![posicion], sourceAPI, false)
+                //val sourceAPI = listaPictogramas!![posicion].sourceAPI
+              //  listener?.removePicto(listaPictogramas!![posicion], sourceAPI, false)
 
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -122,12 +122,12 @@ class AdaptadorPictogramasCuaderno(var listaPictogramas: ArrayList<Pictograma>?,
     }
 
     private fun mostrarPicto(holder : ViewHolderPictogramas, position: Int){
-        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
+       /* val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
         if(identifier == 0) {
             holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
         }else{
             holder.imagen.setImageResource(identifier)
-        }
+        }*/
         //holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
         val drawable = ContextCompat.getDrawable(context, R.drawable.card_personalizado_cuaderno)
         holder.borde.background = drawable

@@ -41,6 +41,7 @@ class CalendarioActivity : AppCompatActivity() {
         fechaActual = findViewById(R.id.lbl_mes)
         val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
         val btnAnteriorMes = findViewById<Button>(R.id.image_calendar_anterior)
+        val buttonPlanificaciones = findViewById<Button>(R.id.button_planificaciones)
         atras = findViewById(R.id.atras)
 
         //set up the fragments
@@ -68,6 +69,11 @@ class CalendarioActivity : AppCompatActivity() {
 
         atras?.setOnClickListener {
             finish()
+        }
+
+        buttonPlanificaciones.setOnClickListener {
+            val intent = Intent(this, PlanificacionesActivity::class.java)
+            startActivity(intent)
         }
     }
 

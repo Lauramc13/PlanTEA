@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.plantea.presentacion.actividades.ConfiguracionPictogramasActivity
 import com.example.plantea.presentacion.actividades.MenuAvataresTEActivity
 import com.example.plantea.presentacion.actividades.MenuObjetosActivity
 import com.example.plantea.presentacion.actividades.TutorialActivity
@@ -27,14 +28,14 @@ class MenuAvataresViewModel : ViewModel() {
         return when {
             prefs.getBoolean("info_usuario", false) -> MenuAvataresTEActivity::class.java
             prefs.getBoolean("info_objeto", false) -> MenuObjetosActivity::class.java
-            else -> TutorialActivity::class.java
+            else -> ConfiguracionPictogramasActivity::class.java
         }
     }
 
     fun determineNextScreenTEA(prefs: SharedPreferences): Class<out AppCompatActivity> {
         return when {
             prefs.getBoolean("info_objeto", false) -> MenuObjetosActivity::class.java
-            else -> TutorialActivity::class.java
+            else -> ConfiguracionPictogramasActivity::class.java
         }
     }
 

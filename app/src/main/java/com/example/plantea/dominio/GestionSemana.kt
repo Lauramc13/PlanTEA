@@ -2,6 +2,7 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import com.example.plantea.persistencia.ConectorBD
+import com.example.plantea.presentacion.actividades.CommonUtils
 
 class GestionSemana {
 
@@ -23,22 +24,30 @@ class GestionSemana {
         return resultado
     }
 
-    fun obtenerImagenes(idUsuario: String, days: MutableList<String>, activity: Activity?): MutableList<ByteArray?> {
+    fun obtenerConfigDias(idUsuario: String, days: MutableList<String>, activity: Activity?): ArrayList<DiaSemana> {
         conectorBD = ConectorBD(activity)
         conectorBD!!.abrir()
-        val imagenes = mutableListOf<ByteArray?>()
+        val dias = ArrayList<DiaSemana>()
+
         for(day in days){
-            imagenes.add(conectorBD!!.obtenerImagenDia(idUsuario, day))
+            val dia = DiaSemana() // Create a new instance inside the loop
+            dia.dia = day
+            val cursor = conectorBD!!.obtenerConfigDias(idUsuario, day)
+            if (cursor.moveToFirst()) {
+                dia.imagen = CommonUtils.byteArrayToBitmap(cursor.getBlob(0))
+                dia.color = cursor.getString(1)
+            }
+            dias.add(dia)
         }
 
         conectorBD!!.cerrar()
-        return imagenes
+        return dias
     }
 
-    fun guardarImagen(idUsuario: String, imagen: ByteArray?, fecha: String, activity: Activity?) {
+    fun guardarSemana(idUsuario: String, imagen: ByteArray?, color: String?, fecha: String?, activity: Activity?) {
         conectorBD = ConectorBD(activity)
         conectorBD!!.abrir()
-        conectorBD!!.guardarImagenSemana(idUsuario, imagen, fecha)
+        conectorBD!!.guardarSemana(idUsuario, imagen, color, fecha)
         conectorBD!!.cerrar()
     }
 
@@ -48,6 +57,14 @@ class GestionSemana {
         conectorBD!!.borrarImagenSemana(idUsuario, fecha)
         conectorBD!!.cerrar()
     }
+
+    fun borrarColor(idUsuario: String, fecha: String, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarColorSemana(idUsuario, fecha)
+        conectorBD!!.cerrar()
+    }
+
 
     fun guardarConfiguracionWeek(idUsuario: String, configurationWeek: Int, actividad: Activity?){
         conectorBD = ConectorBD(actividad)

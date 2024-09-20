@@ -23,17 +23,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.CalendarioUtilidades.formatoDiaEvento
-import com.example.plantea.dominio.Evento
-import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.PlanActivity
+import com.example.plantea.presentacion.actividades.EventosActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
 import java.util.Locale
-
 
 class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     lateinit var vista: View
@@ -78,10 +75,9 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
 
         crearEvento.setOnClickListener {
             if(CommonUtils.isMobile(this.requireContext())){
-                context?.let { it1 -> viewModel.bottomSheetDialog(it1) }
+                viewModel.bottomSheetDialog(requireContext(), null)
             }else{
-                context?.let { it1 -> viewModel.crearEventoFragment(it1) }
-
+                viewModel.crearEventoFragment(requireContext(), null)
             }
         }
 
@@ -99,11 +95,11 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         diaEvento.text = formatoDiaEvento(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
         if(CalendarioUtilidades.fechaSeleccionada.isBefore(LocalDate.now()) ){
             crearEvento.visibility = View.GONE
-            mensaje.text = "No se pueden crear eventos en fechas pasadas"
+            mensaje.text = getString(R.string.mensaje_eventos_pasados)
         }
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
-        viewModel.eventosDia = userId?.let { viewModel.evento.obtenerEventos(it, actividad, CalendarioUtilidades.fechaSeleccionada) } as ArrayList<Evento>
+        viewModel.eventosDia = viewModel.evento.obtenerEventos(userId!!, actividad, CalendarioUtilidades.fechaSeleccionada)
 
         listaEventos.layoutManager = LinearLayoutManager(context)
         adaptadorEvento = AdaptadorEvento(viewModel.eventosDia, this)
@@ -162,10 +158,14 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     override fun viewEventClick(posicion: Int) {
-        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventosDia[posicion].id_plan, Locale.getDefault().language) as ArrayList<Pictograma>
-        val intent = Intent(actividad, PlanActivity::class.java)
+        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventosDia[posicion].idPlan, Locale.getDefault().language, viewModel.idUsuario)
+        val intent = Intent(actividad, EventosActivity::class.java)
         intent.putExtra("titulo", viewModel.eventosDia[posicion].nombre)
+        //intent.putExtra("pictogramas", pictogramas)
         intent.putExtra("pictogramas", pictogramas)
+        pictogramas.forEachIndexed { index, pictogram ->
+            intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
+        }
         intent.putExtra("fecha", viewModel.eventosDia[posicion].fecha)
         startActivity(intent)
     }
@@ -182,8 +182,16 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
             startActivity(chooserIntent)
         } else {
             Toast.makeText(actividad, R.string.toast_error_exportar_evento, Toast.LENGTH_SHORT).show()
-
         }
     }
 
+    override fun editEvento(posicion: Int) {
+        val evento = viewModel.evento.obtenerInfoEvento(viewModel.eventosDia[posicion].id, actividad)
+        //put extras of the event to edit
+        if(CommonUtils.isMobile(this.requireContext())){
+           viewModel.bottomSheetDialog(requireContext(), evento)
+        }else{
+            viewModel.crearEventoFragment(requireContext(), evento)
+        }
+    }
 }

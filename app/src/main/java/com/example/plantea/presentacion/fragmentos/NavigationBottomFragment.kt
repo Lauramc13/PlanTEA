@@ -40,7 +40,7 @@ class NavigationBottomFragment: Fragment() {
         val hostingActivityClass = activity?.javaClass
 
         if (hostingActivityClass != null) {
-            navigationHandler.inicializarVariablesBottom(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass))
+            navigationHandler.inicializarVariablesBottom(vista, this, hostingActivityClass, navigationHandler.hostingId(hostingActivityClass), infoUsuario)
         }
         return vista
     }

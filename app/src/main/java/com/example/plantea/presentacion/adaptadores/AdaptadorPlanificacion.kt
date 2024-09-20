@@ -28,21 +28,17 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
         val context = holder.itemView.context
         holder.titulo.text = listaPlanificacion[position].titulo
         //holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
-        val identifier = context.resources.getIdentifier(listaPlanificacion[position].imagen, "drawable", context.packageName)
-        if(identifier == 0) {
-            holder.imagen.setImageURI(Uri.parse(listaPlanificacion[position].imagen))
-        }else{
-            holder.imagen.setImageResource(identifier)
-        }
+        holder.imagen.setImageBitmap(listaPlanificacion[position].imagen)
 
         holder.card.setBackgroundResource(R.drawable.card_personalizado)
         holder.borrar.visibility = View.VISIBLE
         holder.menu.visibility = View.VISIBLE
 
-        if (listaPlanificacion[position].categoria == 9) { //Premio
+       /* if (listaPlanificacion[position].categoria == 9) { //Premio
             //holder.premio.visibility = View.VISIBLE
             holder.card.setBackgroundResource(R.drawable.card_premio)
-        } else if (listaPlanificacion[position].categoria == 8) { //Espera
+        } else */
+        if (listaPlanificacion[position].categoria == 4) { //Espera
             //holder.premio.visibility = View.VISIBLE
             //holder.premio.setImageResource(R.drawable.reloj)
             holder.card.setBackgroundResource(R.drawable.card_espera)
@@ -54,10 +50,35 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
             holder.historia.setImageResource(R.drawable.bocadillo_historia_on)
         }*/
 
+        configPicto(holder)
     }
 
     override fun getItemCount(): Int {
         return listaPlanificacion.size
+    }
+
+    private fun configPicto(holder: AdaptadorPlanificacion.ViewHolderPlanificacion){
+        val sharedPreferences = holder.itemView.context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        when (sharedPreferences.getString("configPictogramas", "default")) {
+            "default" -> {
+                holder.imagen.visibility = View.VISIBLE
+                holder.titulo.visibility = View.VISIBLE
+            }
+            "imagen" -> {
+                holder.imagen.visibility = View.VISIBLE
+                holder.titulo.visibility = View.GONE
+            }
+            "texto" -> {
+                holder.imagen.visibility = View.GONE
+                holder.titulo.visibility = View.VISIBLE
+            }
+        }
+    }
+
+
+    fun updateListaPlan(newList : ArrayList<Pictograma>){
+        listaPlanificacion = newList
+        notifyDataSetChanged()
     }
 
     inner class ViewHolderPlanificacion(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -73,7 +94,6 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
             borrar = itemView.findViewById<View>(R.id.btn_borrarPicto) as ImageView
             menu = itemView.findViewById<View>(R.id.btn_menu) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
-
 
             borrar.setOnClickListener {
                 val position = bindingAdapterPosition

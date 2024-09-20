@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                 val editor = prefs.edit()
                 editor.putBoolean("PlanificadorLogged", true)
                 editor.apply()
-                val intent = Intent(applicationContext, PlanActivity::class.java)
+                val intent = Intent(applicationContext, EventosPlanificadorActivity::class.java)
                 startActivity(intent)
             }else{
                  navigationHandler.crearDialogoLogin(this, this)
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putBoolean("PlanificadorLogged", false)
             editor.apply()
-            val intent = Intent(applicationContext, PlanActivity::class.java)
+            val intent = Intent(applicationContext, EventosActivity::class.java)
             startActivity(intent)
         }
 

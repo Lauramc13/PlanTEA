@@ -37,40 +37,77 @@ class ConectorBD(ctx: Context?) {
     /************************************ Funciones de la base de datos ******************************************/
     /*************************************************************************************************************/
 
-    // Obtener todos los pictogramas de una categoria
-    fun listarPictogramasPrueba(categoria: Int, userId: String?, language: String): Cursor {
+    fun listarPictogramasCategoria(categoria: Int, userId: String?, language: String): Cursor {
         return db!!.rawQuery(
-            "SELECT Pictograma.id, " +
-                    "COALESCE(Traduccion.translation, Pictograma.nombre) AS nombre, " +
-                    "Pictograma.imagen, Pictograma.id_categoria, " +
+            "SELECT CombinedPictograms.id, " +
+                    "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, " +
+                    "CombinedPictograms.imagen, CombinedPictograms.id_API, " +
+                    "COALESCE(CombinedPictograms.id_categoria_global, CombinedPictograms.id_categoria_local) AS id_categoria, " +
                     "CASE WHEN Favorito.id_usuario IS NOT NULL THEN 1 ELSE 0 END AS favorito " +
+                    "FROM (" +
+                    "SELECT Pictograma.id, Pictograma.nombre, PictogramaLocal.imagen, NULL as id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local " +
                     "FROM Pictograma " +
-                    "LEFT JOIN Favorito ON Favorito.id_pictograma = Pictograma.id AND Favorito.id_usuario = ? " +
-                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = Pictograma.id " +
-                    "LEFT JOIN Traduccion ON RelacionPictoTraduccion.id_traduccion = Traduccion.id " +
-                    "AND Traduccion.language = ? " +
-                    "WHERE Pictograma.id_categoria = ? AND (Pictograma.id_usuario IS NULL OR Pictograma.id_usuario = ?)",
-            arrayOf(userId, language, categoria.toString(), userId)
+                    "INNER JOIN PictogramaLocal ON Pictograma.id = PictogramaLocal.id AND (PictogramaLocal.id_usuario = ? OR PictogramaLocal.id_usuario IS NULL) " +
+                    "UNION ALL " +
+                    "SELECT Pictograma.id, Pictograma.nombre, NULL as imagen, PictogramaAPI.id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local " +
+                    "FROM Pictograma " +
+                    "INNER JOIN PictogramaAPI ON Pictograma.id = PictogramaAPI.id " +
+                    ") AS CombinedPictograms " +
+                    "LEFT JOIN Favorito ON Favorito.id_pictograma = CombinedPictograms.id AND Favorito.id_usuario = ? " +
+                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
+                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
+                    "WHERE (" +
+                    // Case 1: Pictogramas in a category created by the user (with no global reference)
+                    "CombinedPictograms.id_categoria_local = ? " +
+                    // Case 2: Pictogramas of a global category or local category that points to a global category
+                    "OR (CombinedPictograms.id_categoria_global = ? " +
+                    "OR CombinedPictograms.id_categoria_local IN (" +
+                    "SELECT id FROM CategoriaUsuario WHERE id_categoria = ? AND id_usuario = ?))" +
+                    ") " +
+                    "ORDER BY CombinedPictograms.nombre",
+            arrayOf(userId, userId, language, categoria.toString(), categoria.toString(), categoria.toString(), userId)
         )
     }
 
-    //Insertar un pictograma nuevo
-    fun insertarPictograma(nombre: String?, imagen: String?, categoria: String?, idUsuario: String?): String {
-        var categoria = categoria
-        val c = db!!.rawQuery("SELECT id from Categoria where Categoria.titulo = '$categoria'", null)
-        if (c.moveToFirst()) {
-            categoria = c.getString(0)
-        }
-        c.close()
-        db!!.execSQL("INSERT INTO Pictograma (nombre, imagen, id_categoria, id_usuario) VALUES ('$nombre', '$imagen','$categoria', '$idUsuario')")
+    fun insertarPictogramaLocal(nombre: String?, imagen: ByteArray?, categoria: String?, idUsuario: String?): String {
+            db!!.execSQL("INSERT INTO Pictograma (nombre, id_categoria_local) VALUES ('$nombre','$categoria')")
 
-        val c2= db!!.rawQuery("SELECT last_insert_rowid()", null)
-        var id = ""
-        if (c2.moveToFirst()) {
-            id = c2.getString(0)
+            val c2= db!!.rawQuery("SELECT last_insert_rowid()", null)
+            var id = ""
+            if (c2.moveToFirst()) {
+                id = c2.getString(0)
+            }
+            c2.close()
+
+            val values = ContentValues().apply {
+                put("id", id)
+                put("imagen", imagen)
+                put("id_usuario", idUsuario)
+            }
+            db!!.insert("PictogramaLocal", null, values)
+
+            return id
+    }
+
+    fun insertarPictogramaAPI(nombre: String?, idAPI: String?, idCategoria: String?): String{
+        //check if there is a pictogram with the same idAPI
+        val c = db!!.rawQuery("SELECT id from PictogramaAPI where id_API = '$idAPI'", null)
+        if (c.moveToFirst()) {
+            return c.getString(0)
+        }else{
+            db!!.execSQL("INSERT INTO Pictograma (nombre, id_categoria_local) VALUES ('$nombre', '$idCategoria')")
+            val c2 = db!!.rawQuery("SELECT last_insert_rowid()", null)
+            if (c2.moveToFirst()) {
+                val id = c2.getString(0)
+                db!!.execSQL("INSERT INTO PictogramaAPI (id, id_API) VALUES ('$id','$idAPI')")
+                c.close()
+                c2.close()
+                return id
+            }
         }
-        c2.close()
-        return id
+
+        c.close()
+      return ""
     }
 
     // Insertar una planificacion nueva
@@ -94,9 +131,16 @@ class ConectorBD(ctx: Context?) {
     }
 
     // Insertar un pictograma en una planificacion
-    fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?, idPictoAPI: String?, historiaPicto: String?, duracionPicto: String?, pictoEntretenimiento: Int?): Boolean {
-        db!!.execSQL("INSERT INTO RelacionPictogramaPlan (id_plan, id_pictograma, id_pictogramaAPI, historia, duracion, id_picto_entre) VALUES ('$idPlan', '$idPicto', '$idPictoAPI', '$historiaPicto', '$duracionPicto', '$pictoEntretenimiento')")
-        return true
+    fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?, historiaPicto: String?, duracionPicto: String?, pictoEntretenimiento: Int?): Boolean {
+        val categoriaValues = ContentValues().apply {
+            put("id_plan", idPlan)
+            put("id_pictograma", idPicto)
+            put("historia", historiaPicto)
+            put("duracion", duracionPicto)
+            put("id_picto_entre", pictoEntretenimiento)
+
+        }
+        return db!!.insert("RelacionPictogramaPlan", null, categoriaValues) > 0
     }
 
     /*Listar planificaciones disponibles*/
@@ -138,20 +182,32 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id_evento FROM RelacionEventoPlan WHERE id_plan='$idPlan'", null)
     }
 
-    // Listar pictogramas de una planificacion
-    fun listarPictogramasPlanificacion(id: Int, language: String): Cursor {
+    fun listarPictogramasPlanificacion(id: Int, language: String, idUsuario: String): Cursor {
         return db!!.rawQuery(
             "SELECT CombinedPictograms.id, " +
-                    "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, " +
-                    "CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.duracion, RelacionPictogramaPlan.id_picto_entre " +
-                    "FROM (SELECT id, nombre, imagen, id_categoria FROM Pictograma UNION SELECT id, nombre, imagen, NULL AS id_categoria FROM PictogramaAPI) AS CombinedPictograms " +
-                    "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id OR RelacionPictogramaPlan.id_pictogramaAPI = CombinedPictograms.id " +
-                    "INNER JOIN Planificacion ON Planificacion.id = RelacionPictogramaPlan.id_plan " +
-                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
-                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
-                    "WHERE Planificacion.id = ? " +
-                    "ORDER BY RelacionPictogramaPlan.id",
-            arrayOf(language, id.toString())
+               "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre,  " +
+               "CombinedPictograms.imagen, CombinedPictograms.id_API, " +
+                "CASE WHEN CombinedPictograms.id_categoria_global IS NOT NULL THEN CombinedPictograms.id_categoria_global ELSE CombinedPictograms.id_categoria_local " +
+                "END AS id_categoria, " +
+               "RelacionPictogramaPlan.historia,  " +
+               "RelacionPictogramaPlan.duracion,  " +
+               "RelacionPictogramaPlan.id_picto_entre  " +
+            "FROM ( " +
+                    "SELECT Pictograma.id, Pictograma.nombre, PictogramaLocal.imagen, NULL as id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local " +
+                      "FROM Pictograma " +
+                        "INNER JOIN PictogramaLocal ON Pictograma.id = PictogramaLocal.id AND (PictogramaLocal.id_usuario = ? OR PictogramaLocal.id_usuario IS NULL) " +
+                        "UNION ALL  " +
+                        "SELECT Pictograma.id, Pictograma.nombre, NULL as imagen, PictogramaAPI.id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local  " +
+                        "FROM Pictograma  " +
+                        "INNER JOIN PictogramaAPI ON Pictograma.id = PictogramaAPI.id " +
+                        ") AS CombinedPictograms   " +
+        "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id " +
+        "INNER JOIN Planificacion ON Planificacion.id = RelacionPictogramaPlan.id_plan " +
+        "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
+        "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
+        "WHERE Planificacion.id = ? " +
+        "ORDER BY RelacionPictogramaPlan.id",
+            arrayOf(idUsuario, language, id.toString())
         )
     }
 
@@ -161,29 +217,28 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun obtenerPictograma(idPicto: String?, language: String): Cursor{
-       return db!!.rawQuery("SELECT CombinedPictograms.id, CombinedPictograms.imagen, " +
+       return db!!.rawQuery("SELECT CombinedPictograms.id, CombinedPictograms.imagen, CombinedPictograms.id_API, " +
+               "COALESCE(CombinedPictograms.id_categoria_global, CombinedPictograms.id_categoria_local) AS id_categoria, " +
                "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre " +
-               "FROM (SELECT id, nombre, imagen FROM Pictograma UNION SELECT id, nombre, imagen FROM PictogramaAPI) AS CombinedPictograms " +
-               "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
+               " FROM (" +
+                    "SELECT Pictograma.id, Pictograma.nombre, PictogramaLocal.imagen, NULL as id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local " +
+                "  FROM Pictograma " +
+                    "  LEFT JOIN PictogramaLocal ON Pictograma.id = PictogramaLocal.id " +
+                    "   UNION ALL " +
+                    "   SELECT Pictograma.id, Pictograma.nombre, NULL as imagen, PictogramaAPI.id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local " +
+                    "    FROM Pictograma " +
+                    "     INNER JOIN PictogramaAPI ON Pictograma.id = PictogramaAPI.id " +
+                    "   ) AS CombinedPictograms " +
+                "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
                 "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = '$language' " +
                 "WHERE CombinedPictograms.id = '$idPicto'", null)
     }
 
-    fun obtenerPlanificacion(idUsuario: String, idEvento: String, language: String): Cursor {
-        return db!!.rawQuery(
-            "SELECT CombinedPictograms.id, " +
-                    "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, " +
-                    "CombinedPictograms.imagen, CombinedPictograms.id_categoria, RelacionPictogramaPlan.historia, RelacionPictogramaPlan.duracion, RelacionPictogramaPlan.id_picto_entre " +
-                    "FROM (SELECT id, nombre, imagen, id_categoria FROM Pictograma UNION SELECT id, nombre, imagen, NULL AS id_categoria FROM PictogramaAPI) AS CombinedPictograms " +
-                    "INNER JOIN RelacionPictogramaPlan ON RelacionPictogramaPlan.id_pictograma = CombinedPictograms.id OR RelacionPictogramaPlan.id_pictogramaAPI = CombinedPictograms.id " +
-                    "INNER JOIN RelacionEventoPlan ON RelacionEventoPlan.id_plan = RelacionPictogramaPlan.id_plan " +
-                    "INNER JOIN Evento ON RelacionEventoPlan.id_evento = Evento.id " +
-                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
-                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
-                    "WHERE Evento.visible = 1 AND Evento.id_usuario = ? AND RelacionEventoPlan.id_evento = ? " +
-                    "ORDER BY RelacionPictogramaPlan.id",
-            arrayOf(language, idUsuario, idEvento)
-        )
+    fun obtenerPlanificacion(idEvento: String, idUsuario: String): Cursor {
+        return db!!.rawQuery("SELECT id_plan FROM Evento " +
+                "INNER JOIN RelacionEventoPlan ON RelacionEventoPlan.id_evento = Evento.id " +
+                "INNER JOIN Planificacion ON Planificacion.id = RelacionEventoPlan.id_plan " +
+                "WHERE Evento.id = '$idEvento' AND Evento.id_usuario = '$idUsuario' AND Evento.visible = 1", null)
     }
 
     /*Obtener el numero de planficaciones visibles*/
@@ -195,18 +250,42 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery("SELECT id, nombre from Evento where Evento.visible = 1 AND Evento.id_usuario = '$idUsuario' AND Evento.fecha = '$fecha'", null)
     }
 
-    fun insertarCategoria(nombre: String?, imagen: String?, color: String, idUsuario: String): Cursor {
-        db!!.execSQL("INSERT INTO Categoria (titulo, imagen, color, id_usuario) VALUES ('$nombre', '$imagen', '$color', '$idUsuario')")
-        return db!!.rawQuery("SELECT last_insert_rowid()", null)
+    fun insertarCategoria(nombre: String?, imagen: ByteArray?, color: String, idUsuario: String): Long {
+        val categoriaValues = ContentValues().apply {
+            put("titulo", nombre)
+            put("imagen", imagen)
+            put("color", color)
+            put("id_usuario", idUsuario)
+        }
+        return db!!.insert("Categoria", null, categoriaValues)
     }
 
     fun eliminarCategoria(idUsuario: String, idCategoria: Int) {
         val cursor = db!!.rawQuery("SELECT id FROM Categoria WHERE id = '$idCategoria' and id_usuario IS NULL", null)
-
         if (cursor.moveToFirst()) {
-            db!!.execSQL("INSERT INTO RelacionCategoriaUsuario (is_deleted, id_usuario, id_categoria) VALUES (1, '$idUsuario', '$idCategoria')")
+            db!!.execSQL("INSERT INTO CategoriaOculta (id_usuario, id_categoria) VALUES ('$idUsuario', '$idCategoria')")
+            db!!.execSQL("DELETE FROM CategoriaUsuario WHERE id = '$idCategoria' AND id_usuario = '$idUsuario'")
         }else{
             db!!.execSQL("DELETE FROM Categoria WHERE id = '$idCategoria' AND id_usuario = '$idUsuario'")
+        }
+        cursor.close()
+    }
+
+    fun duplicateCategoria(idUsuario: String, idCategoria: Int): Int {
+        //if the category is not duplicated yet we duplicate it, if it is duplicated we get the id of the duplicated category
+        val cursor = db!!.rawQuery("SELECT id FROM CategoriaUsuario WHERE id_categoria = '$idCategoria' AND id_usuario = '$idUsuario'", null)
+        return if (cursor.moveToFirst()) {
+            cursor.getInt(0)
+        }else{
+            db!!.execSQL("INSERT INTO CategoriaUsuario (id_usuario, id_categoria) VALUES ('$idUsuario', '$idCategoria')")
+            val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
+            var id = 0
+            if (c.moveToFirst()) {
+                id = c.getInt(0)
+            }
+            cursor.close()
+            c.close()
+            id
         }
 
     }
@@ -221,15 +300,7 @@ class ConectorBD(ctx: Context?) {
             arrayOf(language, nombre))
     }
 
-    /*Listar todas las categorias*/
-    fun listarCategorias(language: String): Cursor {
-        return db!!.rawQuery("SELECT Categoria.id, COALESCE(Traduccion.translation, Categoria.titulo) AS titulo from Categoria " +
-                "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_categoria = Categoria.id " +
-                "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = '$language' " +
-                "WHERE Categoria.id_usuario IS NULL", null)
-    }
-
-    fun listarCategoriasPrincipales(idUsuario: String, language: String): Cursor {
+    fun listarCategoriasPrincipales(idUsuario: String?, language: String): Cursor {
         return db!!.rawQuery(
             "SELECT Categoria.id, " +
                     "COALESCE(Traduccion.translation, Categoria.titulo) AS titulo, " +
@@ -238,7 +309,7 @@ class ConectorBD(ctx: Context?) {
                     "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_categoria = Categoria.id " +
                     "LEFT JOIN Traduccion ON RelacionPictoTraduccion.id_traduccion = Traduccion.id " +
                     "AND Traduccion.language = ? " +
-                    "WHERE Categoria.id NOT IN (SELECT id_categoria FROM RelacionCategoriaUsuario WHERE id_usuario = ? AND is_deleted = 1) AND Categoria.id_usuario IS NULL OR Categoria.id_usuario = ?",
+                    "WHERE Categoria.id NOT IN (SELECT id_categoria FROM CategoriaOculta WHERE id_usuario = ?) AND Categoria.id_usuario IS NULL OR Categoria.id_usuario = ?",
             arrayOf(language, idUsuario, idUsuario)
         )
     }
@@ -271,32 +342,22 @@ class ConectorBD(ctx: Context?) {
         return true
     }
 
-   /* fun listarPictogramasCuaderno(idCuaderno: Int, language: String): Cursor {
-        return db!!.rawQuery(
-            "SELECT CombinedPictograms.id, " +
-                    "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, " +
-                    "CombinedPictograms.imagen, RelacionPictogramaCuaderno.id_cuaderno, " +
-                    "CASE WHEN CombinedPictograms.id IN (SELECT id FROM Pictograma) THEN 0 ELSE 1 END AS sourceAPI " +
-                    "FROM (SELECT id, nombre, imagen FROM Pictograma UNION SELECT id, nombre, imagen FROM PictogramaAPI) AS CombinedPictograms " +
-                    "INNER JOIN RelacionPictogramaCuaderno ON RelacionPictogramaCuaderno.id_pictograma = CombinedPictograms.id OR RelacionPictogramaCuaderno.id_pictogramaAPI = CombinedPictograms.id " +
-                    "INNER JOIN Cuaderno ON Cuaderno.id = RelacionPictogramaCuaderno.id_cuaderno " +
-                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
-                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
-                    "WHERE Cuaderno.id = ? " +
-                    "ORDER BY RelacionPictogramaCuaderno.id",
-            arrayOf(language, idCuaderno.toString())
-        )
-    }*/
-
     /*Insertar nueva cita en la tabla eventos*/
-    fun insertarCita(idUsuario: String?, nombre: String?, fecha: String, hora: String?): Int {
+    fun insertarEvento(idUsuario: String?, nombre: String?, fecha: String, hora: String?, reminder: String?, changeVisibility: Boolean): Int {
         var id = 0
-        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre,fecha,hora,visible) VALUES ('$idUsuario', '$nombre','$fecha','$hora', 0)")
+        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre, fecha, hora, visible, reminder, change_visibility) VALUES ('$idUsuario', '$nombre','$fecha','$hora', 0, '$reminder', '$changeVisibility')")
         val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
         if (c.moveToFirst()) {
             id = c.getInt(0)
         }
         c.close()
+        return id
+    }
+
+    fun modificarEvento(id: Int, nombre: String?, fecha: String, hora: String?, changeVisibility: Boolean, reminder: String?, idPlan: Int?): Int {
+        db!!.execSQL("UPDATE Evento SET nombre = '$nombre', fecha = '$fecha', hora = '$hora', change_visibility = '$changeVisibility', reminder = '$reminder' WHERE id = '$id'")
+        db!!.execSQL("UPDATE RelacionEventoPlan SET id_plan = '$idPlan' WHERE id_evento = '$id'")
+
         return id
     }
 
@@ -307,7 +368,7 @@ class ConectorBD(ctx: Context?) {
     fun listarEventosPorUsuario(idUsuario: String): Cursor {
         val selectionArgs = arrayOf(idUsuario)
         return db!!.rawQuery(
-            "SELECT Evento.id, Evento.id_usuario, Evento.nombre, Evento.fecha, Evento.hora, RelacionEventoPlan.id_plan, Evento.visible " +
+            "SELECT Evento.id, Evento.id_usuario, Evento.nombre, Evento.fecha, Evento.hora, RelacionEventoPlan.id_plan, Evento.visible, Evento.reminder, Evento.change_visibility " +
                     "FROM Evento " +
                     "INNER JOIN RelacionEventoPlan ON Evento.id = RelacionEventoPlan.id_evento " +
                     "WHERE Evento.id_usuario = ?",
@@ -315,16 +376,15 @@ class ConectorBD(ctx: Context?) {
         )
     }
 
+    fun obtenerInfoEvento(idEvento: Int): Cursor {
+        return db!!.rawQuery("SELECT Evento.*, RelacionEventoPlan.id_plan FROM Evento JOIN RelacionEventoPlan ON Evento.id = RelacionEventoPlan.id_evento WHERE Evento.id = ?", arrayOf(idEvento.toString()))
+    }
+
     /*Eliminar evento*/
     fun eliminarEvento(id: Int) {
         db!!.execSQL("DELETE FROM Evento WHERE id='$id'")
         db!!.execSQL("DELETE FROM RelacionEventoPlan WHERE id_evento='$id'")
     }
-
-    /*Listar categorias de consulta*/
-    /*fun listarConsulta(identificador: Int): Cursor {
-        return db!!.rawQuery("SELECT nombre from Pictograma Inner JOIN Categoria where Categoria.id = Pictograma.id_categoria AND Categoria.id = $identificador", null)
-    }*/
 
     @SuppressLint("Range")
     /*Obtenemos los usuarios existentes con el email que tenemos*/
@@ -340,13 +400,13 @@ class ConectorBD(ctx: Context?) {
         val nameTEA = cursor.getString(cursor.getColumnIndex("nameTEA"))
         val imagenTEA = cursor.getString(cursor.getColumnIndex("imagenTEA"))
         val imagenObjeto = cursor.getString(cursor.getColumnIndex("imagenObjeto"))
-        usuario = Usuario(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto)
+        val configPicto = cursor.getString(cursor.getColumnIndex("configPictogramas"))
+        usuario = Usuario(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto, configPicto)
 
         cursor.close()
         return usuario
     }
 
-    
     fun addImagen(image: String, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagen ='$image' WHERE Usuario.id = '$idUsuario'")
     }
@@ -373,12 +433,35 @@ class ConectorBD(ctx: Context?) {
         }
     }
 
-    fun insertarFavorito(idUsuario: String?, id:String?, nombre: String?, imagen: String?, sourceApi: Boolean) {
-        db!!.execSQL("INSERT INTO Favorito (id_usuario, id_pictograma) VALUES ('$idUsuario', '$id')")
-        if(sourceApi){
-            db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$id', '$nombre', '$imagen')")
+    fun insertarFavorito(idUsuario: String?, id: String?, nombre: String?, idAPI: Int) {
+        //Comprbamos si es un pictograma de la API o no. Si es de la API, vemos si ya lo tenemos guardado. Si no esta guardado lo guardamos
+
+        if (idAPI != 0) {
+            val cursor = db!!.rawQuery("SELECT id FROM PictogramaAPI WHERE id_API = ?", arrayOf(idAPI.toString()))
+            if (cursor.moveToFirst()) {
+                val idPicto = cursor.getString(0)
+                db!!.execSQL("INSERT OR REPLACE INTO Favorito (id_usuario, id_pictograma) VALUES (?, ?)", arrayOf(idUsuario, idPicto))
+                cursor.close()
+                return
+            }else{
+                db!!.execSQL("INSERT OR REPLACE INTO Pictograma (nombre) VALUES (?)", arrayOf(nombre))
+
+                // Retrieve the last inserted row ID from Pictograma table
+                val cursor2 = db!!.rawQuery("SELECT last_insert_rowid()", null)
+                var lastInsertedId: Long = -1
+                if (cursor2.moveToFirst()) {
+                    lastInsertedId = cursor2.getLong(0)
+                }
+                cursor2.close()
+
+                db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, id_API) VALUES (?, ?)", arrayOf(lastInsertedId, idAPI))
+                db!!.execSQL("INSERT INTO Favorito (id_usuario, id_pictograma) VALUES (?, ?)", arrayOf(idUsuario, lastInsertedId))
+            }
+        }else{
+            db!!.execSQL("INSERT INTO Favorito (id_usuario, id_pictograma) VALUES (?, ?)", arrayOf(idUsuario, id))
         }
     }
+
 
     fun borrarFavorito(idUsuario: String?, idPicto: String?) {
         db!!.execSQL("DELETE FROM Favorito WHERE id_usuario = ? AND id_pictograma = ?", arrayOf(idUsuario, idPicto))
@@ -388,8 +471,16 @@ class ConectorBD(ctx: Context?) {
         return db!!.rawQuery(
             "SELECT CombinedPictograms.id, " +
                     "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, " +
-                    "CombinedPictograms.imagen " +
-                    "FROM (SELECT id, nombre, imagen FROM Pictograma UNION SELECT id, nombre, imagen FROM PictogramaAPI) AS CombinedPictograms " +
+                    "CombinedPictograms.imagen, CombinedPictograms.id_API " +
+                    "FROM (" +
+                    "    SELECT Pictograma.id, Pictograma.nombre, PictogramaLocal.imagen, NULL as id_API " +
+                    "    FROM Pictograma " +
+                    "    INNER JOIN PictogramaLocal ON Pictograma.id = PictogramaLocal.id " +
+                    "    UNION " +
+                    "    SELECT Pictograma.id, Pictograma.nombre, NULL as imagen, PictogramaAPI.id_API " +
+                    "    FROM Pictograma " +
+                    "    INNER JOIN PictogramaAPI ON Pictograma.id = PictogramaAPI.id " +
+                    ") AS CombinedPictograms " +
                     "INNER JOIN Favorito ON Favorito.id_pictograma = CombinedPictograms.id " +
                     "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
                     "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
@@ -411,12 +502,13 @@ class ConectorBD(ctx: Context?) {
         return count > 0
     }
 
+    fun cambiarConfiguracionPictogramas(configuration: String, idUsuario: String?) {
+        db!!.execSQL("UPDATE Usuario SET configPictogramas = '$configuration' WHERE id = '$idUsuario'")
+    }
+
     fun getFavorito(idPicto: String?, idUsuario: String?): Boolean {
         val cursor = db!!.rawQuery(
-            "SELECT CombinedPictograms.id " +
-                    "FROM (SELECT id FROM Pictograma UNION SELECT id FROM PictogramaAPI) AS CombinedPictograms " +
-                    "INNER JOIN Favorito ON Favorito.id_pictograma = CombinedPictograms.id " +
-                    "WHERE CombinedPictograms.id = ? AND Favorito.id_usuario = ? ",
+            "SELECT f.id_pictograma FROM Favorito f JOIN PictogramaAPI p ON f.id_pictograma = p.id WHERE p.id_api = ? AND f.id_usuario = ?",
             arrayOf(idPicto, idUsuario)
         )
 
@@ -425,66 +517,9 @@ class ConectorBD(ctx: Context?) {
         return exists
     }
 
-   /* fun insertarCuaderno(idUsuario: String, titulo: String, imagen: String?, termometro: Int): Int {
-        val statement = db!!.compileStatement("INSERT INTO Cuaderno (titulo, imagen, termometro, id_usuario) VALUES (?, ?, ?, ?)")
-        statement.bindString(1, titulo)
-        statement.bindString(2, imagen)
-        statement.bindLong(3, termometro.toLong())
-        statement.bindString(4, idUsuario)
-        val insertedId = statement.executeInsert()
-        statement.close()
-        return insertedId.toInt()
+    /*fun addPictogramaAPI(idPicto: String?, idAPI: String?) {
+        db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, id_API) VALUES ('$idPicto', '$idAPI')")
     }*/
-
-    //CAMBIAR ESTO
-    /*fun insertarPictogramaCuadernoBusqueda(id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
-        db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$id', '$titulo','$imagen')")
-        db!!.execSQL("INSERT OR REPLACE INTO RelacionPictogramaCuaderno (id_pictogramaAPI, id_cuaderno) VALUES ('$id','$idCuaderno')")
-    }*/
-
-   /* fun insertarPictogramaCuaderno( titulo: String?, imagen: String?, idCuaderno: Int, idUsuario: String): Int {
-        db!!.execSQL("INSERT INTO Pictograma (nombre, imagen, id_usuario) VALUES ('$titulo','$imagen', '$idUsuario')")
-        val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
-        var id = 0
-        if (c.moveToFirst()) {
-            id = c.getInt(0)
-        }
-        c.close()
-
-        db!!.execSQL("INSERT OR REPLACE INTO RelacionPictogramaCuaderno (id_pictograma, id_cuaderno) VALUES ('$id','$idCuaderno')")
-        return id
-    }*/
-
-    /*fun borrarPictogramaCuadernoBusqueda(id: String?, idCuaderno: Int) {
-        db!!.execSQL("DELETE FROM RelacionPictogramaCuaderno WHERE id_pictogramaAPI ='$id' AND id_cuaderno = '$idCuaderno'")
-    }
-
-    fun borrarPictogramaCuaderno(id: String?, idCuaderno: Int) {
-        db!!.execSQL("DELETE FROM RelacionPictogramaCuaderno WHERE id_pictograma ='$id' AND id_cuaderno = '$idCuaderno'")
-    }
-
-    fun borrarCuaderno(idCuaderno: Int) {
-        //Borrar fila en tabla cuaderno y borrar todas las filas que id_cuaderno = idCuaderno
-        db!!.execSQL("DELETE FROM Cuaderno WHERE id = '$idCuaderno'")
-        db!!.execSQL("DELETE FROM RelacionPictogramaCuaderno WHERE id_cuaderno = '$idCuaderno'")
-    }
-
-    fun editarCuaderno(idUsuario: String, idCuaderno: String, titulo: String, imagen: String?, termometro: Int) {
-        db!!.execSQL("UPDATE Cuaderno SET titulo ='$titulo', imagen = '$imagen', termometro = '$termometro' WHERE id ='$idCuaderno' AND id_usuario = '$idUsuario'")
-    }
-
-    fun listarCuadernos(idUsuario: String, language: String): Cursor {
-        return db!!.rawQuery("SELECT Cuaderno.id, " +
-                "COALESCE(Traduccion.translation, titulo) AS titulo, " +
-                "imagen, termometro from Cuaderno " +
-                "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_cuaderno = Cuaderno.id " +
-                "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = '$language' " +
-                " WHERE id_usuario = '$idUsuario' OR id_usuario IS NULL", null)
-    }*/
-
-    fun addPictogramaAPI(idPicto: String?, nombre: String?, imagen: String?) {
-        db!!.execSQL("INSERT OR REPLACE INTO PictogramaAPI (id, nombre, imagen) VALUES ('$idPicto', '$nombre', '$imagen')")
-    }
 
     fun checkCategoriaExiste(titulo: String, idUsuario: String, language: String): Cursor {
         return db!!.rawQuery("SELECT COUNT(*), " +
@@ -507,53 +542,39 @@ class ConectorBD(ctx: Context?) {
 
     fun listarPictogramasAleatorios(idUsuario: String?, language: String): Cursor {
         return db!!.rawQuery(
-            "SELECT CombinedPictograms.id, " +
-                    "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, " +
-                    " CombinedPictograms.imagen " +
-                    "FROM (SELECT id, nombre, imagen FROM Pictograma UNION SELECT id, nombre, imagen FROM PictogramaAPI) AS CombinedPictograms " +
-                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
-                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
-                    "WHERE CombinedPictograms.id NOT IN (SELECT id_pictograma FROM Favorito WHERE id_usuario = ?) " +
+            "SELECT CombinedPictograms.id, COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre, CombinedPictograms.imagen, CombinedPictograms.id_API " +
+                    "FROM (" +
+                        "SELECT Pictograma.id, Pictograma.nombre, PictogramaLocal.imagen, NULL as id_API " +
+                        "FROM Pictograma " +
+                        "INNER JOIN PictogramaLocal ON Pictograma.id = PictogramaLocal.id AND (PictogramaLocal.id_usuario = ? OR PictogramaLocal.id_usuario IS NULL) " +
+                        "UNION ALL " +
+                        "SELECT Pictograma.id, Pictograma.nombre, NULL as imagen, PictogramaAPI.id_API " +
+                        "FROM Pictograma " +
+                        "INNER JOIN PictogramaAPI ON Pictograma.id = PictogramaAPI.id) " +
+                    "AS CombinedPictograms " +
+                        "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_pictograma = CombinedPictograms.id " +
+                        "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
                     "ORDER BY RANDOM() LIMIT 6",
-            arrayOf(language, idUsuario)
+            arrayOf(idUsuario, language)
         )
-    }
-
-    fun obtenerCategoriaById(idCategoria: Int, language: String): Cursor {
-        return db!!.rawQuery(
-            "SELECT COALESCE(Traduccion.translation, titulo) AS titulo " +
-                    "FROM Categoria " +
-                    "LEFT JOIN RelacionPictoTraduccion ON RelacionPictoTraduccion.id_categoria = Categoria.id " +
-                    "LEFT JOIN Traduccion ON Traduccion.id = RelacionPictoTraduccion.id_traduccion AND Traduccion.language = ? " +
-                    "WHERE Categoria.id = ?",
-            arrayOf(language, idCategoria.toString())
-        )
-
     }
 
     fun obtenerConfiguracionSemana(idUsuario: String): Cursor {
         return db!!.rawQuery("SELECT configurationWeek FROM Semana WHERE id_usuario = '$idUsuario'", null)
     }
 
-    fun obtenerImagenDia(idUsuario: String, dayWeek: String): ByteArray? {
-        val cursor = db!!.rawQuery("SELECT pictograma_day FROM DiaSemana JOIN Semana ON DiaSemana.semana_id = Semana.id WHERE id_usuario = '$idUsuario' AND day_week = '$dayWeek'", null)
-        var imagen : ByteArray? = null
-        if (cursor.moveToFirst()) {
-            imagen = cursor.getBlob(0)
-        }
-        cursor.close()
-        return imagen
+    fun obtenerConfigDias(idUsuario: String, dayWeek: String): Cursor {
+        return db!!.rawQuery("SELECT pictograma_day, color FROM DiaSemana JOIN Semana ON DiaSemana.semana_id = Semana.id WHERE id_usuario = '$idUsuario' AND day_week = '$dayWeek'", null)
     }
 
 
     @SuppressLint("Range")
-    fun guardarImagenSemana(idUsuario: String, imagen: ByteArray?, dayWeek: String) {
+    fun guardarSemana(idUsuario: String, imagen: ByteArray?, color: String?,  dayWeek: String?) {
         var semanaId: Int? = null
         val cursorSemana = db!!.rawQuery("SELECT id FROM Semana WHERE id_usuario = ?", arrayOf(idUsuario))
         if (cursorSemana.moveToFirst()) {
             semanaId = cursorSemana.getInt(cursorSemana.getColumnIndex("id"))
         } else {
-            // Insert a new record into Semana and get the generated id
             db!!.execSQL("INSERT INTO Semana (id_usuario, configurationWeek) VALUES (?, ?)", arrayOf(idUsuario, 1))
             val cursorNewSemana = db!!.rawQuery("SELECT last_insert_rowid() as id", null)
             if (cursorNewSemana.moveToFirst()) {
@@ -567,11 +588,9 @@ class ConectorBD(ctx: Context?) {
             // Step 2: Check if an entry for the given day_week already exists in DiaSemana
             val cursorDiaSemana = db!!.rawQuery("SELECT id FROM DiaSemana WHERE semana_id = ? AND day_week = ?", arrayOf(semanaId.toString(), dayWeek))
             if (cursorDiaSemana.moveToFirst()) {
-                // Step 3: Update the pictograma_day if the entry exists
-                db!!.execSQL("UPDATE DiaSemana SET pictograma_day = ? WHERE semana_id = ? AND day_week = ?", arrayOf(imagen, semanaId.toString(), dayWeek))
+                db!!.execSQL("UPDATE DiaSemana SET pictograma_day = ?, color = ? WHERE semana_id = ? AND day_week = ?", arrayOf(imagen, color, semanaId.toString(), dayWeek))
             } else {
-                // Step 4: Insert a new entry if it does not exist
-                db!!.execSQL("INSERT INTO DiaSemana (semana_id, day_week, pictograma_day) VALUES (?, ?, ?)", arrayOf(semanaId.toString(), dayWeek, imagen))
+                db!!.execSQL("INSERT INTO DiaSemana (semana_id, day_week, pictograma_day, color) VALUES (?, ?, ?, ?)", arrayOf(semanaId.toString(), dayWeek, imagen, color))
             }
             cursorDiaSemana.close()
         }
@@ -579,7 +598,11 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun borrarImagenSemana(idUsuario: String, dayWeek: String) {
-        db!!.execSQL("DELETE FROM DiaSemana WHERE semana_id IN (SELECT Semana.id FROM Semana WHERE Semana.id_usuario = ? AND DiaSemana.day_week = ?)", arrayOf(idUsuario, dayWeek))
+        db!!.execSQL("UPDATE DiaSemana SET pictograma_day = NULL WHERE semana_id = (SELECT id FROM Semana WHERE id_usuario = ?) AND day_week = ?", arrayOf(idUsuario, dayWeek))
+    }
+
+    fun borrarColorSemana(idUsuario: String, dayWeek: String) {
+        db!!.execSQL("UPDATE DiaSemana SET color = NULL WHERE semana_id = (SELECT id FROM Semana WHERE id_usuario = ?) AND day_week = ?", arrayOf(idUsuario, dayWeek))
     }
 
     fun guardarConfiguracionWeek(idUsuario: String, configurationWeek: Int){

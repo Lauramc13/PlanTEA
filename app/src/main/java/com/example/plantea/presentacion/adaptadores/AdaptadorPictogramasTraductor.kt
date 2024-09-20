@@ -14,10 +14,13 @@ import com.example.plantea.dominio.Pictograma
 
 class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasTraductor.ViewHolderPictogramas>() {
 
+
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, context: Context)
 
         fun onLongItemSeleccionado(posicion: Int, context: Context)
+
+        fun onItemEliminado(posicion: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -27,17 +30,32 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         holder.titulo.text = listaPictogramas!![position].titulo
-        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-
+        holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
         holder.removePicto.visibility = View.VISIBLE
-        holder.removePicto.setOnClickListener {
-            listaPictogramas!!.removeAt(position)
-            notifyDataSetChanged()
-        }
+
+        configPicto(holder)
     }
 
     override fun getItemCount(): Int {
         return listaPictogramas!!.size
+    }
+
+    private fun configPicto(holder: AdaptadorPictogramasTraductor.ViewHolderPictogramas){
+        val sharedPreferences = holder.itemView.context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        when (sharedPreferences.getString("configPictogramas", "default")) {
+            "default" -> {
+                holder.imagen.visibility = View.VISIBLE
+                holder.titulo.visibility = View.VISIBLE
+            }
+            "imagen" -> {
+                holder.imagen.visibility = View.VISIBLE
+                holder.titulo.visibility = View.GONE
+            }
+            "texto" -> {
+                holder.imagen.visibility = View.GONE
+                holder.titulo.visibility = View.VISIBLE
+            }
+        }
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
@@ -51,6 +69,10 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
             removePicto = itemView.findViewById<View>(R.id.btn_removePicto) as ImageView
             itemView.setOnClickListener(this)
             itemView.setOnLongClickListener(this)
+
+            removePicto.setOnClickListener {
+                listener?.onItemEliminado(bindingAdapterPosition)
+            }
         }
 
         override fun onClick(view: View) {

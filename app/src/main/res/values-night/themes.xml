@@ -64,6 +64,14 @@
         <item name="pizzaraFondo">@color/pizarraContenido2</item>
         <item name="stroke2">@color/transparent</item>
 
+        <item name="colorRed">@color/DarkredCategoria</item>
+        <item name="colorOrange">@color/DarkorangeCategoria</item>
+        <item name="colorYellow">@color/DarkyellowCategoria</item>
+        <item name="colorGreen">@color/DarkgreenCategoria</item>
+        <item name="colorBlue">@color/DarkblueCategoria</item>
+        <item name="colorPurple">@color/DarkpurpleCategoria</item>
+        <item name="colorPink">@color/DarkpinkCategoria</item>
+
 
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>

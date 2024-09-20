@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -70,7 +71,7 @@ class NavegacionUtils {
                         val editor = prefs.edit()
                         editor.putBoolean("PlanificadorLogged", true)
                         editor.apply()
-                        context.startActivity(Intent((context as? Activity)?.baseContext, PlanActivity::class.java))
+                        context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
                         (context as? Activity)?.finish()
                         (context as? Activity)?.finishAffinity()
                         dialogLogin.dismiss()
@@ -125,7 +126,8 @@ class NavegacionUtils {
     fun hostingId(hostingActivityClass: Class<FragmentActivity>) : Int {
         val idActivity = when (hostingActivityClass) {
             MainActivity::class.java -> R.id.home
-            PlanActivity::class.java -> R.id.planificacion
+            EventosActivity::class.java -> R.id.planificacion
+            EventosPlanificadorActivity::class.java -> R.id.planificacion
             TraductorActivity::class.java -> R.id.traductor
             CalendarioActivity::class.java -> R.id.calendar
             ActividadActivity::class.java -> R.id.actividades
@@ -136,11 +138,11 @@ class NavegacionUtils {
         return idActivity
     }
 
-    private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>): Boolean {
+    private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>, isPlanificador: Boolean): Boolean {
         val targetActivityClass = when (itemId) {
             R.id.home -> MainActivity::class.java
             R.id.calendar -> CalendarioActivity::class.java
-            R.id.planificacion -> PlanActivity::class.java
+            R.id.planificacion -> if (isPlanificador) EventosPlanificadorActivity::class.java else EventosActivity::class.java
             R.id.actividades -> ActividadActivity::class.java
             R.id.semana -> SemanaActivity::class.java
             // R.id.cuaderno -> CuadernoActivity::class.java
@@ -194,7 +196,7 @@ class NavegacionUtils {
         navigationView.layoutParams = layoutParams
     }
 
-    fun inicializarVariables(view: View, fragment: Fragment, currentActivity: Class<*>, id:Int){
+    fun inicializarVariables(view: View, fragment: Fragment, currentActivity: Class<*>, id:Int, isPlanificador: Boolean){
         val contextFragment = fragment.requireContext()
         buttonMenu = view.findViewById(R.id.item_menu)
         buttonAccount = view.findViewById(R.id.accountButton)
@@ -202,7 +204,7 @@ class NavegacionUtils {
         navigationView = view.findViewById(R.id.navigationView)
         fragmentSide = view.findViewById(R.id.fragment_navigation_side)
         navigationView.setNavigationItemSelectedListener {item ->
-            onNavigationItemSelected(item.itemId, fragment, currentActivity)
+            onNavigationItemSelected(item.itemId, fragment, currentActivity, isPlanificador)
             true
         }
 
@@ -287,8 +289,7 @@ class NavegacionUtils {
                 val editor = prefs.edit()
                 editor.putBoolean("PlanificadorLogged", false)
                 editor.apply()
-
-                fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, PlanActivity::class.java))
+                fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, EventosActivity::class.java))
                 fragment.activity?.finish()
                 fragment.activity?.finishAffinity()
             }else{
@@ -313,10 +314,10 @@ class NavegacionUtils {
 
 
 
-    fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int){
+    fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int, isPlanificador: Boolean){
         navigationViewBottom = view.findViewById(R.id.bottom_navigation)
         navigationViewBottom.setOnItemSelectedListener { item ->
-            onNavigationItemSelected(item.itemId, fragment, currentActivity)
+            onNavigationItemSelected(item.itemId, fragment, currentActivity, isPlanificador)
             true
         }
 

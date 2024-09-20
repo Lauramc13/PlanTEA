@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_eventos"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentacion.fragmentos.EventosFragment">
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_eventos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        tools:context=".presentacion.fragmentos.EventosFragment">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txt_dia_eventos"
@@ -32,59 +32,62 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.95" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <ImageView
+            <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:src="@drawable/checklist_png"
-                android:layout_marginBottom="20dp"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true" />
-
-            <TextView
-                android:id="@+id/lbl_mensaje_evento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginBottom="50dp"
-                android:text="@string/lbl_mensaje_evento"
-                android:textAlignment="center"
-                android:textColor="?colorOnSurface"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="18sp" />
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/checklist_png"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true" />
+
+                <TextView
+                    android:id="@+id/lbl_mensaje_evento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/lbl_mensaje_evento"
+                    android:textAlignment="center"
+                    android:textColor="?colorOnSurface"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_eventos"
+                android:nestedScrollingEnabled="true"
+                android:transitionGroup="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
         </LinearLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_eventos"
-            android:nestedScrollingEnabled="true"
-            android:transitionGroup="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_nuevo_evento"
-        style="@style/buttonFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_baseline_add_24"/>
-</FrameLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_nuevo_evento"
+            style="@style/buttonFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/ic_baseline_add_24"/>
+    </FrameLayout>

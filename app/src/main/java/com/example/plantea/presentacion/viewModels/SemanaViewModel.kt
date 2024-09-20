@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.activity.result.ActivityResultLauncher
@@ -38,19 +37,22 @@ import java.util.Locale
 class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, AdaptadorTablaSemana.OnItemSelectedListener {
 
     var idUsuario = ""
-    var _imagenNuevoPicto = SingleLiveEvent<String?>()
+    var _nuevoPicto = SingleLiveEvent<Pictograma?>()
     lateinit var adaptador: AdaptadorNuevoPicto
     var _listaPictoRandom = SingleLiveEvent<ArrayList<Pictograma>>()
     var _listaPictogramas = SingleLiveEvent<ArrayList<Pictograma>>()
     var pictograma = Pictograma()
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var daySelected = ""
+    var colorSelected: String? = null
     lateinit var week: ArrayList<DiaSemana>
     var isEdit = false
     var configuration = 0
 
     var _imageSelected = MutableLiveData<Bitmap>()
     var _itemBorrado = MutableLiveData<Int>()
+    var _itemColor = MutableLiveData<Int>()
+    var _diaClicked = MutableLiveData<String?>()
 
 
     fun configureUser(prefs : SharedPreferences){
@@ -58,8 +60,8 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
         idUsuario = userId.toString()
     }
 
-    override fun onNuevoPicto(imagenPicto: String?) {
-        _imagenNuevoPicto.value = imagenPicto
+    override fun onNuevoPicto(pictogram: Pictograma?) {
+        _nuevoPicto.value = pictogram
     }
 
     fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
@@ -79,29 +81,12 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
         return myPath.absolutePath
     }
 
-    fun savePicto(image: Drawable){
-        if (image is BitmapDrawable) {
-            val imageBitmap: Bitmap = image.bitmap
-            _imageSelected.value = imageBitmap
+   /* fun savePicto(image: Bitmap){
+            _imageSelected.value = image
         }
-    }
+    }*/
 
-    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        return outputStream.toByteArray()
-    }
-
-    fun byteArrayToBitmap(byteArray: ByteArray?): Bitmap? {
-        return if(byteArray == null){
-            null
-        }else{
-            BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-        }
-    }
-
-
-    fun obtenerImagenes(activity: Activity): ArrayList<DiaSemana> {
+    fun obtenerConfigDias(activity: Activity): ArrayList<DiaSemana> {
         val today = LocalDate.now()
         val monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
         val sunday = today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))
@@ -115,14 +100,7 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
         }
 
         val semana = DiaSemana()
-        val diasSemana = ArrayList<DiaSemana>()
-        val imagenes = semana.obtenerImagenes(idUsuario, days, activity)
-        for(i in 0..6){
-            val bitmap = byteArrayToBitmap(imagenes[i])
-            val dia = DiaSemana(days[i], bitmap)
-            diasSemana.add(dia)
-        }
-        return diasSemana
+        return semana.obtenerDias(idUsuario, days, activity)
     }
 
     fun configurarDaysWeek(configuration: Int): Array<String> {
@@ -167,8 +145,7 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
     private fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int, activity: Activity): Pictograma {
         val tituloMayus = titulo?.uppercase()
         val favorito = pictograma.getFavorito(activity, id.toString(), idUsuario)
-        val archivo = CommonUtils.crearImagen(bitmap, titulo, activity)
-        return Pictograma(id.toString(), tituloMayus, archivo, 0, 0, favorito, true)
+        return Pictograma(id.toString(), tituloMayus, bitmap, 0, 0, favorito)
     }
 
     override fun onItemSeleccionado(posicion: Int, activity: Activity?) {
@@ -180,4 +157,16 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
     override fun onBorrarItemSeleccionado(posicion: Int) {
         _itemBorrado.value = posicion
     }
+
+    override fun onColorSelected(posicion: Int, color: String?, activity: Activity) {
+        colorSelected = color
+        _itemColor.value = posicion
+    }
+
+    override fun onDiaClicked(posicion: Int, activity: Activity) {
+        val dia = week[posicion].dia
+        _diaClicked.value = dia
+
+    }
+
 }

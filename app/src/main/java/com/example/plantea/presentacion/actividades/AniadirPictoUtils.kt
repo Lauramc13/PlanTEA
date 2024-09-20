@@ -1,17 +1,14 @@
 package com.example.plantea.presentacion.actividades
 
-import android.R.attr.bitmap
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +27,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,11 +37,15 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.example.plantea.presentacion.viewModels.EventosViewModel
 import com.example.plantea.presentacion.viewModels.SemanaViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
-import java.io.ByteArrayOutputStream
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class AniadirPictoUtils  {
@@ -76,10 +77,24 @@ class AniadirPictoUtils  {
             val datosLayoutCrearCategoria = inflater.inflate(R.layout.dialogo_crear_categoria_plan, null, false)
             val datosLayoutSemana = inflater.inflate(R.layout.fragment_nuevo_picto_semana, null, false)
 
-            if(viewModel is SemanaViewModel){
-                titleDialog.text = "AÑADIR PICTOGRAMA A LA SEMANA" //TODO: CAMBIAR ESTO
+          /*  if(viewModel is SemanaViewModel){
+                titleDialog.text = activity.getString(R.string.lbl_NuevoPictoSemana).uppercase()
             }else {
                 titleDialog.text = activity.getString(R.string.lbl_NuevoPicto).uppercase()
+            }*/
+
+            when(viewModel){
+                is CrearPlanViewModel -> {
+                    if(isCrearCategoria){
+                        titleDialog.text = activity.getString(R.string.lbl_NuevoPicto)
+                    }
+                }
+                is SemanaViewModel -> {
+                    titleDialog.text = activity.getString(R.string.lbl_NuevoPictoSemana).uppercase()
+                }
+                is EventosViewModel -> {
+                    titleDialog.text = activity.getString(R.string.lbl_imprevistoPicto).uppercase()
+                }
             }
 
             if (searchBar.query.isEmpty()) {
@@ -94,10 +109,17 @@ class AniadirPictoUtils  {
                 recyclerViewBusqueda.layoutManager = GridLayoutManager(activity, 3)
             }
 
-            if (viewModel is CrearPlanViewModel) {
+            /*if (viewModel is CrearPlanViewModel) {
                 initializeAniadirPictoPlan(viewModel, activity, recyclerViewBusqueda)
             } else if (viewModel is SemanaViewModel) {
                 initializeAniadirPictoPlan(viewModel, activity, recyclerViewBusqueda)
+            }*/
+
+            when (viewModel) {
+                is CrearPlanViewModel -> initializeAniadirPictoPlan(viewModel, activity, recyclerViewBusqueda)
+                is SemanaViewModel -> initializeAniadirPictoPlan(viewModel, activity, recyclerViewBusqueda)
+                is EventosViewModel -> initializeAniadirPictoPlan(viewModel, activity, recyclerViewBusqueda)
+                else -> throw IllegalArgumentException("Unsupported ViewModel type")
             }
 
             buttonSiguiente.setOnClickListener {
@@ -110,6 +132,8 @@ class AniadirPictoUtils  {
                     }
                 }else if (viewModel is SemanaViewModel){
                     dialogoAniadirPictoSemana(dialog, view, datosLayoutSemana, buttons, viewModel, activity)
+                }else if (viewModel is EventosViewModel){
+                    dialogoAniadirPictoEvento(dialog, view, datosLayoutSemana, buttons, viewModel, activity)
                 }
             }
 
@@ -174,10 +198,17 @@ class AniadirPictoUtils  {
                     // Handle the returned URI here
                     if (uri != null) {
                         imgPicto.setImageURI(uri)
+                        //uri to bitmap
                         if(viewModel is CrearPlanViewModel){
-                        viewModel._imagenNuevoPicto.value = uri.toString()
+                            val picto = Pictograma()
+                            picto.imagen = MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
+                            viewModel._nuevoPicto.value = picto
+                            //viewModel._nuevoPicto.value?.imagen = MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
                         }else if (viewModel is SemanaViewModel){
-                            viewModel._imagenNuevoPicto.value = uri.toString()
+                            val picto = Pictograma()
+                            picto.imagen = MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
+                            viewModel._nuevoPicto.value = picto
+                           // viewModel._nuevoPicto.value?.imagen = MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
                         }
 
                         //if is dark mode
@@ -190,39 +221,23 @@ class AniadirPictoUtils  {
                     } else {
                         Toast.makeText(activity, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
                     }
-                }
+            }
         }
 
         private fun dialogoAniadirPictoPlan(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: CrearPlanViewModel, activity: Activity) {
             view.removeAllViews()
             view.addView(datosLayout)
-            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
             val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-            if (identifier == 0) {
-                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
-            } else {
-                imagenPicto.setImageResource(identifier)
-            }
-            val categorias = viewModel.categoria.consultarCategorias(activity, Locale.getDefault().language)
+            imagenPicto.setImageBitmap(viewModel._nuevoPicto.value?.imagen)
+
+            val categorias = viewModel.categoria.obtenerCategoriasPrincipales(activity, viewModel.idUsuario, Locale.getDefault().language)
             val spinnerDialogo = view.findViewById<Spinner>(R.id.spinner_Categorias)
             val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
 
-            spinnerDialogo.adapter = ArrayAdapter(
-                activity.applicationContext,
-                android.R.layout.simple_spinner_dropdown_item,
-                categorias as ArrayList<String>
-            )
+            spinnerDialogo.adapter = ArrayAdapter(activity.applicationContext, android.R.layout.simple_spinner_dropdown_item, categorias.map { it.getTitulo() })
 
-            if (viewModel.subcategoriaOpen) {
-                spinnerDialogo.setSelection(viewModel.identificadorSubCategoria - 1)
-            } else {
-                val nombreCategoria = viewModel.categoria.obtenerCategoriaById(
-                    activity.applicationContext,
-                    viewModel.identificadorCategoria,
-                    Locale.getDefault().language
-                )
-                spinnerDialogo.setSelection(categorias.indexOf(nombreCategoria))
-            }
+            //find position of the category by the identificador
+            spinnerDialogo.setSelection(findId(viewModel.identificadorCategoria, categorias))
 
             buttonSiguiente.visibility = View.GONE
             buttons.visibility = View.GONE
@@ -235,22 +250,28 @@ class AniadirPictoUtils  {
                 } else if (imagenPicto.drawable == null) {
                     Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
                 } else {
-                    val imagen = nombrePictograma.editText?.text.toString() //Nombre de la imagen
-                    val image = (imagenPicto.drawable as BitmapDrawable).bitmap
-
-                    val ruta = viewModel.guardarImagen(activity.applicationContext, imagen, image)
+                    val imageBlob = CommonUtils.bitmapToByteArray((imagenPicto.drawable as BitmapDrawable).bitmap)
                     Toast.makeText(activity, R.string.toast_pictograma_creado, Toast.LENGTH_SHORT).show()
 
-                    dialogNuevoPictograma.dismiss() //Cerrar dialogo
+                    dialogNuevoPictograma.dismiss()
 
                     //Añadir pictograma
-                    val idCategoria = viewModel.categoria.obtenerCategoria(activity, spinnerDialogo.selectedItem.toString(), Locale.getDefault().language)
-                    val id = viewModel.pictograma.nuevoPictograma(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), ruta, idCategoria.toString(), viewModel.idUsuario)
+                    var idCategoria = viewModel.categoria.obtenerCategoria(activity, spinnerDialogo.selectedItem.toString(), Locale.getDefault().language)
+                    //if categoria is between 0 and 3
+                    if(idCategoria in 1..4){
+                        idCategoria = viewModel.categoria.duplicateCategoria(activity.applicationContext, viewModel.idUsuario, idCategoria)
+                    }
+                    val id = if(viewModel._nuevoPicto.value?.idAPI != 0){
+                        viewModel.pictograma.nuevoPictogramaAPI(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), viewModel._nuevoPicto.value?.idAPI.toString(), idCategoria.toString())
+                    }else{
+                        viewModel.pictograma.nuevoPictogramaLocal(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), imageBlob, idCategoria.toString(), viewModel.idUsuario)
+                    }
+
                     val pictograma = Pictograma()
-                    pictograma.id = id
                     pictograma.titulo = nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault())
-                    pictograma.imagen = ruta
                     pictograma.categoria = idCategoria
+                    pictograma.id = id
+                    pictograma.imagen = (imagenPicto.drawable as BitmapDrawable).bitmap
                     viewModel._listaPictogramas.value?.add(pictograma)
 
                     //find current fragment and update the recycler
@@ -264,16 +285,40 @@ class AniadirPictoUtils  {
             }
         }
 
-        private fun dialogoAniadirPictoSemana(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: SemanaViewModel, activity: Activity) {
+        private fun dialogoAniadirPictoEvento(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: EventosViewModel, activity: Activity) {
             view.removeAllViews()
             view.addView(datosLayout)
-            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
-            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-            if (identifier == 0) {
-                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
-            } else {
-                imagenPicto.setImageResource(identifier)
+            if(CommonUtils.isMobile(activity)){
+                view.layoutParams.height = 800
+                view.requestLayout()
+
             }
+
+            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+            imagenPicto.setImageBitmap(viewModel._nuevoPicto.value?.imagen)
+
+            buttonSiguiente.visibility = View.GONE
+            buttons.visibility = View.GONE
+
+            val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
+            buttonGuardar.text = activity.getString(R.string.cambiar).uppercase()
+
+            buttonGuardar.setOnClickListener {
+                if (imagenPicto.drawable == null) {
+                    Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel._pictoChanged.value = true
+                    dialogNuevoPictograma.dismiss() //Cerrar dialogo
+                }
+            }
+        }
+
+
+            private fun dialogoAniadirPictoSemana(dialogNuevoPictograma: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: SemanaViewModel, activity: Activity) {
+            view.removeAllViews()
+            view.addView(datosLayout)
+            val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+            imagenPicto.setImageBitmap(viewModel._nuevoPicto.value?.imagen)
 
             buttonSiguiente.visibility = View.GONE
             buttons.visibility = View.GONE
@@ -281,13 +326,11 @@ class AniadirPictoUtils  {
             val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
 
             buttonGuardar.setOnClickListener {
-                val image = imagenPicto.drawable
                 if (imagenPicto.drawable == null) {
                     Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
                 } else {
-                    //drawable to bitmap
 
-                    viewModel.savePicto(image)
+                    viewModel._imageSelected.value = (imagenPicto.drawable as BitmapDrawable).bitmap
                     dialogNuevoPictograma.dismiss() //Cerrar dialogo
 
                     //Añadir pictograma
@@ -299,13 +342,8 @@ class AniadirPictoUtils  {
         private fun dialogoAniadirCategoriaPlan(dialogNuevaCategoria: Dialog, view: ViewGroup, datosLayout: View, buttons: LinearLayout, viewModel: CrearPlanViewModel, activity: Activity) {
             view.removeAllViews()
             view.addView(datosLayout)
-            val identifier = activity.resources.getIdentifier(viewModel._imagenNuevoPicto.value, "drawable", activity.packageName)
             val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-            if (identifier == 0) {
-                imagenPicto.setImageURI(viewModel._imagenNuevoPicto.value?.let { Uri.parse(it) })
-            } else {
-                imagenPicto.setImageResource(identifier)
-            }
+            imagenPicto.setImageBitmap(viewModel._nuevoPicto.value?.imagen)
 
             val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
             var colorSelected = "default"
@@ -366,18 +404,11 @@ class AniadirPictoUtils  {
                 } else if (categoria.checkCategoriaExiste(view.context, nombrePictograma.editText?.text.toString(), viewModel.idUsuario, Locale.getDefault().language)) {
                     Toast.makeText(view.context, R.string.toast_categoria_existente, Toast.LENGTH_SHORT).show()
                 } else {
-                    val nombreImagen = nombrePictograma.editText?.text.toString() //Nombre de la imagen
-                    val image = (imagenPicto.drawable as BitmapDrawable).bitmap
+                    val imagenBlob = CommonUtils.bitmapToByteArray((imagenPicto.drawable as BitmapDrawable).bitmap)
+                    val idCategoria = categoria.crearCategoria(activity, nombrePictograma.editText?.text.toString().uppercase(), imagenBlob, colorSelected, viewModel.idUsuario)
 
-                    val ruta = viewModel.guardarImagen(activity.applicationContext, nombreImagen, image)
-                    val idCategoria = categoria.crearCategoria(activity, nombrePictograma.editText?.text.toString().uppercase(), ruta, colorSelected, viewModel.idUsuario)
-
-                    //update data
-                    categoria.titulo = nombrePictograma.editText?.text.toString().uppercase()
-                    categoria.imagen = ruta
-                    categoria.color = colorSelected
-                    categoria.categoria = idCategoria
-                    viewModel.listaCategorias.add(viewModel.listaCategorias.size - 1, categoria)
+                    val newCategoria = Categoria(idCategoria, nombrePictograma.editText?.text.toString().uppercase(), (imagenPicto.drawable as BitmapDrawable).bitmap, colorSelected)
+                    viewModel.listaCategorias.add(viewModel.listaCategorias.size - 1, newCategoria)
                     viewModel._createdCategoria.value = true
 
                     dialogNuevaCategoria.dismiss() //Cerrar dialogo
@@ -397,6 +428,8 @@ class AniadirPictoUtils  {
                             viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
                         } else if (viewModel is SemanaViewModel) {
                             viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
+                        } else if (viewModel is EventosViewModel) {
+                            viewModel.getPictogramas(query.trim(), activity)
                         }
                     }
                     CommonUtils.hideKeyboard(activity, searchBar)
@@ -412,12 +445,23 @@ class AniadirPictoUtils  {
 
         @SuppressLint("NotifyDataSetChanged")
         private fun initializeAniadirPictoPlan(viewModel: CrearPlanViewModel, activity: Activity, recyclerViewBusqueda: RecyclerView) {
-            viewModel._imagenNuevoPicto.observe(activity as AppCompatActivity) {
+            viewModel._nuevoPicto.observe(activity as AppCompatActivity) {
                 buttonSiguiente.isEnabled = true
             }
 
-            viewModel.adaptador = AdaptadorNuevoPicto(viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language),viewModel)
-            recyclerViewBusqueda.adapter = viewModel.adaptador
+            val randomPictos = viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                randomPictos.forEach { pictogram ->
+                    if (pictogram.idAPI != 0) {
+                        pictogram.imagen = withContext(Dispatchers.IO) {
+                            CommonUtils.getImagenAPI(pictogram.idAPI)
+                        }
+                    }
+                }
+                viewModel.adaptador = AdaptadorNuevoPicto(randomPictos, viewModel)
+                recyclerViewBusqueda.adapter = viewModel.adaptador
+            }
 
             viewModel._listaPictoRandom.observe(activity) {
                 viewModel.adaptador.listaPictogramas = it
@@ -426,18 +470,56 @@ class AniadirPictoUtils  {
         }
 
         private fun initializeAniadirPictoPlan(viewModel: SemanaViewModel, activity: Activity, recyclerViewBusqueda: RecyclerView) {
-            viewModel._imagenNuevoPicto.observe(activity as AppCompatActivity) {
+            viewModel._nuevoPicto.observe(activity as AppCompatActivity) {
                 buttonSiguiente.isEnabled = true
             }
 
-            viewModel.adaptador = AdaptadorNuevoPicto(viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language),viewModel)
-            recyclerViewBusqueda.adapter = viewModel.adaptador
+            val randomPictos = viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                randomPictos.forEach { pictogram ->
+                    if (pictogram.idAPI != 0) {
+                        pictogram.imagen = withContext(Dispatchers.IO) {
+                            CommonUtils.getImagenAPI(pictogram.idAPI)
+                        }
+                    }
+                }
+                viewModel.adaptador = AdaptadorNuevoPicto(randomPictos, viewModel)
+                recyclerViewBusqueda.adapter = viewModel.adaptador
+            }
 
             viewModel._listaPictoRandom.observe(activity) {
                 viewModel.adaptador.listaPictogramas = it
                 viewModel.adaptador.notifyDataSetChanged()
             }
         }
+
+        @SuppressLint("NotifyDataSetChanged")
+        private fun initializeAniadirPictoPlan(viewModel: EventosViewModel, activity: Activity, recyclerViewBusqueda: RecyclerView) {
+            viewModel._nuevoPicto.observe(activity as AppCompatActivity) {
+                buttonSiguiente.isEnabled = true
+            }
+
+            val randomPictos = viewModel.pictograma.getRandomPictograms(activity, viewModel.idUsuario, Locale.getDefault().language)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                randomPictos.forEach { pictogram ->
+                    if (pictogram.idAPI != 0) {
+                        pictogram.imagen = withContext(Dispatchers.IO) {
+                            CommonUtils.getImagenAPI(pictogram.idAPI)
+                        }
+                    }
+                }
+                viewModel.adaptadorNuevoPicto = AdaptadorNuevoPicto(randomPictos, viewModel)
+                recyclerViewBusqueda.adapter = viewModel.adaptadorNuevoPicto
+            }
+
+            viewModel._listaPictoRandom.observe(activity) {
+                viewModel.adaptadorNuevoPicto.listaPictogramas = it
+                viewModel.adaptadorNuevoPicto.notifyDataSetChanged()
+            }
+        }
+
 
         private fun clearButtonsSelected(buttonMorado: FloatingActionButton, buttonRosa: FloatingActionButton, buttonVerde: FloatingActionButton, buttonAmarillo: FloatingActionButton, buttonDefault: FloatingActionButton, buttonAzul: FloatingActionButton) {
             buttonMorado.setImageResource(0)
@@ -446,6 +528,18 @@ class AniadirPictoUtils  {
             buttonAzul.setImageResource(0)
             buttonDefault.setImageResource(0)
             buttonAmarillo.setImageResource(0)
+        }
+
+        private fun findId(id: Int, categorias: ArrayList<Categoria>): Int {
+            var position = 0
+            for (i in categorias.indices) {
+                if (categorias[i].getCategoria() == id) {
+                    position = i
+                    break
+                }
+            }
+            return position
+
         }
 
     }

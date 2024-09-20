@@ -16,12 +16,14 @@ import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.ConfiguracionActivity
 import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.example.plantea.presentacion.actividades.ActividadActivity
-import com.example.plantea.presentacion.actividades.PlanActivity
+import com.example.plantea.presentacion.actividades.EventosActivity
 import com.example.plantea.presentacion.actividades.TraductorActivity
 import com.example.plantea.presentacion.actividades.CalendarioActivity
 import com.example.plantea.presentacion.actividades.CreditsActivity
+import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PasswordActivity
+import com.example.plantea.presentacion.actividades.PlanificacionesActivity
 import com.example.plantea.presentacion.actividades.PoliticaActivity
 import com.example.plantea.presentacion.actividades.SemanaActivity
 
@@ -52,7 +54,9 @@ class NavigationTopFragment: Fragment() {
         val hostingActivityClass = activity?.javaClass
 
         title.text = when (hostingActivityClass) {
-            PlanActivity::class.java -> getString(R.string.pantalla_eventos)
+            EventosActivity::class.java -> getString(R.string.pantalla_eventos)
+            EventosPlanificadorActivity::class.java -> getString(R.string.pantalla_eventos)
+            PlanificacionesActivity::class.java -> getString(R.string.pantalla_planificaciones)
             TraductorActivity::class.java -> getString(R.string.pantalla_traductor)
             CalendarioActivity::class.java -> getString(R.string.pantalla_calendario)
             ActividadActivity::class.java -> getString(R.string.actividades)

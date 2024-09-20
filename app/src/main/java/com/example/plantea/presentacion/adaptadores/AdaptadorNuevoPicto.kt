@@ -17,7 +17,7 @@ class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private
     var currentPosition = RecyclerView.NO_POSITION
 
     interface OnItemSelectedListener {
-        fun onNuevoPicto(imagen: String?)
+        fun onNuevoPicto(picto: Pictograma?)
     }
 
 
@@ -31,12 +31,7 @@ class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         context = holder.itemView.context
         holder.titulo.text = listaPictogramas!![position].titulo
-        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
-        if(identifier == 0) {
-            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-        }else{
-            holder.imagen.setImageResource(identifier)
-        }
+        holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
 
         if (currentPosition == position) {
             holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)
@@ -60,9 +55,8 @@ class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private
             card = itemView.findViewById(R.id.id_card) as View
 
             card.setOnClickListener {
-                val imagen = listaPictogramas!![bindingAdapterPosition].imagen
                 card.setBackgroundResource(R.drawable.card_personalizado_categoria)
-                listener?.onNuevoPicto(imagen)
+                listener?.onNuevoPicto(listaPictogramas!![bindingAdapterPosition])
 
                  val previousPosition = currentPosition
                  currentPosition = bindingAdapterPosition

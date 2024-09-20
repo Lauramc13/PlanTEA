@@ -22,7 +22,7 @@ class AdaptadorCuadernoActivity(var listaPictogramas: ArrayList<Pictograma>?, pr
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         holder.titulo.text = listaPictogramas!![position].titulo
-        holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
+        holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
     }
 
     override fun getItemCount(): Int {

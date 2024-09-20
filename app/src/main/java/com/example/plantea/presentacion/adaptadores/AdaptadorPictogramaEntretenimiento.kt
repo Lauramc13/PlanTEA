@@ -29,12 +29,8 @@ class AdaptadorPictogramaEntretenimiento( var listaPictogramas: ArrayList<Pictog
     override fun onBindViewHolder(holder: AdaptadorPictogramaEntretenimiento.ViewHolderPictogramas, position: Int) {
         context = holder.itemView.context
         holder.titulo.text = listaPictogramas!![position].titulo
-        val identifier = context.resources.getIdentifier(listaPictogramas!![position].imagen, "drawable", context.packageName)
-        if(identifier == 0) {
-            holder.imagen.setImageURI(Uri.parse(listaPictogramas!![position].imagen))
-        }else{
-            holder.imagen.setImageResource(identifier)
-        }
+        holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
+
 
         if(idPicto == listaPictogramas!![position].id!!.toInt()) {
             holder.card.setBackgroundResource(R.drawable.card_personalizado_categoria)

@@ -33,9 +33,8 @@ class CategoriasFragment : Fragment() {
 
         val categoria = Categoria()
         viewModel.listaCategorias = categoria.obtenerCategoriasPrincipales(actividad, viewModel.idUsuario, Locale.getDefault().language)
-        categoria.titulo = getString(R.string.lbl_NuevaCategoria).uppercase()
-        categoria.color = "default"
-        viewModel.listaCategorias.add(viewModel.listaCategorias.size, categoria)
+        val categoriaNueva = Categoria(viewModel.listaCategorias.size - 1, getString(R.string.lbl_NuevaCategoria).uppercase(), null, "default")
+        viewModel.listaCategorias.add(viewModel.listaCategorias.size, categoriaNueva)
 
         adaptador = AdaptadorCategorias(viewModel.listaCategorias, viewModel)
         val constraintLayout = vista.findViewById<ConstraintLayout>(R.id.frameLayout)

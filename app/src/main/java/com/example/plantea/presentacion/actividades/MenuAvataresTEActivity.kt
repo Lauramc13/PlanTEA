@@ -115,9 +115,9 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         if(!isConfiguration){
             val nextActivity = viewModel.determineNextScreenTEA(prefs)
             val intent = Intent(applicationContext, nextActivity)
-            if(nextActivity == TutorialActivity::class.java){
+            /*if(nextActivity == TutorialActivity::class.java){
                 intent.putExtra("isFromManual", false)
-            }
+            }*/
             startActivity(intent)
         }
 
@@ -129,7 +129,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value = CommonUtils.guardarImagen(this, "UsuarioGaleria", viewModel.bitmap!!)
+                viewModel._ruta.value = CommonUtils.guardarImagen(this, "UsuarioGaleria", viewModel.bitmap!!)  // TODO: CAMBIAR
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }

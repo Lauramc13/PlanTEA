@@ -28,7 +28,6 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     private lateinit var imageAdd: Button
     private lateinit var constraintLayout: ConstraintLayout
 
-
     private val viewModel: CrearPlanViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -42,8 +41,8 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         imageCerrar = vista.findViewById(R.id.image_CerrarContenedor)
         imageAdd = vista.findViewById(R.id.image_add)
         textoVacio = vista.findViewById(R.id.textoNoPictogramas)
-        val adaptador = AdaptadorPictogramas(viewModel._listaPictogramas.value, this, this)
-        recyclerPictogramas.adapter = adaptador
+        viewModel.adaptadorCategoriaPictograma = AdaptadorPictogramas(viewModel._listaPictogramas.value, this, this)
+        recyclerPictogramas.adapter = viewModel.adaptadorCategoriaPictograma
 
         if(viewModel._listaPictogramas.value?.size == 0){
             textoVacio.visibility = View.VISIBLE
@@ -58,7 +57,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
             imageAdd.visibility = View.GONE
         }
 
-        //Este método se ejecutará al seleccionar añadir nuevo pictograma.
+        //Este método se ejecutará al seleccionar añadir nuevo pictograma
         imageAdd.setOnClickListener { viewModel.nuevoPictogramaDialogo() }
 
         return vista
@@ -81,7 +80,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
     }
 
     fun markAsFavorite(pictogram: Pictograma) {
-        viewModel.pictograma.insertarFavorito(this.requireContext(), viewModel.idUsuario, pictogram.id, pictogram.titulo, pictogram.imagen, pictogram.sourceAPI)
+        viewModel.pictograma.insertarFavorito(this.requireContext(), viewModel.idUsuario, pictogram.id, pictogram.titulo, pictogram.idAPI)
     }
 
     fun removeFavorite(pictogram: Pictograma) {
