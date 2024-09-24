@@ -191,7 +191,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/next"
-        android:textColor="#203130"
+        android:textColor="?colorOnSurface"
         app:cornerRadius="25dp"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"

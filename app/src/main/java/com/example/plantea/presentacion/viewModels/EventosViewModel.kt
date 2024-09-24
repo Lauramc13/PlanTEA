@@ -439,4 +439,8 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         posicionSelectedCambio = posicion
     }
 
+    fun checkInitializedAdapter(): Boolean {
+        return ::adaptador.isInitialized
+    }
+
 }

@@ -242,7 +242,9 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
 
     fun imageSelected(){
          listaPictogramas[posicionSelected].imagen = bitmap!!
-        adaptador.notifyItemChanged(posicionSelected)
+         listaPictogramas[posicionSelected].idAPI = 0
+
+         adaptador.notifyItemChanged(posicionSelected)
     }
 
     private fun guardarPDF(context: Context, title: String){

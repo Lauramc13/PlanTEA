@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
@@ -33,21 +34,26 @@ class RegisterViewModel: ViewModel() {
     fun accountCreated(activity: Activity, prefs: SharedPreferences, isCheckedUsuarioPlan: Boolean, isCheckedObjeto: Boolean){
         val usuario = Usuario()
         val passwordCifrada = EncryptionUtils.encrypt(password, activity.applicationContext)
-        usuario.crearUsuario(name, email, passwordCifrada, username, objeto, namePlanificado, activity)
-        val id = usuario.consultarId(email, activity)
-        // crear categorias por defecto
-        val editor = prefs.edit()
-        editor.putString("idUsuario", id)
-        editor.putBoolean("userAccount", true)
-        editor.putString("nombreUsuarioPlanificador", username)
-        editor.putBoolean("info_usuario", isCheckedUsuarioPlan)
-        editor.putBoolean("info_objeto", isCheckedObjeto)
-        editor.putString("email", email)
-        editor.putString("nombrePlanificador", name)
-        editor.putString("nombreUsuarioTEA", namePlanificado)
-        editor.putString("nombreObjeto", objeto)
-        editor.apply()
-        _accountCreated.value = true
+        val validUser = usuario.crearUsuario(name, email, passwordCifrada, username, objeto, namePlanificado, activity)
+        if(validUser){
+            val id = usuario.consultarId(email, activity)
+            // crear categorias por defecto
+            val editor = prefs.edit()
+            editor.putString("idUsuario", id)
+            editor.putBoolean("userAccount", true)
+            editor.putString("nombreUsuarioPlanificador", username)
+            editor.putBoolean("info_usuario", isCheckedUsuarioPlan)
+            editor.putBoolean("info_objeto", isCheckedObjeto)
+            editor.putString("email", email)
+            editor.putString("nombrePlanificador", name)
+            editor.putString("nombreUsuarioTEA", namePlanificado)
+            editor.putString("nombreObjeto", objeto)
+            editor.apply()
+            _accountCreated.value = true
+        }else{
+            val error = activity.getString(R.string.error_crear_cuenta)
+            Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
+        }
     }
 
    /* fun registerUser(chekedObjeto: Boolean, checkedUserTEA: Boolean, prefs: SharedPreferences, activity: Activity) {

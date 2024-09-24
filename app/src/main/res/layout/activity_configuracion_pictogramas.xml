@@ -192,7 +192,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/next"
         android:textAllCaps="true"
-        android:textColor="#203130"
+        android:textColor="?colorOnSurface"
         android:textSize="14sp"
         app:cornerRadius="25dp"
         android:backgroundTint="#FAFAFA"

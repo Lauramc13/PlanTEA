@@ -34,7 +34,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -45,19 +45,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="0.75"
+                    android:layout_marginTop="30dp"
                     android:src="@drawable/svg_checklist"
+                    android:layout_marginBottom="20dp"
                     android:scaleType="fitXY"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true" />
 
                 <TextView
                     android:id="@+id/lbl_mensaje_evento"
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.15"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:maxLines="2"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="60dp"
                     android:text="@string/lbl_mensaje_evento"
                     android:textAlignment="center"
                     android:textColor="?colorOnSurface"

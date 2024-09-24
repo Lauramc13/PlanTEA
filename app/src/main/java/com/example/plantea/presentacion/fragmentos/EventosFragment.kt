@@ -74,7 +74,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         viewModel.setIdUsario(prefs)
 
         crearEvento.setOnClickListener {
-            if(CommonUtils.isMobile(this.requireContext())){
+            if(CommonUtils.isMobile(this.requireContext()) || (! CommonUtils.isMobile(this.requireContext()) && CommonUtils.isPortrait(this.requireActivity()))){
                 viewModel.bottomSheetDialog(requireContext(), null)
             }else{
                 viewModel.crearEventoFragment(requireContext(), null)
@@ -188,7 +188,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     override fun editEvento(posicion: Int) {
         val evento = viewModel.evento.obtenerInfoEvento(viewModel.eventosDia[posicion].id, actividad)
         //put extras of the event to edit
-        if(CommonUtils.isMobile(this.requireContext())){
+        if(CommonUtils.isMobile(this.requireContext()) || (! CommonUtils.isMobile(this.requireContext()) && CommonUtils.isPortrait(this.requireActivity()))){
            viewModel.bottomSheetDialog(requireContext(), evento)
         }else{
             viewModel.crearEventoFragment(requireContext(), evento)

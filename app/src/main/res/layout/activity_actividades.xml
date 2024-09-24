@@ -168,7 +168,7 @@
             android:src="@drawable/ic_baseline_close_24"
             android:padding="12dp"
             android:alpha="0.9"
-            android:layout_gravity="end"
+            android:layout_gravity="start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -406,4 +406,7 @@
     <string name="toast_queda_poco_tiempo">Less than 1 minute left</string>
     <string name="importante">IMPORTANT!</string>
     <string name="no_eventos_disponibles">There are no available events</string>
+    <string name="no_planificaciones_disponibles">There are no available plans</string>
+    <string name="error_crear_cuenta">Error creating the account. The email is already in use</string>
+
 </resources>

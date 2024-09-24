@@ -66,16 +66,15 @@ class EventosActivity : AppCompatActivity() {
         viewModel._diasMes.removeObservers(this)
         //CommonUtils.textToSpeech.stop()
 
-       /* viewModel.adaptador.tachados.forEach {
-            viewModel.tachados.add(it) //peta esto
+        var tachadosCopy = ArrayList<Int>()
+        var imprevistosCopy = ArrayList<Int>()
+
+        // if adaptador has not been initialized, we don't want to copy the lists
+        if(viewModel.checkInitializedAdapter()){
+            tachadosCopy = ArrayList(viewModel.adaptador.tachados)
+            imprevistosCopy = ArrayList(viewModel.adaptador.imprevistos)
         }
 
-        viewModel.adaptador.imprevistos.forEach {
-            viewModel.imprevistos.add(it) // peta aqui
-        }*/
-
-        val tachadosCopy = ArrayList(viewModel.adaptador.tachados)
-        val imprevistosCopy = ArrayList(viewModel.adaptador.imprevistos)
 
         // Safely iterate over the copies
         tachadosCopy.forEach {

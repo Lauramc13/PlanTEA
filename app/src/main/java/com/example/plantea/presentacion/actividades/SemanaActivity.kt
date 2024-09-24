@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
@@ -37,6 +38,7 @@ class SemanaActivity: AppCompatActivity() {
 
         val semana = DiaSemana()
         val recyclerViewHeader = findViewById<RecyclerView>(R.id.recycler_view_text)
+
         if(savedInstanceState == null){
             viewModel.configuration = semana.obtenerconfig(viewModel.idUsuario, this)
         }
@@ -51,7 +53,11 @@ class SemanaActivity: AppCompatActivity() {
         recylerView.layoutManager = androidx.recyclerview.widget.GridLayoutManager(this, 7)
         recylerView.adapter = adaptador
 
-        changeButtons(layoutOptions, buttonEditar, buttonSwitch)
+        if(getSharedPreferences("Preferencias", MODE_PRIVATE).getBoolean("PlanificadorLogged", false)){
+            changeButtons(layoutOptions, buttonEditar, buttonSwitch)
+        }else{
+            buttonEditar.visibility = Button.GONE
+        }
 
         buttons(buttonEditar, buttonCancelar, buttonGuardar, buttonSwitch, layoutOptions, adaptador!!, adaptadorHeader, semana)
         observers(adaptador!!)

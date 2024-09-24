@@ -101,19 +101,30 @@
                 android:paddingEnd="30dp"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"/>
 
-            <TextView
-                android:id="@+id/mensajeEventos"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layout_no_eventos"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.55"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/no_eventos_disponibles"
-                android:textColor="?colorOnSurface"
-                android:textSize="@dimen/modalText"
-                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/btn_eventos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/mensajeEventos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|top"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/no_eventos_disponibles"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="@dimen/modalText" />
+
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_eventos"

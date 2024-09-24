@@ -56,6 +56,7 @@ class ActividadViewModel: ViewModel() {
         if (prefs.getString("imagenObjeto", "") === "") {
             imgObjeto.setBackgroundResource(R.drawable.question2)
             txtObjeto.text = context.getString(R.string.noConfigurationActivity)
+            dialogo.findViewById<TextView>(R.id.lbl_actividad).visibility = TextView.GONE
         } else {
             imgObjeto.background = null
             imgObjeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))

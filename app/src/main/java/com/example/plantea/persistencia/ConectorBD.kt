@@ -325,15 +325,13 @@ class ConectorBD(ctx: Context?) {
         nuevoUsuario.put("objeto", objeto)
         nuevoUsuario.put("nameTEA", nameTEA)
 
-        var resultado : Long? = null
-        //Insertamos el registro en la base de datos
-        try{
-            resultado = db?.insert("Usuario", null, nuevoUsuario) ?: -1
-        }catch (e: SQLiteConstraintException){
+        return try{
+            val resultado = db?.insert("Usuario", null, nuevoUsuario) ?: -1
+            resultado != -1L
+        }catch (e: Exception){
             Log.d("TAG", "El usuario ya existe")
+            false
         }
-
-        return resultado != -1L
     }
 
     /*Cambiar contraseña del usuario*/

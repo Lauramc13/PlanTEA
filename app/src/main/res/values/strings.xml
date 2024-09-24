@@ -415,5 +415,7 @@
     <string name="toast_queda_poco_tiempo">Queda menos de 1 minuto</string>
     <string name="importante">¡IMPORTANTE!</string>
     <string name="no_eventos_disponibles">No existen eventos disponibles</string>
+    <string name="no_planificaciones_disponibles">No existen planificaciones disponibles</string>
+    <string name="error_crear_cuenta">Error al crear la cuenta. El correo ya está en uso</string>
 
 </resources>

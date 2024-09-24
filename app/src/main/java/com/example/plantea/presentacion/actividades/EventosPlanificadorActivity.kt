@@ -75,7 +75,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         listaEventos.layoutManager = LinearLayoutManager(this)
         viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuario, this)
         if(viewModel.eventos.isEmpty()){
-            findViewById<TextView>(R.id.mensajeEventos).visibility = View.VISIBLE
+            findViewById<LinearLayout>(R.id.layout_no_eventos).visibility = View.VISIBLE
         }
         adaptador = AdaptadorListaEventos(viewModel.eventos, this)
         listaEventos.adapter = adaptador

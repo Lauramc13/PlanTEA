@@ -91,19 +91,42 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/mensajeEventos"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layout_no_eventos"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.85"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/no_eventos_disponibles"
-                android:textColor="?colorOnSurface"
-                android:textSize="@dimen/modalText"
-                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/btn_eventos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintTop_toBottomOf="@+id/textView15"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="80dp"
+                    android:src="@drawable/svg_neutral_face"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true" />
+
+                <TextView
+                    android:id="@+id/mensajeEventos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|top"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/no_eventos_disponibles"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="@dimen/modalText" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

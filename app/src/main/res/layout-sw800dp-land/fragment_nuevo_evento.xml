@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btn_desplegar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img_cancelarEvento"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:padding="12dp"
+        android:background="@drawable/bg_close_button"
+        android:contentDescription="Cerrar configuración nuevo evento"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="25dp"
+        android:paddingEnd="25dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lbl_nuevoEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/lbl_nuevoEvento"
+            android:fontFamily="@font/poppins_medium"
+            android:textAlignment="center"
+            android:textColor="?colorOnSurface"
+            android:textSize="20sp" />
+
+
+        <!--   <EditText
+               android:id="@+id/txt_tituloEvento"
+               android:hint="Titulo"
+               android:theme="@style/AppTheme.CursorBubble"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:fontFamily="@font/poppins_regular"
+               android:layout_gravity="center_vertical|end"
+               android:textColor="?colorOnSurface"
+               android:inputType="textCapSentences"
+               style="@style/cornerRadiusEvento"
+               android:layout_marginBottom="10dp"
+               android:textSize="18sp" /> -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/svg_calendar3"/>
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fecha"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="?colorOnSurface"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/lbl_fechaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="29 noviembre 2021"
+                android:fontFamily="@font/poppins_regular"
+                android:textAlignment="viewEnd"
+                android:textColor="?colorOnSurface"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/svg_clock"/>
+
+            <TextView
+                android:id="@+id/lbl_hora"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hora"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btn_horaEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/selecciona_hora"
+                android:gravity="end"
+                android:contentDescription="Boton seleccionar hora"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_regular"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/svg_bell"/>
+
+            <TextView
+                android:id="@+id/lbl_recordatorio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recordatorio"
+                android:layout_marginStart="10dp"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="16sp" />
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_recordatorio"
+                style="@style/switchCompact"
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+            </androidx.appcompat.widget.SwitchCompat>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:padding="3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/svg_eye"/>
+
+            <TextView
+                android:id="@+id/lbl_hacer_visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hacer visible 5 min antes"
+                android:layout_marginStart="10dp"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/switch_hacer_visible"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton">
+            </CheckBox>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/lbl_planificacionesDisponibles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/planificaciones_disponibles"
+            android:textColor="?colorOnSurface"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- <TextView
+                 android:id="@+id/lbl_mensajePlanes"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:layout_marginBottom="137dp"
+                 android:fontFamily="@font/poppins_regular"
+                 android:gravity="center"
+                 android:text="@string/lbl_mensaje"
+                 android:textColor="?colorOnSurface"
+                 android:textSize="16sp"
+                 android:visibility="gone"
+                 app:layout_constraintBottom_toTopOf="@+id/btn_guardarEvento"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent" /> -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_planificaciones"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_guardarEvento"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"/>
+
+            <Button
+                android:id="@+id/btn_guardarEvento"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="Boton guardar nuevo evento"
+                android:enabled="false"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/btn_Guardar"
+                android:textColor="#203130"
+                android:textSize="16sp"
+                app:cornerRadius="25dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</FrameLayout>
