@@ -23,6 +23,7 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.OnAlarmReceiver
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
+import com.example.plantea.presentacion.actividades.CalendarioActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
@@ -170,6 +171,14 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
         if(isEditing){
             evento.editarEvento(context as Activity, cita)
+            //change evento where id is the same
+            for (i in eventos.indices) {
+                if (eventos[i].id == eventoIdEdited) {
+                    eventos[i] = cita
+                    break
+                }
+            }
+
         }else{
             cita.id = evento.crearEvento(context as Activity, cita)
         }
@@ -221,7 +230,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun cambiarVisibilidadEvento(eventoId: Int, context: Context){
         val evento = Evento()
-
         evento.cambiarVisibilidad(context, 1, eventoId)
         val prefs = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val userId = prefs.getString("idUsuario", "")
@@ -304,7 +312,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     }
 
     fun createCalendar(context: Context): MaterialDatePicker<Long> {
-        val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select date").build()
+        val datePicker = MaterialDatePicker.Builder.datePicker().setTheme(R.style.CalendarPicker).build()
         datePicker.show((context as AppCompatActivity).supportFragmentManager, "DatePicker")
         return datePicker
     }

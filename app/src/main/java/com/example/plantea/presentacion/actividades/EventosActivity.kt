@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -73,8 +74,9 @@ class EventosActivity : AppCompatActivity() {
         if(viewModel.checkInitializedAdapter()){
             tachadosCopy = ArrayList(viewModel.adaptador.tachados)
             imprevistosCopy = ArrayList(viewModel.adaptador.imprevistos)
-        }
+            viewModel.adaptador.countDownTimer?.cancel()
 
+        }
 
         // Safely iterate over the copies
         tachadosCopy.forEach {
@@ -90,6 +92,7 @@ class EventosActivity : AppCompatActivity() {
         if(viewModel.currentDialog != null){
             viewModel.currentDialog!!.dismiss()
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,6 +122,11 @@ class EventosActivity : AppCompatActivity() {
         dia = findViewById(R.id.lbl_dia)
         atras = findViewById(R.id.atras)
         lblImportante = findViewById(R.id.lbl_importante)
+
+        val question = findViewById<MaterialButton>(R.id.question)
+        question.setOnClickListener {
+            Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
+        }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)
@@ -171,7 +179,13 @@ class EventosActivity : AppCompatActivity() {
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
         iconoDeshacer.setOnClickListener {
             if (!viewModel._pasosCompletados.value?.isEmpty()!!) {
-                //viewModel.adaptador.optionMarcar = false
+                //if the next pictogram has timer, cancel it
+                if(viewModel.adaptador.listaPictogramas?.get(viewModel._pasosCompletados.value?.last() as Int)?.duracion != "null"){
+                    viewModel.adaptador.countDownTimer?.cancel()
+                    viewModel.adaptador.timeLeft = 0
+                    val posicionNextPicto = viewModel._pasosCompletados.value?.last()!!.toInt() + 1
+                    viewModel.adaptador.notifyItemChanged(posicionNextPicto, "null")
+                }
                 viewModel.adaptador.notifyItemChanged(viewModel._pasosCompletados.value?.removeLast() as Int)
                 viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
             }
@@ -180,12 +194,19 @@ class EventosActivity : AppCompatActivity() {
         //Este método se ejecutará al seleccionar el icono deshacer para marcar todos los pictogramas como no realizados
         iconoDeshacerTodas.setOnClickListener {
             if (!viewModel._pasosCompletados.value?.isEmpty()!!) {
-               // viewModel.adaptador.optionMarcar = false
+                viewModel.adaptador.countDownTimer?.cancel() //Cancelar si existe un temporizador activo
+                viewModel.adaptador.timeLeft = 0
+                val posicionPicto = viewModel._pasosCompletados.value?.last()!!.toInt()
+                if(viewModel.adaptador.listaPictogramas?.get(posicionPicto)?.duracion != "null"){
+                    viewModel.adaptador.notifyItemChanged(posicionPicto, "desmarcarDuracion")
+                }
+
                 for(i in 0 until viewModel._pasosCompletados.value?.size!!){
-                    viewModel.adaptador.notifyItemChanged(i)
+                    viewModel.adaptador.notifyItemChanged(i, "null")
                     viewModel._pasosCompletados.value?.removeLast()
                     viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
                 }
+
             }
         }
 
@@ -237,13 +258,10 @@ class EventosActivity : AppCompatActivity() {
                 super.onScrolled(recyclerView, dx, dy)
                 //get location of the item in position posicionSelectedCambio in recyclerview
                 val view = recyclerView.layoutManager!!.findViewByPosition(viewModel.posicionSelectedCambio)
-                val view2 = recyclerView.layoutManager!!.findViewByPosition(viewModel.posicionSelectedCambio+1)
                 if(viewModel.posicionSelectedCambio != -1){
 
-                    if(view != null && view2 != null){
-                        val end = view2.x +240 // 270 is the width of the card
-                        lblImportante.x = (view.x + ( lblImportante.width/ 4 ) + end ) / 2
-                        lblImportante.visibility = View.VISIBLE
+                    if(view != null){
+                        lblImportante.x = view.x + view.width - lblImportante.width/3
                     }else{
                         lblImportante.visibility = View.INVISIBLE
                     }
@@ -303,13 +321,16 @@ class EventosActivity : AppCompatActivity() {
          }
 
          btnAnteriorMes.setOnClickListener {
-             CalendarioUtilidades.fechaSeleccionada =
-                 CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
-             viewModel.obtenerVistaMes()
+             val firstDayOfPreviousMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1)
+             if (CalendarioUtilidades.fechaSeleccionada.minusMonths(1).isBefore(firstDayOfPreviousMonth)){
+                 return@setOnClickListener
+             }else{
+                 CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
+                 viewModel.obtenerVistaMes()
+             }
          }
          btnSiguienteMes.setOnClickListener {
-             CalendarioUtilidades.fechaSeleccionada =
-                 CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
+             CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
              viewModel.obtenerVistaMes()
          }
 
@@ -353,6 +374,7 @@ class EventosActivity : AppCompatActivity() {
             if(it){
                 titulo.text = ""
                 lblMensaje.visibility = View.VISIBLE
+                findViewById<ConstraintLayout>(R.id.constraintLayout2).visibility = View.GONE
                 iconoDeshacer.visibility = View.INVISIBLE
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcar.visibility = View.INVISIBLE
@@ -409,11 +431,9 @@ class EventosActivity : AppCompatActivity() {
             viewModel.adaptador.notifyItemChanged(viewModel.posicionSelectedCambio)
 
             val view = viewModel.recyclerView.layoutManager!!.findViewByPosition(viewModel.posicionSelectedCambio)
-            val view2 = viewModel.recyclerView.layoutManager!!.findViewByPosition(viewModel.posicionSelectedCambio+1)
 
             if(viewModel.posicionSelectedCambio != -1){
-                val end = view2?.x!! + 260
-                lblImportante.x = (view?.x!! + ( lblImportante.width/ 4 ) + end ) / 2
+                lblImportante.x = view?.x!! + view.width - lblImportante.width/3
             }
             lblImportante.visibility = View.VISIBLE
 

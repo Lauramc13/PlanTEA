@@ -61,7 +61,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                   <!-- <TextView
                         android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent" />-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txt_Name"
@@ -204,7 +204,7 @@
                             android:textColor="?colorOnSurface" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.appcompat.widget.SwitchCompat
+                  <!--  <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/check_Plaificado"
                         style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
                         android:layout_width="wrap_content"
@@ -324,7 +324,7 @@
 
                         </RelativeLayout>
 
-                    </RelativeLayout>
+                    </RelativeLayout>-->
 
                     <Button
                         android:id="@+id/btn_register"

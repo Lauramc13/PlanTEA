@@ -8,7 +8,6 @@
     android:background="?customBgColor"
     tools:context=".presentacion.actividades.ConfiguracionActivity">
 
-
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
@@ -64,7 +63,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:contentDescription="Titulo, información del planificador"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/lbl_infoPlanificador"
                     android:textColor="?colorOnSurface"
@@ -119,7 +117,10 @@
                         style="@style/addPhotoBackground"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="1dp"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
                         android:background="@drawable/ic_baseline_add_photo_alternate_128"
                         android:contentDescription="Añadir imagen del planificador"
                         app:shapeAppearance="@style/cornerRadius" />
@@ -227,7 +228,8 @@
                             android:layout_height="match_parent"
                             android:cursorVisible="true"
                             android:inputType="text"
-                            android:textColor="?colorOnSurface" />
+                            android:textColor="?colorOnSurface"
+                            android:alpha="0.6"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -240,6 +242,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="15dp"
+                android:visibility="gone"
                 android:background="@drawable/bg_cards_configuracion"
                 android:contentDescription="Contenedor del planificado"
                 android:elevation="0dp">
@@ -343,6 +346,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:visibility="gone"
                 android:layout_marginBottom="15dp"
                 android:background="@drawable/bg_cards_configuracion"
                 android:contentDescription="Contenedor de la actividad tranquilizadora"
@@ -442,34 +446,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_viewUsers"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/bg_cards_configuracion"
-                android:contentDescription="Contenedor de la actividad tranquilizadora"
-                android:elevation="0dp">
-
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:id="@+id/btn_configuracionPictogramas"
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Configuracion de los pictogramas"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
-                    android:textSize="@dimen/button"
-                    android:maxLines="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:elevation="0dp"/>
 
            <!-- <LinearLayout
                 android:layout_width="match_parent"

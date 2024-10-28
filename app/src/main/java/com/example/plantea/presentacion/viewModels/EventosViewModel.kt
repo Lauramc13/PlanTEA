@@ -15,8 +15,11 @@ import android.os.Handler
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +40,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacionesFutu
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +51,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import java.util.Stack
+import kotlin.concurrent.timer
 
 
 class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener, AdaptadorPlanificacionesFuturas.OnItemSelectedListener, AdaptadorPresentacion.OnItemSelectedListener, AdaptadorNuevoPicto.OnItemSelectedListener {
@@ -280,6 +285,8 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             currentDialog!!.dismiss()
         }
 
+        val prefs: SharedPreferences = context.getSharedPreferences("Preferencias", MODE_PRIVATE)
+
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialogo_presentacion)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -296,6 +303,9 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         pictograma.setImageBitmap(listaPictogramas[posicion].imagen)
 
         tituloPictograma.text = listaPictogramas[posicion].titulo
+        if(prefs.getString("configPictogramas", "default") == "imagen"){
+            tituloPictograma.visibility = View.INVISIBLE
+        }
 
         dialogoPresentacion.clearAnimation()
         imagenConfeti.clearAnimation()
@@ -306,16 +316,14 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         val textoHistoria = dialog.findViewById<TextView>(R.id.lblBubble)
         val avatarHistoria = dialog.findViewById<ShapeableImageView>(R.id.avatarBubble)
 
-        val prefs: SharedPreferences = context.getSharedPreferences("Preferencias", MODE_PRIVATE)
-
         // Si tenemos historias
         if (listaPictogramas[posicion].historia != null) {
             textoHistoria.text = listaPictogramas[posicion].historia
             historia.visibility = View.VISIBLE
-            if (prefs.getString("imagenPlanificador", "") === "") {
+            if (prefs.getString("imagenUsuarioTEA", "") === "") {
                 avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
             } else {
-                avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+                avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
             }
         } else {
             historia.visibility = View.GONE
@@ -346,7 +354,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
 
         btnSiguiente?.setOnClickListener {
-            onItemSeleccionado(context, posicion + 1)
+            recyclerView.findViewHolderForAdapterPosition(posicion + 1)?.itemView?.performClick()
             dialog.dismiss()
         }
 
@@ -368,7 +376,11 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
         _pasosCompletados.value?.add(posicion)
         _pasosCompletados.postValue(_pasosCompletados.value)
-        adaptador.notifyItemChanged(posicion)
+        adaptador.notifyItemChanged(posicion, "marcar")
+
+        if(posicion != 0 && listaPictogramas[posicion-1].duracion.toString() != "null"){
+            adaptador.notifyItemChanged(posicion-1, "marcarDuracion")
+        }
 
         currentDialog = dialog
 
@@ -442,5 +454,49 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     fun checkInitializedAdapter(): Boolean {
         return ::adaptador.isInitialized
     }
+
+    override fun dialogoCambio(itemView: View, progressBar: ProgressBar, duracionText: TextView, context: Context) {
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.dialogo_retraso_tiempo)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val buttonPersonalizado = dialog.findViewById<Button>(R.id.btn_personalizado)
+        val buttonCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
+        // tiempo en segundos
+        val buttons = mapOf(
+            R.id.btn_30 to 30,
+            R.id.btn_1 to 60,
+            R.id.btn_5 to 300,
+            R.id.btn_10 to 600
+        )
+
+        buttons.forEach { (buttonId, time) ->
+            dialog.findViewById<Button>(buttonId).setOnClickListener {
+                adaptador.countDownTimer?.cancel()
+                adaptador.startTimer((time * 1000).toLong() + adaptador.timeLeft, progressBar,  duracionText)
+                dialog.dismiss()
+            }
+        }
+        buttonCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        buttonPersonalizado.setOnClickListener {
+            val reloj = CommonUtils.createReloj24(0, 0, context)
+            reloj.show((itemView.context as androidx.fragment.app.FragmentActivity).supportFragmentManager, "TimePicker")
+
+            reloj.addOnPositiveButtonClickListener {
+                val time = reloj.hour * 60 + reloj.minute
+                adaptador.countDownTimer?.cancel()
+                adaptador.startTimer((time * 60000).toLong() + adaptador.timeLeft, progressBar, duracionText)
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+
 
 }

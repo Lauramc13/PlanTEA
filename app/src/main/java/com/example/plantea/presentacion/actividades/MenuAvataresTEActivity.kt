@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
@@ -23,6 +24,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
     private val viewModel by viewModels<MenuAvataresViewModel>()
     val usuario = Usuario()
     private var isConfiguration = false
+    private var isFromMain = false
     private var uri : Uri? = null
 
 
@@ -37,11 +39,13 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         btnGaleria.setOnClickListener{
             viewModel.abrirGaleria()
         }
+
         val extras = intent.extras
         isConfiguration = extras?.getBoolean("editPreferences") ?: false
+        isFromMain = extras?.getBoolean("isFromMain") ?: false
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
-        if(isConfiguration){
+        if(isConfiguration || isFromMain){
             btnSaltar.text = getString(R.string.str_cancelar)
         }else{
             btnSaltar.text = getString(R.string.str_saltar)
@@ -66,18 +70,22 @@ class MenuAvataresTEActivity : AppCompatActivity() {
 
     fun observers(){
         viewModel._ruta.observe(this){
-        val editor = prefs.edit()
-        if(isConfiguration){
-                editor.putString("imageUsuarioTEAConfig", it)
-                editor.apply()
+        if(isConfiguration || isFromMain){
+            val returnIntent = Intent()
+            returnIntent.putExtra("selectedImageUsuario", uri.toString())
+            setResult(RESULT_OK, returnIntent)
+            finish()
         }else{
-            editor.putString("imagenUsuarioTEA", it)
+            val editor = prefs.edit()
+
+            /*editor.putString("imagenUsuarioTEA", it)
             editor.apply()
             val idUsuario = prefs.getString("idUsuario", "")
             if (idUsuario != null) {
                 usuario.aniadirImagenPlanificado(it.toString(), idUsuario, this@MenuAvataresTEActivity)
             }
-            viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
+            viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }*/
+            Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
         }
         viewModel.imagenSeleccionada = true
         next()
@@ -93,18 +101,22 @@ class MenuAvataresTEActivity : AppCompatActivity() {
             avatar.setOnClickListener {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val editor = prefs.edit()
-                if(isConfiguration) {
-                    editor.putString("imageUsuarioTEAConfig", uri.toString())
-                    editor.apply()
+                if(isConfiguration || isFromMain){
+                    val returnIntent = Intent()
+                    returnIntent.putExtra("selectedImageUsuario", uri.toString())
+                    setResult(RESULT_OK, returnIntent)
+                    finish()
                 }else{
-                    val idUsuario = prefs.getString("idUsuario", "")
-                    if (idUsuario != null) {
-                        val usuario = Usuario()
-                        usuario.aniadirImagenPlanificado(uri.toString(), idUsuario, this@MenuAvataresTEActivity)
-                    }
-                    editor.putString("imagenUsuarioTEA", uri.toString())
-                    editor.apply()
+                    val editor = prefs.edit()
+
+                    /* val idUsuario = prefs.getString("idUsuario", "")
+                     if (idUsuario != null) {
+                         val usuario = Usuario()
+                         usuario.aniadirImagenPlanificado(uri.toString(), idUsuario, this@MenuAvataresTEActivity)
+                     }
+                     editor.putString("imagenUsuarioTEA", uri.toString())
+                     editor.apply()*/
+                    Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
                 }
                 next()
             }
@@ -112,15 +124,11 @@ class MenuAvataresTEActivity : AppCompatActivity() {
     }
 
     private fun next(){
-        if(!isConfiguration){
+        if(!isConfiguration && !isFromMain){
             val nextActivity = viewModel.determineNextScreenTEA(prefs)
             val intent = Intent(applicationContext, nextActivity)
-            /*if(nextActivity == TutorialActivity::class.java){
-                intent.putExtra("isFromManual", false)
-            }*/
             startActivity(intent)
         }
-
         finish()
     }
 

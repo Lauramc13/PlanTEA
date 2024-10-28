@@ -20,6 +20,8 @@ class MenuObjetosActivity : AppCompatActivity() {
     private lateinit var btnGaleria: Button
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
+    private var isFromMain = false
+
     private var uri : Uri? = null
     val usuario = Usuario()
 
@@ -38,6 +40,8 @@ class MenuObjetosActivity : AppCompatActivity() {
 
         val extras = intent.extras
         isConfiguration = extras?.getBoolean("editPreferences") ?: false
+        isFromMain = extras?.getBoolean("isFromMain") ?: false
+
 
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
         if(isConfiguration){
@@ -64,11 +68,13 @@ class MenuObjetosActivity : AppCompatActivity() {
 
     fun observers() {
         viewModel._ruta.observe(this) {
-            val editor = prefs.edit()
-            if(isConfiguration){
-                editor.putString("imageObjetoConfig", it)
-                editor.apply()
+            if(isConfiguration || isFromMain){
+                val returnIntent = Intent()
+                returnIntent.putExtra("selectedImageActividad", uri.toString())
+                setResult(RESULT_OK, returnIntent)
+                finish()
             }else{
+                val editor = prefs.edit()
                 editor.putString("imagenObjeto", it)
                 editor.apply()
                 viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
@@ -78,7 +84,7 @@ class MenuObjetosActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAvatarOnClickListeners(avatarIds: List<String>) {
+    private fun setAvatarOnClickListenersOLD(avatarIds: List<String>) {
         avatarIds.forEach { avatarId ->
             val resources = applicationContext.resources
             val packageName = applicationContext.packageName
@@ -91,22 +97,44 @@ class MenuObjetosActivity : AppCompatActivity() {
                 if(isConfiguration) {
                     editor.putString("imageObjetoConfig", uri.toString())
                     editor.apply()
+                }else if(isFromMain){
+                    val returnIntent = Intent()
+                    returnIntent.putExtra("selectedImageActividad", uri.toString())
+                    setResult(RESULT_OK, returnIntent)
+                    finish()
                 }else{
-                    val idUsuario = prefs.getString("idUsuario", "")
+                    /*val idUsuario = prefs.getString("idUsuario", "")
                     if (idUsuario != null) {
                         val usuario = Usuario()
                         usuario.aniadirImagenObjeto(uri.toString(), idUsuario,this@MenuObjetosActivity)
                     }
                     editor.putString("imagenObjeto", uri.toString())
-                    editor.apply()
+                    editor.apply()*/
+                    Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
                 }
                 next()
             }
         }
     }
 
+    private fun setAvatarOnClickListeners(avatarIds: List<String>) {
+        avatarIds.forEach { avatarId ->
+            val resources = applicationContext.resources
+            val packageName = applicationContext.packageName
+            val avatar = findViewById<CardView>(resources.getIdentifier(avatarId, "id", packageName))
+
+            avatar.setOnClickListener {
+                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
+                uri = Uri.parse("android.resource://$packageName/$drawableId")
+                val returnIntent = Intent()
+                returnIntent.putExtra("selectedImageActividad", uri.toString())
+                setResult(RESULT_OK, returnIntent)
+                finish()
+            }
+        }
+    }
     private fun next(){
-        if(!isConfiguration){
+        if(!isConfiguration && !isFromMain){
             val intent = Intent(applicationContext, ConfiguracionPictogramasActivity::class.java)
             //intent.putExtra("isFromManual", false)
             startActivity(intent)

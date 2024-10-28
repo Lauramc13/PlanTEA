@@ -57,15 +57,15 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     val _dialogMessage = SingleLiveEvent<Int>()
     val _traduccionEnded = SingleLiveEvent<Boolean>()
 
-    val _listaPictogramas = MutableLiveData<ArrayList<Pictograma>>()
+    val _listaPictogramasTraduccion = MutableLiveData<ArrayList<Pictograma>>()
     var textInputContent = ""
 
     init {
-        _listaPictogramas.value = listaPictogramas
+        _listaPictogramasTraduccion.value = listaPictogramas
         _visibilityButtons.value = false
     }
 
-    fun traducirFrase(texto: CharSequence?, context: Context): Boolean {
+    fun traducirFrase(texto: CharSequence?): Boolean {
         listaTraducir.clear()
         listaPictogramas.clear()
         listaPictoBuscador.clear()
@@ -87,7 +87,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                         dict.keys.first().let{ key ->
                             dict[key]?.let {
                                 crearPictoTraduccion(key, word, 0, null)
-                                _listaPictogramas.value = listaPictogramas
+                                _listaPictogramasTraduccion.value = listaPictogramas
                             }
                         }
                     }
@@ -96,12 +96,11 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                         dict.keys.first().let{ key ->
                             dict[key]?.let { (_, id) ->
                                 crearPictoTraduccion(key, word, id, null)
-                                _listaPictogramas.value = listaPictogramas
+                                _listaPictogramasTraduccion.value = listaPictogramas
                             }
                         }
                     }
                 }
-
 
                 listaPictoBuscador.add(dict)
             }
@@ -179,7 +178,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         dialog.show()
     }
 
-    fun dialogoTraduccion(context: Context, view: View){
+    fun dialogoTraduccion(context: Context){
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialogo_historia_traduccion)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -195,7 +194,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 tituloString = ""
             }
 
-            guardarPDF(context, tituloString.uppercase())
+            CommonUtils.guardarPDF(context, tituloString.uppercase(), listaPictogramas)
             CommonUtils.hideKeyboard(context, titulo)
             dialog.dismiss()
         }
@@ -208,23 +207,23 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         try {
             val entryList =  listaPictoBuscador[posicion].entries.toList()
             val desiredId = listaPictogramas[posicion].id
-            var position = 0
+            var positionItem = 0
 
             for ((index, entry) in entryList.withIndex()) {
                 val bitmapId = generateBitmapId(entry.key).toString()
                 if (bitmapId == desiredId) {
-                    position = index
+                    positionItem = index
                     break
                 }
             }
 
-            if (position == entryList.lastIndex) {
-                position = 0
+            if (positionItem == entryList.lastIndex) {
+                positionItem = 0
             } else {
-                position++
+                positionItem++
             }
 
-            crearPictoTraduccion(entryList[position].key, listaPictogramas[posicion].titulo, listaPictogramas[posicion].idAPI, posicion)
+            crearPictoTraduccion(entryList[positionItem].key, entryList[positionItem].value.first, entryList[positionItem].value.second, posicion)
             adaptador.notifyItemChanged(posicion)
 
         }catch (e: Exception){
@@ -247,118 +246,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
          adaptador.notifyItemChanged(posicionSelected)
     }
 
-    private fun guardarPDF(context: Context, title: String){
-        // Create a new PDF document
-        val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val baseFilename = "Traduccion.pdf"
-        var filename = baseFilename
-        var counter = 1
-        val pdfDocument = PdfDocument()
 
-        while (File(downloadsDirectory, filename).exists()) {
-            filename = "${baseFilename.substringBeforeLast(".pdf")}_$counter.pdf"
-            counter++
-        }
-
-        val outputPath = File(downloadsDirectory, filename).absolutePath
-
-        // Create a new page and
-        var columna = 0
-        var fila = 0
-
-
-        // join pictograma.titulo for each pictograma in listaPictogramas and when there is a . add a new line
-        val frases = ArrayList<String>()
-        var currentFrase = ""
-        for (pictograma in listaPictogramas) {
-            currentFrase += pictograma.titulo + " "
-            Log.d("Frase", currentFrase)
-
-            if (pictograma.titulo!!.endsWith(".")) {
-                frases.add(currentFrase)
-                currentFrase = ""
-            }else if(pictograma == listaPictogramas[listaPictogramas.size-1]){
-                frases.add(currentFrase)
-            }
-        }
-
-        try {
-            val pageInfo = PdfDocument.PageInfo.Builder(2480, 3508, 1).create()
-            val page = pdfDocument.startPage(pageInfo)
-            val canvas = page.canvas
-
-            val paint = android.graphics.Paint()
-            paint.color = Color.BLACK
-            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD))
-
-            var top = 200f
-
-            if(title != ""){
-                paint.textSize = 100f
-                val textWidth = paint.measureText(title)
-                val textX = (2480 - textWidth) / 2 // para calcular el centro del texto
-                canvas.drawText(title, textX, 200f, paint)
-                top = 300f
-            }
-
-            var contadorFrase = 0
-            for (pictograma in listaPictogramas) {
-                val bitmap = pictograma.imagen
-                val imageWidth = bitmap?.width?.toFloat()
-                val imageX = columna * 400f + (400f - imageWidth!!) / 2
-
-                bitmap.let {
-                    canvas.drawBitmap(it, imageX+50f, fila*520f+top, null)
-                }
-
-                paint.textSize = 50f
-                val textWidth = paint.measureText(pictograma.titulo!!)
-
-                val textX = columna * 400f + (400f - textWidth) / 2 // para calcular el centro del texto
-                canvas.drawText(pictograma.titulo!!, textX+50f, (fila*520f)+350f+top, paint)
-
-                val shouldDrawNextLine = pictograma.titulo!!.endsWith(".")
-                val isFirstPictograma = pictograma == listaPictogramas[0]
-
-                try{
-                    if (isFirstPictograma) {
-                        canvas.drawText(frases[contadorFrase], 100f, fila * 520f + top - 30, paint)
-                        if (shouldDrawNextLine && pictograma != listaPictogramas[listaPictogramas.size - 1]) {
-                            canvas.drawText(frases[contadorFrase+1], 100f, (fila + 1) * 520f + top - 30, paint)
-                            contadorFrase++
-                        }
-                        contadorFrase++
-                    } else if (shouldDrawNextLine && frases.size != 2) {
-                        canvas.drawText(frases[contadorFrase], 100f, (fila + 1) * 520f + top - 30, paint)
-                        contadorFrase++
-                    }
-                }catch (e: Exception){
-                    Log.d("ERROR", e.toString())
-                }
-
-                if (columna == 5 || pictograma.titulo!!.endsWith(".") ) {
-                    columna = 0
-                    fila++
-                }else{
-                    columna++
-                }
-
-            }
-
-            pdfDocument.finishPage(page)
-            val file = FileOutputStream(outputPath)
-            pdfDocument.writeTo(file)
-            pdfDocument.close()
-            file.close()
-
-            Log.d("PDF", "PDF creado en $outputPath")
-            val message = getString(context, R.string.toast_pdf_creado)
-            Toast.makeText(context, message + filename, Toast.LENGTH_SHORT).show()
-
-        } catch (e: Exception) {
-            Log.e("ERROR", "Error creating PDF: ${e.message}", e)
-        }
-    }
 
     override fun onItemEliminado(posicion: Int) {
         listaPictogramas.removeAt(posicion)

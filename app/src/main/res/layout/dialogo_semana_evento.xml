@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fondo_dialogo_login">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/selecciona_el_evento_para_el_dia"
+        android:textColor="?colorOnSurface"
+        android:textSize="@dimen/modalTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout_eventos"
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_guardar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titulo">
+
+        <Spinner
+            android:id="@+id/spinner_eventos"
+            style="@style/dropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_spinner"
+            android:fontFamily="@font/poppins_regular"
+            android:popupBackground="@drawable/custom_popup_background"
+            android:spinnerMode="dropdown"
+            android:textColor="?colorOnSurface" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/svg_arrow_down" />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/btn_guardar"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Aceptar"
+        android:textAllCaps="true"
+        android:textColor="#203130"
+        android:textSize="@dimen/button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:alpha="0.9"
+        android:background="@drawable/bg_close_button"
+        android:contentDescription="Cerrar seccion"
+        android:padding="12dp"
+        android:src="@drawable/ic_baseline_close_24"
+        app:layout_constraintBottom_toTopOf="@+id/titulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

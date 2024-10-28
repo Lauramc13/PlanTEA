@@ -1,14 +1,10 @@
 package com.example.plantea.presentacion.actividades
 
-import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -42,6 +38,7 @@ class CalendarioActivity : AppCompatActivity() {
         val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
         val btnAnteriorMes = findViewById<Button>(R.id.image_calendar_anterior)
         val buttonPlanificaciones = findViewById<Button>(R.id.button_planificaciones)
+        val buttonPlanificacionesNueva = findViewById<Button>(R.id.button_planificaciones_nueva)
         atras = findViewById(R.id.atras)
 
         //set up the fragments
@@ -62,9 +59,16 @@ class CalendarioActivity : AppCompatActivity() {
             viewModel.obtenerVistaMes()
         }
 
+        // Solo se puede ver el mes anterior al actual
         btnAnteriorMes.setOnClickListener {
-            CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
-            viewModel.obtenerVistaMes()
+            val firstDayOfPreviousMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1)
+
+            if (CalendarioUtilidades.fechaSeleccionada.minusMonths(1).isBefore(firstDayOfPreviousMonth)){
+                return@setOnClickListener
+            }else{
+                CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
+                viewModel.obtenerVistaMes()
+            }
         }
 
         atras?.setOnClickListener {
@@ -73,6 +77,11 @@ class CalendarioActivity : AppCompatActivity() {
 
         buttonPlanificaciones.setOnClickListener {
             val intent = Intent(this, PlanificacionesActivity::class.java)
+            startActivity(intent)
+        }
+
+        buttonPlanificacionesNueva.setOnClickListener {
+            val intent = Intent(this, CrearPlanActivity::class.java)
             startActivity(intent)
         }
     }
@@ -108,6 +117,9 @@ class CalendarioActivity : AppCompatActivity() {
 
         viewModel._changedEvent.observe(this) {
             if (it) {
+                if(viewModel.isEditing){
+                    calendario.adapter?.notifyDataSetChanged()
+                }
                calendario.adapter?.notifyItemChanged(viewModel.posicionCalendario)
             }
         }

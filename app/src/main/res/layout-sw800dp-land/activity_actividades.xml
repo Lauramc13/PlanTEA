@@ -8,16 +8,6 @@
     tools:context=".presentacion.actividades.ActividadActivity">
 
     <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/blob3"
-        android:importantForAccessibility="no"
-        app:tint="?subColorBackground" />
-
-    <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,103 +17,65 @@
         android:importantForAccessibility="no"
         app:srcCompat="@drawable/svg_blob" />
 
-    <LinearLayout
-        android:id="@+id/img_video"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_actividades"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:importantForAccessibility="no"
-        android:gravity="center"
         android:layout_marginStart="80dp"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        app:cardBackgroundColor="#B5DFDE"
+        app:layout_constraintBottom_toTopOf="@+id/card_video"
+        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+        app:layout_constraintHeight_percent="0.57"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_temporizador"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_max="500dp"
-        app:layout_constraintHeight_percent="0.5"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="1200dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintWidth_percent="0.75">
+        app:layout_constraintWidth_percent="0.25">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_objeto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="40dp"
-            android:layout_weight="0.5"
-            android:contentDescription="@string/tarjeta_de_actividad_tranquilizadora"
-            app:cardElevation="0dp"
-            app:strokeColor="?color"
-            app:strokeWidth="1.5dp"
-            app:cardBackgroundColor="?cardBackgroundColorPersonalized"
-            app:cardCornerRadius="20dp">
+    </FrameLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_video"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="50dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_actividades"
+        app:layout_constraintStart_toStartOf="@+id/recycler_actividades">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/svg_happy"
-                    android:importantForAccessibility="no" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/lbl_actividades_objeto"
-                    android:textSize="20sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/svg_youtube" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
-            android:layout_weight="0.5"
-            android:contentDescription="@string/tarjeta_de_youtube"
-            app:cardElevation="0dp"
-            app:strokeColor="?color"
-            app:strokeWidth="1.5dp"
-            app:cardBackgroundColor="?cardBackgroundColorPersonalized"
-            app:cardCornerRadius="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#181F25"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="@dimen/modalTitle"
+                android:text="YouTube" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:importantForAccessibility="no"
-                    app:srcCompat="@drawable/svg_video" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    android:text="@string/lbl_actividades_youtube"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textSize="20sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <FrameLayout
         android:id="@+id/webViewFrame"
@@ -135,11 +87,11 @@
         android:paddingRight="1dip"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+        app:layout_constraintHeight_percent="0.80"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
-        app:layout_constraintWidth_percent="0.85">
+        app:layout_constraintWidth_percent="0.55">
 
         <TextView
             android:layout_width="wrap_content"
@@ -186,8 +138,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
-
     <LinearLayout
         android:id="@+id/linearLayout15"
         android:layout_width="wrap_content"
@@ -217,19 +167,5 @@
             android:textSize="@dimen/displaySmall" />
 
     </LinearLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentCountDown"
-        android:name="com.example.plantea.presentacion.fragmentos.CountDownFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
-        android:elevation="7dp"
-        app:shapeAppearance="@style/cornersNavigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

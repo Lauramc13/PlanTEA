@@ -37,12 +37,11 @@ class NavigationTopFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
-        iconoRol.setImageURI(null)
-        if (infoUsuario) {
+        val iconoTEA = prefs.getString("imagenUsuarioTEA", "")
+        if (iconoTEA != "") {
+            iconoRol.setImageURI(Uri.parse(iconoTEA))
+        }else{
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
-        } else {
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
         }
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

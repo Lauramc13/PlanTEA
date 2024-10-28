@@ -49,7 +49,6 @@ class ConfiguracionPictogramasActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
-
         var isFromConfig = false
         if(intent.extras != null){
              isFromConfig = intent.extras?.getBoolean("editPreferences") == true
@@ -74,6 +73,9 @@ class ConfiguracionPictogramasActivity : AppCompatActivity() {
             usuario.cambiarConfiguracionPictogramas(configPictogramas, idUsuario, this)
 
             if(isFromConfig){
+                val resultIntent = Intent()
+                resultIntent.putExtra("configPicto", configPictogramas)
+                setResult(RESULT_OK, resultIntent)
                 finish()
             }else{
                 val intent = Intent(this, TutorialActivity::class.java)

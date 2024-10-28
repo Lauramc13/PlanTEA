@@ -55,30 +55,29 @@ class PreLoginViewModel: ViewModel() {
         return usuario.checkCredentials(emailText, passwordCifrada, activity)
     }
 
-
     fun configurarDatos(email: String, prefs: SharedPreferences, activity: Activity){
         val user = usuario.obtenerUsuario(email, activity)
         val id = usuario.consultarId(email, activity)
         val editor = prefs.edit()
         editor.putString("idUsuario", id)
         editor.putBoolean("userAccount", true)
-        editor.putString("nombrePlanificador", user.getName())
-        editor.putString("nombreUsuarioPlanificador", user.getUsername())
-        editor.putString("email", user.getEmail())
-        editor.putString("nombreUsuarioTEA", user.getNameTEA())
-        editor.putString("configPictogramas", user.getConfigPictograma())
+        editor.putString("nombrePlanificador", user.name)
+        editor.putString("nombreUsuarioPlanificador", user.username)
+        editor.putString("email", user.email)
+        //editor.putString("nombreUsuarioTEA", user.nameTEA)
+        editor.putString("configPictogramas", user.configPictograma)
 
 
-        if (user.getNameTEA() != "") {
+      /*  if (user.nameTEA != "") {
             editor.putBoolean("info_usuario", true)
-        }
-        editor.putString("imagenPlanificador", user.getImagen())
-        editor.putString("imagenUsuarioTEA", user.getImagenTEA())
-        editor.putString("nombreObjeto", user.getObjeto())
-        if(user.getObjeto() != "") {
+        }*/
+        editor.putString("imagenPlanificador", user.imagen)
+     //   editor.putString("imagenUsuarioTEA", user.imagenTEA)
+       // editor.putString("nombreObjeto", user.objeto)
+       /* if(user.objeto != "") {
             editor.putBoolean("info_objeto", true)
         }
-        editor.putString("imagenObjeto", user.getImagenObjeto())
+        editor.putString("imagenObjeto", user.imagenObjeto)*/
         editor.apply()
     }
 }

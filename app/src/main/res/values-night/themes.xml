@@ -72,7 +72,6 @@
         <item name="colorPurple">@color/DarkpurpleCategoria</item>
         <item name="colorPink">@color/DarkpinkCategoria</item>
 
-
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
 
@@ -193,6 +192,12 @@
         <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>
         <item name="imageButtonStyle">@style/TimePicker.ImageButton</item>
+    </style>
+
+    <style name="CalendarPicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/background2</item>
+        <item name="colorOnSurface">@color/md_theme_dark_primary</item>
+        <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">

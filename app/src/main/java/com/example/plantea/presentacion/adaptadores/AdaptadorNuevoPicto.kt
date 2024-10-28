@@ -20,7 +20,6 @@ class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private
         fun onNuevoPicto(picto: Pictograma?)
     }
 
-
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {

@@ -28,7 +28,10 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntreteni
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
+import com.example.plantea.presentacion.fragmentos.TraduccionPlanFragment
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.example.plantea.presentacion.viewModels.TraductorViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Collections
 import java.util.Locale
@@ -43,16 +46,24 @@ class CrearPlanActivity : AppCompatActivity(){
     private lateinit var btnGuardarPlanificacion: Button
     private lateinit var txtTituloPlan: TextInputLayout
     private var dialogEntretenimiento: Dialog? = null
+    private var dialogGuardar: Dialog? = null
     //RecyclerView Planificacion
     lateinit var recyclerView: RecyclerView
 
     var fragment = Fragment()
 
     private val viewModel by viewModels<CrearPlanViewModel>()
+    private val viewModelTraductor by viewModels<TraductorViewModel>()
+
 
     override fun onStart() {
         super.onStart()
         CommonUtils.loadLemmatizer(Locale.getDefault().language.lowercase(), this)
+    }
+
+    override fun onDestroy() {
+        dialogGuardar?.dismiss()
+        super.onDestroy()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +93,43 @@ class CrearPlanActivity : AppCompatActivity(){
         // SearchView para buscar pictogramas
         AniadirPictoUtils.inializeSearch(searchBar, false, viewModel, this@CrearPlanActivity)
 
+        val btnSearch = findViewById<MaterialButton>(R.id.btn_search)
+
+        btnSearch.setOnClickListener {
+            if (!CommonUtils.isNetworkAvailable(this)) {
+                Toast.makeText(this, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
+                searchBar.setQuery("", false)
+                searchBar.clearFocus()
+            } else {
+                if(searchBar.query.trim().isEmpty()){
+                    return@setOnClickListener
+                }else{
+                    viewModel.getPictogramas(searchBar.query.trim().toString(), false, this)
+                }
+            }
+            CommonUtils.hideKeyboard(this, searchBar)
+        }
+
+        val btnTranslate = findViewById<MaterialButton>(R.id.btn_translate)
+
+        btnTranslate.setOnClickListener {
+            if (!CommonUtils.isNetworkAvailable(this)) {
+                Toast.makeText(this, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
+                searchBar.setQuery("", false)
+                searchBar.clearFocus()
+            } else {
+                if(searchBar.query.trim().isEmpty()){
+                    return@setOnClickListener
+                }else{
+                     viewModelTraductor.traducirFrase(searchBar.query.trim().toString())
+                     transaction = supportFragmentManager.beginTransaction()
+                     transaction.replace(R.id.contenedor_fragments, TraduccionPlanFragment())
+                     transaction.addToBackStack(null)
+                     transaction.commit()
+                }
+            }
+            CommonUtils.hideKeyboard(this, searchBar)
+        }
 
         //Iniciar RecyclerView de planificaciones
         initRecyclerViewPlan()
@@ -298,35 +346,39 @@ class CrearPlanActivity : AppCompatActivity(){
         if(viewModel.listaPlanificacion.isEmpty()){
             Toast.makeText(this, R.string.toast_planificacion_vacio, Toast.LENGTH_SHORT).show()
         }else {
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.dialog_titulo_plan)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            txtTituloPlan = dialog.findViewById(R.id.txt_nombre)
-            val btnGuardar = dialog.findViewById<Button>(R.id.btn_guardar)
-            val cerrarDialgo = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+            dialogGuardar = Dialog(this)
+            dialogGuardar?.setContentView(R.layout.dialog_titulo_plan)
+            dialogGuardar?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            txtTituloPlan = dialogGuardar?.findViewById(R.id.txt_nombre)!!
+            val btnGuardar = dialogGuardar?.findViewById<Button>(R.id.btn_guardar)
+            val cerrarDialgo = dialogGuardar?.findViewById<ImageView>(R.id.icono_CerrarDialogo)
 
             if(viewModel.opcionEditar){
                 txtTituloPlan.editText?.setText(intent.getStringExtra("tituloPlan"))
             }
 
-            cerrarDialgo.setOnClickListener {
-                dialog.dismiss()
+            cerrarDialgo?.setOnClickListener {
+                dialogGuardar?.dismiss()
             }
 
-            btnGuardar.setOnClickListener {
+            btnGuardar?.setOnClickListener {
+                var listaTitulos = viewModel.planificacion.obtenerTitulosPlanificaciones(viewModel.idUsuario, this)
+
                 //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
                 if(txtTituloPlan.editText?.text.toString() == ""){
-                    txtTituloPlan.editText?.setText(getString(R.string.str_notitle))
+                    txtTituloPlan.editText?.setText(searchLastTitle(getString(R.string.str_notitle), listaTitulos))
                 }
                 var idPlan: Int
+                val title = searchLastTitle(txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()), listaTitulos)
+
                 if (viewModel.opcionEditar) {
                     idPlan = intent.getIntExtra("idPlan", 0)
 
-                    viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, viewModel.idUsuario, idPlan, txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()), viewModel.listaPlanificacion)
+                    viewModel.planificacion.actualizarPlanificacion(this@CrearPlanActivity, viewModel.idUsuario, idPlan, title, viewModel.listaPlanificacion)
                     Toast.makeText(this, R.string.toast_plan_actualizado, Toast.LENGTH_SHORT).show()
 
                 } else {
-                    idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario,txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()))
+                    idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario, title)
                     val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
 
                     if (creada != true) {
@@ -342,7 +394,7 @@ class CrearPlanActivity : AppCompatActivity(){
                 finish()
             }
 
-            dialog.show()
+            dialogGuardar?.show()
         }
     }
 
@@ -361,4 +413,14 @@ class CrearPlanActivity : AppCompatActivity(){
         }
     }
 
+    private fun searchLastTitle(title: String, listaTitulos: ArrayList<String>): String{
+        var i = 1
+        var newTitle = title
+        while(listaTitulos.contains(newTitle)){
+            newTitle = "$title ($i)"
+            i++
+        }
+        return newTitle
+
+    }
 }

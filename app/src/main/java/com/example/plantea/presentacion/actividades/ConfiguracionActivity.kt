@@ -1,44 +1,81 @@
 package com.example.plantea.presentacion.actividades
 
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.Actividad
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.adaptadores.ActividadAdapter
+import com.example.plantea.presentacion.adaptadores.UserAdapter
 import com.example.plantea.presentacion.viewModels.ConfiguracionViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
-
 import java.util.*
 
-class ConfiguracionActivity : AppCompatActivity() {
+class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedListener, ActividadAdapter.OnItemSelectedListenerActividad {
     lateinit var prefs: SharedPreferences
     private lateinit var imgUsuarioPlanificador: ImageView
-    private lateinit var imgUsuarioTEA: ImageView
-    private lateinit var imgObjeto: ImageView
     private lateinit var txtPlanificador : TextInputLayout
     private lateinit var txtUsernamePlanificador : TextInputLayout
     private lateinit var txtCorreoPlanificador : TextInputLayout
-    private lateinit var txtUsuarioTEA : TextInputLayout
-    private lateinit var txtObjeto : TextInputLayout
 
     private var restart = false
 
-    private lateinit var iconEditUsuarioTEA : ImageView
-    private lateinit var iconEditObjeto : ImageView
+    var image : ShapeableImageView? = null
+    private var imageActividad : ShapeableImageView? = null
+    private var imagenUriUsuario: String? = null
+    private var imagenUriActividad: String? = null
 
-    private lateinit var lblInfoUsuario : SwitchCompat
-    private lateinit var lblObjeto : SwitchCompat
+    private lateinit var recyclerViewUsers: RecyclerView
 
+    private var resultLauncher :  ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            if(result.data?.extras?.get("selectedImageUsuario") != null){
+                imagenUriUsuario = result.data?.extras?.get("selectedImageUsuario") as String
+                image?.setImageURI(Uri.parse(imagenUriUsuario))
+            }else {
+                imagenUriActividad = result.data?.extras?.get("selectedImageActividad") as String
+                imageActividad?.setImageURI(Uri.parse(imagenUriActividad))
+            }
+        }
+    }
+
+    private var resultLauncherConfigPicto : ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val config = result.data?.extras?.get("configPicto") as String
+            val usuario = Usuario()
+            usuario.cambiarConfiguracionPictogramas(config, viewModel.usersTEA!![viewModel.userSelectPicto].id, this) // TODO: NO GUARDAR AQUI, GUARDAR CUANDO SE GUARDE LA CONFIGURACION
+            viewModel.usersTEA!![viewModel.userSelectPicto].configPictograma = config
+            viewModel.adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
+        }
+    }
+
+    private var resultLauncherImagen : ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imagen = result.data?.extras?.get("selectedImageUsuario") as String
+            viewModel.usersTEA!![viewModel.userSelectPicto].imagen = imagen
+            viewModel.adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
+        }
+    }
 
     private val viewModel by viewModels<ConfiguracionViewModel>()
 
@@ -54,13 +91,16 @@ class ConfiguracionActivity : AppCompatActivity() {
         restart = true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        resultLauncher = null
+    }
+
     override fun onStop() {
         super.onStop()
         //viewModel.email = txtCorreoPlanificador.editText?.text.toString()
         viewModel.name = txtPlanificador.editText?.text.toString()
         viewModel.username = txtUsernamePlanificador.editText?.text.toString()
-        viewModel.nameTEA = txtUsuarioTEA.editText?.text.toString()
-        viewModel.nameObj = txtObjeto.editText?.text.toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,42 +108,39 @@ class ConfiguracionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_configuracion)
 
         imgUsuarioPlanificador = findViewById(R.id.img_FotoPlanificador)
-        imgUsuarioTEA = findViewById(R.id.img_FotoUsuarioTEA)
-        imgObjeto = findViewById(R.id.img_objeto)
 
         txtPlanificador = findViewById(R.id.txt_nombrePlanificador)
         txtUsernamePlanificador = findViewById(R.id.txt_nombreUsuarioPlanificador)
         txtCorreoPlanificador = findViewById(R.id.txt_correoPlanificador)
-        txtUsuarioTEA  = findViewById(R.id.txt_nombreUsuarioTEA)
-        txtObjeto = findViewById(R.id.txt_nombreObjeto)
 
         val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
         val btnPassword : Button= findViewById(R.id.buttonContrasenia)
-        lblInfoUsuario = findViewById(R.id.lbl_infoUsuarioTEA)
-        lblObjeto = findViewById(R.id.lbl_objeto)
         val credits : TextView = findViewById(R.id.btn_credits)
-        iconEditUsuarioTEA = findViewById(R.id.id_editIconUsuario)
-        iconEditObjeto = findViewById(R.id.id_editIconObjeto)
-        val configPictogramas = findViewById<MaterialButton>(R.id.btn_configuracionPictogramas)
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-
-        txtUsuarioTEA.isEnabled = false
-        imgUsuarioTEA.isEnabled = false
-        lblInfoUsuario.isChecked = false
-        lblObjeto.isChecked = false
 
         if(savedInstanceState != null){
             txtPlanificador.editText?.setText(viewModel.name)
             txtUsernamePlanificador.editText?.setText(viewModel.username)
-            txtUsuarioTEA.editText?.setText(viewModel.nameTEA)
-            txtObjeto.editText?.setText(viewModel.nameObj)
         }else {
             txtPlanificador.editText?.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
             txtUsernamePlanificador.editText?.setText(prefs.getString("nombreUsuarioPlanificador", "")!!.uppercase(Locale.getDefault()))
-            txtUsuarioTEA.editText?.setText(prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault()))
-            txtObjeto.editText?.setText(prefs.getString("nombreObjeto", "")!!.uppercase(Locale.getDefault()))
+
+            val usuario = Usuario()
+            viewModel.usersTEA = usuario.obtenerUsuariosTEA(prefs.getString("idUsuario", ""), this)
+            if(viewModel.usersTEA!!.size <3)
+                viewModel.usersTEA!!.add(Usuario())
+            viewModel.adapterUsers = UserAdapter(viewModel.usersTEA, this, this)
         }
+
+        recyclerViewUsers = findViewById(R.id.recycler_viewUsers)
+        if (resources.configuration.orientation == 1)
+            recyclerViewUsers.layoutManager = GridLayoutManager(this, 2)
+        else{
+            recyclerViewUsers.layoutManager = GridLayoutManager(this, 3)
+        }
+
+        recyclerViewUsers.adapter = viewModel.adapterUsers
 
         txtCorreoPlanificador.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
 
@@ -118,52 +155,14 @@ class ConfiguracionActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val infoUsuario = prefs.getBoolean("info_usuario", false)
-        lblInfoUsuario.isChecked = infoUsuario
-        txtUsuarioTEA.isEnabled = infoUsuario
-        imgUsuarioTEA.isEnabled = infoUsuario
-
-        val infoObjeto = prefs.getBoolean("info_objeto", false)
-        lblObjeto.isChecked = infoObjeto
-        txtObjeto.isEnabled = infoObjeto
-        imgObjeto.isEnabled = infoObjeto
-
         imgUsuarioPlanificador.setOnClickListener {
             val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
             intent.putExtra("editPreferences", true)
             startActivity(intent)
         }
 
-        imgUsuarioTEA.setOnClickListener {
-            val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
-            intent.putExtra("editPreferences", true)
-            startActivity(intent)
-        }
-
-        imgObjeto.setOnClickListener {
-            val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
-            intent.putExtra("editPreferences", true)
-            startActivity(intent)
-        }
-
-        lblInfoUsuario.setOnCheckedChangeListener { _, isChecked ->
-            txtUsuarioTEA.isEnabled = isChecked
-            imgUsuarioTEA.isEnabled = isChecked
-        }
-
-        lblObjeto.setOnCheckedChangeListener { _, isChecked ->
-            txtObjeto.isEnabled = isChecked
-            imgObjeto.isEnabled = isChecked
-        }
-
         btnGuardar.setOnClickListener {
-           guardarConfiguracion(lblInfoUsuario, lblObjeto)
-        }
-
-        configPictogramas.setOnClickListener {
-            val intent = Intent(applicationContext, ConfiguracionPictogramasActivity::class.java)
-            intent.putExtra("editPreferences", true)
-            startActivity(intent)
+           guardarConfiguracion()
         }
 
         observers()
@@ -180,87 +179,49 @@ class ConfiguracionActivity : AppCompatActivity() {
             imgUsuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
         } else {
             imgUsuarioPlanificador.background = null
-            //Glide.with(this).load("file://" + prefs.getString("imagenPlanificador", "")).into(imgUsuarioPlanificador)
             imgUsuarioPlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
         }
-        if (prefs.getString("imagenUsuarioTEA", "") == "") {
-            imgUsuarioTEA.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            iconEditUsuarioTEA.visibility = View.GONE
-        } else {
-            imgUsuarioTEA.background = null
-            imgUsuarioTEA.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
-            iconEditUsuarioTEA.visibility = View.VISIBLE
-        }
-        if (prefs.getString("imagenObjeto", "") == "") {
-            imgObjeto.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
-            iconEditObjeto.visibility = View.GONE
-        } else {
-            imgObjeto.background = null
-            imgObjeto.setImageURI(Uri.parse(prefs.getString("imagenObjeto", "")))
-            iconEditObjeto.visibility = View.VISIBLE
-        }
+
     }
 
-    private fun guardarConfiguracion(lblInfoUsuario : SwitchCompat, lblObjeto : SwitchCompat){
+    private fun guardarConfiguracion(){
         //Obtain values from the fields
         val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
-        var nombreUsuarioTEA = txtUsuarioTEA.editText?.text.toString()
         val username = txtUsernamePlanificador.editText?.text.toString()
-        var nombreObjeto = txtObjeto.editText?.text.toString()
+
+        //remove focus from textview in recyclerview
+        recyclerViewUsers.clearFocus()
 
         //if drawable doesnt exists, set it to null
-        val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, imgUsuarioPlanificador.drawable, imgUsuarioTEA.drawable, imgObjeto.drawable, lblInfoUsuario.isChecked, lblObjeto.isChecked)
+        val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador, username, imgUsuarioPlanificador.drawable)
 
         if(isValid){
             //val rutaPlanificador = CommonUtils.crearRuta(this, (imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap, )
             val rutaPlanificador = CommonUtils.guardarImagen(this, "Planificador", (imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap)
-            var rutaUsuarioTEA= ""
-            var rutaObjeto = ""
 
             //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
             val editor = prefs.edit()
-            //editor.putBoolean("userAccount", true)
             editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
-            editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
             editor.putString("imagenPlanificador", rutaPlanificador)
-            editor.putBoolean("info_objeto", lblObjeto.isChecked)
+           /* editor.putBoolean("info_objeto", lblObjeto.isChecked)
             editor.putBoolean("info_usuario", lblInfoUsuario.isChecked)
+            editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)*/
 
             editor.putString("imagenPlanificadorConfig", null)
-            editor.putString("imageUsuarioTEAConfig", null)
-            editor.putString("imageObjetoConfig", null)
 
-            if(lblObjeto.isChecked){
-                //rutaObjeto = CommonUtils.crearRuta(this, (imgObjeto.drawable as BitmapDrawable).bitmap, "Objeto")
-                rutaObjeto = CommonUtils.guardarImagen(this, "Objeto", (imgObjeto.drawable as BitmapDrawable).bitmap)
-                editor.putString("imagenObjeto", rutaObjeto)
-                editor.putString("nombreObjeto", nombreObjeto)
-            }else{
-                editor.putString("nombreObjeto", "")
-                editor.putString("imagenObjeto", "")
-                nombreObjeto = ""
-            }
-
-            if(lblInfoUsuario.isChecked){
-                //rutaUsuarioTEA = CommonUtils.crearRuta(this, (imgUsuarioTEA.drawable as BitmapDrawable).bitmap, "Usuario")
-                rutaUsuarioTEA = CommonUtils.guardarImagen(this, "Usuario", (imgUsuarioTEA.drawable as BitmapDrawable).bitmap)
-                editor.putString("imagenUsuarioTEA", rutaUsuarioTEA)
-                editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)
-            }else{
-                editor.putString("nombreUsuarioTEA", "")
-                editor.putString("imagenUsuarioTEA", "")
-                nombreUsuarioTEA = ""
-            }
             editor.apply()
 
             val idUsuario = prefs.getString("idUsuario", "")
             try {
                 val usuario = Usuario()
-                usuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, this)
+                usuario.guardarConfiguracion(nombreUsuarioPlanificador, username, rutaPlanificador, idUsuario, this)
+                if(viewModel.usersTEA!!.isNotEmpty()){
+                    viewModel.usersTEA!!.removeLast()
+                    usuario.guardarConfiguracionUsersTEA(viewModel.usersTEA!!, idUsuario, this)
+                }
             }catch (e: Exception){
                 Toast.makeText(this, getString(R.string.toast_error_guardar_configuracion), Toast.LENGTH_SHORT).show()
             }
-
             finish()
         }
     }
@@ -271,19 +232,195 @@ class ConfiguracionActivity : AppCompatActivity() {
             imgUsuarioPlanificador.background = null
             imgUsuarioPlanificador.setImageURI(Uri.parse(value))
         }
+    }
 
-        val value2 = prefs.getString("imageUsuarioTEAConfig", "")
-        if (value2 != "" && value2 != "null") {
-            lblInfoUsuario.isChecked = true
-            imgUsuarioTEA.background = null
-            imgUsuarioTEA.setImageURI(Uri.parse(value2))
+    private fun dialogFirstTime(){
+        //create dialog to show the first time
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialogo_bienvenida)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val cerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
+        val frame = dialog.findViewById<FrameLayout>(R.id.fragment_nuevoPicto)
+        frame.addView(layoutInflater.inflate(R.layout.fragment_usuario_tea, frame, false) as View)
+
+        val buttonGuardar = frame.findViewById<MaterialButton>(R.id.btn_guardar)
+        val buttonImagenUsuario = frame.findViewById<MaterialCardView>(R.id.cardUsuario)
+        val buttonImagenActividad = frame.findViewById<MaterialCardView>(R.id.cardActividad)
+        image = frame.findViewById(R.id.imagenUsuario)
+        imageActividad = frame.findViewById(R.id.imagenActividad)
+
+        buttonGuardar.setOnClickListener {
+            val name = frame.findViewById<TextInputLayout>(R.id.txt_NameUsuario).editText?.text.toString()
+            val nameObjeto = frame.findViewById<TextInputLayout>(R.id.txt_NameActividad).editText?.text.toString()
+            val idUsuario = prefs.getString("idUsuario", "")
+            val usuario = Usuario()
+            //añadir boton para indicar que se quiere poner un objeto
+            if(nameObjeto == "" ||imageActividad?.drawable == null || name == "" || image?.drawable == null){
+                Toast.makeText(this, getString(R.string.toast_rellenar_campos), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val idUsuarioTEA = usuario.crearUsuarioTEA(name, imagenUriUsuario, "default", idUsuario, this)
+
+            if(idUsuarioTEA == ""){
+                Toast.makeText(this, getString(R.string.error_usuario_tea), Toast.LENGTH_SHORT).show()
+            }else{
+                val actividad = Actividad()
+                val idActividad = actividad.crearActividad(nameObjeto, imagenUriActividad, idUsuarioTEA, this)
+                val newActividad = Actividad(idActividad, nameObjeto, imagenUriActividad, idUsuarioTEA)
+                val listaActividades = ArrayList<Actividad>()
+                listaActividades.add(newActividad)
+                prefs.edit().putString("idUsuarioTEA", idUsuarioTEA).apply()
+                if(viewModel.usersTEA!!.size >=3){
+                    viewModel.usersTEA!!.removeLast()
+                    viewModel.usersTEA!!.add(Usuario(name, imagenUriUsuario, listaActividades,  "default"))
+                    viewModel.adapterUsers?.notifyItemChanged(viewModel.usersTEA!!.size-1)
+                }else{
+                    val penultimatePosition = viewModel.getPenultimatePosition(viewModel.usersTEA!!.size)
+                    viewModel.usersTEA!!.add(penultimatePosition, Usuario(name, imagenUriUsuario, listaActividades,  "default"))
+                    viewModel.adapterUsers?.notifyItemInserted(penultimatePosition)
+                }
+
+                dialog.dismiss()
+            }
         }
 
-        val value3 = prefs.getString("imageObjetoConfig", "")
-        if (value3 != "" && value3 != "null") {
-            lblObjeto.isChecked = true
-            imgObjeto.background = null
-            imgObjeto.setImageURI(Uri.parse(value3))
+        buttonImagenUsuario.setOnClickListener {
+            val intent = Intent(this, MenuAvataresTEActivity::class.java)
+            intent.putExtra("editPreferences", true)
+            resultLauncher!!.launch(intent)
+        }
+
+        buttonImagenActividad.setOnClickListener {
+            val intent = Intent(this, MenuObjetosActivity::class.java)
+            intent.putExtra("editPreferences", true)
+            resultLauncher!!.launch(intent)
+        }
+
+        cerrar.setOnClickListener {
+            dialog.dismiss()
+            prefs.edit().putBoolean("firstTime", false).apply()
+        }
+
+        dialog.show()
+    }
+
+    override fun onNuevoUser() {
+        dialogFirstTime()
+    }
+
+    override fun changeConfigPicto(position: Int) {
+        val intent = Intent(this, ConfiguracionPictogramasActivity::class.java)
+        intent.putExtra("editPreferences", true)
+        viewModel.userSelectPicto = position
+        resultLauncherConfigPicto!!.launch(intent)
+    }
+
+    override fun onBorrarUser(position: Int) {
+        val usuario = Usuario()
+        val idUsuario = prefs.getString("idUsuario", "")
+        val idUsuarioTEA = viewModel.usersTEA!![position].id
+        if(idUsuarioTEA != ""){
+            usuario.borrarUsuarioTEA(idUsuario,  idUsuarioTEA, this)
+            viewModel.usersTEA!!.removeAt(position)
+            viewModel.adapterUsers?.notifyItemRemoved(position)
+        }
+
+        if(viewModel.usersTEA!!.size <3 && viewModel.usersTEA!![viewModel.usersTEA!!.size - 1].name != null){
+            viewModel.usersTEA!!.add(Usuario())
+            viewModel.adapterUsers?.notifyItemInserted(viewModel.usersTEA!!.size - 1)
         }
     }
+
+    override fun onEditName(position: Int, name: String) {
+        viewModel.usersTEA!![position].name = name
+     // viewModel.adapterUsers?.notifyItemChanged(position)
+    }
+
+    override fun onEditImage(position: Int) {
+        val intent = Intent(this, MenuAvataresTEActivity::class.java)
+        intent.putExtra("editPreferences", true)
+        viewModel.userSelectPicto = position
+        resultLauncherImagen!!.launch(intent)
+    }
+
+    override fun onClick(isEdit: Boolean, positionUser: Int, position: Int){
+       val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialogo_bienvenida)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val frame = dialog.findViewById<FrameLayout>(R.id.fragment_nuevoPicto)
+        frame.addView(layoutInflater.inflate(R.layout.fragment_usuario_tea, frame, false) as View)
+
+        frame.findViewById<LinearLayout>(R.id.linearLayoutUser).visibility = View.GONE
+        imageActividad = frame.findViewById(R.id.imagenActividad)
+        val card = frame.findViewById<MaterialCardView>(R.id.cardActividad)
+        val nombre = frame.findViewById<TextInputLayout>(R.id.txt_NameActividad)
+        val guardar = frame.findViewById<MaterialButton>(R.id.btn_guardar)
+        val borrar = frame.findViewById<MaterialButton>(R.id.btn_borrar)
+        val actividad = Actividad()
+
+        card.setOnClickListener {
+            val intent = Intent(this, MenuObjetosActivity::class.java)
+            intent.putExtra("editPreferences", true)
+            resultLauncher!!.launch(intent)
+        }
+
+
+        if(isEdit){
+            imageActividad?.setImageURI(Uri.parse(viewModel.usersTEA!![positionUser].actividades!![position].imagen))
+            nombre.editText?.setText(viewModel.usersTEA!![positionUser].actividades!![position].name)
+
+            guardar.text = getString(R.string.actualizar)
+            borrar.visibility = View.VISIBLE
+
+            guardar.setOnClickListener {
+                if(nombre.editText?.text.toString() == ""){
+                    Toast.makeText(this, getString(R.string.toast_nombre_vacio), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                actividad.actualizarActividad(viewModel.usersTEA!![positionUser].actividades!![position].id, nombre.editText?.text.toString(), imagenUriActividad, this)
+
+                viewModel.usersTEA!![positionUser].actividades!![position].name = nombre.editText?.text.toString()
+                viewModel.usersTEA!![positionUser].actividades!![position].imagen = imagenUriActividad
+                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+
+                dialog.dismiss()
+            }
+
+            borrar.setOnClickListener {
+                actividad.borrarActividad(viewModel.usersTEA!![positionUser].actividades!![position].id, this)
+                viewModel.usersTEA!![positionUser].actividades!!.removeAt(position)
+                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                dialog.dismiss()
+            }
+
+        }else{
+            guardar.setOnClickListener {
+                if(nombre.editText?.text.toString() == ""){
+                    Toast.makeText(this, getString(R.string.toast_nombre_vacio), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                val idActividad = actividad.crearActividad(nombre.editText?.text.toString(), imagenUriActividad, viewModel.usersTEA!![positionUser].id, this)
+
+                val listaActividades = viewModel.usersTEA!![positionUser].actividades
+
+                listaActividades?.add(listaActividades.size-1, Actividad(idActividad, nombre.editText?.text.toString(), imagenUriActividad, viewModel.usersTEA!![positionUser].id))
+                viewModel.usersTEA!![positionUser].actividades = listaActividades
+                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+
+    }
+
+
 }

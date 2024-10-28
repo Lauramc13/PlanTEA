@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fondo_dialogo_login">
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/selecciona_tiempo_retraso"
+        android:textAllCaps="true"
+        android:textColor="?colorOnSurface"
+        android:textSize="@dimen/modalTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo" />
+
+
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:columnCount="2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_personalizado"
+        app:layout_constraintTop_toBottomOf="@+id/textView18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_30"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="30 seg"
+            android:textAllCaps="true"
+            android:textColor="#203130"
+            android:textSize="@dimen/button" />
+
+        <Button
+            android:id="@+id/btn_1"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="1 min"
+            android:textAllCaps="true"
+            android:textColor="#203130"
+            android:textSize="@dimen/button" />
+
+        <Button
+            android:id="@+id/btn_5"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="5 min"
+            android:textAllCaps="true"
+            android:textColor="#203130"
+            android:textSize="@dimen/button" />
+
+        <Button
+            android:id="@+id/btn_10"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="10 min"
+            android:textAllCaps="true"
+            android:textColor="#203130"
+            android:textSize="@dimen/button" />
+    </androidx.gridlayout.widget.GridLayout>
+
+    <Button
+        android:id="@+id/btn_personalizado"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Personalizado"
+        android:textAllCaps="true"
+        android:textColor="#203130"
+        android:layout_marginBottom="20dp"
+        android:textSize="@dimen/button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/gridView"
+        app:layout_constraintStart_toStartOf="@+id/gridView" />
+
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:alpha="0.9"
+        android:background="@drawable/bg_close_button"
+        android:contentDescription="Cerrar seccion"
+        android:padding="12dp"
+        android:src="@drawable/ic_baseline_close_24"
+        app:layout_constraintBottom_toTopOf="@+id/textView18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

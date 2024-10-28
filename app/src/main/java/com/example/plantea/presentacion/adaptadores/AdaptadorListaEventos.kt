@@ -82,6 +82,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         init {
             itemView.findViewById<ImageView>(R.id.icon_copy).visibility = View.GONE
             itemView.findViewById<ImageView>(R.id.icon_delete).visibility = View.GONE
+            itemView.findViewById<ImageView>(R.id.icon_downloadPDF).visibility = View.GONE
 
             card.setOnClickListener{
                 if(cardOpened == bindingAdapterPosition){

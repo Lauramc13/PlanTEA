@@ -42,7 +42,7 @@ class GestionEventos {
                 evento.hora = c.getString(4)
                 evento.idPlan = c.getInt(5)
                 evento.visible = c.getInt(6)
-                if(c.getString(7) != null && c.getString(7) != "null") //TODO CHANGE c.getString(7) != ""
+                if(c.getString(7) != null && c.getString(7) != "null")
                     evento.reminder = LocalDateTime.parse(c.getString(7))
                 evento.cambiarVisibilidad = c.getInt(8) == 1
 
@@ -66,7 +66,7 @@ class GestionEventos {
             evento.fecha = LocalDate.parse(c.getString(3))
             evento.hora = c.getString(4)
             evento.visible = c.getInt(5)
-            if(c.getString(6) != null && c.getString(6) != "null") //TODO CHANGE c.getString(6) != ""
+            if(c.getString(6) != null && c.getString(6) != "null")
                 evento.reminder = LocalDateTime.parse(c.getString(6))
             evento.cambiarVisibilidad = c.getString(7) == "true"
             evento.idPlan = c.getInt(8)

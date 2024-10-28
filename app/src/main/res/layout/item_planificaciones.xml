@@ -42,6 +42,14 @@
                     android:layout_weight="1" />
 
                 <ImageView
+                    android:id="@+id/icon_downloadPDF"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Copiar planificacion"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/svg_download" />
+
+                <ImageView
                     android:id="@+id/icon_copy"
                     android:layout_width="40dp"
                     android:layout_height="40dp"

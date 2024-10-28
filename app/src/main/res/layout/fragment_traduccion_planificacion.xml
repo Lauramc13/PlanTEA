@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/fragment_personalizado2"
+    tools:context=".presentacion.fragmentos.CategoriasPictogramasFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_pictogramas_traduccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="20dp"
+        android:scrollbars="horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/image_CerrarContenedor"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:contentDescription="Cerrar seccion"
+        android:background="@drawable/bg_close_button"
+        android:src="@drawable/ic_baseline_close_24"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+        android:id="@+id/copy_pictos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:icon="@drawable/svg_move_up"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_pictogramas_traduccion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_pictogramas_traduccion" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

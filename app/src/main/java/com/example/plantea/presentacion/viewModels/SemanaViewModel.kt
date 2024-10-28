@@ -1,12 +1,17 @@
 package com.example.plantea.presentacion.viewModels
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.DiaSemana
+import com.example.plantea.dominio.Evento
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
@@ -63,28 +69,6 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
     override fun onNuevoPicto(pictogram: Pictograma?) {
         _nuevoPicto.value = pictogram
     }
-
-    fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
-        val cw = ContextWrapper(context)
-        val dirImages = cw.getDir("Imagenes", AppCompatActivity.MODE_PRIVATE)
-        val myPath = File(dirImages, "$nombre.png")
-        val fos: FileOutputStream?
-        try {
-            fos = FileOutputStream(myPath)
-            imagen.compress(Bitmap.CompressFormat.PNG, 10, fos) // calidad a 0 imagen mas pequeña
-            fos.flush()
-        } catch (ex: FileNotFoundException) {
-            ex.printStackTrace()
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-        }
-        return myPath.absolutePath
-    }
-
-   /* fun savePicto(image: Bitmap){
-            _imageSelected.value = image
-        }
-    }*/
 
     fun obtenerConfigDias(activity: Activity): ArrayList<DiaSemana> {
         val today = LocalDate.now()
@@ -167,6 +151,44 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
         val dia = week[posicion].dia
         _diaClicked.value = dia
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onAsociarEvento(posicion: Int, activity: Activity) {
+
+        val evento = Evento()
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val fecha = LocalDate.parse(week[posicion].dia, formatter)
+        val eventos = evento.obtenerEventos(idUsuario, activity, fecha)
+
+        if (eventos.isEmpty()) {
+            Toast.makeText(activity, "No hay eventos para este día", Toast.LENGTH_SHORT).show()
+            return
+        }
+        else{
+            val dialog = Dialog(activity)
+            dialog.setContentView(com.example.plantea.R.layout.dialogo_semana_evento)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val spinner = dialog.findViewById<android.widget.Spinner>(com.example.plantea.R.id.spinner_eventos)
+            val tituloDialog = dialog.findViewById<android.widget.TextView>(com.example.plantea.R.id.titulo)
+            tituloDialog.text = activity.getString(com.example.plantea.R.string.selecciona_el_evento_para_el_dia) + " " + fecha.dayOfMonth
+
+            val guardar = dialog.findViewById<android.widget.Button>(com.example.plantea.R.id.btn_guardar)
+
+            val adapter = android.widget.ArrayAdapter(activity.applicationContext, com.example.plantea.R.layout.simple_spinner_item_idioma, eventos.map { it.nombre })
+            spinner.adapter = adapter
+
+            //if evento already is configured, select it
+            spinner.setSelection(eventos.indexOfFirst { it.id.toString() == week[posicion].idEvento })
+
+            guardar.setOnClickListener {
+                val eventoSeleccionado = eventos[spinner.selectedItemPosition]
+                week[posicion].idEvento = eventoSeleccionado.id.toString()
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
     }
 
 }

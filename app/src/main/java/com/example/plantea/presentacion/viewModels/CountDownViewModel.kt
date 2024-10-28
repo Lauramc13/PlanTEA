@@ -10,6 +10,8 @@ class CountDownViewModel: ViewModel() {
     var isRunning = false
     var selectedHour = 0
     var selectedMin = 0
+    var timeLeftInMillis: Long = 0 // Remaining time in milliseconds
+
 
     fun createReloj(): MaterialTimePicker {
 
@@ -24,6 +26,10 @@ class CountDownViewModel: ViewModel() {
     fun tick(millisUntilFinished: Long): String{
         val secondsLeft = millisUntilFinished / 1000
         val hours = secondsLeft / 3600
-        return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, secondsLeft / 60 % 60, secondsLeft % 60)
+        if(hours == 0L){
+            return String.format(Locale.getDefault(), "%02d:%02d", secondsLeft / 60 % 60, secondsLeft % 60)
+        }else{
+            return String.format(Locale.getDefault(), "%02d:%02d", hours, secondsLeft / 60 % 60, secondsLeft % 60)
+        }
     }
 }

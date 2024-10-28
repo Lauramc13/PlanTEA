@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:clickable="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:cardBackgroundColor="?colorOnSurfaceInverse"
+        app:cardCornerRadius="100dp"
+        android:layout_margin="5dp"
+        app:strokeColor="?colorOnSurfaceInverse"
+        app:strokeWidth="4dp"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imagen"
+                style="@style/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="Imagen del planificado"
+                android:background="@drawable/rounded_cardview"
+                app:srcCompat="@drawable/user" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/nombre"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Nombre del planificado"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/lbl_nombre"
+        android:textAlignment="center"
+        android:textColor="?colorOnSurface"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

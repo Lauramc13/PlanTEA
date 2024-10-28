@@ -10,8 +10,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -89,6 +91,11 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
     private fun iniciarListaPlanificaciones() {
         listaPlanificaciones.layoutManager = LinearLayoutManager(this)
         viewModel.planes = viewModel.plan.mostrarPlanificacionesDisponibles(viewModel.idUsuario, this) as ArrayList<Planificacion>
+        if(viewModel.planes.isEmpty()){
+            findViewById<LinearLayout>(R.id.layout_no_planificaciones).visibility = View.VISIBLE
+        }else{
+            findViewById<LinearLayout>(R.id.layout_no_planificaciones).visibility = View.GONE
+        }
         adaptador = AdaptadorListaPlanes(viewModel.planes, this)
         listaPlanificaciones.adapter = adaptador
     }
@@ -107,6 +114,9 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
             viewModel.plan.eliminarPlanificacion(this, viewModel.planes[posicion].getId())
             adaptador.notifyItemRemoved(posicion)
             viewModel.planes.removeAt(posicion)
+            if(viewModel.planes.isEmpty()){
+                findViewById<LinearLayout>(R.id.layout_no_planificaciones).visibility = View.VISIBLE
+            }
             dialogPlan.dismiss()
         }
 
@@ -132,13 +142,14 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
 
     override fun duplicateClick(posicion: Int, context: Context) {
          val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(this, viewModel.planes[posicion].getId(), Locale.getDefault().language, viewModel.idUsuario)
-         val creada = viewModel.plan.crearPlanificacion(this, viewModel.idUsuario, viewModel.planes[posicion].getTitulo() + " " + viewModel.counter.toString())
+        val title =  searchLastTitle(viewModel.planes[posicion].getTitulo())
+         val creada = viewModel.plan.crearPlanificacion(this, viewModel.idUsuario, title)
         viewModel.plan.addPictogramasPlan(creada, this, pictogramas)
 
         if (creada != 0) {
             Toast.makeText(this, R.string.toast_planificacion_duplicada, Toast.LENGTH_SHORT).show()
             val planificacion = viewModel.planes[posicion]
-            val newPlanificacion = Planificacion(planificacion.getTitulo() + " " + viewModel.counter.toString(), planificacion.getId())
+            val newPlanificacion = Planificacion(title, planificacion.getId())
             viewModel.planes.add(newPlanificacion)
             adaptador.notifyItemInserted(viewModel.planes.size)
             listaPlanificaciones.scrollToPosition(adaptador.itemCount?.minus(1) ?: 0)
@@ -147,8 +158,23 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
             Toast.makeText(this, R.string.toast_error_planificacion_duplicada, Toast.LENGTH_SHORT).show()
 
         }
+    }
 
-        viewModel.counter++
+    override fun downloadPDFClick(posicion: Int, context: Context) {
+        viewModel.dialogoTraduccion(this, viewModel.planes[posicion].getId())
+    }
+
+    private fun searchLastTitle(title: String): String{
+        val listaTitulos = viewModel.planificacion.obtenerTitulosPlanificaciones(viewModel.idUsuario, this)
+
+        var i = 1
+        var newTitle = title
+        while(listaTitulos.contains(newTitle)){
+            newTitle = "$title ($i)"
+            i++
+        }
+        return newTitle
+
     }
 
     override fun planSeleccionado(posicion: Int, recyclerPictogramas: RecyclerView, context: Context) {

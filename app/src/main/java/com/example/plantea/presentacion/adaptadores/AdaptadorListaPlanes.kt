@@ -26,6 +26,7 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
         fun deleteClick(posicion: Int, context: Context)
         fun editClick(posicion: Int, context: Context)
         fun duplicateClick(posicion: Int, context: Context)
+        fun downloadPDFClick(posicion: Int, context: Context)
         fun planSeleccionado(posicion: Int, recyclerView: RecyclerView, context: Context)
     }
 
@@ -77,6 +78,7 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
         private var eliminar: ImageView = itemView.findViewById(R.id.icon_delete)
         private var editar: ImageView = itemView.findViewById(R.id.icon_edit)
         private var duplicar: ImageView = itemView.findViewById(R.id.icon_copy)
+        private var downloadPDF: ImageView = itemView.findViewById(R.id.icon_downloadPDF)
         var card: CardView = itemView.findViewById(R.id.card_plan)
         var recyclerView: RecyclerView = itemView.findViewById(R.id.items_planificacion)
 
@@ -91,6 +93,10 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
             duplicar.setOnClickListener {
                 listener?.duplicateClick(bindingAdapterPosition, itemView.context)
             }
+            downloadPDF.setOnClickListener {
+                listener?.downloadPDFClick(bindingAdapterPosition, itemView.context)
+            }
+
             card.setOnClickListener{
                 if(cardOpened == bindingAdapterPosition){
                     cardOpened = -1

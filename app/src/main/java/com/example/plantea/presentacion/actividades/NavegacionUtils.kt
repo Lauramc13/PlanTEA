@@ -70,8 +70,55 @@ class NavegacionUtils {
                     if(usuario.checkCredentials(email, passwordCifrada, activity)){
                         val editor = prefs.edit()
                         editor.putBoolean("PlanificadorLogged", true)
+                        editor.putString("configPictogramas", "default")
+
                         editor.apply()
-                        context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
+                        //context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
+                        context.startActivity(Intent((context as? Activity)?.baseContext, MenuUserActivity::class.java))
+                        (context as? Activity)?.finish()
+                        (context as? Activity)?.finishAffinity()
+                        dialogLogin.dismiss()
+                    }else{
+                        password.error = "Contraseña incorrecta"
+                    }
+
+                }
+            }
+        }
+        iconoCerrarLogin.setOnClickListener { dialogLogin.dismiss() }
+        dialogLogin.show()
+    }
+
+    fun crearDialogoLoginMain(context: Context, activity: Activity, usersTEA: ArrayList<Usuario>?) {
+        prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
+
+        val dialogLogin = Dialog(context)
+        dialogLogin.setContentView(R.layout.dialogo_login)
+        dialogLogin.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val password = dialogLogin.findViewById<TextInputLayout>(R.id.txt_Password)
+        val btnAcceder = dialogLogin.findViewById<MaterialButton>(R.id.btn_login)
+        val iconoCerrarLogin = dialogLogin.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        btnAcceder.setOnClickListener {
+            if (password.editText?.text.toString() == "") {
+                password.error = "El campo no puede estar vacío"
+            } else {
+                val email = prefs.getString("email", "")
+                if(email != null){
+                    val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context)
+
+                    if(usuario.checkCredentials(email, passwordCifrada, activity)){
+                        val editor = prefs.edit()
+                        editor.putBoolean("PlanificadorLogged", true)
+                        if(usersTEA!!.size >1){
+                            context.startActivity(Intent((context as? Activity)?.baseContext, MenuUserActivity::class.java))
+                        }else{
+                            editor.putString("idUsuarioTEA", usersTEA[0].id)
+                            editor.putString("nombreUsuarioTEA", usersTEA[0].name)
+                            editor.putString("imagenUsuarioTEA", usersTEA[0].imagen)
+                            editor.putString("configPictogramas", usersTEA[0].configPictograma)
+                            context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
+                        }
+                        editor.apply()
                         (context as? Activity)?.finish()
                         (context as? Activity)?.finishAffinity()
                         dialogLogin.dismiss()
@@ -109,18 +156,26 @@ class NavegacionUtils {
     }
 
     private fun configurarDatos(vista: View){
-        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
 
         iconoRol = vista.findViewById(R.id.iconoRol)
         iconoRol.setImageURI(null)
         textoRol = vista.findViewById(R.id.textRol)
+       /* val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
         if (infoUsuario) {
             textoRol.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
         } else {
             textoRol.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
+        }*/
+        val image = prefs.getString("imagenUsuarioTEA", "")
+        if(image == ""){
+            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+        }else{
+            iconoRol.setImageURI(Uri.parse(image))
+
         }
+
     }
 
     fun hostingId(hostingActivityClass: Class<FragmentActivity>) : Int {
@@ -132,6 +187,7 @@ class NavegacionUtils {
             CalendarioActivity::class.java -> R.id.calendar
             ActividadActivity::class.java -> R.id.actividades
             SemanaActivity::class.java -> R.id.semana
+            PlanificacionesActivity::class.java -> R.id.calendar
             // CuadernoActivity::class.java -> R.id.cuaderno
             else -> R.id.planificacion
         }

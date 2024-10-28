@@ -130,11 +130,23 @@
     <style name="dropdownMenu">
         <item name="backgroundTint">@color/greenLight</item>
         <item name="android:background">@drawable/border_spinner</item>
+    </style>
 
+    <style name="dropdownMenuSemana">
+        <item name="backgroundTint">@color/md_theme_light_primaryContainer</item>
+        <item name="android:background">@drawable/border_spinner</item>
     </style>
 
     <style name="dropdownMenuIdioma">
         <item name="android:background">@drawable/border_spinner_idioma</item>
+        <item name="strokeColor" tools:targetApi="s">@color/md_theme_dark_primaryContainer</item>
+    </style>
+
+
+    <style name="dropdownMenuEvento">
+        <item name="backgroundTint">@color/greenLight</item>
+        <item name="android:background">@drawable/border_spinner</item>
+
         <item name="strokeColor" tools:targetApi="s">@color/md_theme_dark_primaryContainer</item>
     </style>
     
@@ -267,6 +279,13 @@
         <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>
         <item name="imageButtonStyle">@style/TimePicker.ImageButton</item>
+    </style>
+
+    <style name="CalendarPicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="TimePicker2" parent="Widget.Material3.MaterialTimePicker">

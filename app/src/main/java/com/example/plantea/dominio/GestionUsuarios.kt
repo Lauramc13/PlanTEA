@@ -7,11 +7,18 @@ class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
     private var resultado = false
 
-
     fun crearUsuario( name: String?, email: String?, password: String?, username: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         resultado = conectorBD!!.insertarUsuario(email, password, username, name, objeto, nameTEA)
+        conectorBD!!.cerrar()
+        return resultado
+    }
+
+    fun crearUsuarioTEA(name:String?, imagen: String?, configPicto: String?, idUsuario: String?, actividad: Activity?): String {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        val resultado = conectorBD!!.insertarUsuarioTEA(name, imagen, configPicto,  idUsuario)
         conectorBD!!.cerrar()
         return resultado
     }
@@ -40,22 +47,6 @@ class GestionUsuarios {
         return usuario
     }
 
-    fun addImagenTEA(imagen: String, idUsuario: String, actividad: Activity?) {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        val usuario = conectorBD!!.addImagenTEA(imagen, idUsuario)
-        conectorBD!!.cerrar()
-        return usuario
-    }
-
-    fun addImagenObjeto(imagen: String, idUsuario: String, actividad: Activity?) {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        val usuario = conectorBD!!.addImagenObjeto(imagen, idUsuario)
-        conectorBD!!.cerrar()
-        return usuario
-    }
-
     fun consultarId(email: String,  actividad: Activity?): String? {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
@@ -64,10 +55,11 @@ class GestionUsuarios {
         return usuarioId
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?, actividad: Activity?) {
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: String, idUsuario: String?, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario)
+        //conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario)
+        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, ruta, idUsuario)
         conectorBD!!.cerrar()
     }
 
@@ -84,6 +76,46 @@ class GestionUsuarios {
         conectorBD!!.abrir()
         conectorBD!!.cambiarConfiguracionPictogramas(config, idUsuario)
         conectorBD!!.cerrar()
+    }
+
+    fun obtenerUsuariosTEA(idUsuario: String?, actividad: Activity): ArrayList<Usuario> {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        val usuarios = ArrayList<Usuario>()
+        val c = conectorBD!!.obtenerUsuariosTEA(idUsuario)
+        if (c.moveToFirst()) {
+            do {
+                val usuario = Usuario()
+                usuario.id = c.getString(0)
+                usuario.name = c.getString(1)
+                usuario.imagen = c.getString(2)
+                usuario.configPictograma = c.getString(3)
+                usuario.actividades?.addAll(conectorBD!!.getActividades(usuario.id)?:ArrayList())
+                usuarios.add(usuario)
+
+            } while (c.moveToNext())
+        }
+
+        conectorBD!!.cerrar()
+        return usuarios
+    }
+
+    fun borrarUsuarioTEA(idUsuario: String?, idUsuarioTEA: String?, actividad: Activity?): Boolean {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        resultado = conectorBD!!.borrarUsuarioTEA(idUsuario, idUsuarioTEA)
+        conectorBD!!.cerrar()
+        return resultado
+    }
+
+    fun guardarConfiguracionUsersTEA(users: ArrayList<Usuario>, idUsuario: String?, actividad: Activity?): Boolean {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        for (user in users) {
+            conectorBD!!.guardarConfiguracionUsersTEA(user, idUsuario)
+        }
+        conectorBD!!.cerrar()
+        return true
     }
 
 }

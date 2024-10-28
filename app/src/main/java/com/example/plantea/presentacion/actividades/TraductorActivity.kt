@@ -66,7 +66,6 @@ class TraductorActivity : AppCompatActivity() {
             textoATraducir.requestFocus()
         }
 
-
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
 
@@ -86,7 +85,7 @@ class TraductorActivity : AppCompatActivity() {
             if (!CommonUtils.isNetworkAvailable(this)) {
                 Toast.makeText(this, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
             }else{
-                if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim(), this)) {
+                if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim())) {
                     traducirButton.isEnabled = false
                     viewModel._visibilityButtons.value = true
                     CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
@@ -127,7 +126,7 @@ class TraductorActivity : AppCompatActivity() {
 
             customView.findViewById<TextView>(R.id.item_pdf).setOnClickListener {
                 if(viewModel.listaPictogramas.isNotEmpty()){
-                    viewModel.dialogoTraduccion(this, findViewById(android.R.id.content))
+                    viewModel.dialogoTraduccion(this)
                 }else{
                     Toast.makeText(this, R.string.toast_error_guardar_traduccion_vacia, Toast.LENGTH_SHORT).show()
                 }
@@ -147,7 +146,7 @@ class TraductorActivity : AppCompatActivity() {
 
         guardarPDFButton?.setOnClickListener {
             if(viewModel.listaPictogramas.isNotEmpty()){
-                viewModel.dialogoTraduccion(this, findViewById(android.R.id.content))
+                viewModel.dialogoTraduccion(this)
             }else{
                 Toast.makeText(this, R.string.toast_error_guardar_traduccion_vacia, Toast.LENGTH_SHORT).show()
             }
@@ -156,7 +155,7 @@ class TraductorActivity : AppCompatActivity() {
         /////////////  Observers  //////////////
 
         //Cuando se actualiza la lista de pictogramas, actualizamos el adaptador
-        viewModel._listaPictogramas.observe(this) { listaPictogramas ->
+        viewModel._listaPictogramasTraduccion.observe(this) { listaPictogramas ->
             viewModel.adaptador = AdaptadorPictogramasTraductor(listaPictogramas, viewModel)
             recyclerView.adapter = viewModel.adaptador
         }

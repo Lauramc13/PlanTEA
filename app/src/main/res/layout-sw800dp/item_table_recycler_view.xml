@@ -45,6 +45,19 @@
         app:layout_constraintTop_toBottomOf="@+id/card_imagen" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLinkEvento"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="5dp"
+        app:icon="@drawable/svg_link"
+        app:cornerRadius="10dp"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTrash" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnColors"
         android:layout_width="48dp"
         android:layout_height="48dp"

@@ -181,7 +181,8 @@ tools:context=".presentacion.actividades.ConfiguracionActivity">
                         android:layout_height="match_parent"
                         android:cursorVisible="true"
                         android:inputType="text"
-                        android:textColor="?colorOnSurface" />
+                        android:textColor="?colorOnSurface"
+                        android:alpha="0.6"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
 

@@ -7,7 +7,6 @@ import java.io.Serializable
 class Planificacion : Serializable {
     private lateinit var titulo: String
     private var id = 0
-
     lateinit var listaPictogramas: ArrayList<Pictograma>
     private var gestionPlan = GestionPlanificaciones()
 
@@ -60,6 +59,10 @@ class Planificacion : Serializable {
     //Mostrar la planificacion a seguir
     fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?, language: String): ArrayList<*> {
         return gestionPlan.obtenerPictogramas(idUsuario, id, context, language) as ArrayList<Planificacion>
+    }
+
+    fun obtenerTitulosPlanificaciones(idUsuario: String, actividad: Activity?): ArrayList<String> {
+        return gestionPlan.obtenerTitulosPlanificaciones(idUsuario, actividad)
     }
 
 

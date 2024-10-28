@@ -159,14 +159,15 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
 
     override fun viewEventClick(posicion: Int) {
         val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventosDia[posicion].idPlan, Locale.getDefault().language, viewModel.idUsuario)
+
         val intent = Intent(actividad, EventosActivity::class.java)
         intent.putExtra("titulo", viewModel.eventosDia[posicion].nombre)
-        //intent.putExtra("pictogramas", pictogramas)
         intent.putExtra("pictogramas", pictogramas)
         pictogramas.forEachIndexed { index, pictogram ->
             intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
         }
         intent.putExtra("fecha", viewModel.eventosDia[posicion].fecha)
+
         startActivity(intent)
     }
 

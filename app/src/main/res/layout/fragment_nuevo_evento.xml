@@ -183,7 +183,7 @@
 
                 <CheckBox
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:id="@+id/switch_hacer_visible"
                     android:checked="false"
                     style="@style/Widget.AppCompat.CompoundButton.RadioButton">
@@ -213,7 +213,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-               <!-- <TextView
+                <TextView
                     android:id="@+id/lbl_mensajePlanes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -226,10 +226,10 @@
                     android:textColor="?colorOnSurface"
                     android:textSize="15sp"
                     android:visibility="invisible"
-                    app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lbl_planificacionesDisponibles" />-->
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_planificacionesDisponibles" />
 
                 <TextView
                     android:id="@+id/lbl_planificacionesDisponibles"

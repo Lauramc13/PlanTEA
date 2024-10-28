@@ -17,7 +17,9 @@ import kotlinx.coroutines.launch
 
 class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFactory?, versionBD: Int) : SQLiteOpenHelper(contexto, nombreBD, factory, versionBD) {
     private var context = contexto
-    private var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, password TEXT, username TEXT, name TEXT, imagen TEXT, objeto TEXT, imagenObjeto TEXT, nameTEA TEXT, imagenTEA TEXT, configPictogramas TEXT)"
+    private var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE, password TEXT, username TEXT, name TEXT, imagen TEXT)"
+    private var sqlUsuarioTEA = "CREATE TABLE UsuarioTEA(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, imagen TEXT, configPictogramas TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlActividad = "CREATE TABLE Actividad(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, imagen TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES UsuarioTEA(id))"
     private var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen BLOB, color TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlCategoriasUsuario = "CREATE TABLE CategoriaUsuario(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen BLOB, color TEXT, id_usuario INTEGER, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id))"
     private var sqlCategoriaOculta = "CREATE TABLE CategoriaOculta(id INTEGER PRIMARY KEY AUTOINCREMENT, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
@@ -33,12 +35,14 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlTraduccion = "CREATE TABLE Traduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, translation TEXT)"
     private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
     private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
-    private var sqlDiaSemana = "CREATE TABLE DiaSemana (id INTEGER PRIMARY KEY AUTOINCREMENT, semana_id INTEGER, pictograma_day BLOB, day_week TEXT, color TEXT, FOREIGN KEY (semana_id) REFERENCES Semana(id))"
+    private var sqlDiaSemana = "CREATE TABLE DiaSemana (id INTEGER PRIMARY KEY AUTOINCREMENT, semana_id INTEGER, pictograma_day BLOB, day_week TEXT, color TEXT, id_evento TEXT, FOREIGN KEY (semana_id) REFERENCES Semana(id))"
 
     override fun onCreate(db: SQLiteDatabase) {
         try {
             /*Se ejecuta la sentencia SQL de creación de la tabla*/
             db.execSQL(sqlUsuario)
+            db.execSQL(sqlUsuarioTEA)
+            db.execSQL(sqlActividad)
             db.execSQL(sqlCategorias)
             db.execSQL(sqlCategoriasUsuario)
             db.execSQL(sqlCategoriaOculta)
@@ -69,6 +73,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         try {
             /*Se elimina la versión anterior de la tablet*/
             db.execSQL("DROP TABLE IF EXISTS Usuario")
+            db.execSQL("DROP TABLE IF EXISTS UsuarioTEA")
+            db.execSQL("DROP TABLE IF EXISTS Actividad")
             db.execSQL("DROP TABLE IF EXISTS Categorias")
             db.execSQL("DROP TABLE IF EXISTS CategoriaUsuario")
             db.execSQL("DROP TABLE IF EXISTS RelacionCategoriaUsuario")

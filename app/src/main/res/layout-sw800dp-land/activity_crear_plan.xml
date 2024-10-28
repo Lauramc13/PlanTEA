@@ -91,7 +91,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7" />
 
     <Button
         android:id="@+id/btn_guardarPlan"
@@ -125,32 +125,58 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout2"
+    <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:gravity="center"
         android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
-        android:background="@drawable/fragment_personalizado3">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
-        <android.widget.SearchView
-            android:id="@+id/searchViewPicto"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:elevation="0dp"
-            android:theme="@style/AppTheme.SearchBar"
-            android:contentDescription="Barra de busqueda de pictogramas por nombre"
-            android:queryHint="@string/buscar_pictos"
-            android:closeIcon="@drawable/svg_close"
-            android:iconifiedByDefault="false"
-            tools:ignore="NotSibling"/>
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fragment_personalizado3">
+
+            <android.widget.SearchView
+                android:id="@+id/searchViewPicto"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:closeIcon="@drawable/svg_close"
+                android:contentDescription="Barra de busqueda de pictogramas por nombre"
+                android:elevation="0dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="@string/buscar_pictos"
+                android:theme="@style/AppTheme.SearchBar"
+                tools:ignore="NotSibling" />
+        </FrameLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_search"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/svg_search"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:iconTint="#203130" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_translate"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/svg_translation"
+            app:iconTint="#203130" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

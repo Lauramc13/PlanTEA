@@ -34,7 +34,7 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
         fun onBorrarItemSeleccionado(posicion: Int)
         fun onColorSelected(posicion: Int, color: String?, activity: Activity)
         fun onDiaClicked(posicion: Int, activity: Activity)
-
+        fun onAsociarEvento(posicion: Int, activity: Activity)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderItemSemana {
@@ -82,6 +82,7 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
 
         holder.borrar.visibility = if (isEdit && imagen != null) View.VISIBLE else View.GONE
         holder.colors.visibility = if (isEdit) View.VISIBLE else View.GONE
+        holder.linkEvento.visibility = if (isEdit && imagen != null) View.VISIBLE else View.GONE
 
         if (imagen == null) {
             holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
@@ -132,12 +133,18 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
         var borrar: MaterialButton
         var card: MaterialCardView
         var colors: MaterialButton
+        var linkEvento: MaterialButton
 
         init {
             imagen = itemView.findViewById(R.id.image)
             borrar = itemView.findViewById(R.id.btnTrash)
             card = itemView.findViewById(R.id.card_imagen)
             colors = itemView.findViewById(R.id.btnColors)
+            linkEvento = itemView.findViewById(R.id.btnLinkEvento)
+
+            linkEvento.setOnClickListener {
+                listener?.onAsociarEvento(bindingAdapterPosition, context as Activity)
+            }
 
             borrar.setOnClickListener {
                 listener?.onBorrarItemSeleccionado(bindingAdapterPosition)

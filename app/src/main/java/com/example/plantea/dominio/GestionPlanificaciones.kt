@@ -129,7 +129,6 @@ class GestionPlanificaciones : Serializable {
                 pictograma.titulo = c.getString(1)
                 if( c.getBlob(2) == null){
                     pictograma.idAPI = c.getInt(3)
-                    // pictograma.imagen = CommonUtils.getImagenAPI(pictograma.idAPI)
                 }else{
                     pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
                 }
@@ -195,6 +194,21 @@ class GestionPlanificaciones : Serializable {
         c.close()
         conectorBD.cerrar()
         return listaPictogramas
+    }
+
+    fun obtenerTitulosPlanificaciones(idUsuario: String, actividad: Activity?): ArrayList<String> {
+        val listaPlanificaciones = ArrayList<String>()
+        conectorBD = ConectorBD(actividad)
+        conectorBD.abrir()
+        val c = conectorBD.listarPlanificaciones(idUsuario)
+        if (c.moveToFirst()) {
+            do {
+                listaPlanificaciones.add(c.getString(0))
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD.cerrar()
+        return listaPlanificaciones
     }
 
 }

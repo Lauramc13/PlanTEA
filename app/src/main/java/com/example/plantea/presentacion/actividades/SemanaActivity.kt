@@ -1,16 +1,22 @@
 package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.opengl.Visibility
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.DiaSemana
+import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemana
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemanaHeader
 import com.example.plantea.presentacion.viewModels.SemanaViewModel
@@ -26,6 +32,10 @@ class SemanaActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_semana)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
 
         val buttonGuardar = findViewById<Button>(R.id.btnGuardar)
         val buttonEditar = findViewById<Button>(R.id.btnEditar)
@@ -73,6 +83,14 @@ class SemanaActivity: AppCompatActivity() {
             buttonEditar.visibility = Button.VISIBLE
             buttonSwitch.visibility = Button.GONE
         }
+    }
+
+    private fun configurarFrame(spinner: Spinner, prefs: SharedPreferences){
+        //populate spinner
+        val usuario = Usuario()
+        val usuarios = usuario.obtenerUsuariosTEA(prefs.getString("idUsuario", ""), this)
+        val adapter = ArrayAdapter(applicationContext, R.layout.simple_spinner_item_idioma,  usuarios.map { it.name })
+        spinner.adapter = adapter
     }
 
     fun observers(adapter: AdaptadorTablaSemana) {
@@ -133,7 +151,7 @@ class SemanaActivity: AppCompatActivity() {
             for(i in 0..6){
                 if(viewModel.week[i].imagen != null || viewModel.week[i].color != null) {
                     val imageBlob = CommonUtils.bitmapToByteArray(viewModel.week[i].imagen)
-                    semana.guardarSemana(viewModel.idUsuario, imageBlob, viewModel.week[i].color, viewModel.week[i].dia, this)
+                    semana.guardarSemana(viewModel.idUsuario, imageBlob, viewModel.week[i].color, viewModel.week[i].dia, viewModel.week[i].idEvento, this)
                 }
                if(viewModel.week[i].imagen == null){
                     semana.borrarImagen(viewModel.idUsuario, viewModel.week[i].dia!!, this)

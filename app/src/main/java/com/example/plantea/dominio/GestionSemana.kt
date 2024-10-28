@@ -36,6 +36,7 @@ class GestionSemana {
             if (cursor.moveToFirst()) {
                 dia.imagen = CommonUtils.byteArrayToBitmap(cursor.getBlob(0))
                 dia.color = cursor.getString(1)
+                dia.idEvento = cursor.getString(2)
             }
             dias.add(dia)
         }
@@ -44,10 +45,10 @@ class GestionSemana {
         return dias
     }
 
-    fun guardarSemana(idUsuario: String, imagen: ByteArray?, color: String?, fecha: String?, activity: Activity?) {
+    fun guardarSemana(idUsuario: String, imagen: ByteArray?, color: String?, fecha: String?, idEvento: String?, activity: Activity?) {
         conectorBD = ConectorBD(activity)
         conectorBD!!.abrir()
-        conectorBD!!.guardarSemana(idUsuario, imagen, color, fecha)
+        conectorBD!!.guardarSemana(idUsuario, imagen, color, fecha, idEvento)
         conectorBD!!.cerrar()
     }
 

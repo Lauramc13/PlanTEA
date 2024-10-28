@@ -30,12 +30,12 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var txtUsername : TextInputLayout
     private lateinit var txtPassword : TextInputLayout
     private lateinit var txtPassword2 : TextInputLayout
-    private lateinit var txtNameplanificado : TextInputLayout
+  /*  private lateinit var txtNameplanificado : TextInputLayout
     private lateinit var txtObjeto : TextInputLayout
     private lateinit var checkUserPlanificado : SwitchCompat
     private lateinit var checkObjeto: SwitchCompat
     private lateinit var botonAyuda: MaterialButton
-    private lateinit var tooltipText: TextView
+    private lateinit var tooltipText: TextView*/
     private lateinit var backButton: Button
 
     private val viewModel by viewModels<RegisterViewModel>()
@@ -51,8 +51,8 @@ class RegisterActivity : AppCompatActivity(){
         viewModel.username = txtUsername.editText?.text.toString()
         viewModel.password = txtPassword.editText?.text.toString()
         viewModel.password2 = txtPassword2.editText?.text.toString()
-        viewModel.objeto = txtObjeto.editText?.text.toString()
-        viewModel.namePlanificado = txtNameplanificado.editText?.text.toString()
+        /*viewModel.objeto = txtObjeto.editText?.text.toString()
+        viewModel.namePlanificado = txtNameplanificado.editText?.text.toString()*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,18 +66,18 @@ class RegisterActivity : AppCompatActivity(){
         txtUsername = findViewById(R.id.txt_UserName)
         txtPassword = findViewById(R.id.txt_password)
         txtPassword2 = findViewById(R.id.txt_password2)
-        txtObjeto = findViewById(R.id.txt_objeto)
+        /*txtObjeto = findViewById(R.id.txt_objeto)
         txtNameplanificado = findViewById(R.id.txt_nombreplanificado)
         checkUserPlanificado = findViewById(R.id.check_Plaificado)
         checkObjeto = findViewById(R.id.check_Objeto)
         botonAyuda = findViewById(R.id.buttonAyudaActividad)
-        tooltipText = findViewById(R.id.tooltipText)
+        tooltipText = findViewById(R.id.tooltipText)*/
         backButton = findViewById(R.id.goBackButton)
 
-        txtNameplanificado.isEnabled = false
+       /* txtNameplanificado.isEnabled = false
         txtObjeto.isEnabled = false
         checkUserPlanificado.isChecked = false
-        checkObjeto.isChecked = false
+        checkObjeto.isChecked = false*/
 
         val intent = intent
 
@@ -93,11 +93,15 @@ class RegisterActivity : AppCompatActivity(){
             txtUsername.editText?.setText(viewModel.username)
             txtPassword.editText?.setText(viewModel.password)
             txtPassword2.editText?.setText(viewModel.password2)
-            txtObjeto.editText?.setText(viewModel.objeto)
-            txtNameplanificado.editText?.setText(viewModel.namePlanificado)
+           /* txtObjeto.editText?.setText(viewModel.objeto)
+            txtNameplanificado.editText?.setText(viewModel.namePlanificado)*/
         }
 
-        botonAyuda.setOnClickListener {
+        backButton.setOnClickListener {
+            finish()
+        }
+
+        /*botonAyuda.setOnClickListener {
             val slideTransition = Slide(Gravity.END)
             slideTransition.duration = 800
             val parentView = findViewById<RelativeLayout>(R.id.relativeLayoutTooltip)
@@ -112,10 +116,6 @@ class RegisterActivity : AppCompatActivity(){
                 View.VISIBLE
         }
 
-        backButton.setOnClickListener {
-            finish()
-        }
-
         checkUserPlanificado.setOnCheckedChangeListener { _, isChecked ->
             txtNameplanificado.isEnabled = isChecked
         }
@@ -123,16 +123,16 @@ class RegisterActivity : AppCompatActivity(){
         checkObjeto.setOnCheckedChangeListener { _, isChecked ->
             txtObjeto.isEnabled = isChecked
         }
-
+*/
         btnRegister.setOnClickListener {
             // Clear previous errors
             txtName.error = null
             txtEmail.error = null
             txtUsername.error = null
             txtPassword.error = null
-            txtObjeto.error = null
             txtPassword2.error = null
-            txtNameplanificado.error = null
+           /* txtObjeto.error = null
+            txtNameplanificado.error = null*/
 
             val errorMessage = createAccount()
             if (errorMessage != 0) {
@@ -191,13 +191,15 @@ class RegisterActivity : AppCompatActivity(){
     private fun createAccount(): Int {
         textInput()
 
-        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
+       // val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
+        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, false, false)
         val isAccountValid = isAccountValid(viewModel.email, viewModel.password, viewModel.password2, notextViewsVacios)
 
         if (isAccountValid.isValid) {
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
             //viewModel.registerUser(checkObjeto.isChecked, checkUserPlanificado.isChecked, prefs, this)
-            viewModel.accountCreated(this, prefs, checkUserPlanificado.isChecked, checkObjeto.isChecked)
+           // viewModel.accountCreated(this, prefs, checkUserPlanificado.isChecked, checkObjeto.isChecked)
+            viewModel.accountCreated(this, prefs, false, false)
         }
 
         return isAccountValid.errorMessage ?: 0
@@ -229,7 +231,7 @@ class RegisterActivity : AppCompatActivity(){
             return false
         }
 
-        if (objeto.isEmpty() && checkedObjeto) {
+       /* if (objeto.isEmpty() && checkedObjeto) {
             txtObjeto.error = "ESTO ES UN ERROR"
             return false
         }
@@ -237,7 +239,7 @@ class RegisterActivity : AppCompatActivity(){
         if (namePlanificado.isEmpty() && checkedUserTea) {
             txtNameplanificado.error = "ESTO ES UN ERROR"
             return false
-        }
+        }*/
         return true
     }
 

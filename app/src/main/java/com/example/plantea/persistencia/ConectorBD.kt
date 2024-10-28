@@ -1,6 +1,7 @@
 package com.example.plantea.persistencia
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -9,6 +10,7 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.util.Log
+import com.example.plantea.dominio.Actividad
 import com.example.plantea.dominio.Usuario
 
 class ConectorBD(ctx: Context?) {
@@ -322,8 +324,8 @@ class ConectorBD(ctx: Context?) {
         nuevoUsuario.put("username", username)
         nuevoUsuario.put("password", password)
         nuevoUsuario.put("name", name)
-        nuevoUsuario.put("objeto", objeto)
-        nuevoUsuario.put("nameTEA", nameTEA)
+        //nuevoUsuario.put("objeto", objeto)
+        //nuevoUsuario.put("nameTEA", nameTEA)
 
         return try{
             val resultado = db?.insert("Usuario", null, nuevoUsuario) ?: -1
@@ -332,6 +334,95 @@ class ConectorBD(ctx: Context?) {
             Log.d("TAG", "El usuario ya existe")
             false
         }
+    }
+
+    fun insertarUsuarioTEA(name: String?, imagen: String?, configPicto: String?, idUsuario: String?): String {
+        val values = ContentValues().apply {
+            put("name", name)
+            put("imagen", imagen)
+            put("id_usuario", idUsuario)
+            /*put("objeto", nameObjeto)
+            put("imagenObjeto", imagenObjeto)*/
+            put("configPictogramas", configPicto)
+        }
+
+        return try{
+            db?.insert("UsuarioTEA", null, values)
+            val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
+            var id = 0
+            if (c.moveToFirst()) {
+                id = c.getInt(0)
+            }
+            c.close()
+            id.toString()
+        }catch (e: Exception){
+            Log.d("TAG", "El usuario ya existe")
+            ""
+        }
+
+
+    }
+
+    /*Insertar una actividad en la tabla de objetos*/
+    fun insertarActividad(name: String?, imagen: String?, idUsuarioTEA: String?): String? {
+        val values = ContentValues().apply {
+            put("name", name)
+            put("imagen", imagen)
+            put("id_usuario", idUsuarioTEA)
+        }
+        return try{
+            (db?.insert("Actividad", null, values) ?: -1).toInt()
+            val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
+            var id = ""
+            if (c.moveToFirst()) {
+                id = c.getString(0)
+            }
+            c.close()
+            id
+        }catch (e: Exception){
+            Log.d("TAG", "La actividad ya existe")
+            null
+        }
+    }
+
+    /*Borrar una actividad*/
+    fun borrarActividad(idActividad: String?): Boolean {
+        return try{
+            db!!.execSQL("DELETE FROM Actividad WHERE id='$idActividad'")
+            true
+        }catch (e: Exception){
+            Log.d("TAG", "Error al borrar la actividad")
+            false
+        }
+    }
+
+    /*Actualizar una actividad*/
+    fun actualizarActividad(idActividad: String?, name: String?, imagen: String?): Boolean {
+        return try{
+            db!!.execSQL("UPDATE Actividad SET name = '$name', imagen = '$imagen' WHERE id = '$idActividad'")
+            true
+        }catch (e: Exception){
+            Log.d("TAG", "Error al actualizar la actividad")
+            false
+        }
+    }
+
+    /*Obtener las actividades de un usuario*/
+    fun getActividades(idUsuario: String?): ArrayList<Actividad>? {
+        val actividades = ArrayList<Actividad>()
+        val cursor = db!!.rawQuery("SELECT * FROM Actividad WHERE id_usuario = '$idUsuario'", null)
+        if (cursor.moveToFirst()) {
+            do {
+                val actividad = Actividad()
+                actividad.id = cursor.getString(0)
+                actividad.name = cursor.getString(1)
+                actividad.imagen = cursor.getString(2)
+                actividad.idUsuario = cursor.getString(3)
+                actividades.add(actividad)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return actividades
     }
 
     /*Cambiar contraseña del usuario*/
@@ -393,13 +484,14 @@ class ConectorBD(ctx: Context?) {
 
         val username = cursor.getString(cursor.getColumnIndex("username"))
         val name = cursor.getString(cursor.getColumnIndex("name"))
-        val objeto = cursor.getString(cursor.getColumnIndex("objeto"))
+       // val objeto = cursor.getString(cursor.getColumnIndex("objeto"))
         val imagen = cursor.getString(cursor.getColumnIndex("imagen"))
-        val nameTEA = cursor.getString(cursor.getColumnIndex("nameTEA"))
-        val imagenTEA = cursor.getString(cursor.getColumnIndex("imagenTEA"))
-        val imagenObjeto = cursor.getString(cursor.getColumnIndex("imagenObjeto"))
-        val configPicto = cursor.getString(cursor.getColumnIndex("configPictogramas"))
-        usuario = Usuario(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto, configPicto)
+        //val nameTEA = cursor.getString(cursor.getColumnIndex("nameTEA"))
+        // val imagenTEA = cursor.getString(cursor.getColumnIndex("imagenTEA"))
+        //val imagenObjeto = cursor.getString(cursor.getColumnIndex("imagenObjeto"))
+       // val configPicto = cursor.getString(cursor.getColumnIndex("configPictogramas"))
+        //usuario = Usuario(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto, configPicto)
+        usuario = Usuario(name, email, username, imagen)
 
         cursor.close()
         return usuario
@@ -409,14 +501,14 @@ class ConectorBD(ctx: Context?) {
         db!!.execSQL("UPDATE Usuario SET imagen ='$image' WHERE Usuario.id = '$idUsuario'")
     }
 
-    fun addImagenTEA(image: String, idUsuario: String) {
+    /*fun addImagenTEA(image: String, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagenTEA ='$image' WHERE Usuario.id = '$idUsuario'")
-    }
+    }*/
 
 
-    fun addImagenObjeto(image: String, idUsuario: String) {
+    /*fun addImagenObjeto(image: String, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagenObjeto ='$image' WHERE Usuario.id = '$idUsuario'")
-    }
+    }*/
 
     @SuppressLint("Range")
     fun consultarId(email: String): String? {
@@ -487,8 +579,13 @@ class ConectorBD(ctx: Context?) {
         )
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?) {
+    fun guardarConfiguracionOLD(nombreUsuarioPlanificador: String, username: String, nombreUsuarioTEA: String, nombreObjeto: String, rutaPlanificador: String, rutaUsuarioTEA: String, rutaObjeto: String, idUsuario: String?) {
         val query = "UPDATE Usuario SET name = '$nombreUsuarioPlanificador', username = '$username', nameTEA = '$nombreUsuarioTEA', objeto = '$nombreObjeto', imagen = '$rutaPlanificador', imagenTEA = '$rutaUsuarioTEA', imagenObjeto = '$rutaObjeto' WHERE id = '$idUsuario'"
+        db?.execSQL(query)
+    }
+
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: String, idUsuario: String?) {
+        val query = "UPDATE Usuario SET name = '$nombreUsuarioPlanificador', username = '$username', imagen = '$ruta' WHERE id = '$idUsuario'"
         db?.execSQL(query)
     }
 
@@ -501,7 +598,41 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun cambiarConfiguracionPictogramas(configuration: String, idUsuario: String?) {
-        db!!.execSQL("UPDATE Usuario SET configPictogramas = '$configuration' WHERE id = '$idUsuario'")
+        db!!.execSQL("UPDATE UsuarioTEA SET configPictogramas = '$configuration' WHERE id = '$idUsuario'")
+    }
+
+    fun obtenerUsuariosTEA(idUsuario: String?): Cursor {
+        return db!!.rawQuery("SELECT * FROM UsuarioTEA WHERE id_usuario = '$idUsuario'", null)
+    }
+
+    fun borrarUsuarioTEA(idUsuario: String?, idUsuarioTEA: String?): Boolean {
+        try {
+            db!!.execSQL("DELETE FROM UsuarioTEA WHERE id = '$idUsuarioTEA' AND id_usuario = '$idUsuario'")
+            db!!.execSQL("DELETE FROM Actividad WHERE id_usuario = '$idUsuarioTEA'")
+        } catch (e: SQLiteConstraintException) {
+            return false
+        }
+        return true
+    }
+
+    fun guardarConfiguracionUsersTEA(user: Usuario, idUsuario: String?): Boolean {
+        val values = ContentValues().apply {
+            put("name", user.name)
+            put("imagen", user.imagen)
+           /* put("objeto", user.objeto)
+            put("imagenObjeto", user.imagenObjeto)*/
+            put("configPictogramas", user.configPictograma)
+            put("id_usuario", idUsuario)
+        }
+
+        return try{
+            //update
+            db?.update("UsuarioTEA", values, "id_usuario = ? AND id = ?", arrayOf(idUsuario, user.id))
+            true
+        }catch (e: Exception){
+            Log.d("TAG", "Algo ha fallado")
+            false
+        }
     }
 
     fun getFavorito(idPicto: String?, idUsuario: String?): Boolean {
@@ -562,12 +693,12 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun obtenerConfigDias(idUsuario: String, dayWeek: String): Cursor {
-        return db!!.rawQuery("SELECT pictograma_day, color FROM DiaSemana JOIN Semana ON DiaSemana.semana_id = Semana.id WHERE id_usuario = '$idUsuario' AND day_week = '$dayWeek'", null)
+        return db!!.rawQuery("SELECT pictograma_day, color, id_evento FROM DiaSemana JOIN Semana ON DiaSemana.semana_id = Semana.id WHERE id_usuario = '$idUsuario' AND day_week = '$dayWeek'", null)
     }
 
 
     @SuppressLint("Range")
-    fun guardarSemana(idUsuario: String, imagen: ByteArray?, color: String?,  dayWeek: String?) {
+    fun guardarSemana(idUsuario: String, imagen: ByteArray?, color: String?, dayWeek: String?, idEvento: String?) {
         var semanaId: Int? = null
         val cursorSemana = db!!.rawQuery("SELECT id FROM Semana WHERE id_usuario = ?", arrayOf(idUsuario))
         if (cursorSemana.moveToFirst()) {
@@ -586,9 +717,9 @@ class ConectorBD(ctx: Context?) {
             // Step 2: Check if an entry for the given day_week already exists in DiaSemana
             val cursorDiaSemana = db!!.rawQuery("SELECT id FROM DiaSemana WHERE semana_id = ? AND day_week = ?", arrayOf(semanaId.toString(), dayWeek))
             if (cursorDiaSemana.moveToFirst()) {
-                db!!.execSQL("UPDATE DiaSemana SET pictograma_day = ?, color = ? WHERE semana_id = ? AND day_week = ?", arrayOf(imagen, color, semanaId.toString(), dayWeek))
+                db!!.execSQL("UPDATE DiaSemana SET pictograma_day = ?, color = ?, id_evento = ? WHERE semana_id = ? AND day_week = ?", arrayOf(imagen, color, idEvento, semanaId.toString(), dayWeek))
             } else {
-                db!!.execSQL("INSERT INTO DiaSemana (semana_id, day_week, pictograma_day, color) VALUES (?, ?, ?, ?)", arrayOf(semanaId.toString(), dayWeek, imagen, color))
+                db!!.execSQL("INSERT INTO DiaSemana (semana_id, day_week, pictograma_day, color, id_evento) VALUES (?, ?, ?, ?, ?)", arrayOf(semanaId.toString(), dayWeek, imagen, color, idEvento))
             }
             cursorDiaSemana.close()
         }

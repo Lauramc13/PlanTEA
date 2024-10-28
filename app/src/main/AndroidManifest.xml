@@ -116,6 +116,9 @@
         <activity
             android:name=".presentacion.actividades.ConfiguracionPictogramasActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".presentacion.actividades.MenuUserActivity"
+            android:windowSoftInputMode="adjustPan" />
 
 
         <receiver android:name=".dominio.OnAlarmReceiver" />

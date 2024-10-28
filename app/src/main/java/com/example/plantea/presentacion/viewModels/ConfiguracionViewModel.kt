@@ -3,6 +3,8 @@ package com.example.plantea.presentacion.viewModels
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
+import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.adaptadores.UserAdapter
 
 class ConfiguracionViewModel: ViewModel() {
 
@@ -14,21 +16,26 @@ class ConfiguracionViewModel: ViewModel() {
     var nameTEA = ""
     var nameObj = ""
 
-    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, txtUsuarioTEAText: String, txtObjetoText: String, imgPlanificador: Drawable?, imgUserTEA: Drawable?, imageObjeto: Drawable?, infoUserTEA: Boolean, infoObjeto: Boolean): Boolean {
-        if (txtPlanificadorText.isEmpty() || txtUsernameText.isEmpty() || txtUsuarioTEAText.isEmpty() && infoUserTEA) {
+    var userSelectPicto = -1
+
+    var adapterUsers: UserAdapter? = null
+    var usersTEA : ArrayList<Usuario>? = null
+
+    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, imgPlanificador: Drawable?): Boolean {
+        if (txtPlanificadorText.isEmpty() || txtUsernameText.isEmpty()) {
             _toast.value = R.string.toast_necesita_nombre
             return false
         }
 
-        if (imgPlanificador == null || (imgUserTEA == null && infoUserTEA)) {
-            _toast.value = R.string.toast_necesita_imagen_usuario
-            return false
+        return true
+    }
+
+    fun getPenultimatePosition(listaSize: Int): Int {
+        return if (listaSize < 3) {
+            listaSize - 1
+        } else {
+            listaSize - 2
         }
 
-        if ((txtObjetoText.isEmpty() || imageObjeto == null) && infoObjeto) {
-            _toast.value = R.string.toast_necesita_objeto
-            return false
-        }
-        return true
     }
 }

@@ -14,9 +14,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -33,6 +35,7 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Planificacion
+import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanesEventos
@@ -129,7 +132,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             val parentActivity: Activity? = activity
             context?.let { it1 -> viewModel.nuevoEventoEdit(it1, evento, parentActivity)}
             dismiss()
-
         }
 
         configurarEvento()
@@ -326,9 +328,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         dialogReminder.show()
     }
 
-    private fun iniciarListaPlanificaciones() {
+    private fun iniciarListaPlanificaciones(vista: View) {
         listaPlanificaciones.layoutManager = LinearLayoutManager(context)
         viewModel.planes = viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>
+        if(viewModel.planes.isEmpty()){
+            vista.findViewById<TextView>(R.id.lbl_mensajePlanes).visibility = View.VISIBLE
+        }
         adaptador = AdaptadorPlanesEventos(viewModel.planes, this)
         listaPlanificaciones.adapter = adaptador
         visibilityPlan()
@@ -377,7 +382,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
     @SuppressLint("NotifyDataSetChanged")
     private fun configurarEvento() {
-        iniciarListaPlanificaciones()
+        iniciarListaPlanificaciones(vista)
         if(viewModel.isPlanSeleccionado){
             adaptador.setItemSelected(viewModel.posicionPlan)
             btnGuardar.isEnabled = true
@@ -386,7 +391,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         viewModel.planes.addAll( viewModel.plan.mostrarPlanificacionesDisponibles(viewModel.idUsuario, actividad) as ArrayList<Planificacion>)
         adaptador.notifyDataSetChanged()
     }
-
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {

@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         fun onItemSeleccionado(context: Context, posicion: Int)
         fun onItemLongClick(activity: Activity, posicion: Int)
         fun checkPosition(posicion: Int) : Boolean
+        fun dialogoCambio(itemView: View, progressBar: ProgressBar, duracionText: TextView, context: Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -69,59 +71,37 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         configPicto(holder)
     }
 
-    private fun typePictogramOLD(position: Int, holder: ViewHolderPictogramas) {
-        val color = if (CommonUtils.isDarkMode(context as Activity)) R.color.md_theme_dark_onSurface else R.color.md_theme_light_onBackground
+    override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int, payloads: MutableList<Any>){
+        if(payloads.isEmpty()) {
+            onBindViewHolder(holder, position)
+        }else if(payloads.contains("marcarDuracion")){
+            duracionPictograma(position, holder)
+            Log.i("pruebas", "onBindViewHolder con payloads - marcarDuracion")
+        } else{
+            context = holder.itemView.context
+            holder.titulo.text = listaPictogramas!![position].titulo
+            holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
 
-        when {
-            // Si se ha marcado el pictograma y este es un cambio
-            imprevistos.contains(position)  && listMarcados!!.contains(position) -> {
-                holder.card.setBackgroundResource(R.drawable.card_cambio_disabled)
-                holder.card.alpha = 0.7f
-                holder.entretenimiento.alpha = 0.8f
-                holder.titulo.setTextColor(Color.RED)
+            typePictogram(position, holder)
+
+            if(listaPictogramas!![position].historia.toString() == "null"){
+                holder.historia.visibility = View.INVISIBLE
+            }else{
+                holder.historia.visibility = View.VISIBLE
             }
-            // Si el pictograma es un cambio viejo(?) y se ha marcado
-            tachados.contains(position) && listMarcados!!.contains(position) -> {
-                holder.card.setBackgroundResource(R.drawable.card_cambio_disabled)
-                holder.card.alpha = 0.7f
-                holder.entretenimiento.alpha = 0.8f
-                holder.titulo.setTextColor(Color.RED)
-                holder.arrow.visibility = View.VISIBLE
-                holder.iconCambio.visibility = View.VISIBLE
+
+            if(animatedPositions.contains(position)){
+                animateCard(holder, position)
             }
-            //Si el pictograma es un cambio y no se ha marcado
-            imprevistos.contains(position) ->{
-                holder.card.setBackgroundResource(R.drawable.card_cambio)
-                holder.titulo.setTextColor(Color.RED)
-            }
-            //Si el pictograma es del tipo entretenimiento
-            listaPictogramas!![position].categoria == 4 -> {
-                holder.card.setBackgroundResource(R.drawable.card_espera)
-            }
-            // Si el pictograma ha sido marcado
-            listMarcados!!.contains(position) -> {
-                holder.card.setBackgroundResource(R.drawable.card_disabled)
-                holder.card.alpha = 0.7f
-                holder.entretenimiento.alpha = 0.8f
-                holder.titulo.setTextColor(ContextCompat.getColor(context, color))
-            }
-            tachados.contains(position) -> {
-                holder.card.setBackgroundResource(R.drawable.card_cambio)
-                holder.titulo.setTextColor(Color.RED)
-                holder.arrow.visibility = View.VISIBLE
-                holder.iconCambio.visibility = View.VISIBLE
-                holder.itemView.alpha = 0.7f
-            }
-            else -> {
-                holder.card.setBackgroundResource(R.drawable.card_personalizado)
-                holder.titulo.setTextColor(ContextCompat.getColor(context, color))
-                holder.arrow.visibility = View.GONE
-                holder.iconCambio.visibility = View.GONE
-                holder.itemView.alpha = 1f
-                holder.card.alpha = 1f
-                holder.entretenimiento.alpha = 1f
-            }
+
+            entretenimiento(listaPictogramas!![position].pictoEntretenimiento, holder)
+            configPicto(holder)
+            if(payloads.contains("desmarcarDuracion"))
+                duracionPictograma(position, holder)
+
+            Log.i("pruebas", "onBindViewHolder con payloads")
         }
+
     }
 
     private fun typePictogram(position: Int, holder: ViewHolderPictogramas) {
@@ -198,6 +178,8 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
     private fun duracionPictograma(position: Int, holder: ViewHolderPictogramas){
         if(listaPictogramas!![position].duracion.toString() != "null") {
+            holder.duracion.progressDrawable?.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN)
+            if(timeLeft == 0L) holder.duracion.progress = 100
             holder.duracion.visibility = View.VISIBLE
             holder.tiempo.visibility = View.VISIBLE
             val parts = listaPictogramas!![position].duracion.toString().split(":")
@@ -233,7 +215,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         }
     }
 
-    private fun startTimer(time : Long, progressBar: ProgressBar, duracionText: TextView){
+     fun startTimer(time : Long, progressBar: ProgressBar, duracionText: TextView){
         var firstTime = true
 
          countDownTimer = object : CountDownTimer(time, 1000) {
@@ -251,9 +233,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 }
 
                 if (millisUntilFinished < 60000 && firstTime){  // if time left is less than 1 minute then change the color of progress bar
-                    //app:indicatorColor
-                    val colorFilter: ColorFilter = PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN)
-                    progressBar.progressDrawable.colorFilter = colorFilter
+                    progressBar.progressDrawable.colorFilter = PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN)
                     Toast.makeText(context, context.getString(R.string.toast_queda_poco_tiempo), Toast.LENGTH_SHORT).show()
                     firstTime = false
                 }
@@ -261,6 +241,8 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
             override fun onFinish() {
                 countDownTimer!!.cancel()
+                timeLeft = 0
+                Log.d("pruebas", "Se termino el temporizador evento")
                 Toast.makeText(context, context.getString(R.string.toast_se_termino_tiempo), Toast.LENGTH_SHORT).show()
             }
         }
@@ -324,43 +306,47 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             duracion.setOnClickListener {
                 //if countDownTimer is running
                 if(countDownTimer != null){
-                    val reloj = CommonUtils.createReloj24(0, 0, context)
-                    reloj.show((itemView.context as androidx.fragment.app.FragmentActivity).supportFragmentManager, "TimePicker")
+                    listener?.dialogoCambio(itemView, duracion, tiempo, context)
 
-                    reloj.addOnPositiveButtonClickListener {
-                        val timeText = String.format(Locale.getDefault(), "%02d:%02d", reloj.hour, reloj.minute)
-                        tiempo.text = timeText
-                        countDownTimer?.cancel()
-                        // get time left in the countdown timer
-
-                        startTimer((reloj.hour * 3600000 + reloj.minute * 60000).toLong() + timeLeft, duracion, tiempo)
-                    }
                 }
             }
-
         }
 
         override fun onClick(view: View) {
-            val position = bindingAdapterPosition
-            val checkedPosition =  listener?.checkPosition(position)
+            if(listMarcados!!.contains(bindingAdapterPosition)){
+                return // no se hace nada
+            }
+            val nextPosition =  listener?.checkPosition(bindingAdapterPosition)
+            if(nextPosition == true){
+               listener?.onItemSeleccionado(view.context, bindingAdapterPosition)
+                if(listaPictogramas!![bindingAdapterPosition].duracion.toString() != "null"){
+                    val time = CommonUtils.formatTimeSeconds(listaPictogramas!![bindingAdapterPosition].duracion.toString())
+                    startTimer(time.toLong() * 1000, duracion, tiempo)
+                    duracion.progressDrawable!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN)
+                }
 
-            if(checkedPosition == true){
-                listener?.onItemSeleccionado(view.context, position)
-                /*card.setBackgroundResource(R.drawable.card_disabled)
-                entretenimiento.alpha = 0.8f
-                card.alpha = 0.7f*/
+                if(bindingAdapterPosition != 0 && listaPictogramas!![bindingAdapterPosition-1].duracion.toString() != "null"){
+                    if(countDownTimer != null){
+                        countDownTimer?.cancel()
+                        timeLeft = 0
+                        countDownTimer = null
+                    }
+                }
 
-                if (position+1 < listaPictogramas!!.size && listaPictogramas!![position + 1].duracion.toString() != "null" ) {
+              /*  if (position+1 < listaPictogramas!!.size && listaPictogramas!![position + 1].duracion.toString() != "null" ) {
                     val time = CommonUtils.formatTimeSeconds(listaPictogramas!![position+1].duracion.toString())
                     //duracion of the next pictogram
                     val nextViewHolder = (itemView.parent as RecyclerView).findViewHolderForAdapterPosition(position + 1) as? ViewHolderPictogramas
                     val duracionNext = nextViewHolder?.duracion
                     startTimer(time.toLong() * 1000, duracionNext!!, nextViewHolder.tiempo)
+                    //primary color
+                    duracionNext.progressDrawable!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN)
                 }else{
                     if(countDownTimer != null){
                         countDownTimer?.cancel()
+                        countDownTimer = null
                     }
-                }
+                }*/
 
             }else{
                 Toast.makeText(view.context, R.string.toast_no_paso_anterior, Toast.LENGTH_SHORT).show()

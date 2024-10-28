@@ -53,7 +53,7 @@
     <string name="lbl_infoactividad_texto">Represents the object that calms the supervised user</string>
 
     <string name="btn_add">Planning</string>
-    <string name="lbl_mensaje">There are no plans available. Click on \"New plan\" to create a plan.</string>
+    <string name="lbl_mensaje">There are no plans available.</string>
     <string name="lbl_lunes">Monday</string>
     <string name="lbl_martes">Tuesday</string>
     <string name="lbl_miercoles">Wednesday</string>
@@ -97,6 +97,8 @@
     <string name="lbl_actividades_objeto">SOOTHING ACTIVITY</string>
     <string name="lbl_actividades_youtube">YOUTUBE</string>
     <string name="lbl_configuracion_objeto">Soothing activity</string>
+    <string name="lbl_configuracion_objeto2">Soothing activity:</string>
+
     <string name="lbl_configuracion_notificaciones">Event notifications</string>
     <string name="lbl_configuracion_notificaciones_1">1 hour before</string>
     <string name="lbl_configuracion_notificaciones_2">1 day before</string>
@@ -408,5 +410,14 @@
     <string name="no_eventos_disponibles">There are no available events</string>
     <string name="no_planificaciones_disponibles">There are no available plans</string>
     <string name="error_crear_cuenta">Error creating the account. The email is already in use</string>
+    <string name="nuevo_user">New user</string>
+    <string name="configuracion_picto">Configuration of pictograms:</string>
+    <string name="selecciona_fecha">Select the date of the event</string>
+    <string name="actualizar" >Update</string>
+    <string name="toast_nombre_vacio">You cannot leave the name field empty</string>
+    <string name="error_usuario_tea">Error when creating the user.</string>
+    <string name="selecciona_tiempo_retraso">Select the time delay</string>
+    <string name="selecciona_el_evento_para_el_dia">Select the event for the day</string>
+
 
 </resources>

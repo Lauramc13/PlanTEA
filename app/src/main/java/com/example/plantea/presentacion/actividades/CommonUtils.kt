@@ -10,9 +10,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.pdf.PdfDocument
 import android.net.Uri
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
@@ -23,6 +26,7 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +36,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.JsonPictogramaItem
+import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -190,18 +195,38 @@ class CommonUtils{
             }
 
             val image = textAsBitmap(query)
-            val idImageCreated = wordToId(query)
+            val idImageCreated = wordToInt(query)
             dict[image] = Pair(query, idImageCreated)
 
             return dict
         }
 
-        private fun wordToId(word: String): Int {
-            var id = 0
+        private fun wordToInt(word: String): Int {
+            var id= 0
+            val base = 128
+
             for (char in word) {
-                id = id * 31 + char.code
+                id = id * base + char.code
             }
             return id
+        }
+
+        // Converts an integer back into the original word
+        private fun intToWord(id: Int): String {
+            var currentId = id
+            val base = 128
+            val wordBuilder = StringBuilder()
+
+            while (currentId > 0) {
+                // Get the last encoded character's ASCII value
+                val charCode = (currentId % base).toInt()
+                wordBuilder.append(charCode.toChar())
+
+                currentId /= base
+            }
+
+            // The word is built backwards, so reverse it
+            return wordBuilder.reverse().toString()
         }
 
         private fun lemmatizar(query: String): String{
@@ -505,10 +530,11 @@ class CommonUtils{
         }
 
         fun byteArrayToBitmap(byteArray: ByteArray?): Bitmap? {
-            return if(byteArray == null){
+            return if(byteArray == null || byteArray.isEmpty()){
                 null
             }else{
-                BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+                Bitmap.createScaledBitmap(bitmap, 300, 300, true)
             }
         }
 
@@ -522,7 +548,10 @@ class CommonUtils{
 
                 if (response.isSuccessful) {
                     bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
-                } else {
+                } else if(response.code() == 404){
+                    val titulo = intToWord(id!!)
+                    bitmap = textAsBitmap(titulo)
+                }else {
                     Log.d("ERROR", "Error de la llamada a las imagenes")
                 }
             } catch (e: IOException) {
@@ -553,14 +582,126 @@ class CommonUtils{
         }
 
         fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
-            val reloj =  MaterialTimePicker.Builder()
+            return MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setHour(hora)
                 .setMinute(minutos)
                 .setTheme(R.style.TimePicker)
                 .setTitleText(ContextCompat.getString(context, R.string.selecciona_hora))
                 .build()
-            return reloj
+        }
+
+        fun guardarPDF(context: Context, title: String, listaPictogramas: ArrayList<Pictograma>) {
+            // Create a new PDF document
+            val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val baseFilename = "Traduccion.pdf"
+            var filename = baseFilename
+            var counter = 1
+            val pdfDocument = PdfDocument()
+
+            while (File(downloadsDirectory, filename).exists()) {
+                filename = "${baseFilename.substringBeforeLast(".pdf")}_$counter.pdf"
+                counter++
+            }
+
+            val outputPath = File(downloadsDirectory, filename).absolutePath
+
+            // Create a new page and
+            var columna = 0
+            var fila = 0
+
+
+            // join pictograma.titulo for each pictograma in listaPictogramas and when there is a . add a new line
+            val frases = ArrayList<String>()
+            var currentFrase = ""
+            for (pictograma in listaPictogramas) {
+                currentFrase += pictograma.titulo + " "
+                Log.d("Frase", currentFrase)
+
+                if (pictograma.titulo!!.endsWith(".")) {
+                    frases.add(currentFrase)
+                    currentFrase = ""
+                }else if(pictograma == listaPictogramas[listaPictogramas.size-1]){
+                    frases.add(currentFrase)
+                }
+            }
+
+            try {
+                val pageInfo = PdfDocument.PageInfo.Builder(2480, 3508, 1).create()
+                val page = pdfDocument.startPage(pageInfo)
+                val canvas = page.canvas
+
+                val paint = android.graphics.Paint()
+                paint.color = Color.BLACK
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD))
+
+                var top = 200f
+
+                if(title != ""){
+                    paint.textSize = 100f
+                    val textWidth = paint.measureText(title)
+                    val textX = (2480 - textWidth) / 2 // para calcular el centro del texto
+                    canvas.drawText(title, textX, 200f, paint)
+                    top = 300f
+                }
+
+                var contadorFrase = 0
+                for (pictograma in listaPictogramas) {
+                    val bitmap = pictograma.imagen
+                    val imageWidth = bitmap?.width?.toFloat() ?: 0f
+                    val imageX = columna * 400f + (400f - imageWidth) / 2
+
+                    if (bitmap != null) {
+                        canvas.drawBitmap(bitmap, imageX+50f, fila*520f+top, null)
+                    }
+
+                    paint.textSize = 50f
+                    val textWidth = paint.measureText(pictograma.titulo!!)
+
+                    val textX = columna * 400f + (400f - textWidth) / 2 // para calcular el centro del texto
+                    canvas.drawText(pictograma.titulo!!, textX+50f, (fila*520f)+350f+top, paint)
+
+                    val shouldDrawNextLine = pictograma.titulo!!.endsWith(".")
+                    val isFirstPictograma = pictograma == listaPictogramas[0]
+
+                    try{
+                        if (isFirstPictograma) {
+                            canvas.drawText(frases[contadorFrase], 100f, fila * 520f + top - 30, paint)
+                            if (shouldDrawNextLine && pictograma != listaPictogramas[listaPictogramas.size - 1]) {
+                                canvas.drawText(frases[contadorFrase+1], 100f, (fila + 1) * 520f + top - 30, paint)
+                                contadorFrase++
+                            }
+                            contadorFrase++
+                        } else if (shouldDrawNextLine && frases.size != 2) {
+                            canvas.drawText(frases[contadorFrase], 100f, (fila + 1) * 520f + top - 30, paint)
+                            contadorFrase++
+                        }
+                    }catch (e: Exception){
+                        Log.d("ERROR", e.toString())
+                    }
+
+                    if (columna == 5 || pictograma.titulo!!.endsWith(".") ) {
+                        columna = 0
+                        fila++
+                    }else{
+                        columna++
+                    }
+
+                }
+
+                pdfDocument.finishPage(page)
+                val file = FileOutputStream(outputPath)
+                pdfDocument.writeTo(file)
+                pdfDocument.close()
+                file.close()
+
+                Log.d("PDF", "PDF creado en $outputPath")
+                val message = ContextCompat.getString(context, R.string.toast_pdf_creado)
+                Toast.makeText(context, message + filename, Toast.LENGTH_SHORT).show()
+
+            } catch (e: Exception) {
+                Log.e("ERROR", "Error creating PDF: ${e.message}", e)
+            }
         }
 
     }

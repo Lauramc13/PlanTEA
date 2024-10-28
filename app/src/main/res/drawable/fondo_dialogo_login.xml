@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Color de fondo de la vista -->
     <solid
-        android:color="?colorBG1" >
+        android:color="?colorBG1">
     </solid>
 
     <!-- Aquí indicamos el radio a aplicar a las esquinas -->

@@ -105,7 +105,6 @@ class AdaptadorPlanificacion(var listaPlanificacion: ArrayList<Pictograma>, priv
 
             //obtenemos la posicion del pictograma y guardamos en el objeto Pictograma la historia, si el pictograma tenia historia de antes tambien la mostramos
             menu.setOnClickListener {
-
                 listener.onMenuClick(bindingAdapterPosition, it, itemView.context)
             }
         }

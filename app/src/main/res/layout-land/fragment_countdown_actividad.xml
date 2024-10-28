@@ -1,0 +1,93 @@
+<!-- res/layout/activity_main.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Temporizador"
+            android:textAllCaps="true"
+            android:textColor="?colorOnSecondaryContainer"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            style="@style/Widget.Material3.CircularProgressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progress="100"
+            android:layout_marginTop="20dp"
+            app:indicatorColor="?colorOnSecondaryContainer"
+            app:indicatorSize="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19"
+            app:trackColor="@color/white"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="10dp" />
+
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="00:00:00"
+            android:textColor="?colorOnSecondaryContainer"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/startButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:backgroundTint="?colorOnSecondaryContainer"
+            android:contentDescription="Botón reproducir lista"
+            android:elevation="0dp"
+            android:enabled="true"
+            android:textColor="#203130"
+            android:textSize="20sp"
+            app:cornerRadius="25dp"
+            app:icon="@drawable/svg_play"
+            app:iconGravity="textEnd"
+            app:iconSize="25dp"
+            app:iconTint="@color/white"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pauseButton"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:elevation="0dp"
+            android:enabled="true"
+            android:textColor="#203130"
+            android:textSize="20sp"
+            android:backgroundTint="?colorOnSecondaryContainer"
+            app:cornerRadius="25dp"
+            app:icon="@drawable/svg_stop"
+            app:iconGravity="textEnd"
+            app:iconSize="25dp"
+            android:clickable="false"
+            app:iconTint="@color/white"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

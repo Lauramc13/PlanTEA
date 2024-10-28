@@ -92,7 +92,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
-                android:id="@+id/layout_no_eventos"
+                android:id="@+id/layout_no_planificaciones"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent="0.55"
                 android:layout_height="wrap_content"

@@ -48,14 +48,14 @@
     <string name="lbl_dolores">¿DÓNDE TE DUELE?</string>
     <string name="lbl_sentimientos">¿COMO TE SIENTES?</string>
     <string name="lbl_configuracion">Configuración</string>
-    <string name="lbl_infoPlanificador">Datos del planificador</string>
+    <string name="lbl_infoPlanificador">Datos del planificador/a</string>
     <string name="lbl_infoplaificador_texto">Usuario responsable de crear y gestionar planificaciones</string>
     <string name="lbl_infoUsuarioTEA">Datos de la persona supervisada </string>
     <string name="lbl_infoUsuarioTEA_texto">Usuario capaz de ver y seguir las planificaciones</string>
     <string name="lbl_infoactividad">Datos de la actividad tranquilizadora </string>
     <string name="lbl_infoactividad_texto">Representa el objeto que calma a la persona con TEA</string>
     <string name="btn_add">Planificación</string>
-    <string name="lbl_mensaje">No hay planificaciones disponibles. Pulsa en \"Nueva planificación\" para crear una planificación</string>
+    <string name="lbl_mensaje">No hay planificaciones disponibles</string>
     <string name="lbl_lunes">Lunes</string>
     <string name="lbl_martes">Martes</string>
     <string name="lbl_miercoles">Miércoles</string>
@@ -98,6 +98,8 @@
     <string name="lbl_actividades_objeto">ACTIVIDAD TRANQUILIZADORA</string>
     <string name="lbl_actividades_youtube">YOUTUBE</string>
     <string name="lbl_configuracion_objeto">Actividad tranquilizadora</string>
+    <string name="lbl_configuracion_objeto2">Actividad tranquilizadora:</string>
+
     <string name="lbl_configuracion_notificaciones">Notificaciones de los eventos</string>
     <string name="lbl_configuracion_notificaciones_1">1 hora antes</string>
     <string name="lbl_configuracion_notificaciones_2">1 día antes</string>
@@ -257,7 +259,7 @@
     <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Elige un avatar para la actividad/objeto que calma a la persona con TEA</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Elige un avatar para la persona que va a crear y gestionar las planificaciones</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Elige un avatar para la persona que va a seguir las planificaciones</string>
-    <string name="planificaciones">Planificaciones</string>
+    <string name="planificaciones">Ver planificaciones</string>
     <string name="planificaciones_futuras">Eventos futuros</string>
 
     <!-- Strings utilizados para el manual -->
@@ -359,7 +361,7 @@
     <string name="toast_permisos">Plantea necesita permisos para mostrar notificaciones</string>
     <string name="toast_no_imagen_seleccionada">No se ha seleccionado ninguna imagen</string>
     <string name="toast_iniciando_sesion">Iniciando sesión</string>
-    <string name="toast_rellenar_campos">Tienes que rellenar todos los campos</string>
+    <string name="toast_rellenar_campos">Por favor, rellene todos los campos</string>
     <string name="toast_obligatorio">Obligatorio</string>
     <string name="toast_necesita_titulo">Se necesita un título para el nuevo pictograma</string>
     <string name="toast_necesita_imagen">Se necesita una imagen para el nuevo pictograma</string>
@@ -417,5 +419,15 @@
     <string name="no_eventos_disponibles">No existen eventos disponibles</string>
     <string name="no_planificaciones_disponibles">No existen planificaciones disponibles</string>
     <string name="error_crear_cuenta">Error al crear la cuenta. El correo ya está en uso</string>
+    <string name="nuevo_user">Nuevo user</string>
+    <string name="user" translatable="false">User</string>
+    <string name="configuracion_picto">Configuracion de los pictogramas:</string>
+    <string name="selecciona_fecha">Selecciona la fecha del evento</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="toast_nombre_vacio">No puedes dejar el nombre vacío</string>
+    <string name="error_usuario_tea">Error al crear el usuario TEA</string>
+    <string name="selecciona_tiempo_retraso">Selecciona el tiempo de retraso</string>
+    <string name="selecciona_el_evento_para_el_dia">Selecciona el evento para el dia</string>
+
 
 </resources>

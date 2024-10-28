@@ -130,7 +130,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     private fun next(){
         if(!isConfiguration){
             val nextActivity = viewModel.determineNextScreenPlan(prefs)
-            val intent = Intent(applicationContext, nextActivity)
+            val intent = Intent(this, TutorialActivity::class.java)
             /*if(nextActivity == TutorialActivity::class.java){
                 intent.putExtra("isFromManual", false)
             }*/
