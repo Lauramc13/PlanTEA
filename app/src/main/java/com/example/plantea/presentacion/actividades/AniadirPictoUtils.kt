@@ -426,6 +426,7 @@ class AniadirPictoUtils  {
                     } else {
                         if (viewModel is CrearPlanViewModel) {
                             viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
+
                         } else if (viewModel is SemanaViewModel) {
                             viewModel.getPictogramas(query.trim(), isNuevoPictoBusqueda, activity)
                         } else if (viewModel is EventosViewModel) {

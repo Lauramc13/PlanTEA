@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -35,7 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.OnItemSelectedListener {
+class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.OnItemSelectedListener, AdaptadorPictogramasPlan.OnItemSelectedListener {
 
     val viewModel: EventosPlanificadorViewModel by viewModels()
 
@@ -55,7 +56,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         onBackPressedDispatcher.addCallback(this, callback)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        viewModel.configureUser(prefs, this)
+        viewModel.configureUser(prefs)
 
         listaEventos = findViewById(R.id.recycler_eventos)
 
@@ -91,7 +92,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                 pictogram.imagen = BitmapFactory.decodeResource(resources, R.drawable.loading_placeholder)
         }
 
-        val adaptadorPictogramas = AdaptadorPictogramasPlan(pictosEvento)
+        val adaptadorPictogramas = AdaptadorPictogramasPlan(pictosEvento, this)
         recyclerPictogramas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerPictogramas.adapter = adaptadorPictogramas
 
@@ -106,6 +107,21 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                 adaptadorPictogramas.notifyItemChanged(pictosEvento.indexOf(pictogram))
             }
         }
+    }
+
+    override fun verEvento(posicion: Int, context: Context) {
+        val plan = Planificacion()
+        val pictogramas = plan.obtenerPictogramasPlanificacion(this, viewModel.eventos[posicion].idPlan, Locale.getDefault().language, viewModel.idUsuario)
+
+        val intent = Intent(this, EventosActivity::class.java)
+        intent.putExtra("titulo", viewModel.eventos[posicion].nombre)
+        intent.putExtra("pictogramas", pictogramas)
+        pictogramas.forEachIndexed { index, pictogram ->
+            intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
+        }
+        intent.putExtra("fecha", viewModel.eventos[posicion].fecha)
+
+        startActivity(intent)
     }
 
     override fun eventoEditado(posicion: Int, context: Context) {
@@ -194,6 +210,10 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         viewModel.eventos.clear()
         viewModel.eventos.addAll(viewModel.evento.obtenerTodosEventos(viewModel.idUsuario, this))
         adaptador.notifyDataSetChanged()
+    }
+
+    override fun pictogramaSeleccionado(posicion: Int, context: Context) {
+        Log.d("Pictograma", "Pictograma seleccionado")
     }
 
     @SuppressLint("NotifyDataSetChanged")

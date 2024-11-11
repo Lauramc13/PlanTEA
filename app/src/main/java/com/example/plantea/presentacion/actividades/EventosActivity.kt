@@ -299,7 +299,7 @@ class EventosActivity : AppCompatActivity() {
          val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
          CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
 
-         viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuario, this)
+         viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuarioTEA, this)
          viewModel.obtenerVistaMes()
 
          viewModel._fechaActual.observe(this) { fechaActual.text = it }

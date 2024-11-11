@@ -178,7 +178,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
                     break
                 }
             }
-
         }else{
             cita.id = evento.crearEvento(context as Activity, cita)
         }

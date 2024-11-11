@@ -241,7 +241,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
 
     fun imageSelected(){
          listaPictogramas[posicionSelected].imagen = bitmap!!
-         listaPictogramas[posicionSelected].idAPI = 0
+         listaPictogramas[posicionSelected].idAPI = -1
 
          adaptador.notifyItemChanged(posicionSelected)
     }

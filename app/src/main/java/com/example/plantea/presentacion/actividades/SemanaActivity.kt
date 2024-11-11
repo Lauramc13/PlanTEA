@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.DiaSemana
+import com.example.plantea.dominio.Evento
+import com.example.plantea.dominio.Planificacion
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemana
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemanaHeader
@@ -113,13 +115,21 @@ class SemanaActivity: AppCompatActivity() {
         }
 
         viewModel._diaClicked.observe(this) {
-            // it to localdate
-            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            val localDate = LocalDate.parse(it, formatter)
+            val idEvento = viewModel.week[it!!.toInt()].idEvento
+            val evento = Evento()
+            val eventoSelected = evento.obtenerInfoEvento(idEvento!!.toInt(), this)
+
+            val plan = Planificacion()
+            val pictogramas = plan.obtenerPictogramasPlanificacion(this, eventoSelected.idPlan, Locale.getDefault().language, viewModel.idUsuario)
 
             val intent = Intent(this, EventosActivity::class.java)
-            intent.putExtra("dia", localDate)
-            intent.putExtra("isFromSemana", true)
+            intent.putExtra("titulo", eventoSelected.nombre)
+            intent.putExtra("pictogramas", pictogramas)
+            pictogramas.forEachIndexed { index, pictogram ->
+                intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
+            }
+            intent.putExtra("fecha", eventoSelected.fecha)
+
             startActivity(intent)
         }
     }

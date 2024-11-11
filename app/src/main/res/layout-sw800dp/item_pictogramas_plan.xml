@@ -87,7 +87,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="5m"/>
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/btn_menu"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -98,7 +98,7 @@
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_options" />
+                app:srcCompat="@drawable/svg_options" />-->
 
             <ImageView
                 android:id="@+id/btn_removePicto"

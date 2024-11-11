@@ -11,6 +11,7 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -234,7 +235,9 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
                 if (millisUntilFinished < 60000 && firstTime){  // if time left is less than 1 minute then change the color of progress bar
                     progressBar.progressDrawable.colorFilter = PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN)
-                    Toast.makeText(context, context.getString(R.string.toast_queda_poco_tiempo), Toast.LENGTH_SHORT).show()
+                    val toast = Toast.makeText(context, context.getString(R.string.toast_queda_poco_tiempo), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER, 0, 0)
+                    toast.show()
                     firstTime = false
                 }
             }

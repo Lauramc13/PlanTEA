@@ -34,8 +34,12 @@ class EventosPlanificadorViewModel: ViewModel() {
         return callback
     }
 
-    fun configureUser(prefs : android.content.SharedPreferences, context: Context){
-        val userId = prefs.getString("idUsuario", "")
+    fun configureUser(prefs : android.content.SharedPreferences){
+        val userId = if(prefs.getString("idUsuarioTEA", "") == null || prefs.getString("idUsuarioTEA", "") == ""){
+            prefs.getString("idUsuario", "")
+        } else{
+            prefs.getString("idUsuarioTEA", "")
+        }
         idUsuario = userId.toString()
     }
 

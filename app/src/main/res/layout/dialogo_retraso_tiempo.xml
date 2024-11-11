@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/fondo_dialogo_login">
 
@@ -9,10 +9,10 @@
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/poppins_medium"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:layout_marginTop="5dp"
         android:text="@string/selecciona_tiempo_retraso"
         android:textAllCaps="true"
         android:textColor="?colorOnSurface"
@@ -21,78 +21,146 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo" />
 
-
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/gridView"
+    <LinearLayout
+        android:id="@+id/linearLayout20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        app:columnCount="2"
-        app:layout_constraintBottom_toTopOf="@+id/btn_personalizado"
-        app:layout_constraintTop_toBottomOf="@+id/textView18"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18">
 
-        <Button
-            android:id="@+id/btn_30"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="100dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:fontFamily="@font/poppins_regular"
-            android:text="30 seg"
-            android:textAllCaps="true"
-            android:textColor="#203130"
-            android:textSize="@dimen/button" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_1"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:text="1 min"
-            android:textAllCaps="true"
-            android:textColor="#203130"
-            android:textSize="@dimen/button" />
+            <LinearLayout
+                android:id="@+id/gridView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_5"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:text="5 min"
-            android:textAllCaps="true"
-            android:textColor="#203130"
-            android:textSize="@dimen/button" />
+                <RadioButton
+                    android:id="@+id/btn_30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="30 seg"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button" />
 
-        <Button
-            android:id="@+id/btn_10"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="100dp"
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:id="@+id/btn_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="1 min"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:id="@+id/btn_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="5 min"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:id="@+id/btn_10"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="10 min"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"/>
+
+                <RadioButton
+                    android:id="@+id/btn_personalizado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Personalizado"
+                    android:textAllCaps="true"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/button" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/numberPickerLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:text="10 min"
-            android:textAllCaps="true"
-            android:textColor="#203130"
-            android:textSize="@dimen/button" />
-    </androidx.gridlayout.widget.GridLayout>
+            android:background="@drawable/fondo_dialogo_login"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <NumberPicker
+                android:id="@+id/timePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/poppins_regular"
+                android:theme="@style/numberPicker" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/minutos"
+                android:layout_gravity="center"
+                android:textColor="?colorOnSurface" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/btn_personalizado"
+        android:id="@+id/btn_guardar"
         style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:fontFamily="@font/poppins_regular"
-        android:text="Personalizado"
+        android:text="@string/aceptar"
         android:textAllCaps="true"
         android:textColor="#203130"
-        android:layout_marginBottom="20dp"
         android:textSize="@dimen/button"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/gridView"
-        app:layout_constraintStart_toStartOf="@+id/gridView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout20" />
 
     <ImageView
         android:id="@+id/icono_CerrarDialogo"

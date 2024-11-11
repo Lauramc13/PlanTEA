@@ -148,9 +148,9 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
     }
 
     override fun onDiaClicked(posicion: Int, activity: Activity) {
-        val dia = week[posicion].dia
-        _diaClicked.value = dia
-
+        if(week[posicion].idEvento != null){
+            _diaClicked.value = posicion.toString()
+        }
     }
 
     @SuppressLint("SetTextI18n")

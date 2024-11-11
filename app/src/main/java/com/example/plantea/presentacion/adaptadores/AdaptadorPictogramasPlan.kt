@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -19,13 +20,17 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.util.Locale
 
 
-class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : RecyclerView.Adapter<AdaptadorPictogramasPlan.ViewHolderPictogramas>() {
+class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasPlan.ViewHolderPictogramas>() {
 
     lateinit var context: Context
     private var listaPictos = listaPictogramas
     lateinit var countDownTimer: CountDownTimer
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
+    interface OnItemSelectedListener {
+        fun pictogramaSeleccionado(posicion: Int, context: Context)
+    }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas_presentacion, parent, false)
         return ViewHolderPictogramas(view)
     }
@@ -94,16 +99,15 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : R
         var historia: ImageView
         var entretenimiento: ImageView
         var duracion : TextView
-       // var duracion : CircularProgressIndicator
 
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            card = itemView.findViewById(R.id.id_card) as View
+            card = itemView.findViewById(R.id.id_card)!!
             historia = itemView.findViewById(R.id.btn_historiaPictoOn)
             entretenimiento = itemView.findViewById(R.id.entretenimiento)
             duracion = itemView.findViewById(R.id.duracionPictoTexto)
-        }
 
+        }
     }
 }

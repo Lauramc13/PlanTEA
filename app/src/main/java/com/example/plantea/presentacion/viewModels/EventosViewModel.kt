@@ -15,10 +15,15 @@ import android.os.Handler
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.ProgressBar
+import android.widget.RadioButton
 import android.widget.TextView
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -89,6 +94,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     private lateinit var animCard: Animation
 
     var idUsuario = ""
+    var idUsuarioTEA = ""
 
     var isRunning = false
     var currentRunnable: Runnable? = null
@@ -103,12 +109,11 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toString()
     val month: String = monthFormat.format(calendar.time)
 
-    var planificaciones = ArrayList<Evento>()
     var evento = Evento()
     lateinit var eventos: ArrayList<Evento>
 
-    private lateinit var imagenConfeti: ImageView
-    private lateinit var mensajePremio: TextView
+    //private lateinit var imagenConfeti: ImageView
+    //private lateinit var mensajePremio: TextView
 
     override fun diaSeleccionado(context: Context?, fecha: LocalDate, position: Int, selectedDay: Int) {
         selectedDate(context, fecha)
@@ -169,11 +174,11 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     fun mostrarPlan(context: Context?) {
         _pasosCompletados.value = ArrayList()
         //check if there is a plan for the selected date with visibility 1
-        val check = evento.checkEventosDia(idUsuario, selectedDate, context)
+        val check = evento.checkEventosDia(idUsuarioTEA, selectedDate, context)
 
         if(check > -1){
             //existe un evento visible para este dia
-            evento = evento.obtenerEventoPlan(idUsuario, selectedDate, context)
+            evento = evento.obtenerEventoPlan(idUsuarioTEA, selectedDate, context)
             listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, evento.id.toString(), context, Locale.getDefault().language) } as ArrayList<Pictograma>
             tituloPlan = evento.nombre.toString()
 
@@ -211,10 +216,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
     }
 
-    fun mostrarPlanificaciones(): ArrayList<Planificacion.PlanificacionItem> {
+   /* fun mostrarPlanificaciones(): ArrayList<Planificacion.PlanificacionItem> {
         val lista: ArrayList<Planificacion.PlanificacionItem> = ArrayList()
 
-        for (planificacion in planificaciones) {
+        for (planificacion in eventosConfigurados) {
             planificacion.fecha?.let { fechaPlanificacion ->
                 val datePlanificacion = LocalDate.parse(fechaPlanificacion.toString())
 
@@ -234,7 +239,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
 
         return lista
-    }
+    }*/
 
     fun stopReproductor() {
         currentRunnable?.let {
@@ -266,9 +271,8 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     }
 
     fun configureUser(prefs : SharedPreferences, context: Context){
-        val userId = prefs.getString("idUsuario", "")
-        idUsuario = userId.toString()
-        planificaciones = userId?.let { evento.obtenerTodosEventos(it, context as Activity) } as ArrayList<Evento>
+        idUsuario = prefs.getString("idUsuario", "").toString()
+        idUsuarioTEA = prefs.getString("idUsuarioTEA", "").toString()
     }
 
     fun initializeAnimations(applicationContext: Context) {
@@ -296,8 +300,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         val historia = dialog.findViewById<ConstraintLayout>(R.id.Bubble)
         val btnAnterior : MaterialButton? = dialog.findViewById(R.id.btn_anterior)
         val btnSiguiente: MaterialButton? = dialog.findViewById(R.id.btn_siguiente)
-        imagenConfeti = dialog.findViewById(R.id.img_confeti)
-        mensajePremio = dialog.findViewById(R.id.txt_premio)
+        val progress = dialog.findViewById<ProgressBar>(R.id.duracionPicto)
+        val duracionText = dialog.findViewById<TextView>(R.id.duracionPictoTiempo)
+       // imagenConfeti = dialog.findViewById(R.id.img_confeti)
+       // mensajePremio = dialog.findViewById(R.id.txt_premio)
 
         val  dialogoPresentacion = dialog.findViewById<ConstraintLayout>(R.id.dialogo_presentacion_2)
         pictograma.setImageBitmap(listaPictogramas[posicion].imagen)
@@ -307,11 +313,21 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             tituloPictograma.visibility = View.INVISIBLE
         }
 
+        if (listaPictogramas[posicion].duracion.toString() != "null") {
+            progress.visibility = View.VISIBLE
+            duracionText.visibility = View.VISIBLE
+            val time = CommonUtils.formatTimeSeconds(listaPictogramas[posicion].duracion.toString())
+            adaptador.startTimer(time.toLong() * 1000, progress, duracionText)
+        } else {
+            progress.visibility = View.GONE
+            duracionText.visibility = View.GONE
+        }
+
         dialogoPresentacion.clearAnimation()
-        imagenConfeti.clearAnimation()
+      /*  imagenConfeti.clearAnimation()
         mensajePremio.clearAnimation()
         imagenConfeti.visibility = View.INVISIBLE
-        mensajePremio.visibility = View.INVISIBLE
+        mensajePremio.visibility = View.INVISIBLE*/
 
         val textoHistoria = dialog.findViewById<TextView>(R.id.lblBubble)
         val avatarHistoria = dialog.findViewById<ShapeableImageView>(R.id.avatarBubble)
@@ -370,9 +386,9 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             buttonEntretenimiento.visibility = View.GONE
         }
 
-        if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
+       /* if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
             animacionesConfeti(context, listaPictogramas[posicion].categoria)
-        }
+        }*/
 
         _pasosCompletados.value?.add(posicion)
         _pasosCompletados.postValue(_pasosCompletados.value)
@@ -397,7 +413,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
     }
 
-    private fun animacionesConfeti(context: Context, categoria: Int) {
+   /* private fun animacionesConfeti(context: Context, categoria: Int) {
         imagenConfeti.visibility = View.VISIBLE
         mensajePremio.visibility = View.VISIBLE
 
@@ -417,7 +433,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             mensajePremio.animation = animCard
             animCard.start()
         }
-    }
+    }*/
 
     private fun animacionEntretenimiento(context: Context, posicion: Int) {
         val entretenimiento = currentDialog?.findViewById<ShapeableImageView>(R.id.img_pictograma)
@@ -460,39 +476,62 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         dialog.setContentView(R.layout.dialogo_retraso_tiempo)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val buttonPersonalizado = dialog.findViewById<Button>(R.id.btn_personalizado)
+        val buttonPersonalizado = dialog.findViewById<RadioButton>(R.id.btn_personalizado)
+        val buttonGuardar = dialog.findViewById<Button>(R.id.btn_guardar)
         val buttonCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        val layoutTime =  dialog.findViewById<LinearLayout>(R.id.numberPickerLayout)
+
+        var timeSelected = 0L
+        var lastChecked = 0
 
         // tiempo en segundos
         val buttons = mapOf(
-            R.id.btn_30 to 30,
-            R.id.btn_1 to 60,
-            R.id.btn_5 to 300,
-            R.id.btn_10 to 600
+            R.id.btn_30 to 30000,
+            R.id.btn_1 to 60000,
+            R.id.btn_5 to 300000,
+            R.id.btn_10 to 600000
         )
 
         buttons.forEach { (buttonId, time) ->
-            dialog.findViewById<Button>(buttonId).setOnClickListener {
-                adaptador.countDownTimer?.cancel()
-                adaptador.startTimer((time * 1000).toLong() + adaptador.timeLeft, progressBar,  duracionText)
-                dialog.dismiss()
+            dialog.findViewById<RadioButton>(buttonId).setOnClickListener {
+                timeSelected = time.toLong()
+                if(lastChecked != 0){
+                    dialog.findViewById<RadioButton>(lastChecked).isChecked = false
+                    if(lastChecked == R.id.btn_personalizado){
+                        layoutTime.visibility = View.GONE
+                    }
+                }
+                lastChecked = buttonId
+
             }
         }
+
+        buttonPersonalizado.setOnClickListener {
+            if(lastChecked != 0)
+                dialog.findViewById<RadioButton>(lastChecked).isChecked = false
+
+            lastChecked = R.id.btn_personalizado
+            layoutTime.visibility = View.VISIBLE
+
+            val timePicker = dialog.findViewById<NumberPicker>(R.id.timePicker)
+            timePicker.minValue = 1
+            timePicker.maxValue = 59
+
+            timePicker.setOnValueChangedListener { _, _, newVal ->
+                timeSelected = newVal * 60000L
+            }
+        }
+
+        buttonGuardar.setOnClickListener {
+             adaptador.countDownTimer?.cancel()
+             adaptador.startTimer(timeSelected + adaptador.timeLeft, progressBar,  duracionText)
+             dialog.dismiss()
+        }
+
         buttonCerrar.setOnClickListener {
             dialog.dismiss()
         }
 
-        buttonPersonalizado.setOnClickListener {
-            val reloj = CommonUtils.createReloj24(0, 0, context)
-            reloj.show((itemView.context as androidx.fragment.app.FragmentActivity).supportFragmentManager, "TimePicker")
-
-            reloj.addOnPositiveButtonClickListener {
-                val time = reloj.hour * 60 + reloj.minute
-                adaptador.countDownTimer?.cancel()
-                adaptador.startTimer((time * 60000).toLong() + adaptador.timeLeft, progressBar, duracionText)
-                dialog.dismiss()
-            }
-        }
 
         dialog.show()
     }

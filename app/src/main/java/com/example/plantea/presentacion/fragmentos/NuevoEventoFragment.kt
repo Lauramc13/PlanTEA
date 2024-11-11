@@ -94,6 +94,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             return fragment
         }
     }
+
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
         // view background transparent
@@ -128,7 +131,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
                 return@setOnClickListener
             }
 
-            val evento = Evento(viewModel.eventoIdEdited, viewModel.idUsuario, viewModel.planes[viewModel.posicionPlan].getTitulo(), CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado, radioButtonVista.isChecked, null)
+            var idUserTEA = prefs.getString("idUsuarioTEA", null)
+            if (idUserTEA == null || idUserTEA == "") {
+                idUserTEA = viewModel.idUsuario
+            }
+
+            val evento = Evento(viewModel.eventoIdEdited, idUserTEA, viewModel.planes[viewModel.posicionPlan].getTitulo(), CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado, radioButtonVista.isChecked, null)
             val parentActivity: Activity? = activity
             context?.let { it1 -> viewModel.nuevoEventoEdit(it1, evento, parentActivity)}
             dismiss()
@@ -333,6 +341,8 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         viewModel.planes = viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>
         if(viewModel.planes.isEmpty()){
             vista.findViewById<TextView>(R.id.lbl_mensajePlanes).visibility = View.VISIBLE
+        }else{
+            vista.findViewById<TextView>(R.id.lbl_mensajePlanes).visibility = View.GONE
         }
         adaptador = AdaptadorPlanesEventos(viewModel.planes, this)
         listaPlanificaciones.adapter = adaptador

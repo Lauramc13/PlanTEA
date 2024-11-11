@@ -212,6 +212,8 @@
 
     <style name="items">
         <item name="cardBackgroundColor">@color/white</item>
+        <item name="behavior_fitToContents">false</item>
+        <item name="android:clipChildren">false</item>
     </style>
 
     <style name="pictogramas">
@@ -402,4 +404,12 @@
         <item name="cornerSize">17dp</item>
     </style>
 
+    <style name="numberPicker" parent="AppTheme">
+        <item name="colorControlNormal">@color/transparent</item>
+    </style>
+
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/nav_default_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/nav_default_exit_anim</item>
+    </style>
 </resources>

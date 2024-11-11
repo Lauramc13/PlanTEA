@@ -5,9 +5,6 @@ import android.content.Context
 import android.util.Log
 import com.example.plantea.persistencia.ConectorBD
 import com.example.plantea.presentacion.actividades.CommonUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.Serializable
 
 class GestionPlanificaciones : Serializable {
@@ -23,16 +20,19 @@ class GestionPlanificaciones : Serializable {
         return idPlan
     }
 
-    fun addPictogramasPlan(actividad: Activity?, idPlan: Int?, listaPlanificacion: ArrayList<Pictograma>): Boolean {
+    fun addPictogramasPlan(actividad: Activity?, idPlan: Int?, idUsuario: String?, listaPlanificacion: ArrayList<Pictograma>): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD.abrir()
         try{
             for(pictogram in listaPlanificacion){
                 var idPicto = pictogram.id
-                if(pictogram.idAPI != 0) {
+                if(pictogram.idAPI != 0 && pictogram.idAPI != -1) {
                     idPicto = conectorBD.insertarPictogramaAPI(pictogram.titulo, pictogram.idAPI.toString(), null)
+                }else if(pictogram.idAPI == -1){
+                    val imagen = CommonUtils.bitmapToByteArray(pictogram.imagen)
+                    idPicto = conectorBD.insertarPictogramaLocal(pictogram.titulo, imagen, null, idUsuario)
                 }
-                conectorBD.addPictogramasPlanificacion(idPlan, idPicto, pictogram.historia, pictogram.duracion, pictogram.pictoEntretenimiento)
+                conectorBD.addPictogramasPlanificacion(idPlan, idPicto)
 
             }
         }catch (e: Exception){
@@ -54,7 +54,7 @@ class GestionPlanificaciones : Serializable {
                 }else{
                     idPicto = conectorBD.insertarPictogramaLocal(pictogram.titulo, CommonUtils.bitmapToByteArray(pictogram.imagen), null, idUsuario)
                 }
-                conectorBD.addPictogramasPlanificacion(idPlan, idPicto, pictogram.historia, pictogram.duracion, pictogram.pictoEntretenimiento)
+                conectorBD.addPictogramasPlanificacion(idPlan, idPicto)
 
             }
         }catch (e: Exception){
@@ -111,6 +111,7 @@ class GestionPlanificaciones : Serializable {
 
         for (idEvento in idEventos) {
             conectorBD.borrarEventoFromPlanificacion(idEvento, idPlan)
+            conectorBD.borrarEventoSemana(idEvento.toString())
         }
 
         conectorBD.borrarPlanificacion(idPlan)
@@ -133,9 +134,6 @@ class GestionPlanificaciones : Serializable {
                     pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
                 }
                 pictograma.categoria = c.getInt(4)
-                pictograma.historia = c.getString(5)
-                pictograma.duracion = c.getString(6)
-                pictograma.pictoEntretenimiento = c.getInt(7)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }
@@ -153,7 +151,7 @@ class GestionPlanificaciones : Serializable {
 
         try{
             for(pictogram in pictogramas){
-                conectorBD.addPictogramasPlanificacion(id, pictogram.id, pictogram.historia, pictogram.duracion, pictogram.pictoEntretenimiento)
+                conectorBD.addPictogramasPlanificacion(id, pictogram.id)
             }
         }catch (e: Exception){
             Log.d("Warning", e.toString())
@@ -181,9 +179,9 @@ class GestionPlanificaciones : Serializable {
                             pictograma.imagen = CommonUtils.byteArrayToBitmap(c2.getBlob(2))
                         }
                         pictograma.categoria = c2.getInt(4)
-                        pictograma.historia = c2.getString(5)
+                       /* pictograma.historia = c2.getString(5)
                         pictograma.duracion = c2.getString(6)
-                        pictograma.pictoEntretenimiento = c2.getInt(7)
+                        pictograma.pictoEntretenimiento = c2.getInt(7)*/
                         listaPictogramas.add(pictograma)
                     }
                 while (c2.moveToNext())

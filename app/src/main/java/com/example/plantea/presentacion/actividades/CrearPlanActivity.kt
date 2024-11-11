@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -55,7 +54,6 @@ class CrearPlanActivity : AppCompatActivity(){
     private val viewModel by viewModels<CrearPlanViewModel>()
     private val viewModelTraductor by viewModels<TraductorViewModel>()
 
-
     override fun onStart() {
         super.onStart()
         CommonUtils.loadLemmatizer(Locale.getDefault().language.lowercase(), this)
@@ -91,7 +89,7 @@ class CrearPlanActivity : AppCompatActivity(){
         onBackPressedDispatcher.addCallback(this, callback)
 
         // SearchView para buscar pictogramas
-        AniadirPictoUtils.inializeSearch(searchBar, false, viewModel, this@CrearPlanActivity)
+        inializeSearch()
 
         val btnSearch = findViewById<MaterialButton>(R.id.btn_search)
 
@@ -121,6 +119,7 @@ class CrearPlanActivity : AppCompatActivity(){
                 if(searchBar.query.trim().isEmpty()){
                     return@setOnClickListener
                 }else{
+                     searchBar.clearFocus()
                      viewModelTraductor.traducirFrase(searchBar.query.trim().toString())
                      transaction = supportFragmentManager.beginTransaction()
                      transaction.replace(R.id.contenedor_fragments, TraduccionPlanFragment())
@@ -191,7 +190,7 @@ class CrearPlanActivity : AppCompatActivity(){
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView = findViewById(R.id.lst_planificacion)
         recyclerView.layoutManager = layoutManager
-        viewModel.adaptadorPlanificacion = AdaptadorPlanificacion(viewModel.listaPlanificacion, viewModel)
+        viewModel.adaptadorPlanificacion = AdaptadorPlanificacion(viewModel.listaPlanificacion)
         recyclerView.adapter = viewModel.adaptadorPlanificacion
 
         //Desplaza la lista para insertar un nuevo pictograma
@@ -260,7 +259,7 @@ class CrearPlanActivity : AppCompatActivity(){
 
             iconoCerrar.setOnClickListener { dialog.dismiss() }
 
-            btnGuardar.setOnClickListener { view ->
+            btnGuardar.setOnClickListener {_ ->
                 if (historiaText.editText?.text.toString() == "") {
                     Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
                 } else {
@@ -362,14 +361,14 @@ class CrearPlanActivity : AppCompatActivity(){
             }
 
             btnGuardar?.setOnClickListener {
-                var listaTitulos = viewModel.planificacion.obtenerTitulosPlanificaciones(viewModel.idUsuario, this)
+                val listaTitulos = viewModel.planificacion.obtenerTitulosPlanificaciones(viewModel.idUsuario, this)
 
                 //Si la opcionEditar es FALSE se crea una planificación nueva si por el contrario es TRUE se realiza la función editar
                 if(txtTituloPlan.editText?.text.toString() == ""){
-                    txtTituloPlan.editText?.setText(searchLastTitle(getString(R.string.str_notitle), listaTitulos))
+                    txtTituloPlan.editText?.setText(viewModel.searchLastTitle(getString(R.string.str_notitle), listaTitulos))
                 }
-                var idPlan: Int
-                val title = searchLastTitle(txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()), listaTitulos)
+                val idPlan: Int
+                val title = viewModel.searchLastTitle(txtTituloPlan.editText?.text.toString().uppercase(Locale.getDefault()), listaTitulos)
 
                 if (viewModel.opcionEditar) {
                     idPlan = intent.getIntExtra("idPlan", 0)
@@ -379,7 +378,7 @@ class CrearPlanActivity : AppCompatActivity(){
 
                 } else {
                     idPlan = viewModel.planificacion.crearPlanificacion(this@CrearPlanActivity,  viewModel.idUsuario, title)
-                    val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.listaPlanificacion)
+                    val creada = viewModel.planificacion.addPictogramasPlan(idPlan, this@CrearPlanActivity, viewModel.idUsuario, viewModel.listaPlanificacion)
 
                     if (creada != true) {
                         Toast.makeText(this, R.string.toast_error_crear_planificacion, Toast.LENGTH_SHORT).show()
@@ -406,21 +405,58 @@ class CrearPlanActivity : AppCompatActivity(){
                 val ruta =  CommonUtils.getPathFromUri(this, uri) // TODO: CAMBIAR
                 CommonUtils.guardarImagen(this, ruta, bitmap)
                 viewModel._image.value = uri
+            } else {
+                Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
+            }
+        }
 
+        viewModelTraductor.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            if (uri != null) {
+
+                val inputStream = this.contentResolver?.openInputStream(uri)
+                viewModelTraductor.bitmap = BitmapFactory.decodeStream(inputStream)
+                viewModelTraductor.imageSelected()
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun searchLastTitle(title: String, listaTitulos: ArrayList<String>): String{
-        var i = 1
-        var newTitle = title
-        while(listaTitulos.contains(newTitle)){
-            newTitle = "$title ($i)"
-            i++
-        }
-        return newTitle
+    private fun inializeSearch() {
+        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if (!CommonUtils.isNetworkAvailable(this@CrearPlanActivity)) {
+                    Toast.makeText(this@CrearPlanActivity, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
+                    searchBar.setQuery("", false)
+                    searchBar.clearFocus()
+                } else {
+                    //if there are two or more words, search pictograms
+                    if (query.trim().contains(" ")) {
+                        searchBar.clearFocus()
+                        viewModelTraductor.traducirFrase(searchBar.query.trim().toString())
+                        transaction = supportFragmentManager.beginTransaction()
+                        transaction.replace(R.id.contenedor_fragments, TraduccionPlanFragment())
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                    } else{
+                        viewModel.getPictogramas(query.trim(), false, this@CrearPlanActivity)
+                    }
+                }
+                searchBar.clearFocus()
+                CommonUtils.hideKeyboard(this@CrearPlanActivity, searchBar)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                //after a space and a letter, disable the search button
+                if (newText.trim().contains(" ") && newText.trim().length > 1) {
+                    findViewById<MaterialButton>(R.id.btn_search).isEnabled = false
+                } else {
+                    findViewById<MaterialButton>(R.id.btn_search).isEnabled = true
+                }
+                return true
+            }
+        })
 
     }
 }

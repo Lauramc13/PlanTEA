@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="-1.5dp">
+<shape android:shape="rectangle">
     <!-- Color de fondo de la vista -->
     <solid
         android:color="?colorBG1" >
@@ -12,5 +14,7 @@
     </stroke>
 
     <!-- Aquí indicamos el radio a aplicar a las esquinas -->
-    <corners android:radius="8dp"/>
+    <corners
+        android:bottomLeftRadius="8dp" android:bottomRightRadius="8dp" />
 </shape>
+</inset>

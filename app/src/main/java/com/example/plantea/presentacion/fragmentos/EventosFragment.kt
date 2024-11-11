@@ -27,6 +27,7 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EventosActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
@@ -37,7 +38,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     private lateinit var diaEvento: TextView
     private lateinit var layoutMensaje : LinearLayout
     private lateinit var mensaje: TextView
-    private lateinit var crearEvento: FloatingActionButton
+    private lateinit var crearEvento: MaterialButton
     private lateinit var listaEventos: RecyclerView
     private lateinit var actividad: Activity
     private lateinit var adaptadorEvento: AdaptadorEvento
@@ -98,7 +99,13 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
             mensaje.text = getString(R.string.mensaje_eventos_pasados)
         }
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val userId = prefs.getString("idUsuario", "")
+
+        val userId = if(prefs.getString("idUsuarioTEA", "") == null || prefs.getString("idUsuarioTEA", "") == ""){
+            prefs.getString("idUsuario", "")
+        } else{
+            prefs.getString("idUsuarioTEA", "")
+        }
+
         viewModel.eventosDia = viewModel.evento.obtenerEventos(userId!!, actividad, CalendarioUtilidades.fechaSeleccionada)
 
         listaEventos.layoutManager = LinearLayoutManager(context)

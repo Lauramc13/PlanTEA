@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedListener, AdaptadorCategorias.OnItemSelectedListener, AdaptadorPictogramaEntretenimiento.OnItemSelectedListener, AdaptadorNuevoPicto.OnItemSelectedListener {
+class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListener, AdaptadorPictogramaEntretenimiento.OnItemSelectedListener, AdaptadorNuevoPicto.OnItemSelectedListener {
 
     var identificadorCategoria : Int = -1
     var _closeFragment = SingleLiveEvent<Boolean>()
@@ -137,7 +137,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         _clearBusqueda.value = true
     }
 
-    override fun onMenuClick(position: Int, view: View, context: Context){
+    /*override fun onMenuClick(position: Int, view: View, context: Context){
        val inflater = LayoutInflater.from(context)
         val customView = inflater.inflate(R.layout.popup_menu_crear_plan, null)
         val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
@@ -158,7 +158,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
         }
 
         popupWindow.showAsDropDown(view)
-    }
+    }*/
 
     override fun onItemSeleccionado(categoria: Int, context: Context) {
         if(categoria == 5){
@@ -286,5 +286,15 @@ class CrearPlanViewModel : ViewModel(), AdaptadorPlanificacion.OnItemSelectedLis
             }
 
         }
+    }
+
+    fun searchLastTitle(title: String, listaTitulos: ArrayList<String>): String{
+        var i = 1
+        var newTitle = title
+        while(listaTitulos.contains(newTitle)){
+            newTitle = "$title ($i)"
+            i++
+        }
+        return newTitle
     }
 }

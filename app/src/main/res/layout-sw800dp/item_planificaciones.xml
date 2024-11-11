@@ -9,7 +9,8 @@
         android:id="@+id/card_plan"
         android:layout_height="50dp"
         style="@style/items"
-        android:clipChildren="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         app:strokeColor="?color"
         app:strokeWidth="1.5dp"
         app:cardCornerRadius="20dp"
@@ -59,6 +60,13 @@
                     app:srcCompat="@drawable/svg_files" />
 
                 <ImageView
+                    android:id="@+id/icon_eye"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="7dp"
+                    app:srcCompat="@drawable/svg_eye_on" />
+
+                <ImageView
                     android:id="@+id/icon_edit"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -83,11 +91,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="-20dp"
-                android:layout_marginBottom="-20dp"
+                android:layout_marginTop="-10dp"
                 android:layout_marginEnd="10dp"
                 android:clickable="false"
                 android:focusable="false"
+                android:elevation="0dp"
                 android:visibility="visible"/>
 
         </LinearLayout>

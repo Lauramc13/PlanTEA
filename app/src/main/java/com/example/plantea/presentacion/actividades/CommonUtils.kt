@@ -332,7 +332,7 @@ class CommonUtils{
             return image
         }
 
-        fun crearImagen(bitmap: Bitmap, titulo: String?, context: Context): String {
+        /*fun crearImagen(bitmap: Bitmap, titulo: String?, context: Context): String {
             val tituloEncoded = URLEncoder.encode(titulo, StandardCharsets.UTF_8.toString())
             val width = bitmap.width
             val height = bitmap.height
@@ -355,7 +355,7 @@ class CommonUtils{
             return context.getFileStreamPath(filename).absolutePath
         }
 
-       /* fun initializeTextToSpeech(context: Context) {
+        fun initializeTextToSpeech(context: Context) {
             textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
         }
 

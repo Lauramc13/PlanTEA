@@ -39,6 +39,17 @@ class ConectorBD(ctx: Context?) {
     /************************************ Funciones de la base de datos ******************************************/
     /*************************************************************************************************************/
 
+    fun getNextGlobalId(db: SQLiteDatabase): Int {
+        val cursor = db.rawQuery("SELECT id FROM GlobalID", null)
+        cursor.moveToFirst()
+        val id = cursor.getInt(0)
+        cursor.close()
+
+        // Update the ID for next use
+        db.execSQL("UPDATE GlobalID SET id = id + 1")
+        return id
+    }
+
     fun listarPictogramasCategoria(categoria: Int, userId: String?, language: String): Cursor {
         return db!!.rawQuery(
             "SELECT CombinedPictograms.id, " +
@@ -133,13 +144,13 @@ class ConectorBD(ctx: Context?) {
     }
 
     // Insertar un pictograma en una planificacion
-    fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?, historiaPicto: String?, duracionPicto: String?, pictoEntretenimiento: Int?): Boolean {
+    fun addPictogramasPlanificacion(idPlan: Int?, idPicto: String?): Boolean {
         val categoriaValues = ContentValues().apply {
             put("id_plan", idPlan)
             put("id_pictograma", idPicto)
-            put("historia", historiaPicto)
+            /*put("historia", historiaPicto)
             put("duracion", duracionPicto)
-            put("id_picto_entre", pictoEntretenimiento)
+            put("id_picto_entre", pictoEntretenimiento)*/
 
         }
         return db!!.insert("RelacionPictogramaPlan", null, categoriaValues) > 0
@@ -190,10 +201,10 @@ class ConectorBD(ctx: Context?) {
                "COALESCE(Traduccion.translation, CombinedPictograms.nombre) AS nombre,  " +
                "CombinedPictograms.imagen, CombinedPictograms.id_API, " +
                 "CASE WHEN CombinedPictograms.id_categoria_global IS NOT NULL THEN CombinedPictograms.id_categoria_global ELSE CombinedPictograms.id_categoria_local " +
-                "END AS id_categoria, " +
-               "RelacionPictogramaPlan.historia,  " +
+                "END AS id_categoria " +
+              /* "RelacionPictogramaPlan.historia,  " +
                "RelacionPictogramaPlan.duracion,  " +
-               "RelacionPictogramaPlan.id_picto_entre  " +
+               "RelacionPictogramaPlan.id_picto_entre  " +*/
             "FROM ( " +
                     "SELECT Pictograma.id, Pictograma.nombre, PictogramaLocal.imagen, NULL as id_API, Pictograma.id_categoria_global, Pictograma.id_categoria_local " +
                       "FROM Pictograma " +
@@ -320,6 +331,8 @@ class ConectorBD(ctx: Context?) {
     fun insertarUsuario(email: String?, password:String?, username:String?, name: String?, objeto:String?, nameTEA:String?): Boolean {
         //Creamos el registro a insertar como objeto ContentValues
         val nuevoUsuario = ContentValues()
+        val id = getNextGlobalId(db!!)
+        nuevoUsuario.put("id", id)
         nuevoUsuario.put("email", email)
         nuevoUsuario.put("username", username)
         nuevoUsuario.put("password", password)
@@ -337,29 +350,23 @@ class ConectorBD(ctx: Context?) {
     }
 
     fun insertarUsuarioTEA(name: String?, imagen: String?, configPicto: String?, idUsuario: String?): String {
+        val id = getNextGlobalId(db!!)
         val values = ContentValues().apply {
+            put("id", id)
             put("name", name)
             put("imagen", imagen)
             put("id_usuario", idUsuario)
-            /*put("objeto", nameObjeto)
-            put("imagenObjeto", imagenObjeto)*/
             put("configPictogramas", configPicto)
         }
 
         return try{
             db?.insert("UsuarioTEA", null, values)
-            val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
-            var id = 0
-            if (c.moveToFirst()) {
-                id = c.getInt(0)
-            }
-            c.close()
             id.toString()
+
         }catch (e: Exception){
             Log.d("TAG", "El usuario ya existe")
             ""
         }
-
 
     }
 
@@ -465,7 +472,7 @@ class ConectorBD(ctx: Context?) {
         )
     }
 
-    fun obtenerInfoEvento(idEvento: Int): Cursor {
+    fun obtenerInfoEvento(idEvento: Int): Cursor { //CAMBIAR ESTO
         return db!!.rawQuery("SELECT Evento.*, RelacionEventoPlan.id_plan FROM Evento JOIN RelacionEventoPlan ON Evento.id = RelacionEventoPlan.id_evento WHERE Evento.id = ?", arrayOf(idEvento.toString()))
     }
 
@@ -744,6 +751,10 @@ class ConectorBD(ctx: Context?) {
             db!!.execSQL("INSERT INTO Semana (configurationWeek, id_usuario) VALUES (?, ?)", arrayOf(configurationWeek, idUsuario))
         }
         cursor.close()
+    }
+
+    fun borrarEventoSemana(idEvento: String) {
+        db!!.execSQL("UPDATE DiaSemana SET id_evento = NULL WHERE id_evento = ?", arrayOf(idEvento))
     }
 
     companion object {

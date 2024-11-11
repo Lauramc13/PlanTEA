@@ -31,8 +31,8 @@ class Planificacion : Serializable {
         return gestionPlan.insertarPlanificacion(actividad, idUsuario, titulo)
     }
 
-    fun addPictogramasPlan(idPlan: Int?,actividad: Activity?, listaPlanificacion: ArrayList<Pictograma>): Any {
-        return gestionPlan.addPictogramasPlan(actividad, idPlan, listaPlanificacion)
+    fun addPictogramasPlan(idPlan: Int?,actividad: Activity?, idUsuario: String?, listaPlanificacion: ArrayList<Pictograma>): Any {
+        return gestionPlan.addPictogramasPlan(actividad, idPlan, idUsuario, listaPlanificacion)
     }
 
     fun addPictogramasPlanTraductor(idPlan: Int?, actividad: Activity?, listaPlanificacion: ArrayList<Pictograma>, idUsuario: String?): Any {

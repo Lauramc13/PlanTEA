@@ -144,7 +144,7 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
          val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(this, viewModel.planes[posicion].getId(), Locale.getDefault().language, viewModel.idUsuario)
         val title =  searchLastTitle(viewModel.planes[posicion].getTitulo())
          val creada = viewModel.plan.crearPlanificacion(this, viewModel.idUsuario, title)
-        viewModel.plan.addPictogramasPlan(creada, this, pictogramas)
+        viewModel.plan.addPictogramasPlan(creada, this, viewModel.idUsuario, pictogramas)
 
         if (creada != 0) {
             Toast.makeText(this, R.string.toast_planificacion_duplicada, Toast.LENGTH_SHORT).show()
@@ -186,7 +186,7 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
                 pictogram.imagen = BitmapFactory.decodeResource(resources, R.drawable.loading_placeholder)
         }
 
-        val adaptadorPictogramas = AdaptadorPictogramasPlan(pictosPlaninificacion)
+        val adaptadorPictogramas = AdaptadorPictogramasPlan(pictosPlaninificacion, null)
         recyclerPictogramas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerPictogramas.adapter = adaptadorPictogramas
 

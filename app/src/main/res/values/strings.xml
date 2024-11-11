@@ -411,8 +411,8 @@
     <string name="guardar_planificacion">Guardar planificación</string>
     <string name="crear_nueva_planificaci_n">Crear nueva planificación</string>
     <string name="crear_planificacion">CREAR PLANIFICACION</string>
-    <string name="guardar_traducci_n_como_pdf">Guardar traducción como pdf</string>
-    <string name="titulo_para_la_traducci_n">Titulo para la traducción</string>
+    <string name="guardar_traducci_n_como_pdf">Guardar como pdf</string>
+    <string name="titulo_para_la_traducci_n">Titulo para el documento</string>
     <string name="mensaje_eventos_pasados">No se pueden crear eventos en fechas pasadas</string>
     <string name="toast_queda_poco_tiempo">Queda menos de 1 minuto</string>
     <string name="importante">¡IMPORTANTE!</string>
@@ -428,6 +428,6 @@
     <string name="error_usuario_tea">Error al crear el usuario TEA</string>
     <string name="selecciona_tiempo_retraso">Selecciona el tiempo de retraso</string>
     <string name="selecciona_el_evento_para_el_dia">Selecciona el evento para el dia</string>
-
+    <string name="minutos">MINUTOS</string>
 
 </resources>

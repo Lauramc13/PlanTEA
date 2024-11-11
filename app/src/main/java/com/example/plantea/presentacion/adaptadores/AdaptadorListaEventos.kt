@@ -28,6 +28,8 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         fun eventoSeleccionado(posicion: Int, recyclerView: RecyclerView, context: Context)
 
         fun eventoEditado(posicion: Int, context: Context)
+
+        fun verEvento(posicion: Int, context: Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -61,7 +63,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
     private fun calculateHeight(posicion: Int, context: Context): Int {
         return when (posicion) {
             selectedPosition -> {
-                if (CommonUtils.isMobile(context)) dpToPx(180, context) else dpToPx(230, context)
+                if (CommonUtils.isMobile(context)) dpToPx(180, context) else dpToPx(220, context)
             }
             else -> {
                 if (CommonUtils.isMobile(context)) dpToPx(45, context) else dpToPx(50, context)
@@ -77,6 +79,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         var titulo: TextView = itemView.findViewById(R.id.lbl_Planificacion)
         var card: CardView = itemView.findViewById(R.id.card_plan)
         var edit = itemView.findViewById<ImageView>(R.id.icon_edit)
+        var ver = itemView.findViewById<ImageView>(R.id.icon_eye)
         var recyclerView: RecyclerView = itemView.findViewById(R.id.items_planificacion)
 
         init {
@@ -103,6 +106,11 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
 
             edit.setOnClickListener {
                 listener?.eventoEditado(bindingAdapterPosition, itemView.context)
+            }
+
+            ver.setOnClickListener {
+                listener?.verEvento(bindingAdapterPosition, itemView.context)
+
             }
         }
     }

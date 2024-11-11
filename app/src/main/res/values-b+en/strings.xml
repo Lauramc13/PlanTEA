@@ -402,8 +402,8 @@
     <string name="guardar_planificacion">Save as planning</string>
     <string name="crear_nueva_planificaci_n">Create a new planning</string>
     <string name="crear_planificacion">CREATE PLANNING</string>
-    <string name="guardar_traducci_n_como_pdf">Save translation as PDF</string>
-    <string name="titulo_para_la_traducci_n">Title for the translation</string>
+    <string name="guardar_traducci_n_como_pdf">Save as PDF</string>
+    <string name="titulo_para_la_traducci_n">Title for the document</string>
     <string name="mensaje_eventos_pasados">Cannot create events on past dates</string>
     <string name="toast_queda_poco_tiempo">Less than 1 minute left</string>
     <string name="importante">IMPORTANT!</string>
@@ -418,6 +418,6 @@
     <string name="error_usuario_tea">Error when creating the user.</string>
     <string name="selecciona_tiempo_retraso">Select the time delay</string>
     <string name="selecciona_el_evento_para_el_dia">Select the event for the day</string>
-
+    <string name="minutos">MINUTES</string>
 
 </resources>
