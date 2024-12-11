@@ -132,7 +132,7 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
         val intent = Intent(this, CrearPlanActivity::class.java)
         intent.putExtra("idPlan", viewModel.planes[posicion].getId())
         intent.putExtra("tituloPlan", viewModel.planes[posicion].getTitulo())
-        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(this, viewModel.planes[posicion].getId(), Locale.getDefault().language, viewModel.idUsuario)
+        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacionNEW(this, viewModel.planes[posicion].getId(), Locale.getDefault().language, viewModel.idUsuario)
         intent.putExtra("pictogramas", pictogramas)
         pictogramas.forEachIndexed { index, pictogram ->
             intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
@@ -141,7 +141,7 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
     }
 
     override fun duplicateClick(posicion: Int, context: Context) {
-         val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(this, viewModel.planes[posicion].getId(), Locale.getDefault().language, viewModel.idUsuario)
+         val pictogramas = viewModel.plan.obtenerPictogramasPlanificacionNEW(this, viewModel.planes[posicion].getId(), Locale.getDefault().language, viewModel.idUsuario)
         val title =  searchLastTitle(viewModel.planes[posicion].getTitulo())
          val creada = viewModel.plan.crearPlanificacion(this, viewModel.idUsuario, title)
         viewModel.plan.addPictogramasPlan(creada, this, viewModel.idUsuario, pictogramas)
@@ -179,14 +179,14 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
 
     override fun planSeleccionado(posicion: Int, recyclerPictogramas: RecyclerView, context: Context) {
         viewModel.posicionPlan = posicion
-        val pictosPlaninificacion = viewModel.plan.obtenerPictogramasPlanificacion(this, viewModel.planes[viewModel.posicionPlan].getId(), Locale.getDefault().language, viewModel.idUsuario) as ArrayList<Pictograma>
+        val pictosPlaninificacion = viewModel.plan.obtenerPictogramasPlanificacionNEW(this, viewModel.planes[viewModel.posicionPlan].getId(), Locale.getDefault().language, viewModel.idUsuario) as ArrayList<Pictograma>
 
         for (pictogram in pictosPlaninificacion) {
             if (pictogram.idAPI != 0)
                 pictogram.imagen = BitmapFactory.decodeResource(resources, R.drawable.loading_placeholder)
         }
 
-        val adaptadorPictogramas = AdaptadorPictogramasPlan(pictosPlaninificacion, null)
+        val adaptadorPictogramas = AdaptadorPictogramasPlan(pictosPlaninificacion)
         recyclerPictogramas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerPictogramas.adapter = adaptadorPictogramas
 

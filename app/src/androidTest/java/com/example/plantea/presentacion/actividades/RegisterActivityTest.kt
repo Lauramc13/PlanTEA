@@ -78,32 +78,32 @@ class RegisterActivityTest{
     //Valid tests
     @Test
     fun isValidEmailReturnTrue() {
-        assertTrue(resource.isAccountValid("correo@gmail.com", "password", "password", true).isValid)
+        assertTrue(resource.isAccountValid("correo@gmail.com", "123","password", "password", true).isValid)
     }
 
     @Test
     fun isntValidEmailReturnFalse() {
-        assertFalse( resource.isAccountValid("asdf", "password", "password", true).isValid)
+        assertFalse( resource.isAccountValid("asdf", "123","password", "password", true).isValid)
     }
 
     @Test
     fun isValidPasswordReturnTrue() {
-        assertTrue(resource.isAccountValid("correo@gmail.com", "123456", "123456", true).isValid)
+        assertTrue(resource.isAccountValid("correo@gmail.com","123", "123456", "123456", true).isValid)
     }
 
     @Test
     fun isntValidPasswordReturnFalse() {
-        assertFalse(resource.isAccountValid("correo@gmail.com", "123", "123", true).isValid)
+        assertFalse(resource.isAccountValid("correo@gmail.com", "123","123", "123", true).isValid)
     }
 
     @Test
     fun isntSamePasswordReturnFalse() {
-        assertFalse(resource.isAccountValid("correo@gmail.com", "password", "password2", true).isValid)
+        assertFalse(resource.isAccountValid("correo@gmail.com","123", "password", "password2", true).isValid)
     }
 
     @Test
     fun isTextViewsVaciosReturnTrue(){
-        assertFalse(resource.isAccountValid("correo@gmail.com", "password", "password2", false).isValid)
+        assertFalse(resource.isAccountValid("correo@gmail.com","123", "password", "password2", false).isValid)
     }
 
     //Test que si se pulsa el botonAyuda, se muestra el tooltip

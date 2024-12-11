@@ -63,17 +63,28 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_eliminarEvento"
+            android:id="@+id/btn_guardar"
             style="@style/Widget.Material3.Button"
-            android:layout_width="230dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/btn_Guardar"
-            app:cornerRadius="10dp"
             android:textColor="#203130"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:textSize="@dimen/button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_eliminar"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/lbl_eliminar"
+            android:visibility="visible"
+            android:layout_marginBottom="5dp"
+            android:textColor="#203130"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

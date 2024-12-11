@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+    <color name="colorHalfWhite">#CFFFFFFF</color>
     <color name="seed">#238382</color>
     <color name="seedLight">#72C7C4</color>
     <color name="white">#FFFFFF</color>
@@ -118,7 +119,7 @@
 
     <color name="pizarraContenido2">#8051EEE9</color>
 
-    <color name="veryLight">#C1EBEB</color>
+    <color name="veryLight">#CCEBEB</color>
 
     <color name="blue">#32B3DB</color>
 

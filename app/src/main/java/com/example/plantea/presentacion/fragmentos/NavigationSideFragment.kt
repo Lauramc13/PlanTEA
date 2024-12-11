@@ -39,11 +39,7 @@ class NavigationSideFragment: Fragment() {
         val rol : LinearLayout = vista.findViewById(R.id.accountButton)
 
         val navigationView = vista.findViewById<NavigationView>(R.id.navigationView)
-        if (infoUsuario) {
-            navigationView.inflateMenu(R.menu.navigation_rail_menu)
-        } else {
-            navigationView.inflateMenu(R.menu.navigation_rail_menu_tea)
-        }
+        navigationView.inflateMenu(R.menu.navigation_rail_menu)
 
         rol.setOnClickListener {
             navigationHandler.menuUsuario(this, it)

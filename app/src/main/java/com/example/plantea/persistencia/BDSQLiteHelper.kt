@@ -23,7 +23,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlUsuarioTEA = "CREATE TABLE UsuarioTEA(id INTEGER PRIMARY KEY DEFAULT (nextval('global_id_seq')), name TEXT, imagen TEXT, configPictogramas TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlActividad = "CREATE TABLE Actividad(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, imagen TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES UsuarioTEA(id))"
     private var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen BLOB, color TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
-    private var sqlCategoriasUsuario = "CREATE TABLE CategoriaUsuario(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen BLOB, color TEXT, id_usuario INTEGER, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id))"
+    private var sqlCategoriasUsuario = "CREATE TABLE CategoriaUsuario(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id))"
     private var sqlCategoriaOculta = "CREATE TABLE CategoriaOculta(id INTEGER PRIMARY KEY AUTOINCREMENT, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlPictograma = "CREATE TABLE Pictograma(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, id_categoria_global INTEGER, id_categoria_local INTEGER, FOREIGN KEY (id_categoria_global) REFERENCES Categoria(id), FOREIGN KEY (id_categoria_local) REFERENCES CategoriaUsuario(id))"
     private var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY, id_API INTEGER, FOREIGN KEY (id) REFERENCES Pictograma(id))"
@@ -33,11 +33,12 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqpPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, es_actual INTEGER, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, visible INTEGER, reminder TEXT, change_visibility BOOLEAN, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlRelacionPictogramaPlan = "CREATE TABLE RelacionPictogramaPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_plan INTEGER, id_pictograma INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id))"
-    private var sqlRelacionEventoPlan = "CREATE TABLE RelacionEventoPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, historia TEXT, duracion TEXT, id_picto_entre, id_evento INTEGER, id_plan INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
+    private var sqlRelacionEventoPlan = "CREATE TABLE RelacionEventoPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_evento INTEGER, id_plan INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     private var sqlTraduccion = "CREATE TABLE Traduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, translation TEXT)"
     private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
     private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlDiaSemana = "CREATE TABLE DiaSemana (id INTEGER PRIMARY KEY AUTOINCREMENT, semana_id INTEGER, pictograma_day BLOB, day_week TEXT, color TEXT, id_evento TEXT, FOREIGN KEY (semana_id) REFERENCES Semana(id))"
+    private var sqlPictogramaEvento = "CREATE TABLE PictogramaEvento (id INTEGER PRIMARY KEY AUTOINCREMENT, duracion TEXT, historia TEXT, id_picto_entre INTEGER, id_evento INTEGER, id_pictograma INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id))"
 
     override fun onCreate(db: SQLiteDatabase) {
         try {
@@ -63,6 +64,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlRelacionPictoTraduccion)
             db.execSQL(sqlSemana)
             db.execSQL(sqlDiaSemana)
+            db.execSQL(sqlPictogramaEvento)
 
             @OptIn(DelicateCoroutinesApi::class)
             GlobalScope.launch {
@@ -96,6 +98,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS RelacionPictoTraduccion")
             db.execSQL("DROP TABLE IF EXISTS Semana")
             db.execSQL("DROP TABLE IF EXISTS DiaSemana")
+            db.execSQL("DROP TABLE IF EXISTS PictogramaEvento")
 
             /*Se crea la nueva versión de la table*/
             onCreate(db)

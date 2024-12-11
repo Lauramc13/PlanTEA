@@ -80,4 +80,17 @@ class Pictograma: Serializable {
         return Pictograma(this.id, this.titulo, this.imagen, this.idAPI, this.categoria, this.favorito)
     }
 
+    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?) {
+        gestorPictogramas.guardarHistoria(actividad, id, idPicto, historia)
+
+    }
+
+    fun guardarDuracion(actividad: Activity?, toString: String, id: String, s: String?) {
+        gestorPictogramas.guardarDuracion(actividad, toString, id, s)
+    }
+
+    fun guardarPictoEntretenimiento(actividad: Activity?, id: String, idPicto: String?, idEntretenimiento: String?) {
+        gestorPictogramas.guardarPictoEntretenimiento(actividad, id, idPicto, idEntretenimiento)
+    }
+
 }

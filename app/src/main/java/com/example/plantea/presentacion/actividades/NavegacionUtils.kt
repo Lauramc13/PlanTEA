@@ -20,8 +20,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
@@ -32,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
@@ -50,7 +54,7 @@ class NavegacionUtils {
     private var isExpanded = false
     private var popupView : View? = null
 
-    fun crearDialogoLogin(context: Context, activity: Activity) {
+    private fun crearDialogoLogin(context: Context, activity: Activity) {
         prefs = context.getSharedPreferences("Preferencias", AppCompatActivity.MODE_PRIVATE)
 
         val dialogLogin = Dialog(context)
@@ -65,13 +69,13 @@ class NavegacionUtils {
             } else {
                 val email = prefs.getString("email", "")
                 if(email != null){
-                    val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context)
+                    val idUser = prefs.getString("idUsuario", "")
+                    val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context, idUser!!)
 
                     if(usuario.checkCredentials(email, passwordCifrada, activity)){
                         val editor = prefs.edit()
                         editor.putBoolean("PlanificadorLogged", true)
                         editor.putString("configPictogramas", "default")
-
                         editor.apply()
                         //context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
                         context.startActivity(Intent((context as? Activity)?.baseContext, MenuUserActivity::class.java))
@@ -98,13 +102,15 @@ class NavegacionUtils {
         val password = dialogLogin.findViewById<TextInputLayout>(R.id.txt_Password)
         val btnAcceder = dialogLogin.findViewById<MaterialButton>(R.id.btn_login)
         val iconoCerrarLogin = dialogLogin.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
         btnAcceder.setOnClickListener {
             if (password.editText?.text.toString() == "") {
                 password.error = "El campo no puede estar vacío"
             } else {
                 val email = prefs.getString("email", "")
                 if(email != null){
-                    val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context)
+                    val idUser = prefs.getString("idUsuario", "")
+                    val passwordCifrada = EncryptionUtils.getEncrypt(password.editText?.text.toString(), context, idUser!!)
 
                     if(usuario.checkCredentials(email, passwordCifrada, activity)){
                         val editor = prefs.edit()
@@ -142,32 +148,30 @@ class NavegacionUtils {
 
         btnLogout.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-
             val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(fragment.requireContext(), gso)
             googleSignInClient.signOut()
-            //prefs.edit().clear().apply()
-            dialogLogout.dismiss()
+
+            val editor = prefs.edit()
+
+            for (key in prefs.all.keys) {
+                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key"))) {
+                    editor.remove(key)
+                }
+            }
+            editor.apply()
             fragment.requireContext().startActivity(Intent(fragment.activity?.baseContext, PreLoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK))
             fragment.activity?.finish()
             fragment.activity?.finishAffinity()
         }
+
         iconoCerrarLogin.setOnClickListener { dialogLogout.dismiss() }
         dialogLogout.show()
     }
 
     private fun configurarDatos(vista: View){
-
         iconoRol = vista.findViewById(R.id.iconoRol)
         iconoRol.setImageURI(null)
         textoRol = vista.findViewById(R.id.textRol)
-       /* val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
-        if (infoUsuario) {
-            textoRol.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
-        } else {
-            textoRol.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
-        }*/
         val image = prefs.getString("imagenUsuarioTEA", "")
         if(image == ""){
             iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
@@ -175,7 +179,6 @@ class NavegacionUtils {
             iconoRol.setImageURI(Uri.parse(image))
 
         }
-
     }
 
     fun hostingId(hostingActivityClass: Class<FragmentActivity>) : Int {
@@ -184,10 +187,10 @@ class NavegacionUtils {
             EventosActivity::class.java -> R.id.planificacion
             EventosPlanificadorActivity::class.java -> R.id.planificacion
             TraductorActivity::class.java -> R.id.traductor
-            CalendarioActivity::class.java -> R.id.calendar
+            // CalendarioActivity::class.java -> R.id.calendar
             ActividadActivity::class.java -> R.id.actividades
-            SemanaActivity::class.java -> R.id.semana
-            PlanificacionesActivity::class.java -> R.id.calendar
+            SemanaActivity::class.java -> R.id.calendario
+            PlanificacionesActivity::class.java -> R.id.planificacion
             // CuadernoActivity::class.java -> R.id.cuaderno
             else -> R.id.planificacion
         }
@@ -195,17 +198,67 @@ class NavegacionUtils {
     }
 
     private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>, isPlanificador: Boolean): Boolean {
-        val targetActivityClass = when (itemId) {
+        var targetActivityClass = when (itemId) {
             R.id.home -> MainActivity::class.java
-            R.id.calendar -> CalendarioActivity::class.java
-            R.id.planificacion -> if (isPlanificador) EventosPlanificadorActivity::class.java else EventosActivity::class.java
+//            R.id.calendar -> CalendarioActivity::class.java
             R.id.actividades -> ActividadActivity::class.java
-            R.id.semana -> SemanaActivity::class.java
-            // R.id.cuaderno -> CuadernoActivity::class.java
-            //R.id.user -> ConfiguracionActivity::class.java
-            //R.id.help -> ManualActivity::class.java
             R.id.traductor -> TraductorActivity::class.java
+            R.id.calendario -> SemanaActivity::class.java
+            R.id.planificacion -> if(isPlanificador) EventosPlanificadorActivity::class.java else EventosActivity::class.java
             else -> return true
+        }
+
+        if(itemId == R.id.planificacion){
+            val inflater = LayoutInflater.from(fragment.requireContext())
+            val popupView = inflater.inflate(R.layout.popup_menu_plan, null)
+
+            popupView.findViewById<MaterialCardView>(R.id.item_eventos).setOnClickListener {
+                val intent = Intent(fragment.requireContext().applicationContext, targetActivityClass)
+                fragment.requireContext().startActivity(intent)
+            }
+
+            popupView.findViewById<MaterialCardView>(R.id.item_planificaciones).setOnClickListener {
+                val intent = Intent(fragment.requireContext().applicationContext, PlanificacionesActivity::class.java)
+                fragment.requireContext().startActivity(intent)
+            }
+
+            val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+            if (fragment.requireContext().resources.configuration.orientation == 1) {
+                popupWindow.showAtLocation(fragment.requireView(),  Gravity.START or Gravity.BOTTOM , 0, 160)
+            } else {
+                popupWindow.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
+            }
+
+            return true
+        }
+
+        if(itemId == R.id.calendario){
+
+            val inflater = LayoutInflater.from(fragment.requireContext())
+            val popupView = inflater.inflate(R.layout.popup_menu_calendario, null)
+
+            popupView.findViewById<MaterialCardView>(R.id.item_mes).setOnClickListener {
+//                val intent = Intent(fragment.requireContext().applicationContext, targetActivityClass)
+//                fragment.requireContext().startActivity(intent)
+                Toast.makeText(fragment.requireContext(), "Funcionalidad no disponible", Toast.LENGTH_SHORT).show()
+            }
+
+            popupView.findViewById<MaterialCardView>(R.id.item_semana).setOnClickListener {
+                val intent = Intent(fragment.requireContext().applicationContext, SemanaActivity::class.java)
+                fragment.requireContext().startActivity(intent)
+            }
+
+
+            val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+            if (fragment.requireContext().resources.configuration.orientation == 1) {
+                //width of the screen
+                val width = fragment.requireContext().resources.displayMetrics.widthPixels/5
+                popupWindow.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width+10, 160)
+            } else {
+                popupWindow.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
+            }
+
+            return true
         }
 
         if (currentActivity == targetActivityClass) {
@@ -353,6 +406,23 @@ class NavegacionUtils {
             }
         }
 
+        if(Locale.getDefault().language == "es"){
+            customView.findViewById<ImageView>(R.id.languageImage).setImageResource(R.drawable.ic_es)
+            customView.findViewById<TextView>(R.id.languageText).text = "Español"
+        }else if (Locale.getDefault().language == "en"){
+            customView.findViewById<ImageView>(R.id.languageImage).setImageResource(R.drawable.ic_en)
+            customView.findViewById<TextView>(R.id.languageText).text = "English"
+        }
+
+        customView.findViewById<LinearLayout>(R.id.item_idioma).setOnClickListener {
+            //change language
+            if(Locale.getDefault().language == "es"){
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
+            }else{
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("es")))
+            }
+        }
+
         customView.findViewById<LinearLayout>(R.id.item_cerarSesion).setOnClickListener {
             cerrarSesion(fragment)
         }
@@ -368,8 +438,6 @@ class NavegacionUtils {
         popupWindow.showAsDropDown(anchorView)
     }
 
-
-
     fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int, isPlanificador: Boolean){
         navigationViewBottom = view.findViewById(R.id.bottom_navigation)
         navigationViewBottom.setOnItemSelectedListener { item ->
@@ -381,12 +449,5 @@ class NavegacionUtils {
         val menu: Menu = navigationViewBottom.menu
         menu.findItem(id).isChecked = true
     }
-
-    /*fun destroyPopup(){
-        if (popupWindow.isShowing) {
-            popupWindow.dismiss()
-        }
-    }*/
-
 
 }

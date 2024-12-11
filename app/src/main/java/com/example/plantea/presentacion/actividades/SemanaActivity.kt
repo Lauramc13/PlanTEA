@@ -3,13 +3,10 @@ package com.example.plantea.presentacion.actividades
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.opengl.Visibility
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.Spinner
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +19,6 @@ import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemana
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemanaHeader
 import com.example.plantea.presentacion.viewModels.SemanaViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class SemanaActivity: AppCompatActivity() {
@@ -120,7 +115,7 @@ class SemanaActivity: AppCompatActivity() {
             val eventoSelected = evento.obtenerInfoEvento(idEvento!!.toInt(), this)
 
             val plan = Planificacion()
-            val pictogramas = plan.obtenerPictogramasPlanificacion(this, eventoSelected.idPlan, Locale.getDefault().language, viewModel.idUsuario)
+            val pictogramas = plan.obtenerPictogramasPlanificacionEvento(this, eventoSelected.idPlan,eventoSelected.id, Locale.getDefault().language, viewModel.idUsuario)
 
             val intent = Intent(this, EventosActivity::class.java)
             intent.putExtra("titulo", eventoSelected.nombre)
@@ -152,7 +147,6 @@ class SemanaActivity: AppCompatActivity() {
             adaptador.isEdit = viewModel.isEdit
             adaptador.notifyDataSetChanged() // probar a quitar una
             adaptador.notifyDataSetChanged()
-            adaptador.currentPopupWindow?.dismiss()
             adaptadorHeader.updateList(viewModel.configurarDaysWeek(viewModel.configuration), viewModel.configuration)
             changeButtons(layoutOptions, buttonEditar, buttonSwitch)
         }
@@ -163,8 +157,10 @@ class SemanaActivity: AppCompatActivity() {
                     val imageBlob = CommonUtils.bitmapToByteArray(viewModel.week[i].imagen)
                     semana.guardarSemana(viewModel.idUsuario, imageBlob, viewModel.week[i].color, viewModel.week[i].dia, viewModel.week[i].idEvento, this)
                 }
+
                if(viewModel.week[i].imagen == null){
                     semana.borrarImagen(viewModel.idUsuario, viewModel.week[i].dia!!, this)
+                    viewModel.week[i].idEvento = null
                }
 
                 if(viewModel.week[i].color == null){

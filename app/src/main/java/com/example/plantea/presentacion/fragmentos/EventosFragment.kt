@@ -72,7 +72,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
 
         iniciarAdaptadorEvento()
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        viewModel.setIdUsario(prefs)
+        viewModel.configureUser(prefs)
 
         crearEvento.setOnClickListener {
             if(CommonUtils.isMobile(this.requireContext()) || (! CommonUtils.isMobile(this.requireContext()) && CommonUtils.isPortrait(this.requireActivity()))){
@@ -165,7 +165,7 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
     }
 
     override fun viewEventClick(posicion: Int) {
-        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacion(actividad, viewModel.eventosDia[posicion].idPlan, Locale.getDefault().language, viewModel.idUsuario)
+        val pictogramas = viewModel.plan.obtenerPictogramasPlanificacionEvento(actividad, viewModel.eventosDia[posicion].idPlan, viewModel.eventosDia[posicion].id, Locale.getDefault().language, viewModel.idUsuario)
 
         val intent = Intent(actividad, EventosActivity::class.java)
         intent.putExtra("titulo", viewModel.eventosDia[posicion].nombre)

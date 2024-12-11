@@ -22,8 +22,8 @@
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="?colorBG1"
+            app:strokeColor="?color"
             android:clickable="true"
-
             app:cardElevation="0dp">
 
             <com.google.android.material.imageview.ShapeableImageView

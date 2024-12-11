@@ -44,7 +44,7 @@ class PasswordActivity : AppCompatActivity() {
                     val email = prefs.getString("email", "")
 
                     if (idUsuario != null && email != null) {
-                        if (viewModel.currentPasswordCorrect(this, applicationContext, email, viejaPass.editText?.text.toString())) {
+                        if (viewModel.currentPasswordCorrect(this, applicationContext, email, viejaPass.editText?.text.toString(), idUsuario)){
                             viewModel.actualizarPassword(idUsuario, nuevaPass.editText?.text.toString(), this)
                             Toast.makeText(this, R.string.toast_contrasenia_actualizada, Toast.LENGTH_SHORT).show()
                             finish()

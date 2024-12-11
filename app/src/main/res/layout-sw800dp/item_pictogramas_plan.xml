@@ -5,17 +5,18 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="vertical"
+    android:layout_gravity="center"
     android:paddingTop="6dp">
 
     <RelativeLayout
         android:id="@+id/id_card_picto"
-        android:layout_width="220dp"
-        android:layout_height="170dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/id_card"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
@@ -32,7 +33,7 @@
                 android:background="@color/white"
                 android:contentDescription="@string/lbl_Consultas"
                 android:foregroundGravity="center"
-                app:layout_constraintBottom_toTopOf="@+id/id_Texto"
+                android:layout_marginTop="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,13 +50,15 @@
                 android:foregroundGravity="bottom|center_vertical"
                 android:gravity="center"
                 android:maxLines="1"
-                android:layout_marginBottom="7dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="@string/lbl_Consultas"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/id_Imagen" />
 
             <ImageView
                 android:id="@+id/btn_borrarPicto"

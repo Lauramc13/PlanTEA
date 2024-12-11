@@ -1,7 +1,9 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -28,7 +30,9 @@ import java.time.LocalDate
 class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit: Boolean, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorTablaSemana.ViewHolderItemSemana>() {
 
     lateinit var context: Context
-    var currentPopupWindow: PopupWindow? = null
+    private lateinit var popupWindowMenu: PopupWindow
+
+
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, activity: Activity?)
         fun onBorrarItemSeleccionado(posicion: Int)
@@ -80,9 +84,8 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
     private fun changeImageClick(holder: ViewHolderItemSemana, position: Int){
         val imagen = listaDiaSemana?.get(position)?.imagen
 
-        holder.borrar.visibility = if (isEdit && imagen != null) View.VISIBLE else View.GONE
         holder.colors.visibility = if (isEdit) View.VISIBLE else View.GONE
-        holder.linkEvento.visibility = if (isEdit && imagen != null) View.VISIBLE else View.GONE
+        holder.menu.visibility = if (isEdit && imagen != null) View.VISIBLE else View.GONE
 
         if (imagen == null) {
             holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
@@ -130,24 +133,53 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
 
     inner class ViewHolderItemSemana(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imagen: ImageView
-        var borrar: MaterialButton
+        var menu: MaterialButton
         var card: MaterialCardView
         var colors: MaterialButton
-        var linkEvento: MaterialButton
 
         init {
             imagen = itemView.findViewById(R.id.image)
-            borrar = itemView.findViewById(R.id.btnTrash)
             card = itemView.findViewById(R.id.card_imagen)
             colors = itemView.findViewById(R.id.btnColors)
-            linkEvento = itemView.findViewById(R.id.btnLinkEvento)
+            menu = itemView.findViewById(R.id.btnMenu)
 
-            linkEvento.setOnClickListener {
-                listener?.onAsociarEvento(bindingAdapterPosition, context as Activity)
-            }
+            menu.setOnClickListener {
+                //create popup
+                ObjectAnimator.ofFloat(menu, "rotation", menu.rotation + 45f).apply {
+                    duration = 300 // Animation duration in milliseconds
+                    start()
+                }
+                val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val popupView = inflater.inflate(R.layout.popup_menu_semana, null)
 
-            borrar.setOnClickListener {
-                listener?.onBorrarItemSeleccionado(bindingAdapterPosition)
+                popupWindowMenu = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+                popupWindowMenu.showAsDropDown(menu, -5, 0)
+
+                popupWindowMenu.setOnDismissListener {
+                    // Rotate FAB back to 0 degrees when the popup is dismissed
+                    ObjectAnimator.ofFloat(menu, "rotation", 0f).apply {
+                        duration = 300
+                        start()
+                    }
+                }
+
+                val btnLink = popupView.findViewById<MaterialButton>(R.id.item_link)
+                val btnBorrar =  popupView.findViewById<MaterialButton>(R.id.item_borrar)
+
+                if(listaDiaSemana?.get(bindingAdapterPosition)?.idEvento != null && listaDiaSemana?.get(bindingAdapterPosition)?.idEvento != ""){
+                    btnLink.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.md_theme_light_primaryContainer))
+                    btnLink.iconTint = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.md_theme_dark_onPrimary))
+                }
+
+                btnLink.setOnClickListener {
+                    listener?.onAsociarEvento(bindingAdapterPosition, context as Activity)
+                    popupWindowMenu.dismiss()
+                }
+
+                btnBorrar.setOnClickListener {
+                    listener?.onBorrarItemSeleccionado(bindingAdapterPosition)
+                    popupWindowMenu.dismiss()
+                }
             }
 
             imagen.setOnClickListener {
@@ -162,17 +194,14 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
             }
 
             colors.setOnClickListener {
-                currentPopupWindow?.dismiss()
-                val popupWindow = PopupWindow(context)
-                val layout = LayoutInflater.from(context).inflate(R.layout.menu_horizontal_colors, null)
 
+                val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val layout = inflater.inflate(R.layout.menu_horizontal_colors, null)
+                val popupWindow = PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+                //show at the center of colors button
                 layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-                val popupWidth = layout.measuredWidth
-
-                popupWindow.contentView = layout
-                popupWindow.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                popupWindow.showAsDropDown(itemView, (itemView.width - popupWidth) / 2, 0)
-                currentPopupWindow = popupWindow
+                val popupWidth = layout.measuredWidth-colors.width
+                popupWindow.showAsDropDown(colors, -(popupWidth/2), 0)
 
                 layout.findViewById<FloatingActionButton>(R.id.fab1).setOnClickListener {
                     listener?.onColorSelected(bindingAdapterPosition, "red", context as Activity)

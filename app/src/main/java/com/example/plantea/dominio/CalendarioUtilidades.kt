@@ -74,17 +74,6 @@ object CalendarioUtilidades {
     }
 
     @JvmStatic
-    fun formatoMesAnioOLD(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("MMMM yyyy", Locale("es", "ES"))
-        return fecha.format(formato)
-    }
-
-    fun formatoFechaEventoOLD(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("es", "ES"))
-        return fecha.format(formato)
-    }
-
-    @JvmStatic
     fun formatoDiaEventoOLD(fecha: LocalDate): String {
         val formato = DateTimeFormatter.ofPattern("EEEE  d", Locale("es", "ES"))
 

@@ -60,13 +60,12 @@
 
             <ImageView
                 android:id="@+id/btn_removePicto"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_alignParentEnd="true"
-                android:padding="3dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="7dp"
                 android:layout_margin="7dp"
                 android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/svg_trash"
                 app:tint="?customColorGray" />

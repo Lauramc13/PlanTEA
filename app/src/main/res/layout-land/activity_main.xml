@@ -12,7 +12,7 @@
         android:layout_width="55dp"
         android:layout_height="48dp"
         android:layout_margin="25dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Spinner
@@ -46,13 +46,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
         android:backgroundTint="@color/transparent"
         android:contentDescription="Preferencias"
         android:padding="8dp"
         app:icon="@drawable/user"
         app:iconSize="40dp"
         app:iconTint="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -62,14 +63,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
         android:backgroundTint="@color/transparent"
         android:contentDescription="Preferencias"
+        android:padding="8dp"
         app:icon="@drawable/svg_logout"
         app:iconSize="40dp"
-        android:padding="8dp"
         app:iconTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/image_RolPlanificador2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -100,6 +101,7 @@
         android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
         app:cardCornerRadius="20dp"
         android:gravity="center"
+        app:strokeWidth="0dp"
         app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"

@@ -48,6 +48,8 @@
         android:layout_marginBottom="50dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?celdaCalendario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/recycler_actividades"
         app:layout_constraintStart_toStartOf="@+id/recycler_actividades">
@@ -61,13 +63,14 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/svg_youtube" />
+                android:src="@drawable/svg_youtube"
+                app:tint="?colorOnSurface" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="#181F25"
+                android:textColor="?colorOnSurface"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:textSize="@dimen/modalTitle"

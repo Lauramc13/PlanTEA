@@ -43,6 +43,33 @@
             android:orientation="vertical"
             android:background="@drawable/bg_calendario">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/calendarButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/svg_calendardate"
+                app:iconTint="#203130"
+                app:iconSize="30dp"
+                android:visibility="gone"
+                android:layout_margin="10dp"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_calendario"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                app:icon="@drawable/svg_calendardate"
+                app:iconTint="#203130"
+                app:iconGravity="textStart"
+                app:iconSize="30dp"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="20dp"
+                />
+
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"

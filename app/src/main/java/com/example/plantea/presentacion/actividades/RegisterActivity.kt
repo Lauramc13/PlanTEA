@@ -3,23 +3,14 @@ package com.example.plantea.presentacion.actividades
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.transition.Slide
-import android.transition.TransitionManager
 import android.util.Log
 import android.util.Patterns
-import android.view.Gravity
-import android.view.View
-import android.view.animation.PathInterpolator
 import android.widget.Button
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import com.example.plantea.R
 import com.example.plantea.presentacion.viewModels.RegisterViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 
 class RegisterActivity : AppCompatActivity(){
@@ -161,7 +152,7 @@ class RegisterActivity : AppCompatActivity(){
 
     data class ValidationResult(val isValid: Boolean, var errorMessage: Int? = null)
 
-    fun isAccountValid(email: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
+    fun isAccountValid(email: String, username: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             runOnUiThread { txtEmail.error = "ESTO ES UN ERROR" }
             return  ValidationResult(false, R.string.toast_error_correo_valido)
@@ -173,6 +164,11 @@ class RegisterActivity : AppCompatActivity(){
                 txtPassword2.error = "ESTO ES UN ERROR"
             }
             return ValidationResult(false, R.string.toast_cotrasenias_diferentes)
+        }
+
+        if (!username.matches(Regex("^[a-zA-Z0-9]*$"))) {
+            runOnUiThread { txtUsername.error = "ESTO ES UN ERROR" }
+            return  ValidationResult(false, R.string.toast_error_username_valido)
         }
 
         //la contraseña tiene que tener minimo 6 caracteres
@@ -193,7 +189,7 @@ class RegisterActivity : AppCompatActivity(){
 
        // val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
         val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, false, false)
-        val isAccountValid = isAccountValid(viewModel.email, viewModel.password, viewModel.password2, notextViewsVacios)
+        val isAccountValid = isAccountValid(viewModel.email, viewModel.username, viewModel.password, viewModel.password2, notextViewsVacios)
 
         if (isAccountValid.isValid) {
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)

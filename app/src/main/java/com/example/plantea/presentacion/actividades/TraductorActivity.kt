@@ -189,7 +189,8 @@ class TraductorActivity : AppCompatActivity() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
-                viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
+                //put bitmap as 300 x 300
+                viewModel.bitmap = CommonUtils.resizeBitmap(BitmapFactory.decodeStream(inputStream))
                 viewModel.imageSelected()
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()

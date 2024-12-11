@@ -1,21 +1,17 @@
 package com.example.plantea.presentacion.adaptadores
 
-import android.animation.ValueAnimator
 import android.content.Context
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.google.android.material.button.MaterialButton
 
 class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaPlanes.ViewHolder>() {
     private var selectedPosition = RecyclerView.NO_POSITION
@@ -75,12 +71,13 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView = itemView.findViewById(R.id.lbl_Planificacion)
-        private var eliminar: ImageView = itemView.findViewById(R.id.icon_delete)
-        private var editar: ImageView = itemView.findViewById(R.id.icon_edit)
-        private var duplicar: ImageView = itemView.findViewById(R.id.icon_copy)
-        private var downloadPDF: ImageView = itemView.findViewById(R.id.icon_downloadPDF)
+        private var eliminar: MaterialButton = itemView.findViewById(R.id.icon_delete)
+        private var editar: MaterialButton = itemView.findViewById(R.id.icon_edit)
+        private var duplicar: MaterialButton = itemView.findViewById(R.id.icon_copy)
+        private var downloadPDF: MaterialButton = itemView.findViewById(R.id.icon_downloadPDF)
         var card: CardView = itemView.findViewById(R.id.card_plan)
         var recyclerView: RecyclerView = itemView.findViewById(R.id.items_planificacion)
+
 
         init {
             editar.setOnClickListener {
@@ -115,5 +112,4 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
             }
         }
     }
-
 }

@@ -48,7 +48,7 @@ class PlanificacionesViewModel : ViewModel(){
         val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
         val btnCrear : Button = dialog.findViewById(R.id.btn_create)
 
-        val listaPictogramas = planificacion.obtenerPictogramasPlanificacion(activity, idPlan, Locale.getDefault().language, idUsuario)
+        val listaPictogramas = planificacion.obtenerPictogramasPlanificacionNEW(activity, idPlan, Locale.getDefault().language, idUsuario)
 
         val imagesLoadedJob = GlobalScope.launch(Dispatchers.Default) {
             listaPictogramas.forEach { pictogram ->

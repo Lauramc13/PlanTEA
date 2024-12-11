@@ -132,7 +132,7 @@
     <string name="lbl_eliminarEvento">Eliminar evento</string>
     <string name="lbl_eliminarEventoMensaje">¿Seguro que deseas eliminar el evento seleccionado?</string>
     <string name="lbl_cancelar">CANCELAR</string>
-    <string name="lbl_eliminar">ELIMINAR EVENTO</string>
+    <string name="lbl_eliminar">ELIMINAR</string>
     <string name="lbl_eliminarPlanificacion">Eliminar planificación</string>
     <string name="lbl_eliminarPlanificacionMensaje">¿Seguro que deseas eliminar la planificación seleccionada?</string>
     <string name="lbl_eliminarPlanificacionMensaje2">Si desea eliminar la planificación, se eliminarán también todos los eventos asociados</string>
@@ -199,7 +199,7 @@
     <string name="pantalla_eventos">Eventos</string>
     <string name="pantalla_traductor">Traductor</string>
     <string name="pantalla_calendario">Calendario</string>
-    <string name="pantalla_planificaciones">Planiﬁcaciones</string>
+    <string name="pantalla_planificaciones">Planificaciones</string>
     <string name="pantalla_cuaderno">Cuadernos de comunicación</string>
     <string name="pantalla_acercade">Acerca de la aplicación</string>
     <string name="pantalla_configuracion">Configuración</string>
@@ -256,9 +256,9 @@
     <string name="crear_cuaderno">CREAR CUADERNO</string>
     <string name="aniadir_cuaderno">AÑADIR CUADERNO</string>
     <string name="cerrar_dialogo">Cerrar dialogo</string>
-    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Elige un avatar para la actividad/objeto que calma a la persona con TEA</string>
+    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Elige una imagen para la actividad/objeto que calma a la persona con TEA</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Elige un avatar para la persona que va a crear y gestionar las planificaciones</string>
-    <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Elige un avatar para la persona que va a seguir las planificaciones</string>
+    <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Elige un avatar para la persona que va a seguir las planificaciones (usuario/a con TEA)</string>
     <string name="planificaciones">Ver planificaciones</string>
     <string name="planificaciones_futuras">Eventos futuros</string>
 
@@ -390,6 +390,7 @@
     <string name="toast_cotrasenias_diferentes">Las contraseñas no coinciden</string>
     <string name="toast_cotrasenias_6">La contraseña debe tener al menos 6 caracteres</string>
     <string name="toast_error_correo_valido">La dirección de correo electrónico no es válida</string>
+    <string name="toast_error_username_valido">El nombre de usuario solo puede contener números, mayusculas y minusculas</string>
     <string name="toast_error_guardar_traduccion_vacia">No se puede guardar una traducción sin pictogramas</string>
     <string name="toast_pdf_creado">PDF creado en /Download/</string>
     <string name="toast_no_paso_anterior">No se ha realizado el paso anterior</string>
@@ -429,5 +430,11 @@
     <string name="selecciona_tiempo_retraso">Selecciona el tiempo de retraso</string>
     <string name="selecciona_el_evento_para_el_dia">Selecciona el evento para el dia</string>
     <string name="minutos">MINUTOS</string>
+    <string name="sin_evento">Ninguno</string>
+    <string name="text">Texto</string>
+    <string name="min">Minutos</string>
+    <string name="seg">Segundos</string>
+    <string name="pantalla_calendario_semanal">Calendario semanal</string>
+    <string name="pantalla_calendario_mensual">Calendario mensual</string>
 
 </resources>

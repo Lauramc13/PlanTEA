@@ -73,6 +73,7 @@ android:layout_margin="15dp"
             android:text="@string/lbl_eliminar"
             android:textColor="#203130"
             app:cornerRadius="25dp"
+            android:textAllCaps="true"
             android:textSize="@dimen/button" />
 
     </LinearLayout>

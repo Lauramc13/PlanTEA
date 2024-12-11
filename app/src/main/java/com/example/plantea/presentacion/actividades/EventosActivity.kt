@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -75,7 +74,7 @@ class EventosActivity : AppCompatActivity() {
             tachadosCopy = ArrayList(viewModel.adaptador.tachados)
             imprevistosCopy = ArrayList(viewModel.adaptador.imprevistos)
             viewModel.adaptador.countDownTimer?.cancel()
-
+            viewModel.adaptador.countDownTimer = null
         }
 
         // Safely iterate over the copies
@@ -92,7 +91,6 @@ class EventosActivity : AppCompatActivity() {
         if(viewModel.currentDialog != null){
             viewModel.currentDialog!!.dismiss()
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,8 +98,8 @@ class EventosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_eventos)
 
         // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
-        val callback = viewModel.backCallBack(this)
-        onBackPressedDispatcher.addCallback(this, callback)
+//        val callback = viewModel.backCallBack(this)
+//        onBackPressedDispatcher.addCallback(this, callback)
 
         if(CommonUtils.isMobile(this)){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -183,8 +181,7 @@ class EventosActivity : AppCompatActivity() {
                 if(viewModel.adaptador.listaPictogramas?.get(viewModel._pasosCompletados.value?.last() as Int)?.duracion != "null"){
                     viewModel.adaptador.countDownTimer?.cancel()
                     viewModel.adaptador.timeLeft = 0
-                    val posicionNextPicto = viewModel._pasosCompletados.value?.last()!!.toInt() + 1
-                    viewModel.adaptador.notifyItemChanged(posicionNextPicto, "null")
+                    viewModel.adaptador.notifyItemChanged(viewModel._pasosCompletados.value?.last()!!.toInt(), "null")
                 }
                 viewModel.adaptador.notifyItemChanged(viewModel._pasosCompletados.value?.removeLast() as Int)
                 viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
@@ -212,7 +209,6 @@ class EventosActivity : AppCompatActivity() {
 
         //Este método se ejecutará al seleccionar el icono marcar para marcar el pictograma actual como realizado
         iconoMarcar.setOnClickListener {
-            //viewModel.adaptador.optionMarcar = true
             if (!viewModel._pasosCompletados.value?.isEmpty()!!) {
                 //val posicion = viewModel._pasosCompletados.value?.peek() as Int
                 val posicion = viewModel._pasosCompletados.value?.last() as Int
@@ -227,7 +223,6 @@ class EventosActivity : AppCompatActivity() {
 
         // Este método se ejecutará al seleccionar el icono marcar para marcar todos los pictogramas como realizados
         iconoMarcarTodas.setOnClickListener {
-           // viewModel.adaptador.optionMarcar = true
             for (i in 0 until viewModel.listaPictogramas.size){
                 viewModel.adaptador.notifyItemChanged(i)
                 viewModel._pasosCompletados.value?.add(i)
@@ -352,6 +347,7 @@ class EventosActivity : AppCompatActivity() {
                     iconoDeshacerTodas.visibility = View.VISIBLE
                     iconoMarcar.visibility = View.VISIBLE
                     iconoMarcarTodas.visibility = View.VISIBLE
+                    findViewById<ConstraintLayout>(R.id.constraintLayout2).visibility = View.VISIBLE
                     //iconoEscuchar.visibility = View.VISIBLE
                     iconoReproducir.visibility = View.VISIBLE
                     iconoMarcar.isEnabled = true
@@ -426,7 +422,17 @@ class EventosActivity : AppCompatActivity() {
             viewModel.adaptador.tachados.add(viewModel.posicionSelectedCambio)
             viewModel.adaptador.imprevistos.add(viewModel.posicionSelectedCambio+1)
 
-            viewModel.adaptador.listaPictogramas?.add(viewModel.posicionSelectedCambio+1, viewModel._nuevoPicto.value!!)
+
+            val pictoNuevo = viewModel._nuevoPicto.value!!
+            pictoNuevo.historia = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].historia
+            pictoNuevo.duracion = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].duracion
+            pictoNuevo.pictoEntretenimiento = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].pictoEntretenimiento
+
+            viewModel.listaPictogramas[viewModel.posicionSelectedCambio].historia = null
+            viewModel.listaPictogramas[viewModel.posicionSelectedCambio].duracion = null
+            viewModel.listaPictogramas[viewModel.posicionSelectedCambio].pictoEntretenimiento = 0
+
+            viewModel.adaptador.listaPictogramas?.add(viewModel.posicionSelectedCambio+1, pictoNuevo)
             viewModel.adaptador.notifyItemInserted(viewModel.posicionSelectedCambio+1)
             viewModel.adaptador.notifyItemChanged(viewModel.posicionSelectedCambio)
 

@@ -8,8 +8,8 @@ import java.util.Locale
 
 class CountDownViewModel: ViewModel() {
     var isRunning = false
-    var selectedHour = 0
-    var selectedMin = 0
+    var selectedHour = -1
+    var selectedMin = -1
     var timeLeftInMillis: Long = 0 // Remaining time in milliseconds
 
 

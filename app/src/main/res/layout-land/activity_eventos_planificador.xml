@@ -77,6 +77,20 @@
             android:orientation="vertical"
             android:background="@drawable/bg_calendario">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_calendario"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:icon="@drawable/svg_calendardate"
+                app:iconTint="#203130"
+                app:iconGravity="textStart"
+                app:iconSize="27dp"
+                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="20dp"
+                />
+
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"

@@ -12,6 +12,45 @@
     android:background="@drawable/bg_popup">
 
     <LinearLayout
+        android:id="@+id/item_idioma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/languageImage"
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_es" />
+
+        <TextView
+            android:id="@+id/languageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="6dp"
+            android:text="Español"
+            android:textSize="13sp"
+            android:padding="5dp"
+            android:textColor="?colorOnSurfaceVariant"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_medium"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="140dp"
+        android:layout_height="1dp"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:background="?color" />
+
+    <LinearLayout
         android:id="@+id/item_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

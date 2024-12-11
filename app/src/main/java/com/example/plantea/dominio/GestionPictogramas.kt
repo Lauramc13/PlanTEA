@@ -198,5 +198,24 @@ class GestionPictogramas : Serializable {
 
     }
 
+    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.insertarHistoria(id, idPicto, historia)
+        conectorBD!!.cerrar()
+    }
 
+    fun guardarDuracion(actividad: Activity?, toString: String, id: String, s: String?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.insertarDuracion(toString, id, s)
+        conectorBD!!.cerrar()
+    }
+
+    fun guardarPictoEntretenimiento(actividad: Activity?, id: String, idPicto: String?, idEntretenimiento: String?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.insertarPictoEntretenimiento(id, idPicto, idEntretenimiento)
+        conectorBD!!.cerrar()
+    }
 }

@@ -39,9 +39,8 @@
     <attr name="colorBlue" format="reference" />
     <attr name="colorPurple" format="reference" />
     <attr name="colorPink" format="reference" />
+    <attr name="colorRedImportante" format="reference" />
 
-
-
-
+    <attr name="colorHalfWhite" format="reference" />
 
 </resources>

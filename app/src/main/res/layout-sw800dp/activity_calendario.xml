@@ -117,7 +117,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_calendario" />
 
-        <LinearLayout
+      <!--  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginTop="20dp">
@@ -140,15 +140,14 @@
                 app:iconPadding="20dp"
                 app:iconSize="30dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_calendario_planificaciones" />
+                android:background="@drawable/bg_calendario_planificaciones" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_planificaciones_nueva"
                 style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
                 android:text="@string/lbl_nuevaPlanificacion"
                 android:textColor="#203130"
                 android:textAllCaps="true"
@@ -162,7 +161,7 @@
                 app:iconSize="30dp"
                 android:background="@drawable/bg_calendario_planificaciones" />
 
-        </LinearLayout>
+     <!--   </LinearLayout>-->
 
     </LinearLayout>
 

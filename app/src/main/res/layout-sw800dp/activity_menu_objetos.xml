@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         app:layout_constraintWidth_percent="0.7"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="@string/lbl_seleccionaActividad"

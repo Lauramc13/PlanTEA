@@ -20,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.dominio.Pictograma
@@ -223,7 +222,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 positionItem++
             }
 
-            crearPictoTraduccion(entryList[positionItem].key, entryList[positionItem].value.first, entryList[positionItem].value.second, posicion)
+            crearPictoTraduccion(entryList[positionItem].key, listaPictogramas[posicion].titulo, entryList[positionItem].value.second, posicion)
             adaptador.notifyItemChanged(posicion)
 
         }catch (e: Exception){

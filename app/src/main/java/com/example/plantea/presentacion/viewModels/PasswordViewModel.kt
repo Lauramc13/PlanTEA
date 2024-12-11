@@ -13,13 +13,13 @@ class PasswordViewModel: ViewModel(){
     var nuevaPass = ""
     var confirmaPass = ""
 
-    fun currentPasswordCorrect(activity: Activity, context: Context, emailText: String, passwordText: String): Boolean {
-        val passwordCifrada = EncryptionUtils.getEncrypt(passwordText, context)
+    fun currentPasswordCorrect(activity: Activity, context: Context, emailText: String, passwordText: String, idUsuario: String): Boolean {
+        val passwordCifrada = EncryptionUtils.getEncrypt(passwordText, context, idUsuario)
         return usuario.checkCredentials(emailText, passwordCifrada, activity)
     }
 
     fun actualizarPassword(idUsuario: String, passwordNueva: String, actividad: Activity){
-        val passwordCifrada = EncryptionUtils.getEncrypt(passwordNueva, actividad.applicationContext)
+        val passwordCifrada = EncryptionUtils.getEncrypt(passwordNueva, actividad.applicationContext, idUsuario)
         usuario.actualizarPass(idUsuario, passwordCifrada, actividad)
     }
 }

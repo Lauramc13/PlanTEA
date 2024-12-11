@@ -36,7 +36,7 @@
                 android:contentDescription="@string/lbl_Consultas"
                 android:foregroundGravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
-
+                android:paddingBottom="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/cornerRadius"
@@ -47,17 +47,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
                 android:autoSizeTextType="uniform"
                 android:fontFamily="@font/poppins_regular"
                 android:foregroundGravity="bottom|center_vertical"
                 android:gravity="center"
                 android:maxLines="1"
+                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="@string/lbl_Consultas"
-                android:layout_marginTop="10dp"
                 android:textColor="?colorOnSurface"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/id_Imagen" />
@@ -79,14 +79,11 @@
             <ImageView
                 android:id="@+id/iconCambio"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
+                android:layout_height="0dp"
                 android:elevation="4dp"
                 android:padding="7dp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/id_Texto"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/svg_close"
                 app:tint="@color/red" />
@@ -174,13 +171,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/svg_trash" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_addInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:visibility="gone"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_add" />
+                app:iconSize="25dp"
+                app:icon="@drawable/svg_add" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -233,8 +234,6 @@
                 app:srcCompat="@drawable/categoria_consultas" />
 
         </RelativeLayout>
-
-
 
         <ImageView
             android:id="@+id/arrow"

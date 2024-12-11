@@ -39,7 +39,7 @@ class TutorialActivity : AppCompatActivity() {
         btnSkip = findViewById(R.id.btn_skip)
 
         btnPrevious.setOnClickListener {
-            viewPager.currentItem = viewPager.currentItem - 1
+            viewPager.currentItem -= 1
             btnNext.text = getString(R.string.str_siguiente)
         }
 
@@ -50,7 +50,7 @@ class TutorialActivity : AppCompatActivity() {
             }else{
                 btnNext.text = getString(R.string.str_siguiente)
             }
-            viewPager.currentItem = viewPager.currentItem + 1
+            viewPager.currentItem += 1
         }
 
         btnSkip.setOnClickListener {

@@ -30,10 +30,12 @@
 
     <FrameLayout
         android:id="@+id/frameLayout_idiomas"
-        android:layout_width="60dp"
-        android:layout_height="52dp"
-        android:layout_margin="25dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="64dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:padding="3dp"
+        app:layout_constraintEnd_toStartOf="@+id/image_RolPlanificador2"
         app:layout_constraintTop_toTopOf="parent">
 
         <Spinner
@@ -60,37 +62,38 @@
             android:src="@drawable/ic_es" />
     </FrameLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/image_RolPlanificador2"
         style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="64dp"
+        android:layout_height="56dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="100dp"
-        android:backgroundTint="@color/transparent"
+        android:layout_marginEnd="5dp"
         android:contentDescription="Preferencias"
         app:icon="@drawable/user"
-        app:iconSize="45dp"
-        android:padding="8dp"
-        app:iconTint="#ffffff"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:iconSize="33dp"
+        app:cornerRadius="15dp"
+        app:iconTint="?colorSecondary"
+        app:iconGravity="textStart"
+        android:backgroundTint="?colorOnSurfaceInverse"
+        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
         style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="56dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/transparent"
+        android:layout_margin="20dp"
         android:contentDescription="Preferencias"
-        app:icon="@drawable/svg_logout"
-        app:iconSize="45dp"
         android:padding="8dp"
-        app:iconTint="#ffffff"
+        app:icon="@drawable/svg_logout"
+        app:iconSize="30dp"
+        app:iconGravity="textStart"
+        app:cornerRadius="15dp"
+        app:iconTint="?colorSecondary"
+        android:backgroundTint="?colorOnSurfaceInverse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,6 +120,7 @@
         android:contentDescription="Tarjeta del planificador para iniciar sesión"
         app:cardCornerRadius="20dp"
         android:gravity="center"
+        app:strokeWidth="0dp"
         app:layout_constraintVertical_bias="0.4"
         app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:layout_constraintBottom_toBottomOf="parent"

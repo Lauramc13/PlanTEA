@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_calendario"
+            android:background="@drawable/bg_popup_2"
             android:orientation="vertical">
 
             <TextView
@@ -101,8 +101,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_planificar"
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
-                android:layout_width="250dp"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"

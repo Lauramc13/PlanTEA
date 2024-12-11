@@ -130,7 +130,7 @@
     <string name="lbl_eliminarEvento">Delete event</string>
     <string name="lbl_eliminarEventoMensaje">Are you sure you want to delete the selected event?</string>
     <string name="lbl_cancelar">CANCEL</string>
-    <string name="lbl_eliminar">DELETE EVENT</string>
+    <string name="lbl_eliminar">DELETE</string>
     <string name="lbl_eliminarPlanificacion">Delete planning</string>
     <string name="lbl_eliminarPlanificacionMensaje">Are you sure you want to delete the selected plan?</string>
     <string name="lbl_eliminarPlanificacionMensaje2">If you want to delete the plan, all associated events will also be deleted</string>
@@ -250,9 +250,9 @@
     <string name="crear_cuaderno">CREATE NOTEBOOK</string>
     <string name="aniadir_cuaderno">ADD NOTEBOOK</string>
     <string name="cerrar_dialogo">Close dialog</string>
-    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Choose an avatar for the activity/object that calms the supervised user</string>
+    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Choose an image for the activity/object that calms the supervised user</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Choose an avatar for the person who is going to create and manage the plans</string>
-    <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Choose an avatar for the person who is going to follow the plans</string>
+    <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Choose an avatar for the person who is going to follow the plans (user with ASD)</string>
     <string name="planificaciones">Plans</string>
     <string name="planificaciones_futuras">Future events</string>
 
@@ -381,6 +381,7 @@
     <string name="toast_cotrasenias_diferentes">Passwords do not match</string>
     <string name="toast_cotrasenias_6">Password must be at least 6 characters</string>
     <string name="toast_error_correo_valido">The email address is not valid</string>
+    <string name="toast_error_username_valido">The username can only contain letters and numbers</string>
     <string name="toast_error_guardar_traduccion_vacia">Cannot save a translation without pictograms</string>
     <string name="toast_pdf_creado">PDF created in /Download/</string>
     <string name="toast_no_paso_anterior">The previous step has not been performed</string>
@@ -419,5 +420,12 @@
     <string name="selecciona_tiempo_retraso">Select the time delay</string>
     <string name="selecciona_el_evento_para_el_dia">Select the event for the day</string>
     <string name="minutos">MINUTES</string>
+    <string name="sin_evento">None</string>
+    <string name="text">Text</string>
+    <string name="min">Minutes</string>
+    <string name="seg">Seconds</string>
+    <string name="pantalla_calendario_semanal">Weekly calendar</string>
+    <string name="pantalla_calendario_mensual">Monthly calendar</string>
+
 
 </resources>

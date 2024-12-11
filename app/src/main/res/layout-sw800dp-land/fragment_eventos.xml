@@ -90,8 +90,6 @@
             android:layout_margin="16dp"
             android:text="@string/lbl_nuevoEvento"
             android:textAllCaps="true"
-            android:textColor="#203130"
-            app:iconTint="#203130"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="@dimen/buttonBig"
             app:icon="@drawable/ic_baseline_add_24"/>

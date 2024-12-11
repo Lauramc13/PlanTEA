@@ -146,13 +146,12 @@
                     android:textSize="16sp" />
 
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_recordatorio"
-                    style="@style/switchCompact"
                     android:layout_width="match_parent"
                     android:layout_height="35dp">
 
-                </androidx.appcompat.widget.SwitchCompat>
+                </com.google.android.material.materialswitch.MaterialSwitch>
             </LinearLayout>
 
             <LinearLayout
@@ -183,12 +182,10 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_hacer_visible"
-                    style="@style/Widget.AppCompat.CompoundButton.RadioButton">
-                </CheckBox>
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"/>
             </LinearLayout>
 
             <TextView
@@ -248,8 +245,26 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/btn_Guardar"
                     android:textColor="#203130"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/buttonBig"
                     app:cornerRadius="25dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_borrarEvento" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_borrarEvento"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Boton guardar nuevo evento"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/lbl_eliminarEvento"
+                    android:textColor="#203130"
+                    android:textSize="@dimen/buttonBig"
+                    android:textAllCaps="true"
+                    app:cornerRadius="25dp"
+                    app:icon="@drawable/svg_trash"
+                    app:iconGravity="textStart"
+                    app:iconTint="#203130"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

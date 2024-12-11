@@ -1,11 +1,9 @@
-
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/md_theme_light_onPrimary</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/icon_launcher</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
         <item name="android:statusBarColor">@color/black</item>
-
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
@@ -78,6 +76,8 @@
         <item name="colorPurple">@color/purpleCategoria</item>
         <item name="colorPink">@color/pinkCategoria</item>
 
+        <item name="colorRedImportante">@color/red</item>
+
     </style>
 
     <style name="colorsCalendar" parent="">
@@ -101,12 +101,6 @@
         <item name="colorSurfaceVariant">@color/md_theme_light_outline</item>
         <item name="colorOutline">@color/md_theme_light_surfaceVariant</item>
     </style>
-
-    <style name="switchCompact" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@drawable/mtrl_switch_thumb_per</item>
-        <item name="trackTint">@drawable/mtrl_switch_track_per</item>
-    </style>
-
 
     <style name="buttonFAB" parent="Widget.Material3.FloatingActionButton.Secondary">
         <item name="elevation">0dp</item>
@@ -216,6 +210,13 @@
         <item name="android:clipChildren">false</item>
     </style>
 
+    <style name="items_plan">
+        <item name="cardBackgroundColor">#DEF7F7</item>
+        <item name="strokeColor">#B0E8E8</item>
+        <item name="behavior_fitToContents">false</item>
+        <item name="android:clipChildren">false</item>
+    </style>
+
     <style name="pictogramas">
         <item name="backgroundTint">@color/white</item>
     </style>
@@ -274,29 +275,26 @@
         <item name="background">@color/md_theme_light_primaryContainer</item>
     </style>
 
-    <style name="TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+    <style name="TimePicker" parent="ThemeOverlay.Material3.MaterialTimePicker">
         <item name="colorPrimary">@color/md_theme_light_onPrimaryContainer</item>
         <item name="fontFamily">@font/poppins_medium</item>
         <item name="materialClockStyle">@style/TimePicker.Clock</item>
-        <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>
+        <item name="textAllCaps">true</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiary</item>
         <item name="imageButtonStyle">@style/TimePicker.ImageButton</item>
+        <item name="colorSurfaceContainerHigh">@color/seedLight</item>
     </style>
 
-    <style name="CalendarPicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorOnPrimary">@color/md_theme_light_onPrimaryContainer</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/md_theme_light_onPrimaryContainer</item>
-        <item name="fontFamily">@font/poppins_medium</item>
-    </style>
-
-    <style name="TimePicker2" parent="Widget.Material3.MaterialTimePicker">
+    <style name="CalendarPicker" parent="ThemeOverlay.Material3.MaterialCalendar">
         <item name="colorPrimary">@color/md_theme_light_onPrimaryContainer</item>
         <item name="fontFamily">@font/poppins_medium</item>
         <item name="materialClockStyle">@style/TimePicker.Clock</item>
-        <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>
+        <item name="textAllCaps">true</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiary</item>
         <item name="imageButtonStyle">@style/TimePicker.ImageButton</item>
+        <item name="colorSurfaceContainerHigh">@color/veryLight</item>
     </style>
 
     <style name="TimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
@@ -318,21 +316,6 @@
 
     <style name="TimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
         <item name="iconTint">@color/background2</item>
-    </style>
-
-
-    <style name="calendarTheme" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
-        <item name="colorPrimary">@color/md_theme_light_onPrimaryContainer</item>
-        <item name="colorOnPrimary">@color/md_theme_light_onPrimaryContainer</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:background">@color/md_theme_light_primary</item>
-        <item name="android:textColor">@color/md_theme_light_onPrimaryContainer</item>
-        <item name="android:colorControlActivated">@color/md_theme_dark_primaryContainer</item> <!--selected day-->
-        <item name="android:textColorPrimary">@color/md_theme_light_onPrimaryContainer</item> <!--days of the month-->
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">10dp</item>
-        <item name="backgroundColor">@color/md_theme_dark_primaryContainer</item>
-        <item name="backgroundStacked">@color/md_theme_dark_primaryContainer</item>
     </style>
 
     <style name="backgroundBottomNavigation" parent="@style/Widget.Material3.NavigationView">
@@ -406,10 +389,18 @@
 
     <style name="numberPicker" parent="AppTheme">
         <item name="colorControlNormal">@color/transparent</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Animation">
         <item name="android:windowEnterAnimation">@anim/nav_default_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/nav_default_exit_anim</item>
     </style>
+
+    <style name="buttonInfo" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="backgroundTint">@color/white</item>
+        <item name="iconTint">@color/md_theme_light_secondary</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
 </resources>

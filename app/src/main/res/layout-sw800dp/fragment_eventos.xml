@@ -38,6 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginBottom="55dp"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -86,8 +87,7 @@
         android:layout_gravity="bottom|center"
         android:layout_margin="16dp"
         android:text="@string/lbl_nuevoEvento"
-        android:textColor="#203130"
-        app:iconTint="#203130"
+        app:iconTint="?colorOnSurface"
         android:textAllCaps="true"
         android:fontFamily="@font/poppins_semibold"
         android:textSize="@dimen/buttonBig"

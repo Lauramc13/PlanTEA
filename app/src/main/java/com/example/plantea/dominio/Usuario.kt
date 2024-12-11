@@ -29,8 +29,8 @@ class Usuario {
         actividades.let { this.actividades?.addAll(it) }
     }
 
-    fun crearUsuario(name:String?, email: String?, password: String?, username: String?, objeto: String?, nameTEA:String?, actividad: Activity?): Boolean {
-       return gestorUsuario.crearUsuario(name, email, password, username, objeto, nameTEA, actividad)
+    fun crearUsuario(name:String?, email: String?, username: String?, actividad: Activity?): Boolean {
+       return gestorUsuario.crearUsuario(name, email, username, actividad)
     }
 
     fun crearUsuarioTEA(name:String?, imagen: String?, configPicto: String?, idUsuario: String?, actividad: Activity?): String {

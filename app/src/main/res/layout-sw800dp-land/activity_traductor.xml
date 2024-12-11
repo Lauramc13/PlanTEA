@@ -97,6 +97,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:contentDescription="Lista con la planificación actual"
                 android:scrollbars="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +162,7 @@
               <Button
                   android:id="@+id/guardarButton"
                   style="@style/Widget.Material3.Button.TonalButton"
-                  android:layout_width="210dp"
+                  android:layout_width="220dp"
                   android:layout_height="wrap_content"
                   android:layout_marginStart="20dp"
                   android:layout_marginTop="10dp"

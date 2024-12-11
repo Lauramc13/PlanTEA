@@ -51,7 +51,8 @@ class PreLoginViewModel: ViewModel() {
     }
 
     fun iniciarSesion(activity: Activity, context: Context, emailText: String, passwordText: String): Boolean {
-        val passwordCifrada = EncryptionUtils.getEncrypt(passwordText, context)
+        val id = usuario.consultarId(email, activity)
+        val passwordCifrada = EncryptionUtils.getEncrypt(passwordText, context, id!!)
         return usuario.checkCredentials(emailText, passwordCifrada, activity)
     }
 

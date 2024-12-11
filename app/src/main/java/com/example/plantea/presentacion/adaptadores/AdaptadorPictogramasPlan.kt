@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.net.Uri
 import android.os.CountDownTimer
@@ -16,19 +17,17 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.ActividadActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.util.Locale
 
 
-class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasPlan.ViewHolderPictogramas>() {
+class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : RecyclerView.Adapter<AdaptadorPictogramasPlan.ViewHolderPictogramas>() {
 
     lateinit var context: Context
     private var listaPictos = listaPictogramas
-    lateinit var countDownTimer: CountDownTimer
-
-    interface OnItemSelectedListener {
-        fun pictogramaSeleccionado(posicion: Int, context: Context)
-    }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas_presentacion, parent, false)
@@ -68,11 +67,10 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?, pri
         configPicto(holder)
     }
 
-
-
     override fun getItemCount(): Int {
         return listaPictos!!.size
     }
+
 
     private fun configPicto(holder: AdaptadorPictogramasPlan.ViewHolderPictogramas){
         val sharedPreferences = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
@@ -107,7 +105,6 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?, pri
             historia = itemView.findViewById(R.id.btn_historiaPictoOn)
             entretenimiento = itemView.findViewById(R.id.entretenimiento)
             duracion = itemView.findViewById(R.id.duracionPictoTexto)
-
         }
     }
 }

@@ -31,11 +31,7 @@ class NavigationBottomFragment: Fragment() {
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
         bottomNavigation.menu.clear()
-        if (infoUsuario) {
-            bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom)
-        } else {
-            bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom_tea)
-        }
+        bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom)
 
         val hostingActivityClass = activity?.javaClass
 

@@ -240,7 +240,7 @@ class CrearPlanActivity : AppCompatActivity(){
             }
         }
 
-        viewModel._historiaClicked.observe(this) {
+      /*  viewModel._historiaClicked.observe(this) {
             val tituloCard = viewModel.listaPlanificacion[it].titulo
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dialogo_historiasocial)
@@ -270,9 +270,9 @@ class CrearPlanActivity : AppCompatActivity(){
             }
 
             dialog.show()
-        }
+        }*/
 
-        viewModel._onDuracionClicked.observe(this) {position->
+       /* viewModel._onDuracionClicked.observe(this) {position->
             var duracion = viewModel.listaPlanificacion[position].duracion
             if(duracion == null || duracion == "null"){
                 duracion = "00:00"
@@ -287,10 +287,10 @@ class CrearPlanActivity : AppCompatActivity(){
                 viewModel.listaPlanificacion[position].duracion = "$hora:$min"
             }
             picker.show(supportFragmentManager, picker.toString())
-        }
+        }*/
 
         // Open dialog to select pictograma for entretenimiento
-        viewModel._onEntretenimientoClicked.observe(this) { position->
+        /*viewModel._onEntretenimientoClicked.observe(this) { position->
             dialogEntretenimiento = Dialog(this)
             dialogEntretenimiento!!.setContentView(R.layout.dialogo_aniadir_actividad)
             dialogEntretenimiento!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -324,7 +324,7 @@ class CrearPlanActivity : AppCompatActivity(){
             }
 
             dialogEntretenimiento!!.show()
-        }
+        }*/
 
         viewModel._idPictoEntretenimiento.observe(this){
             viewModel.listaPlanificacion[viewModel._onEntretenimientoClicked.value!!].pictoEntretenimiento = it
@@ -334,12 +334,6 @@ class CrearPlanActivity : AppCompatActivity(){
 
     }
 
-    private fun recyclerActividad(recyclerActividad : RecyclerView, dialog: Dialog, listaPictogramas: ArrayList<Pictograma>, idPicto: Int){
-        val constraintLayout = dialog.findViewById<ConstraintLayout>(R.id.frameLayout)
-        CommonUtils.getGridValueCuaderno(findViewById(android.R.id.content), this, recyclerActividad, constraintLayout, 150, 200)
-        val adaptador = AdaptadorPictogramaEntretenimiento(listaPictogramas, idPicto, viewModel)
-        recyclerActividad.adapter = adaptador
-    }
 
     private fun clickGuardarPicto(){
         if(viewModel.listaPlanificacion.isEmpty()){

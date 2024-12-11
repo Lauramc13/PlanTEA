@@ -33,10 +33,13 @@ class RegisterViewModel: ViewModel() {
     //Comprobar si el email es valido
     fun accountCreated(activity: Activity, prefs: SharedPreferences, isCheckedUsuarioPlan: Boolean, isCheckedObjeto: Boolean){
         val usuario = Usuario()
-        val passwordCifrada = EncryptionUtils.encrypt(password, activity.applicationContext)
-        val validUser = usuario.crearUsuario(name, email, passwordCifrada, username, objeto, namePlanificado, activity)
+        val validUser = usuario.crearUsuario(name, email, username, activity)
+
         if(validUser){
-            val id = usuario.consultarId(email, activity)
+            val id = usuario.consultarId(email, activity).toString()
+            val passwordCifrada = EncryptionUtils.encrypt(password, id, activity.applicationContext)
+            usuario.actualizarPass(id, passwordCifrada, activity)
+
             // crear categorias por defecto
             val editor = prefs.edit()
             editor.putString("idUsuario", id)

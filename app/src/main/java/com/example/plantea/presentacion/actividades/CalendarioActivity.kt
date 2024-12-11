@@ -5,8 +5,10 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -30,14 +32,14 @@ class CalendarioActivity : AppCompatActivity() {
         setContentView(R.layout.activity_calendario)
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-        viewModel.configureUser(prefs, this)
+        viewModel.configureUser(prefs)
 
         viewModel.crearCanalNotificacion(this)
         calendario = findViewById(R.id.recycler_calendario)
         fechaActual = findViewById(R.id.lbl_mes)
         val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
         val btnAnteriorMes = findViewById<Button>(R.id.image_calendar_anterior)
-        val buttonPlanificaciones = findViewById<Button>(R.id.button_planificaciones)
+//        val buttonPlanificaciones = findViewById<Button>(R.id.button_planificaciones)
         val buttonPlanificacionesNueva = findViewById<Button>(R.id.button_planificaciones_nueva)
         atras = findViewById(R.id.atras)
 
@@ -75,10 +77,10 @@ class CalendarioActivity : AppCompatActivity() {
             finish()
         }
 
-        buttonPlanificaciones.setOnClickListener {
-            val intent = Intent(this, PlanificacionesActivity::class.java)
-            startActivity(intent)
-        }
+//        buttonPlanificaciones.setOnClickListener {
+//            val intent = Intent(this, PlanificacionesActivity::class.java)
+//            startActivity(intent)
+//        }
 
         buttonPlanificacionesNueva.setOnClickListener {
             val intent = Intent(this, CrearPlanActivity::class.java)
@@ -107,6 +109,7 @@ class CalendarioActivity : AppCompatActivity() {
 
             val adaptadorCalendario = AdaptadorCalendario(it, listaDays, viewModel.eventos, viewModel)
             calendario.adapter = adaptadorCalendario
+            calendario.requestLayout()
 
             if (savedInstanceState == null || viewModel.isDiaSeleccionado) {
                 val ft = supportFragmentManager.beginTransaction()
@@ -139,6 +142,13 @@ class CalendarioActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.isDiaSeleccionado = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(calendario.isEmpty()){ // si calendario se minimiza
+            viewModel.obtenerVistaMes()
+        }
     }
 
 }

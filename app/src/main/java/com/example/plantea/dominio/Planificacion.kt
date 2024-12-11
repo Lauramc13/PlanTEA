@@ -52,6 +52,15 @@ class Planificacion : Serializable {
         return gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan, language, idUsuario)
     }
 
+    fun obtenerPictogramasPlanificacionNEW(actividad: Activity?, idPlan: Int, language: String, idUsuario: String): ArrayList<Pictograma> { // QUITAR ESTO
+        return gestionPlan.obtenerPictogramasPlanificacionNEW(actividad, idPlan, language, idUsuario)
+    }
+
+
+    fun obtenerPictogramasPlanificacionEvento(actividad: Activity?, idPlan: Int, idEvento: Int, language: String, idUsuario: String): ArrayList<Pictograma> {
+        return gestionPlan.obtenerPictogramasPlanificacionEvento(actividad, idPlan, idEvento, language, idUsuario)
+    }
+
     fun actualizarPlanificacion(actividad: Activity?, idUsuario: String, idPlan: Int, nombre: String?, pictogramas: ArrayList<Pictograma>) {
         gestionPlan.actualizarPlanificacion(actividad, idUsuario, idPlan, nombre, pictogramas)
     }

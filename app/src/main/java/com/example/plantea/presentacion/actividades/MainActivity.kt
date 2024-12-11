@@ -2,6 +2,7 @@
 
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -37,6 +38,9 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
@@ -144,8 +148,8 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         imageSpinner = findViewById(R.id.image_idioma)
         recyclerView = findViewById(R.id.recyclerView)
 
-        val preferencias: Button = findViewById(R.id.image_RolPlanificador2)
-        val buttonLogout: Button = findViewById(R.id.btn_logout)
+        val preferencias: MaterialButton = findViewById(R.id.image_RolPlanificador2)
+        val buttonLogout: MaterialButton = findViewById(R.id.btn_logout)
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
         //Preferencias
@@ -313,19 +317,24 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         val btnLogout: Button = dialogLogout.findViewById(R.id.btn_logout)
         iconoCerrar = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
         btnLogout.setOnClickListener {
-            val secretKey = prefs.getString("secret_key", "")
-            val iv = prefs.getString("initialization_vector", "")
-            prefs.edit().clear().apply()
-            prefs.edit()
-                .putString("secret_key", secretKey)
-                .putString("initialization_vector", iv)
-                .apply()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
+            googleSignInClient.signOut()
+
+            val editor = prefs.edit()
+
+            for (key in prefs.all.keys) {
+                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key"))) {
+                    editor.remove(key)
+                }
+            }
+            editor.apply()
             val intent = Intent(this, PreLoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finishAffinity()
-
         }
+
         iconoCerrar.setOnClickListener { dialogLogout.dismiss() }
         dialogLogout.show()
     }

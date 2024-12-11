@@ -291,7 +291,6 @@ class AniadirPictoUtils  {
             if(CommonUtils.isMobile(activity)){
                 view.layoutParams.height = 800
                 view.requestLayout()
-
             }
 
             val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)

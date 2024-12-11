@@ -53,7 +53,7 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.fragment:fragment-ktx:1.6.2'
 
     // Kotlin support
@@ -70,7 +70,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx:22.3.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.3.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.9.1'
-    implementation 'androidx.compose.ui:ui-text-android:1.6.8'
+    implementation 'androidx.compose.ui:ui-text-android:1.7.5'
     //implementation 'androidx.test.espresso:espresso-contrib:3.5.0'
     androidTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.1")
     androidTestImplementation("org.junit.jupiter:junit-jupiter-migrationsupport:5.10.1")

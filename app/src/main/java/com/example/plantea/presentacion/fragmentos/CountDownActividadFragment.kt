@@ -29,7 +29,6 @@ class CountDownActividadFragment: Fragment() {
     private lateinit var countDownTimer: CountDownTimer
     private lateinit var timerTextView: TextView
     private lateinit var startButton: MaterialButton
-    private lateinit var pauseButton: MaterialButton
     private lateinit var progressBar: CircularProgressIndicator
 
     override fun onDestroy() {
@@ -48,48 +47,41 @@ class CountDownActividadFragment: Fragment() {
         timerTextView = vista.findViewById(R.id.timerTextView)
         progressBar = vista.findViewById(R.id.progressBar)
         startButton = vista.findViewById(R.id.startButton)
-        pauseButton = vista.findViewById(R.id.pauseButton)
 
-        startButton.setOnClickListener {
-            if (viewModel.isRunning) {
+        progressBar.setOnClickListener {
+            if(viewModel.isRunning){
+                val parentActivity = requireActivity() as ActividadActivity
+                parentActivity.stopVideo()
                 endTimer()
-                pauseButton.isClickable = false
-            } else {
-                pauseButton.isClickable = true
-                val picker = viewModel.createReloj()
-                picker.addOnPositiveButtonClickListener {
-                    if (picker.hour == 0 && picker.minute == 0) {
-                        return@addOnPositiveButtonClickListener
-                    } else {
-                        viewModel.selectedHour = picker.hour
-                        viewModel.selectedMin = picker.minute
-
-                        if(picker.hour == 0){
-                            timerTextView.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.selectedMin, 0)
-                        }else{
-                            timerTextView.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.selectedHour, viewModel.selectedMin)
-                        }
-
-                        startButton.setIconResource(R.drawable.svg_close_thick)
-                        startTimer(null)
-                        viewModel.isRunning = true
-                    }
-
-                }
-
-                picker.show(requireFragmentManager(), "TimePicker")
             }
+
+            val picker = viewModel.createReloj()
+            picker.addOnPositiveButtonClickListener {
+                if (picker.hour == 0 && picker.minute == 0) {
+                    return@addOnPositiveButtonClickListener
+                } else {
+                    viewModel.selectedHour = picker.hour
+                    viewModel.selectedMin = picker.minute
+
+                    if(picker.hour == 0){
+                        timerTextView.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.selectedMin, 0)
+                    }else{
+                        timerTextView.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.selectedHour, viewModel.selectedMin)
+                    }
+                }
+            }
+
+            picker.show(requireFragmentManager(), "TimePicker")
         }
 
-        pauseButton.setOnClickListener {
+
+        startButton.setOnClickListener{
             if (viewModel.isRunning) {
-                countDownTimer.cancel()
-                viewModel.isRunning = false
-                pauseButton.setIconResource(R.drawable.svg_play)
-            }else{
-                startTimer(viewModel.timeLeftInMillis)
+                endTimer()
+            }else if(viewModel.selectedHour != -1 && viewModel.selectedMin != -1){
+                startButton.setIconResource(R.drawable.svg_close_thick)
+                startTimer(null)
                 viewModel.isRunning = true
-                pauseButton.setIconResource(R.drawable.svg_stop)
             }
         }
 
@@ -126,6 +118,8 @@ class CountDownActividadFragment: Fragment() {
         timerTextView.text = "00:00"
         startButton.setIconResource(R.drawable.svg_play)
         progressBar.progress = 100
+        viewModel.selectedHour = -1
+        viewModel.selectedMin = -1
     }
 
 }

@@ -15,9 +15,12 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.google.android.material.button.MaterialButton
+import java.time.LocalDate
 
 class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaEventos.ViewHolder>() {
     private var selectedPosition = RecyclerView.NO_POSITION
@@ -26,19 +29,31 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
 
     interface OnItemSelectedListener {
         fun eventoSeleccionado(posicion: Int, recyclerView: RecyclerView, context: Context)
-
         fun eventoEditado(posicion: Int, context: Context)
-
         fun verEvento(posicion: Int, context: Context)
+        fun cambiarVisibilidadEvento(posicion: Int, context: Context)
+        fun exportarEvento(posicion: Int, context: Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_planificaciones, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_eventos, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.titulo.text = planes!![position].nombre
+        holder.fecha.text = CalendarioUtilidades.formatoFechaEvento(planes!![position].fecha!!)
+
+        holder.fecha.visibility = View.VISIBLE
+        holder.separator.visibility = View.VISIBLE
+
+        if(planes!![position].visible == 1){
+            holder.visibility.setIconResource(R.drawable.svg_eye_on)
+        } else {
+            holder.visibility.setIconResource(R.drawable.svg_eye_off)
+            holder.visibility.iconTint = holder.itemView.context.getColorStateList(R.color.red)
+        }
+
         changeHeight(holder, position)
         if (selectedPosition == position) {
             holder.recyclerView.visibility = View.VISIBLE
@@ -77,16 +92,16 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView = itemView.findViewById(R.id.lbl_Planificacion)
+        val fecha: TextView = itemView.findViewById(R.id.lbl_Fecha)
+        val separator : TextView = itemView.findViewById(R.id.separator)
         var card: CardView = itemView.findViewById(R.id.card_plan)
-        var edit = itemView.findViewById<ImageView>(R.id.icon_edit)
-        var ver = itemView.findViewById<ImageView>(R.id.icon_eye)
+        var edit = itemView.findViewById<MaterialButton>(R.id.icon_edit)
+        var ver = itemView.findViewById<MaterialButton>(R.id.icon_eye)
+        var visibility = itemView.findViewById<MaterialButton>(R.id.icon_visibility)
+        var export = itemView.findViewById<MaterialButton>(R.id.icon_export)
         var recyclerView: RecyclerView = itemView.findViewById(R.id.items_planificacion)
 
         init {
-            itemView.findViewById<ImageView>(R.id.icon_copy).visibility = View.GONE
-            itemView.findViewById<ImageView>(R.id.icon_delete).visibility = View.GONE
-            itemView.findViewById<ImageView>(R.id.icon_downloadPDF).visibility = View.GONE
-
             card.setOnClickListener{
                 if(cardOpened == bindingAdapterPosition){
                     cardOpened = -1
@@ -110,7 +125,14 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
 
             ver.setOnClickListener {
                 listener?.verEvento(bindingAdapterPosition, itemView.context)
+            }
 
+            visibility.setOnClickListener {
+                listener?.cambiarVisibilidadEvento(bindingAdapterPosition, itemView.context)
+            }
+
+            export.setOnClickListener {
+                listener?.exportarEvento(bindingAdapterPosition, itemView.context)
             }
         }
     }

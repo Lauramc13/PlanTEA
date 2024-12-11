@@ -7,10 +7,10 @@ class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
     private var resultado = false
 
-    fun crearUsuario( name: String?, email: String?, password: String?, username: String?, objeto:String?, nameTEA:String?, actividad: Activity?): Boolean {
+    fun crearUsuario( name: String?, email: String?, username: String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        resultado = conectorBD!!.insertarUsuario(email, password, username, name, objeto, nameTEA)
+        resultado = conectorBD!!.insertarUsuario(email, username, name)
         conectorBD!!.cerrar()
         return resultado
     }

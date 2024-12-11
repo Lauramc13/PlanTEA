@@ -54,6 +54,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import java.text.Normalizer
 import java.util.Locale
 import java.util.UUID
 
@@ -168,12 +169,14 @@ class CommonUtils{
             val listaIds = mutableListOf<Int>()
             val listaTitulos = mutableListOf<String>()
 
-            val encodedQuery = encodeQuery(query)
-            pedirDatosAPI(encodedQuery, listaIds, listaTitulos)
+            val cleanQuery  = cleanQuery(query)
+
+            //val encodedQuery = encodeQuery(query)
+            pedirDatosAPI(cleanQuery, listaIds, listaTitulos)
 
             Log.d("INFO", "Lista de ids: $listaIds")
             if(listaIds.isEmpty()){
-                val lemmatizedQuery = lemmatizar(query)
+                val lemmatizedQuery = lemmatizar(cleanQuery)
                 pedirDatosAPI(lemmatizedQuery, listaIds, listaTitulos)
             }
 
@@ -237,13 +240,11 @@ class CommonUtils{
             }
         }
 
+
         private fun pedirDatosAPI(query: String, listaIds: MutableList<Int>, listaTitulos: MutableList<String>) {
             val retrofitBuilder = getRetrofitBuilder()
 
             val encodedQuery = encodeQuery(query)
-
-            Log.d("DEBUG", "Query: $encodedQuery")
-
 
             try {
                 val language = Locale.getDefault().language
@@ -268,11 +269,19 @@ class CommonUtils{
             }
         }
 
+        fun cleanQuery(query: String): String {
+            val normalized = Normalizer.normalize(query, Normalizer.Form.NFD)
+            return normalized.replace("\\p{Mn}+".toRegex(), "")
+                .replace(",", "")
+                .lowercase() // Convert to lowercase
+        }
+
         private fun encodeQuery(query: String): String {
             val queryEncoded = URLEncoder.encode(query, "utf-8")
             if(queryEncoded.contains(".")){
                 return queryEncoded.replace(".", "%2E")
             }
+
             return queryEncoded
         }
 
@@ -324,10 +333,13 @@ class CommonUtils{
                 paint.textSize = textSize
                 width = 300
             }
-
-            val image = Bitmap.createBitmap(width, 300, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawText(text, 0f, 150f - textBounds.exactCenterY(), paint)
+            val image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888)
+            try {
+                val canvas = Canvas(image)
+                canvas.drawText(text,  (300 - width) / 2f, 150f - textBounds.exactCenterY(), paint)
+            }catch (e: Exception){
+                Log.d("ERROR", e.toString())
+            }
 
             return image
         }
@@ -574,10 +586,10 @@ class CommonUtils{
 
         fun formatTimeSeconds(input: String): Int {
             val parts = input.split(":")
-            val hours = parts[0].toInt()
-            val minutes = parts[1].toInt()
+            val minutes = parts[0].toInt()
+            val seconds = parts[1].toInt()
 
-            return hours * 3600 + minutes * 60
+            return minutes * 60 + seconds
 
         }
 
@@ -701,6 +713,21 @@ class CommonUtils{
 
             } catch (e: Exception) {
                 Log.e("ERROR", "Error creating PDF: ${e.message}", e)
+            }
+        }
+
+        fun resizeBitmap(image: Bitmap?): Bitmap? {
+            //resize bitmap to 300 x 300
+            return if (image != null) {
+                val width = image.width
+                val height = image.height
+                val scaleWidth = 300f / width
+                val scaleHeight = 300f / height
+                val matrix = android.graphics.Matrix()
+                matrix.postScale(scaleWidth, scaleHeight)
+                Bitmap.createBitmap(image, 0, 0, width, height, matrix, false)
+            } else {
+                null
             }
         }
 

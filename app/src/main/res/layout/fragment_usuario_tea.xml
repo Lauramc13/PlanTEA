@@ -30,12 +30,14 @@
 
             <TextView
                 android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="18sp"
                 android:textAllCaps="true"
                 android:gravity="center"
                 android:lines="2"
+                android:lineSpacingExtra="0dp"
+                android:lineSpacingMultiplier="1"
                 android:layout_marginBottom="10dp"
                 android:text="@string/user" />
 
@@ -102,11 +104,14 @@
 
             <TextView
                 android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="18sp"
-                android:gravity="center"
                 android:textAllCaps="true"
+                android:gravity="center"
+                android:lines="2"
+                android:lineSpacingExtra="0dp"
+                android:lineSpacingMultiplier="1"
                 android:layout_marginBottom="10dp"
                 android:text="@string/lbl_actividades_objeto" />
 

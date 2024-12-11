@@ -1,6 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:paddingTop="10dp"
+    android:paddingBottom="20dp"
+    android:background="@drawable/bg_tiempo_duracion">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/icono_CerrarDialogo"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="10dp"
+        app:cornerRadius="15dp"
+        app:iconTint="?colorOnSurfaceVariant"
+        app:backgroundTint="?colorOnTertiary"
+        android:contentDescription="Cerrar seccion"
+        app:icon="@drawable/ic_baseline_close_24" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="@dimen/title"
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="center"
+        android:text="@string/duracion"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp">
+
+        <NumberPicker
+            android:id="@+id/numberPickerMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_tiempo_duracion_2"
+            android:fontFamily="@font/poppins_medium"
+            android:theme="@style/numberPicker"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/numberPickerMin"
+            app:layout_constraintStart_toStartOf="@+id/numberPickerMin"
+            app:layout_constraintEnd_toEndOf="@+id/numberPickerMin"
+            android:textAllCaps="true"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="5dp"
+            android:text="@string/min"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text=":"
+            android:textSize="@dimen/display"
+            android:textAllCaps="true"
+            app:layout_constraintBottom_toBottomOf="@+id/numberPickerSec"
+            app:layout_constraintEnd_toStartOf="@+id/numberPickerSec"
+            app:layout_constraintStart_toEndOf="@+id/numberPickerMin"
+            app:layout_constraintTop_toTopOf="@+id/numberPickerSec" />
+
+        <NumberPicker
+            android:id="@+id/numberPickerSec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_tiempo_duracion_2"
+            android:fontFamily="@font/poppins_medium"
+            android:theme="@style/numberPicker"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/seg"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="@+id/numberPickerSec"
+            app:layout_constraintStart_toStartOf="@+id/numberPickerSec"
+            app:layout_constraintTop_toBottomOf="@+id/numberPickerMin" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_aceptar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/aceptar"
+        android:textSize="@dimen/buttonBig"
+        android:textAllCaps="true"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#203130"
+        app:strokeColor="#203130"
+        app:backgroundTint="@color/colorHalfWhite"
+        android:layout_gravity="center"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_eliminar"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/borrar"
+        android:textAllCaps="true"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:textColor="#203130"
+        android:textSize="@dimen/buttonBig"
+        />
+
+</LinearLayout>

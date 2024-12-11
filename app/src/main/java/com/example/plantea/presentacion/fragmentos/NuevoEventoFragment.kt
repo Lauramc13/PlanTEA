@@ -18,13 +18,13 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -35,12 +35,12 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.CalendarioUtilidades.formatoFechaEvento
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.Planificacion
-import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanesEventos
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import java.time.Instant
@@ -55,6 +55,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     lateinit var vista: View
     private lateinit var btnHora: TextView
     private lateinit var btnGuardar: Button
+    private lateinit var btnBorrar: Button
 //    private lateinit var btnPlanificar: Button
     private lateinit var fechaEvento: TextView
   //  private lateinit var mensajePlanes: TextView
@@ -62,8 +63,8 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     lateinit var listaPlanificaciones: RecyclerView
     private lateinit var adaptador: AdaptadorPlanesEventos
     private lateinit var layoutPlanificaciones: ConstraintLayout
-    private lateinit var switchReminder : SwitchCompat
-    private lateinit var radioButtonVista : CheckBox
+    private lateinit var switchReminder : MaterialSwitch
+    private lateinit var radioButtonVista : MaterialSwitch
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
@@ -108,6 +109,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         cancelarEvento = vista.findViewById(R.id.img_cancelarEvento)
         btnHora = vista.findViewById(R.id.btn_horaEvento)
         btnGuardar = vista.findViewById(R.id.btn_guardarEvento)
+        btnBorrar = vista.findViewById(R.id.btn_borrarEvento)
         //btn_planificar = vista.findViewById(R.id.btn_planificar)
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
 //        mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
@@ -118,7 +120,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         radioButtonVista = vista.findViewById(R.id.switch_hacer_visible)
 
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        viewModel.setIdUsario(prefs)
+        viewModel.configureUser(prefs)
 
         fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         fechaEvento.setOnClickListener { mostrarCalendario() }
@@ -137,9 +139,13 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }
 
             val evento = Evento(viewModel.eventoIdEdited, idUserTEA, viewModel.planes[viewModel.posicionPlan].getTitulo(), CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado, radioButtonVista.isChecked, null)
-            val parentActivity: Activity? = activity
+            val parentActivity: EventosPlanificadorActivity? = activity as EventosPlanificadorActivity?
             context?.let { it1 -> viewModel.nuevoEventoEdit(it1, evento, parentActivity)}
             dismiss()
+        }
+
+        btnBorrar.setOnClickListener {
+            borrarEvento()
         }
 
         configurarEvento()
@@ -179,7 +185,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             } else{
                 val parentActivity: Activity? = activity
                 if(parentActivity is EventosPlanificadorActivity){
-                    parentActivity.expand(false, CommonUtils.isPortrait(parentActivity))
+                    parentActivity.expand(false, CommonUtils.isPortrait(parentActivity), false)
                 }else{
                     context?.let { it1 -> viewModel.cancelarEvento(it1) }
                 }
@@ -236,6 +242,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             viewModel.eventoIdEdited = idEventoEdit!!
             btnGuardar.isEnabled = true
             btnGuardar.text = getString(R.string.editar).uppercase()
+            btnBorrar.visibility = View.VISIBLE
             viewModel.isPlanSeleccionado = true
             viewModel.planSeleccionado = idPlanEdit
             adaptador.setItemSelected(viewModel.posicionPlan)
@@ -250,7 +257,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }
 
         radioButtonVista.isChecked = change_visibility ?: false
-        switchReminder.isChecked = reminder != "null"
+        switchReminder.isChecked = reminder != null
     }
 
 
@@ -288,10 +295,10 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
         val btnAceptar = dialogReminder.findViewById<Button>(R.id.btn_aceptarRecordatorio)
         val iconCerrar = dialogReminder.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-        val checkboxMin = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_min)
-        val checkboxHora = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_hora)
-        val checkboxDia = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_dia)
-        val checkBoxPersonalizar = dialogReminder.findViewById<SwitchCompat>(R.id.checkBox_personalizar)
+        val checkboxMin = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_min)
+        val checkboxHora = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_hora)
+        val checkboxDia = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_dia)
+        val checkBoxPersonalizar = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_personalizar)
 
         btnAceptar.setOnClickListener {
             //si no se ha seleccionado ningun checkbox poner el switch a false
@@ -338,7 +345,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
     private fun iniciarListaPlanificaciones(vista: View) {
         listaPlanificaciones.layoutManager = LinearLayoutManager(context)
-        viewModel.planes = viewModel.idUsuario.let { viewModel.plan.mostrarPlanificacionesDisponibles(it, actividad) } as ArrayList<Planificacion>
+        viewModel.planes = viewModel.plan.mostrarPlanificacionesDisponibles(viewModel.idUsuarioPlanner, actividad) as ArrayList<Planificacion>
         if(viewModel.planes.isEmpty()){
             vista.findViewById<TextView>(R.id.lbl_mensajePlanes).visibility = View.VISIBLE
         }else{
@@ -346,7 +353,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }
         adaptador = AdaptadorPlanesEventos(viewModel.planes, this)
         listaPlanificaciones.adapter = adaptador
-        visibilityPlan()
     }
 
     private fun mostrarReloj() {
@@ -380,16 +386,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         btnGuardar.isEnabled = true
     }
 
-    private fun visibilityPlan(){
-        if (viewModel.planes.isEmpty()) {
-            listaPlanificaciones.visibility = View.GONE
-            //mensajePlanes.visibility = View.VISIBLE
-        } else {
-            listaPlanificaciones.visibility = View.VISIBLE
-        //    mensajePlanes.visibility = View.GONE
-        }
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     private fun configurarEvento() {
         iniciarListaPlanificaciones(vista)
@@ -397,9 +393,40 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             adaptador.setItemSelected(viewModel.posicionPlan)
             btnGuardar.isEnabled = true
         }
-        viewModel.planes.clear()
-        viewModel.planes.addAll( viewModel.plan.mostrarPlanificacionesDisponibles(viewModel.idUsuario, actividad) as ArrayList<Planificacion>)
-        adaptador.notifyDataSetChanged()
+    }
+
+    private fun borrarEvento(){
+        val parentActivity: EventosPlanificadorActivity? = activity as EventosPlanificadorActivity?
+
+        val dialog = Dialog(actividad)
+        dialog.setContentView(R.layout.dialogo_eliminar_evento)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnEliminar = dialog.findViewById<Button>(R.id.btn_eliminarEvento)
+        val atras = dialog.findViewById<Button>(R.id.btn_cancelarEvento)
+        val btnCancelar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
+        atras.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnEliminar.setOnClickListener{
+            //find position of the event to be deleted
+            val posicion = parentActivity?.viewModel?.eventos?.indexOfFirst { it.id == viewModel.eventoIdEdited }
+            parentActivity?.viewModel?.deleteEvento(actividad, requireContext(), posicion!!)
+            parentActivity?.adaptador?.notifyItemRemoved(posicion!!)
+
+            if(viewModel.eventos.isEmpty()){
+                parentActivity?.findViewById<LinearLayout>(R.id.layout_no_eventos)?.visibility = View.VISIBLE
+            }
+
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     @SuppressLint("NotifyDataSetChanged")

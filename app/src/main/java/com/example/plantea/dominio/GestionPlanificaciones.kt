@@ -134,6 +134,60 @@ class GestionPlanificaciones : Serializable {
                     pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
                 }
                 pictograma.categoria = c.getInt(4)
+                pictograma.historia = c.getString(5)
+                pictograma.duracion = c.getString(6)
+                pictograma.pictoEntretenimiento = c.getInt(7)
+                listaPictogramas.add(pictograma)
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD.cerrar()
+        return listaPictogramas
+    }
+
+    fun obtenerPictogramasPlanificacionNEW(actividad: Activity?, idPlan: Int, language: String, idUsuario: String): ArrayList<Pictograma> {
+        conectorBD = ConectorBD(actividad)
+        listaPictogramas = ArrayList()
+        conectorBD.abrir()
+        val c = conectorBD.listarPictogramasPlanificacion(idPlan, language, idUsuario)
+        if (c.moveToFirst()) {
+            do {
+                val pictograma = Pictograma()
+                pictograma.id = c.getInt(0).toString()
+                pictograma.titulo = c.getString(1)
+                if( c.getBlob(2) == null){
+                    pictograma.idAPI = c.getInt(3)
+                }else{
+                    pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
+                }
+                pictograma.categoria = c.getInt(4)
+                listaPictogramas.add(pictograma)
+            } while (c.moveToNext())
+        }
+        c.close()
+        conectorBD.cerrar()
+        return listaPictogramas
+    }
+
+    fun obtenerPictogramasPlanificacionEvento(actividad: Activity?, idPlan: Int, idEvento: Int, language: String, idUsuario: String): ArrayList<Pictograma> {
+        conectorBD = ConectorBD(actividad)
+        listaPictogramas = ArrayList()
+        conectorBD.abrir()
+        val c = conectorBD.listarPictogramasPlanificacionEvento(idPlan, idEvento, language, idUsuario)
+        if (c.moveToFirst()) {
+            do {
+                val pictograma = Pictograma()
+                pictograma.id = c.getInt(0).toString()
+                pictograma.titulo = c.getString(1)
+                if( c.getBlob(2) == null){
+                    pictograma.idAPI = c.getInt(3)
+                }else{
+                    pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
+                }
+                pictograma.categoria = c.getInt(4)
+                pictograma.historia = c.getString(5)
+                pictograma.duracion = c.getString(6)
+                pictograma.pictoEntretenimiento = c.getInt(7)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }
@@ -159,15 +213,15 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramas(idUsuario: String, id: String, context: Context?, language: String): ArrayList<*> {
+    fun obtenerPictogramas(idUsuario: String, idEvento: String, context: Context?, language: String): ArrayList<*> {
         conectorBD = ConectorBD(context)
         listaPictogramas = ArrayList()
         conectorBD.abrir()
         var idPlan = 0
-        val c = conectorBD.obtenerPlanificacion(id, idUsuario)
+        val c = conectorBD.obtenerPlanificacion(idEvento, idUsuario)
         if (c.moveToFirst()) {
             idPlan = c.getInt(0)
-                val c2 = conectorBD.listarPictogramasPlanificacion(idPlan, language, idUsuario)
+                val c2 = conectorBD.listarPictogramasPlanificacionEvento(idPlan, idEvento.toInt(), language, idUsuario)
                 if (c2.moveToFirst()) {
                     do {
                         val pictograma = Pictograma()
@@ -179,9 +233,9 @@ class GestionPlanificaciones : Serializable {
                             pictograma.imagen = CommonUtils.byteArrayToBitmap(c2.getBlob(2))
                         }
                         pictograma.categoria = c2.getInt(4)
-                       /* pictograma.historia = c2.getString(5)
+                        pictograma.historia = c2.getString(5)
                         pictograma.duracion = c2.getString(6)
-                        pictograma.pictoEntretenimiento = c2.getInt(7)*/
+                        pictograma.pictoEntretenimiento = c2.getInt(7)
                         listaPictogramas.add(pictograma)
                     }
                 while (c2.moveToNext())

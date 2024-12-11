@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/md_theme_dark_inverseOnSurface</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/icon_launcher</item>
-
+        <item name="android:statusBarColor">@color/md_theme_dark_scrim</item>
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_onSecondary</item>
@@ -34,7 +34,6 @@
         <item name="boxBackgroundColor">@color/md_theme_dark_background2</item>
         <item name="android:popupBackground">@color/transparent</item>
 
-
         <!-- CUSTOM ITEMS -->
         <item name="customBgColor">@color/md_theme_dark_surface</item>
         <item name="customBgTermometro">@color/md_theme_dark_background2</item>
@@ -54,7 +53,7 @@
         <item name="cardBackgroundColorPersonalized">@color/md_theme_dark_surfaceVariant2</item>
         <item name="colorBG">@color/md_theme_dark_background2</item>
         <item name="bgEvento">@color/md_theme_dark_background2</item>
-        <item name="bgDisabled">@color/md_theme_dark_backgroundDark</item>
+        <item name="bgDisabled">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorBG0">@color/md_theme_dark_backgroundDark</item>
         <item name="colorBG1">@color/md_theme_dark_surfaceVariant</item>
         <item name="colorBG2">@color/md_theme_dark_surfaceVariant</item>
@@ -63,7 +62,6 @@
         <item name="pizzaraBorde">@color/md_theme_dark_primary</item>
         <item name="pizzaraFondo">@color/pizarraContenido2</item>
         <item name="stroke2">@color/transparent</item>
-
         <item name="colorRed">@color/DarkredCategoria</item>
         <item name="colorOrange">@color/DarkorangeCategoria</item>
         <item name="colorYellow">@color/DarkyellowCategoria</item>
@@ -71,10 +69,9 @@
         <item name="colorBlue">@color/DarkblueCategoria</item>
         <item name="colorPurple">@color/DarkpurpleCategoria</item>
         <item name="colorPink">@color/DarkpinkCategoria</item>
-
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
-
+        <item name="colorRedImportante">@color/redCategoria</item>
     </style>
 
     <style name="cornerRadiusLogin" parent="">
@@ -91,7 +88,6 @@
         <item name="backgroundTint">@color/md_theme_light_primary</item>
         <item name="boxBackgroundColor">@color/md_theme_light_primary</item>
         <item name="backgroundColor">@color/md_theme_light_primary</item>
-
     </style>
 
     <style name="BottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog">
@@ -106,11 +102,6 @@
         <item name="grayStroke">@color/md_theme_dark_surfaceVariant</item>
         <item name="colorSurfaceVariant">@color/md_theme_dark_outline</item>
         <item name="colorOutline">@color/md_theme_dark_background2</item>
-    </style>
-
-    <style name="switchCompact" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@drawable/mtrl_switch_thumb_per</item>
-        <item name="trackTint">@drawable/mtrl_switch_track_per</item>
     </style>
 
     <style name="Switches">
@@ -133,7 +124,6 @@
         <item name="elevation">0dp</item>
         <item name="android:backgroundTint">@color/md_theme_dark_primary</item>
         <item name="tint">@color/md_theme_dark_inverseOnSurface</item>
-
     </style>
 
 
@@ -158,6 +148,11 @@
 
     <style name="items">
         <item name="cardBackgroundColor">@color/md_theme_light_inverseSurface</item>
+    </style>
+
+    <style name="items_plan">
+        <item name="cardBackgroundColor">@color/md_theme_dark_secondaryContainer</item>
+        <item name="strokeColor">@color/md_theme_dark_onSecondary</item>
     </style>
 
     <style name="editText" parent="">
@@ -185,19 +180,25 @@
         <item name="background">@color/md_theme_dark_background2</item>
     </style>
 
-    <style name="TimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+    <style name="TimePicker" parent="ThemeOverlay.Material3.MaterialTimePicker">
         <item name="colorPrimary">@color/background2</item>
         <item name="fontFamily">@font/poppins_medium</item>
         <item name="materialClockStyle">@style/TimePicker.Clock</item>
         <item name="materialButtonOutlinedStyle">@style/TimePicker.Button</item>
         <item name="chipStyle">@style/TimePicker.Chip</item>
+        <item name="textAllCaps">true</item>
         <item name="imageButtonStyle">@style/TimePicker.ImageButton</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_dark_background2</item>
+
     </style>
 
-    <style name="CalendarPicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorPrimary">@color/background2</item>
-        <item name="colorOnSurface">@color/md_theme_dark_primary</item>
+    <style name="CalendarPicker" parent="ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/md_theme_dark_primary</item>
+        <item name="colorOnSurface">@color/background2</item>
         <item name="fontFamily">@font/poppins_medium</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">15sp</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_dark_background2</item>
     </style>
 
     <style name="TimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
@@ -265,5 +266,12 @@
         <item name="android:textColor">@color/md_theme_dark_surfaceVariant</item>
         <item name="android:textSize">@dimen/snackBarText</item>
     </style>
+
+    <style name="buttonInfo" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="backgroundTint">@color/md_theme_light_secondary</item>
+        <item name="iconTint">@color/white</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
 
 </resources>

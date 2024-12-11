@@ -9,8 +9,11 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.CountDownTimer
 import android.os.Handler
 import android.view.View
 import android.view.animation.Animation
@@ -28,6 +31,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -76,6 +80,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     var posicionSelectedCambio = -1
     lateinit var adaptadorNuevoPicto: AdaptadorNuevoPicto
 
+    var countDownTimer: CountDownTimer? = null
 //    var speechInProgress = false
 
     var imprevistos = ArrayList<Int>()
@@ -173,13 +178,18 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
     fun mostrarPlan(context: Context?) {
         _pasosCompletados.value = ArrayList()
-        //check if there is a plan for the selected date with visibility 1
-        val check = evento.checkEventosDia(idUsuarioTEA, selectedDate, context)
+        val idUsuarioEvento = if(idUsuarioTEA != ""){ //TODO: Tecnicamente no es necesario hacer esto ya que siempre va a ser idUsuarioTEA o se va a proporcionar los pictogramas si es idUsuario
+            idUsuarioTEA
+        }else{
+            idUsuario
+        }
+
+        val check = evento.checkEventosDia(idUsuarioEvento, selectedDate, context)
 
         if(check > -1){
             //existe un evento visible para este dia
-            evento = evento.obtenerEventoPlan(idUsuarioTEA, selectedDate, context)
-            listaPictogramas = idUsuario.let { plan.mostrarPlanificacion(it, evento.id.toString(), context, Locale.getDefault().language) } as ArrayList<Pictograma>
+            evento = evento.obtenerEventoPlan(idUsuarioEvento, selectedDate, context)
+            listaPictogramas = idUsuarioEvento.let { plan.mostrarPlanificacion(it, evento.id.toString(), context, Locale.getDefault().language) } as ArrayList<Pictograma>
             tituloPlan = evento.nombre.toString()
 
             for (pictogram in listaPictogramas) {
@@ -317,7 +327,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             progress.visibility = View.VISIBLE
             duracionText.visibility = View.VISIBLE
             val time = CommonUtils.formatTimeSeconds(listaPictogramas[posicion].duracion.toString())
-            adaptador.startTimer(time.toLong() * 1000, progress, duracionText)
+            startTimerDialog(time.toLong() * 1000, progress, duracionText)
         } else {
             progress.visibility = View.GONE
             duracionText.visibility = View.GONE
@@ -337,7 +347,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             textoHistoria.text = listaPictogramas[posicion].historia
             historia.visibility = View.VISIBLE
             if (prefs.getString("imagenUsuarioTEA", "") === "") {
-                avatarHistoria.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+                avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
             } else {
                 avatarHistoria.setImageURI(Uri.parse(prefs.getString("imagenUsuarioTEA", "")))
             }
@@ -371,6 +381,9 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
         btnSiguiente?.setOnClickListener {
             recyclerView.findViewHolderForAdapterPosition(posicion + 1)?.itemView?.performClick()
+            if(listaPictogramas[posicion + 1].duracion.toString() != "null"){
+                startTimerDialog(CommonUtils.formatTimeSeconds(listaPictogramas[posicion + 1].duracion.toString()).toLong() * 1000, progress, duracionText)
+            }
             dialog.dismiss()
         }
 
@@ -386,11 +399,15 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             buttonEntretenimiento.visibility = View.GONE
         }
 
-       /* if (listaPictogramas[posicion].categoria == 9 || listaPictogramas[posicion].categoria == 8) {
-            animacionesConfeti(context, listaPictogramas[posicion].categoria)
-        }*/
+        if(adaptador.imprevistos.contains(posicion)){
+            _pasosCompletados.value?.add(posicion-1)
+            _pasosCompletados.value?.add(posicion)
+            }
+        else{
+            _pasosCompletados.value?.add(posicion)
+        }
 
-        _pasosCompletados.value?.add(posicion)
+
         _pasosCompletados.postValue(_pasosCompletados.value)
         adaptador.notifyItemChanged(posicion, "marcar")
 
@@ -401,15 +418,22 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         currentDialog = dialog
 
         //Botón cerrar
-        btnCerrar.setOnClickListener { dialog.dismiss() }
+        btnCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            countDownTimer?.cancel()
+        }
+
         dialog.show()
     }
 
     override fun checkPosition(posicion: Int): Boolean {
         return if(_pasosCompletados.value?.isEmpty()!!){
-            posicion == 0
+            posicion == 0 || imprevistos.contains(posicion)
         }else{
-            _pasosCompletados.value?.last()!! + 1 == posicion
+            _pasosCompletados.value?.last()!! + 1 == posicion || (_pasosCompletados.value?.last()!!+2  == posicion && imprevistos.contains(posicion))
         }
     }
 
@@ -524,6 +548,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
         buttonGuardar.setOnClickListener {
              adaptador.countDownTimer?.cancel()
+            // if time is more than 1 minute, update the progressbar color
+             if(timeSelected + adaptador.timeLeft > 60000){
+                 progressBar.progressDrawable.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN) //poner esto bien, ahora mismo es un apañño
+             }
              adaptador.startTimer(timeSelected + adaptador.timeLeft, progressBar,  duracionText)
              dialog.dismiss()
         }
@@ -534,6 +562,28 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
 
         dialog.show()
+    }
+
+    private fun startTimerDialog(time : Long, progressBar: ProgressBar, duracionText: TextView){
+        countDownTimer = object : CountDownTimer(time, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                progressBar.progress = ((millisUntilFinished / 1000).toFloat() / (time / 1000).toFloat() * 100).toInt()
+                val hours = millisUntilFinished / 3600000
+                val minutes = (millisUntilFinished % 3600000) / 60000
+                val seconds = (millisUntilFinished % 60000) / 1000
+                if(hours == 0L){
+                    duracionText.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+                }else{
+                    duracionText.text = String.format(Locale.getDefault(), "%02d:%02d", hours, minutes)
+                }
+            }
+
+            override fun onFinish() {
+                countDownTimer?.cancel()
+            }
+        }
+        countDownTimer!!.start()
     }
 
 

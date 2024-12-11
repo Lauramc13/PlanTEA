@@ -66,6 +66,7 @@
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
+        app:strokeWidth="0dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="@+id/recycler_actividades"
         app:layout_constraintStart_toStartOf="@+id/recycler_actividades">

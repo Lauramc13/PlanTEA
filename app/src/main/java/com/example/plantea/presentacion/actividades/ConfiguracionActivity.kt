@@ -252,8 +252,8 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         imageActividad = frame.findViewById(R.id.imagenActividad)
 
         buttonGuardar.setOnClickListener {
-            val name = frame.findViewById<TextInputLayout>(R.id.txt_NameUsuario).editText?.text.toString()
-            val nameObjeto = frame.findViewById<TextInputLayout>(R.id.txt_NameActividad).editText?.text.toString()
+            val name = frame.findViewById<TextInputLayout>(R.id.txt_NameUsuario).editText?.text.toString().uppercase()
+            val nameObjeto = frame.findViewById<TextInputLayout>(R.id.txt_NameActividad).editText?.text.toString().uppercase()
             val idUsuario = prefs.getString("idUsuario", "")
             val usuario = Usuario()
             //añadir boton para indicar que se quiere poner un objeto

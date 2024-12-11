@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListener, AdaptadorPictogramaEntretenimiento.OnItemSelectedListener, AdaptadorNuevoPicto.OnItemSelectedListener {
+class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListener, AdaptadorNuevoPicto.OnItemSelectedListener {
 
     var identificadorCategoria : Int = -1
     var _closeFragment = SingleLiveEvent<Boolean>()
@@ -198,9 +198,6 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
         _nuevoPictoDialogCategoria.value = true
     }
 
-    override fun onItemSeleccionadoEntre(idPicto: Int) {
-        _idPictoEntretenimiento.value = idPicto
-    }
 
     override fun onNuevoPicto(picto: Pictograma?) {
         _nuevoPicto.value = picto
@@ -252,7 +249,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     }
 
 
-    fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
+  /*  fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
         return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(hora)
@@ -260,7 +257,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
             .setTheme(R.style.TimePicker)
             .setTitleText(getString(context, R.string.selecciona_hora))
             .build()
-    }
+    }*/
 
     fun configurarParametros(intent: Intent, context: Context) {
         opcionEditar = true

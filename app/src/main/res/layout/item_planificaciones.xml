@@ -8,9 +8,7 @@
         android:layout_width="match_parent"
         android:id="@+id/card_plan"
         android:layout_height="50dp"
-        style="@style/items"
-        app:strokeColor="?color"
-        app:strokeWidth="1.5dp"
+        style="@style/items_plan"
         app:cardCornerRadius="20dp"
         android:layout_marginBottom="10dp"
         app:cardElevation="0dp">
@@ -41,40 +39,50 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_downloadPDF"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="Copiar planificacion"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/svg_download" />
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_height="wrap_content"
+                    app:iconSize="25dp"
+                    app:iconTint="?colorOnSurface"
+                    app:strokeWidth="0dp"
+                    app:iconGravity="textStart"
+                    app:icon="@drawable/svg_download" />
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_copy"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="Copiar planificacion"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/svg_files" />
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_height="wrap_content"
+                    app:iconSize="23dp"
+                    app:iconTint="?colorOnSurface"
+                    app:strokeWidth="0dp"
+                    app:iconGravity="textStart"
+                    app:icon="@drawable/svg_files" />
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_edit"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="8dp"
-                    android:contentDescription="Editar planificacion"
-                    android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/svg_edit" />
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_height="wrap_content"
+                    app:iconSize="26dp"
+                    app:iconTint="?colorOnSurface"
+                    app:strokeWidth="0dp"
+                    app:iconGravity="textStart"
+                    app:icon="@drawable/svg_edit" />
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_delete"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="10dp"
-                    android:layout_marginEnd="5dp"
-                    android:contentDescription="Eliminar planificacion"
-                    android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/svg_trash" />
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_height="wrap_content"
+                    app:iconSize="25dp"
+                    app:iconTint="?colorOnSurface"
+                    app:strokeWidth="0dp"
+                    android:layout_marginEnd="10dp"
+                    app:iconGravity="textStart"
+                    app:icon="@drawable/svg_trash" />
 
             </LinearLayout>
 

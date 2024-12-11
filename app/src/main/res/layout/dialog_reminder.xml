@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,8 +23,7 @@
             android:layout_marginBottom="10dp"
             android:textSize="16sp" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/checkBox_min"
             android:layout_width="match_parent"
             android:layout_marginEnd="15dp"
@@ -35,11 +33,9 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/recordar_5min"
             android:textSize="14sp"
-            android:textColor="?colorOnSurface"
-            app:buttonTint="?colorPrimary" />
+            android:textColor="?colorOnSurface"/>
 
-        <androidx.appcompat.widget.SwitchCompat
-            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/checkBox_hora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,11 +44,9 @@
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:textSize="14sp"
-            android:textColor="?colorOnSurface"
-            app:buttonTint="?colorPrimary" />
+            android:textColor="?colorOnSurface" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/checkBox_dia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,10 +56,9 @@
             android:layout_marginStart="15dp"
             android:textSize="14sp"
             android:textColor="?colorOnSurface"
-            app:buttonTint="?colorPrimary" />
+            />
 
-        <androidx.appcompat.widget.SwitchCompat
-            style="@style/Widget.Material3.CompoundButton.MaterialSwitch"
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/checkBox_personalizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,8 +67,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
             android:textSize="14sp"
-            android:textColor="?colorOnSurface"
-            app:buttonTint="?colorPrimary" />
+            android:textColor="?colorOnSurface" />
 
 
         <Button

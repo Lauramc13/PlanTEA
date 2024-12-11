@@ -143,13 +143,12 @@
                     android:textSize="15sp" />
 
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_recordatorio"
-                    style="@style/switchCompact"
                     android:layout_width="match_parent"
                     android:layout_height="35dp">
 
-                </androidx.appcompat.widget.SwitchCompat>
+                </com.google.android.material.materialswitch.MaterialSwitch>
             </LinearLayout>
 
             <LinearLayout
@@ -181,13 +180,10 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_hacer_visible"
-                    android:checked="false"
-                    style="@style/Widget.AppCompat.CompoundButton.RadioButton">
-                </CheckBox>
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"/>
             </LinearLayout>
 
             <androidx.fragment.app.FragmentContainerView

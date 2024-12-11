@@ -63,7 +63,12 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
 
     fun configureUser(prefs : SharedPreferences){
         val userId = prefs.getString("idUsuario", "")
-        idUsuario = userId.toString()
+        val userIdTEA = prefs.getString("idUsuarioTEA", "")
+        idUsuario = if(userIdTEA == ""){
+            userId.toString()
+        }else{
+            userIdTEA.toString()
+        }
     }
 
     override fun onNuevoPicto(pictogram: Pictograma?) {
@@ -175,13 +180,25 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
 
             val guardar = dialog.findViewById<android.widget.Button>(com.example.plantea.R.id.btn_guardar)
 
-            val adapter = android.widget.ArrayAdapter(activity.applicationContext, com.example.plantea.R.layout.simple_spinner_item_idioma, eventos.map { it.nombre })
+            val eventosNombres : ArrayList<String> = ArrayList()
+            for (evento in eventos){
+                evento.nombre?.let { eventosNombres.add(it) }
+            }
+            eventosNombres.add(activity.getString(com.example.plantea.R.string.sin_evento))
+
+            val adapter = android.widget.ArrayAdapter(activity.applicationContext, com.example.plantea.R.layout.simple_spinner_item_idioma, eventosNombres)
             spinner.adapter = adapter
 
             //if evento already is configured, select it
-            spinner.setSelection(eventos.indexOfFirst { it.id.toString() == week[posicion].idEvento })
+            spinner.setSelection(eventos.indexOfFirst { it.id.toString() == week[posicion].idEvento})
 
             guardar.setOnClickListener {
+                if(spinner.selectedItemPosition == eventos.size){
+                    week[posicion].idEvento = null
+                    dialog.dismiss()
+                    return@setOnClickListener
+                }
+
                 val eventoSeleccionado = eventos[spinner.selectedItemPosition]
                 week[posicion].idEvento = eventoSeleccionado.id.toString()
                 dialog.dismiss()

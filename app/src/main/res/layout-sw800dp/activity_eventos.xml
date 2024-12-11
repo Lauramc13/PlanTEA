@@ -26,6 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:iconSize="32dp"
+        android:visibility="gone"
         app:icon="@drawable/svg_question" />
 
     <ImageView

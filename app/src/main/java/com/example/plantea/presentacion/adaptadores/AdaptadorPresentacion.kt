@@ -107,29 +107,25 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
     private fun typePictogram(position: Int, holder: ViewHolderPictogramas) {
         val color = if (CommonUtils.isDarkMode(context as Activity)) R.color.md_theme_dark_onSurface else R.color.md_theme_light_onBackground
+        val colorRed = if (CommonUtils.isDarkMode(context as Activity)) R.color.redCategoria else R.color.red
 
         val isMarked = listMarcados!!.contains(position)
         val isImprevisto = imprevistos.contains(position)
         val isTachado = tachados.contains(position)
-        val isEntretenimiento = listaPictogramas!![position].categoria == 4
 
         when {
             isImprevisto && isMarked -> // Caso: imprevisto y marcado
-                applyDisabledStyle(holder, R.drawable.card_cambio_disabled, R.color.red)
+                applyDisabledStyle(holder, R.drawable.card_cambio_disabled, colorRed)
             isTachado && isMarked -> // Caso: tachado y marcado
-                applyDisabledStyle(holder, R.drawable.card_cambio_disabled, R.color.red, true)
-            isImprevisto -> { // Caso: imprevisto no marcado
-                holder.card.setBackgroundResource(R.drawable.card_cambio)
-                holder.titulo.setTextColor(ContextCompat.getColor(context, R.color.red))
-            }
-            isEntretenimiento -> // Caso: entretenimiento
-                holder.card.setBackgroundResource(R.drawable.card_espera)
-            isMarked -> // Caso: marcado pero no imprevisto ni tachado
+                applyDisabledStyle(holder, R.drawable.card_cambio_disabled, colorRed, true)
+            isImprevisto && !isMarked -> // Caso: imprevisto y marcado
+                applyUnmarkedStyle(holder, R.drawable.card_cambio, colorRed)
+            isTachado && !isMarked -> // Caso: tachado y marcado
+                applyUnmarkedStyle(holder, R.drawable.card_cambio, colorRed, true)
+            isMarked -> // Caso: marcado pero no tachado
                 applyDisabledStyle(holder, R.drawable.card_disabled, color)
-            isTachado ->  // Caso: tachado pero no marcado
-                applyCambioStyle(holder, R.color.red)
             else ->  // Caso por defecto
-                applyDefaultStyle(holder, color)
+                applyUnmarkedStyle(holder, R.drawable.card_personalizado, color)
         }
     }
 
@@ -142,22 +138,13 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         holder.iconCambio.visibility = if (showIcons) View.VISIBLE else View.GONE
     }
 
-    private fun applyCambioStyle(holder: ViewHolderPictogramas, color: Int) {
-        holder.card.setBackgroundResource(R.drawable.card_cambio)
-        holder.titulo.setTextColor(ContextCompat.getColor(context, color))
-        holder.arrow.visibility = View.VISIBLE
-        holder.iconCambio.visibility = View.VISIBLE
-        holder.itemView.alpha = 0.7f
-    }
-
-    private fun applyDefaultStyle(holder: ViewHolderPictogramas, color: Int) {
-        holder.card.setBackgroundResource(R.drawable.card_personalizado)
-        holder.titulo.setTextColor(ContextCompat.getColor(context, color))
-        holder.arrow.visibility = View.GONE
-        holder.iconCambio.visibility = View.GONE
-        holder.itemView.alpha = 1f
+    private fun applyUnmarkedStyle(holder: ViewHolderPictogramas, backgroundRes: Int, color: Int, showIcons: Boolean = false) {
+        holder.card.setBackgroundResource(backgroundRes)
         holder.card.alpha = 1f
         holder.entretenimiento.alpha = 1f
+        holder.titulo.setTextColor(ContextCompat.getColor(context, color))
+        holder.arrow.visibility = if (showIcons) View.VISIBLE else View.GONE
+        holder.iconCambio.visibility = if (showIcons) View.VISIBLE else View.GONE
     }
 
     private fun entretenimiento(idEntretenimiento: Int, holder: ViewHolderPictogramas){
@@ -184,14 +171,11 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             holder.duracion.visibility = View.VISIBLE
             holder.tiempo.visibility = View.VISIBLE
             val parts = listaPictogramas!![position].duracion.toString().split(":")
-            val hours = parts[0].toInt()
-            val minutes = parts[1].toInt()
+            val minutes = parts[0].toInt()
+            val seconds = parts[1].toInt()
 
-            if(hours == 0){
-                holder.tiempo.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, 0)
-            }else{
-                holder.tiempo.text = String.format(Locale.getDefault(), "%02d:%02d", hours, minutes)
-            }
+            holder.tiempo.text = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+
         }else{
             holder.duracion.visibility = View.INVISIBLE
             holder.tiempo.visibility = View.INVISIBLE
@@ -218,7 +202,10 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
      fun startTimer(time : Long, progressBar: ProgressBar, duracionText: TextView){
         var firstTime = true
-
+         if (countDownTimer != null) {
+             countDownTimer!!.cancel()
+             countDownTimer = null
+         }
          countDownTimer = object : CountDownTimer(time, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
@@ -232,24 +219,35 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 }else{
                     duracionText.text = String.format(Locale.getDefault(), "%02d:%02d", hours, minutes)
                 }
-
-                if (millisUntilFinished < 60000 && firstTime){  // if time left is less than 1 minute then change the color of progress bar
+                // if time left is less than 1 minute then change the color of progress bar
+                if (millisUntilFinished < 60000 && firstTime) {
                     progressBar.progressDrawable.colorFilter = PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN)
-                    val toast = Toast.makeText(context, context.getString(R.string.toast_queda_poco_tiempo), Toast.LENGTH_SHORT)
-                    toast.setGravity(Gravity.CENTER, 0, 0)
-                    toast.show()
+                    customToast(context.getString(R.string.toast_queda_poco_tiempo), progressBar)
                     firstTime = false
                 }
             }
 
             override fun onFinish() {
-                countDownTimer!!.cancel()
+                countDownTimer?.cancel()
                 timeLeft = 0
-                Log.d("pruebas", "Se termino el temporizador evento")
-                Toast.makeText(context, context.getString(R.string.toast_se_termino_tiempo), Toast.LENGTH_SHORT).show()
+                customToast(context.getString(R.string.toast_se_termino_tiempo), progressBar)
             }
         }
         countDownTimer!!.start()
+    }
+
+    fun customToast(text: String, progressBar: ProgressBar?){
+        val toast = View.inflate(context, R.layout.toast_custom, null)
+        val toastText = toast.findViewById<TextView>(R.id.toast_text)
+        toastText.text = text
+        val toastDuration = Toast(context)
+        toastDuration.view = toast
+        val positionText = IntArray(2)
+        progressBar!!.getLocationOnScreen(positionText)
+        toastDuration.setGravity(Gravity.TOP or Gravity.START, positionText[0] - (progressBar.width*1.7).toInt(), positionText[1] - progressBar.height)
+
+        toastDuration.duration = Toast.LENGTH_SHORT
+        toastDuration.show()
     }
 
     //si el reproductor se para a medias es posible que no se haya terminado la animacion y el cardview se quede en un estado intermedio con alpha 0.7
@@ -291,6 +289,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var iconCambio: ImageView
         var arrow : ImageView
 
+
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
@@ -301,6 +300,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             tiempo = itemView.findViewById(R.id.duracionPictoTiempo)
             iconCambio = itemView.findViewById(R.id.iconCambio)
             arrow = itemView.findViewById(R.id.arrow)
+
             itemView.setOnClickListener(this)
             itemView.setOnLongClickListener(this)
 
@@ -316,41 +316,40 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         }
 
         override fun onClick(view: View) {
-            if(listMarcados!!.contains(bindingAdapterPosition)){
+            if(listMarcados!!.contains(bindingAdapterPosition) || tachados.contains(bindingAdapterPosition)){
                 return // no se hace nada
             }
-            val nextPosition =  listener?.checkPosition(bindingAdapterPosition)
-            if(nextPosition == true){
-               listener?.onItemSeleccionado(view.context, bindingAdapterPosition)
-                if(listaPictogramas!![bindingAdapterPosition].duracion.toString() != "null"){
-                    val time = CommonUtils.formatTimeSeconds(listaPictogramas!![bindingAdapterPosition].duracion.toString())
-                    startTimer(time.toLong() * 1000, duracion, tiempo)
-                    duracion.progressDrawable!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN)
+
+            if(listener?.checkPosition(bindingAdapterPosition) == true){
+               listener.onItemSeleccionado(view.context, bindingAdapterPosition)
+
+                //if the last pictogram is tachado, mark the last pictogram also
+                if(tachados.contains(bindingAdapterPosition-1)){
+                    notifyItemChanged(bindingAdapterPosition-1)
+
+                    if(bindingAdapterPosition >= 2 && listaPictogramas!![bindingAdapterPosition-2].duracion.toString() != "null"){
+                        if(countDownTimer != null){
+                            notifyItemChanged(bindingAdapterPosition-2, "desmarcarDuracion")
+                            timeLeft = 0
+                        }
+                    }
                 }
 
                 if(bindingAdapterPosition != 0 && listaPictogramas!![bindingAdapterPosition-1].duracion.toString() != "null"){
                     if(countDownTimer != null){
+                        //get item of bingeadapterposition -1
                         countDownTimer?.cancel()
+                        notifyItemChanged(bindingAdapterPosition-1, "desmarcarDuracion")
                         timeLeft = 0
                         countDownTimer = null
                     }
                 }
 
-              /*  if (position+1 < listaPictogramas!!.size && listaPictogramas!![position + 1].duracion.toString() != "null" ) {
-                    val time = CommonUtils.formatTimeSeconds(listaPictogramas!![position+1].duracion.toString())
-                    //duracion of the next pictogram
-                    val nextViewHolder = (itemView.parent as RecyclerView).findViewHolderForAdapterPosition(position + 1) as? ViewHolderPictogramas
-                    val duracionNext = nextViewHolder?.duracion
-                    startTimer(time.toLong() * 1000, duracionNext!!, nextViewHolder.tiempo)
-                    //primary color
-                    duracionNext.progressDrawable!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN)
-                }else{
-                    if(countDownTimer != null){
-                        countDownTimer?.cancel()
-                        countDownTimer = null
-                    }
-                }*/
-
+                if(listaPictogramas!![bindingAdapterPosition].duracion.toString() != "null"){
+                    val time = CommonUtils.formatTimeSeconds(listaPictogramas!![bindingAdapterPosition].duracion.toString())
+                    startTimer(time.toLong() * 1000, duracion, tiempo)
+                    duracion.progressDrawable!!.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_primary), PorterDuff.Mode.SRC_IN)
+                }
             }else{
                 Toast.makeText(view.context, R.string.toast_no_paso_anterior, Toast.LENGTH_SHORT).show()
             }

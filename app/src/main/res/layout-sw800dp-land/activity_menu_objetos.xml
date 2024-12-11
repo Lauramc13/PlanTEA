@@ -30,19 +30,19 @@
     <TextView
         android:id="@+id/lbl_planificacion"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.5"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
+        android:maxLines="1"
         android:text="@string/lbl_seleccionaActividad"
         android:textColor="?colorOnSurface"
         android:textSize="34sp"
-        android:maxLines="1"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
 
     <TextView
         android:id="@+id/lbl_planificacion2"
@@ -54,6 +54,7 @@
         android:text="@string/elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea"
         android:textColor="?colorOnSurface"
         android:textSize="22sp"
+        android:layout_marginTop="10dp"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

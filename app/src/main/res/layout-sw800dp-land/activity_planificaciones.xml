@@ -57,7 +57,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -70,8 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
         app:layout_constraintWidth_max="1200dp"
-        app:layout_constraintWidth_percent="0.85"
-        android:background="@drawable/bg_calendario">
+        app:layout_constraintWidth_percent="0.85">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout17"
@@ -79,7 +77,7 @@
             android:layout_weight="1"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:background="@drawable/bg_calendario">
+            android:background="@drawable/bg_popup_2">
 
             <TextView
                 android:id="@+id/textView13"
@@ -109,8 +107,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_planificar"
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
-                android:layout_width="250dp"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_baseline_add_24"
                 app:iconTint="?colorOnSurface"

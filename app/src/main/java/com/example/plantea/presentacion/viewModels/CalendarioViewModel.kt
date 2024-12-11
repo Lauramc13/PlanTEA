@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,6 +51,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var eventosDia = ArrayList<Evento>()
 
     var idUsuario = "0"
+    var idUsuarioPlanner = "0"
     val _fechaActual = MutableLiveData<String>()
     val _fechaSeleccionada = MutableLiveData<LocalDate>()
     val _changedEvent = SingleLiveEvent<Boolean>()
@@ -72,6 +75,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var plan = Planificacion()
     var isEditing = false
     var eventoIdEdited = 0
+
 
     //Notificaciones
     var checkBoxMin = false
@@ -164,7 +168,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
     }
 
-    fun nuevoEventoEdit(context: Context, cita: Evento, parent: Activity?) {
+    fun nuevoEventoEdit(context: Context, cita: Evento, parent: EventosPlanificadorActivity?) {
         if(checkBoxDia || checkBoxHora || checkBoxMin || checkBoxPer){
             cita.reminder = notificationTime(cita.fecha, LocalTime.parse(cita.hora))
         }
@@ -172,14 +176,19 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         if(isEditing){
             evento.editarEvento(context as Activity, cita)
             //change evento where id is the same
-            for (i in eventos.indices) {
-                if (eventos[i].id == eventoIdEdited) {
-                    eventos[i] = cita
+            for (i in parent?.viewModel?.eventos?.indices!!) {
+                if (parent.viewModel.eventos[i].id == eventoIdEdited) {
+                    parent.viewModel.eventos[i] = cita
                     break
                 }
             }
+            parent.listaEventos.adapter?.notifyItemChanged(parent.viewModel.posicionEvento)
         }else{
             cita.id = evento.crearEvento(context as Activity, cita)
+            parent?.viewModel?.eventos?.add(cita)
+            parent?.listaEventos?.adapter?.notifyItemInserted(parent.viewModel.eventos.size - 1)
+            parent?.findViewById<LinearLayout>(R.id.layout_no_eventos)?.visibility = View.GONE
+
         }
 
         crearNotificacion(context, planes[posicionPlan].getTitulo(), cita.id, cita.reminder?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli())
@@ -188,18 +197,8 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             programarVisibilidad(cita, context, cita.id)
         }
 
-        if(parent is EventosPlanificadorActivity){
-            parent.expand(false, CommonUtils.isPortrait(parent))
-            parent.viewModel.eventos[parent.viewModel.posicionEvento] = cita
-            parent.listaEventos.adapter?.notifyItemChanged(parent.viewModel.posicionEvento)
-        }else{
-            val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-            ft.replace(R.id.fragment_calendario, EventosFragment())
-            ft.addToBackStack(null)
-            ft.commit()
-            eventos.add(cita)
-            _changedEvent.value = true
-        }
+        parent?.expand(false, CommonUtils.isPortrait(parent), false)
+
     }
 
     private fun programarVisibilidad(cita: Evento, context: Context, id: Int){
@@ -283,15 +282,14 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         isDiaSeleccionado = true
     }
 
-    fun configureUser(prefs : android.content.SharedPreferences, context: Context){
-        val userId = prefs.getString("idUsuario", "")
+    fun configureUser(prefs : android.content.SharedPreferences){
+        val userId = if(prefs.getString("idUsuarioTEA", "") == null || prefs.getString("idUsuarioTEA", "") == ""){
+            prefs.getString("idUsuario", "")
+        } else{
+            prefs.getString("idUsuarioTEA", "")
+        }
         idUsuario = userId.toString()
-        eventos = userId?.let { evento.obtenerTodosEventos(it, context as Activity) } as ArrayList<Evento>
-    }
-
-    fun setIdUsario(prefs : android.content.SharedPreferences){
-        val userId = prefs.getString("idUsuario", "")
-        idUsuario = userId.toString()
+        idUsuarioPlanner = prefs.getString("idUsuario", "").toString()
     }
 
     fun createReloj(context: Context): MaterialTimePicker {
@@ -311,7 +309,11 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     }
 
     fun createCalendar(context: Context): MaterialDatePicker<Long> {
-        val datePicker = MaterialDatePicker.Builder.datePicker().setTheme(R.style.CalendarPicker).build()
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("")
+            .setTheme(R.style.CalendarPicker)
+            .build()
+
         datePicker.show((context as AppCompatActivity).supportFragmentManager, "DatePicker")
         return datePicker
     }
@@ -322,7 +324,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         planSeleccionado = planes[posicion].getId()
     }
 
-    fun editarClick(actividad: Activity, posicion: Int, startForResult: ActivityResultLauncher<Intent>){
+   /* fun editarClick(actividad: Activity, posicion: Int, startForResult: ActivityResultLauncher<Intent>){
         val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].getId(), Locale.getDefault().language, idUsuario) as java.util.ArrayList<Pictograma>
         val intent = Intent(actividad, CrearPlanActivity::class.java)
         intent.putExtra("identificador", planes[posicion].getId())
@@ -332,7 +334,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
         }
         startForResult.launch(intent)
-    }
+    }*/
 
     fun exportEventCalendar(posicion: Int): Intent {
         val date = CalendarioUtilidades.fechaSeleccionada
