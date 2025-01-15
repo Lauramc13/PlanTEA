@@ -42,7 +42,6 @@ class EventosPlanificadorViewModel: ViewModel(), AdaptadorPictogramaEntretenimie
     val _fechaActual = MutableLiveData<String>()
     val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
 
-
     fun backCallBack(context: Context): OnBackPressedCallback {
         val callback = object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {

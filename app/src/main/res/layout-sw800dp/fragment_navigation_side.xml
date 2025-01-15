@@ -77,7 +77,6 @@
             android:layout_marginStart="10dp"
             android:fontFamily="@font/roboto_medium"
             android:gravity="center"
-            android:text="asf"
             android:textColor="?colorOnSurfaceVariant"
             android:visibility="gone" />
     </LinearLayout>

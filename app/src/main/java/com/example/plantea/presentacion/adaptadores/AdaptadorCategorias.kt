@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -13,13 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Categoria
+import com.example.plantea.presentacion.actividades.CommonUtils
 
 class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorCategorias.ViewHolderCategorias>() {
     lateinit var context: Context
 
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, context: Context)
-        fun addCategoria(view: View?)
+        fun addCategoria(view: View?, activity: Activity)
         fun borrarCategoria(posicion: Int, categoria: Int, view: View?)
 
     }
@@ -54,23 +56,11 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
                 holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_theme_dark_onSurfaceVariant))
             }
         }else{
-            val color = getColor(listaCategorias!![position].getColor()!!)
             val darkColor = getColorDark(listaCategorias!![position].getColor()!!)
 
             holder.borrar.setColorFilter(ContextCompat.getColor(context, darkColor), PorterDuff.Mode.SRC_IN)
-            holder.card.setCardBackgroundColor(ContextCompat.getColor(context, color))
+            holder.card.setCardBackgroundColor(CommonUtils.getColor(context, listaCategorias!![position].getColor()!!))
             holder.titulo.setTextColor(ContextCompat.getColor(context, R.color.md_theme_light_onSurface))
-        }
-    }
-
-    private fun getColor(color: String): Int {
-        return when(color) {
-            "blue" -> R.color.blueCategoria
-            "green" -> R.color.greenCategoria
-            "purple" -> R.color.purpleCategoria
-            "pink" -> R.color.pinkCategoria
-            "yellow" -> R.color.yellowCategoria
-            else -> R.color.md_theme_light_surfaceVariant
         }
     }
 
@@ -115,7 +105,8 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
             val posicion = bindingAdapterPosition
 
             if(posicion == listaCategorias!!.size-1){
-                listener?.addCategoria(view)
+                //pass the activity
+                listener?.addCategoria(view, view!!.context as Activity)
             } else {
                 listener?.onItemSeleccionado(listaCategorias!![posicion].getCategoria(), view!!.context)
             }

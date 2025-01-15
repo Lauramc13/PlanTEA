@@ -74,7 +74,7 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/str_traducir"
                 android:textAllCaps="true"

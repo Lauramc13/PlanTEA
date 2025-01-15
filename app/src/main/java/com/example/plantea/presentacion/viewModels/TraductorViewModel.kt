@@ -193,7 +193,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                 tituloString = ""
             }
 
-            CommonUtils.guardarPDF(context, tituloString.uppercase(), listaPictogramas)
+            CommonUtils.guardarPDF(context, tituloString, listaPictogramas)
             CommonUtils.hideKeyboard(context, titulo)
             dialog.dismiss()
         }

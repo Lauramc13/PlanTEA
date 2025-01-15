@@ -129,9 +129,9 @@
 
             <LinearLayout
                 android:id="@+id/layout_no_planificaciones"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.35"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintHeight_percent="0.26"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -140,13 +140,11 @@
                 android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginEnd="80dp"
-                    android:src="@drawable/svg_neutral_face"
-                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/svg_plan3"
+                    android:layout_marginBottom="10dp"
                     android:scaleType="fitXY"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true" />

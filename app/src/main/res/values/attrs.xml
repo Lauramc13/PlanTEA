@@ -42,5 +42,7 @@
     <attr name="colorRedImportante" format="reference" />
 
     <attr name="colorHalfWhite" format="reference" />
+    <attr name="materialButtonToggleGroup" />
+    <attr name="materialButtonChipGroup" />
 
 </resources>

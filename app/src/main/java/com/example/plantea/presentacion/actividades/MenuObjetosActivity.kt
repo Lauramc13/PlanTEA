@@ -3,6 +3,7 @@ package com.example.plantea.presentacion.actividades
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
@@ -11,8 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
 
 class MenuObjetosActivity : AppCompatActivity() {
@@ -21,10 +24,7 @@ class MenuObjetosActivity : AppCompatActivity() {
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
     private var isFromMain = false
-
-    private var uri : Uri? = null
     val usuario = Usuario()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +42,6 @@ class MenuObjetosActivity : AppCompatActivity() {
         isConfiguration = extras?.getBoolean("editPreferences") ?: false
         isFromMain = extras?.getBoolean("isFromMain") ?: false
 
-
         val btnSaltar : Button = findViewById(R.id.btn_saltar)
         if(isConfiguration){
             btnSaltar.text = getString(R.string.str_cancelar)
@@ -51,69 +50,18 @@ class MenuObjetosActivity : AppCompatActivity() {
         }
 
         btnSaltar.setOnClickListener{
-            if(isConfiguration) {
-                uri = null
-            }else{
-                val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-                val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val editor = prefs.edit()
-                editor.putString("imagenObjeto", uri.toString())
-                editor.apply()
-            }
-            next()
+            finish()
         }
 
         observers()
     }
 
     fun observers() {
-        viewModel._ruta.observe(this) {
-            if(isConfiguration || isFromMain){
-                val returnIntent = Intent()
-                returnIntent.putExtra("selectedImageActividad", uri.toString())
-                setResult(RESULT_OK, returnIntent)
-                finish()
-            }else{
-                val editor = prefs.edit()
-                editor.putString("imagenObjeto", it)
-                editor.apply()
-                viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
-                viewModel.imagenSeleccionada = true
-            }
-            next()
-        }
-    }
-
-    private fun setAvatarOnClickListenersOLD(avatarIds: List<String>) {
-        avatarIds.forEach { avatarId ->
-            val resources = applicationContext.resources
-            val packageName = applicationContext.packageName
-            val avatar = findViewById<CardView>(resources.getIdentifier(avatarId, "id", packageName))
-
-            avatar.setOnClickListener {
-                val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
-                uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val editor = prefs.edit()
-                if(isConfiguration) {
-                    editor.putString("imageObjetoConfig", uri.toString())
-                    editor.apply()
-                }else if(isFromMain){
-                    val returnIntent = Intent()
-                    returnIntent.putExtra("selectedImageActividad", uri.toString())
-                    setResult(RESULT_OK, returnIntent)
-                    finish()
-                }else{
-                    /*val idUsuario = prefs.getString("idUsuario", "")
-                    if (idUsuario != null) {
-                        val usuario = Usuario()
-                        usuario.aniadirImagenObjeto(uri.toString(), idUsuario,this@MenuObjetosActivity)
-                    }
-                    editor.putString("imagenObjeto", uri.toString())
-                    editor.apply()*/
-                    Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
-                }
-                next()
-            }
+        viewModel._imageSelected.observe(this) {
+            val returnIntent = Intent()
+            returnIntent.putExtra("selectedImageActividad", CommonUtils.bitmapToByteArray(viewModel.bitmap))
+            setResult(RESULT_OK, returnIntent)
+            finish()
         }
     }
 
@@ -125,30 +73,20 @@ class MenuObjetosActivity : AppCompatActivity() {
 
             avatar.setOnClickListener {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
-                uri = Uri.parse("android.resource://$packageName/$drawableId")
+                val image = ResourcesCompat.getDrawable(resources, drawableId, null) as BitmapDrawable
                 val returnIntent = Intent()
-                returnIntent.putExtra("selectedImageActividad", uri.toString())
+                returnIntent.putExtra("selectedImageActividad", CommonUtils.bitmapToByteArray(image.bitmap))
                 setResult(RESULT_OK, returnIntent)
                 finish()
             }
         }
     }
-    private fun next(){
-        if(!isConfiguration && !isFromMain){
-            val intent = Intent(applicationContext, ConfiguracionPictogramasActivity::class.java)
-            //intent.putExtra("isFromManual", false)
-            startActivity(intent)
-        }
-        finish()
-    }
 
     private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
-                val inputStream = this.contentResolver?.openInputStream(uri)
-                viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value = CommonUtils.guardarImagen(this, "ObjetoGaleria", viewModel.bitmap!!)  // TODO: CAMBIAR
-
+                viewModel.bitmap = CommonUtils.uriToBitmap(this, uri)
+                viewModel._imageSelected.value = true
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }

@@ -9,7 +9,6 @@ import java.io.Serializable
 
 class GestionPictogramas : Serializable {
     private var listaPictogramas: ArrayList<Pictograma>? = null
-    private var listaConsultas: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
 
     // fun listarPictogramas(actividad: Activity?, idcategoria: Int): ArrayList<Pictograma> {

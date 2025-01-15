@@ -26,7 +26,6 @@ class Categoria {
         this.color = color
     }
 
-
     fun obtenerCategoria(context: Context, nombre: String?, language: String): Int {
         return gestorCategorias.obtenerIdCategoria(context, nombre, language)
     }

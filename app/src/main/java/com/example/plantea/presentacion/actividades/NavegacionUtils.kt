@@ -29,6 +29,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -120,7 +122,7 @@ class NavegacionUtils {
                         }else{
                             editor.putString("idUsuarioTEA", usersTEA[0].id)
                             editor.putString("nombreUsuarioTEA", usersTEA[0].name)
-                            editor.putString("imagenUsuarioTEA", usersTEA[0].imagen)
+                            editor.putString("imagenUsuarioTEA", CommonUtils.bitmapToByteArray(usersTEA[0].imagen!!).toPreservedString)
                             editor.putString("configPictogramas", usersTEA[0].configPictograma)
                             context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
                         }
@@ -174,10 +176,11 @@ class NavegacionUtils {
         textoRol = vista.findViewById(R.id.textRol)
         val image = prefs.getString("imagenUsuarioTEA", "")
         if(image == ""){
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+            iconoRol.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray))
+            textoRol.text = prefs.getString("nombrePlanificador", "")
         }else{
-            iconoRol.setImageURI(Uri.parse(image))
-
+            iconoRol.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenUsuarioTEA", "")!!.toPreservedByteArray))
+            textoRol.text = prefs.getString("nombreUsuarioTEA", "")
         }
     }
 
@@ -187,7 +190,8 @@ class NavegacionUtils {
             EventosActivity::class.java -> R.id.planificacion
             EventosPlanificadorActivity::class.java -> R.id.planificacion
             TraductorActivity::class.java -> R.id.traductor
-            // CalendarioActivity::class.java -> R.id.calendar
+           // CalendarioActivity::class.java -> R.id.calendario
+            CalendarioMensualActivity::class.java -> R.id.calendario
             ActividadActivity::class.java -> R.id.actividades
             SemanaActivity::class.java -> R.id.calendario
             PlanificacionesActivity::class.java -> R.id.planificacion
@@ -200,10 +204,9 @@ class NavegacionUtils {
     private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>, isPlanificador: Boolean): Boolean {
         var targetActivityClass = when (itemId) {
             R.id.home -> MainActivity::class.java
-//            R.id.calendar -> CalendarioActivity::class.java
             R.id.actividades -> ActividadActivity::class.java
             R.id.traductor -> TraductorActivity::class.java
-            R.id.calendario -> SemanaActivity::class.java
+            R.id.calendario -> CalendarioMensualActivity::class.java
             R.id.planificacion -> if(isPlanificador) EventosPlanificadorActivity::class.java else EventosActivity::class.java
             else -> return true
         }
@@ -233,14 +236,12 @@ class NavegacionUtils {
         }
 
         if(itemId == R.id.calendario){
-
             val inflater = LayoutInflater.from(fragment.requireContext())
             val popupView = inflater.inflate(R.layout.popup_menu_calendario, null)
 
             popupView.findViewById<MaterialCardView>(R.id.item_mes).setOnClickListener {
-//                val intent = Intent(fragment.requireContext().applicationContext, targetActivityClass)
-//                fragment.requireContext().startActivity(intent)
-                Toast.makeText(fragment.requireContext(), "Funcionalidad no disponible", Toast.LENGTH_SHORT).show()
+                val intent = Intent(fragment.requireContext().applicationContext, targetActivityClass)
+                fragment.requireContext().startActivity(intent)
             }
 
             popupView.findViewById<MaterialCardView>(R.id.item_semana).setOnClickListener {
@@ -253,7 +254,7 @@ class NavegacionUtils {
             if (fragment.requireContext().resources.configuration.orientation == 1) {
                 //width of the screen
                 val width = fragment.requireContext().resources.displayMetrics.widthPixels/5
-                popupWindow.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width+10, 160)
+                popupWindow.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width-30, 160)
             } else {
                 popupWindow.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
             }

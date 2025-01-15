@@ -65,9 +65,9 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
         }
 
         val color = if(context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES){
-            getColorDark(context, listaDiaSemana?.get(position)?.color)
+            CommonUtils.getColorDark(context, listaDiaSemana?.get(position)?.color)
         }else{
-             getColor(context, listaDiaSemana?.get(position)?.color)
+            CommonUtils.getColor(context, listaDiaSemana?.get(position)?.color)
         }
 
         val drawable = holder.itemView.background as LayerDrawable
@@ -105,31 +105,7 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
         notifyItemChanged(posicion)
     }
 
-    private fun getColor(context: Context, color: String?): Int {
-        return when(color) {
-            "red" -> ContextCompat.getColor(context, R.color.redCategoria)
-            "orange" -> ContextCompat.getColor(context, R.color.orangeCategoria)
-            "yellow" -> ContextCompat.getColor(context, R.color.yellowCategoria)
-            "green" -> ContextCompat.getColor(context, R.color.greenCategoria)
-            "blue" -> ContextCompat.getColor(context, R.color.blueCategoria)
-            "purple" -> ContextCompat.getColor(context, R.color.purpleCategoria)
-            "pink" -> ContextCompat.getColor(context, R.color.pinkCategoria)
-            else ->  ContextCompat.getColor(context, R.color.white)
-        }
-    }
 
-    private fun getColorDark(context: Context, color: String?): Int {
-        return when(color) {
-            "red" -> ContextCompat.getColor(context, R.color.DarkredCategoria)
-            "orange" -> ContextCompat.getColor(context, R.color.DarkorangeCategoria)
-            "yellow" -> ContextCompat.getColor(context, R.color.DarkyellowCategoria)
-            "green" -> ContextCompat.getColor(context, R.color.DarkgreenCategoria)
-            "blue" -> ContextCompat.getColor(context, R.color.DarkblueCategoria)
-            "purple" -> ContextCompat.getColor(context, R.color.DarkpurpleCategoria)
-            "pink" -> ContextCompat.getColor(context, R.color.DarkpinkCategoria)
-            else ->  ContextCompat.getColor(context, R.color.md_theme_dark_background2)
-        }
-    }
 
     inner class ViewHolderItemSemana(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imagen: ImageView

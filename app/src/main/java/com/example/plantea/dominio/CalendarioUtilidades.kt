@@ -15,6 +15,17 @@ object CalendarioUtilidades {
     }
 
     @JvmStatic
+    fun formatoFecha(fecha: LocalDate): String {
+        return if (Locale.getDefault().language == "es") {
+            val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("es", "ES"))
+            fecha.format(formato)
+        } else {
+            val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("en", "US"))
+            fecha.format(formato)
+        }
+    }
+
+    @JvmStatic
     fun formatoFechaEvento(fecha: LocalDate): String {
         return if(Locale.getDefault().language == "es") {
             val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("es", "ES"))
@@ -72,13 +83,5 @@ object CalendarioUtilidades {
             fecha.format(formato)
         }
     }
-
-    @JvmStatic
-    fun formatoDiaEventoOLD(fecha: LocalDate): String {
-        val formato = DateTimeFormatter.ofPattern("EEEE  d", Locale("es", "ES"))
-
-        return fecha.format(formato)
-    }
-
 
 }

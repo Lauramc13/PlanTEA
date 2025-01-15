@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/md_theme_light_onPrimary</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/icon_launcher</item>
@@ -67,6 +67,8 @@
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/Widget.App.Snackbar.TextView</item>
         <item name="stroke2">@color/md_theme_light_surfaceVariant</item>
+        <item name="materialButtonToggleGroup">@style/materialButtonToggleGroup</item>
+
 
         <item name="colorRed">@color/redCategoria</item>
         <item name="colorOrange">@color/orangeCategoria</item>
@@ -182,6 +184,7 @@
         <item name="cornerSizeBottomRight">10dp</item>
         <item name="boxBackgroundColor">@color/white</item>
     </style>
+
 
     <style name="cornerRadiusEvento" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="backgroundTint">@color/white</item>
@@ -401,6 +404,19 @@
         <item name="backgroundTint">@color/white</item>
         <item name="iconTint">@color/md_theme_light_secondary</item>
         <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="materialButtonToggleGroup" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">@color/button_toggle_color</item>
+        <item name="android:textColor">@color/button_toggle_color_text</item>
+    </style>
+
+    <style name="materialButtonChipGroup" parent="Widget.Material3.Chip.Filter">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="chipBackgroundColor">@color/button_chip_color</item>
+        <item name="chipIcon">@drawable/svg_check</item>
+        <item name="textStartPadding">8dp</item>
     </style>
 
 </resources>

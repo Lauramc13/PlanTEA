@@ -22,7 +22,7 @@
             android:paddingEnd="70dp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="10dp"
-            android:text="Eliminar categoría"
+            android:text="@string/eliminar_categor_a"
             android:textColor="?colorOnSurface"
             android:textSize="22sp" />
 
@@ -34,7 +34,7 @@
             android:gravity="center"
             android:paddingStart="70dp"
             android:paddingEnd="70dp"
-            android:text="¿Seguro que desesas eliminar esta categoría?"
+            android:text="@string/seguro_que_desesas_eliminar_esta_categor_a"
             android:textColor="?colorOnSurface"
             android:textSize="17sp"
             android:maxLines="2"
@@ -52,7 +52,7 @@
                 android:textAllCaps="true"
                 android:layout_margin="20dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="ELIMINAR CATEGORÍA"
+                android:text="@string/eliminar_categor_a"
                 />
 
     </LinearLayout>

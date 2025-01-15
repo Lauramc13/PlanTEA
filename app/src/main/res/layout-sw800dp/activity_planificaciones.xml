@@ -20,7 +20,6 @@
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/svg_blob" />
@@ -29,7 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintWidth_percent="0.85"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
@@ -93,24 +92,22 @@
 
             <LinearLayout
                 android:id="@+id/layout_no_planificaciones"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.55"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintHeight_percent="0.15"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginEnd="80dp"
-                    android:src="@drawable/svg_neutral_face"
-                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/svg_plan3"
+                    android:layout_marginBottom="10dp"
                     android:scaleType="fitXY"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true" />

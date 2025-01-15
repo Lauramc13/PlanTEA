@@ -29,8 +29,8 @@ class ActividadAdapter(private val positionUser: Int, private val actividades: A
     }
 
     override fun onBindViewHolder(holder: ViewHolderAcitividades, position: Int) {
-        if(!actividades!![position].imagen.isNullOrEmpty()){
-            holder.imagen.setImageURI(Uri.parse(actividades[position].imagen))
+        if(actividades!![position].imagen != null){
+            holder.imagen.setImageBitmap(actividades[position].imagen)
         }
     }
 

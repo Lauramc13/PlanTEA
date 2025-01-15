@@ -17,27 +17,12 @@ import com.example.plantea.presentacion.actividades.MenuObjetosActivity
 import com.example.plantea.presentacion.actividades.TutorialActivity
 
 class MenuAvataresViewModel : ViewModel() {
-    var imagenSeleccionada : Boolean = false
     var idUsuario : String = ""
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     //val _image = MutableLiveData<Uri?>()
     var _ruta : MutableLiveData<String> = SingleLiveEvent()
     var bitmap : Bitmap? = null
-
-    fun determineNextScreenPlan(prefs: SharedPreferences): Class<out AppCompatActivity> {
-        return when {
-            prefs.getBoolean("info_usuario", false) -> MenuAvataresTEActivity::class.java
-            prefs.getBoolean("info_objeto", false) -> MenuObjetosActivity::class.java
-            else -> ConfiguracionPictogramasActivity::class.java
-        }
-    }
-
-    fun determineNextScreenTEA(prefs: SharedPreferences): Class<out AppCompatActivity> {
-        return when {
-            prefs.getBoolean("info_objeto", false) -> MenuObjetosActivity::class.java
-            else -> ConfiguracionPictogramasActivity::class.java
-        }
-    }
+    var _imageSelected = MutableLiveData<Boolean>()
 
     @SuppressLint("IntentReset")
     fun abrirGaleria() {

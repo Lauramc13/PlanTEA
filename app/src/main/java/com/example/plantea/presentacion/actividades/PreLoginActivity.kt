@@ -76,7 +76,6 @@ class PreLoginActivity : AppCompatActivity(){
         }
 
         signin?.setOnClickListener {
-            Toast.makeText(this, R.string.toast_iniciando_sesion, Toast.LENGTH_SHORT).show()
             signInGoogle()
         }
 

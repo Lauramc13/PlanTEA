@@ -3,10 +3,13 @@ package com.example.plantea.presentacion.viewModels
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.drawable.BitmapDrawable
 import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.actividades.EncryptionUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -65,20 +68,10 @@ class PreLoginViewModel: ViewModel() {
         editor.putString("nombrePlanificador", user.name)
         editor.putString("nombreUsuarioPlanificador", user.username)
         editor.putString("email", user.email)
-        //editor.putString("nombreUsuarioTEA", user.nameTEA)
         editor.putString("configPictogramas", user.configPictograma)
 
-
-      /*  if (user.nameTEA != "") {
-            editor.putBoolean("info_usuario", true)
-        }*/
-        editor.putString("imagenPlanificador", user.imagen)
-     //   editor.putString("imagenUsuarioTEA", user.imagenTEA)
-       // editor.putString("nombreObjeto", user.objeto)
-       /* if(user.objeto != "") {
-            editor.putBoolean("info_objeto", true)
-        }
-        editor.putString("imagenObjeto", user.imagenObjeto)*/
+        val rutaPlanificador = CommonUtils.bitmapToByteArray(user.imagen)
+        editor.putString("imagenPlanificador", rutaPlanificador.toPreservedString)
         editor.apply()
     }
 }

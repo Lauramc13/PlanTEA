@@ -65,46 +65,48 @@
         app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
         app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
 
-        <LinearLayout
-            android:id="@+id/colors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@+id/txt_Titulo"
-            app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+    <LinearLayout
+        android:id="@+id/colors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/txt_Titulo"
+        app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab1"
-                style="@style/buttonsColorsCategorias"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:backgroundTint="@color/purpleCategoria" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fab1"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:strokeWidth="0dp"
+            app:cornerRadius="15dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?colorOnSurface"
+            app:backgroundTint="@color/purpleCategoria" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab2"
-                style="@style/buttonFAB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:backgroundTint="@color/pinkCategoria" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fab2"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:strokeWidth="0dp"
+            app:cornerRadius="15dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?colorOnSurface"
+            app:backgroundTint="@color/pinkCategoria" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab3"
-                style="@style/buttonsColorsCategorias"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:backgroundTint="@color/greenCategoria" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fab3"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:strokeWidth="0dp"
+            app:cornerRadius="15dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?colorOnSurface"
+            app:backgroundTint="@color/greenCategoria" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab4"
-                style="@style/buttonsColorsCategorias"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:backgroundTint="@color/yellowCategoria" />
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/colors2"
@@ -113,21 +115,38 @@
         app:layout_constraintStart_toStartOf="@+id/colors"
         app:layout_constraintTop_toBottomOf="@+id/colors">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab5"
-            style="@style/buttonsColorsCategorias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:backgroundTint="#CDEDFF" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fab4"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:strokeWidth="0dp"
+            app:cornerRadius="15dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?colorOnSurface"
+            app:backgroundTint="@color/yellowCategoria" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fab5"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:strokeWidth="0dp"
+            app:cornerRadius="15dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?colorOnSurface"
+            app:backgroundTint="#CDEDFF" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fab6"
-            style="@style/buttonsColorsCategorias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:backgroundTint="?color" />
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            app:strokeWidth="0dp"
+            app:cornerRadius="15dp"
+            app:iconGravity="textStart"
+            style="@style/Widget.Material3.Button.IconButton"
+            app:iconTint="?colorOnSurface"
+            app:backgroundTint="?color" />
     </LinearLayout>
 
 
@@ -141,7 +160,7 @@
         android:textColor="#203130"
         android:textSize="14sp"
         app:cornerRadius="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

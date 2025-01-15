@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteException
 import android.util.Log
 import com.example.plantea.dominio.Actividad
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils
 
 class ConectorBD(ctx: Context?) {
     private val dbHelper: BDSQLiteHelper
@@ -455,7 +456,7 @@ class ConectorBD(ctx: Context?) {
         }
     }
 
-    fun insertarUsuarioTEA(name: String?, imagen: String?, configPicto: String?, idUsuario: String?): String {
+    fun insertarUsuarioTEA(name: String?, imagen: ByteArray?, configPicto: String?, idUsuario: String?): String {
         val id = getNextGlobalId(db!!)
         val values = ContentValues().apply {
             put("id", id)
@@ -477,12 +478,13 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Insertar una actividad en la tabla de objetos*/
-    fun insertarActividad(name: String?, imagen: String?, idUsuarioTEA: String?): String? {
+    fun insertarActividad(name: String?, imagen: ByteArray?, idUsuarioTEA: String?): String? {
         val values = ContentValues().apply {
             put("name", name)
             put("imagen", imagen)
             put("id_usuario", idUsuarioTEA)
         }
+
         return try{
             (db?.insert("Actividad", null, values) ?: -1).toInt()
             val c = db!!.rawQuery("SELECT last_insert_rowid()", null)
@@ -502,6 +504,7 @@ class ConectorBD(ctx: Context?) {
     fun borrarActividad(idActividad: String?): Boolean {
         return try{
             db!!.execSQL("DELETE FROM Actividad WHERE id='$idActividad'")
+            db!!.execSQL("DELETE FROM RelacionCategoriaActividad WHERE id_actividad='$idActividad'")
             true
         }catch (e: Exception){
             Log.d("TAG", "Error al borrar la actividad")
@@ -510,7 +513,7 @@ class ConectorBD(ctx: Context?) {
     }
 
     /*Actualizar una actividad*/
-    fun actualizarActividad(idActividad: String?, name: String?, imagen: String?): Boolean {
+    fun actualizarActividad(idActividad: String?, name: String?, imagen: ByteArray?): Boolean {
         return try{
             db!!.execSQL("UPDATE Actividad SET name = '$name', imagen = '$imagen' WHERE id = '$idActividad'")
             true
@@ -520,21 +523,77 @@ class ConectorBD(ctx: Context?) {
         }
     }
 
+    fun addCategoriaActividad(idActividad: String?, idCategoria: String?): Boolean {
+        //update or insert into RelacionCategoriaActividad
+        return try{
+            db!!.execSQL("INSERT INTO RelacionCategoriaActividad (id_actividad, id_categoria) VALUES ('$idActividad', '$idCategoria')")
+            true
+        }catch (e: Exception){
+            Log.d("TAG", "Error al añadir la categoria a la actividad")
+            false
+        }
+    }
+
+    fun removeCategoriaActividad(idActividad: String?, idCategoria: String?): Boolean {
+        return try{
+            db!!.execSQL("DELETE FROM RelacionCategoriaActividad WHERE id_actividad = '$idActividad' AND id_categoria = '$idCategoria'")
+            true
+        }catch (e: Exception){
+            Log.d("TAG", "Error al borrar la categoria de la actividad")
+            false
+        }
+    }
+
     /*Obtener las actividades de un usuario*/
-    fun getActividades(idUsuario: String?): ArrayList<Actividad>? {
+    fun getActividades(idUsuario: String?, idCategoria: String?): ArrayList<Actividad>? {
         val actividades = ArrayList<Actividad>()
-        val cursor = db!!.rawQuery("SELECT * FROM Actividad WHERE id_usuario = '$idUsuario'", null)
+        // get actividades from idCategoria actividad(id, name, imagen, id_usuario) relacionCategoriaActividad(id_actividad, id_categoria)
+        val cursor = db!!.rawQuery("""
+        SELECT a.id, a.name, a.imagen, a.id_usuario, GROUP_CONCAT(rca.id_categoria) AS categorias
+        FROM actividad AS a
+        INNER JOIN relacionCategoriaActividad AS rca 
+        ON a.id = rca.id_actividad
+        WHERE a.id IN (SELECT id_actividad FROM relacionCategoriaActividad WHERE id_categoria = ?)
+        GROUP BY a.id """.trimIndent(), arrayOf(idCategoria))
         if (cursor.moveToFirst()) {
             do {
                 val actividad = Actividad()
                 actividad.id = cursor.getString(0)
                 actividad.name = cursor.getString(1)
-                actividad.imagen = cursor.getString(2)
+                actividad.imagen = CommonUtils.byteArrayToBitmap(cursor.getBlob(2))
                 actividad.idUsuario = cursor.getString(3)
+                actividad.idCategoria = ArrayList(cursor.getString(4)?.split(",") ?: emptyList())
+
                 actividades.add(actividad)
             } while (cursor.moveToNext())
         }
         cursor.close()
+        return actividades
+    }
+
+    fun getAllActividades(idUsuario: String?): ArrayList<Actividad>? {
+        val actividades = ArrayList<Actividad>()
+        val cursor = db!!.rawQuery(   """
+        SELECT a.id, a.name, a.imagen, a.id_usuario, GROUP_CONCAT(rca.id_categoria) AS categorias
+        FROM actividad AS a
+        LEFT JOIN relacionCategoriaActividad AS rca 
+        ON a.id = rca.id_actividad
+        WHERE a.id_usuario = ?
+        GROUP BY  a.id
+        """.trimIndent(), arrayOf(idUsuario))
+        if (cursor.moveToFirst()) {
+            do {
+                val actividad = Actividad()
+                actividad.id = cursor.getString(0)
+                actividad.name = cursor.getString(1)
+                actividad.imagen = CommonUtils.byteArrayToBitmap(cursor.getBlob(2))
+                actividad.idUsuario = cursor.getString(3)
+                actividad.idCategoria = ArrayList(cursor.getString(4)?.split(",") ?: emptyList())
+                actividades.add(actividad)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+
         return actividades
     }
 
@@ -591,27 +650,11 @@ class ConectorBD(ctx: Context?) {
 
     @SuppressLint("Range")
     /*Obtenemos los usuarios existentes con el email que tenemos*/
-    fun obtenerUsuarioExistente(email: String): Usuario {
-        val cursor = db!!.rawQuery("SELECT * from Usuario WHERE Usuario.email = '$email'", null)
-        val usuario: Usuario?
-        cursor.moveToFirst()
-
-        val username = cursor.getString(cursor.getColumnIndex("username"))
-        val name = cursor.getString(cursor.getColumnIndex("name"))
-       // val objeto = cursor.getString(cursor.getColumnIndex("objeto"))
-        val imagen = cursor.getString(cursor.getColumnIndex("imagen"))
-        //val nameTEA = cursor.getString(cursor.getColumnIndex("nameTEA"))
-        // val imagenTEA = cursor.getString(cursor.getColumnIndex("imagenTEA"))
-        //val imagenObjeto = cursor.getString(cursor.getColumnIndex("imagenObjeto"))
-       // val configPicto = cursor.getString(cursor.getColumnIndex("configPictogramas"))
-        //usuario = Usuario(name, email, username, objeto, imagen, nameTEA, imagenTEA, imagenObjeto, configPicto)
-        usuario = Usuario(name, email, username, imagen)
-
-        cursor.close()
-        return usuario
+    fun obtenerUsuarioExistente(email: String): Cursor {
+        return db!!.rawQuery("SELECT * from Usuario WHERE Usuario.email = '$email'", null)
     }
 
-    fun addImagen(image: String, idUsuario: String) {
+    fun addImagen(image: ByteArray?, idUsuario: String) {
         db!!.execSQL("UPDATE Usuario SET imagen ='$image' WHERE Usuario.id = '$idUsuario'")
     }
 
@@ -698,9 +741,13 @@ class ConectorBD(ctx: Context?) {
         db?.execSQL(query)
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: String, idUsuario: String?) {
-        val query = "UPDATE Usuario SET name = '$nombreUsuarioPlanificador', username = '$username', imagen = '$ruta' WHERE id = '$idUsuario'"
-        db?.execSQL(query)
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: ByteArray?, idUsuario: String?) {
+        val values = ContentValues().apply {
+            put("name", nombreUsuarioPlanificador)
+            put("username", username)
+            put("imagen", ruta)
+        }
+        db!!.update("Usuario", values, "id = ?", arrayOf(idUsuario))
     }
 
     fun checkCredentials(email: String, password: String): Boolean {
@@ -732,9 +779,7 @@ class ConectorBD(ctx: Context?) {
     fun guardarConfiguracionUsersTEA(user: Usuario, idUsuario: String?): Boolean {
         val values = ContentValues().apply {
             put("name", user.name)
-            put("imagen", user.imagen)
-           /* put("objeto", user.objeto)
-            put("imagenObjeto", user.imagenObjeto)*/
+            put("imagen", CommonUtils.bitmapToByteArray(user.imagen))
             put("configPictogramas", user.configPictograma)
             put("id_usuario", idUsuario)
         }
@@ -898,6 +943,73 @@ class ConectorBD(ctx: Context?) {
             db!!.execSQL("INSERT INTO PictogramaEvento (id_evento, id_pictograma, id_picto_entre) VALUES (?, ?, ?)", arrayOf(id, idPicto, idPictoEntre))
         }
         cursor.close()
+    }
+
+    //QUERIES DE CALENDARIO MENSUAL
+    fun obtenerDiaMes(idUsuario: String, fecha: String?): Cursor {
+        return db!!.rawQuery("SELECT titulo, fecha, imagen, color FROM DiaMes WHERE id_usuario = '$idUsuario' AND fecha LIKE '$fecha' ORDER BY fecha", null)
+    }
+
+    fun guardarDia(idUsuario: String, titulo: String?,  imagen: ByteArray?, color: String?, fecha: String?){
+        val cursor = db!!.rawQuery("SELECT id FROM DiaMes WHERE id_usuario = ? AND fecha = ?", arrayOf(idUsuario, fecha))
+        if (cursor.moveToFirst()) {
+            // Step 3: Update the pictograma_day if the entry exists
+            db!!.execSQL("UPDATE DiaMes SET titulo = ?, imagen = ?, color = ? WHERE id_usuario = ? AND fecha = ?", arrayOf(titulo, imagen, color, idUsuario, fecha))
+        } else {
+            // Step 4: Insert a new entry if it does not exist
+            db!!.execSQL("INSERT INTO DiaMes (id_usuario, fecha, titulo, imagen, color) VALUES (?, ?, ?, ?, ?)", arrayOf(idUsuario, fecha, titulo, imagen, color))
+        }
+        cursor.close()
+    }
+
+    fun borrarImagenDiaMes(idUsuario: String, fecha: String) {
+        db!!.execSQL("UPDATE DiaMes SET imagen = NULL WHERE id_usuario = ? AND fecha = ?", arrayOf(idUsuario, fecha))
+    }
+
+    fun borrarColorDiaMes(idUsuario: String, fecha: String) {
+        db!!.execSQL("UPDATE DiaMes SET color = NULL WHERE id_usuario = ? AND fecha = ?", arrayOf(idUsuario, fecha))
+    }
+
+    fun borrarDia(idUsuario: String, fecha: String) {
+        db!!.execSQL("DELETE FROM DiaMes WHERE id_usuario = ? AND fecha = ?", arrayOf(idUsuario, fecha))
+    }
+
+    fun editarDia(idUsuario: String, titulo: String?, imagen: ByteArray?, color: String?, fecha: String?) {
+        db!!.execSQL("UPDATE DiaMes SET titulo = ?, imagen = ?, color = ? WHERE id_usuario = ? AND fecha = ?", arrayOf(titulo, imagen, color, idUsuario, fecha))
+    }
+
+    fun crearCategoriaActividad(nombre: String?, idUsuario: String?): Int {
+        val values = ContentValues().apply {
+            put("titulo", nombre)
+            put("id_usuario", idUsuario)
+        }
+
+        return try{
+            val id = db?.insert("CategoriaActividad", null, values)?.toInt()
+            id ?: -1
+        }catch (e: Exception){
+            Log.d("TAG", "La categoria ya existe")
+            -1
+        }
+    }
+
+    fun borrarCategoriaActividad(idCategoria: String?, idUsuario: String?): Boolean {
+        db!!.execSQL("DELETE FROM CategoriaActividad WHERE id = '$idCategoria'")
+        db!!.execSQL("DELETE FROM RelacionCategoriaActividad WHERE id_categoria = '$idCategoria'")
+        return true
+    }
+
+    fun editarCategoriaActividad(idCategoria: String?, nombre: String?): Boolean {
+        db!!.execSQL("UPDATE CategoriaActividad SET titulo = '$nombre' WHERE id = '$idCategoria'")
+        return true
+    }
+
+    fun listarCategoriasActividad(idUsuario: String?): Cursor {
+        return db!!.rawQuery("SELECT * FROM CategoriaActividad WHERE id_usuario = '$idUsuario'", null)
+    }
+
+    fun obtenerIdCategoriaActividad(nombre: String?, idUsuario: String?): Cursor {
+        return db!!.rawQuery("SELECT id FROM CategoriaActividad WHERE titulo = ? AND id_usuario = ?", arrayOf(nombre, idUsuario))
     }
 
     companion object {

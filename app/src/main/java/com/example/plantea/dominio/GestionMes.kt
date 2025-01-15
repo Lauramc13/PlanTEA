@@ -1,0 +1,93 @@
+package com.example.plantea.dominio
+
+import android.app.Activity
+import android.graphics.BitmapFactory
+import com.example.plantea.persistencia.ConectorBD
+import com.example.plantea.presentacion.actividades.CommonUtils
+import java.time.LocalDate
+
+class GestionMes {
+
+    private var conectorBD: ConectorBD? = null
+
+//    fun obtenerConfigDias(idUsuario: String, days: MutableList<String>, activity: Activity?): ArrayList<DiaSemana> {
+//        conectorBD = ConectorBD(activity)
+//        conectorBD!!.abrir()
+//        val dias = ArrayList<DiaSemana>()
+//
+//        for(day in days){
+//            val dia = DiaSemana() // Create a new instance inside the loop
+//            dia.dia = day
+//            val cursor = conectorBD!!.obtenerConfigDias(idUsuario, day)
+//            if (cursor.moveToFirst()) {
+//                dia.imagen = CommonUtils.byteArrayToBitmap(cursor.getBlob(0))
+//                dia.color = cursor.getString(1)
+//                dia.idEvento = cursor.getString(2)
+//            }
+//            dias.add(dia)
+//        }
+//
+//        conectorBD!!.cerrar()
+//        return dias
+//    }
+
+    fun obtenerDiasMes(idUsuario: String, fecha: String?, activity: Activity?): ArrayList<DiaMes> {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+
+        val dias = ArrayList<DiaMes>()
+
+        val cursor = conectorBD!!.obtenerDiaMes(idUsuario, fecha)
+        for (i in 0 until cursor.count) {
+            cursor.moveToPosition(i)
+            val dia = DiaMes()
+            dia.titulo = cursor.getString(0)
+            dia.fecha = LocalDate.parse(cursor.getString(1))
+            if (cursor.getBlob(2) != null) {
+                val img = cursor.getBlob(2)
+                dia.imagen = BitmapFactory.decodeByteArray(img, 0, img.size)
+            }
+            dia.color = cursor.getString(3)
+            dias.add(dia)
+        }
+
+        conectorBD!!.cerrar()
+        return dias
+    }
+
+    fun guardarDia(idUsuario: String, titulo: String?,  imagen: ByteArray?, color: String?, fecha: String?, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.guardarDia(idUsuario, titulo, imagen, color, fecha)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarImagen(idUsuario: String, fecha: String, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarImagenDiaMes(idUsuario, fecha)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarColor(idUsuario: String, fecha: String, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarColorDiaMes(idUsuario, fecha)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarDia(idUsuario: String, fecha: String, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarDia(idUsuario, fecha)
+        conectorBD!!.cerrar()
+    }
+
+    fun editarDia(idUsuario: String, titulo: String?, imagen: ByteArray?, color: String?, fecha: String?, activity: Activity?) {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        conectorBD!!.editarDia(idUsuario, titulo, imagen, color, fecha)
+        conectorBD!!.cerrar()
+    }
+
+}

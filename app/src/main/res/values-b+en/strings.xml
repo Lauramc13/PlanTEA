@@ -20,6 +20,7 @@
     <string name="lbl_Accion">ACTION</string>
     <string name="lbl_Entretenimiento">ENTERTAINMENT</string>
     <string name="lbl_Recompensa">REWARDS</string>
+    <string name="lbl_Aniadir">Add</string>
     <string name="lbl_NuevoPicto">Add Pictogram</string>
     <string name="lbl_imprevistoPicto">Change pictogram</string>
     <string name="lbl_NuevoPictoSemana">Add Weekly Pictogram</string>
@@ -351,7 +352,6 @@
     <!-- Strings used for the toasts -->
     <string name="toast_permisos">PlanTEA needs permissions to show notifications</string>
     <string name="toast_no_imagen_seleccionada">No image selected</string>
-    <string name="toast_iniciando_sesion">Logging in</string>
     <string name="toast_rellenar_campos">You have to fill out all the fields</string>
     <string name="toast_obligatorio">Mandatory</string>
     <string name="toast_necesita_titulo">A title is needed for the new pictogram</string>
@@ -426,6 +426,22 @@
     <string name="seg">Seconds</string>
     <string name="pantalla_calendario_semanal">Weekly calendar</string>
     <string name="pantalla_calendario_mensual">Monthly calendar</string>
+    <string name="fechas_importantes">Important days</string>
+    <string name="agregar_fecha">New important day</string>
+    <string name="exportar_como_pdf">Export as PDF</string>
+    <string name="dia2">Day</string>
+    <string name="lbl_eliminarFecha">Delete day</string>
+    <string name="lbl_eliminarFechaMensaje">Are you sure you want to delete the selected day?</string>
+    <string name="eliminar_categor_a">Delete category</string>
+    <string name="seguro_que_desesas_eliminar_esta_categor_a">Are you sure you want to delete this category?</string>
+    <string name="toast_fecha_existente">An important day has already been set for this date</string>
+    <string name="fecha2">Date</string>
+    <string name="titulo">Title</string>
+    <string name="no_existen_fechas_importantes">There are no important dates</string>
+    <string name="editar_imagen">Edit image</string>
+    <string name="todas">All</string>
+    <string name="aniadir_actividad">Add activity</string>
+    <string name="categoria_actividades">Categories of activities</string>
 
 
 </resources>

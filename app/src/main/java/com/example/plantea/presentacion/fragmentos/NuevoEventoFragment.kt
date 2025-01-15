@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -39,6 +40,7 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanesEventos
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
+import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
@@ -65,9 +67,10 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     private lateinit var layoutPlanificaciones: ConstraintLayout
     private lateinit var switchReminder : MaterialSwitch
     private lateinit var radioButtonVista : MaterialSwitch
-    private lateinit var startForResult: ActivityResultLauncher<Intent>
+   // private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
+
     private var permisosGranted = false
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -86,7 +89,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             if (idPlan != null) {
                 args.putInt("arg_idPlan" , idPlan)
             }
-            args.putString("arg_reminder", reminder.toString())
+            if(reminder != null){
+                args.putString("arg_reminder", reminder.toString())
+            }
             if (changeVisibility != null) {
                 args.putBoolean("arg_change_visibility", changeVisibility)
             }
@@ -95,8 +100,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             return fragment
         }
     }
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
@@ -150,28 +153,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
         configurarEvento()
 
-        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
-                val idPlan = intent?.getIntExtra("idPlan", 0)
-                if (idPlan != null) {
-                    if(!intent.getBooleanExtra("isNuevo", false)){
-                        viewModel.posicionPlan = viewModel.planes.size
-                    }else{
-                        for (i in viewModel.planes.indices) {
-                            if (viewModel.planes[i].getId() == idPlan) {
-                                viewModel.posicionPlan = i
-                                break
-                            }
-                        }
-                    }
-                    btnGuardar.isEnabled = true
-                    viewModel.isPlanSeleccionado = true
-                    viewModel.planSeleccionado = idPlan
-                    adaptador.setItemSelected(viewModel.posicionPlan)
-                }
-            }
-        }
+        /**/
 
       /*  btnPlanificar.setOnClickListener {
             val intent = Intent(context, CrearPlanActivity::class.java)
@@ -213,6 +195,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }
 
         dialog?.setOnCancelListener { switchReminder.isChecked = false }
+
+        viewModel._planSeleccionado.observe(viewLifecycleOwner) {
+            viewModel.isPlanSeleccionado = true
+            viewModel.posicionPlan = it
+            btnGuardar.isEnabled = true
+        }
 
         return vista
     }

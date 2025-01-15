@@ -2,6 +2,9 @@ package com.example.plantea.dominio
 
 import android.app.Activity
 import com.example.plantea.persistencia.ConectorBD
+import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
+
 
 class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
@@ -15,7 +18,7 @@ class GestionUsuarios {
         return resultado
     }
 
-    fun crearUsuarioTEA(name:String?, imagen: String?, configPicto: String?, idUsuario: String?, actividad: Activity?): String {
+    fun crearUsuarioTEA(name:String?, imagen: ByteArray?, configPicto: String?, idUsuario: String?, actividad: Activity?): String {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         val resultado = conectorBD!!.insertarUsuarioTEA(name, imagen, configPicto,  idUsuario)
@@ -34,12 +37,24 @@ class GestionUsuarios {
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val usuario = conectorBD!!.obtenerUsuarioExistente(email)
+        var usuario = Usuario()
+        val c = conectorBD!!.obtenerUsuarioExistente(email)
+        if (c.moveToFirst()) {
+            do {
+                usuario.id = c.getString(0)
+                usuario.email = c.getString(1)
+                usuario.username =c.getString(3)
+                usuario.name = c.getString(4)
+                usuario.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(5))
+            } while (c.moveToNext())
+        }
+        c.close()
         conectorBD!!.cerrar()
+
         return usuario
     }
 
-    fun addImagen(imagen: String, idUsuario: String, actividad: Activity?) {
+    fun addImagen(imagen: ByteArray?, idUsuario: String, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         val usuario = conectorBD!!.addImagen(imagen, idUsuario)
@@ -55,10 +70,9 @@ class GestionUsuarios {
         return usuarioId
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: String, idUsuario: String?, actividad: Activity?) {
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: ByteArray?, idUsuario: String?, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        //conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario)
         conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, ruta, idUsuario)
         conectorBD!!.cerrar()
     }
@@ -88,9 +102,9 @@ class GestionUsuarios {
                 val usuario = Usuario()
                 usuario.id = c.getString(0)
                 usuario.name = c.getString(1)
-                usuario.imagen = c.getString(2)
+                usuario.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(2))
                 usuario.configPictograma = c.getString(3)
-                usuario.actividades?.addAll(conectorBD!!.getActividades(usuario.id)?:ArrayList())
+                usuario.actividades?.addAll(conectorBD!!.getAllActividades(usuario.id)?:ArrayList())
                 usuarios.add(usuario)
 
             } while (c.moveToNext())

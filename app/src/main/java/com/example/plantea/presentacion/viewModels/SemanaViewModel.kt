@@ -3,36 +3,38 @@ package com.example.plantea.presentacion.viewModels
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
-import android.content.ContextWrapper
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.provider.MediaStore
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
+import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.DiaSemana
 import com.example.plantea.dominio.Evento
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils
+import com.example.plantea.presentacion.actividades.AniadirPictoUtils.Companion
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemana
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import com.google.android.material.button.MaterialButton
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -40,22 +42,27 @@ import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 
-class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, AdaptadorTablaSemana.OnItemSelectedListener {
+class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener, AniadirPictoUtils.Companion.CustomViewModel {
 
-    var idUsuario = ""
-    var _nuevoPicto = SingleLiveEvent<Pictograma?>()
-    lateinit var adaptador: AdaptadorNuevoPicto
-    var _listaPictoRandom = SingleLiveEvent<ArrayList<Pictograma>>()
-    var _listaPictogramas = SingleLiveEvent<ArrayList<Pictograma>>()
-    var pictograma = Pictograma()
-    lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+    override val pictograma: Pictograma = Pictograma()
+    override var idUsuario: String = ""
+    override var _nuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
+    override var _listaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override lateinit var adaptadorRandomPictos: AdaptadorNuevoPicto
+    override var _listaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var _imageSelected = SingleLiveEvent<Bitmap>()
+    override var saltar = false
+    override var isEditImage = false
+    override var isCalendarioMensual = false
+
+
+    override lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var daySelected = ""
     var colorSelected: String? = null
     lateinit var week: ArrayList<DiaSemana>
     var isEdit = false
     var configuration = 0
 
-    var _imageSelected = MutableLiveData<Bitmap>()
     var _itemBorrado = MutableLiveData<Int>()
     var _itemColor = MutableLiveData<Int>()
     var _diaClicked = MutableLiveData<String?>()
@@ -69,10 +76,6 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
         }else{
             userIdTEA.toString()
         }
-    }
-
-    override fun onNuevoPicto(pictogram: Pictograma?) {
-        _nuevoPicto.value = pictogram
     }
 
     fun obtenerConfigDias(activity: Activity): ArrayList<DiaSemana> {
@@ -107,39 +110,9 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
         return if (configuration == 2) daysShort else daysFull
     }
 
-    fun getPictogramas(query: String, isNuevoPictoBusqueda: Boolean, activity: Activity) {
-        val pictogramasBusqueda = ArrayList<Pictograma>()
-        CoroutineScope(Dispatchers.IO).launch {
-            val dict = CommonUtils.getDataApi(query)
-
-            withContext(Dispatchers.Main) {
-                dict.keys.mapNotNull { key ->
-                    dict[key]?.let { (value, id) ->
-                        pictogramasBusqueda.add(crearPictoBusqueda(key, value, id, activity))
-                    }
-                }
-            }
-
-            if (pictogramasBusqueda.isNotEmpty()) {
-                if(isNuevoPictoBusqueda){
-                    _listaPictoRandom.postValue(pictogramasBusqueda)
-                } else{
-                    _listaPictogramas.postValue(pictogramasBusqueda)
-                }
-
-            }
-        }
-    }
-
-    private fun crearPictoBusqueda(bitmap: Bitmap, titulo: String?, id: Int, activity: Activity): Pictograma {
-        val tituloMayus = titulo?.uppercase()
-        val favorito = pictograma.getFavorito(activity, id.toString(), idUsuario)
-        return Pictograma(id.toString(), tituloMayus, bitmap, 0, 0, favorito)
-    }
-
     override fun onItemSeleccionado(posicion: Int, activity: Activity?) {
         if (activity != null)
-            AniadirPictoUtils.initializeDialog(this, activity, false)
+            AniadirPictoUtils.initializeDialog(this, activity)
         daySelected = week[posicion].dia.toString()
     }
 
@@ -206,6 +179,51 @@ class SemanaViewModel: ViewModel(), AdaptadorNuevoPicto.OnItemSelectedListener, 
 
             dialog.show()
         }
+    }
+
+    //Metodos de la interfaz de AniadirPictoUtils
+    override val onItemSelectedListener = object : AdaptadorNuevoPicto.OnItemSelectedListener {
+        override fun onNuevoPicto(pictogram: Pictograma?) {
+            _nuevoPicto.value = pictogram
+        }
+    }
+
+    override fun setupTitle(titleDialog: TextView, activity: Activity) {
+        titleDialog.text = activity.getString(R.string.lbl_NuevoPictoSemana).uppercase()
+    }
+
+    override fun dialogoAniadirPicto(dialogo: Dialog, view: ViewGroup, activity: Activity, buttons: LinearLayout, btnSiguiente: MaterialButton, btnSaltar: MaterialButton) {
+        val lastView = view.getChildAt(view.childCount - 1)
+        view.removeAllViews()
+        view.addView(activity.layoutInflater.inflate(R.layout.fragment_nuevo_picto_semana, null))
+        val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
+        imagenPicto.setImageBitmap(_nuevoPicto.value?.imagen)
+
+        imagenPicto.setOnClickListener {
+            buttons.visibility = View.VISIBLE
+            btnSiguiente.visibility = View.VISIBLE
+            adaptadorRandomPictos.currentPosition = RecyclerView.NO_POSITION
+            adaptadorRandomPictos.notifyDataSetChanged()
+
+            view.removeAllViews()
+            view.addView(lastView)
+        }
+
+        val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
+        buttonGuardar.setOnClickListener {
+            if (imagenPicto.drawable == null) {
+                Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
+            } else {
+                _imageSelected.value = (imagenPicto.drawable as BitmapDrawable).bitmap
+                dialogo.dismiss()
+            }
+        }
+    }
+
+    override fun abrirGaleria() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
 }

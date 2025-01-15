@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.ComponentName
 import android.content.Context
@@ -18,11 +19,15 @@ import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -35,6 +40,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntreteni
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasEventos
 import com.example.plantea.presentacion.fragmentos.CalendarioFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
+import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
@@ -48,13 +54,16 @@ import java.util.Locale
 class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.OnItemSelectedListener, AdaptadorPictogramasEventos.OnItemSelectedListener {
 
     val viewModel: EventosPlanificadorViewModel by viewModels()
+    val viewModelCalendario : CalendarioViewModel by viewModels()
 
     lateinit var listaEventos: RecyclerView
     lateinit var adaptador: AdaptadorListaEventos
     private lateinit var fragmentEdit: FragmentContainerView
+    private lateinit var fragmentLayout: LinearLayout
     private lateinit var  dialogEntretenimiento: Dialog
     private var entretenimientoPosition = -1
-
+    private lateinit var btnNuevaPlanificacion: MaterialButton
+    private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +72,8 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         val nuevoEvento = findViewById<Button>(R.id.btn_eventos)
         val calendarButton = findViewById<MaterialButton>(R.id.btn_calendario)
         fragmentEdit = findViewById(R.id.linearLayout16)
+        fragmentLayout = findViewById(R.id.linearLayoutFragment)
+        btnNuevaPlanificacion = findViewById(R.id.btn_nuevo_plan)
 
         // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
         val callback = viewModel.backCallBack(this)
@@ -78,6 +89,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         }
 
         nuevoEvento.setOnClickListener {
+            btnNuevaPlanificacion.visibility = View.VISIBLE
             CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
             if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)) {
                 bottomSheetDialog(this, null)
@@ -92,7 +104,30 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             }
         }
 
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == RESULT_OK) {
+                val intent = result.data
+                val idPlan = intent?.getIntExtra("idPlan", 0)
+                var posicionPlan = 0
+                if (idPlan != null) {
+                    if(!intent.getBooleanExtra("isNuevo", false)){
+                        viewModel.posicionEvento = viewModelCalendario.planes.size
+                        posicionPlan = viewModelCalendario.planes.size
+                    }
+
+                    viewModelCalendario.planSeleccionado = idPlan
+                    viewModelCalendario._planSeleccionado.value = posicionPlan
+                }
+            }
+        }
+
+        btnNuevaPlanificacion.setOnClickListener {
+            val intent = Intent(this, CrearPlanActivity::class.java)
+            startForResult.launch(intent)
+        }
+
         calendarButton.setOnClickListener{
+            btnNuevaPlanificacion.visibility = View.GONE
             calendarSection()
             expand(true, CommonUtils.isPortrait(this), true)
         }
@@ -100,17 +135,17 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         iniciarListaPlanificaciones()
         calendarSection()
 
-        fragmentEdit.post{
-            val parent = fragmentEdit.parent as? View
+        fragmentLayout.post{
+            val parent = fragmentLayout.parent as? View
             if (parent != null) {
                 if (CommonUtils.isPortrait(this)) {
                     val targetHeight = (parent.height * 0.55).toInt()
-                    fragmentEdit.layoutParams.height = targetHeight
+                    fragmentLayout.layoutParams.height = targetHeight
                 } else {
                     val targetWidth = (parent.width * 0.4).toInt()
-                    fragmentEdit.layoutParams.width = targetWidth
+                    fragmentLayout.layoutParams.width = targetWidth
                 }
-                fragmentEdit.requestLayout()
+                fragmentLayout.requestLayout()
             }
         }
 
@@ -238,6 +273,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
     }
 
     override fun eventoEditado(posicion: Int, context: Context) {
+        btnNuevaPlanificacion.visibility = View.VISIBLE
         CalendarioUtilidades.fechaSeleccionada = viewModel.eventos[posicion].fecha!!
         if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)) {
             bottomSheetDialog(context, viewModel.eventos[posicion])
@@ -295,24 +331,24 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
     fun expand(isExpand: Boolean, isVertical: Boolean, isCalendar: Boolean) {
         val valueAnimator: ValueAnimator
         if(isExpand) {
-            if(fragmentEdit.visibility == View.VISIBLE) return
+            if(fragmentLayout.visibility == View.VISIBLE) return
 
-            fragmentEdit.visibility = View.VISIBLE
+            fragmentLayout.visibility = View.VISIBLE
             if(isVertical){
-                val targetHeigt = ((fragmentEdit.parent as View).height * 0.55).toInt()
-                fragmentEdit.layoutParams.height = 0
+                val targetHeigt = ((fragmentLayout.parent as View).height * 0.55).toInt()
+                fragmentLayout.layoutParams.height = 0
                 valueAnimator = ValueAnimator.ofInt(0, targetHeigt)
                 valueAnimator.addUpdateListener { animation ->
-                    fragmentEdit.layoutParams.height = animation.animatedValue as Int
-                    fragmentEdit.requestLayout()
+                    fragmentLayout.layoutParams.height = animation.animatedValue as Int
+                    fragmentLayout.requestLayout()
                 }
             }else {
-                val targetWidth = ((fragmentEdit.parent as View).width * 0.37).toInt()
-                fragmentEdit.layoutParams.width = 0
+                val targetWidth = ((fragmentLayout.parent as View).width * 0.37).toInt()
+                fragmentLayout.layoutParams.width = 0
                 valueAnimator = ValueAnimator.ofInt(0, targetWidth)
                 valueAnimator.addUpdateListener { animation ->
-                    fragmentEdit.layoutParams.width = animation.animatedValue as Int
-                    fragmentEdit.requestLayout()
+                    fragmentLayout.layoutParams.width = animation.animatedValue as Int
+                    fragmentLayout.requestLayout()
                 }
             }
 
@@ -329,25 +365,26 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             valueAnimator.duration = 500
             valueAnimator.start()
         }else{
+            btnNuevaPlanificacion.visibility = View.GONE
             fragmentEdit.removeAllViews()
             if(isVertical){
-                valueAnimator = ValueAnimator.ofInt(fragmentEdit.height, 0)
+                valueAnimator = ValueAnimator.ofInt(fragmentLayout.height, 0)
                 valueAnimator.addUpdateListener { animation ->
-                    fragmentEdit.layoutParams.height = animation.animatedValue as Int
-                    fragmentEdit.requestLayout()
+                    fragmentLayout.layoutParams.height = animation.animatedValue as Int
+                    fragmentLayout.requestLayout()
                 }
             }else{
-                valueAnimator = ValueAnimator.ofInt(fragmentEdit.width, 0)
+                valueAnimator = ValueAnimator.ofInt(fragmentLayout.width, 0)
                 valueAnimator.addUpdateListener { animation ->
-                    fragmentEdit.layoutParams.width = animation.animatedValue as Int
-                    fragmentEdit.requestLayout()
+                    fragmentLayout.layoutParams.width = animation.animatedValue as Int
+                    fragmentLayout.requestLayout()
                 }
             }
 
             valueAnimator.addListener(object : android.animation.Animator.AnimatorListener {
                 override fun onAnimationStart(animation: android.animation.Animator) {}
                 override fun onAnimationEnd(animation: android.animation.Animator) {
-                    fragmentEdit.visibility = View.GONE
+                    fragmentLayout.visibility = View.GONE
                 }
                 override fun onAnimationCancel(animation: android.animation.Animator) {}
                 override fun onAnimationRepeat(animation: android.animation.Animator) {}

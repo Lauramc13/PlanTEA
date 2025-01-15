@@ -10,6 +10,7 @@ import android.view.animation.PathInterpolator
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -30,6 +31,7 @@ class CountDownActividadFragment: Fragment() {
     private lateinit var timerTextView: TextView
     private lateinit var startButton: MaterialButton
     private lateinit var progressBar: CircularProgressIndicator
+    private lateinit var cardViewReloj: CardView
 
     override fun onDestroy() {
         super.onDestroy()
@@ -46,9 +48,10 @@ class CountDownActividadFragment: Fragment() {
 
         timerTextView = vista.findViewById(R.id.timerTextView)
         progressBar = vista.findViewById(R.id.progressBar)
+        cardViewReloj = vista.findViewById(R.id.cardViewReloj)
         startButton = vista.findViewById(R.id.startButton)
 
-        progressBar.setOnClickListener {
+        cardViewReloj.setOnClickListener {
             if(viewModel.isRunning){
                 val parentActivity = requireActivity() as ActividadActivity
                 parentActivity.stopVideo()

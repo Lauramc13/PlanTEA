@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         app:layout_constraintWidth_percent="0.7"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
         android:text="@string/lbl_seleccionaAvatar"
@@ -39,7 +39,7 @@
         android:fontFamily="@font/poppins_medium"
         android:gravity="center"
         android:maxLines="2"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones"
         android:textColor="?colorOnSurface"
         android:textSize="@dimen/subtitle"
@@ -73,7 +73,7 @@
 
     <Button
         android:id="@+id/btn_saltar"
-        style="@style/Widget.Material3.Button.IconButton.Outlined"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"

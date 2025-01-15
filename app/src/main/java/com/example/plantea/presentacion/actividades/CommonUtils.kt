@@ -1,13 +1,16 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -15,6 +18,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
@@ -30,6 +34,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -63,13 +68,37 @@ class CommonUtils{
 
     companion object {
         //lateinit var textToSpeech: TextToSpeech
-        val handler = Handler(Looper.getMainLooper())
         //var listener: TextToSpeechListener? = null
-        lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-        private lateinit var imgPicto: ImageView
 
-        val wordToLemmaEs = mutableMapOf<String, String>()
-        val wordToLemmaEn = mutableMapOf<String, String>()
+        val handler = Handler(Looper.getMainLooper())
+        lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+
+        private val wordToLemmaEs = mutableMapOf<String, MutableList<String>>()
+        private val wordToLemmaEn = mutableMapOf<String, MutableList<String>>()
+
+        val String.toPreservedByteArray: ByteArray
+            get() {
+                return this.toByteArray(Charsets.ISO_8859_1)
+            }
+
+        val ByteArray.toPreservedString: String
+            get() {
+                return String(this, Charsets.ISO_8859_1)
+            }
+
+        object PreferencesHelper {
+            private const val PREF_NAME = "Preferencias"
+
+            fun isFirstTime(context: Context, key: String): Boolean {
+                val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                return prefs.getBoolean(key, true)
+            }
+
+            fun setFirstTime(context: Context, key: String, isFirstTime: Boolean) {
+                val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                prefs.edit().putBoolean(key, isFirstTime).apply()
+            }
+        }
 
         // to call the listener when the speech is done
        /* private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
@@ -169,15 +198,16 @@ class CommonUtils{
             val listaIds = mutableListOf<Int>()
             val listaTitulos = mutableListOf<String>()
 
-            val cleanQuery  = cleanQuery(query)
+             val cleanQuery  = query.lowercase().replace(",", "")
 
             //val encodedQuery = encodeQuery(query)
             pedirDatosAPI(cleanQuery, listaIds, listaTitulos)
 
-            Log.d("INFO", "Lista de ids: $listaIds")
             if(listaIds.isEmpty()){
                 val lemmatizedQuery = lemmatizar(cleanQuery)
-                pedirDatosAPI(lemmatizedQuery, listaIds, listaTitulos)
+                for (word in lemmatizedQuery) {
+                    pedirDatosAPI(word, listaIds, listaTitulos)
+                }
             }
 
             for (id in listaIds) {
@@ -197,7 +227,7 @@ class CommonUtils{
                 }
             }
 
-            val image = textAsBitmap(query)
+            val image = textAsBitmap(query, 100f)
             val idImageCreated = wordToInt(query)
             dict[image] = Pair(query, idImageCreated)
 
@@ -232,14 +262,13 @@ class CommonUtils{
             return wordBuilder.reverse().toString()
         }
 
-        private fun lemmatizar(query: String): String{
-            return if(Locale.getDefault().language.lowercase() == "es"){
-                wordToLemmaEs[query].toString()
-            }else{
-                wordToLemmaEn[query].toString()
+        private fun lemmatizar(query: String): MutableList<String> {
+            return if (Locale.getDefault().language == "es") {
+                wordToLemmaEs[query] ?: mutableListOf(query)
+            } else {
+                wordToLemmaEn[query] ?: mutableListOf(query)
             }
         }
-
 
         private fun pedirDatosAPI(query: String, listaIds: MutableList<Int>, listaTitulos: MutableList<String>) {
             val retrofitBuilder = getRetrofitBuilder()
@@ -267,13 +296,6 @@ class CommonUtils{
             } catch (e: IOException) {
                 Log.d("ERROR", e.toString())
             }
-        }
-
-        fun cleanQuery(query: String): String {
-            val normalized = Normalizer.normalize(query, Normalizer.Form.NFD)
-            return normalized.replace("\\p{Mn}+".toRegex(), "")
-                .replace(",", "")
-                .lowercase() // Convert to lowercase
         }
 
         private fun encodeQuery(query: String): String {
@@ -305,23 +327,9 @@ class CommonUtils{
             }
         }
 
-        private fun textAsBitmapOLD(text: String?): Bitmap {
+        private fun textAsBitmap(text: String?, textSize: Float): Bitmap {
             val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-            paint.textSize = 100f
-            paint.color = Color.BLACK
-            paint.textAlign = Paint.Align.LEFT
-            val baseline = -paint.ascent() // ascent() is negative
-            val width = (paint.measureText(text) + 0.5f).toInt() // round
-            val height = (baseline + paint.descent() + 0.5f).toInt()
-            val image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(image)
-            canvas.drawText(text!!, 0f, baseline, paint)
-            return image
-        }
-
-        private fun textAsBitmap(text: String?): Bitmap {
-            val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-            paint.textSize = 100f
+            paint.textSize = textSize
             paint.color = Color.BLACK
             paint.textAlign = Paint.Align.LEFT
             val textBounds = Rect()
@@ -344,7 +352,7 @@ class CommonUtils{
             return image
         }
 
-        /*fun crearImagen(bitmap: Bitmap, titulo: String?, context: Context): String {
+      /*  fun crearImagen(bitmap: Bitmap, titulo: String?, context: Context): Uri {
             val tituloEncoded = URLEncoder.encode(titulo, StandardCharsets.UTF_8.toString())
             val width = bitmap.width
             val height = bitmap.height
@@ -364,7 +372,7 @@ class CommonUtils{
                 e.printStackTrace()
             }
 
-            return context.getFileStreamPath(filename).absolutePath
+            return Uri.fromFile(File(context.filesDir, filename))
         }
 
         fun initializeTextToSpeech(context: Context) {
@@ -499,11 +507,12 @@ class CommonUtils{
             if(wordToLemmaEn.isNotEmpty() && language == "en" || wordToLemmaEs.isNotEmpty() && language == "es"){
                 return
             }
+
             CoroutineScope(Dispatchers.IO).launch {
                 try{
                     withContext(Dispatchers.IO) {
                         try {
-                            val dictLemmatizer: InputStream = context.assets.open("lemmatization-" + language + ".txt")
+                            val dictLemmatizer: InputStream = context.assets.open("lemmatization-$language.txt")
                             for (line in dictLemmatizer.bufferedReader().readLines()) {
                                 val parts = line.split("\t")
                                 if (parts.size == 2) {
@@ -511,9 +520,17 @@ class CommonUtils{
                                     val word = parts[1]
 
                                     if (language == "es") {
-                                        wordToLemmaEs[word] = lemma
+                                        if (wordToLemmaEs.containsKey(word)) {
+                                            wordToLemmaEs[word]?.add(lemma)
+                                        } else {
+                                            wordToLemmaEs[word] = mutableListOf(lemma)
+                                        }
                                     } else {
-                                        wordToLemmaEn[word] = lemma
+                                        if (wordToLemmaEn.containsKey(word)) {
+                                            wordToLemmaEn[word]?.add(lemma)
+                                        } else {
+                                            wordToLemmaEn[word] = mutableListOf(lemma)
+                                        }
                                     }
                                 }
                             }
@@ -525,6 +542,36 @@ class CommonUtils{
                 }catch (e: Exception){
                     e.printStackTrace()
                 }
+            }
+        }
+
+        fun uriToBitmapOLD(context: Context, uri: Uri): Bitmap? {
+            return try {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    val source = ImageDecoder.createSource(context.contentResolver, uri)
+                    ImageDecoder.decodeBitmap(source)
+                }else{
+                    val bitmap = context.contentResolver.openInputStream(uri)?.use { stream ->
+                        Bitmap.createBitmap(BitmapFactory.decodeStream(stream))
+                    }
+                    bitmap
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            }
+        }
+
+        fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
+            val contentResolver: ContentResolver = context.contentResolver
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source = ImageDecoder.createSource(contentResolver, uri)
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                val bitmap = context.contentResolver.openInputStream(uri)?.use { stream ->
+                    Bitmap.createBitmap(BitmapFactory.decodeStream(stream))
+                }
+                bitmap
             }
         }
 
@@ -545,8 +592,13 @@ class CommonUtils{
             return if(byteArray == null || byteArray.isEmpty()){
                 null
             }else{
-                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-                Bitmap.createScaledBitmap(bitmap, 300, 300, true)
+                try {
+                    val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+                    Bitmap.createScaledBitmap(bitmap, 300, 300, true)
+                }catch (e: Exception){
+                    null
+                }
+
             }
         }
 
@@ -562,7 +614,7 @@ class CommonUtils{
                     bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
                 } else if(response.code() == 404){
                     val titulo = intToWord(id!!)
-                    bitmap = textAsBitmap(titulo)
+                    bitmap = textAsBitmap(titulo, 100f)
                 }else {
                     Log.d("ERROR", "Error de la llamada a las imagenes")
                 }
@@ -593,26 +645,17 @@ class CommonUtils{
 
         }
 
-        fun createReloj24(hora: Int, minutos: Int, context: Context): MaterialTimePicker {
-            return MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_24H)
-                .setHour(hora)
-                .setMinute(minutos)
-                .setTheme(R.style.TimePicker)
-                .setTitleText(ContextCompat.getString(context, R.string.selecciona_hora))
-                .build()
-        }
-
         fun guardarPDF(context: Context, title: String, listaPictogramas: ArrayList<Pictograma>) {
             // Create a new PDF document
             val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val baseFilename = "Traduccion.pdf"
-            var filename = baseFilename
             var counter = 1
             val pdfDocument = PdfDocument()
+            var filename = if( title != "") "$title.pdf" else baseFilename
 
             while (File(downloadsDirectory, filename).exists()) {
-                filename = "${baseFilename.substringBeforeLast(".pdf")}_$counter.pdf"
+                // "${baseFilename.substringBeforeLast(".pdf")}_$counter.pdf"
+                filename = if (title != "") "${title}_$counter.pdf" else "Traduccion_$counter.pdf"
                 counter++
             }
 
@@ -643,7 +686,7 @@ class CommonUtils{
                 val page = pdfDocument.startPage(pageInfo)
                 val canvas = page.canvas
 
-                val paint = android.graphics.Paint()
+                val paint = Paint()
                 paint.color = Color.BLACK
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD))
 
@@ -651,9 +694,9 @@ class CommonUtils{
 
                 if(title != ""){
                     paint.textSize = 100f
-                    val textWidth = paint.measureText(title)
+                    val textWidth = paint.measureText(title.uppercase())
                     val textX = (2480 - textWidth) / 2 // para calcular el centro del texto
-                    canvas.drawText(title, textX, 200f, paint)
+                    canvas.drawText(title.uppercase(), textX, 200f, paint)
                     top = 300f
                 }
 
@@ -729,6 +772,43 @@ class CommonUtils{
             } else {
                 null
             }
+        }
+
+        fun getColor(context: Context, color: String?): Int {
+            return when(color) {
+                "red" -> ContextCompat.getColor(context, R.color.redCategoria)
+                "orange" -> ContextCompat.getColor(context, R.color.orangeCategoria)
+                "yellow" -> ContextCompat.getColor(context, R.color.yellowCategoria)
+                "green" -> ContextCompat.getColor(context, R.color.greenCategoria)
+                "blue" -> ContextCompat.getColor(context, R.color.blueCategoria)
+                "purple" -> ContextCompat.getColor(context, R.color.purpleCategoria)
+                "pink" -> ContextCompat.getColor(context, R.color.pinkCategoria)
+                "gray" -> ContextCompat.getColor(context, R.color.darkerGray)
+                "default" -> ContextCompat.getColor(context, R.color.darkerGray)
+                else ->  ContextCompat.getColor(context, R.color.white)
+            }
+        }
+
+        fun getColorDark(context: Context, color: String?): Int {
+            return when(color) {
+                "red" -> ContextCompat.getColor(context, R.color.DarkredCategoria)
+                "orange" -> ContextCompat.getColor(context, R.color.DarkorangeCategoria)
+                "yellow" -> ContextCompat.getColor(context, R.color.DarkyellowCategoria)
+                "green" -> ContextCompat.getColor(context, R.color.DarkgreenCategoria)
+                "blue" -> ContextCompat.getColor(context, R.color.DarkblueCategoria)
+                "purple" -> ContextCompat.getColor(context, R.color.DarkpurpleCategoria)
+                "pink" -> ContextCompat.getColor(context, R.color.DarkpinkCategoria)
+                "gray" -> ContextCompat.getColor(context, R.color.md_theme_dark_surfaceVariant4)
+                else ->  ContextCompat.getColor(context, R.color.md_theme_dark_background2)
+            }
+        }
+
+        fun drawableToBitmap(drawable: Drawable): Bitmap {
+            val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            return bitmap
         }
 
     }

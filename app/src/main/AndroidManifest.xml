@@ -111,6 +111,9 @@
             android:name=".presentacion.actividades.SemanaActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".presentacion.actividades.CalendarioMensualActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".presentacion.actividades.PlanificacionesActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity

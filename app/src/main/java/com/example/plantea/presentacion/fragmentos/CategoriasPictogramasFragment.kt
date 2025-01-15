@@ -58,7 +58,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         }
 
         //Este método se ejecutará al seleccionar añadir nuevo pictograma
-        imageAdd.setOnClickListener { viewModel.nuevoPictogramaDialogo() }
+        imageAdd.setOnClickListener { viewModel.nuevoPictogramaDialogo(this.requireActivity()) }
 
         return vista
     }

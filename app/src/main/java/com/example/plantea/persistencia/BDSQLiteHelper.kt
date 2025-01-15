@@ -22,6 +22,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY DEFAULT (nextval('global_id_seq')), email TEXT UNIQUE, password TEXT, username TEXT, name TEXT, imagen TEXT)"
     private var sqlUsuarioTEA = "CREATE TABLE UsuarioTEA(id INTEGER PRIMARY KEY DEFAULT (nextval('global_id_seq')), name TEXT, imagen TEXT, configPictogramas TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlActividad = "CREATE TABLE Actividad(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, imagen TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES UsuarioTEA(id))"
+    private var sqlCategoriaActividad = "CREATE TABLE CategoriaActividad(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES UsuarioTEA(id))"
+    private var sqlRelacionCategoriaActividad = "CREATE TABLE RelacionCategoriaActividad(id_actividad INTEGER, id_categoria INTEGER, FOREIGN KEY (id_actividad) REFERENCES Actividad(id), FOREIGN KEY (id_categoria) REFERENCES CategoriaActividad(id))"
     private var sqlCategorias = "CREATE TABLE Categoria(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, imagen BLOB, color TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlCategoriasUsuario = "CREATE TABLE CategoriaUsuario(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_categoria INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id))"
     private var sqlCategoriaOculta = "CREATE TABLE CategoriaOculta(id INTEGER PRIMARY KEY AUTOINCREMENT, id_categoria INTEGER, id_usuario INTEGER, FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
@@ -39,6 +41,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlDiaSemana = "CREATE TABLE DiaSemana (id INTEGER PRIMARY KEY AUTOINCREMENT, semana_id INTEGER, pictograma_day BLOB, day_week TEXT, color TEXT, id_evento TEXT, FOREIGN KEY (semana_id) REFERENCES Semana(id))"
     private var sqlPictogramaEvento = "CREATE TABLE PictogramaEvento (id INTEGER PRIMARY KEY AUTOINCREMENT, duracion TEXT, historia TEXT, id_picto_entre INTEGER, id_evento INTEGER, id_pictograma INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id))"
+    private var sqlDiaMes = "CREATE TABLE DiaMes (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, fecha TEXT, titulo TEXT, color TEXT, imagen TEXT, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
 
     override fun onCreate(db: SQLiteDatabase) {
         try {
@@ -48,6 +51,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlUsuario)
             db.execSQL(sqlUsuarioTEA)
             db.execSQL(sqlActividad)
+            db.execSQL(sqlCategoriaActividad)
+            db.execSQL(sqlRelacionCategoriaActividad)
             db.execSQL(sqlCategorias)
             db.execSQL(sqlCategoriasUsuario)
             db.execSQL(sqlCategoriaOculta)
@@ -65,6 +70,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlSemana)
             db.execSQL(sqlDiaSemana)
             db.execSQL(sqlPictogramaEvento)
+            db.execSQL(sqlDiaMes)
 
             @OptIn(DelicateCoroutinesApi::class)
             GlobalScope.launch {
@@ -82,6 +88,8 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS Usuario")
             db.execSQL("DROP TABLE IF EXISTS UsuarioTEA")
             db.execSQL("DROP TABLE IF EXISTS Actividad")
+            db.execSQL("DROP TABLE IF EXISTS CategoriaActividad")
+            db.execSQL("DROP TABLE IF EXISTS RelacionCategoriaActividad")
             db.execSQL("DROP TABLE IF EXISTS Categorias")
             db.execSQL("DROP TABLE IF EXISTS CategoriaUsuario")
             db.execSQL("DROP TABLE IF EXISTS RelacionCategoriaUsuario")
@@ -99,6 +107,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS Semana")
             db.execSQL("DROP TABLE IF EXISTS DiaSemana")
             db.execSQL("DROP TABLE IF EXISTS PictogramaEvento")
+            db.execSQL("DROP TABLE IF EXISTS DiaMes")
 
             /*Se crea la nueva versión de la table*/
             onCreate(db)

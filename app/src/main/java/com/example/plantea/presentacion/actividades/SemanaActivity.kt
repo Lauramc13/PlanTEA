@@ -40,7 +40,7 @@ class SemanaActivity: AppCompatActivity() {
         val buttonSwitch = findViewById<Button>(R.id.btnSwitch)
         val layoutOptions = findViewById<LinearLayout>(R.id.optionsEditar)
 
-        AniadirPictoUtils.createPickMedia(viewModel, this)
+        viewModel.createPickMedia(viewModel, this)
         viewModel.configureUser(getSharedPreferences("Preferencias", MODE_PRIVATE))
 
         val semana = DiaSemana()

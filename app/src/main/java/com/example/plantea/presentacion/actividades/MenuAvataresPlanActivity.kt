@@ -2,7 +2,6 @@ package com.example.plantea.presentacion.actividades
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -12,9 +11,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.res.ResourcesCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
+
 
 
 class MenuAvataresPlanActivity : AppCompatActivity() {
@@ -23,7 +25,6 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     val usuario = Usuario()
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
-    private var uri : Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,15 +51,6 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         }
 
         btnSaltar.setOnClickListener{
-            if(isConfiguration) {
-                uri = null
-            }else{
-                val drawableId = resources.getIdentifier("svg_user", "drawable", packageName)
-                val uri = Uri.parse("android.resource://$packageName/$drawableId")
-                val editor = prefs.edit()
-                editor.putString("imagenPlanificador", uri.toString())
-                editor.apply()
-            }
             next()
         }
         observers()
@@ -67,11 +59,8 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     private fun createPickMedia() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
-                viewModel.imagenSeleccionada = true
-                val inputStream = this.contentResolver?.openInputStream(uri)
-                viewModel.bitmap = BitmapFactory.decodeStream(inputStream)
-                viewModel._ruta.value =  CommonUtils.guardarImagen(this, "PlanificadorGaleria", viewModel.bitmap!!)  // TODO: CAMBIAR
-
+                viewModel.bitmap = CommonUtils.uriToBitmap(this, uri)
+                viewModel._imageSelected.value = true
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
@@ -79,22 +68,22 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     }
 
     fun observers(){
-        viewModel._ruta.observe(this){
+        viewModel._imageSelected.observe(this){
             val editor = prefs.edit()
             if(isConfiguration){
-                editor.putString("imagenPlanificadorConfig", it)
+                editor.putString("imagenPlanificadorConfig",CommonUtils.bitmapToByteArray(viewModel.bitmap).toPreservedString)
                 editor.apply()
-                next()
+              //  next()
             }else{
-                editor.putString("imagenPlanificador", it)
+                val rutaPlanificador = CommonUtils.guardarImagen(this, "Planificador", viewModel.bitmap!!)
+                editor.putString("imagenPlanificador", rutaPlanificador)
                 editor.apply()
                 val idUsuario = prefs.getString("idUsuario", "")
                 if (idUsuario != null) {
-                    usuario.aniadirImagenPlanificador(it.toString(), idUsuario, this@MenuAvataresPlanActivity)
+                    val imagenBlob = CommonUtils.bitmapToByteArray(viewModel.bitmap!!)
+                    usuario.aniadirImagenPlanificador(imagenBlob, idUsuario, this@MenuAvataresPlanActivity)
                 }
-            viewModel.bitmap?.let { it1 -> CommonUtils.guardarImagen(applicationContext, it, it1) }
-        }
-            viewModel.imagenSeleccionada = true
+            }
             next()
         }
     }
@@ -108,18 +97,18 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             avatar.setOnClickListener {
                 val drawableId = resources.getIdentifier(avatarId, "drawable", packageName)
                 val editor = prefs.edit()
-                uri = Uri.parse("android.resource://$packageName/$drawableId")
+                val image = ResourcesCompat.getDrawable(resources, drawableId, null) as BitmapDrawable
 
                 if(isConfiguration){
-                    editor.putString("imagenPlanificadorConfig", uri.toString())
+                    editor.putString("imagenPlanificadorConfig", CommonUtils.bitmapToByteArray(image.bitmap).toPreservedString)
                     editor.apply()
                 }else{
                     val idUsuario = prefs.getString("idUsuario", "")
                     if (idUsuario != null) {
                         val usuario = Usuario()
-                        usuario.aniadirImagenPlanificador(uri.toString(), idUsuario, this@MenuAvataresPlanActivity)
+                        usuario.aniadirImagenPlanificador(CommonUtils.bitmapToByteArray(image.bitmap), idUsuario, this@MenuAvataresPlanActivity)
                     }
-                    editor.putString("imagenPlanificador", uri.toString())
+                    editor.putString("imagenPlanificador", CommonUtils.bitmapToByteArray(image.bitmap).toPreservedString)
                     editor.apply()
                 }
                 next()
@@ -129,14 +118,11 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
 
     private fun next(){
         if(!isConfiguration){
-            val nextActivity = viewModel.determineNextScreenPlan(prefs)
             val intent = Intent(this, TutorialActivity::class.java)
-            /*if(nextActivity == TutorialActivity::class.java){
-                intent.putExtra("isFromManual", false)
-            }*/
             startActivity(intent)
+        }else{
+            finish()
         }
-        finish()
     }
 
 

@@ -35,6 +35,15 @@
                 android:layout_height="180dp"
                 android:layout_margin="5dp"
                 app:shapeAppearance="@style/cornerRadius" />
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="end"
+                android:src="@drawable/edit_image_svg"
+                app:shapeAppearance="@style/cornerRadius" />
         </FrameLayout>
 
         <Button

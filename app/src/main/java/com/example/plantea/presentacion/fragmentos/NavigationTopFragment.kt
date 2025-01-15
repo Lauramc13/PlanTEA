@@ -19,6 +19,8 @@ import com.example.plantea.presentacion.actividades.ActividadActivity
 import com.example.plantea.presentacion.actividades.EventosActivity
 import com.example.plantea.presentacion.actividades.TraductorActivity
 import com.example.plantea.presentacion.actividades.CalendarioActivity
+import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
 import com.example.plantea.presentacion.actividades.CreditsActivity
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
@@ -39,9 +41,9 @@ class NavigationTopFragment: Fragment() {
         prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val iconoTEA = prefs.getString("imagenUsuarioTEA", "")
         if (iconoTEA != "") {
-            iconoRol.setImageURI(Uri.parse(iconoTEA))
+            iconoRol.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenUsuarioTEA", "")!!.toPreservedByteArray))
         }else{
-            iconoRol.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+            iconoRol.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray))
         }
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

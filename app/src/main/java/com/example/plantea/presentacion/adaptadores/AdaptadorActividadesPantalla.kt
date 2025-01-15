@@ -23,7 +23,6 @@ class AdaptadorActividadesPantalla(private val actividades: ArrayList<Actividad>
 
     interface OnItemSelectedListenerActividad {
         fun onClick(context: Context, position: Int)
-
         fun onClickNuevaActividad(context: Context, position: Int)
     }
 
@@ -35,8 +34,9 @@ class AdaptadorActividadesPantalla(private val actividades: ArrayList<Actividad>
     override fun onBindViewHolder(holder: ViewHolderAcitividades, position: Int) {
         if(actividades!![position].id == "-1"){
             holder.imagen.setImageResource(R.drawable.svg_add)
+            holder.nombre.text = actividades[position].name
         } else {
-            holder.imagen.setImageURI(Uri.parse(actividades[position].imagen))
+            holder.imagen.setImageBitmap(actividades[position].imagen)
             holder.nombre.text = actividades[position].name
         }
     }

@@ -57,6 +57,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     val _changedEvent = SingleLiveEvent<Boolean>()
 
     var isDiaSeleccionado = false
+    var _planSeleccionado = SingleLiveEvent<Int>()
 
     //Variables de Eventos Fragment
     lateinit var pictogramas: ArrayList<Pictograma>
@@ -75,7 +76,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var plan = Planificacion()
     var isEditing = false
     var eventoIdEdited = 0
-
 
     //Notificaciones
     var checkBoxMin = false

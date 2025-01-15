@@ -15,8 +15,22 @@
             android:textAllCaps="true"
             android:textColor="?colorOnSecondaryContainer"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardViewReloj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="100dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="@color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19">
+
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
@@ -24,7 +38,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:progress="100"
-            android:layout_marginTop="20dp"
             app:indicatorColor="?colorOnSecondaryContainer"
             app:indicatorSize="150dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,12 +54,10 @@
             android:layout_marginEnd="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="00:00:00"
+            android:layout_gravity="center"
             android:textColor="?colorOnSecondaryContainer"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-            app:layout_constraintEnd_toEndOf="@+id/progressBar"
-            app:layout_constraintStart_toStartOf="@+id/progressBar"
-            app:layout_constraintTop_toTopOf="@+id/progressBar" />
+            android:textSize="20sp" />
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/startButton"
@@ -64,10 +75,10 @@
             app:icon="@drawable/svg_play"
             app:iconGravity="textEnd"
             app:iconSize="25dp"
-            app:iconTint="@color/white"
+            app:iconTint="?colorOnSurfaceInverse"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/progressBar"
-            app:layout_constraintTop_toTopOf="@+id/progressBar" />
+            app:layout_constraintStart_toEndOf="@+id/cardViewReloj"
+            app:layout_constraintTop_toTopOf="@+id/cardViewReloj" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pauseButton"
@@ -85,8 +96,8 @@
             app:icon="@drawable/svg_stop"
             app:iconGravity="textEnd"
             app:iconSize="25dp"
-            app:iconTint="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-            app:layout_constraintStart_toEndOf="@+id/progressBar" />
+            app:iconTint="?colorOnSurfaceInverse"
+            app:layout_constraintBottom_toBottomOf="@+id/cardViewReloj"
+            app:layout_constraintStart_toEndOf="@+id/cardViewReloj" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

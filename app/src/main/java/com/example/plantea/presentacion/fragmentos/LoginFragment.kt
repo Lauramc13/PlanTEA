@@ -52,8 +52,6 @@ class LoginFragment: BottomSheetDialogFragment() {
         viewModel.initGoogleSignInClient(requireContext())
 
         signin?.setOnClickListener {
-            Toast.makeText(requireContext(), R.string.toast_iniciando_sesion, Toast.LENGTH_SHORT).show()
-
             signInGoogle()
         }
 

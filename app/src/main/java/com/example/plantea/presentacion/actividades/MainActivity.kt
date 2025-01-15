@@ -7,7 +7,9 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -32,6 +34,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Actividad
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.adaptadores.AdaptadorUserMainClass
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
@@ -43,6 +47,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
@@ -65,20 +70,18 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
 
     var image :ShapeableImageView? = null
     private var imageActividad :ShapeableImageView? = null
-    private var imagenUriUsuario: String? = null
-    private var imagenUriActividad: String? = null
     private var usersTEA : ArrayList<Usuario>? = null
     private var adapterUsers: AdaptadorUserMainClass? = null
     lateinit var recyclerView : RecyclerView
 
     private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            if(result.data?.extras?.get("selectedImageUsuario") != null){
-                imagenUriUsuario = result.data?.extras?.get("selectedImageUsuario") as String
-                image?.setImageURI(Uri.parse(imagenUriUsuario))
+            if(result.data?.extras?.getByteArray("selectedImageUsuario") != null){
+                val imagenUriUsuario = result.data?.extras?.getByteArray("selectedImageUsuario") as ByteArray
+                image?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriUsuario))
             }else {
-                imagenUriActividad = result.data?.extras?.get("selectedImageActividad") as String
-                imageActividad?.setImageURI(Uri.parse(imagenUriActividad))
+                val imagenUriActividad = result.data?.extras?.getByteArray("selectedImageActividad") as ByteArray
+                imageActividad?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriActividad))
             }
         }
     }
@@ -108,19 +111,9 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             recyclerView.visibility = View.GONE
         }
 
-
-        /*if (!infoUsuario) {
-            cardUsuarioTEA.visibility = View.GONE
-        }else{
-            cardUsuarioTEA.visibility = View.VISIBLE
-        }*/
         nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-       // nombreUsuarioTEA.text = prefs.getString("nombreUsuarioTEA", "")!!.uppercase(Locale.getDefault())
-      //  imageUsuarioTEA.setImageDrawable(null)
-       // val imagen = prefs.getString("imagenUsuarioTEA", "")
-       // imageUsuarioTEA.setImageURI(Uri.parse(imagen))
         imagePlanificador.setImageDrawable(null)
-        imagePlanificador.setImageURI(Uri.parse(prefs.getString("imagenPlanificador", "")))
+        imagePlanificador.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -222,9 +215,10 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
     }
 
     private fun dialogFirstTime(){
-        val firstTime = prefs.getBoolean("firstTime", true) //TODO: CAMBIAR ESTO
-        //if (firstTime) {
-        if (false) {
+     //   if (CommonUtils.Companion.PreferencesHelper.isFirstTime(this, "MainActivityFirstTime")) {
+            CommonUtils.Companion.PreferencesHelper.setFirstTime(this, "MainActivityFirstTime", false)
+
+        if(true){
             //create dialog to show the first time
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dialogo_bienvenida)
@@ -236,6 +230,10 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             val viewBienvenida = layoutInflater.inflate(R.layout.view_bienvenida, frame, false) as View
             frame.addView(viewBienvenida)
             val viewUserConfiguration = layoutInflater.inflate(R.layout.fragment_usuario_tea, frame, false) as View
+
+            val chipGroup = viewUserConfiguration.findViewById<ChipGroup>(R.id.chipGroup)
+            chipGroup.visibility = View.GONE
+            viewUserConfiguration.findViewById<TextView>(R.id.lbl_categoria).visibility = View.GONE
 
             val userConfigurationIN = TranslateAnimation(Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
             val bienvenidaOUT = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
@@ -264,14 +262,19 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
                         Toast.makeText(this, getString(R.string.toast_rellenar_campos), Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
-                    val idUsuarioTEA = usuario.crearUsuarioTEA(name, imagenUriUsuario, idUsuario, "default", this)
+                    val imagenBlob = CommonUtils.bitmapToByteArray((image!!.drawable as BitmapDrawable).bitmap)
+                    val idUsuarioTEA = usuario.crearUsuarioTEA(name, imagenBlob, "default", idUsuario, this)
                     if(idUsuarioTEA == ""){
                         Toast.makeText(this, getString(R.string.error_usuario_tea), Toast.LENGTH_SHORT).show()
                     }else{
                         val actividad = Actividad()
-                        actividad.crearActividad(nameObjeto, imagenUriActividad, idUsuarioTEA, this)
+                        val imagenBlobActividad = CommonUtils.bitmapToByteArray((imageActividad!!.drawable as BitmapDrawable).bitmap)
+                        actividad.crearActividad(nameObjeto,imagenBlobActividad, idUsuarioTEA,  this)
                         prefs.edit().putString("idUsuarioTEA", idUsuarioTEA).apply()
                     }
+                    dialog.dismiss()
+                    //update recycler view
+                    configurarDatos()
                 }
 
                 buttonImagenUsuario.setOnClickListener {
@@ -350,7 +353,7 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         val editor = prefs.edit()
         editor.putString("idUsuarioTEA", usersTEA!![position].id)
         editor.putString("nombreUsuarioTEA", usersTEA!![position].name)
-        editor.putString("imagenUsuarioTEA", usersTEA!![position].imagen)
+        editor.putString("imagenUsuarioTEA", CommonUtils.bitmapToByteArray(usersTEA!![position].imagen!!).toPreservedString)
         editor.putBoolean("PlanificadorLogged", false)
         editor.putString("configPictogramas", usersTEA!![position].configPictograma)
 

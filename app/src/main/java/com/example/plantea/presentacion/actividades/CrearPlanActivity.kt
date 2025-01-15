@@ -37,7 +37,6 @@ import java.util.Locale
 
 class CrearPlanActivity : AppCompatActivity(){
     private lateinit var transaction: FragmentTransaction
-
     private lateinit var searchBar: SearchView
     private lateinit var backButton: Button
 
@@ -78,9 +77,7 @@ class CrearPlanActivity : AppCompatActivity(){
         }
 
         observers()
-
-        // Para el dialogo de crear nuevo pictograma
-        AniadirPictoUtils.createPickMedia(viewModel, this)
+        viewModel.createPickMedia(viewModel, this)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.setIdUsuario(prefs)
@@ -228,104 +225,6 @@ class CrearPlanActivity : AppCompatActivity(){
             recyclerView.scrollToPosition(viewModel.adaptadorPlanificacion.itemCount -2)
         }
 
-        viewModel._nuevoPictoDialog.observe(this) {
-            if (it) {
-                AniadirPictoUtils.initializeDialog(viewModel, this, false)
-            }
-        }
-
-        viewModel._nuevoPictoDialogCategoria.observe(this) {
-            if (it) {
-                AniadirPictoUtils.initializeDialog(viewModel, this, true)
-            }
-        }
-
-      /*  viewModel._historiaClicked.observe(this) {
-            val tituloCard = viewModel.listaPlanificacion[it].titulo
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.dialogo_historiasocial)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val btnGuardar = dialog.findViewById<Button>(R.id.btn_eliminarEvento)
-            val cardtitulo = dialog.findViewById<TextView>(R.id.cardName)
-            cardtitulo.text = tituloCard
-            val iconoCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-            val historiaText = dialog.findViewById<TextInputLayout>(R.id.historiaText)
-
-            if (viewModel.listaPlanificacion[it].historia.toString() == "null") {
-                historiaText.editText?.setText("")
-            } else {
-                historiaText.editText?.setText(viewModel.listaPlanificacion[it].historia)
-            }
-
-            iconoCerrar.setOnClickListener { dialog.dismiss() }
-
-            btnGuardar.setOnClickListener {_ ->
-                if (historiaText.editText?.text.toString() == "") {
-                    Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
-                } else {
-                    viewModel.listaPlanificacion[it].historia = historiaText.editText?.text.toString()
-                    viewModel.adaptadorPlanificacion.notifyItemChanged(it)
-                    dialog.dismiss()
-                }
-            }
-
-            dialog.show()
-        }*/
-
-       /* viewModel._onDuracionClicked.observe(this) {position->
-            var duracion = viewModel.listaPlanificacion[position].duracion
-            if(duracion == null || duracion == "null"){
-                duracion = "00:00"
-            }
-            val duracionArray = duracion.split(":")
-
-            val picker = viewModel.createReloj24(duracionArray[0].toInt(), duracionArray[1].toInt(), this)
-            picker.addOnPositiveButtonClickListener {
-                val hora = if (picker.hour < 10) "0" + picker.hour else picker.hour
-                val min = if (picker.minute < 10) "0" + picker.minute else picker.minute
-
-                viewModel.listaPlanificacion[position].duracion = "$hora:$min"
-            }
-            picker.show(supportFragmentManager, picker.toString())
-        }*/
-
-        // Open dialog to select pictograma for entretenimiento
-        /*viewModel._onEntretenimientoClicked.observe(this) { position->
-            dialogEntretenimiento = Dialog(this)
-            dialogEntretenimiento!!.setContentView(R.layout.dialogo_aniadir_actividad)
-            dialogEntretenimiento!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            val recyclerActividad = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_actividad)
-            val recyclerEntretenimiento = dialogEntretenimiento!!.findViewById<RecyclerView>(R.id.recycler_entretenimiento)
-            val btnClose = dialogEntretenimiento!!.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-            val pictograma = Pictograma()
-            val listaPictogramas = ArrayList<Pictograma>()
-
-            val idPictoEntretenimiento = viewModel.listaPlanificacion[position].pictoEntretenimiento
-
-            val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
-            if(prefs.getBoolean("info_objeto", false)) {
-                pictograma.id = "-1"
-                pictograma.titulo = prefs.getString("nombreObjeto", "default")!!.uppercase()
-                //pictograma.imagen = prefs.getString("imagenObjeto", "default") TODO uncomment
-                listaPictogramas.add(pictograma)
-                recyclerActividad(recyclerActividad, dialogEntretenimiento!!, listaPictogramas, idPictoEntretenimiento)
-            }else{
-               val title = dialogEntretenimiento!!.findViewById<TextView>(R.id.txt_actividad)
-                title.visibility = View.GONE
-                recyclerActividad.visibility = View.GONE
-            }
-
-            val language = Locale.getDefault().language
-            val pictoEntretenimiento =  pictograma.obtenerPictogramas(this, 4, viewModel.idUsuario, language) as ArrayList<Pictograma>
-            recyclerActividad(recyclerEntretenimiento, dialogEntretenimiento!!, pictoEntretenimiento, idPictoEntretenimiento)
-
-            btnClose.setOnClickListener {
-                dialogEntretenimiento!!.dismiss()
-            }
-
-            dialogEntretenimiento!!.show()
-        }*/
-
         viewModel._idPictoEntretenimiento.observe(this){
             viewModel.listaPlanificacion[viewModel._onEntretenimientoClicked.value!!].pictoEntretenimiento = it
             Thread.sleep(150)
@@ -392,7 +291,7 @@ class CrearPlanActivity : AppCompatActivity(){
     }
 
     private fun createPickMedia() {
-        viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        viewModel.pickMediaTraductor = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 val bitmap = BitmapFactory.decodeStream(inputStream)

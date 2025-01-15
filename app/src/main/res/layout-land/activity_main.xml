@@ -104,7 +104,7 @@
         app:strokeWidth="0dp"
         app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardViewUsuarioTEA"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         android:focusable="true">
@@ -137,51 +137,16 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardViewUsuarioTEA"
-        android:clickable="true"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.3"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="wrap_content"
+        android:maxWidth="500dp"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_percent="0.5"
-        app:cardBackgroundColor="?colorOnSurfaceInverse"
-        app:cardCornerRadius="20dp"
-        android:contentDescription="Tarjeta del planificado para iniciar sesión"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardViewPlanificador"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        android:focusable="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_RolTEA"
-                style="@style/editText"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:contentDescription="Imagen del planificado"
-                android:background="@drawable/rounded_cardview"
-                app:srcCompat="@drawable/user" />
-
-            <TextView
-                android:id="@+id/lbl_nombreUsuarioTEA"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/lbl_nombre"
-                android:textColor="?colorOnSurface"
-                android:contentDescription="Nombre del planificado"
-                android:fontFamily="@font/poppins_semibold"
-                android:textAlignment="center"
-                android:textSize="@dimen/title" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintVertical_bias="0.4"/>
 
     <ImageView
         android:id="@+id/imageView6"

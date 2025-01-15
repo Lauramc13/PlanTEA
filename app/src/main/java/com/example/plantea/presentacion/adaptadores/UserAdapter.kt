@@ -42,11 +42,11 @@ class UserAdapter(private val users: ArrayList<Usuario>?, private val listener: 
             holder.borrar.visibility = View.GONE
         } else {
             holder.nombre.editText?.setText(users[position].name)
-            if(users[position].imagen.isNullOrEmpty()){
+            if(users[position].imagen == null){
                 holder.iconEdit.visibility = View.VISIBLE
             }else{
                 holder.iconEdit.visibility = View.GONE
-                holder.imagen.setImageURI(Uri.parse(users[position].imagen))
+                holder.imagen.setImageBitmap(users[position].imagen)
             }
             holder.newUser.visibility = View.GONE
             holder.user.visibility = View.VISIBLE
@@ -54,7 +54,7 @@ class UserAdapter(private val users: ArrayList<Usuario>?, private val listener: 
             holder.buttonConfig.text = buttonConfig(users[position].configPictograma)
 
             if(users[position].actividades?.isEmpty() == true || (users[position].actividades?.last()?.name != null && users[position].actividades?.last()?.name != "")){
-                users[position].actividades?.add(Actividad("", "","", users[position].id))
+                users[position].actividades?.add(Actividad("", "",null, null, users[position].id))
             }
             holder.recyclerActividades?.layoutManager = GridLayoutManager(holder.recyclerActividades?.context, 3, GridLayoutManager.VERTICAL, false)
             holder.recyclerActividades?.adapter = ActividadAdapter(position, users[position].actividades, listenerActividad)

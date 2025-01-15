@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.adaptadores.AdaptadorMenuUser
 
 
@@ -46,7 +47,7 @@ class MenuUserActivity : AppCompatActivity(), AdaptadorMenuUser.OnItemSelectedLi
         val editor = prefs.edit()
         editor.putString("idUsuarioTEA", usersTEA!![position].id)
         editor.putString("nombreUsuarioTEA", usersTEA!![position].name)
-        editor.putString("imagenUsuarioTEA", usersTEA!![position].imagen)
+        editor.putString("imagenUsuarioTEA", CommonUtils.bitmapToByteArray(usersTEA!![position].imagen!!).toPreservedString)
         editor.putString("configPictogramas", usersTEA!![position].configPictograma)
 
         editor.apply()

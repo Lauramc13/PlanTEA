@@ -143,6 +143,7 @@ class EventosActivity : AppCompatActivity() {
         viewModel.initializeAnimations(applicationContext)
 
         observe()
+        viewModel.createPickMedia(viewModel, this)
 
         //Comprobar si hay parametros en caso de llamada desde el planificador
         if (this.intent.extras != null) {
@@ -421,7 +422,6 @@ class EventosActivity : AppCompatActivity() {
         viewModel._pictoChanged.observe(this){
             viewModel.adaptador.tachados.add(viewModel.posicionSelectedCambio)
             viewModel.adaptador.imprevistos.add(viewModel.posicionSelectedCambio+1)
-
 
             val pictoNuevo = viewModel._nuevoPicto.value!!
             pictoNuevo.historia = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].historia

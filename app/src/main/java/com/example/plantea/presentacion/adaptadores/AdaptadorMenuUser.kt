@@ -26,8 +26,8 @@ class AdaptadorMenuUser(private val users: ArrayList<Usuario>?, private val list
 
     override fun onBindViewHolder(holder: ViewHolderUserTEA, position: Int) {
         holder.nombre.text = users!![position].name
-        if(!users[position].imagen.isNullOrEmpty()){
-            holder.imagen.setImageURI(Uri.parse(users[position].imagen))
+        if(users[position].imagen != null){
+            holder.imagen.setImageBitmap(users[position].imagen)
         }
 
     }

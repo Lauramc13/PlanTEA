@@ -1,13 +1,14 @@
 package com.example.plantea.dominio
 
 import android.app.Activity
+import android.graphics.Bitmap
 
 class Usuario {
      var id : String? = null
      var name: String? = null
      var email: String? = null
      var username:String? = null
-     var imagen: String?= null
+     var imagen: Bitmap? = null
      var actividades: ArrayList<Actividad>? = ArrayList()
      var configPictograma : String?=null
 
@@ -15,14 +16,14 @@ class Usuario {
 
     constructor()
 
-    constructor(nombre:String?, correo: String?, nombreUsuario:String?, image:String?){
+    constructor(nombre:String?, correo: String?, nombreUsuario:String?, image:Bitmap?){
         name = nombre
         email = correo
         username = nombreUsuario
         imagen = image
     }
 
-    constructor(nombre:String?, image:String?, actividades: ArrayList<Actividad>, configPicto:String?){
+    constructor(nombre:String?, image:Bitmap?, actividades: ArrayList<Actividad>, configPicto:String?){
         name = nombre
         imagen = image
         configPictograma = configPicto
@@ -33,7 +34,7 @@ class Usuario {
        return gestorUsuario.crearUsuario(name, email, username, actividad)
     }
 
-    fun crearUsuarioTEA(name:String?, imagen: String?, configPicto: String?, idUsuario: String?, actividad: Activity?): String {
+    fun crearUsuarioTEA(name:String?, imagen: ByteArray?, configPicto: String?, idUsuario: String?, actividad: Activity?): String {
         return gestorUsuario.crearUsuarioTEA(name, imagen, configPicto,  idUsuario, actividad)
     }
 
@@ -45,7 +46,7 @@ class Usuario {
         return gestorUsuario.obtenerUsuario(email, actividad)
     }
 
-    fun aniadirImagenPlanificador(imagen: String, idUsuario: String, actividad: Activity?){
+    fun aniadirImagenPlanificador(imagen: ByteArray?, idUsuario: String, actividad: Activity?){
         return gestorUsuario.addImagen(imagen, idUsuario, actividad)
     }
 
@@ -53,7 +54,7 @@ class Usuario {
         return gestorUsuario.consultarId(email, actividad)
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, rutaImagen: String, idUsuario:String?, actividad: Activity?) {
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, rutaImagen: ByteArray?, idUsuario:String?, actividad: Activity?) {
         //return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, actividad)
         return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, rutaImagen, idUsuario, actividad)
     }
