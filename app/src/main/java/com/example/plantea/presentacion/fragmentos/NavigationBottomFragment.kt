@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.plantea.R
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
 import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -32,6 +33,22 @@ class NavigationBottomFragment: Fragment() {
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
         bottomNavigation.menu.clear()
         bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom)
+
+        if (!infoUsuario) {
+            bottomNavigation.menu.removeItem(R.id.user)
+        }else{
+           //change icon of user
+            bottomNavigation.itemIconTintList = null
+
+            val image = prefs.getString("imagenUsuarioTEA", "")
+            if (image == "") {
+                bottomNavigation.menu.findItem(R.id.user).setIcon(CommonUtils.byteArrayToDrawableWithCorner(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray, this.requireContext()))
+            }else{
+                //bottomNavigation.menu.findItem(R.id.user).setIcon(R.drawable.svg_star)
+                bottomNavigation.menu.findItem(R.id.user).setIcon(CommonUtils.byteArrayToDrawableWithCorner(image!!.toPreservedByteArray, this.requireContext()))
+
+            }
+        }
 
         val hostingActivityClass = activity?.javaClass
 

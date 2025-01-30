@@ -2,10 +2,13 @@
 
 <resources>
     <color name="colorHalfWhite">#CFFFFFFF</color>
+    <color name="darkGreen">#203130</color>
     <color name="seed">#238382</color>
     <color name="seedLight">#72C7C4</color>
     <color name="white">#FFFFFF</color>
+    <color name="whitish">#FEFFFF</color>
     <color name="red">#C10000</color>
+    <color name="redLight">#CC3535</color>
     <color name="lightGray">#FAFAFA</color>
     <color name="semiGray">#4DE9ECEF</color>
     <color name="darkerGray">#e9ecef</color>
@@ -91,14 +94,15 @@
     <color name="yellowDark">#C3C606</color>
     <color name="yellowDarkest">#757701</color>
 
-    <color name="blueCategoria">#CDEDFF</color>
-    <color name="yellowCategoria">#FEFFBE</color>
-    <color name="greenCategoria">#B0E8E8</color>
-    <color name="purpleCategoria">#E5D3F2</color>
-    <color name="pinkCategoria">#FFC2D8</color>
+    <color name="blueCategoria">#C5E9FC</color>
+    <color name="yellowCategoria">#FFFFC2</color>
+    <color name="greenCategoria">#CDF4E2</color>
+    <color name="purpleCategoria">#ECE2F3</color>
+    <color name="pinkCategoria">#FFD6E2</color>
     <color name="redCategoria">#FFC2C2</color>
-    <color name="orangeCategoria">#FFE3C2</color>
+    <color name="orangeCategoria">#FFE2C2</color>
 
+    <!-- Dark -->
     <color name="DarkblueCategoria">#3D708F</color>
     <color name="DarkyellowCategoria">#8D8F3D</color>
     <color name="DarkgreenCategoria">#487070</color>
@@ -107,12 +111,12 @@
     <color name="DarkredCategoria">#8F3D3D</color>
     <color name="DarkorangeCategoria">#8F653D</color>
 
+    <!-- Para los iconos de las categorias -->
     <color name="blueCategoriaDark">#0081CC</color>
     <color name="yellowCategoriaDark">#8C8F00</color>
     <color name="greenCategoriaDark">#206F6F</color>
     <color name="purpleCategoriaDark">#623D7B</color>
     <color name="pinkCategoriaDark">#B80043</color>
-
 
     <color name="pizarraBorde">#C1C1C1</color>
     <color name="pizarraContenido">#F4F4F4</color>

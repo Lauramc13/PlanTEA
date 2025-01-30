@@ -30,7 +30,7 @@
         android:layout_margin="10dp"
         android:contentDescription="Cerrar seccion"
         android:background="@drawable/bg_close_button"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/svg_close"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         app:iconSize="28dp"
-        app:icon="@drawable/ic_baseline_add_24"
+        app:icon="@drawable/svg_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

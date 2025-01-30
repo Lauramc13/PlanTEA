@@ -59,7 +59,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user" />
+                android:src="@drawable/svg_user" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

@@ -1,172 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical"
-    android:paddingTop="6dp">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/id_card_picto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/id_card"
             android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/card_personalizado"
-            android:elevation="0dp">
+            android:layout_height="155dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/card_personalizado">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/id_Imagen"
-                style="@style/pictogramas"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentEnd="true"
-                android:background="@color/white"
-                android:contentDescription="@string/lbl_Consultas"
-                android:foregroundGravity="center"
-                android:layout_marginTop="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/id_Texto"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/cornerRadius"
-                app:srcCompat="@drawable/categoria_consultas" />
-
-            <TextView
-                android:id="@+id/id_Texto"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
-                android:fontFamily="@font/poppins_regular"
-                android:foregroundGravity="bottom|center_vertical"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/lbl_Consultas"
-                android:textColor="?colorOnSurface"
-                android:textSize="15sp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/id_Imagen" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/id_Imagen"
+                    style="@style/pictogramas"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@color/white"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/lbl_Consultas"
+                    app:shapeAppearance="@style/cornerRadius"
+                    app:srcCompat="@drawable/categoria_consultas" />
+
+                <TextView
+                    android:id="@+id/id_Texto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/poppins_regular"
+                    android:foregroundGravity="bottom|center_vertical"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:text="@string/lbl_Consultas"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/btn_borrarPicto"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:elevation="4dp"
-                android:padding="7dp"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_trash"/>
-
-            <TextView
-                android:id="@+id/duracionPicto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="5m"
-                android:textColor="?colorOnSurface"
-                android:textSize="@dimen/button"
-                android:visibility="invisible"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="7dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/btn_favoritosOff"
+                android:id="@+id/btn_favoritos"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:padding="10dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="2dp"
                 android:elevation="4dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_heart">
-            </ImageView>
-
-            <ImageView
-                android:id="@+id/btn_favoritosOn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"
-                android:elevation="4dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_heart_filled" />
-
-            <ImageView
-                android:id="@+id/btn_menu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="9dp"
-                android:layout_marginEnd="-3dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_options" />
-
-            <ImageView
-                android:id="@+id/btn_historiaPictoOn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
-                android:elevation="4dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bocadillo_historia_on" />
-
-            <ImageView
-                android:id="@+id/btn_removePicto"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
-                android:padding="3dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:tint="?customColorGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/svg_trash" />
+                app:srcCompat="@drawable/svg_star"/>
+
+            <ImageView
+                android:id="@+id/btn_borrarPicto"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:layout_alignParentStart="true"
+                app:tint="?customColorGray"
+                android:visibility="gone"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/svg_trash"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--<ImageView
-            android:id="@+id/id_recompensa"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="-3dp"
-            android:layout_marginEnd="-22dp"
-            android:contentDescription="@string/lbl_Consultas"
-            android:elevation="4dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/categoria_recompensa">
-        </ImageView>-->
-
-
     </RelativeLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,6 +52,7 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
             if(listaDiaSemana?.get(position)?.imagen != null){
                 holder.imagen.setImageBitmap(listaDiaSemana!![position].imagen)
                 holder.imagen.setBackgroundColor(Color.WHITE)
+                holder.imagen.clearColorFilter()
             }else{
                 holder.imagen.setImageBitmap(null)
                 holder.imagen.setBackgroundColor(Color.TRANSPARENT)
@@ -89,8 +90,11 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
 
         if (imagen == null) {
             holder.card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            holder.imagen.clearColorFilter()
+
             if(isEdit) {
                 holder.imagen.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.svg_add_image))
+                holder.imagen.setColorFilter(ContextCompat.getColor(context, R.color.md_theme_light_outline))
             }
         }
     }

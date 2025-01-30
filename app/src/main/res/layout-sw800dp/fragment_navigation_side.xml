@@ -26,8 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="start"
-        android:background="?colorBG1"
-        android:backgroundTint="?colorBG1"
+        android:background="@color/transparent"
         android:fontFamily="@font/poppins_light"
         app:elevation="3dp"
         app:itemIconPadding="10dp"
@@ -67,7 +66,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user" />
+                android:src="@drawable/svg_user" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView

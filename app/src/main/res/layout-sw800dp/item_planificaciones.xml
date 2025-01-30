@@ -34,6 +34,7 @@
                     android:padding="10dp"
                     android:gravity="center"
                     android:layout_marginLeft="10dp"
+                    android:textColor="?colorOnSurface"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Ejemplo plan"/>
 
@@ -69,8 +70,8 @@
                     android:layout_width="48dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="30dp"
-                    app:iconTint="?colorOnSurface"
+                    app:iconSize="31dp"
+                    app:iconTint="?colorOnSecondaryContainer"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
                     app:iconGravity="textStart"
@@ -81,8 +82,8 @@
                     android:layout_width="48dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="30dp"
-                    app:iconTint="?colorOnSurface"
+                    app:iconSize="32dp"
+                    app:iconTint="?colorOnSecondaryContainer"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
                     app:iconGravity="textStart"
@@ -93,12 +94,12 @@
                     android:layout_width="48dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="35dp"
-                    app:iconTint="?colorOnSurface"
+                    app:iconSize="30dp"
+                    app:iconTint="?colorOnSecondaryContainer"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
                     app:iconGravity="textStart"
-                    app:icon="@drawable/svg_edit" />
+                    app:icon="@drawable/svg_edit_outline" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_delete"
@@ -106,7 +107,7 @@
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
                     app:iconSize="30dp"
-                    app:iconTint="?colorOnSurface"
+                    app:iconTint="?colorOnSecondaryContainer"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
                     android:layout_marginEnd="10dp"

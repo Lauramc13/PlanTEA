@@ -1,230 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:paddingTop="30dp"
-    android:paddingEnd="45dp"
-    android:paddingStart="45dp"
+    android:paddingEnd="25dp"
+    android:paddingStart="25dp"
     android:paddingBottom="30dp"
     android:layout_gravity="center">
 
-    <LinearLayout
-        android:id="@+id/linearLayout19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_guardar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayoutUser"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginEnd="40dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="58dp"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="18sp"
-                android:textAllCaps="true"
-                android:gravity="center"
-                android:lines="2"
-                android:lineSpacingExtra="0dp"
-                android:lineSpacingMultiplier="1"
-                android:layout_marginBottom="10dp"
-                android:text="@string/user" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardUsuario"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:clickable="true"
-                android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
-                android:focusable="true"
-                android:gravity="center"
-                app:cardBackgroundColor="?configuracionCardBg"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/cardViewUsuarioTEA"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                app:layout_constraintVertical_bias="0.35"
-                app:strokeColor="?color"
-                app:strokeWidth="1.5dp">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imagenUsuario"
-                    style="@style/addPhotoBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/svg_add_image"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_NameUsuario"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/fondo_texto_login"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="Nombre"
-
-                android:inputType="text"
-                android:textColor="?colorOnSurface"
-                app:shapeAppearance="@style/cornerRadiusLogin">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="16sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="58dp"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="18sp"
-                android:textAllCaps="true"
+            <LinearLayout
+                android:id="@+id/linearLayoutUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:lines="2"
-                android:lineSpacingExtra="0dp"
-                android:lineSpacingMultiplier="1"
-                android:layout_marginBottom="10dp"
-                android:text="@string/lbl_actividades_objeto" />
+                android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardActividad"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:clickable="true"
-                android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
-                android:focusable="true"
-                android:gravity="center"
-                app:cardBackgroundColor="?configuracionCardBg"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/cardViewUsuarioTEA"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                app:layout_constraintVertical_bias="0.35"
-                app:strokeColor="?color"
-                app:strokeWidth="1.5dp">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imagenActividad"
-                    style="@style/addPhotoBackground"
+                <TextView
+                    android:id="@+id/textUser"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/svg_add_image"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_NameActividad"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="Nombre"
-                android:inputType="text"
-                android:textColor="?colorOnSurface"
-                app:shapeAppearance="@style/cornerRadiusLogin">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="@string/user"
+                    android:textAllCaps="false"
                     android:textColor="?colorOnSurface"
-                    android:textSize="16sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:textSize="@dimen/subtitle" />
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardUsuario"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
+                    android:focusable="true"
+                    android:gravity="center"
+                    style="@style/cardBackground"
+                    app:layout_constraintBottom_toTopOf="@+id/cardViewUsuarioTEA"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    app:layout_constraintVertical_bias="0.35">
 
-            <TextView
-                android:id="@+id/lbl_categoria"
-                android:layout_width="wrap_content"
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imagenUsuario"
+                        style="@style/addPhotoBackground"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/svg_add_image"
+                        android:clickable="false"
+                        android:focusable="false" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_NameUsuario"
+                    style="@style/cornertextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/lbl_nombre">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        style="@style/textInput"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Categoría:"
-                android:textSize="@dimen/subtitle"
-                android:fontFamily="@font/poppins_medium" />
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
-                style="@style/Widget.Material3.ChipGroup"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                app:chipSpacingVertical="-2dp"
-                app:singleLine="false"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:lineSpacingExtra="0dp"
+                    android:lineSpacingMultiplier="1"
+                    android:lines="2"
+                    android:textColor="?colorOnSurface"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/lbl_actividades_objeto"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/subtitle" />
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardActividad"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:clickable="true"
+                    android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
+                    android:focusable="true"
+                    android:gravity="center"
+                    style="@style/cardBackground"
+                    app:layout_constraintBottom_toTopOf="@+id/cardViewUsuarioTEA"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    app:layout_constraintVertical_bias="0.35"
+                    app:strokeColor="?color"
+                    app:strokeWidth="1.5dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imagenActividad"
+                        style="@style/addPhotoBackground"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/svg_add_image"
+                        android:clickable="false"
+                        android:focusable="false" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_NameActividad"
+                    style="@style/cornertextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/lbl_nombre"
+                    android:inputType="text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        style="@style/textInput" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/lbl_categoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/categor_a"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="@dimen/subtitle" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    style="@style/Widget.Material3.ChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:chipSpacingVertical="-2dp"
+                    app:singleLine="false" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_guardar"
         style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
         android:fontFamily="@font/poppins_medium"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:text="@string/btn_Guardar"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="#181F25"
         android:textSize="@dimen/button"
         app:layout_constraintBottom_toTopOf="@+id/btn_borrar"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout19"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout19" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_borrar"
         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="0dp"
         android:fontFamily="@font/poppins_medium"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:text="@string/borrar"
-        android:textAllCaps="true"
-        android:textColor="#181F25"
-        android:textSize="@dimen/button"
         android:visibility="gone"
+        android:textAllCaps="false"
+        android:textSize="@dimen/button"
         app:icon="@drawable/svg_trash"
-        app:iconTint="#181F25"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout19"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout19" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,16 +11,11 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="65dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/svg_key" />
+        android:layout_marginTop="10dp"
+        android:paddingStart="@dimen/paddingDialog"
+        android:paddingEnd="@dimen/paddingDialog"
+        app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
             android:id="@+id/lbl_Acceder"
@@ -33,47 +28,41 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Password"
-            android:layout_width="220dp"
+            style="@style/cornertextInput"
+            android:layout_width="@dimen/widthTextInput"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="34dp"
             android:layout_marginEnd="50dp"
             android:ems="10"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:background="@drawable/fondo_texto_login"
             android:inputType="textPassword"
             android:textColor="?colorOnSurface"
             android:textColorHint="?colorOnSurface"
             app:endIconMode="password_toggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_Acceder"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="wrap_content"
                 android:hint="@string/lbl_contrasena"
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
-                android:textColor="?colorOnSurface" />
+                style="@style/textInput" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
             style="@style/Widget.Material3.Button"
-            android:layout_width="220dp"
+            android:layout_width="@dimen/widthTextInput"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/btn_Acceder"
-            android:textAllCaps="true"
-            android:textColor="#203130"
-            android:textSize="@dimen/button"
-            app:cornerRadius="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password"/>
+            android:textAllCaps="false"
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button" />
     </LinearLayout>
 
     <ImageView
@@ -83,7 +72,7 @@
         android:layout_margin="10dp"
         android:contentDescription="Cerrar seccion"
         android:background="@drawable/bg_close_button"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/svg_close"
         android:padding="12dp"
         android:alpha="0.9"
         app:layout_constraintEnd_toEndOf="parent"

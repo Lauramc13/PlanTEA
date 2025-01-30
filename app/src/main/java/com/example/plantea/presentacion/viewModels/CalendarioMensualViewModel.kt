@@ -122,9 +122,9 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
 
     override fun setupTitle(titleDialog: TextView, activity: Activity) {
         if(isEditImage){
-            titleDialog.text = activity.getString(R.string.editar_imagen).uppercase()
+            titleDialog.text = activity.getString(R.string.editar_imagen)
         }else{
-            titleDialog.text = activity.getString(R.string.agregar_fecha).uppercase()
+            titleDialog.text = activity.getString(R.string.agregar_fecha)
         }
     }
 

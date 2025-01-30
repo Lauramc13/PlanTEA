@@ -10,13 +10,14 @@ import com.example.plantea.R
 import com.google.android.material.tabs.TabLayout
 import com.example.plantea.presentacion.adaptadores.AdaptadorPaginas
 import com.example.plantea.presentacion.viewModels.TutorialViewModel
+import com.google.android.material.button.MaterialButton
 
 class TutorialActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
     private lateinit var adapter: AdaptadorPaginas
     private lateinit var btnPrevious: Button
     private lateinit var btnNext: Button
-    private lateinit var btnSkip: Button
+    private lateinit var btnSkip: MaterialButton
     private var isFromManual = false
 
     private val viewModel by viewModels<TutorialViewModel>()
@@ -36,7 +37,7 @@ class TutorialActivity : AppCompatActivity() {
 
         btnPrevious = findViewById(R.id.btn_previous)
         btnNext = findViewById(R.id.btn_next)
-        btnSkip = findViewById(R.id.btn_skip)
+        btnSkip = findViewById(R.id.btn_saltar)
 
         btnPrevious.setOnClickListener {
             viewPager.currentItem -= 1

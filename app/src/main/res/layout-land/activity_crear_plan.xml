@@ -46,13 +46,13 @@
         android:contentDescription="Botón para guardar la planificación"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/btn_Guardar"
-        android:textColor="#203130"
+        android:textColor="@color/darkGreen"
         android:layout_marginEnd="20dp"
         android:textSize="@dimen/button"
         app:cornerRadius="25dp"
-        app:icon="@drawable/ic_baseline_save_24"
+        app:icon="@drawable/svg_save"
         app:iconSize="20dp"
-        app:iconTint="#203130"
+        app:iconTint="@color/darkGreen"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -150,6 +150,7 @@
             android:contentDescription="Barra de busqueda de pictogramas por nombre"
             android:queryHint="@string/buscar_pictos"
             android:closeIcon="@drawable/svg_close"
+            android:searchIcon="@drawable/svg_search"
             android:iconifiedByDefault="false"
             tools:ignore="NotSibling"/>
 

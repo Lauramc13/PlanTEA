@@ -46,28 +46,23 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Titulo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto nombre de usuario"
             android:ems="10"
-            android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_tulo"
             android:inputType="text"
-            android:textColor="?colorOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/card_imagen"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
+                style="@style/textInput"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -97,9 +92,8 @@
             android:layout_marginTop="70dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/crear_cuaderno"
-            android:textColor="#203130"
-            android:textSize="14sp"
-            app:cornerRadius="10dp"
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

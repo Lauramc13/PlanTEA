@@ -28,7 +28,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="5dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/svg_calendario"
+            android:src="@drawable/svg_calendario_mensual"
             app:tint="?colorPrimary" />
 
         <TextView

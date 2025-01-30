@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListener, AniadirPictoUtils.Companion.CustomViewModel {
+class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListener, Companion.CustomViewModel {
 
     override val pictograma: Pictograma = Pictograma()
     override var idUsuario: String = ""
@@ -104,7 +104,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
 
     //Opcion para indicar funcionalidad editar o crear
     var opcionEditar = false
-    var isCrearCategoria = false
+    private var isCrearCategoria = false
 
     fun setIdUsuario(prefs: android.content.SharedPreferences) {
         idUsuario = prefs.getString("idUsuario", "").toString()
@@ -117,6 +117,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     }
 
     fun nuevoPictogramaDialogo(activity: Activity){
+        isCrearCategoria = false
         AniadirPictoUtils.initializeDialog(this, activity)
     }
 

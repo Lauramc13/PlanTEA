@@ -6,24 +6,19 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntretenimiento
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanificacion
 import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
@@ -43,9 +38,8 @@ class CrearPlanActivity : AppCompatActivity(){
     //Variables dialogo crear nuevo pictograma
     private lateinit var btnGuardarPlanificacion: Button
     private lateinit var txtTituloPlan: TextInputLayout
-    private var dialogEntretenimiento: Dialog? = null
     private var dialogGuardar: Dialog? = null
-    //RecyclerView Planificacion
+
     lateinit var recyclerView: RecyclerView
 
     var fragment = Fragment()
@@ -72,7 +66,6 @@ class CrearPlanActivity : AppCompatActivity(){
         backButton = findViewById(R.id.goBackButton)
 
         backButton.setOnClickListener{
-            dialogEntretenimiento?.dismiss()
             finish()
         }
 
@@ -228,7 +221,6 @@ class CrearPlanActivity : AppCompatActivity(){
         viewModel._idPictoEntretenimiento.observe(this){
             viewModel.listaPlanificacion[viewModel._onEntretenimientoClicked.value!!].pictoEntretenimiento = it
             Thread.sleep(150)
-            dialogEntretenimiento?.dismiss()
         }
 
     }

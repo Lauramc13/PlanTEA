@@ -59,12 +59,12 @@ class AdaptadorListaCategoriasActividad(var listaCategorias: ArrayList<Categoria
                     isEditable = true
                     titulo.isEnabled = true
                     titulo.background = ResourcesCompat.getDrawable(context.resources, R.drawable.edittext_underline, null)
-                    editar.icon = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_baseline_save_24, null)
+                    editar.icon = ResourcesCompat.getDrawable(context.resources, R.drawable.svg_save, null)
                 }else{
                     val posicion = bindingAdapterPosition
                     listener?.editarCategoria(listaCategorias!![posicion].id, titulo.text.toString(), posicion)
                     titulo.background = null
-                    editar.setIconResource(R.drawable.svg_edit)
+                    editar.setIconResource(R.drawable.svg_edit_outline)
                     isEditable = false
                     titulo.isEnabled = false
                 }

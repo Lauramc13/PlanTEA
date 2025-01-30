@@ -37,6 +37,7 @@
                     android:gravity="center"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:textColor="?colorOnSurface"
                     android:text="Ejemplo plan"/>
 
                 <TextView
@@ -47,6 +48,7 @@
                     android:gravity="center"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="-"
+                    android:textColor="?colorOnSurface"
                     android:visibility="gone"
                     tools:ignore="HardcodedText" />
 
@@ -58,6 +60,7 @@
                     android:padding="10dp"
                     android:gravity="center"
                     android:visibility="gone"
+                    android:textColor="?colorOnSurface"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Ejemplo plan"/>
 
@@ -71,7 +74,7 @@
                     android:layout_width="42dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="35dp"
+                    app:iconSize="30dp"
                     app:iconTint="?colorOnSurface"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
@@ -83,7 +86,7 @@
                     android:layout_width="42dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="27dp"
+                    app:iconSize="30dp"
                     app:iconTint="?colorOnSurface"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
@@ -95,19 +98,19 @@
                     android:layout_width="42dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="35dp"
+                    app:iconSize="25dp"
                     app:iconTint="?colorOnSurface"
                     android:padding="0dp"
                     app:strokeWidth="0dp"
                     app:iconGravity="textStart"
-                    app:icon="@drawable/svg_edit" />
+                    app:icon="@drawable/svg_edit_outline" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_export"
                     android:layout_width="42dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="30dp"
+                    app:iconSize="25dp"
                     app:iconTint="?colorOnSurface"
                     android:padding="0dp"
                     app:strokeWidth="0dp"

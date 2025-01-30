@@ -1,21 +1,13 @@
 package com.example.plantea.presentacion.adaptadores
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Actividad
-import com.example.plantea.dominio.Usuario
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textfield.TextInputLayout
 
 class ActividadAdapter(private val positionUser: Int, private val actividades: ArrayList<Actividad>?, private val listener: OnItemSelectedListenerActividad?) : RecyclerView.Adapter<ActividadAdapter.ViewHolderAcitividades>() {
 

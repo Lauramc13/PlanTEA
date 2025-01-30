@@ -26,7 +26,7 @@ class RegisterViewModel: ViewModel() {
 
     fun updateButtonIcon(context: Context): Drawable?{
         // Actualizar el icono del botón segun el estado
-        val iconResource = if (isClicked) R.drawable.question_simple else R.drawable.svg_close
+        val iconResource = if (isClicked) R.drawable.svg_question else R.drawable.svg_close
         return ContextCompat.getDrawable(context, iconResource)
     }
 

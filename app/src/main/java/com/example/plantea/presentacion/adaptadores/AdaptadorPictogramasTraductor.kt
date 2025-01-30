@@ -14,17 +14,14 @@ import com.example.plantea.dominio.Pictograma
 
 class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasTraductor.ViewHolderPictogramas>() {
 
-
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, context: Context)
-
         fun onLongItemSeleccionado(posicion: Int, context: Context)
-
         fun onItemEliminado(posicion: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas_traductor, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pictogramas, null, false)
         return ViewHolderPictogramas(view)
     }
 
@@ -58,34 +55,25 @@ class AdaptadorPictogramasTraductor(var listaPictogramas: ArrayList<Pictograma>?
         }
     }
 
-    inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
-        var titulo: TextView
-        var imagen: ImageView
-        val removePicto : ImageView
+    inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var titulo: TextView = itemView.findViewById(R.id.id_Texto)
+        var imagen: ImageView = itemView.findViewById(R.id.id_Imagen)
+        val removePicto : ImageView = itemView.findViewById(R.id.btn_borrarPicto)
 
         init {
-            titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
-            imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            removePicto = itemView.findViewById<View>(R.id.btn_removePicto) as ImageView
-            itemView.setOnClickListener(this)
-            itemView.setOnLongClickListener(this)
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                listener?.onItemSeleccionado(position, itemView.context)
+            }
+            itemView.setOnLongClickListener{
+                val position = bindingAdapterPosition
+                listener?.onLongItemSeleccionado(position, itemView.context)
+                return@setOnLongClickListener true
+            }
 
             removePicto.setOnClickListener {
                 listener?.onItemEliminado(bindingAdapterPosition)
             }
         }
-
-        override fun onClick(view: View) {
-            val position = bindingAdapterPosition
-            listener?.onItemSeleccionado(position, view.context)
-        }
-
-        override fun onLongClick(view: View): Boolean {
-            val position = bindingAdapterPosition
-            listener?.onLongItemSeleccionado(position, view.context)
-            return true
-        }
-
-
     }
 }

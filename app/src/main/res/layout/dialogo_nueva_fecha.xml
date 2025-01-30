@@ -6,202 +6,192 @@
     android:id="@+id/fragment_nuevo_picto_nombre"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:id="@+id/frameImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_textinputedit"
-        app:layout_constraintBottom_toBottomOf="@+id/colors2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.155"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toTopOf="@+id/txt_Fecha">
-
-        <ImageView
-            android:id="@+id/img_NuevoPicto"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:layout_margin="5dp"
-            app:shapeAppearance="@style/cornerRadius" />
-
-        <ImageView
-            android:id="@+id/edit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="5dp"
-            android:layout_gravity="end"
-            android:src="@drawable/edit_image_svg"
-            app:shapeAppearance="@style/cornerRadius" />
-    </FrameLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txt_Fecha"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/fondo_texto_login"
-        android:contentDescription="Campo de texto nombre de usuario"
-        android:ems="10"
-        android:fontFamily="@font/poppins_regular"
-        android:layout_marginTop="10dp"
-        android:hint="@string/fecha2"
-        android:inputType="none"
-        android:textColor="?colorOnSurface"
-        app:shapeAppearance="@style/cornerRadiusLogin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frameImage" >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextFecha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            android:focusable="false"
-            android:cursorVisible="false"
-            android:clickable="true"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txt_Titulo"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/fondo_texto_login"
-        android:contentDescription="Campo de texto nombre de usuario"
-        android:ems="10"
-        android:fontFamily="@font/poppins_regular"
-        android:layout_marginTop="10dp"
-        android:hint="@string/lbl_tulo"
-        android:inputType="text"
-        android:textColor="?colorOnSurface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frameImage"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Fecha"
-        app:shapeAppearance="@style/cornerRadiusLogin">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_regular"
-        android:text="@string/color"
-        android:textColor="?colorOnSurface"
-        android:textSize="@dimen/modalText"
-        app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
-
     <LinearLayout
-        android:id="@+id/colors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/txt_Titulo"
-        app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <FrameLayout
+            android:id="@+id/frameImage"
+            android:layout_width="@dimen/widthTextInput"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_textinputedit"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp">
+
+            <ImageView
+                android:id="@+id/img_NuevoPicto"
+                style="@style/addPhotoBackground"
+                android:layout_width="150dp"
+                android:layout_margin="5dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:contentDescription="Añadir imagen del planificador"
+                app:shapeAppearance="@style/cornerRadius" />
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="3dp"
+                android:layout_gravity="end"
+                android:src="@drawable/edit_image_svg"
+                app:shapeAppearance="@style/cornerRadius" />
+        </FrameLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Fecha"
+            style="@style/cornertextInput"
+            android:layout_width="@dimen/widthTextInput"
+            android:layout_height="wrap_content"
+            android:contentDescription="Campo de texto nombre de usuario"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:hint="@string/fecha2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:clickable="true"
+                style="@style/textInput" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Titulo"
+            style="@style/cornertextInput"
+            android:layout_width="@dimen/widthTextInput"
+            android:layout_height="wrap_content"
+            android:contentDescription="Campo de texto nombre de usuario"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:hint="@string/lbl_tulo"
+            android:inputType="text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                style="@style/textInput"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/color"
+            android:textColor="?colorOnSurface"
+            android:textSize="@dimen/modalText"
+            app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
+            app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
+
+        <LinearLayout
+            android:id="@+id/colors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/txt_Titulo"
+            app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab1"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:strokeWidth="0dp"
+                app:cornerRadius="15dp"
+                app:iconGravity="textStart"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:iconTint="@color/md_theme_light_shadow"
+                app:backgroundTint="?colorPurple" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab2"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:strokeWidth="0dp"
+                app:cornerRadius="15dp"
+                app:iconGravity="textStart"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:iconTint="@color/md_theme_light_shadow"
+                app:backgroundTint="?colorPink" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab3"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:strokeWidth="0dp"
+                app:cornerRadius="15dp"
+                app:iconGravity="textStart"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:iconTint="@color/md_theme_light_shadow"
+                app:backgroundTint="?colorGreen" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/colors2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/colors"
+            app:layout_constraintTop_toBottomOf="@+id/colors">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab4"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:strokeWidth="0dp"
+                app:cornerRadius="15dp"
+                app:iconGravity="textStart"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:iconTint="@color/md_theme_light_shadow"
+                app:backgroundTint="?colorYellow" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab5"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:strokeWidth="0dp"
+                app:cornerRadius="15dp"
+                app:iconGravity="textStart"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:iconTint="@color/md_theme_light_shadow"
+                app:backgroundTint="?colorBlue" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/fab6"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:strokeWidth="0dp"
+                app:cornerRadius="15dp"
+                app:iconGravity="textStart"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:iconTint="?colorOnSurface"
+                app:backgroundTint="?color" />
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab1"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            app:strokeWidth="0dp"
-            app:cornerRadius="15dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/purpleCategoria" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab2"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            app:strokeWidth="0dp"
-            app:cornerRadius="15dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/pinkCategoria" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab3"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            app:strokeWidth="0dp"
-            app:cornerRadius="15dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/greenCategoria" />
+            android:id="@+id/btn_GuardarPicto"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/btn_Guardar"
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button"
+            android:textAllCaps="false"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/colors2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/colors"
-        app:layout_constraintTop_toBottomOf="@+id/colors">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab4"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            app:strokeWidth="0dp"
-            app:cornerRadius="15dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/yellowCategoria" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab5"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            app:strokeWidth="0dp"
-            app:cornerRadius="15dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="#CDEDFF" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/fab6"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            app:strokeWidth="0dp"
-            app:cornerRadius="15dp"
-            app:iconGravity="textStart"
-            style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="?color" />
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_GuardarPicto"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="@string/btn_Guardar"
-        android:textColor="#203130"
-        android:textSize="@dimen/button"
-        android:textAllCaps="true"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colors2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

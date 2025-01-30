@@ -8,8 +8,8 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:clickable="true"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:cardBackgroundColor="?colorOnSurfaceInverse"
         app:cardCornerRadius="100dp"
         android:layout_margin="5dp"
@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:contentDescription="Imagen del planificado"
                 android:background="@drawable/rounded_cardview"
-                app:srcCompat="@drawable/user" />
+                app:srcCompat="@drawable/svg_user" />
 
     </com.google.android.material.card.MaterialCardView>
 

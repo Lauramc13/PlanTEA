@@ -10,12 +10,12 @@
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.85"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.6"
         app:srcCompat="@drawable/background_login_land_svg" />
 
 
@@ -23,17 +23,17 @@
         android:id="@+id/linearLayout8"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
         android:layout_marginTop="70dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView7"
-        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="360dp"
-        app:layout_constraintWidth_percent="0.4">
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintWidth_max="360dp">
 
         <TextView
             android:id="@+id/textView7"
@@ -46,58 +46,48 @@
             android:textColor="?colorOnSurface"
             android:textSize="30sp" />
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto nombre de usuario"
-            android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_email"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            android:inputType="text">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/textInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Password"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto contraseña"
             android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_contrasena"
             android:inputType="textPassword"
-            android:textColor="?colorOnSurface"
             app:endIconMode="password_toggle"
-            app:layout_constraintStart_toStartOf="@+id/txt_UserName"
-            app:layout_constraintTop_toBottomOf="@+id/txt_UserName"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/textInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textPassword"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
-            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="55dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:contentDescription="Boton iniciar sesion"
@@ -105,12 +95,8 @@
             android:fontFamily="@font/poppins_semibold"
             android:maxWidth="10dp"
             android:text="@string/lbl_iniciarSesion"
-            android:textColor="#203130"
-            android:textSize="14sp"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button" />
 
         <!-- <TextView
             android:id="@+id/btn_olvidar"
@@ -127,22 +113,21 @@
             android:layout_margin="10dp"
             android:src="@drawable/svg_separador" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/Signin"
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:backgroundTint="?configuracionCardBg"
             android:contentDescription="Boton iniciar sesion"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/sesion_google"
             android:textColor="?colorOnSurface"
-            android:textSize="14sp"
-            app:cornerRadius="10dp"
+            android:textSize="@dimen/button"
             app:icon="@drawable/svg_google_icon"
-            app:iconSize="28dp"
-            app:iconTint="@null"
-            app:strokeWidth="1dp" />
+            app:iconGravity="textStart"
+            app:iconPadding="15dp"
+            app:iconSize="25dp"
+            app:iconTint="@null" />
 
         <TextView
             android:id="@+id/btn_registrar"
@@ -189,18 +174,19 @@
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
+
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.43"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4"
         app:srcCompat="@drawable/svg_problemsolving" />
-
 
     <FrameLayout
         android:id="@+id/frameLayout_idiomas"

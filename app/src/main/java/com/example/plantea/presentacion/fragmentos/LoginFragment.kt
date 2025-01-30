@@ -24,16 +24,17 @@ import com.example.plantea.presentacion.viewModels.PreLoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment: BottomSheetDialogFragment() {
 
     lateinit var actividad: Activity
-    private  var btnLogin: Button? = null
+    private  var btnLogin: MaterialButton? = null
     private  var btnRegister: TextView? = null
     private  var email: TextInputLayout? = null
     private  var password: TextInputLayout? = null
-    private  var signin : Button? = null
+    private  var signin : MaterialButton? = null
     private lateinit var prefs : SharedPreferences
 
     private val viewModel by viewModels<PreLoginViewModel>()
@@ -97,8 +98,14 @@ class LoginFragment: BottomSheetDialogFragment() {
     }
 
     private fun signInGoogle() {
-        val signInIntent: Intent = viewModel.mGoogleSignInClient.signInIntent
-        launcher.launch(signInIntent)
+        try{
+            val signInIntent: Intent = viewModel.mGoogleSignInClient.signInIntent
+            launcher.launch(signInIntent)
+        } catch (e: Exception) {
+            Toast.makeText(actividad, "Error al iniciar sesión con Google", Toast.LENGTH_SHORT).show()
+            Log.d("pruebas", "Error al iniciar sesión con Google: ${e.message}")
+        }
+
     }
 
     private var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->

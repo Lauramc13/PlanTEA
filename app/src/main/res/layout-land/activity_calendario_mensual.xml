@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <ImageView
@@ -204,10 +204,10 @@
                 style="@style/Widget.Material3.Button"
                 android:text="@string/agregar_fecha"
                 app:icon="@drawable/svg_add"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textSize="@dimen/button"
-                android:textColor="#203130"
-                app:iconTint="#203130"
+                android:textColor="@color/darkGreen"
+                app:iconTint="@color/darkGreen"
                 android:fontFamily="@font/poppins_semibold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -220,7 +220,7 @@
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:text="@string/exportar_como_pdf"
                 app:icon="@drawable/svg_download"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="?colorOnSurface"
                 app:iconTint="?colorOnSurface"
                 android:textSize="@dimen/button"

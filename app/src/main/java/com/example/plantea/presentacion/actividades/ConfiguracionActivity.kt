@@ -1,15 +1,19 @@
 package com.example.plantea.presentacion.actividades
 
 
+import android.Manifest
 import android.app.Activity
+import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,6 +22,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -29,29 +35,36 @@ import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPres
 import com.example.plantea.presentacion.adaptadores.ActividadAdapter
 import com.example.plantea.presentacion.adaptadores.UserAdapter
 import com.example.plantea.presentacion.viewModels.ConfiguracionViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
 class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedListener, ActividadAdapter.OnItemSelectedListenerActividad {
     lateinit var prefs: SharedPreferences
     private lateinit var imgUsuarioPlanificador: ImageView
-    private lateinit var txtPlanificador : TextInputLayout
-    private lateinit var txtUsernamePlanificador : TextInputLayout
-    private lateinit var txtCorreoPlanificador : TextInputLayout
+    private var nombreTextView: TextView? = null
+    private var txtPlanificador : TextInputLayout? = null
+    private var txtUsernamePlanificador : TextInputLayout? = null
+    private var txtCorreoPlanificador : TextInputLayout? = null
+    private var dialogLogout : Dialog? = null
+    private var switchNoti : MaterialSwitch? = null
+    private var switchOscuro : MaterialSwitch? = null
 
     private var restart = false
     var image : ShapeableImageView? = null
     private var imageActividad : ShapeableImageView? = null
 
+    private var recyclerViewUsers: RecyclerView? = null
 
-
-    private lateinit var recyclerViewUsers: RecyclerView
-
+    // Para cuando se crea un usuario TEA nuevo
     private var resultLauncher :  ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         try {
             if (result.resultCode == Activity.RESULT_OK) {
@@ -90,6 +103,10 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        switchNoti?.isChecked = it
+    }
+
     private val viewModel by viewModels<ConfiguracionViewModel>()
 
     override fun onResume() {
@@ -97,6 +114,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         configurarDatos()
         getImages()
         restart = false
+        switchOscuro?.isChecked = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 
     override fun onRestart() {
@@ -107,12 +125,15 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     override fun onDestroy() {
         super.onDestroy()
         resultLauncher = null
+        if (dialogLogout?.isShowing == true) {
+            dialogLogout?.dismiss()
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.name = txtPlanificador.editText?.text.toString()
-        viewModel.username = txtUsernamePlanificador.editText?.text.toString()
+        viewModel.name = txtPlanificador?.editText?.text.toString()
+        viewModel.username = txtUsernamePlanificador?.editText?.text.toString()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,20 +145,31 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         imgUsuarioPlanificador = findViewById(R.id.img_FotoPlanificador)
         viewModel.idUsuario = prefs.getString("idUsuario", "").toString()
 
+        //Version tablet
         txtPlanificador = findViewById(R.id.txt_nombrePlanificador)
         txtUsernamePlanificador = findViewById(R.id.txt_nombreUsuarioPlanificador)
         txtCorreoPlanificador = findViewById(R.id.txt_correoPlanificador)
+        val btnGuardar : Button? = findViewById(R.id.btn_guardarConfiguracion)
+        val btnPassword : Button? = findViewById(R.id.buttonContrasenia)
 
-        val btnGuardar : Button = findViewById(R.id.btn_guardarConfiguracion)
-        val btnPassword : Button= findViewById(R.id.buttonContrasenia)
+        val btnPolitica : MaterialButton? = findViewById(R.id.btnPolitica)
+        nombreTextView = findViewById(R.id.txt_nombre)
+        val btnEditPerfil : MaterialButton? = findViewById(R.id.btnEdit)
+        switchNoti = findViewById(R.id.switch_notificaciones)
+        switchOscuro = findViewById(R.id.switch_oscuro)
+
         val credits : TextView = findViewById(R.id.btn_credits)
+        val btnLogout : MaterialButton? = findViewById(R.id.btnCerrarSesion)
+        val btnUsersTEA : MaterialButton? = findViewById(R.id.btn_users_tea)
 
         if(savedInstanceState != null){
-            txtPlanificador.editText?.setText(viewModel.name)
-            txtUsernamePlanificador.editText?.setText(viewModel.username)
+            txtPlanificador?.editText?.setText(viewModel.name)
+            nombreTextView?.text = viewModel.name
+            txtUsernamePlanificador?.editText?.setText(viewModel.username)
         }else {
-            txtPlanificador.editText?.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
-            txtUsernamePlanificador.editText?.setText(prefs.getString("nombreUsuarioPlanificador", "")!!.uppercase(Locale.getDefault()))
+            txtPlanificador?.editText?.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
+            nombreTextView?.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
+            txtUsernamePlanificador?.editText?.setText(prefs.getString("nombreUsuarioPlanificador", "")!!.uppercase(Locale.getDefault()))
 
             val usuario = Usuario()
             viewModel.usersTEA = usuario.obtenerUsuariosTEA(viewModel.idUsuario, this)
@@ -146,39 +178,98 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
             viewModel.adapterUsers = UserAdapter(viewModel.usersTEA, this, this)
         }
 
-        recyclerViewUsers = findViewById(R.id.recycler_viewUsers)
-        if (resources.configuration.orientation == 1)
-            recyclerViewUsers.layoutManager = GridLayoutManager(this, 2)
-        else{
-            recyclerViewUsers.layoutManager = GridLayoutManager(this, 3)
+        if(!CommonUtils.isMobile(this)){
+            initRecyclerViewUsers()
+
+            imgUsuarioPlanificador.setOnClickListener {
+                val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
+                intent.putExtra("editPreferences", true)
+                startActivity(intent)
+            }
+        }else{
+            val btnOrden : Spinner? = findViewById(R.id.btn_orden)
+            spinnerOrdenPictogramas(btnOrden)
         }
 
-        recyclerViewUsers.adapter = viewModel.adapterUsers
-
-        txtCorreoPlanificador.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
+        txtCorreoPlanificador?.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
 
         credits.paintFlags = credits.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         credits.setOnClickListener{
             val intent = Intent(applicationContext, CreditsActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
         }
 
-        btnPassword.setOnClickListener {
+        btnPassword?.setOnClickListener {
             val intent = Intent(applicationContext, PasswordActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
-        imgUsuarioPlanificador.setOnClickListener {
-            val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
-            intent.putExtra("editPreferences", true)
-            startActivity(intent)
-        }
-
-        btnGuardar.setOnClickListener {
+        btnGuardar?.setOnClickListener {
            guardarConfiguracion()
         }
 
+        btnLogout?.setOnClickListener {
+            dialogLogout()
+        }
+
+        btnPolitica?.setOnClickListener {
+            val intent = Intent(applicationContext, PoliticaActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        btnEditPerfil?.setOnClickListener {
+            val intent = Intent(applicationContext, EditarPerfilActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            //startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        }
+
+        btnUsersTEA?.setOnClickListener {
+            val intent = Intent(applicationContext, ConfiguracionUsersTEAActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            switchNoti?.isChecked = true
+        }
+
+        switchNoti?.setOnCheckedChangeListener { _, isChecked ->
+           changeNotifications(isChecked)
+        }
+
+        // if the current theme is dark, set the switch to checked
+        if (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES) {
+            switchOscuro?.isChecked = true
+        }
+        switchOscuro?.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                prefs.edit().putBoolean("darkMode", true).apply()
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                prefs.edit().putBoolean("darkMode", false).apply()
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
         observers()
+    }
+
+    private fun initRecyclerViewUsers(){
+        recyclerViewUsers = findViewById(R.id.recycler_viewUsers)
+
+        recyclerViewUsers?.layoutManager = if (resources.configuration.orientation == 1) {
+            GridLayoutManager(this, 2)
+        }else{
+            GridLayoutManager(this, 3)
+        }
+
+        recyclerViewUsers?.adapter = viewModel.adapterUsers
     }
 
     fun observers(){
@@ -188,22 +279,24 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     }
 
     private fun configurarDatos(){
+        val nombre = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
+        txtPlanificador?.editText?.setText(nombre)
+        nombreTextView?.text = nombre
         if (prefs.getString("imagenPlanificador", "") == "") {
-            imgUsuarioPlanificador.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_128)
+            imgUsuarioPlanificador.setBackgroundResource(R.drawable.svg_add_image)
         } else {
             imgUsuarioPlanificador.background = null
             imgUsuarioPlanificador.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenPlanificador", "")?.toPreservedByteArray))
         }
-
     }
 
     private fun guardarConfiguracion(){
         //Obtain values from the fields
-        val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
-        val username = txtUsernamePlanificador.editText?.text.toString()
+        val nombreUsuarioPlanificador = txtPlanificador?.editText?.text.toString()
+        val username = txtUsernamePlanificador?.editText?.text.toString()
 
         //remove focus from textview in recyclerview
-        recyclerViewUsers.clearFocus()
+        recyclerViewUsers?.clearFocus()
 
         //if drawable doesnt exists, set it to null
         val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador, username, imgUsuarioPlanificador.drawable)
@@ -211,15 +304,11 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         if(isValid){
             val imagenBlob = CommonUtils.bitmapToByteArray((imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap)
 
-
             //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
             val editor = prefs.edit()
             editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
             editor.putString("imagenPlanificador", imagenBlob.toPreservedString)
-           /* editor.putBoolean("info_objeto", lblObjeto.isChecked)
-            editor.putBoolean("info_usuario", lblInfoUsuario.isChecked)
-            editor.putString("nombreUsuarioTEA", nombreUsuarioTEA)*/
-
+            editor.putString("nombreUsuarioPlanificador", username)
             editor.putString("imagenPlanificadorConfig", null)
 
             editor.apply()
@@ -325,6 +414,37 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         dialogoNewUser()
     }
 
+    private fun dialogLogout(){
+        dialogLogout = Dialog(this)
+        dialogLogout?.setContentView(R.layout.dialogo_logout)
+        dialogLogout?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val buttonLogout = dialogLogout?.findViewById<MaterialButton>(R.id.btn_logout)
+        val iconoCerrar = dialogLogout?.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
+        buttonLogout?.setOnClickListener {
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
+            googleSignInClient.signOut()
+
+            val editor = prefs.edit()
+
+            for (key in prefs.all.keys) {
+                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key"))) {
+                    editor.remove(key)
+                }
+            }
+            editor.apply()
+            val intent = Intent(this, PreLoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finishAffinity()
+        }
+
+        iconoCerrar?.setOnClickListener { dialogLogout?.dismiss() }
+        dialogLogout?.show()
+    }
+
+
     override fun changeConfigPicto(position: Int) {
         val intent = Intent(this, ConfiguracionPictogramasActivity::class.java)
         intent.putExtra("editPreferences", true)
@@ -418,11 +538,6 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
                     Toast.makeText(this, getString(R.string.toast_nombre_vacio), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
-//                val imagenBlobActividad = if(imagenUriActividad != null){
-//                    CommonUtils.bitmapToByteArray((imageActividad!!.drawable as BitmapDrawable).bitmap)
-//                }else{
-//                    CommonUtils.bitmapToByteArray(viewModel.usersTEA!![positionUser].actividades!![position].imagen)
-//                }
 
                 val imagenBlobActividad = CommonUtils.bitmapToByteArray((imageActividad!!.drawable as BitmapDrawable).bitmap)
                 actividad.actualizarActividad(viewModel.usersTEA!![positionUser].actividades!![position].id, nombre.editText?.text.toString(), imagenBlobActividad , this)
@@ -471,7 +586,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
 
                 val listaActividades = viewModel.usersTEA!![positionUser].actividades
                 val nuevaActividad = Actividad(idActividad, nombre.editText?.text.toString(), (imageActividad!!.drawable as BitmapDrawable).bitmap, viewModel.selectedCategoriasNueva, viewModel.usersTEA!![positionUser].id)
-                listaActividades?.add(nuevaActividad)
+                listaActividades?.add(listaActividades.size -1, nuevaActividad)
                 viewModel.usersTEA!![positionUser].actividades = listaActividades
                 viewModel.adapterUsers?.notifyItemChanged(positionUser)
 
@@ -480,8 +595,38 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         }
 
         dialog.show()
-
     }
 
+    private fun changeNotifications(isChecked: Boolean) {
+        if(isChecked){
+            //Para versiones anteriores no se necesita preguntar por permisos
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }else{
+            Toast.makeText(this, getString(R.string.toast_notificaciones_activadas), Toast.LENGTH_LONG).show()
+            switchNoti?.isChecked = true
+        }
+    }
+
+    private fun spinnerOrdenPictogramas(spinner: Spinner?){
+        val config = ArrayList<String>()
+        config.add(getString(R.string.horizontal))
+        config.add(getString(R.string.vertical))
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item_idioma, config)
+        spinner?.adapter = adapter
+
+        val isVertical = prefs.getBoolean("isVerticalPictogramas", false)
+        spinner?.setSelection(if(isVertical) 1 else 0)
+
+        spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                prefs.edit().putBoolean("isVerticalPictogramas", position == 1).apply()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+    }
 
 }

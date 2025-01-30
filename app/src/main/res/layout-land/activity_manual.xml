@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <ImageView
@@ -346,7 +346,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:textSize="@dimen/button"
-                        android:textAllCaps="true"
+                        android:textAllCaps="false"
                         android:fontFamily="@font/poppins_medium"
                         android:textColor="?colorOnSurface"
                         android:text="@string/repetir_tutorial"/>

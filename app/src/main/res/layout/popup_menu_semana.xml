@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dp"
-    android:background="@drawable/bg_popup_info2">
+    android:background="@drawable/bg_popup_info">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/item_link"

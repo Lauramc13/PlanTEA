@@ -8,37 +8,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="65dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/svg_plan_icon" />
+        android:layout_marginTop="10dp"
+        android:paddingStart="@dimen/paddingDialog"
+        android:paddingEnd="@dimen/paddingDialog"
+        app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo">
 
         <TextView
             android:id="@+id/lbl_Logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_bold"
             android:gravity="center"
-            app:autoSizeTextType="uniform"
             android:maxLines="2"
             android:paddingStart="70dp"
             android:paddingEnd="70dp"
             android:text="@string/lbl_salirPlanificacion2"
             android:textColor="?colorOnSurface"
-            android:textSize="@dimen/modalTitle" />
+            android:textSize="@dimen/modalTitle"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/lbl_Logout3"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_medium"
             android:gravity="center"
             android:text="@string/lbl_salirPlanificacion3"
             android:textColor="?colorOnSurface"
@@ -47,21 +43,20 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/btn_cancelarSalir"
-                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/lbl_cancelar"
-                android:layout_marginEnd="20dp"
                 android:textColor="?colorOnSurface"
-                app:cornerRadius="25dp"
                 android:textSize="@dimen/button" />
 
             <Button
@@ -69,11 +64,10 @@
                 style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/lbl_salirPlanificacionBotton"
-                android:textColor="#203130"
-                app:cornerRadius="25dp"
+                android:textAllCaps="false"
+                android:textColor="@color/darkGreen"
                 android:textSize="@dimen/button" />
         </LinearLayout>
 
@@ -86,7 +80,7 @@
         android:layout_margin="10dp"
         android:contentDescription="Cerrar seccion"
         android:background="@drawable/bg_close_button"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/svg_close"
         android:padding="12dp"
         android:alpha="0.9"
         app:layout_constraintEnd_toEndOf="parent"

@@ -13,8 +13,9 @@
         android:fontFamily="@font/poppins_medium"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
+        android:gravity="center"
         android:text="@string/selecciona_tiempo_retraso"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="?colorOnSurface"
         android:textSize="@dimen/modalTitle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,8 +51,8 @@
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/poppins_regular"
                     android:text="30 seg"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -64,8 +65,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:text="1 min"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -78,8 +79,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:text="5 min"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -92,8 +93,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:text="10 min"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -106,8 +107,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:text="Personalizado"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button" />
 
             </LinearLayout>
@@ -135,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/minutos"
+                android:text="@string/min"
                 android:layout_gravity="center"
                 android:textColor="?colorOnSurface" />
 
@@ -149,10 +150,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_semibold"
         android:text="@string/aceptar"
-        android:textAllCaps="true"
-        android:textColor="#203130"
+        android:textAllCaps="false"
+        android:textColor="@color/darkGreen"
         android:textSize="@dimen/button"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
@@ -170,7 +171,7 @@
         android:background="@drawable/bg_close_button"
         android:contentDescription="Cerrar seccion"
         android:padding="12dp"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/svg_close"
         app:layout_constraintBottom_toTopOf="@+id/textView18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

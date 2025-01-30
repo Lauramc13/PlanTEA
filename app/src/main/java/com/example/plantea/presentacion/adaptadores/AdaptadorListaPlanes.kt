@@ -44,7 +44,8 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
 
     private fun changeHeight(holder: ViewHolder, position: Int) {
         val layoutParams = holder.card.layoutParams
-        val newHeight = calculateHeight(position, holder.itemView.context)
+        val layoutParamsItem = holder.recyclerView.layoutParams
+        val newHeight = calculateHeight(layoutParamsItem.height, position, holder.itemView.context)
         layoutParams.height = newHeight
         holder.card.layoutParams = layoutParams
     }
@@ -54,10 +55,10 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).toInt()
     }
 
-    private fun calculateHeight(posicion: Int, context: Context): Int {
+    private fun calculateHeight(itemHeight: Int, posicion: Int, context: Context): Int {
         return when (posicion) {
             selectedPosition -> {
-                if (CommonUtils.isMobile(context)) dpToPx(180, context) else dpToPx(230, context)
+                if (CommonUtils.isMobile(context)) dpToPx(itemHeight, context) else dpToPx(itemHeight, context)
             }
             else -> {
                 if (CommonUtils.isMobile(context)) dpToPx(45, context) else dpToPx(50, context)

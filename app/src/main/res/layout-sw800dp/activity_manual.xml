@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <ImageView
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
+            android:textColor="?colorOnSurface"
             android:text="@string/titulo_manual"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:padding="10dp"
+            android:textColor="?colorOnSurface"
             android:text="@string/subtitulo_manual"
             android:textSize="20sp" />
 
@@ -90,6 +92,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
                                 android:fontFamily="@font/poppins_regular"
                                 android:text="@string/titulo_crearEvento"
                                 android:textSize="@dimen/modalText" />
@@ -171,6 +174,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
                                 android:fontFamily="@font/poppins_regular"
                                 android:text="@string/titulo_crearPlanificacion"
                                 android:textSize="@dimen/modalText" />
@@ -252,6 +256,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
                                 android:fontFamily="@font/poppins_regular"
                                 android:text="@string/titulo_cuaderno"
                                 android:textSize="@dimen/modalText" />
@@ -334,6 +339,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
                                 android:fontFamily="@font/poppins_regular"
                                 android:text="@string/titulo_traductor"
                                 android:textSize="@dimen/modalText" />
@@ -475,7 +481,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:textSize="@dimen/button"
-                    android:textAllCaps="true"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_medium"
                     android:textColor="?colorOnSurface"
                     android:text="@string/repetir_tutorial"/>

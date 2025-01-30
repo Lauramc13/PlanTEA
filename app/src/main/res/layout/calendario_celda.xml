@@ -21,6 +21,7 @@
     app:cardElevation="0dp"
     android:clickable="true"
     app:layout_gravity="center"
+    app:strokeColor="?customBgTermometro"
     app:layout_constraintDimensionRatio="1:1"
     app:cardBackgroundColor="@color/transparent"
     app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +42,7 @@
         android:textColor="?colorOnSurface"
         android:fontFamily="@font/poppins_regular"
         android:textSize="14sp"
+        android:autoSizeMinTextSize="11sp"
         android:maxLines="1" />
 
 </com.google.android.material.card.MaterialCardView>

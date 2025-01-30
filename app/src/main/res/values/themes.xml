@@ -4,6 +4,8 @@
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/icon_launcher</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
         <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
@@ -22,7 +24,7 @@
         <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
         <item name="android:colorBackground">@color/md_theme_light_background</item>
         <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
-        <item name="colorSurface">@color/md_theme_light_primary2</item>
+        <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
@@ -69,7 +71,6 @@
         <item name="stroke2">@color/md_theme_light_surfaceVariant</item>
         <item name="materialButtonToggleGroup">@style/materialButtonToggleGroup</item>
 
-
         <item name="colorRed">@color/redCategoria</item>
         <item name="colorOrange">@color/orangeCategoria</item>
         <item name="colorYellow">@color/yellowCategoria</item>
@@ -77,8 +78,8 @@
         <item name="colorBlue">@color/blueCategoria</item>
         <item name="colorPurple">@color/purpleCategoria</item>
         <item name="colorPink">@color/pinkCategoria</item>
-
         <item name="colorRedImportante">@color/red</item>
+
 
     </style>
 
@@ -86,9 +87,11 @@
         <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
     </style>
 
-    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="searchIcon">@drawable/ic_search_24dp</item>
-        <item name="closeIcon">@drawable/ic_search_24dp</item>
+    <style name="cardBackground" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/whitish</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="strokeColor">@color/md_theme_light_surfaceVariant</item>
+        <item name="strokeWidth">1.5dp</item>
     </style>
 
     <style name="BottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog">
@@ -101,7 +104,23 @@
         <item name="colorAccent">@color/white</item>
         <item name="thumbIconTint">@color/md_theme_dark_primary</item>
         <item name="colorSurfaceVariant">@color/md_theme_light_outline</item>
-        <item name="colorOutline">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+    </style>
+
+
+    <style name="FragmentDialogTheme" parent="Theme.Material3.DayNight.Dialog">
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_onPrimary</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+        <item name="android:strokeColor">@color/md_theme_dark_onSurface</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="thumbIconTint">@color/md_theme_dark_primary</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_outline</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
     </style>
 
     <style name="buttonFAB" parent="Widget.Material3.FloatingActionButton.Secondary">
@@ -113,7 +132,7 @@
     <style name="buttonFABReproducir" parent="Widget.Material3.FloatingActionButton.Secondary">
         <item name="elevation">0dp</item>
         <item name="android:backgroundTint">@color/md_theme_light_primary</item>
-        <item name="tint">#203130</item>
+        <item name="tint">@color/darkGreen</item>
     </style>
 
     <style name="buttonsColorsCategorias" parent="Widget.Material3.FloatingActionButton.Secondary">
@@ -152,14 +171,30 @@
 
     <style name="activeIndicator" parent="Theme.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/md_theme_light_primary2</item>
+        <item name="android:width">42dp</item>
+        <item name="android:height">42dp</item>
+
     </style>
 
     <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/md_theme_light_primary2</item>
     </style>
 
-    <style name="Switches">
-        <item name="track">@color/md_theme_light_primary</item>
+    <style name="Switches" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="colorSurfaceContainerHighest">@color/lightGray</item>
+    </style>
+
+    <style name="textInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+        <item name="android:textSize">@dimen/body</item>
+    </style>
+
+    <style name="cornertextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">25dp</item>
+        <item name="boxCornerRadiusTopEnd">25dp</item>
+        <item name="boxCornerRadiusBottomStart">25dp</item>
+        <item name="boxCornerRadiusBottomEnd">25dp</item>
     </style>
 
     <style name="cornerRadius" parent="">
@@ -167,10 +202,10 @@
         <item name="cornerFamilyTopRight">rounded</item>
         <item name="cornerFamilyBottomLeft">rounded</item>
         <item name="cornerFamilyBottomRight">rounded</item>
-        <item name="cornerSizeTopLeft">10dp</item>
-        <item name="cornerSizeTopRight">10dp</item>
-        <item name="cornerSizeBottomLeft">10dp</item>
-        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="cornerSizeTopLeft">@dimen/corner_radius</item>
+        <item name="cornerSizeTopRight">@dimen/corner_radius</item>
+        <item name="cornerSizeBottomLeft">@dimen/corner_radius</item>
+        <item name="cornerSizeBottomRight">@dimen/corner_radius</item>
     </style>
 
     <style name="cornerRadiusLogin" parent="">
@@ -178,13 +213,12 @@
         <item name="cornerFamilyTopRight">rounded</item>
         <item name="cornerFamilyBottomLeft">rounded</item>
         <item name="cornerFamilyBottomRight">rounded</item>
-        <item name="cornerSizeTopLeft">10dp</item>
-        <item name="cornerSizeTopRight">10dp</item>
-        <item name="cornerSizeBottomLeft">10dp</item>
-        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="cornerSizeTopLeft">@dimen/corner_radius</item>
+        <item name="cornerSizeTopRight">@dimen/corner_radius</item>
+        <item name="cornerSizeBottomLeft">@dimen/corner_radius</item>
+        <item name="cornerSizeBottomRight">@dimen/corner_radius</item>
         <item name="boxBackgroundColor">@color/white</item>
     </style>
-
 
     <style name="cornerRadiusEvento" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="backgroundTint">@color/white</item>
@@ -272,6 +306,7 @@
         <item name="queryHint">@color/md_theme_light_onSurface</item>
         <item name="colorAccent">@color/md_theme_light_primary</item>
         <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textSize">@dimen/buttonBig</item>
     </style>
 
     <style name="backgroundEventos">
@@ -417,6 +452,26 @@
         <item name="chipBackgroundColor">@color/button_chip_color</item>
         <item name="chipIcon">@drawable/svg_check</item>
         <item name="textStartPadding">8dp</item>
+    </style>
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/no_anim</item>
+        <item name="android:activityOpenExitAnimation">@anim/no_anim</item>
+        <item name="android:activityCloseEnterAnimation">@anim/no_anim</item>
+        <item name="android:activityCloseExitAnimation">@anim/no_anim</item>
+    </style>
+
+    <style name="buttonSaltar" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
+        <item name="iconTint">@color/md_theme_light_onSurface</item>
+        <item name="android:textSize">@dimen/button</item>
+        <item name="iconPadding">10dp</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="icon">@drawable/svg_chevron_right</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:text">@string/lbl_saltar</item>
+        <item name="android:paddingEnd">10dp</item>
     </style>
 
 </resources>

@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
-        app:tint="?subColorBackground" />
+        app:srcCompat="@drawable/blob_v2" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -32,8 +31,10 @@
         android:layout_height="50dp"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/editar"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textSize="@dimen/button"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="@+id/tableLayout"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
@@ -42,6 +43,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="@+id/tableLayout"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
@@ -85,10 +88,10 @@
         android:background="@drawable/bg_cards_configuracion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.85">
+        app:layout_constraintWidth_percent="0.9">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_text"

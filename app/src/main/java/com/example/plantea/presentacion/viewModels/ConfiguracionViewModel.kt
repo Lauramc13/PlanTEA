@@ -1,14 +1,22 @@
 package com.example.plantea.presentacion.viewModels
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.Build
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CategoriaActividad
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.adaptadores.UserAdapter
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import com.google.android.material.snackbar.Snackbar
 
 class ConfiguracionViewModel: ViewModel() {
 
@@ -22,7 +30,8 @@ class ConfiguracionViewModel: ViewModel() {
     var idUsuario = ""
     var userSelectPicto = -1
 
-    var adapterUsers: UserAdapter? = null
+    //it can be UserAdapterMobile or UserAdapter
+    var adapterUsers: RecyclerView.Adapter<*>? = null
     var usersTEA : ArrayList<Usuario>? = null
 
     fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, imgPlanificador: Drawable?): Boolean {
@@ -58,6 +67,7 @@ class ConfiguracionViewModel: ViewModel() {
             }
         }
         return chip
-
     }
+
+
 }

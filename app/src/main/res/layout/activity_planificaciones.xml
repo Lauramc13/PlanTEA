@@ -13,14 +13,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/svg_blob" />
@@ -31,7 +30,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/fragmentContainerViewBottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.80"
+        app:layout_constraintHeight_percent="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
         app:layout_constraintWidth_percent="0.9">
@@ -49,10 +48,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/planificaciones_disponibles"
-                android:paddingTop="30dp"
-                android:paddingStart="30dp"
-                android:textSize="@dimen/modalText"
-                android:textAllCaps="true"
+                android:paddingTop="20dp"
+                android:paddingStart="20dp"
+                android:textSize="@dimen/modalTitle"
+                android:textAllCaps="false"
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="?colorOnSurface"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +74,7 @@
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_baseline_add_24"
+                app:icon="@drawable/svg_add"
                 app:iconTint="?colorOnSurface"
                 app:iconPadding="10dp"
                 android:fontFamily="@font/poppins_semibold"
@@ -95,7 +94,7 @@
             <LinearLayout
                 android:id="@+id/layout_no_planificaciones"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.85"
+                app:layout_constraintWidth_percent="0.65"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/btn_planificar"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,11 +109,12 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginStart="80dp"
                     android:layout_marginEnd="80dp"
-                    android:src="@drawable/svg_neutral_face"
+                    android:src="@drawable/svg_plan2"
                     android:layout_marginBottom="20dp"
                     android:scaleType="fitXY"
                     android:layout_gravity="center"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    app:tint="?colorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"

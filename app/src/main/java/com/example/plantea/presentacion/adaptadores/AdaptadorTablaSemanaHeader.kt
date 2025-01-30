@@ -18,7 +18,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-class AdaptadorTablaSemanaHeader(var listaDiaSemana: Array<String>, private var configuracion: Int) : RecyclerView.Adapter<AdaptadorTablaSemanaHeader.ViewHolderItemSemanaHeader>() {
+class AdaptadorTablaSemanaHeader(private var listaDiaSemana: Array<String>, private var configuracion: Int) : RecyclerView.Adapter<AdaptadorTablaSemanaHeader.ViewHolderItemSemanaHeader>() {
 
     lateinit var context: Context
 

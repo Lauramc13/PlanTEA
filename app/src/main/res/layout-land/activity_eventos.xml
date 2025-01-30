@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <ImageView
@@ -101,7 +101,7 @@
                         android:gravity="center"
                         app:cornerRadius="25dp"
                         android:layout_marginEnd="15dp"
-                        app:icon="@drawable/svg_calendardate"
+                        app:icon="@drawable/svg_calendar"
                         app:iconSize="26dp"
                         app:iconTint="?colorOnSurface">
 
@@ -127,14 +127,14 @@
                         android:layout_height="45dp"
                         android:layout_marginEnd="5dp"
                         android:enabled="false"
-                        android:textColor="#203130"
+                        android:textColor="@color/darkGreen"
                         android:textSize="20sp"
                         android:theme="@style/botonesSecundarios"
                         app:cornerRadius="25dp"
                         app:icon="@drawable/svg_rewind"
                         app:iconGravity="textEnd"
                         app:iconSize="22dp"
-                        app:iconTint="#203130" />
+                        app:iconTint="@color/darkGreen" />
 
                     <Button
                         android:id="@+id/icon_deshacer"
@@ -144,14 +144,14 @@
                         android:layout_marginEnd="5dp"
                         android:elevation="0dp"
                         android:enabled="false"
-                        android:textColor="#203130"
+                        android:textColor="@color/darkGreen"
                         android:textSize="20sp"
                         android:theme="@style/botonesSecundarios"
                         app:cornerRadius="25dp"
                         app:icon="@drawable/svg_play_goback"
                         app:iconGravity="textEnd"
                         app:iconSize="20dp"
-                        app:iconTint="#203130" />
+                        app:iconTint="@color/darkGreen" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/icon_reproducir"
@@ -160,13 +160,13 @@
                         android:layout_height="52dp"
                         android:elevation="0dp"
                         android:enabled="true"
-                        android:textColor="#203130"
+                        android:textColor="@color/darkGreen"
                         android:textSize="20sp"
                         app:cornerRadius="100dp"
                         app:icon="@drawable/svg_play"
                         app:iconGravity="textEnd"
                         app:iconSize="25dp"
-                        app:iconTint="#203130" />
+                        app:iconTint="@color/darkGreen" />
 
                     <Button
                         android:id="@+id/icon_marcar"
@@ -174,14 +174,14 @@
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:layout_marginStart="5dp"
-                        android:textColor="#203130"
+                        android:textColor="@color/darkGreen"
                         android:textSize="20sp"
                         android:theme="@style/botonesSecundarios"
                         app:cornerRadius="25dp"
                         app:elevation="0dp"
                         app:icon="@drawable/svg_play_gofoward"
                         app:iconSize="20dp"
-                        app:iconTint="#203130" />
+                        app:iconTint="@color/darkGreen" />
 
                     <Button
                         android:id="@+id/icon_marcarTodas"
@@ -190,14 +190,14 @@
                         android:layout_height="45dp"
                         android:layout_marginStart="5dp"
                         android:elevation="0dp"
-                        android:textColor="#203130"
+                        android:textColor="@color/darkGreen"
                         android:textSize="20sp"
                         android:theme="@style/botonesSecundarios"
                         app:cornerRadius="25dp"
                         app:icon="@drawable/svg_foward"
                         app:iconGravity="textEnd"
                         app:iconSize="22dp"
-                        app:iconTint="#203130" />
+                        app:iconTint="@color/darkGreen" />
                 </LinearLayout>
 
                 <!--  <Button
@@ -230,12 +230,12 @@
                     android:contentDescription="Botón escuchar planificacion"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/str_escuchar2"
-                    android:textColor="#203130"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button"
                     app:cornerRadius="25dp"
                     app:icon="@drawable/svg_sound"
                     app:iconSize="25dp"
-                    app:iconTint="#203130"
+                    app:iconTint="@color/darkGreen"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.384"
@@ -286,26 +286,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/layout_fecha"
                     app:layout_constraintVertical_bias="0.0" />
-
-                <Button
-                    android:id="@+id/crearPlan"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/lbl_nuevoEvento"
-                    android:textAllCaps="true"
-                    android:textColor="#203130"
-                    android:textSize="@dimen/button"
-                    android:visibility="invisible"
-                    app:cornerRadius="25dp"
-                    app:icon="@drawable/ic_baseline_add_24"
-                    app:iconSize="25dp"
-                    app:iconTint="#203130"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_mensajeNinio" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -10,7 +10,7 @@
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="15dp"
         app:cardElevation="0dp"
         android:background="@drawable/card_dotted_categorias"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,9 +29,7 @@
                 android:layout_height="70dp"
                 android:padding="4dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/categoria_consultas">
-
-            </ImageView>
+                app:srcCompat="@drawable/categoria_consultas"/>
 
             <TextView
                 android:id="@+id/lbl_titulo"
@@ -39,24 +37,25 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:text="@string/lbl_IrMedico"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="?colorOnSurface"
-                android:textSize="13sp">
-
-            </TextView>
-
+                android:textSize="13sp"/>
         </LinearLayout>
+
         <ImageView
             android:id="@+id/btn_borrarPicto"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:elevation="4dp"
-            android:padding="4dp"
+            android:padding="6dp"
             android:layout_marginTop="2dp"
             android:visibility="visible"
             app:tint="?colorOnSurfaceVariant"
             app:srcCompat="@drawable/svg_trash"/>
+
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,151 +2,138 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/bg_cards_configuracion"
         android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/newUser"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="35dp"
-        android:padding="20dp"
-        android:background="@drawable/card_add_image">
-
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/add_image"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="@dimen/modalText"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/nuevo_user"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="35dp"
-        android:paddingBottom="35dp"
-        android:layout_gravity="top">
-
-    <RelativeLayout
-        android:id="@+id/id_card"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:background="@drawable/card_personalizado"
-        android:elevation="0dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
-        app:layout_constraintHorizontal_bias="0.435"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imagen"
-            style="@style/addPhotoBackground"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="1dp"
-            android:background="@drawable/ic_baseline_add_photo_alternate_128"
-            android:contentDescription="Añadir imagen del planificador"
-            app:shapeAppearance="@style/cornerRadius" />
-
-        <ImageView
-            android:id="@+id/id_editIcon"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:contentDescription="@string/lbl_Consultas"
-            android:elevation="4dp"
-            app:srcCompat="@drawable/edit_image_svg" />
-    </RelativeLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nombre"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="@string/lbl_datosNombre"
-        android:inputType="textPersonName"
-        android:maxLength="14"
-        android:layout_marginBottom="5dp"
-        android:textColor="?colorOnSurface"
-        android:textCursorDrawable="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:cursorVisible="true"
-            android:inputType="text"
-            android:textColor="?colorOnSurface" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/configuracion_picto"
-            android:layout_gravity="start"
-            android:layout_marginTop="15dp" />
-
-        <Button
-            android:id="@+id/configPicto"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/newUser"
+            android:gravity="center"
             style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textAllCaps="true"
+            android:orientation="vertical"
+            android:layout_margin="15dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:text="@string/nuevo_user"
             android:fontFamily="@font/poppins_medium"
-            android:textColor="?colorOnSurface"
-            android:text="Default"/>
+            app:icon="@drawable/svg_add"
+            app:iconGravity="textStart" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_configuracion_objeto2"
-            android:layout_gravity="start"
-            android:layout_marginTop="15dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_actividades"
+        <LinearLayout
+            android:id="@+id/user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="35dp"
+            android:background="@drawable/bg_cards_configuracion"
+            android:layout_gravity="top">
 
-    </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/id_card"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:elevation="0dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="?configuracionCardBg"
+                app:strokeColor="?color"
+                android:layout_marginBottom="30dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imagen"
+                    style="@style/addPhotoBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/svg_add_image"
+                    android:contentDescription="Añadir imagen del planificador"
+                    app:shapeAppearance="@style/cornerRadius" />
+
+                <ImageView
+                    android:id="@+id/id_editIcon"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:contentDescription="@string/lbl_Consultas"
+                    android:elevation="4dp"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/edit_image_svg" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nombre"
+                style="@style/cornertextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/lbl_datosNombre"
+                android:inputType="textPersonName"
+                android:maxLength="14"
+                android:layout_marginBottom="5dp"
+                android:textCursorDrawable="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cursorVisible="true"
+                    android:inputType="text"
+                    style="@style/textInput"
+                    android:textColor="?colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/configuracion_picto"
+                android:layout_gravity="start"
+                android:layout_marginTop="15dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/configPicto"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/button"
+                android:textAllCaps="false"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Default"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_configuracion_objeto2"
+                android:layout_gravity="start"
+                android:layout_marginTop="15dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_actividades"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <Button

@@ -8,62 +8,71 @@
     <RelativeLayout
         android:id="@+id/id_card_picto"
         android:layout_width="wrap_content"
-        android:layout_height="135dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/id_card"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/card_personalizado"
-            android:elevation="0dp">
+            android:layout_width="160dp"
+            android:layout_height="115dp"
+            android:animateLayoutChanges="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/card_personalizado">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/id_Imagen"
-                style="@style/pictogramas"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_above="@+id/id_Texto"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:background="@color/white"
-                android:contentDescription="@string/lbl_Consultas"
-                android:foregroundGravity="center"
-                app:layout_constraintBottom_toTopOf="@+id/id_Texto"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/cornerRadius"
-                app:srcCompat="@drawable/placeholder" />
-
-            <TextView
-                android:id="@+id/id_Texto"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:autoSizeTextType="uniform"
-                android:fontFamily="@font/poppins_regular"
-                android:foregroundGravity="bottom|center_vertical"
-                android:gravity="center"
-                android:layout_marginBottom="7dp"
-                android:maxLines="1"
-                android:text="@string/lbl_Consultas"
-                android:textColor="?colorOnSurface"
-                android:textSize="15sp"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/id_Imagen"
+                    style="@style/pictogramas"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@color/white"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/lbl_Consultas"
+                    app:shapeAppearance="@style/cornerRadius"
+                    app:srcCompat="@drawable/categoria_consultas" />
+
+                <TextView
+                    android:id="@+id/id_Texto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/poppins_regular"
+                    android:foregroundGravity="bottom|center_vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:paddingTop="10dp"
+                    android:text="@string/lbl_Consultas"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btn_borrarPicto"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
+                android:layout_alignParentStart="true"
+                app:tint="?customColorGray"
+                android:visibility="gone"
+                android:layout_marginTop="-3dp"
+                android:layout_marginStart="-3dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/svg_trash"/>
 
             <ImageView
                 android:id="@+id/iconCambio"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:elevation="4dp"
                 android:padding="7dp"
                 android:visibility="gone"
@@ -74,129 +83,59 @@
                 app:srcCompat="@drawable/svg_close"
                 app:tint="@color/red" />
 
-
-            <ImageView
-                android:id="@+id/btn_borrarPicto"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="5dp"
-                android:padding="5dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/svg_trash"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
             <TextView
                 android:id="@+id/duracionPictoTexto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="7dp"
-                android:alpha="0.8"
+                android:layout_margin="7dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="5m"
-                android:textColor="?colorSecondary"
-                android:textSize="@dimen/button"
-                android:visibility="invisible"
+                android:textSize="13sp"
+                android:alpha="0.8"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/btn_menu"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:elevation="4dp"
-                android:padding="8dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/svg_options"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/btn_favoritosOff"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"
-                android:elevation="4dp"
-                android:padding="7dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/svg_heart"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/btn_favoritosOn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"
-                android:elevation="4dp"
-                android:padding="7dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/svg_heart_filled"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="?colorSecondary"
+                android:visibility="gone"
+                android:text="5m"/>
 
             <ImageView
                 android:id="@+id/btn_historiaPicto"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="12dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
                 android:elevation="4dp"
-                android:padding="3dp"
                 android:visibility="gone"
-                app:srcCompat="@drawable/bocadillo_historia_off"
+                android:layout_marginTop="-3dp"
+                android:layout_marginEnd="-3dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bocadillo_historia_on" />
 
-            <ImageView
-                android:id="@+id/btn_historiaPictoOn"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
-                android:elevation="4dp"
-                android:padding="3dp"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_addInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
                 android:visibility="gone"
-                app:srcCompat="@drawable/bocadillo_historia_on"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                android:id="@+id/btn_removePicto"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
-                android:padding="3dp"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/svg_trash"
-                app:tint="?customColorGray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:iconSize="15dp"
+                app:icon="@drawable/svg_add" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/duracionPicto"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:visibility="gone"
-            android:progress="100"
-            app:indicatorColor="?colorPrimary"
-            app:trackColor="@color/greenLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:background="@drawable/round_bg"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:progress="100"
+            app:indicatorSize="40dp"
+            android:visibility="gone"
+            app:indicatorColor="?colorPrimary"
+            app:trackColor="@color/greenLight" />
 
         <TextView
             android:id="@+id/duracionPictoTiempo"
@@ -207,26 +146,32 @@
             android:layout_alignTop="@+id/duracionPicto"
             android:layout_alignBottom="@+id/duracionPicto"
             android:gravity="center"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:visibility="gone"
             android:textColor="?colorOnSurface"
             android:text="00:00" />
 
-
-        <ImageView
-            android:id="@+id/entretenimiento"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/id_card"
             android:layout_toEndOf="@+id/id_card"
-            android:layout_marginTop="45dp"
-            android:layout_marginStart="-35dp"
-            android:padding="5dp"
-            android:background="@drawable/card_personalizado"
-            android:contentDescription="@string/lbl_Consultas"
-            android:elevation="0dp"
-            android:visibility="visible"
-            app:srcCompat="@drawable/categoria_consultas"/>
+            android:layout_marginStart="-25dp"
+            android:gravity="center"
+            android:layout_alignBottom="@+id/id_card">
+
+            <ImageView
+                android:id="@+id/entretenimiento"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:background="@drawable/card_personalizado_small"
+                android:elevation="0dp"
+                android:padding="5dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/categoria_consultas" />
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/arrow"
@@ -234,8 +179,8 @@
             android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/id_card"
-            android:layout_marginTop="45dp"
-            android:layout_marginStart="-35dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="-30dp"
             android:padding="5dp"
             android:contentDescription="@string/lbl_Consultas"
             android:elevation="0dp"
@@ -243,5 +188,4 @@
             app:srcCompat="@drawable/svg_arrow_round"/>
 
     </RelativeLayout>
-
 </LinearLayout>

@@ -50,7 +50,7 @@
         android:backgroundTint="@color/transparent"
         android:contentDescription="Preferencias"
         android:padding="8dp"
-        app:icon="@drawable/user"
+        app:icon="@drawable/svg_user"
         app:iconSize="40dp"
         app:iconTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +123,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_cardview"
-                app:srcCompat="@drawable/user" />
+                app:srcCompat="@drawable/svg_user" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/lbl_nombrePlanificador"
@@ -148,23 +148,5 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.4"/>
 
-    <ImageView
-        android:id="@+id/imageView6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="-30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:tint="@color/white"
-        app:srcCompat="@drawable/svg_blob_white" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"
-        app:tint="@color/white"
-        app:srcCompat="@drawable/svg_blob2_white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

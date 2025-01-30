@@ -9,21 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.plantea.R
 
 class CreditsActivity : AppCompatActivity(){
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_credits)
 
-        val privacy : TextView = findViewById(R.id.txt_privacy)
         val arasaacLink : TextView = findViewById(R.id.arasaacLink)
         val manyLink : TextView = findViewById(R.id.manypixelsLink)
         val flaticonLink : TextView = findViewById(R.id.flatIconLink)
         val freepikLink : TextView = findViewById(R.id.freepikLink)
         val svgRepoLink: TextView = findViewById(R.id.svgRepoLink)
-
-        privacy.paintFlags = privacy.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        privacy.setOnClickListener{
-            startActivity(Intent(this, PoliticaActivity::class.java))
-        }
 
         arasaacLink.paintFlags = arasaacLink.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         arasaacLink.setOnClickListener{

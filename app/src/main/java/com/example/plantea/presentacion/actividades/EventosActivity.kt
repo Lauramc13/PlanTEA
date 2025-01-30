@@ -10,8 +10,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -39,8 +41,7 @@ import java.util.Locale
 class EventosActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     lateinit var titulo: TextView
-    private lateinit var lblMensaje: TextView
-    private lateinit var buttonPlanNuevo : Button
+    private lateinit var lblMensaje: LinearLayout
     //private lateinit var iconoEscuchar: Button
     private lateinit var iconoReproducir: MaterialButton
     private lateinit var iconoDeshacer: Button
@@ -93,6 +94,29 @@ class EventosActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val layoutManagerLinear: LinearLayoutManager
+
+        if(prefs.getBoolean("isVerticalPictogramas", false)){
+            layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            viewModel.recyclerView.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            viewModel.recyclerView.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            if(viewModel.listaPictogramas.size > 4){
+                val params = viewModel.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+                params.setMargins(0, 350, 0, 300)
+                viewModel.recyclerView.layoutParams = params
+            }
+        }else{
+            layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            viewModel.recyclerView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            viewModel.recyclerView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        viewModel.recyclerView.layoutManager = layoutManagerLinear
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_eventos)
@@ -101,25 +125,24 @@ class EventosActivity : AppCompatActivity() {
 //        val callback = viewModel.backCallBack(this)
 //        onBackPressedDispatcher.addCallback(this, callback)
 
-        if(CommonUtils.isMobile(this)){
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
+//        if(CommonUtils.isMobile(this)){
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//        }
 
         iconoDeshacer = findViewById(R.id.icon_deshacer)
         iconoDeshacerTodas = findViewById(R.id.icon_deshacerTodas)
         iconoMarcar = findViewById(R.id.icon_marcar)
         iconoMarcarTodas = findViewById(R.id.icon_marcarTodas)
-       // iconoEscuchar = findViewById(R.id.icon_escuchar)
         iconoReproducir = findViewById(R.id.icon_reproducir)
-       // planificacionesFuturas = findViewById(R.id.planificacionRecyclerView)
         calendarButton = findViewById(R.id.CalendarDate)
-        buttonPlanNuevo = findViewById(R.id.crearPlan)
         titulo = findViewById(R.id.lbl_titulo)
-        lblMensaje = findViewById(R.id.lbl_mensajeNinio)
+        lblMensaje = findViewById(R.id.layout_no_eventos)
         viewModel.recyclerView = findViewById(R.id.recycler_plan)
         dia = findViewById(R.id.lbl_dia)
         atras = findViewById(R.id.atras)
         lblImportante = findViewById(R.id.lbl_importante)
+
+        CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
 
         val question = findViewById<MaterialButton>(R.id.question)
         question.setOnClickListener {
@@ -128,15 +151,6 @@ class EventosActivity : AppCompatActivity() {
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)
-
-        val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        viewModel.recyclerView.layoutManager = layoutManagerLinear
-
-        //initTextSpeech()
-        /*val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
-        if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
-            initNotificationList()
-        }*/
 
         dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
 
@@ -167,12 +181,6 @@ class EventosActivity : AppCompatActivity() {
 
         calendarButton.setOnClickListener {
             crearDialogo()
-        }
-
-        buttonPlanNuevo.setOnClickListener {
-            val intent = Intent(this, CalendarioActivity::class.java)
-            intent.putExtra("date", viewModel.fechaSeleccionada.toString())
-            startActivity(intent)
         }
 
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
@@ -293,14 +301,19 @@ class EventosActivity : AppCompatActivity() {
          val btnAnteriorMes = viewModel.dialog!!.findViewById<ImageView>(R.id.image_calendar_anterior2)
          val calendario = viewModel.dialog!!.findViewById<RecyclerView>(R.id.recycler_calendario)
          val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
-         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
 
-         viewModel.eventos = viewModel.evento.obtenerTodosEventos(viewModel.idUsuarioTEA, this)
+         val idUsuario = if(prefs.getBoolean("PlanificadorLogged", false)) viewModel.idUsuario else viewModel.idUsuarioTEA
+         viewModel.eventos = viewModel.evento.obtenerTodosEventos(idUsuario!!, this)
          viewModel.obtenerVistaMes()
 
          viewModel._fechaActual.observe(this) { fechaActual.text = it }
 
          viewModel._diasMes.observe(this) {
+             val ratio = if(it.size < 42) "7:6" else "1:1"
+             val params = calendario.layoutParams as ConstraintLayout.LayoutParams
+             params.dimensionRatio = ratio
+             calendario.layoutParams = params
+
              calendario.layoutManager = GridLayoutManager(this, 7)
              val listaDays = if(CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
                  arrayOf("L", "M", "X", "J", "V", "S", "D")
@@ -314,6 +327,7 @@ class EventosActivity : AppCompatActivity() {
 
              val adaptadorCalendario = AdaptadorCalendario(it,listaDays, viewModel.eventos, viewModel)
              calendario.adapter = adaptadorCalendario
+             calendario.requestLayout()
          }
 
          btnAnteriorMes.setOnClickListener {
@@ -342,13 +356,11 @@ class EventosActivity : AppCompatActivity() {
         viewModel._planLiveData.observe(this){
             if (it != null) {
                     titulo.text = viewModel.tituloPlan
-                    lblMensaje.visibility = View.INVISIBLE
-                    buttonPlanNuevo.visibility = View.INVISIBLE
+                    lblMensaje.visibility = View.GONE
                     iconoDeshacer.visibility = View.VISIBLE
                     iconoDeshacerTodas.visibility = View.VISIBLE
                     iconoMarcar.visibility = View.VISIBLE
                     iconoMarcarTodas.visibility = View.VISIBLE
-                    findViewById<ConstraintLayout>(R.id.constraintLayout2).visibility = View.VISIBLE
                     //iconoEscuchar.visibility = View.VISIBLE
                     iconoReproducir.visibility = View.VISIBLE
                     iconoMarcar.isEnabled = true
@@ -371,7 +383,6 @@ class EventosActivity : AppCompatActivity() {
             if(it){
                 titulo.text = ""
                 lblMensaje.visibility = View.VISIBLE
-                findViewById<ConstraintLayout>(R.id.constraintLayout2).visibility = View.GONE
                 iconoDeshacer.visibility = View.INVISIBLE
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcar.visibility = View.INVISIBLE
@@ -380,20 +391,12 @@ class EventosActivity : AppCompatActivity() {
                 iconoReproducir.visibility = View.INVISIBLE
 
                 /*if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
-                    buttonPlanNuevo.visibility = View.VISIBLE
                     val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
                     layoutPlanificaciones.visibility = View.VISIBLE
                 }else{
-                    buttonPlanNuevo.visibility = View.INVISIBLE
                     val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
                     layoutPlanificaciones.visibility = View.GONE
                 }*/
-
-                if(isPlanificador){
-                    buttonPlanNuevo.visibility = View.VISIBLE
-                }else{
-                    buttonPlanNuevo.visibility = View.INVISIBLE
-                }
 
                 viewModel.recyclerView.visibility = View.INVISIBLE
             }
@@ -480,6 +483,7 @@ class EventosActivity : AppCompatActivity() {
             }
 
             val fecha = intent.getSerializableExtra("fecha") as LocalDate
+            CalendarioUtilidades.fechaSeleccionada = fecha
             val diaSemana = fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("es")).replaceFirstChar { it.uppercase() }
             val mes = fecha.month.getDisplayName(TextStyle.FULL, Locale("es"))
             val diaText = "$diaSemana, ${fecha.dayOfMonth} de $mes"

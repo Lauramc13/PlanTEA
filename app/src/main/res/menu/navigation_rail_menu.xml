@@ -4,62 +4,36 @@
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_home"
-        android:title="Inicio"/>
+        android:title="@string/inicio"/>
    <!-- <item
         android:id="@+id/calendar"
         android:enabled="true"
         android:checkable="true"
-        android:icon="@drawable/svg_calendardate"
+        android:icon="@drawable/svg_calendar"
         android:title="Calendario"/>-->
     <item
         android:id="@+id/planificacion"
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_plan"
-        android:title="Eventos"/>
+        android:title="@string/eventos_y_planificaciones"/>
     <item
         android:id="@+id/calendario"
         android:enabled="true"
         android:checkable="true"
-        android:icon="@drawable/svg_semana"
-        android:title="Calendario"/>
+        android:icon="@drawable/svg_calendar"
+        android:title="@string/pantalla_calendario"/>
     <item
         android:id="@+id/actividades"
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_actividadesdado"
-        android:title="Actividades"/>
+        android:title="@string/actividades"/>
    <item
        android:id="@+id/traductor"
        android:enabled="true"
        android:checkable="true"
        android:icon="@drawable/svg_translation"
-       android:title="Traductor"/>
-
-    <!--<item
-   android:id="@+id/cuaderno"
-   android:enabled="true"
-   android:checkable="true"
-   android:icon="@drawable/svg_cuadernocomunicacion"
-   android:title="Cuaderno de comunicacion"/> -->
-
-<!--  <item
-       android:id="@+id/labels_item"
-       android:title="">
-       <menu>
-           <item
-               android:id="@+id/user"
-               android:icon="@drawable/svg_gear"
-               android:title="Preferencias"
-               android:checkable="true" />
-
-           <item
-               android:id="@+id/help"
-               android:icon="@drawable/svg_question"
-               android:title="Ayuda"
-               android:checkable="true" />
-
-       </menu>
-   </item>-->
+       android:title="@string/titulo_traductor"/>
 
 </menu>

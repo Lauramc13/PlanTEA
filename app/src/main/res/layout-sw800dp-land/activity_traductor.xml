@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
-        app:tint="?subColorBackground" />
+        app:srcCompat="@drawable/blob_v2" />
 
     <ImageView
         android:id="@+id/imageView8"
@@ -42,7 +41,7 @@
             android:id="@+id/linearLayout12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/fondo_cuaderno_tiempo"
+            android:background="@drawable/bg_calendario"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -56,31 +55,25 @@
                 android:layout_weight="1"
                 android:hint="@string/str_escribe_frase"
                 android:inputType="text"
-                android:textColor="?colorOnSurface"
-                app:boxBackgroundColor="@android:color/transparent"
                 app:hintTextColor="?colorBG1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     android:layout_margin="5dp"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="20sp" />
+                    style="@style/textInput" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/traducirButton"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:layout_width="140dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/str_traducir"
-                android:textAllCaps="true"
-                android:textColor="#203130"
-                android:textSize="14sp"
-                app:cornerRadius="25dp" />
+                android:textColor="@color/darkGreen"
+                android:textSize="@dimen/button" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_cuaderno_tiempo">
+            android:background="@drawable/bg_calendario">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_plan"
@@ -107,11 +100,13 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="20dp"
+                app:dividerColor="?color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
@@ -169,7 +164,7 @@
                   android:layout_marginBottom="10dp"
                   android:fontFamily="@font/poppins_semibold"
                   android:text="@string/str_guardar_como"
-                  android:textAllCaps="true"
+                  android:textAllCaps="false"
                   android:textColor="?colorOnSurface"
                   android:textSize="14sp"
                   android:visibility="invisible"

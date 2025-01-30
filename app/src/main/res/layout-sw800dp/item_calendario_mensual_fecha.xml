@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:textSize="@dimen/titleNavigation"
+            android:textColor="?colorOnSurface"
             android:text="fecha"/>
 
         <TextView
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
             android:textSize="@dimen/subtitle"
+            android:textColor="?colorOnSurface"
             android:layout_marginTop="5dp"
             android:text="titulo"/>
 

@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasTraductor
 import com.example.plantea.presentacion.viewModels.TraductorViewModel
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.divider.MaterialDivider
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
 
@@ -53,7 +55,7 @@ class TraductorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
-        val traducirButton: Button = findViewById(R.id.traducirButton)
+        val traducirButton: MaterialButton = findViewById(R.id.traducirButton)
         guardarButton = findViewById(R.id.guardarButton)
         guardarPDFButton = findViewById(R.id.guardarButtonPDF)
         guardarButtonPlan = findViewById(R.id.guardarButtonPlan)
@@ -112,6 +114,7 @@ class TraductorActivity : AppCompatActivity() {
         guardarButton?.setOnClickListener {
             val inflater = LayoutInflater.from(this)
             val customView = inflater.inflate(R.layout.popup_guardar_traduccion, null)
+            customView.elevation = 10f
             val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
             popupWindow.width = guardarButton!!.width
 
@@ -169,11 +172,13 @@ class TraductorActivity : AppCompatActivity() {
         viewModel._visibilityButtons.observe(this) { visibility ->
             if(visibility){
                 if(isPlanificador){
+                    findViewById<MaterialDivider>(R.id.divider).visibility = View.VISIBLE
                     guardarButton?.visibility = View.VISIBLE
                     guardarPDFButton?.visibility = View.VISIBLE
                     guardarButtonPlan?.visibility = View.VISIBLE
                 }
             }else{
+                findViewById<MaterialDivider>(R.id.divider).visibility = View.GONE
                 guardarButton?.visibility = View.GONE
                 guardarPDFButton?.visibility = View.GONE
                 guardarButtonPlan?.visibility = View.GONE

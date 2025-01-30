@@ -24,16 +24,15 @@
                 <ImageView
                     android:id="@+id/img_NuevoPicto"
                     style="@style/addPhotoBackground"
-                    android:layout_width="140dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="210dp"
+                    android:layout_margin="9dp"
                     android:layout_height="140dp"
-                    android:contentDescription="Añadir imagen del planificador"
                     app:shapeAppearance="@style/cornerRadius" />
             </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_Titulo"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/cornertextInput"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -49,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/lbl_tulo"
                     android:inputType="text"
-                    android:textColor="?colorOnSurface"/>
+                    style="@style/textInput"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -73,35 +72,35 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fab1"
                     android:layout_width="70dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     app:strokeWidth="0dp"
                     app:cornerRadius="15dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?colorOnSurface"
-                    app:backgroundTint="@color/purpleCategoria" />
+                    app:iconTint="@color/md_theme_light_shadow"
+                    app:backgroundTint="?colorPurple" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fab2"
                     android:layout_width="70dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     app:strokeWidth="0dp"
                     app:cornerRadius="15dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?colorOnSurface"
-                    app:backgroundTint="@color/pinkCategoria" />
+                    app:iconTint="@color/md_theme_light_shadow"
+                    app:backgroundTint="?colorPink" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fab3"
                     android:layout_width="70dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     app:strokeWidth="0dp"
                     app:cornerRadius="15dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?colorOnSurface"
-                    app:backgroundTint="@color/greenCategoria" />
+                    app:iconTint="@color/md_theme_light_shadow"
+                    app:backgroundTint="?colorGreen" />
 
             </LinearLayout>
 
@@ -115,29 +114,29 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fab4"
                     android:layout_width="70dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     app:strokeWidth="0dp"
                     app:cornerRadius="15dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?colorOnSurface"
-                    app:backgroundTint="@color/yellowCategoria" />
+                    app:iconTint="@color/md_theme_light_shadow"
+                    app:backgroundTint="?colorYellow" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fab5"
                     android:layout_width="70dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     app:strokeWidth="0dp"
                     app:cornerRadius="15dp"
                     app:iconGravity="textStart"
                     style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?colorOnSurface"
-                    app:backgroundTint="#CDEDFF" />
+                    app:iconTint="@color/md_theme_light_shadow"
+                    app:backgroundTint="?colorBlue" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fab6"
                     android:layout_width="70dp"
-                    android:layout_height="60dp"
+                    android:layout_height="50dp"
                     app:strokeWidth="0dp"
                     app:cornerRadius="15dp"
                     app:iconGravity="textStart"
@@ -153,9 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="@string/crear_categoria"
-                android:textSize="14sp"
-                android:textColor="#203130"
-                app:cornerRadius="10dp"
+                android:textSize="@dimen/button"
+                android:textColor="@color/darkGreen"
                 android:fontFamily="@font/poppins_semibold" />
 
         </LinearLayout>

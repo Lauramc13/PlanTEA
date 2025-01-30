@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Color de fondo de la vista -->
-    <solid
-        android:color="?colorBG1" >
-    </solid>
-
-    <!-- Color y ancho del borde del elemento -->
+    <solid android:color="?colorBG1" />
+    <corners android:radius="20dp"/>
     <stroke
         android:width="1.5dp"
         android:color="?color"
         android:dashGap="10px"
-        android:dashWidth="10px">
-    </stroke>
-
-    <!-- Aquí indicamos el radio a aplicar a las esquinas -->
-    <corners
-        android:radius="8dp"   >
-    </corners>
+        android:dashWidth="10px"/>
 </shape>

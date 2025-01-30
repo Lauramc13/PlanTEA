@@ -27,29 +27,24 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Titulo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto nombre de usuario"
             android:ems="10"
-            android:fontFamily="@font/poppins_regular"
             android:layout_marginTop="20dp"
             android:hint="@string/lbl_tulo"
             android:inputType="text"
-            android:textColor="?colorOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/frameImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
+                style="@style/textInput"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -81,8 +76,8 @@
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/purpleCategoria" />
+            app:iconTint="@color/md_theme_light_shadow"
+            app:backgroundTint="?colorPurple" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab2"
@@ -92,8 +87,8 @@
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/pinkCategoria" />
+            app:iconTint="@color/md_theme_light_shadow"
+            app:backgroundTint="?colorPink" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab3"
@@ -103,8 +98,8 @@
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/greenCategoria" />
+            app:iconTint="@color/md_theme_light_shadow"
+            app:backgroundTint="?colorGreen" />
 
     </LinearLayout>
 
@@ -123,8 +118,8 @@
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="@color/yellowCategoria" />
+            app:iconTint="@color/md_theme_light_shadow"
+            app:backgroundTint="?colorYellow" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab5"
@@ -134,8 +129,8 @@
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.IconButton"
-            app:iconTint="?colorOnSurface"
-            app:backgroundTint="#CDEDFF" />
+            app:iconTint="@color/md_theme_light_shadow"
+            app:backgroundTint="?colorBlue" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab6"
@@ -157,10 +152,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/crear_categoria"
-        android:textColor="#203130"
-        android:textSize="14sp"
-        app:cornerRadius="10dp"
+        android:textColor="@color/darkGreen"
+        android:textSize="@dimen/button"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

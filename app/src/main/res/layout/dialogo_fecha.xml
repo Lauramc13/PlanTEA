@@ -42,7 +42,7 @@
                 android:paddingEnd="6dp"
                 android:paddingBottom="2dp"
                 android:textColor="?colorOnSurface"
-                android:textSize="22sp" />
+                android:textSize="@dimen/title" />
 
             <TextView
                 android:id="@+id/fecha"
@@ -57,17 +57,17 @@
                 android:hint="@string/fecha2"
                 android:padding="6dp"
                 android:textColor="?colorOnSurface"
-                android:textSize="18sp" />
+                android:textSize="@dimen/subtitle" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:clickable="false"
                 android:contentDescription="@string/tarjeta_del_planificador_para_iniciar_sesi_n"
                 android:focusable="true"
                 android:gravity="center"
-                app:cardBackgroundColor="?configuracionCardBg"
+                app:cardBackgroundColor="@color/whitish"
                 app:cardCornerRadius="20dp"
                 app:strokeColor="?color"
                 app:strokeWidth="1.5dp">
@@ -113,8 +113,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab1"
             style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             app:backgroundTint="@color/purpleCategoria"
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
@@ -124,8 +124,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab2"
             style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             app:backgroundTint="@color/pinkCategoria"
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
@@ -135,8 +135,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab3"
             style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             app:backgroundTint="@color/greenCategoria"
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
@@ -155,8 +155,8 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab4"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             app:strokeWidth="0dp"
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
@@ -166,8 +166,8 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab5"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             app:strokeWidth="0dp"
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
@@ -177,8 +177,8 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fab6"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             app:strokeWidth="0dp"
             app:cornerRadius="15dp"
             app:iconGravity="textStart"
@@ -193,10 +193,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/editar"
-        android:textAllCaps="true"
-        android:textColor="#203130"
-        app:icon="@drawable/svg_edit"
-        app:iconTint="#203130"
+        android:textAllCaps="false"
+        android:textColor="@color/darkGreen"
+        android:textSize="@dimen/button"
+        app:icon="@drawable/svg_edit_outline"
+        app:iconTint="@color/darkGreen"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -210,7 +211,8 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/borrar"
-        android:textAllCaps="true"
+        android:textSize="@dimen/button"
+        android:textAllCaps="false"
         app:icon="@drawable/svg_trash"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -224,7 +226,7 @@
         android:layout_margin="20dp"
         android:contentDescription="Cerrar seccion"
         android:background="@drawable/bg_close_button"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/svg_close"
         android:padding="12dp"
         android:alpha="0.9"
         app:layout_constraintEnd_toEndOf="parent"

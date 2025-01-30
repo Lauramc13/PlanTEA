@@ -7,14 +7,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.provider.CalendarContract
-import android.widget.NumberPicker
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getString
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.OnAlarmReceiver
@@ -22,8 +18,6 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntretenimiento
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale

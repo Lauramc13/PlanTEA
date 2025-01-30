@@ -30,9 +30,9 @@ class SemanaActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_semana)
 
-        if(CommonUtils.isMobile(this)){
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
+//        if(CommonUtils.isMobile(this)){
+//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//            }
 
         val buttonGuardar = findViewById<Button>(R.id.btnGuardar)
         val buttonEditar = findViewById<Button>(R.id.btnEditar)

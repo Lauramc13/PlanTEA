@@ -33,7 +33,7 @@ class AdaptadorActividadesPantalla(private val actividades: ArrayList<Actividad>
 
     override fun onBindViewHolder(holder: ViewHolderAcitividades, position: Int) {
         if(actividades!![position].id == "-1"){
-            holder.imagen.setImageResource(R.drawable.svg_add)
+            holder.imagen.setImageResource(R.drawable.svg_add_20)
             holder.nombre.text = actividades[position].name
         } else {
             holder.imagen.setImageBitmap(actividades[position].imagen)

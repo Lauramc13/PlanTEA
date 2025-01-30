@@ -25,6 +25,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
@@ -37,6 +38,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -545,23 +548,6 @@ class CommonUtils{
             }
         }
 
-        fun uriToBitmapOLD(context: Context, uri: Uri): Bitmap? {
-            return try {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    val source = ImageDecoder.createSource(context.contentResolver, uri)
-                    ImageDecoder.decodeBitmap(source)
-                }else{
-                    val bitmap = context.contentResolver.openInputStream(uri)?.use { stream ->
-                        Bitmap.createBitmap(BitmapFactory.decodeStream(stream))
-                    }
-                    bitmap
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                null
-            }
-        }
-
         fun uriToBitmap(context: Context, uri: Uri): Bitmap? {
             val contentResolver: ContentResolver = context.contentResolver
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -586,6 +572,21 @@ class CommonUtils{
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             return stream.toByteArray()
+        }
+
+        fun byteArrayToDrawableWithCorner(byteArray: ByteArray?, context: Context): Drawable? {
+            val bitmap = byteArrayToBitmap(byteArray)
+
+            bitmap?.let {
+                val dpValue = 50f // 20dp corner radius
+                val pxValue = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.resources.displayMetrics)
+
+                val roundedDrawable: RoundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.resources, it)
+                roundedDrawable.cornerRadius = pxValue
+                return roundedDrawable
+            }
+
+            return null
         }
 
         fun byteArrayToBitmap(byteArray: ByteArray?): Bitmap? {

@@ -33,36 +33,32 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Titulo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="250dp"
+            android:layout_width="@dimen/widthTextInput"
             android:layout_height="wrap_content"
+            style="@style/cornertextInput"
             android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="50dp"
             android:ems="10"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            android:inputType="text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_tulo"
-                android:inputType="text"
-                android:textColor="?colorOnSurface"/>
+                style="@style/textInput"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_GuardarPicto"
             style="@style/Widget.Material3.Button"
-            android:layout_width="250dp"
+            android:layout_width="@dimen/widthTextInput"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/btn_Guardar"
-            app:cornerRadius="10dp"
-            android:textColor="#203130"
-            android:textSize="14sp" />
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button" />
 
     </LinearLayout>
 

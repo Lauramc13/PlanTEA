@@ -1,26 +1,16 @@
 package com.example.plantea.presentacion.adaptadores
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.net.Uri
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.PopupWindow
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
-import com.example.plantea.presentacion.actividades.ActividadActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.materialswitch.MaterialSwitch
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.util.Locale
 
 
@@ -102,7 +92,7 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : R
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             card = itemView.findViewById(R.id.id_card)!!
-            historia = itemView.findViewById(R.id.btn_historiaPictoOn)
+            historia = itemView.findViewById(R.id.btn_historiaPicto)
             entretenimiento = itemView.findViewById(R.id.entretenimiento)
             duracion = itemView.findViewById(R.id.duracionPictoTexto)
         }

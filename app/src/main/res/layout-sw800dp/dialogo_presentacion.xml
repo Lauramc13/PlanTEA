@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:text="¡Conseguido!"
+        android:text="@string/conseguido"
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/white"
-        android:textSize="50dp"
+        android:textSize="50sp"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/card_presentacion"
@@ -55,13 +55,13 @@
                 android:id="@+id/icono_CerrarDialogoEvento"
                 android:layout_width="48dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@drawable/bg_close_button"
                 android:padding="12dp"
                 android:layout_margin="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_close_24" />
+                app:srcCompat="@drawable/svg_close" />
 
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -116,6 +116,39 @@
         app:layout_constraintBottom_toBottomOf="@+id/card_presentacion"
         app:layout_constraintStart_toEndOf="@+id/card_presentacion"
         app:layout_constraintTop_toTopOf="@+id/card_presentacion" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/duracionPicto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/round_bg"
+        android:progress="100"
+        android:elevation="3dp"
+        android:layout_marginBottom="-50dp"
+        android:visibility="gone"
+        app:indicatorColor="?colorPrimary"
+        app:indicatorSize="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_presentacion"
+        app:layout_constraintEnd_toEndOf="@+id/card_presentacion"
+        app:layout_constraintStart_toStartOf="@+id/card_presentacion"
+        app:trackColor="@color/greenLight" />
+
+    <TextView
+        android:id="@+id/duracionPictoTiempo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/duracionPicto"
+        app:layout_constraintEnd_toEndOf="@+id/duracionPicto"
+        app:layout_constraintStart_toStartOf="@+id/duracionPicto"
+        app:layout_constraintTop_toTopOf="@+id/duracionPicto"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:elevation="3dp"
+        android:visibility="gone"
+        android:textColor="?colorOnSurface"
+        android:text="00:00" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Bubble"

@@ -29,18 +29,20 @@
             android:iconifiedByDefault="false"
             android:queryHint="@string/buscar_pictos"
             android:theme="@style/AppTheme.SearchBar"
+            android:searchIcon="@drawable/svg_search"
             tools:ignore="NotSibling" />
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pictogramas_busqueda"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="290dp"
         android:layout_marginTop="5dp"
         android:isScrollContainer="true"
         android:padding="10dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
         app:layout_constraintVertical_bias="0.0" />

@@ -1,7 +1,11 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Dialog
+import android.app.DownloadManager
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
@@ -11,8 +15,7 @@ import android.graphics.pdf.PdfDocument.PageInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
+import android.os.storage.StorageManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -25,8 +28,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.FileProvider
+import androidx.core.app.NotificationCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.set
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +40,6 @@ import com.example.plantea.dominio.DiaMes
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensual
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensualFechas
 import com.example.plantea.presentacion.viewModels.CalendarioMensualViewModel
-import com.example.plantea.presentacion.viewModels.SingleLiveEvent
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
@@ -137,7 +140,12 @@ class CalendarioMensualActivity: AppCompatActivity() {
             findViewById<TextView>(R.id.noHayFechas).visibility = if(viewModel.fechas.isEmpty()) View.VISIBLE else  View.GONE
 
             //Calendario
-            val ratio = if(it.size < 42) "7:6" else "1:1"
+            val ratio = when (it.size) {
+                35 -> "7:6"
+                49 -> "7:8"
+                else -> "1:1"
+            }
+
             val params = calendario.layoutParams as ConstraintLayout.LayoutParams
             params.dimensionRatio = ratio
             calendario.layoutParams = params
@@ -216,6 +224,10 @@ class CalendarioMensualActivity: AppCompatActivity() {
         val dialogBorrar = Dialog(this)
         dialogBorrar.setContentView(R.layout.dialogo_eliminar_dia_mes)
         dialogBorrar.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialogBorrar.findViewById<Button>(R.id.btn_cancelar).setOnClickListener{
+            dialogBorrar.dismiss()
+        }
 
         dialogBorrar.findViewById<Button>(R.id.btn_eliminar).setOnClickListener {
             val diaMes = DiaMes()
@@ -330,8 +342,16 @@ class CalendarioMensualActivity: AppCompatActivity() {
     private fun exportarPdf(){
         try {
             val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            val filename = "Calendario_PlanTEA.pdf"
+            var filename = "Calendario_PlanTEA.pdf"
+            var counter = 1
+
+            while (File(downloadsDirectory, filename).exists()) {
+                filename = "Calendario_PlanTEA_$counter.pdf"
+                counter++
+            }
+
             val outputPath = File(downloadsDirectory, filename).absolutePath
+
             val pdfDocument = PdfDocument()
             val pageWidth = 1485
             val pageHeight = 1050
@@ -349,16 +369,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
             calendarioPDF.measure(widthSpec, heightSpec)
             calendarioPDF.requestLayout()
 
-            //Blobs
-            val bitmap = CommonUtils.drawableToBitmap(ResourcesCompat.getDrawable(resources, R.drawable.blob_pdf_2, null)!!)
-            val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 450, 450, false)
-            val bitmap2 = CommonUtils.drawableToBitmap(ResourcesCompat.getDrawable(resources, R.drawable.blob_pdf, null)!!)
-            val scaledBitmap2 = Bitmap.createScaledBitmap(bitmap2, 300, 300, false)
-            canvas.drawBitmap(scaledBitmap, 0f, pageHeight - 450f, null)
-            canvas.drawBitmap(scaledBitmap2, pageWidth - 300f, 0f, null)
-
             //Mover el canvas para el calendario
-
             if(viewModel.fechas.isEmpty()){
                 //canvas in the middle
                 canvas.save()
@@ -372,7 +383,6 @@ class CalendarioMensualActivity: AppCompatActivity() {
                 calendarioPDF.draw(canvas)
                 canvas.restore()
             }
-
 
             //Fecha
             val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -423,8 +433,9 @@ class CalendarioMensualActivity: AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }finally {
-            Toast.makeText(this, "PDF exportado en la carpeta de descargas", Toast.LENGTH_SHORT).show()
+            val message = getString(R.string.toast_pdf_exportado)
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
-
     }
+
 }

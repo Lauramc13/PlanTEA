@@ -37,6 +37,6 @@
         app:iconSize="27dp"
         android:padding="0dp"
         app:iconGravity="textStart"
-        app:icon="@drawable/svg_game_filled"/>
+        app:icon="@drawable/svg_game"/>
 
 </LinearLayout>

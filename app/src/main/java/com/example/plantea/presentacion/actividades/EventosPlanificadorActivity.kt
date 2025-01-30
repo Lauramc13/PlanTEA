@@ -2,7 +2,6 @@ package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.content.ComponentName
 import android.content.Context
@@ -26,8 +25,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -127,9 +127,14 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         }
 
         calendarButton.setOnClickListener{
-            btnNuevaPlanificacion.visibility = View.GONE
-            calendarSection()
-            expand(true, CommonUtils.isPortrait(this), true)
+            if(CommonUtils.isMobile(this)){
+                calendarDialog()
+            }else{
+                btnNuevaPlanificacion.visibility = View.GONE
+                calendarSection()
+                expand(true, CommonUtils.isPortrait(this), true)
+            }
+
         }
 
         iniciarListaPlanificaciones()
@@ -160,6 +165,10 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             Thread.sleep(150)
             dialogEntretenimiento.dismiss()
         }
+
+        viewModelCalendario._fechaSeleccionada.observe(this){
+            Toast.makeText(this, "FILTRAR LA LISTA DE EVENTOS POR EL DIA SELECCIONADO", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun calendarSection(){
@@ -168,6 +177,11 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         ft.replace(R.id.linearLayout16, fragment)
         ft.addToBackStack(null)
         ft.commit()
+    }
+
+    private fun calendarDialog(){
+        val fragment = CalendarioFragment()
+        fragment.show(supportFragmentManager, fragment.tag)
     }
 
     private fun iniciarListaPlanificaciones() {
@@ -274,7 +288,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
 
     override fun eventoEditado(posicion: Int, context: Context) {
         btnNuevaPlanificacion.visibility = View.VISIBLE
-        CalendarioUtilidades.fechaSeleccionada = viewModel.eventos[posicion].fecha!!
+        CalendarioUtilidades.fechaSeleccionada = viewModel.eventos[posicion].fecha?: LocalDate.now()
         if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)) {
             bottomSheetDialog(context, viewModel.eventos[posicion])
         }else{
@@ -493,7 +507,6 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
 
         dialogEntretenimiento.show()
     }
-
 
     private fun recyclerActividad(recyclerActividad : RecyclerView, dialog: Dialog, listaPictogramas: ArrayList<Pictograma>, idPicto: Int){
         val constraintLayout = dialog.findViewById<ConstraintLayout>(R.id.frameLayout)

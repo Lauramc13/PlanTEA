@@ -118,7 +118,7 @@
             android:layout_gravity="end"
             android:padding="12dp"
             android:background="@drawable/bg_close_button"
-            app:srcCompat="@drawable/ic_baseline_close_24" />
+            app:srcCompat="@drawable/svg_close" />
 
 
         <ImageView

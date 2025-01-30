@@ -32,6 +32,7 @@
         android:textSize="15sp"
         android:maxLines="1"
         android:visibility="visible"
+        android:textColor="?colorOnSurface"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

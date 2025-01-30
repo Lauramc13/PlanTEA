@@ -6,14 +6,18 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.35"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/svg_blob"
-        app:tint="@color/seedLight"
-        android:importantForAccessibility="no" />
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob_v2"
+        android:scaleType="centerCrop"
+        android:alpha="0.5"
+        app:tint="?colorPrimary"
+        android:importantForAccessibility="no"/>
 
     <TextView
         android:id="@+id/lbl_planificacion"
@@ -21,7 +25,7 @@
         app:layout_constraintWidth_percent="0.7"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_bold"
         android:gravity="center"
         android:text="@string/lbl_seleccionaAvatar"
         android:textColor="?colorOnSurface"
@@ -52,17 +56,17 @@
     <Button
         android:id="@+id/btn_galeria"
         style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.8"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:contentDescription="Boton para seleccionar foto de la galeria"
         android:fontFamily="@font/poppins_semibold"
         android:maxLines="1"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:text="@string/lbl_seleccionarFoto"
-        android:textAllCaps="true"
-        android:textColor="#203130"
+        android:textAllCaps="false"
+        android:textColor="@color/darkGreen"
         android:textSize="@dimen/button"
         app:cornerRadius="25dp"
         android:autoSizeTextType="uniform"
@@ -71,21 +75,12 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_saltar"
-        style="@style/Widget.Material3.Button.OutlinedButton"
-        android:layout_width="150dp"
+        style="@style/buttonSaltar"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#FFFFFF"
-        android:contentDescription="Boton para saltar el paso de seleccionar avatar del planificado"
-        android:fontFamily="@font/poppins_semibold"
-        android:maxWidth="10dp"
-        android:text="@string/lbl_saltar"
-        android:textAllCaps="true"
-        android:textColor="#203130"
-        android:textSize="@dimen/button"
-        app:cornerRadius="25dp"
+        android:layout_width="@dimen/width_button_saltar"
+        android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -94,14 +89,13 @@
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="end"
+        app:layout_constraintVertical_weight="1"
+        android:layout_margin="20dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_galeria"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_planificacion2"
-        app:layout_constraintWidth_percent="0.9">
-
+        app:layout_constraintWidth_percent="0.8">
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,7 +108,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:contentDescription="Opción 1 chica pelo moreno"
                     android:id="@+id/avatar1chica"
@@ -122,7 +116,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -134,7 +128,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     android:id="@+id/avatar2chica"
                     android:contentDescription="Opción 2 chica pelo rubio"
                     app:strokeColor="?color"
@@ -142,7 +136,7 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardElevation="0dp"
                     app:cardCornerRadius="20dp"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -160,7 +154,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar3chica"
                     android:contentDescription="Opción 3 chica pelo negro"
@@ -168,7 +162,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -180,7 +174,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar4chica"
                     android:contentDescription="Opción 4 chica pelo moreno"
@@ -188,7 +182,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -207,7 +201,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 app:cardCornerRadius="20dp"
                 android:id="@+id/avatar5chica"
                 android:contentDescription="Opción 5 chica pelo moreno corto"
@@ -215,7 +209,7 @@
                 app:strokeWidth="1.5dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/white"
-                android:layout_margin="15dp">
+                android:layout_margin="5dp">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -227,7 +221,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_weight="1"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 app:cardCornerRadius="20dp"
                 android:id="@+id/avatar1chico"
                 android:contentDescription="Opción 1 chico pelo moreno barba"
@@ -235,7 +229,7 @@
                 app:strokeWidth="1.5dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/white"
-                android:layout_margin="15dp">
+                android:layout_margin="5dp">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -253,7 +247,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar2chico"
                     android:contentDescription="Opción 2 chico pelo rubio"
@@ -261,7 +255,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -272,7 +266,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar3chico"
                     android:contentDescription="Opción 3 chico pelo moreno largo barba"
@@ -280,7 +274,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
                     <ImageView
 
                         android:layout_width="match_parent"
@@ -299,7 +293,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar4chico"
                     android:contentDescription="Opción 4 chico pelo moreno"
@@ -307,7 +301,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -318,7 +312,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_weight="1"
-                    android:layout_height="150dp"
+                    android:layout_height="100dp"
                     app:cardCornerRadius="20dp"
                     android:id="@+id/avatar5chico"
                     android:contentDescription="Opción 5 chico pelo moreno gafas"
@@ -326,7 +320,7 @@
                     app:strokeWidth="1.5dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/white"
-                    android:layout_margin="15dp">
+                    android:layout_margin="5dp">
 
                     <ImageView
                         android:layout_width="match_parent"

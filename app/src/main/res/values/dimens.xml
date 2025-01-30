@@ -5,26 +5,31 @@
     <dimen name="old_navigation_width"> 80dp</dimen>
 
     <dimen name="displayBig">30sp</dimen>
-    <dimen name="display">25sp</dimen>
+    <dimen name="display">18sp</dimen>
     <dimen name="displaySmall">22sp</dimen>
-    <dimen name="title">20sp</dimen>
+
+    <dimen name="title">18sp</dimen>
     <dimen name="subtitle">16sp</dimen>
     <dimen name="body">14sp</dimen>
-    <dimen name="caption">12sp</dimen>
+    <dimen name="caption">11sp</dimen>
     <dimen name="overline">10sp</dimen>
     <dimen name="button">14sp</dimen>
     <dimen name="buttonBig">16sp</dimen>
-    <dimen name="modalText">16sp</dimen>
-    <dimen name="modalTitle">18sp</dimen>
-    <dimen name="listItems">16sp</dimen>
+    <dimen name="modalTitle">17sp</dimen>
+    <dimen name="modalText">15sp</dimen>
+    <dimen name="listItems">13sp</dimen>
     <dimen name="listItemsTitle">14sp</dimen>
     <dimen name="listItemsSubtitle">14sp</dimen>
     <dimen name="menuItems">14sp</dimen>
     <dimen name="errorText">12sp</dimen>
     <dimen name="formText">15sp</dimen>
-    <dimen name="titleSmall">18sp</dimen>
+    <dimen name="titleSmall">16sp</dimen>
     <dimen name="snackBarText">15sp</dimen>
-    <dimen name="titleNavigation">17sp</dimen>
-
+    <dimen name="titleNavigation">19sp</dimen>
+    <dimen name="paddingDialog">0dp</dimen>
+    <dimen name="widthTextInput">220dp</dimen>
+    <dimen name="width_button_saltar">130dp</dimen>
+    <dimen name="popup_y">20dp</dimen>
+    <dimen name="corner_radius">7dp</dimen>
 
 </resources>

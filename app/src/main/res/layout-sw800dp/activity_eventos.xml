@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <com.google.android.material.button.MaterialButton
@@ -86,7 +86,7 @@
                 android:contentDescription="Botón calendario"
                 android:gravity="center"
                 app:cornerRadius="25dp"
-                app:icon="@drawable/svg_calendardate"
+                app:icon="@drawable/svg_calendar"
                 app:iconSize="25dp"
                 app:iconTint="?colorOnSurface">
 
@@ -117,14 +117,14 @@
                 android:contentDescription="Botón reproducir lista"
                 android:elevation="0dp"
                 android:enabled="false"
-                android:textColor="#203130"
+                android:textColor="@color/darkGreen"
                 android:textSize="20sp"
                 android:theme="@style/botonesSecundarios"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_rewind"
                 app:iconGravity="textEnd"
                 app:iconSize="28dp"
-                app:iconTint="#203130" />
+                app:iconTint="@color/darkGreen" />
 
             <Button
                 android:id="@+id/icon_deshacer"
@@ -135,14 +135,14 @@
                 android:contentDescription="Botón reproducir lista"
                 android:elevation="0dp"
                 android:enabled="false"
-                android:textColor="#203130"
+                android:textColor="@color/darkGreen"
                 android:textSize="20sp"
                 android:theme="@style/botonesSecundarios"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_play_goback"
                 app:iconGravity="textEnd"
                 app:iconSize="25dp"
-                app:iconTint="#203130" />
+                app:iconTint="@color/darkGreen" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/icon_reproducir"
@@ -152,13 +152,13 @@
                 android:contentDescription="Botón reproducir lista"
                 android:elevation="0dp"
                 android:enabled="true"
-                android:textColor="#203130"
+                android:textColor="@color/darkGreen"
                 android:textSize="20sp"
                 app:cornerRadius="100dp"
                 app:icon="@drawable/svg_play"
                 app:iconGravity="textEnd"
                 app:iconSize="35dp"
-                app:iconTint="#203130" />
+                app:iconTint="@color/darkGreen" />
 
 
             <Button
@@ -168,14 +168,14 @@
                 android:layout_height="52dp"
                 android:layout_marginStart="15dp"
                 android:contentDescription="Botón reproducir lista"
-                android:textColor="#203130"
+                android:textColor="@color/darkGreen"
                 android:textSize="20sp"
                 android:theme="@style/botonesSecundarios"
                 app:cornerRadius="25dp"
                 app:elevation="0dp"
                 app:icon="@drawable/svg_play_gofoward"
                 app:iconSize="25dp"
-                app:iconTint="#203130" />
+                app:iconTint="@color/darkGreen" />
 
             <Button
                 android:id="@+id/icon_marcarTodas"
@@ -185,14 +185,14 @@
                 android:layout_marginStart="15dp"
                 android:contentDescription="Botón reproducir lista"
                 android:elevation="0dp"
-                android:textColor="#203130"
+                android:textColor="@color/darkGreen"
                 android:textSize="20sp"
                 android:theme="@style/botonesSecundarios"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_foward"
                 app:iconGravity="textEnd"
                 app:iconSize="28dp"
-                app:iconTint="#203130" />
+                app:iconTint="@color/darkGreen" />
         </LinearLayout>
 
        <!-- <Button
@@ -203,12 +203,12 @@
             android:contentDescription="Botón deshacer acción"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/str_escuchar2"
-            android:textColor="#203130"
+            android:textColor="@color/darkGreen"
             android:textSize="16sp"
             app:cornerRadius="25dp"
             app:icon="@drawable/svg_sound"
             app:iconSize="25dp"
-            app:iconTint="#203130"
+            app:iconTint="@color/darkGreen"
             android:layout_marginEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -241,27 +241,47 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Titulo"
+            android:text="@string/titulo"
             android:textColor="?colorOnSurface"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_fecha" />
 
-        <TextView
-            android:id="@+id/lbl_mensajeNinio"
+        <LinearLayout
+            android:id="@+id/layout_no_eventos"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/lbl_mensajeNinio"
-            android:fontFamily="@font/poppins_regular"
-            android:text="@string/lbl_mensajeNinio"
-            android:textColor="?colorOnSurface"
-            android:textSize="21sp"
-            android:gravity="center"
-            android:visibility="invisible"
+            app:layout_constraintHeight_percent="0.25"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/constraintLayout" />
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/svg_ticket"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/mensajeEventos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|top"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/lbl_mensajeNinio"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/title" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/lbl_importante"
@@ -273,55 +293,25 @@
             android:fontFamily="@font/poppins_semibold"
             android:textSize="20sp"
             android:layout_marginBottom="-10dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
             tools:ignore="MissingConstraints" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/fragment_personalizado"
-            android:padding="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_titulo">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_plan"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
+                android:layout_height="wrap_content"
+                android:clipToPadding="true"
+                android:padding="10dp"
+                android:layout_margin="20dp"
                 android:contentDescription="Lista con la planificación actual"
-                android:scrollbars="horizontal" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:scrollbars="horizontal"
+                android:background="@drawable/fragment_personalizado"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"/>
 
-        <Button
-            android:id="@+id/crearPlan"
-            style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/lbl_nuevoEvento"
-            android:textColor="#203130"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            android:textAllCaps="true"
-            app:cornerRadius="25dp"
-            app:iconPadding="5dp"
-            android:paddingEnd="20dp"
-            android:layout_marginTop="20dp"
-            app:icon="@drawable/ic_baseline_add_24"
-            app:iconSize="25dp"
-            app:iconTint="#203130"
-            app:layout_constraintBottom_toBottomOf="@id/recycler_plan"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_mensajeNinio" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

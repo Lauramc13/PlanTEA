@@ -33,7 +33,11 @@ class MenuUserActivity : AppCompatActivity(), AdaptadorMenuUser.OnItemSelectedLi
         if (usersTEA!!.isNotEmpty()) {
             recyclerView.visibility = View.VISIBLE
             adapterUsers = AdaptadorMenuUser(usersTEA, this)
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            if(CommonUtils.isMobile(this)) {
+                recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            } else {
+                recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            }
 
             recyclerView.adapter = adapterUsers
         } else {

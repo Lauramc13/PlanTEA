@@ -1,8 +1,6 @@
 package com.example.plantea.presentacion.adaptadores
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
+import com.google.android.material.card.MaterialCardView
 
 class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?): RecyclerView.Adapter<AdaptadorNuevoPicto.ViewHolderPictogramas>() {
 
@@ -23,7 +22,7 @@ class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_picto_entretenimiento, null, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_picto_default, null, false)
         return ViewHolderPictogramas(view)
     }
 
@@ -44,15 +43,11 @@ class AdaptadorNuevoPicto( var listaPictogramas: ArrayList<Pictograma>?, private
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var titulo: TextView
-        var imagen: ImageView
-        var card: View
+        var titulo: TextView = itemView.findViewById(R.id.id_Texto)
+        var imagen: ImageView = itemView.findViewById(R.id.id_Imagen)
+        var card: MaterialCardView = itemView.findViewById(R.id.id_card)
 
         init {
-            titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
-            imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            card = itemView.findViewById(R.id.id_card) as View
-
             card.setOnClickListener {
                 card.setBackgroundResource(R.drawable.card_personalizado_categoria)
                 listener?.onNuevoPicto(listaPictogramas!![bindingAdapterPosition])

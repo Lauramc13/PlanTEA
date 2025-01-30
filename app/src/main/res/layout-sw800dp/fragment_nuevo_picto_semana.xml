@@ -55,9 +55,8 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/btn_Guardar"
-            android:textColor="#203130"
-            android:textSize="14sp"
-            app:cornerRadius="10dp" />
+            android:textColor="@color/darkGreen"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,7 +39,7 @@
             android:text="@string/la_actividad_es"
             android:layout_marginTop="30dp"
             android:textColor="?colorOnSurface"
-            android:textSize="22sp"
+            android:textSize="@dimen/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,9 +54,8 @@
             android:paddingStart="30dp"
             android:paddingEnd="30dp"
             android:gravity="center"
-            android:text="No hay una actividad configurada"
             android:textColor="?colorOnSurface"
-            android:textSize="22sp"
+            android:textSize="@dimen/subtitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lbl_nombreObjeto"
-            app:srcCompat="@drawable/question2" />
+            app:srcCompat="@drawable/svg_question_circle" />
 
         <TextView
             android:id="@+id/lbl_categoria"
@@ -104,7 +103,7 @@
         android:layout_margin="20dp"
         android:contentDescription="Cerrar seccion"
         android:background="@drawable/bg_close_button"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/svg_close"
         android:padding="12dp"
         android:alpha="0.9"
         app:layout_constraintEnd_toEndOf="parent"

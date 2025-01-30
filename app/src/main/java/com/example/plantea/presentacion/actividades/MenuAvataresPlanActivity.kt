@@ -16,7 +16,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
 import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
-
+import com.google.android.material.button.MaterialButton
 
 
 class MenuAvataresPlanActivity : AppCompatActivity() {
@@ -40,7 +40,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
             viewModel.abrirGaleria()
         }
 
-        val btnSaltar : Button = findViewById(R.id.btn_saltar)
+        val btnSaltar : MaterialButton = findViewById(R.id.btn_saltar)
         val extras = intent.extras
         isConfiguration = extras?.getBoolean("editPreferences") ?: false
 

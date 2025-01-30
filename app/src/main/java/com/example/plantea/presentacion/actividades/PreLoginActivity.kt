@@ -29,18 +29,19 @@ import com.example.plantea.presentacion.fragmentos.LoginFragment
 import com.example.plantea.presentacion.viewModels.PreLoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import java.util.ArrayList
 import java.util.Locale
 
 class PreLoginActivity : AppCompatActivity(){
-    private  var btnLogin: Button? = null
+    private  var btnLogin: MaterialButton? = null
     private  var btnRegister: TextView? = null
    // private lateinit var btnOlvidarPass: TextView
     private  var email: TextInputLayout? = null
     private  var password: TextInputLayout? = null
     private  var signin : Button? = null
-    private var btnComenzar : Button? = null
+    private var btnComenzar : MaterialButton? = null
     private lateinit var spinner : Spinner
     private lateinit var imageSpinner : ImageView
     private lateinit var prefs : SharedPreferences

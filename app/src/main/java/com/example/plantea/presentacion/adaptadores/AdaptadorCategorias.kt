@@ -36,17 +36,13 @@ class AdaptadorCategorias(var listaCategorias: ArrayList<Categoria>?, private va
         holder.titulo.text = listaCategorias!![position].getTitulo()
 
         if(position == listaCategorias!!.size-1){
-            holder.imagen.setImageResource(R.drawable.svg_add)
+            holder.imagen.setImageResource(R.drawable.svg_add_20)
             val drawable = ContextCompat.getDrawable(context, R.drawable.card_dotted_categorias)
             holder.card.background = drawable
             holder.borrar.visibility = View.GONE
         }else{
            holder.imagen.setImageBitmap(listaCategorias!![position].getImagen())
         }
-
-        /*if(position in 0..9){
-            holder.borrar.visibility = View.GONE
-        }*/
 
         if(listaCategorias!![position].getColor() == "default") {
             // if its dark mode

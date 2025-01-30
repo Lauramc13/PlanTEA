@@ -13,10 +13,39 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
+        android:alpha="0.8"
         app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background_login_svg" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/my_image"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:src="@drawable/svg_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/tiltneon"
+            android:text="PlanTEA"
+            android:textColor="?colorOnSurface"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/my_image"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
 
     <TextView
@@ -31,7 +60,7 @@
         android:textSize="@dimen/displayBig"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
@@ -56,7 +85,7 @@
         android:id="@+id/imageView7"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.39"
@@ -75,7 +104,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:maxWidth="10dp"
         android:text="@string/comenzar"
-        android:textColor="#203130"
+        android:textColor="@color/darkGreen"
         android:layout_marginBottom="60dp"
         android:textSize="@dimen/buttonBig"
         app:layout_constraintBottom_toBottomOf="parent"

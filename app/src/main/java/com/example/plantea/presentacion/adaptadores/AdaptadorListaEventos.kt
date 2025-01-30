@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -48,10 +49,10 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         holder.separator.visibility = View.VISIBLE
 
         if(planes!![position].visible == 1){
-            holder.visibility.setIconResource(R.drawable.svg_eye_on)
+            holder.visibility?.setIconResource(R.drawable.svg_eye_on)
         } else {
-            holder.visibility.setIconResource(R.drawable.svg_eye_off)
-            holder.visibility.iconTint = holder.itemView.context.getColorStateList(R.color.red)
+            holder.visibility?.setIconResource(R.drawable.svg_eye_off)
+            holder.visibility?.iconTint = holder.itemView.context.getColorStateList(R.color.red)
         }
 
         changeHeight(holder, position)
@@ -78,7 +79,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
     private fun calculateHeight(posicion: Int, context: Context): Int {
         return when (posicion) {
             selectedPosition -> {
-                if (CommonUtils.isMobile(context)) dpToPx(180, context) else dpToPx(220, context)
+                if (CommonUtils.isMobile(context)) dpToPx(170, context) else dpToPx(220, context)
             }
             else -> {
                 if (CommonUtils.isMobile(context)) dpToPx(45, context) else dpToPx(50, context)
@@ -95,10 +96,11 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         val fecha: TextView = itemView.findViewById(R.id.lbl_Fecha)
         val separator : TextView = itemView.findViewById(R.id.separator)
         var card: CardView = itemView.findViewById(R.id.card_plan)
-        var edit = itemView.findViewById<MaterialButton>(R.id.icon_edit)
-        var ver = itemView.findViewById<MaterialButton>(R.id.icon_eye)
-        var visibility = itemView.findViewById<MaterialButton>(R.id.icon_visibility)
-        var export = itemView.findViewById<MaterialButton>(R.id.icon_export)
+        var edit : MaterialButton? = itemView.findViewById(R.id.icon_edit)
+        var ver : MaterialButton? = itemView.findViewById(R.id.icon_eye)
+        var visibility : MaterialButton? = itemView.findViewById(R.id.icon_visibility)
+        var export: MaterialButton? = itemView.findViewById(R.id.icon_export)
+        var options : MaterialButton? = itemView.findViewById(R.id.icon_options)
         var recyclerView: RecyclerView = itemView.findViewById(R.id.items_planificacion)
 
         init {
@@ -119,19 +121,61 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
                 notifyItemChanged(bindingAdapterPosition)
             }
 
-            edit.setOnClickListener {
+            options?.setOnClickListener {
+                // show menu with export and visibility options
+                val inflater = itemView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val popupView = inflater.inflate(R.layout.popup_menu_evento, null)
+                val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+                popupWindow.showAsDropDown(options, -20, 0)
+
+                edit = popupView.findViewById(R.id.item_editar)
+                ver = popupView.findViewById(R.id.item_ver)
+                visibility =  popupView.findViewById(R.id.item_visibilidad)
+                export = popupView.findViewById(R.id.item_export)
+
+                //if evento is visible
+                if (planes!![bindingAdapterPosition].visible == 1){
+                    visibility?.setIconResource(R.drawable.svg_eye_filled)
+
+                } else{
+                    visibility?.setIconResource(R.drawable.svg_eye_off)
+                    visibility?.iconTint = itemView.context.getColorStateList(R.color.red)
+                }
+
+                edit?.setOnClickListener {
+                    listener?.eventoEditado(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
+
+                ver?.setOnClickListener {
+                    listener?.verEvento(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
+
+                visibility?.setOnClickListener {
+                    listener?.cambiarVisibilidadEvento(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
+
+                export?.setOnClickListener {
+                    listener?.exportarEvento(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
+            }
+
+            edit?.setOnClickListener {
                 listener?.eventoEditado(bindingAdapterPosition, itemView.context)
             }
 
-            ver.setOnClickListener {
+            ver?.setOnClickListener {
                 listener?.verEvento(bindingAdapterPosition, itemView.context)
             }
 
-            visibility.setOnClickListener {
+            visibility?.setOnClickListener {
                 listener?.cambiarVisibilidadEvento(bindingAdapterPosition, itemView.context)
             }
 
-            export.setOnClickListener {
+            export?.setOnClickListener {
                 listener?.exportarEvento(bindingAdapterPosition, itemView.context)
             }
         }

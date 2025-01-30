@@ -57,24 +57,16 @@
     app:layout_constraintStart_toStartOf="parent"
     android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_skip"
-            style="@style/Widget.Material3.Button.IconButton"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_saltar"
+            style="@style/buttonSaltar"
+            android:width="@dimen/width_button_saltar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:layout_gravity="end"
-            app:iconGravity="end"
-            app:backgroundTint="@color/transparent"
-            app:cornerRadius="60dp"
-            app:iconSize="25dp"
-            android:layout_margin="5dp"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/str_saltar"
-            app:icon="@drawable/ic_baseline_arrow_forward_32"
-            android:textColor="?colorOnSurface"
-            app:iconTint="?colorOnSurface" />
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="end" />
+
 
         <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"

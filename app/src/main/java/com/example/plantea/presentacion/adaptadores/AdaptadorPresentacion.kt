@@ -107,7 +107,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
     private fun typePictogram(position: Int, holder: ViewHolderPictogramas) {
         val color = if (CommonUtils.isDarkMode(context as Activity)) R.color.md_theme_dark_onSurface else R.color.md_theme_light_onBackground
-        val colorRed = if (CommonUtils.isDarkMode(context as Activity)) R.color.redCategoria else R.color.red
+        val colorRed = if (CommonUtils.isDarkMode(context as Activity)) R.color.redLight else R.color.red
 
         val isMarked = listMarcados!!.contains(position)
         val isImprevisto = imprevistos.contains(position)
@@ -282,19 +282,17 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var imagen: ImageView
         var card: View
         var historia: ImageView
-       // var duracion : FragmentContainerView
         var duracion: CircularProgressIndicator
         var tiempo: TextView
         var entretenimiento: ImageView
         var iconCambio: ImageView
         var arrow : ImageView
 
-
         init {
             titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             card = itemView.findViewById(R.id.id_card) as View
-            historia = itemView.findViewById(R.id.btn_historiaPictoOn)
+            historia = itemView.findViewById(R.id.btn_historiaPicto)
             duracion = itemView.findViewById(R.id.duracionPicto)
             entretenimiento = itemView.findViewById(R.id.entretenimiento)
             tiempo = itemView.findViewById(R.id.duracionPictoTiempo)
@@ -310,7 +308,6 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
                 //if countDownTimer is running
                 if(countDownTimer != null){
                     listener?.dialogoCambio(itemView, duracion, tiempo, context)
-
                 }
             }
         }

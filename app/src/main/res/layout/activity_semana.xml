@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
-        app:tint="?subColorBackground" />
+        app:srcCompat="@drawable/blob_v2"
+        />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -29,29 +29,32 @@
         android:id="@+id/btnEditar"
         style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/editar"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="#181F25"
         android:textSize="@dimen/button"
-        app:cornerRadius="25dp"
-        app:layout_constraintEnd_toEndOf="@+id/tableLayout"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/scroll"
+        app:layout_constraintStart_toStartOf="@+id/scroll"
+        app:layout_constraintTop_toBottomOf="@+id/scroll" />
 
     <LinearLayout
         android:id="@+id/optionsEditar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/tableLayout"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/scroll"
+        app:layout_constraintStart_toStartOf="@+id/scroll"
+        app:layout_constraintTop_toBottomOf="@+id/scroll">
 
         <Button
             android:id="@+id/btnCancelar"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/lbl_cancelar"
             android:textColor="#181F25"
@@ -67,7 +70,7 @@
             android:id="@+id/btnGuardar"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/btn_Guardar"
             android:paddingTop="5dp"
@@ -79,33 +82,42 @@
             app:cornerRadius="25dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/tableLayout"
+    <HorizontalScrollView
+        android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:clipToOutline="true"
         android:background="@drawable/bg_cards_configuracion"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.9">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_text"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_images"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_text"
+                android:orientation="horizontal"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_images"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
     <Button
         android:id="@+id/btnSwitch"
@@ -117,7 +129,7 @@
         android:visibility="gone"
         app:icon="@drawable/svg_refresh"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tableLayout" />
+        app:layout_constraintTop_toTopOf="@+id/scroll" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"

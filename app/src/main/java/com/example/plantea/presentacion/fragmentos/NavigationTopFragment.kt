@@ -19,9 +19,12 @@ import com.example.plantea.presentacion.actividades.ActividadActivity
 import com.example.plantea.presentacion.actividades.EventosActivity
 import com.example.plantea.presentacion.actividades.TraductorActivity
 import com.example.plantea.presentacion.actividades.CalendarioActivity
+import com.example.plantea.presentacion.actividades.CalendarioMensualActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
+import com.example.plantea.presentacion.actividades.ConfiguracionUsersTEAActivity
 import com.example.plantea.presentacion.actividades.CreditsActivity
+import com.example.plantea.presentacion.actividades.EditarPerfilActivity
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.actividades.ManualActivity
 import com.example.plantea.presentacion.actividades.PasswordActivity
@@ -68,6 +71,10 @@ class NavigationTopFragment: Fragment() {
             PoliticaActivity::class.java -> getString(R.string.pantalla_politica)
             PasswordActivity::class.java -> getString(R.string.btn_CambiarPass)
             SemanaActivity::class.java -> getString(R.string.semana)
+            CalendarioMensualActivity::class.java -> getString(R.string.calendario_mensual)
+            EditarPerfilActivity::class.java -> getString(R.string.editar_perfil)
+            ConfiguracionUsersTEAActivity::class.java -> getString(R.string.configuracion_users_tea)
+
             else -> getString(R.string.app_name)
         }
 

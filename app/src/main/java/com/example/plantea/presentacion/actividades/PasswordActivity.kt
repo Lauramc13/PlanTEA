@@ -16,6 +16,11 @@ class PasswordActivity : AppCompatActivity() {
     private val emptyTextViews = mutableListOf<TextView>()
     private val viewModel by viewModels<PasswordViewModel>()
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password)

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:paddingTop="10dp"
-    android:paddingBottom="20dp"
+    android:paddingBottom="15dp"
     android:background="@drawable/bg_tiempo_duracion">
 
     <com.google.android.material.button.MaterialButton
@@ -20,16 +20,16 @@
         app:iconTint="?colorOnSurfaceVariant"
         app:backgroundTint="?colorOnTertiary"
         android:contentDescription="Cerrar seccion"
-        app:icon="@drawable/ic_baseline_close_24" />
+        app:icon="@drawable/svg_close" />
 
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:fontFamily="@font/poppins_semibold"
-        android:textSize="@dimen/title"
+        android:textSize="@dimen/titleSmall"
         android:layout_marginBottom="15dp"
         android:layout_gravity="center"
         android:text="@string/duracion"/>
@@ -60,7 +60,7 @@
             app:layout_constraintTop_toBottomOf="@+id/numberPickerMin"
             app:layout_constraintStart_toStartOf="@+id/numberPickerMin"
             app:layout_constraintEnd_toEndOf="@+id/numberPickerMin"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:fontFamily="@font/poppins_medium"
             android:layout_marginTop="5dp"
             android:text="@string/min"/>
@@ -71,7 +71,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text=":"
             android:textSize="@dimen/display"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="@+id/numberPickerSec"
             app:layout_constraintEnd_toStartOf="@+id/numberPickerSec"
             app:layout_constraintStart_toEndOf="@+id/numberPickerMin"
@@ -95,7 +95,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/seg"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="@+id/numberPickerSec"
             app:layout_constraintStart_toStartOf="@+id/numberPickerSec"
             app:layout_constraintTop_toBottomOf="@+id/numberPickerMin" />
@@ -107,11 +107,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/aceptar"
-        android:textSize="@dimen/buttonBig"
-        android:textAllCaps="true"
+        android:textSize="@dimen/button"
+        android:textAllCaps="false"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="#203130"
-        app:strokeColor="#203130"
+        android:textColor="@color/darkGreen"
+        app:strokeColor="@color/darkGreen"
         app:backgroundTint="@color/colorHalfWhite"
         android:layout_gravity="center"/>
 
@@ -122,12 +122,12 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/borrar"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:visibility="visible"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
-        android:textColor="#203130"
-        android:textSize="@dimen/buttonBig"
+        android:textColor="@color/darkGreen"
+        android:textSize="@dimen/button"
         />
 
 </LinearLayout>

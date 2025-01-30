@@ -42,27 +42,6 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
         holder.titulo.text = listaPictos!![position].titulo
         holder.imagen.setImageBitmap(listaPictos!![position].imagen)
 
-       /* if(listaPictos!![position].duracion.toString() != "null"){
-        }
-
-        val idEntretenimiento = listaPictogramas!![position].pictoEntretenimiento
-        if(idEntretenimiento == 0) {
-            holder.entretenimiento.visibility = View.GONE
-        }else{
-            if(idEntretenimiento == -1){
-                val prefs = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-                val imagen = prefs.getString("imagenObjeto", null)
-                holder.entretenimiento.setImageURI(Uri.parse(imagen))
-            }else{
-                val picto = Pictograma()
-                val image = picto.obtenerPicto(context,  idEntretenimiento.toString(), Locale.getDefault().language).imagen
-                holder.entretenimiento.setImageBitmap(image)
-            }
-            holder.entretenimiento.visibility = View.VISIBLE
-        }
-
-        holder.historia.visibility = if(listaPictos!![position].historia.toString() == "null") View.INVISIBLE else View.VISIBLE
-*/
         configPicto(holder)
     }
 
@@ -90,20 +69,16 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var titulo: TextView
-        var imagen: ImageView
-        var card: View
-        val fab: MaterialButton
-        lateinit var historia: MaterialButton
-        lateinit var duracion: MaterialButton
-        lateinit var entretenimiento: MaterialButton
+        var titulo: TextView = itemView.findViewById(R.id.id_Texto)
+        var imagen: ImageView = itemView.findViewById(R.id.id_Imagen)
+        var card: View = itemView.findViewById(R.id.id_card)
+        private val fab: MaterialButton = itemView.findViewById(R.id.btn_addInfo)
+
+        private lateinit var historia: MaterialButton
+        private lateinit var duracion: MaterialButton
+        private lateinit var entretenimiento: MaterialButton
 
         init {
-            titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
-            imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            card = itemView.findViewById(R.id.id_card)!!
-            fab = itemView.findViewById(R.id.btn_addInfo)
-
             fab.visibility = View.VISIBLE
             fab.setOnClickListener {
 

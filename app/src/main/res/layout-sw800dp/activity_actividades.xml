@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob3"
+        app:srcCompat="@drawable/blob_v2"
         app:tint="?subColorBackground" />
 
     <ImageView
@@ -113,9 +113,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="10dp"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_temporizador_land">
-
-        </FrameLayout>
+            android:background="@drawable/bg_temporizador_land"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_video"
@@ -137,7 +135,8 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="50dp"
-                    android:src="@drawable/svg_youtube" />
+                    android:src="@drawable/svg_youtube"
+                    app:tint="@color/md_theme_light_onSurface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -145,8 +144,8 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="25dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="YouTube"
-                    android:textColor="#203130"
+                    android:text="@string/lbl_actividades_youtube"
+                    android:textColor="@color/md_theme_light_onSurface"
                     android:textSize="@dimen/modalTitle" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -188,7 +187,7 @@
             android:background="@drawable/bg_close_button"
             android:contentDescription="Cerrar seccion"
             android:padding="12dp"
-            android:src="@drawable/ic_baseline_close_24"
+            android:src="@drawable/svg_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

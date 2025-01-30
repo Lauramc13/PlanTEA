@@ -8,21 +8,20 @@
     <string name="lbl_NewPass">Contraseña nueva</string>
     <string name="lbl_RepPass">Volver a introducir la contraseña</string>
     <string name="lbl_NuevaPass">Nueva contraseña</string>
-    <string name="btn_Guardar">GUARDAR</string>
-    <string name="btn_tutorial">VOLVER A VER EL TUTORIAL</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="lbl_profesionales">PROFESIONALES</string>
-    <string name="lbl_Consultas">CONSULTAS</string>
-    <string name="lbl_Lugares">LUGARES</string>
-    <string name="lbl_Favoritos">FAVORITOS</string>
-    <string name="lbl_IrColegio">IR AL COLEGIO</string>
-    <string name="lbl_IrMedico">IR AL MÉDICO</string>
-    <string name="lbl_Comprar">HACER LA COMPRA</string>
-    <string name="lbl_CortarsePelo">CORTARSE EL PELO</string>
-    <string name="lbl_Desplazamiento">DESPLAZAMIENTO</string>
-    <string name="lbl_Accion">ACCIÓN</string>
-    <string name="lbl_Entretenimiento">ENTRETENIMIENTO</string>
-    <string name="lbl_Recompensa">RECOMPENSA</string>
+    <string name="btn_Guardar">Guardar</string>
+    <string name="btn_tutorial">Volver a ver el tutorial</string>
+    <string name="lbl_profesionales">Profesionales</string>
+    <string name="lbl_Consultas">Consultas</string>
+    <string name="lbl_Lugares">Lugares</string>
+    <string name="lbl_Favoritos">Favoritos</string>
+    <string name="lbl_IrColegio">Ir al colegio</string>
+    <string name="lbl_IrMedico">Ir al médico</string>
+    <string name="lbl_Comprar">Hacer la compra</string>
+    <string name="lbl_CortarsePelo">Cortarse el pelo</string>
+    <string name="lbl_Desplazamiento">Desplazamiento</string>
+    <string name="lbl_Accion">Acción</string>
+    <string name="lbl_Entretenimiento">Entretenimiento</string>
+    <string name="lbl_Recompensa">Recompensa</string>
     <string name="lbl_Aniadir">Añadir</string>
     <string name="lbl_NuevoPicto">Añadir pictograma</string>
     <string name="lbl_imprevistoPicto">Cambiar pictograma</string>
@@ -34,20 +33,18 @@
     <string name="lbl_RepitePass">Repite la contraseña</string>
     <string name="lbl_CrearPass">Crear contraseña</string>
     <string name="item_ayuda">Ayuda</string>
-    <string name="lbl_hora">HORAS</string>
-    <string name="lbl_dia">DÍAS</string>
-    <string name="lbl_semana">SEMANAS</string>
-    <string name="lbl_mes">MESES</string>
-    <string name="lbl_anio">AÑOS</string>
-    <string name="lbl_poco">POCO</string>
-    <string name="lbl_mucho">MUCHO</string>
-    <string name="lbl_izquierda">IZQUIERDA</string>
-    <string name="lbl_derecha">DERECHA</string>
-    <string name="lbl_si">SI</string>
-    <string name="lbl_mal">NO</string>
-    <string name="lbl_sintomas">¿QUÉ TE PASA?</string>
-    <string name="lbl_dolores">¿DÓNDE TE DUELE?</string>
-    <string name="lbl_sentimientos">¿COMO TE SIENTES?</string>
+    <string name="lbl_hora">Horas</string>
+    <string name="lbl_dia">Días</string>
+    <string name="lbl_semana">Semanas</string>
+    <string name="lbl_mes">Meses</string>
+    <string name="lbl_anio">Años</string>
+    <string name="lbl_izquierda">Izquierda</string>
+    <string name="lbl_derecha">Derecha</string>
+    <string name="lbl_si">Si</string>
+    <string name="lbl_mal">No</string>
+    <string name="lbl_sintomas">¿Qué te pasa?</string>
+    <string name="lbl_dolores">¿Dónde te duele?</string>
+    <string name="lbl_sentimientos">¿Cómo te sientes?</string>
     <string name="lbl_configuracion">Configuración</string>
     <string name="lbl_infoPlanificador">Datos del planificador/a</string>
     <string name="lbl_infoplaificador_texto">Usuario responsable de crear y gestionar planificaciones</string>
@@ -67,8 +64,8 @@
     <string name="btn_nuevo_evento">Evento</string>
     <string name="lbl_nuevoEvento">Nuevo Evento</string>
     <string name="lbl_mensaje_evento">No hay eventos para este día. Pulsa en \"+\" para crear un evento.</string>
-    <string name="btn_horaEvento">HORA</string>
-    <string name="item_perfil">preferencias</string>
+    <string name="btn_horaEvento">Hora</string>
+    <string name="item_perfil">Preferencias</string>
     <string name="lbl_mensajeNinio">No hay eventos para seguir este dia</string>
     <string name="lbl_indice1">1. Descripción de la aplicación PlanTEA</string>
     <string name="lbl_indice2">2. Ajuste de las preferencias</string>
@@ -96,29 +93,28 @@
     <string name="lbl_indice6">5. Ajuste de las preferencias</string>
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="lbl_actividades">Actividades</string>
-    <string name="lbl_actividades_objeto">ACTIVIDAD TRANQUILIZADORA</string>
-    <string name="lbl_actividades_youtube">YOUTUBE</string>
-    <string name="lbl_configuracion_objeto">Actividad tranquilizadora</string>
+    <string name="lbl_actividades_objeto">Actividad tranquilizadora</string>
+    <string name="lbl_actividades_youtube" translatable="false">YouTube</string>
     <string name="lbl_configuracion_objeto2">Actividad tranquilizadora:</string>
 
     <string name="lbl_configuracion_notificaciones">Notificaciones de los eventos</string>
     <string name="lbl_configuracion_notificaciones_1">1 hora antes</string>
     <string name="lbl_configuracion_notificaciones_2">1 día antes</string>
     <string name="lbl_configuracion_notificaciones_3">1 semana antes</string>
-    <string name="lbl_nombre">NOMBRE</string>
+    <string name="lbl_nombre">Nombre</string>
 
     <string name="lbl_seleccionaAvatar">Selecciona el avatar del planificador</string>
     <string name="lbl_seleccionaAvatarTEA">Selecciona el avatar de la persona supervisada</string>
     <string name="lbl_seleccionaActividad">Selecciona la actividad tranquilizadora</string>
-    <string name="lbl_seleccionarFoto">SELECCIONAR FOTO DE LA GALERIA</string>
-    <string name="lbl_saltar">SALTAR</string>
-    <string name="lbl_deshacer">DESHACER</string>
+    <string name="lbl_seleccionarFoto">Seleccionar foto de la galería</string>
+    <string name="lbl_saltar">Saltar</string>
+    <string name="lbl_deshacer">Deshacer</string>
     <string name="lbl_reproducir">Reproducir</string>
     <string name="lbl_seleccionaPictograma">Selecciona la opción de visualización de los pictogramas</string>
     <string name="lbl_seleccionaPictograma2">Los pictogramas se visualizarán según su preferencia</string>
 
     <string name="lbl_cuaderno">Cuaderno de comunicación</string>
-    <string name="lbl_iniciarSesion">INICIAR SESIÓN</string>
+    <string name="lbl_iniciarSesion">Iniciar sesión</string>
     <string name="lbl_noCuenta">¿No tienes cuenta? Regístrate aquí</string>
     <string name="lbl_nombreUsuario">Nombre de usuario</string>
     <string name="lbl_email">Correo electrónico</string>
@@ -128,22 +124,22 @@
     <string name="lbl_datosPlanificado">Datos de la persona supervisada</string>
     <string name="lbl_datosNombre">Nombre</string>
     <string name="lbl_datosContraseña">Volver a introducir la contraseña</string>
-    <string name="lbl_crearCuenta">CREAR CUENTA</string>
+    <string name="lbl_crearCuenta">Crear cuenta</string>
 
     <string name="lbl_eliminarEvento">Eliminar evento</string>
     <string name="lbl_eliminarEventoMensaje">¿Seguro que deseas eliminar el evento seleccionado?</string>
-    <string name="lbl_cancelar">CANCELAR</string>
-    <string name="lbl_eliminar">ELIMINAR</string>
+    <string name="lbl_cancelar">Cancelar</string>
+    <string name="lbl_eliminar">Eliminar</string>
     <string name="lbl_eliminarPlanificacion">Eliminar planificación</string>
     <string name="lbl_eliminarPlanificacionMensaje">¿Seguro que deseas eliminar la planificación seleccionada?</string>
     <string name="lbl_eliminarPlanificacionMensaje2">Si desea eliminar la planificación, se eliminarán también todos los eventos asociados</string>
-    <string name="lbl_eliminarPlanificacionMensaje3">ELIMINAR PLANIFICACION</string>
+    <string name="lbl_eliminarPlanificacionMensaje3">Eliminar planificación</string>
     <string name="lbl_historialSocial">Texto adicional para:</string>
-    <string name="lbl_cerrarSesion">¿Estas segur@ que quieres cerrar la sesión?</string>
+    <string name="lbl_cerrarSesion">¿Estás seguro/a que quieres cerrar la sesión?</string>
     <string name="lbl_cerrarSesionBotton">Cerrar sesión</string>
-    <string name="lbl_nuevaPlanificacion">NUEVA PLANIFICACIÓN</string>
+    <string name="lbl_nuevaPlanificacion">Nueva planificación</string>
     <string name="lbl_salirPlanificacion">Salir de la planificación</string>
-    <string name="lbl_salirPlanificacion2">¿Estas segur@ que quieres salir de la planificación?</string>
+    <string name="lbl_salirPlanificacion2">¿Estás seguro/a que quieres salir de la planificación?</string>
     <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>
     <string name="lbl_salirPlanificacionBotton">Salir</string>
     <string name="lbl_contraseniaOlvidada">¿Has olvidado la contraseña?</string>
@@ -157,17 +153,17 @@
     <string name="recordatorio">Recordatorio:</string>
     <string name="planificaciones_disponibles">Planificaciones disponibles:</string>
     <string name="eventos_disponibles">Eventos disponibles:</string>
-    <string name="recordar">Recordar...</string>
+    <string name="recordar">Recordar…</string>
     <string name="recordar_5min">5 minutos antes</string>
     <string name="recordar_1hora">1 hora antes</string>
     <string name="recordar_1dia">1 día antes</string>
-    <string name="recordar_personalizado">A las...</string>
+    <string name="recordar_personalizado">A las…</string>
     <string name="aceptar">Aceptar</string>
     <string name="bienvenido">¡Bienvenido a PlanTEA!</string>
     <string name="bienvenido_texto">En PlanTEA podrás planificar tus eventos y actividades de manera sencilla y rápida.</string>
     <string name="explicacion_actividad">La actividad tranquilizadora representa el objeto que calma a la persona con TEA</string>
 
-    <string name="sesion_google">INICIAR SESIÓN CON GOOGLE</string>
+    <string name="sesion_google">Iniciar sesión con Google</string>
     <string name="licencias">Licencias de código abierto</string>
     <string name="ilustraciones">Ilustraciones</string>
     <string name="arasaac">Centro Aragonés para la Comunicación Aumentativa y Alternativa</string>
@@ -189,11 +185,11 @@
     <string name="actividad_entre">Actividad de entretenimiento</string>
     <string name="cambiar_rol">Cambiar rol</string>
     <string name="cambiar">Cambiar</string>
-    <string name="aniadir_picto_entre">AÑADIR PICTOGRAMA DE ENTRETENIMIENTO</string>
+    <string name="aniadir_picto_entre">Añadir pictograma de entretenimiento</string>
     <string name="item_entretenimiento">Entretenimiento</string>
     <string name="item_recompensa">Recompensa</string>
     <string name="crear_nueva_categoria">Crear nueva categoría</string>
-    <string name="crear_categoria">CREAR CATEGORÍA</string>
+    <string name="crear_categoria">Crear categoría</string>
     <string name="crear_nuevo_cuaderno">Crear nuevo cuaderno</string>
     <string name="crear_nuevo_pictograma">Crear nuevo pictograma</string>
     <!-- Title pages -->
@@ -226,7 +222,7 @@
     <string name="str_saltar">Saltar</string>
     <string name="str_escuchar2">ESCUCHAR</string>
     <string name="str_traducir">Traducir</string>
-    <string name="str_escribe_frase">Escribe tu frase aqui...</string>
+    <string name="str_escribe_frase">Escribe tu frase aqui…</string>
     <string name="str_guardar_como">Guardar como</string>
 
     <string name="str_finalizar">Finalizar</string>
@@ -240,11 +236,11 @@
     <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el grupo CHICO. CHICO es un grupo de investigación de la Universidad de Castilla-La Mancha con sede en la Escuela Superior de Informática del Campus de Ciudad Real que cuenta también con investigadores en la Facultad de Educación de Ciudad Real, en la Escuela de Ingeniería Minera e Industrial de Almadén, y en la Facultad de Ciencias Sociales de Talavera de la Reina.</string>
     <string name="str_parrafo2">El interés investigador del grupo se focaliza, principalmente, en los nuevos métodos, técnicas, herramientas y procesos de Ingeniería Informática para la mejora de las tareas interactivas y colaborativas.</string>
     <string name="str_parrafo3">Financiación</string>
-    <string name="str_parrafo4">Este trabajo ha sido desarrollado en el contexto del Proyecto APTEA (Ref. TED2021-131956B-I00), financiado por el MICIN/AEI/10.13039/501100000033 y los fondos de la Unión Europea "NextGenerationEU"/PRTR; del Proyecto PlanTEAAF (Ref. 2022-GRIN-34175) en el marco del Plan Propio de Investigación de la Universidad de Castilla - La Mancha, cofinanciadas por el Fondo Europeo de Desarrollo Regional (FEDER); y de los convenios de colaboración con AUTRADE (Ref. 220413CONV) y FACLM (Ref. 230405CONV).</string>
+    <string name="str_parrafo4">Este trabajo ha sido desarrollado en el contexto del Proyecto APTEA (Ref. TED2021–131956B-I00), financiado por el MICIN/AEI/10.13039/501100000033 y los fondos de la Unión Europea "NextGenerationEU"/PRTR; del Proyecto PlanTEAAF (Ref. 2022-GRIN-34175) en el marco del Plan Propio de Investigación de la Universidad de Castilla - La Mancha, cofinanciadas por el Fondo Europeo de Desarrollo Regional (FEDER); y de los convenios de colaboración con AUTRADE (Ref. 220413CONV) y FACLM (Ref. 230405CONV).</string>
 
     <string name="cuaderno_de_com">Cuaderno de comunicación</string>
     <string name="lbl_tulo">Título</string>
-    <string name="lbl_borrarCuaderno">¿Estas seguro que quiere borrar el cuaderno seleccionado?</string>
+    <string name="lbl_borrarCuaderno">¿Estás seguro/a que quiere borrar el cuaderno seleccionado?</string>
     <string name="lbl_borrarCuadernoBotton">Borrar cuaderno</string>
     <string name="tarjeta_de_actividad_tranquilizadora">Tarjeta de actividad tranquilizadora</string>
     <string name="tarjeta_de_youtube">Tarjeta de youtube</string>
@@ -254,8 +250,8 @@
     <string name="bienvenido_de_nuevo">¡Bienvenido de nuevo!</string>
     <string name="tarjeta_del_planificador_para_iniciar_sesi_n">Tarjeta del planificador para iniciar sesión</string>
     <string name="la_actividad_es">La actividad es:</string>
-    <string name="crear_cuaderno">CREAR CUADERNO</string>
-    <string name="aniadir_cuaderno">AÑADIR CUADERNO</string>
+    <string name="crear_cuaderno">Crear cuaderno</string>
+    <string name="aniadir_cuaderno">Añadir cuaderno</string>
     <string name="cerrar_dialogo">Cerrar dialogo</string>
     <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Elige una imagen para la actividad/objeto que calma a la persona con TEA</string>
     <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Elige un avatar para la persona que va a crear y gestionar las planificaciones</string>
@@ -398,20 +394,20 @@
     <string name="termometro">Termometro</string>
     <string name="color">Color:</string>
     <string name="planificaci_n">Planificación</string>
-    <string name="crear_pictograma">CREAR PICTOGRAMA</string>
+    <string name="crear_pictograma">Crear pictograma</string>
     <string name="editar">Editar</string>
     <string name="borrar">Borrar</string>
     <string name="no_pictogramas_categoria">No hay pictogramas para esta categoría</string>
-    <string name="comenzar">COMENZAR</string>
-    <string name="ayer">AYER</string>
-    <string name="hoy">HOY</string>
-    <string name="ma_ana">MAÑANA</string>
+    <string name="comenzar">Comenzar</string>
+    <string name="ayer">Ayer</string>
+    <string name="hoy">Hoy</string>
+    <string name="ma_ana">Mañana</string>
     <string name="titulo_requirement">Introduce un nombre para la planificación</string>
-    <string name="str_notitle">Sin titulo</string>
+    <string name="str_notitle">Sin título</string>
     <string name="guardar_pdf">Guardar PDF</string>
     <string name="guardar_planificacion">Guardar planificación</string>
     <string name="crear_nueva_planificaci_n">Crear nueva planificación</string>
-    <string name="crear_planificacion">CREAR PLANIFICACION</string>
+    <string name="crear_planificacion">Crear planificación</string>
     <string name="guardar_traducci_n_como_pdf">Guardar como pdf</string>
     <string name="titulo_para_la_traducci_n">Titulo para el documento</string>
     <string name="mensaje_eventos_pasados">No se pueden crear eventos en fechas pasadas</string>
@@ -421,15 +417,14 @@
     <string name="no_planificaciones_disponibles">No existen planificaciones disponibles</string>
     <string name="error_crear_cuenta">Error al crear la cuenta. El correo ya está en uso</string>
     <string name="nuevo_user">Nuevo user</string>
-    <string name="user" translatable="false">User</string>
+    <string name="user">Usuario planificado</string>
     <string name="configuracion_picto">Configuracion de los pictogramas:</string>
     <string name="selecciona_fecha">Selecciona la fecha del evento</string>
     <string name="actualizar">Actualizar</string>
     <string name="toast_nombre_vacio">No puedes dejar el nombre vacío</string>
     <string name="error_usuario_tea">Error al crear el usuario TEA</string>
     <string name="selecciona_tiempo_retraso">Selecciona el tiempo de retraso</string>
-    <string name="selecciona_el_evento_para_el_dia">Selecciona el evento para el dia</string>
-    <string name="minutos">MINUTOS</string>
+    <string name="selecciona_el_evento_para_el_dia">Selecciona el evento para el día</string>
     <string name="sin_evento">Ninguno</string>
     <string name="text">Texto</string>
     <string name="min">Minutos</string>
@@ -452,5 +447,32 @@
     <string name="todas">Todas</string>
     <string name="aniadir_actividad">Añadir actividad</string>
     <string name="categoria_actividades">Categorías para las actividades</string>
+    <string name="bienvenid_a_plantea">Bienvenido/a a PlanTEA</string>
+    <string name="subtitulo_bienvenida">Antes de empezar, vamos a configurar un usuario TEA</string>
+    <string name="continuar">Continuar</string>
+    <string name="hacer_visible_5_min_antes">Hacer visible 5 min antes</string>
+    <string name="notificaciones">Notificaciones</string>
+    <string name="modo_oscuro">Modo oscuro</string>
+    <string name="arasaac2" translatable="false">ARASAAC</string>
+    <string name="pdf" translatable="false">PDF</string>
+    <string name="editar_perfil">Editar perfil</string>
+    <string name="usuarios_tea">Usuarios TEA</string>
+    <string name="toast_notificaciones_activadas">Para desactivar las notificaciones, ve a los ajustes de su dispositivo</string>
+    <string name="configuracion_users_tea">Configuración de los usuarios TEA</string>
+    <string name="orden_pictos">Orden pictogramas</string>
+    <string name="conseguido">¡Conseguido!</string>
+    <string name="calendario_mensual">Calendario mensual</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="eventos_y_planificaciones">Eventos y planificaciones</string>
+    <string name="cuenta">Cuenta</string>
+    <string name="inicio">Inicio</string>
+    <string name="horizontal" translatable="false">Horizontal</string>
+    <string name="vertical" translatable="false">Vertical</string>
+    <string name="editar_evento">Editar evento</string>
+    <string name="imagen_y_texto">Imagen y texto</string>
+    <string name="imagen">Imagen</string>
+    <string name="texto">Texto</string>
+    <string name="toast_pdf_exportado">PDF exportado en la carpeta de descargas</string>
+    <string name="categor_a">Categoría:</string>
 
 </resources>

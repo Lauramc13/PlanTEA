@@ -9,8 +9,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/newUser"
-        android:layout_width="170dp"
-        android:layout_height="150dp"
+        android:layout_width="130dp"
+        android:layout_height="115dp"
         app:cardBackgroundColor="?cardBackgroundColorPersonalized"
         app:cardCornerRadius="20dp"
         app:strokeColor="?color"
@@ -23,8 +23,8 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imagen"
             style="@style/pictogramas"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             app:shapeAppearance="@style/cornerRadius"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="15dp"
@@ -37,10 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="10dp"
-            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:textSize="@dimen/listItems"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/poppins_regular"
             android:textColor="?colorOnSurface"
-
-            android:text="Nombre"/>
+            android:text="@string/lbl_nombre"/>
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

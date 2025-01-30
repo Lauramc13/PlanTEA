@@ -14,7 +14,7 @@
         android:padding="12dp"
         android:background="@drawable/bg_close_button"
         android:contentDescription="Cerrar configuración nuevo evento"
-        app:srcCompat="@drawable/ic_baseline_close_24" />
+        app:srcCompat="@drawable/svg_close" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,12 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
             android:text="@string/lbl_nuevoEvento"
-            android:fontFamily="@font/poppins_medium"
+            android:fontFamily="@font/poppins_semibold"
             android:textAlignment="center"
             android:textColor="?colorOnSurface"
-            android:textSize="20sp" />
+            android:textSize="@dimen/title" />
 
 
         <!--   <EditText
@@ -61,9 +60,9 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/svg_calendar3"/>
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/svg_calendar"/>
 
             <TextView
                 android:id="@+id/textView11"
@@ -94,8 +93,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/svg_clock"/>
 
             <TextView
@@ -128,8 +127,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/svg_bell"/>
 
             <TextView
@@ -145,7 +144,8 @@
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switch_recordatorio"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"/>
+                android:layout_height="35dp"
+                android:theme="@style/Switches"/>
 
         </LinearLayout>
 
@@ -158,15 +158,15 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/svg_eye"/>
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/svg_eye_on"/>
 
             <TextView
                 android:id="@+id/lbl_hacer_visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hacer visible 5 min antes"
+                android:text="@string/hacer_visible_5_min_antes"
                 android:layout_marginStart="10dp"
                 android:textColor="?colorOnSurface"
                 android:fontFamily="@font/poppins_regular"
@@ -180,10 +180,9 @@
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switch_hacer_visible"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"/>
+                android:layout_height="35dp"
+                android:theme="@style/Switches"/>
         </LinearLayout>
-
-
 
         <TextView
             android:id="@+id/lbl_planificacionesDisponibles"
@@ -233,7 +232,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_guardarEvento"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="match_parent"
@@ -242,9 +241,14 @@
                 android:enabled="false"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/btn_Guardar"
-                android:textColor="#203130"
-                android:textSize="@dimen/buttonBig"
+                android:textColor="@color/darkGreen"
+                android:textSize="@dimen/button"
                 app:cornerRadius="25dp"
+                app:icon="@drawable/svg_save"
+                app:iconGravity="textStart"
+                app:iconPadding="10dp"
+                app:iconSize="20dp"
+                app:iconTint="@color/darkGreen"
                 android:layout_marginBottom="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/btn_borrarEvento" />
 
@@ -255,14 +259,14 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/lbl_eliminarEvento"
-                android:textColor="#203130"
-                android:textSize="@dimen/buttonBig"
+                android:textColor="@color/darkGreen"
+                android:textSize="@dimen/button"
                 android:visibility="gone"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 app:cornerRadius="25dp"
                 app:icon="@drawable/svg_trash"
                 app:iconGravity="textStart"
-                app:iconTint="#203130"
+                app:iconTint="@color/darkGreen"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

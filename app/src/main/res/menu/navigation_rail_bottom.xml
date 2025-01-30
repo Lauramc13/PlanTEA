@@ -4,29 +4,28 @@
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_plan"
-        android:title="Eventos"/>
+        android:title="@string/eventos_y_planificaciones"/>
     <item
         android:id="@+id/calendario"
         android:enabled="true"
         android:checkable="true"
-        android:icon="@drawable/svg_semana"
-        android:title="Calendario"/>
-    <item
-        android:id="@+id/home"
-        android:enabled="true"
-        android:checkable="true"
-        android:icon="@drawable/svg_home"
-        android:title="Inicio"/>
+        android:icon="@drawable/svg_calendar"
+        android:title="@string/pantalla_calendario"/>
     <item
         android:id="@+id/actividades"
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_actividadesdado"
-        android:title="Actividades"/>
+        android:title="@string/actividades"/>
     <item
         android:id="@+id/traductor"
         android:enabled="true"
         android:checkable="true"
         android:icon="@drawable/svg_translation"
-        android:title="Traductor"/>
+        android:title="@string/titulo_traductor"/>
+    <item
+        android:id="@+id/user"
+        android:enabled="true"
+        android:checkable="true"
+        android:title="@string/cuenta"/>
 </menu>

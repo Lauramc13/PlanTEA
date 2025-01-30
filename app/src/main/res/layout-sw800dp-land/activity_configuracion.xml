@@ -9,15 +9,19 @@
     tools:context=".presentacion.actividades.ConfiguracionActivity">
 
     <ImageView
-        android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rotation="180"
-        android:layout_marginEnd="-30dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/svg_blob"
-        app:tint="@color/seedLight" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob_v2" />
+
+    <ImageView
+        android:layout_width="243dp"
+        android:layout_height="204dp"
+        android:layout_marginStart="-20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/svg_blob" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
@@ -32,10 +36,12 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.9"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintBottom_toTopOf="@+id/btn_guardarConfiguracion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
         tools:context=".presentacion.actividades.ConfiguracionActivity">
 
@@ -43,25 +49,22 @@
             android:layout_width="1000dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="Contenedor con la configuración del usuario"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="15dp"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/bg_cards_configuracion"
-                android:contentDescription="Contenedor del planificador"
                 android:elevation="0dp">
 
                 <TextView
                     android:id="@+id/lbl_infoPlanificador"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="30dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/lbl_infoPlanificador"
@@ -74,7 +77,7 @@
                     android:id="@+id/textView"
                     android:layout_width="290dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="30dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/lbl_infoplaificador_texto"
                     android:textColor="?colorOutline"
@@ -90,11 +93,11 @@
                     android:contentDescription="Boton para cambiar contraseña del usuario"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/btn_CambiarPass"
-                    android:textColor="#203130"
+                    android:textColor="@color/darkGreen"
                     android:textSize="@dimen/button"
-                    android:textAllCaps="true"
+                    android:textAllCaps="false"
                     app:cornerRadius="25dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="30dp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -121,7 +124,7 @@
                         android:layout_marginTop="1dp"
                         android:layout_marginEnd="1dp"
                         android:layout_marginBottom="1dp"
-                        android:background="@drawable/ic_baseline_add_photo_alternate_128"
+                        android:background="@drawable/svg_add_image"
                         android:contentDescription="Añadir imagen del planificador"
                         app:shapeAppearance="@style/cornerRadius" />
 
@@ -153,82 +156,63 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txt_nombrePlanificador"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="340dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="Campo de texto con nombre del planificador"
                         android:ems="10"
-                        android:fontFamily="@font/poppins_medium"
                         android:hint="@string/lbl_datosNombre"
                         android:inputType="textPersonName"
                         android:maxLength="14"
                         android:layout_marginBottom="5dp"
-                        android:textColor="?colorOnSurface"
                         android:textCursorDrawable="@null"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador">
+                        style="@style/cornertextInput">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:cursorVisible="true"
-                            android:inputType="text"
-                            android:textColor="?colorOnSurface" />
+                            style="@style/textInput"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txt_nombreUsuarioPlanificador"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="340dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="Campo de texto con nombre de usuario del planificador"
                         android:ems="10"
-                        android:fontFamily="@font/poppins_medium"
                         android:hint="@string/lbl_nombreUsuario"
                         android:inputType="textPersonName"
                         android:maxLength="14"
+                        style="@style/cornertextInput"
                         android:textColor="?colorOnSurface"
                         android:textCursorDrawable="@null"
-                        android:layout_marginBottom="5dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
-                        app:layout_constraintVertical_bias="0.214">
+                        android:layout_marginBottom="5dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:cursorVisible="true"
-                            android:inputType="text"
-                            android:textColor="?colorOnSurface" />
+                            style="@style/textInput" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txt_correoPlanificador"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        style="@style/cornertextInput"
                         android:layout_width="340dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="Campo de texto con correo del planificador"
                         android:ems="10"
-                        android:fontFamily="@font/poppins_medium"
                         android:hint="@string/lbl_email"
                         android:inputType="textPersonName"
                         android:maxLength="14"
                         android:enabled="false"
-                        android:textColor="?colorOnSurface"
-                        android:textCursorDrawable="@null"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/id_card_Planificador"
-                        app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador"
-                        app:layout_constraintVertical_bias="0.214">
+                        android:textCursorDrawable="@null">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:cursorVisible="true"
-                            android:inputType="text"
-                            android:textColor="?colorOnSurface"
+                            style="@style/textInput"
                             android:alpha="0.6"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -266,7 +250,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="1dp"
-                        android:background="@drawable/svg_add_photo"
+                        android:background="@drawable/svg_add_image"
                         android:contentDescription="Añadir imagen del planificado"
                         app:shapeAppearance="@style/cornerRadius" />
 
@@ -400,7 +384,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="1dp"
-                        android:background="@drawable/svg_add_photo"
+                        android:background="@drawable/svg_add_image"
                         android:contentDescription="Añadir imagen de la actividad tranquilizadora"
                         app:shapeAppearance="@style/cornerRadius" />
 
@@ -449,9 +433,248 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_viewUsers"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginBottom="15dp"
+                android:nestedScrollingEnabled="false"
                 android:elevation="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="Titulo, información del planificador"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/item_perfil"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/titleSmall" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_cards_configuracion"
+                android:paddingBottom="15dp"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:paddingTop="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/svg_bell" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/notificaciones"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_notificaciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:theme="@style/Switches" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/svg_moon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/modo_oscuro"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_oscuro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:theme="@style/Switches" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/svg_logout" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/lbl_cerrarSesionBotton"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCerrarSesion"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        app:strokeWidth="0dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="Titulo, información del planificador"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/app_name"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/titleSmall" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_cards_configuracion"
+                android:paddingBottom="15dp"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:paddingTop="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/svg_info"
+                        app:tint="?colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/pantalla_acercade"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_credits"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        app:strokeWidth="0dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/svg_policy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/pantalla_politica"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPolitica"
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        app:strokeWidth="0dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
            <!-- <LinearLayout
                 android:layout_width="match_parent"
@@ -520,34 +743,24 @@
 
             </LinearLayout> -->
 
-            <Button
-                android:id="@+id/btn_guardarConfiguracion"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="200dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:contentDescription="Boton guardar configuración"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/btn_Guardar"
-                android:textColor="#203130"
-                app:cornerRadius="25dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/btn_credits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15.5sp"
-                android:padding="10dp"
-                android:text="@string/pantalla_acercade"
-                android:layout_gravity="center_horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_guardarConfiguracion"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:contentDescription="Boton guardar configuración"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/btn_Guardar"
+        android:textColor="@color/darkGreen"
+        app:cornerRadius="25dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

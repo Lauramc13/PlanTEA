@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="600dp"
-    android:layout_height="450dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="30dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -17,8 +18,9 @@
 
         <ImageView
             android:id="@+id/imagen"
-            android:layout_width="400dp"
-            android:layout_height="250dp"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="30dp"
             android:src="@drawable/welcome" />
 
         <TextView
@@ -27,48 +29,49 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Bienvenid@ a PlanTEA"
+            android:text="@string/bienvenid_a_plantea"
             android:textColor="?colorOnSurface"
-            android:textSize="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/title"
+            android:layout_marginTop="30dp" />
 
         <TextView
             android:id="@+id/subtitulo"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:autoSizeTextType="uniform"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            android:lines="2"
-            android:text="Antes de empezar, vamos a configurar un usuario TEA"
+            android:text="@string/subtitulo_bienvenida"
             android:textColor="?colorOnSurface"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lbl_actividad" />
+            android:textSize="@dimen/subtitle" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/icono_contiuar"
+            android:id="@+id/btn_continuar"
             style="@style/Widget.Material3.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_semibold"
-            android:paddingStart="50dp"
-            android:paddingEnd="50dp"
-            android:src="@drawable/svg_chevron_right"
-            android:text="CONTINUAR"
+            app:icon="@drawable/svg_chevron_right"
+            app:iconGravity="textEnd"
+            app:iconTint="#181F25"
+            android:text="@string/continuar"
             android:textColor="#181F25"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="@dimen/buttonBig"
+            app:tint="?colorOnSurface" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_saltar"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/lbl_saltar"
+            android:textColor="?colorOnSurface"
+            android:textSize="@dimen/button"
             app:tint="?colorOnSurface" />
 
     </LinearLayout>

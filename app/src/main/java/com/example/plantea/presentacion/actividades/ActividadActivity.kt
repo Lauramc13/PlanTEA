@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -89,7 +90,8 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
         }
 
         recyclerActividades = findViewById(R.id.recycler_actividades)
-        recyclerActividades.layoutManager = GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false)
+        val numberActivities = if (CommonUtils.isMobile(this)) 2 else 3
+        recyclerActividades.layoutManager = GridLayoutManager(this, numberActivities, GridLayoutManager.VERTICAL, false)
         viewModel.adapter = AdaptadorActividadesPantalla(viewModel.listaActividades, this)
         recyclerActividades.adapter = viewModel.adapter
 
@@ -345,6 +347,7 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
 
             id = categoria.id!!.toInt()
             text = categoria.name!!.uppercase()
+            textSize = if (CommonUtils.isMobile(this@ActividadActivity)) 12f else 14f
             isAllCaps = true
             typeface = resources.getFont(R.font.poppins_medium)
             setOnClickListener {

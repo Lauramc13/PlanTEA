@@ -15,7 +15,6 @@
         android:id="@+id/item_editar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/svg_edit"
         android:drawablePadding="8dp"
         android:text="@string/editar"
         android:height="44dp"
@@ -25,6 +24,7 @@
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         android:textColor="?colorOnSurface"
+        app:drawableStartCompat="@drawable/svg_edit_outline"
         app:drawableTint="?colorPrimary" />
 
     <!-- Divider-->
@@ -38,7 +38,6 @@
         android:id="@+id/item_borrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/svg_trash"
         android:drawablePadding="8dp"
         android:text="@string/borrar"
         android:textSize="16sp"
@@ -49,5 +48,6 @@
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
+        app:drawableStartCompat="@drawable/svg_trash"
         app:drawableTint="?colorPrimary" />
 </LinearLayout>

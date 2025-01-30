@@ -48,25 +48,19 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Titulo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="@drawable/fondo_texto_login"
-            android:contentDescription="Campo de texto nombre de usuario"
-            android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_tulo"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            android:inputType="text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/textInput"
                 android:inputType="text"
-                android:textSize="16sp"
-                android:layout_marginEnd="1dp"
-                android:textColor="?colorOnSurface" />
+                android:layout_marginEnd="1dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.SwitchCompat
@@ -94,9 +88,8 @@
             android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/crear_cuaderno"
-            app:cornerRadius="10dp"
-            android:textColor="#203130"
-            android:textSize="14sp" />
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button" />
 
     </LinearLayout>
 

@@ -2,16 +2,14 @@
 
 package com.example.plantea.presentacion.actividades
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
@@ -19,7 +17,6 @@ import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Spinner
@@ -55,17 +52,13 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedListener {
     private lateinit var imagePlanificador: ImageView
-    //private lateinit var imageUsuarioTEA: ImageView
     private lateinit var nombrePlanificador: TextView
-    //private lateinit var nombreUsuarioTEA: TextView
-  //  private lateinit var cardUsuarioTEA: CardView
     private lateinit var cardUsuarioPlanificador: CardView
-    private lateinit var iconoCerrar: ImageView
     private lateinit var spinner : Spinner
     private lateinit var imageSpinner : ImageView
 
     private var navigationHandler = NavegacionUtils()
-    private lateinit var dialogLogout : Dialog
+    private var dialogLogout : Dialog? = null
     private lateinit var prefs: SharedPreferences
 
     var image :ShapeableImageView? = null
@@ -89,10 +82,10 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
     override fun onResume() {
         super.onResume()
         configurarDatos()
+        dialogFirstTime()
     }
 
     private fun configurarDatos(){
-        dialogLogout = Dialog(this)
         val usuario = Usuario()
         usersTEA = usuario.obtenerUsuariosTEA(prefs.getString("idUsuario", ""), this)
         if(usersTEA!!.isNotEmpty()){
@@ -105,15 +98,17 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
                 flexWrap = FlexWrap.WRAP
             }
             recyclerView.layoutManager = layoutManager
-
             recyclerView.adapter = adapterUsers
         }else{
             recyclerView.visibility = View.GONE
         }
 
         nombrePlanificador.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-        imagePlanificador.setImageDrawable(null)
-        imagePlanificador.setImageBitmap(CommonUtils.byteArrayToBitmap(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray))
+        val imagenPlanificador = prefs.getString("imagenPlanificador", "")
+        if(imagenPlanificador != ""){
+            imagePlanificador.setImageDrawable(null)
+            imagePlanificador.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenPlanificador!!.toPreservedByteArray))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,21 +124,21 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             finish()
         }
 
-        dialogFirstTime()
+        if(prefs.getBoolean("darkMode", false)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
 
         imagePlanificador = findViewById(R.id.image_RolPlanificador)
-        //imageUsuarioTEA = findViewById(R.id.image_RolTEA)
         nombrePlanificador = findViewById(R.id.lbl_nombrePlanificador)
-        //nombreUsuarioTEA = findViewById(R.id.lbl_nombreUsuarioTEA)
         cardUsuarioPlanificador = findViewById(R.id.cardViewPlanificador)
-       // cardUsuarioTEA = findViewById(R.id.cardViewUsuarioTEA)
         spinner = findViewById(R.id.spinner_idiomas)
         imageSpinner = findViewById(R.id.image_idioma)
         recyclerView = findViewById(R.id.recyclerView)
 
         val preferencias: MaterialButton = findViewById(R.id.image_RolPlanificador2)
-        val buttonLogout: MaterialButton = findViewById(R.id.btn_logout)
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        val buttonLogout: MaterialButton? = findViewById(R.id.btn_logout)
 
         //Preferencias
         configurarDatos()
@@ -165,25 +160,17 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             }
         }
 
-        //Este método se ejecutará al pinchar sobre la imagen del rol niño
-        /*cardUsuarioTEA.setOnClickListener {
-            val editor = prefs.edit()
-            editor.putBoolean("PlanificadorLogged", false)
-            editor.apply()
-            val intent = Intent(applicationContext, EventosActivity::class.java)
-            startActivity(intent)
-        }*/
-
         preferencias.setOnClickListener{
-            startActivity(Intent(applicationContext, ConfiguracionActivity::class.java))
+            val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
+            startActivity(intent)
+
         }
 
-        buttonLogout.setOnClickListener{
+        buttonLogout?.setOnClickListener{
             dialogLogout()
         }
 
         configurationLanguage()
-
     }
 
     private fun configurationLanguage(){
@@ -215,10 +202,8 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
     }
 
     private fun dialogFirstTime(){
-     //   if (CommonUtils.Companion.PreferencesHelper.isFirstTime(this, "MainActivityFirstTime")) {
+       if (CommonUtils.Companion.PreferencesHelper.isFirstTime(this, "MainActivityFirstTime")) {
             CommonUtils.Companion.PreferencesHelper.setFirstTime(this, "MainActivityFirstTime", false)
-
-        if(true){
             //create dialog to show the first time
             val dialog = Dialog(this)
             dialog.setContentView(R.layout.dialogo_bienvenida)
@@ -239,7 +224,12 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             val bienvenidaOUT = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
             configurateAnimation(userConfigurationIN, bienvenidaOUT, this)
 
-            val btnContinuar = frame.findViewById<MaterialButton>(R.id.icono_contiuar)
+            val btnSaltar = frame.findViewById<MaterialButton>(R.id.btn_saltar)
+            btnSaltar.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            val btnContinuar = frame.findViewById<MaterialButton>(R.id.btn_continuar)
             btnContinuar.setOnClickListener {
                 viewUserConfiguration.startAnimation(userConfigurationIN)
                 viewBienvenida.startAnimation(bienvenidaOUT)
@@ -315,11 +305,12 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
     }
 
     private fun dialogLogout(){
-        dialogLogout.setContentView(R.layout.dialogo_logout)
-        dialogLogout.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val btnLogout: Button = dialogLogout.findViewById(R.id.btn_logout)
-        iconoCerrar = dialogLogout.findViewById(R.id.icono_CerrarDialogo)
-        btnLogout.setOnClickListener {
+        dialogLogout = Dialog(this)
+        dialogLogout?.setContentView(R.layout.dialogo_logout)
+        dialogLogout?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnLogout = dialogLogout?.findViewById<MaterialButton>(R.id.btn_logout)
+        val iconoCerrar = dialogLogout?.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        btnLogout?.setOnClickListener {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
             val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
             googleSignInClient.signOut()
@@ -338,14 +329,14 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             finishAffinity()
         }
 
-        iconoCerrar.setOnClickListener { dialogLogout.dismiss() }
-        dialogLogout.show()
+        iconoCerrar?.setOnClickListener { dialogLogout?.dismiss() }
+        dialogLogout?.show()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (dialogLogout.isShowing) {
-            dialogLogout.dismiss()
+        if (dialogLogout?.isShowing == true) {
+            dialogLogout?.dismiss()
         }
     }
 

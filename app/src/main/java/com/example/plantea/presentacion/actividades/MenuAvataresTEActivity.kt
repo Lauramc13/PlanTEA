@@ -17,6 +17,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
+import com.google.android.material.button.MaterialButton
 
 class MenuAvataresTEActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
@@ -42,7 +43,7 @@ class MenuAvataresTEActivity : AppCompatActivity() {
         isConfiguration = extras?.getBoolean("editPreferences") ?: false
         isFromMain = extras?.getBoolean("isFromMain") ?: false
 
-        val btnSaltar : Button = findViewById(R.id.btn_saltar)
+        val btnSaltar : MaterialButton = findViewById(R.id.btn_saltar)
         if(isConfiguration || isFromMain){
             btnSaltar.text = getString(R.string.str_cancelar)
         }else{

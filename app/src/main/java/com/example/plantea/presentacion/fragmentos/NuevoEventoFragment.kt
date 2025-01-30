@@ -28,6 +28,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,8 +41,8 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanesEventos
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
-import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
@@ -56,7 +57,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     lateinit var actividad: Activity
     lateinit var vista: View
     private lateinit var btnHora: TextView
-    private lateinit var btnGuardar: Button
+    private lateinit var btnGuardar: MaterialButton
     private lateinit var btnBorrar: Button
 //    private lateinit var btnPlanificar: Button
     private lateinit var fechaEvento: TextView
@@ -214,7 +215,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         val reminder = arguments?.getString("arg_reminder")
         val change_visibility = arguments?.getBoolean("arg_change_visibility")
         val label = vista.findViewById<TextView>(R.id.lbl_nuevoEvento)
-        label.text = ""
+
 
         //set the date and hour if the fragment is called to be edited
         if (idPlanEdit != null && dateEdit != null && hourEdit != null) {
@@ -229,16 +230,19 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }
             viewModel.eventoIdEdited = idEventoEdit!!
             btnGuardar.isEnabled = true
-            btnGuardar.text = getString(R.string.editar).uppercase()
+            btnGuardar.text = getString(R.string.editar)
+            btnGuardar.icon = ContextCompat.getDrawable(actividad, R.drawable.svg_edit_outline)
             btnBorrar.visibility = View.VISIBLE
             viewModel.isPlanSeleccionado = true
             viewModel.planSeleccionado = idPlanEdit
             adaptador.setItemSelected(viewModel.posicionPlan)
+            label.text = getString(R.string.editar_evento)
 
         }else{
             viewModel.eventoIdEdited = 0
             viewModel.isEditing = false
             btnGuardar.text = getString(R.string.btn_Guardar)
+            btnGuardar.icon = ContextCompat.getDrawable(actividad, R.drawable.svg_save)
             viewModel.isPlanSeleccionado = false
             adaptador.setItemSelected(-1)
             btnGuardar.isEnabled = false

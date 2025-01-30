@@ -203,6 +203,7 @@ class NavegacionUtils {
 
     private fun onNavigationItemSelected(itemId: Int, fragment: Fragment, currentActivity: Class<*>, isPlanificador: Boolean): Boolean {
         var targetActivityClass = when (itemId) {
+            R.id.user -> ConfiguracionActivity::class.java
             R.id.home -> MainActivity::class.java
             R.id.actividades -> ActividadActivity::class.java
             R.id.traductor -> TraductorActivity::class.java
@@ -226,8 +227,10 @@ class NavegacionUtils {
             }
 
             val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+
             if (fragment.requireContext().resources.configuration.orientation == 1) {
-                popupWindow.showAtLocation(fragment.requireView(),  Gravity.START or Gravity.BOTTOM , 0, 160)
+                val dimen = fragment.requireContext().resources.getDimensionPixelSize(R.dimen.popup_y)
+                popupWindow.showAtLocation(fragment.requireView(),  Gravity.START or Gravity.BOTTOM , 30, dpToPx(dimen, fragment.requireContext()))
             } else {
                 popupWindow.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
             }
@@ -249,12 +252,12 @@ class NavegacionUtils {
                 fragment.requireContext().startActivity(intent)
             }
 
-
             val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
             if (fragment.requireContext().resources.configuration.orientation == 1) {
                 //width of the screen
                 val width = fragment.requireContext().resources.displayMetrics.widthPixels/5
-                popupWindow.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width-30, 160)
+                val dimen = fragment.requireContext().resources.getDimensionPixelSize(R.dimen.popup_y)
+                popupWindow.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width-30, dpToPx(dimen, fragment.requireContext()))
             } else {
                 popupWindow.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
             }
@@ -270,6 +273,11 @@ class NavegacionUtils {
         fragment.requireContext().startActivity(intent)
 
         return true
+    }
+
+    private fun dpToPx(dp: Int, context: Context): Int {
+        val resources = context.resources
+        return (dp * resources.displayMetrics.density).toInt()
     }
 
     fun restoreNavigationItemClicked(id: Int){
@@ -310,7 +318,6 @@ class NavegacionUtils {
         val contextFragment = fragment.requireContext()
         buttonMenu = view.findViewById(R.id.item_menu)
         buttonAccount = view.findViewById(R.id.accountButton)
-
         navigationView = view.findViewById(R.id.navigationView)
         fragmentSide = view.findViewById(R.id.fragment_navigation_side)
         navigationView.setNavigationItemSelectedListener {item ->
@@ -373,12 +380,30 @@ class NavegacionUtils {
         val customView = inflater.inflate(R.layout.popup_menu_usuario, null)
         val popupWindow = PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         //si la pantalla esta en horizontal
-        if(fragment.requireContext().resources.configuration.orientation == 1){
-            popupWindow.showAtLocation(anchorView, Gravity.END  or Gravity.TOP, 20, 100)
-        }else{
-            popupWindow.showAtLocation(anchorView, Gravity.START  or Gravity.BOTTOM, 100, 120)
+        //case if its mobile, if its tablet and in portrait mode or if its tablet and in landscape mode
 
+        val isPortrait = fragment.requireContext().resources.configuration.orientation == 1
+        val isMobile = CommonUtils.isMobile(fragment.requireContext())
+
+        when {
+            isMobile -> {
+                //width of the screen
+
+                popupWindow.showAtLocation(anchorView, Gravity.END  or Gravity.BOTTOM, 30, 250)
+            }
+            isPortrait && !isMobile -> {
+                popupWindow.showAtLocation(anchorView, Gravity.END  or Gravity.TOP, 20, 100)
+            }
+            else -> {
+                popupWindow.showAtLocation(anchorView, Gravity.START  or Gravity.BOTTOM, 100, 120)
+            }
         }
+//        if(fragment.requireContext().resources.configuration.orientation == 1 && !CommonUtils.isMobile(fragment.requireContext())){
+//            popupWindow.showAtLocation(anchorView, Gravity.END  or Gravity.TOP, 20, 100)
+//        }else{
+//            popupWindow.showAtLocation(anchorView, Gravity.START  or Gravity.BOTTOM, 100, 120)
+//
+//        }
 
         //Si estamos en el usuarioTEA
         if(!infoUsuario) {
@@ -442,7 +467,11 @@ class NavegacionUtils {
     fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int, isPlanificador: Boolean){
         navigationViewBottom = view.findViewById(R.id.bottom_navigation)
         navigationViewBottom.setOnItemSelectedListener { item ->
-            onNavigationItemSelected(item.itemId, fragment, currentActivity, isPlanificador)
+            if(item.itemId == R.id.user){
+                menuUsuario(fragment, view)
+            }else{
+                onNavigationItemSelected(item.itemId, fragment, currentActivity, isPlanificador)
+            }
             true
         }
 

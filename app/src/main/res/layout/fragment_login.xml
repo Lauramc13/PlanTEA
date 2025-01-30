@@ -5,6 +5,12 @@
     android:background="@drawable/bg_bottom_sheet"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="0dp"
@@ -19,60 +25,46 @@
         app:layout_constraintWidth_max="350dp"
         app:layout_constraintWidth_percent="0.8">
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto nombre de usuario"
             android:ems="10"
-            android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_email"
-            android:inputType="text"
-            android:textColor="?colorOnSurface"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            android:inputType="text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
+                style="@style/textInput"
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_Password"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/cornertextInput"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_texto_login"
             android:contentDescription="Campo de texto contraseña"
             android:ems="10"
-            android:fontFamily="@font/poppins_regular"
             android:hint="@string/lbl_contrasena"
             android:inputType="textPassword"
-            android:textColor="?colorOnSurface"
             app:endIconMode="password_toggle"
-            app:layout_constraintStart_toStartOf="@+id/txt_UserName"
-            app:layout_constraintTop_toBottomOf="@+id/txt_UserName"
-            app:shapeAppearance="@style/cornerRadiusLogin">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPassword"
-                android:textColor="?colorOnSurface"
-                android:textSize="16sp" />
+                style="@style/textInput" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
-            style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginTop="10dp"
@@ -82,22 +74,8 @@
             android:fontFamily="@font/poppins_semibold"
             android:maxWidth="10dp"
             android:text="@string/lbl_iniciarSesion"
-            android:textColor="#203130"
-            android:textSize="@dimen/button"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_registrar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_Password" />
-
-        <!--<TextView
-            android:id="@+id/btn_olvidar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:gravity="center"
-            android:textSize="@dimen/body"
-            android:text="@string/lbl_contraseniaOlvidada"
-            android:textColor="?colorOnSurface" />-->
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -105,22 +83,21 @@
             android:layout_margin="10dp"
             android:src="@drawable/svg_separador" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/Signin"
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?configuracionCardBg"
+            android:layout_height="58dp"
             android:contentDescription="Boton iniciar sesion"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/sesion_google"
             android:textColor="?colorOnSurface"
             android:textSize="@dimen/button"
-            app:cornerRadius="10dp"
             app:icon="@drawable/svg_google_icon"
-            app:iconSize="28dp"
-            app:iconTint="@null"
-            app:strokeWidth="1dp" />
+            app:iconGravity="textStart"
+            app:iconPadding="15dp"
+            app:iconSize="25dp"
+            app:iconTint="@null" />
 
         <TextView
             android:id="@+id/btn_registrar"
@@ -133,9 +110,7 @@
             android:gravity="center"
             android:text="@string/lbl_noCuenta"
             android:textColor="?colorOnSurface"
-            android:textSize="@dimen/body"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="@dimen/body" />
 
       <!--  <TextView
             android:id="@+id/btn_registrar"

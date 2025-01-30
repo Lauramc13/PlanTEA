@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:text="¡Conseguido!"
+        android:text="@string/conseguido"
         android:fontFamily="@font/poppins_bold"
         android:textColor="@color/white"
-        android:textSize="50dp"
+        android:textSize="50sp"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/card_presentacion"
@@ -159,13 +159,13 @@
                 android:id="@+id/icono_CerrarDialogoEvento"
                 android:layout_width="48dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_margin="15dp"
                 android:background="@drawable/bg_close_button"
                 android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_close_24" />
+                app:srcCompat="@drawable/svg_close" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_pictograma"
@@ -224,7 +224,7 @@
             app:icon="@drawable/svg_chevron_left"
             android:layout_marginEnd="10dp"
             app:iconSize="30dp"
-            app:iconTint="#203130"/>
+            app:iconTint="@color/darkGreen"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_siguiente"
@@ -234,7 +234,7 @@
             app:icon="@drawable/svg_chevron_right"
             android:layout_marginStart="10dp"
             app:iconSize="30dp"
-            app:iconTint="#203130"/>
+            app:iconTint="@color/darkGreen"/>
 
     </LinearLayout>
 
