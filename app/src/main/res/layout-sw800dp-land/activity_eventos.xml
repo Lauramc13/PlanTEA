@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/blob_v2"
-        app:tint="?subColorBackground" />
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/question"
@@ -378,7 +378,6 @@
             android:layout_height="wrap_content"
             app:icon="@drawable/svg_chevron_left"
             app:iconSize="35dp" />
-
 
         <TextView
             android:id="@+id/title"

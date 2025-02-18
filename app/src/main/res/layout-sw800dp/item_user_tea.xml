@@ -148,7 +148,7 @@
         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
         android:layout_width="44dp"
         android:layout_height="37dp"
-        android:layout_margin="20dp"
+        android:layout_margin="30dp"
         android:background="@drawable/bg_close_button"
         app:icon="@drawable/svg_trash"
         android:padding="8dp"

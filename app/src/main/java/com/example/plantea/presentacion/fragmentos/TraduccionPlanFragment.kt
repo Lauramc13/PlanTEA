@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -36,7 +35,7 @@ class TraduccionPlanFragment: Fragment() {
         val layoutManagerLinear = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManagerLinear
 
-        viewModel._listaPictogramasTraduccion.observe(viewLifecycleOwner) { listaPictogramas ->
+        viewModel.mdListaPictogramasTraduccion.observe(viewLifecycleOwner) { listaPictogramas ->
             viewModel.adaptador = AdaptadorPictogramasTraductor(listaPictogramas, viewModel)
             recyclerView.adapter = viewModel.adaptador
             viewModel.adaptador.notifyDataSetChanged()
@@ -54,7 +53,7 @@ class TraduccionPlanFragment: Fragment() {
 
         val cerrar = vista.findViewById<ImageView>(R.id.image_CerrarContenedor)
         cerrar.setOnClickListener {
-            viewModelPlan._closeFragment.value = true
+            viewModelPlan.seCloseFragment.value = true
 
         }
 

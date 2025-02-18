@@ -24,10 +24,11 @@
             android:layout_marginEnd="150dp"
             android:background="@null"
             android:enabled="false"
+            android:backgroundTint="?colorOnSurface"
             android:fontFamily="@font/poppins_medium"
             android:text="lorem ipsum"
             android:textColor="?colorOnSurface"
-            android:textSize="15sp" />
+            android:textSize="@dimen/body" />
 
 
         <com.google.android.material.button.MaterialButton

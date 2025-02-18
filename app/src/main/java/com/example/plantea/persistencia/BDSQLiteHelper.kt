@@ -38,9 +38,9 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlRelacionEventoPlan = "CREATE TABLE RelacionEventoPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_evento INTEGER, id_plan INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     private var sqlTraduccion = "CREATE TABLE Traduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, translation TEXT)"
     private var sqlRelacionPictoTraduccion  = "CREATE TABLE RelacionPictoTraduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, id_pictograma INTEGER, id_categoria INTEGER, id_traduccion INTEGER, FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id), FOREIGN KEY (id_categoria) REFERENCES Categoria(id), FOREIGN KEY (id_traduccion) REFERENCES Traduccion(id))"
-    private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, configurationWeek INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlSemana  = "CREATE TABLE Semana (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, configurationWeek INTEGER, colors TEXT, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlDiaSemana = "CREATE TABLE DiaSemana (id INTEGER PRIMARY KEY AUTOINCREMENT, semana_id INTEGER, pictograma_day BLOB, day_week TEXT, color TEXT, id_evento TEXT, FOREIGN KEY (semana_id) REFERENCES Semana(id))"
-    private var sqlPictogramaEvento = "CREATE TABLE PictogramaEvento (id INTEGER PRIMARY KEY AUTOINCREMENT, duracion TEXT, historia TEXT, id_picto_entre INTEGER, id_evento INTEGER, id_pictograma INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id))"
+    private var sqlPictogramaEvento = "CREATE TABLE PictogramaEvento (id INTEGER PRIMARY KEY AUTOINCREMENT, posicion INTEGER, titulo_alt TEXT, imagen_alt BLOB, duracion TEXT, historia TEXT, id_picto_entre INTEGER, id_evento INTEGER, id_pictograma INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_pictograma) REFERENCES RelacionPictogramaPlan(id_pictograma))"
     private var sqlDiaMes = "CREATE TABLE DiaMes (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, fecha TEXT, titulo TEXT, color TEXT, imagen TEXT, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -117,6 +117,11 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         }
     }
 
+    /**
+     * Método que inserta los datos iniciales en la base de datos
+     * @param db Base de datos
+     * @return void
+     */
     private fun meterDatos(db: SQLiteDatabase) {
         insertCategoria(db, "LUGARES", R.drawable.categoria_lugares, "default", "en", "LOCATIONS") // 1
         insertCategoria(db, "DESPLAZAMIENTO", R.drawable.categoria_desplazamiento, "default", "en", "DISPLACEMENT") // 2
@@ -193,11 +198,18 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         insertPictogramaCategoria(db, "LEER", R.drawable.categoria_entretenimiento_leer, 4, "en", "READ")
     }
 
-    private fun insertCategoria(db: SQLiteDatabase, titulo: String, imagen: Int?, color: String?, language: String, translation: String) {
-        // Convert drawable to byte array
-        val imageBlob = CommonUtils.drawableToByteArray(ContextCompat.getDrawable(context!!, imagen!!)!!)
 
-        // Insert into Categoria table
+    /**
+     * Método que inserta los datos de las categorias predeterminadas en la base de datos
+     * @param db Base de datos
+     * @param titulo Titulo de la categoria
+     * @param imagen Imagen de la categoria
+     * @param color Color de la categoria
+     * @param language Idioma de la categoria
+     * @param translation Traduccion del titulo de la categoria
+     */
+    private fun insertCategoria(db: SQLiteDatabase, titulo: String, imagen: Int?, color: String?, language: String, translation: String) {
+        val imageBlob = CommonUtils.drawableToByteArray(ContextCompat.getDrawable(context!!, imagen!!)!!)
         val categoriaValues = ContentValues().apply {
             put("titulo", titulo)
             put("imagen", imageBlob)
@@ -232,25 +244,15 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
         db.insert("RelacionPictoTraduccion", null, relacionValues)
     }
 
-    private fun insertPictogramaCategoriaOLD(db: SQLiteDatabase, nombre: String, imagen: Int, idCategoria: Int, language: String, translation: String) {
-        // Convert drawable to byte array
-        val imagenBlob = CommonUtils.drawableToByteArray(ContextCompat.getDrawable(context!!, imagen)!!)
-
-        // Convert drawable to byte array
-
-        db.execSQL("INSERT INTO Pictograma (nombre, id_categoria) VALUES('$nombre', $idCategoria)")
-        val cursor = db.rawQuery("SELECT last_insert_rowid()", null)
-        var idPictograma: Long = -1 // Initialize id with a default value
-        if (cursor != null && cursor.moveToFirst()) {
-            idPictograma = cursor.getLong(0) // Get the value of the first column (which should be the id)
-            cursor.close() // Close the cursor when done
-        }
-
-        db.execSQL("INSERT INTO PictogramaLocal (id, imagen) VALUES('$idPictograma', '$imagenBlob')")
-        db.execSQL("INSERT INTO Traduccion (language, translation) VALUES('$language', '$translation')")
-        db.execSQL("INSERT INTO RelacionPictoTraduccion (id_pictograma, id_traduccion) VALUES('$idPictograma', (SELECT last_insert_rowid()))")
-    }
-
+    /**
+     * Método que inserta los datos de los pictogramas predeterminados en la base de datos
+     * @param db Base de datos
+     * @param nombre Nombre del pictograma
+     * @param imagen Imagen del pictograma
+     * @param idCategoria Id de la categoria
+     * @param language Idioma del pictograma
+     * @param translation Traduccion del nombre del pictograma
+     */
     private fun insertPictogramaCategoria(db: SQLiteDatabase, nombre: String, imagen: Int, idCategoria: Int, language: String, translation: String) {
         // Convert drawable to byte array
         val imagenBlob = CommonUtils.drawableToByteArray(ContextCompat.getDrawable(context!!, imagen)!!)

@@ -11,6 +11,10 @@ import androidx.core.app.NotificationCompat
 import com.example.plantea.R
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 
+
+/***
+ * Clase que se encarga de recibir las alarmas programadas y mostrar una notificación
+ */
 class OnAlarmReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if(intent.extras!!.getBoolean("CambiarVisibilidad")){

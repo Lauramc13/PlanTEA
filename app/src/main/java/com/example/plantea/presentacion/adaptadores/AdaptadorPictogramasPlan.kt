@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : R
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         context = holder.itemView.context
 
-        holder.titulo.text = listaPictos!![position].titulo
+        holder.titulo.setText(listaPictos!![position].titulo)
         holder.imagen.setImageBitmap(listaPictos!![position].imagen)
 
         if(listaPictos!![position].duracion.toString() != "null"){
@@ -81,7 +82,7 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : R
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var titulo: TextView
+        var titulo: EditText
         var imagen: ImageView
         var card: View
         var historia: ImageView
@@ -89,7 +90,7 @@ class AdaptadorPictogramasPlan(var listaPictogramas: ArrayList<Pictograma>?) : R
         var duracion : TextView
 
         init {
-            titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
+            titulo = itemView.findViewById<View>(R.id.id_Texto) as EditText
             imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
             card = itemView.findViewById(R.id.id_card)!!
             historia = itemView.findViewById(R.id.btn_historiaPicto)

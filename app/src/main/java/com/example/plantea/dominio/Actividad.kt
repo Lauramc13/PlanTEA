@@ -49,6 +49,4 @@ class Actividad {
     fun getAllActividades(idUsuario: String?, actividad: Activity?): ArrayList<Actividad>? {
         return gestorActividad.getAllActividades(idUsuario, actividad)
     }
-
-
 }

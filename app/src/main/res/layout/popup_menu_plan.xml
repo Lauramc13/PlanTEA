@@ -5,31 +5,31 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="5dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:background="@drawable/bg_popup">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_eventos"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="5dp"
         android:clickable="true"
-        app:strokeWidth="0dp"
         android:backgroundTint="?colorBG1"
+        app:strokeWidth="0dp"
         android:focusable="true"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:src="@drawable/svg_eventos"
-            app:tint="?colorPrimary" />
+            app:tint="?colorOnSurfaceVariant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,25 +41,23 @@
             android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
             android:gravity="center"
-            android:fontFamily="@font/roboto_medium"
-            />
+            android:fontFamily="@font/roboto_medium" />
     </com.google.android.material.card.MaterialCardView>
 
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="140dp"
-        android:layout_height="1dp"
-        android:padding="5dp"
-        android:layout_gravity="center"
-        android:background="?color" />
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        app:dividerColor="?color"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_planificaciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
         android:clickable="true"
         android:backgroundTint="?colorBG1"
         app:strokeWidth="0dp"
@@ -67,12 +65,13 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:src="@drawable/svg_plan2"
-            app:tint="?colorPrimary" />
+            app:tint="?colorOnSurfaceVariant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -84,8 +83,7 @@
             android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
             android:gravity="center"
-            android:fontFamily="@font/roboto_medium"
-            />
+            android:fontFamily="@font/roboto_medium" />
     </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

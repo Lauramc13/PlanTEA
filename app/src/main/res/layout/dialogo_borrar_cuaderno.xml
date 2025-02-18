@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/widthDialog"
     android:layout_height="wrap_content"
     android:background="@drawable/fondo_dialogo_login">
 
@@ -21,8 +21,10 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
             android:maxLines="2"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
+            android:paddingTop="@dimen/paddingTopDialog"
+            android:paddingBottom="15dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/lbl_borrarCuaderno"
             android:textColor="?colorOnSurface"
             android:textSize="@dimen/modalTitle"

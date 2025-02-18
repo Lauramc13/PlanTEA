@@ -40,6 +40,7 @@
         <item name="color">@color/md_theme_light_surfaceVariant</item>
 
         <!-- CUSTOM ITEMS -->
+        <item name="whitish">@color/whitish</item>
         <item name="customBgColor">@color/lightGray</item>
         <item name="customBgTermometro">@color/darkerGray</item>
         <item name="customBgColorCuaderno">@color/white</item>
@@ -455,9 +456,9 @@
     </style>
 
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/no_anim</item>
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/no_anim</item>
-        <item name="android:activityCloseEnterAnimation">@anim/no_anim</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
         <item name="android:activityCloseExitAnimation">@anim/no_anim</item>
     </style>
 

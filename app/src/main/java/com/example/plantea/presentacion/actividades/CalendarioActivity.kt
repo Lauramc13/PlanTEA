@@ -1,11 +1,12 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isEmpty
@@ -27,9 +28,14 @@ class CalendarioActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<CalendarioViewModel>()
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs)
@@ -39,7 +45,6 @@ class CalendarioActivity : AppCompatActivity() {
         fechaActual = findViewById(R.id.lbl_mes)
         val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
         val btnAnteriorMes = findViewById<Button>(R.id.image_calendar_anterior)
-//        val buttonPlanificaciones = findViewById<Button>(R.id.button_planificaciones)
         val buttonPlanificacionesNueva = findViewById<Button>(R.id.button_planificaciones_nueva)
         atras = findViewById(R.id.atras)
 
@@ -77,23 +82,19 @@ class CalendarioActivity : AppCompatActivity() {
             finish()
         }
 
-//        buttonPlanificaciones.setOnClickListener {
-//            val intent = Intent(this, PlanificacionesActivity::class.java)
-//            startActivity(intent)
-//        }
-
         buttonPlanificacionesNueva.setOnClickListener {
             val intent = Intent(this, CrearPlanActivity::class.java)
             startActivity(intent)
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun observer(savedInstanceState: Bundle?){
-        viewModel._fechaActual.observe(this) {
+        viewModel.mdFechaActual.observe(this) {
             fechaActual.text = it
         }
 
-        viewModel._dias.observe(this) {
+        viewModel.mdDias.observe(this) {
             calendario.layoutManager = GridLayoutManager(this, 7)
 
             val listaDays = if(CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
@@ -118,7 +119,7 @@ class CalendarioActivity : AppCompatActivity() {
             }
         }
 
-        viewModel._changedEvent.observe(this) {
+        viewModel.seChangedEvent.observe(this) {
             if (it) {
                 if(viewModel.isEditing){
                     calendario.adapter?.notifyDataSetChanged()
@@ -127,7 +128,7 @@ class CalendarioActivity : AppCompatActivity() {
             }
         }
 
-        viewModel._fechaSeleccionada.observe(this) {
+        viewModel.mdFechaSeleccionada.observe(this) {
             CalendarioUtilidades.fechaSeleccionada = it
             calendario.adapter?.notifyItemChanged(viewModel.lastPositionCalendario)
             calendario.adapter?.notifyItemChanged(viewModel.posicionCalendario)
@@ -146,7 +147,7 @@ class CalendarioActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(calendario.isEmpty()){ // si calendario se minimiza
+        if(calendario.isEmpty()){
             viewModel.obtenerVistaMes()
         }
     }

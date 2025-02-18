@@ -1,36 +1,30 @@
 package com.example.plantea.presentacion.adaptadores
 
-import android.animation.ValueAnimator
 import android.content.Context
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.Evento
-import com.example.plantea.dominio.Planificacion
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.google.android.material.button.MaterialButton
-import java.time.LocalDate
 
 class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorListaEventos.ViewHolder>() {
     private var selectedPosition = RecyclerView.NO_POSITION
     private var previousSelectedPosition = RecyclerView.NO_POSITION
     private var cardOpened = -1
+    private var isEdit = false
 
     interface OnItemSelectedListener {
-        fun eventoSeleccionado(posicion: Int, recyclerView: RecyclerView, context: Context)
-        fun eventoEditado(posicion: Int, context: Context)
+        fun eventoSeleccionado(posicion: Int, recyclerView: RecyclerView, isEdit:Boolean, context: Context)
+        fun eventoEditado(posicion: Int, recyclerView: RecyclerView, context: Context)
         fun verEvento(posicion: Int, context: Context)
         fun cambiarVisibilidadEvento(posicion: Int, context: Context)
         fun exportarEvento(posicion: Int, context: Context)
@@ -44,7 +38,6 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.titulo.text = planes!![position].nombre
         holder.fecha.text = CalendarioUtilidades.formatoFechaEvento(planes!![position].fecha!!)
-
         holder.fecha.visibility = View.VISIBLE
         holder.separator.visibility = View.VISIBLE
 
@@ -58,7 +51,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         changeHeight(holder, position)
         if (selectedPosition == position) {
             holder.recyclerView.visibility = View.VISIBLE
-            listener?.eventoSeleccionado(position, holder.recyclerView, holder.itemView.context)
+            listener?.eventoSeleccionado(position, holder.recyclerView, isEdit, holder.itemView.context)
         } else {
             holder.recyclerView.visibility = View.GONE
         }
@@ -97,7 +90,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         val separator : TextView = itemView.findViewById(R.id.separator)
         var card: CardView = itemView.findViewById(R.id.card_plan)
         var edit : MaterialButton? = itemView.findViewById(R.id.icon_edit)
-        var ver : MaterialButton? = itemView.findViewById(R.id.icon_eye)
+        private var ver : MaterialButton? = itemView.findViewById(R.id.icon_eye)
         var visibility : MaterialButton? = itemView.findViewById(R.id.icon_visibility)
         var export: MaterialButton? = itemView.findViewById(R.id.icon_export)
         var options : MaterialButton? = itemView.findViewById(R.id.icon_options)
@@ -105,20 +98,7 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
 
         init {
             card.setOnClickListener{
-                if(cardOpened == bindingAdapterPosition){
-                    cardOpened = -1
-                    notifyItemChanged(selectedPosition)
-                    selectedPosition = RecyclerView.NO_POSITION
-                    previousSelectedPosition = RecyclerView.NO_POSITION
-                } else {
-                    cardOpened = bindingAdapterPosition
-                    previousSelectedPosition = selectedPosition
-                    selectedPosition = bindingAdapterPosition
-                }
-
-                changeHeight(this, previousSelectedPosition)
-                notifyItemChanged(previousSelectedPosition)
-                notifyItemChanged(bindingAdapterPosition)
+               openCloseCard(bindingAdapterPosition, this)
             }
 
             options?.setOnClickListener {
@@ -143,7 +123,13 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
                 }
 
                 edit?.setOnClickListener {
-                    listener?.eventoEditado(bindingAdapterPosition, itemView.context)
+                    listener?.eventoEditado(bindingAdapterPosition, recyclerView, itemView.context)
+                    if(cardOpened != bindingAdapterPosition){
+                        openCloseCard(bindingAdapterPosition, this)
+                    }else{
+                        (recyclerView.adapter as AdaptadorPictogramasEventos).setEditMode(true)
+                    }
+                    isEdit = true
                     popupWindow.dismiss()
                 }
 
@@ -161,10 +147,17 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
                     listener?.exportarEvento(bindingAdapterPosition, itemView.context)
                     popupWindow.dismiss()
                 }
+
             }
 
             edit?.setOnClickListener {
-                listener?.eventoEditado(bindingAdapterPosition, itemView.context)
+                if(cardOpened != bindingAdapterPosition){
+                    openCloseCard(bindingAdapterPosition, this)
+                }else{
+                    (recyclerView.adapter as AdaptadorPictogramasEventos).setEditMode(true)
+                }
+                isEdit = true
+                listener?.eventoEditado(bindingAdapterPosition, recyclerView, itemView.context)
             }
 
             ver?.setOnClickListener {
@@ -181,4 +174,20 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         }
     }
 
+    fun openCloseCard(position: Int, viewHolder: AdaptadorListaEventos.ViewHolder){
+        if(cardOpened == position){
+            cardOpened = -1
+            notifyItemChanged(selectedPosition)
+            selectedPosition = RecyclerView.NO_POSITION
+            previousSelectedPosition = RecyclerView.NO_POSITION
+        } else {
+            cardOpened = position
+            previousSelectedPosition = selectedPosition
+            selectedPosition = position
+        }
+
+        changeHeight(viewHolder, previousSelectedPosition)
+        notifyItemChanged(previousSelectedPosition)
+        notifyItemChanged(position)
+    }
 }

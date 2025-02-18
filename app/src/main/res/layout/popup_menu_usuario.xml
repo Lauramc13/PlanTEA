@@ -5,28 +5,30 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="5dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:background="@drawable/bg_popup">
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_idioma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:clickable="true"
+        app:strokeWidth="0dp"
+        android:backgroundTint="?colorBG1"
         android:focusable="true"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/languageImage"
-            android:layout_width="26dp"
+            android:layout_width="31dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="2dp"
+            android:paddingStart="7dp"
+            android:paddingEnd="5dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_es" />
 
         <TextView
@@ -36,35 +38,39 @@
             android:drawablePadding="6dp"
             android:text="Español"
             android:textSize="13sp"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
-            android:gravity="center"
-            android:fontFamily="@font/roboto_medium"
-            />
-    </LinearLayout>
+            android:fontFamily="@font/roboto_medium" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <View
-        android:layout_width="140dp"
-        android:layout_height="1dp"
-        android:padding="5dp"
-        android:layout_gravity="center"
-        android:background="?color" />
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        app:dividerColor="?color"/>
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:clickable="true"
+        app:strokeWidth="0dp"
+        android:backgroundTint="?colorBG1"
         android:focusable="true"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/svg_gear"
-            app:tint="?colorPrimary" />
+            app:tint="?colorOnSurfaceVariant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,36 +78,40 @@
             android:drawablePadding="6dp"
             android:text="@string/lbl_configuracion"
             android:textSize="13sp"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
-            android:gravity="center"
-            android:fontFamily="@font/roboto_medium"
-            />
-    </LinearLayout>
+            android:fontFamily="@font/roboto_medium" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
-        android:layout_width="140dp"
-        android:layout_height="1dp"
-        android:padding="5dp"
-        android:layout_gravity="center"
-        android:background="?color" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        app:dividerColor="?color"/>
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_cuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:clickable="true"
+        app:strokeWidth="0dp"
+        android:backgroundTint="?colorBG1"
         android:focusable="true"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/svg_switch"
-            app:tint="?colorPrimary" />
+            app:tint="?colorOnSurfaceVariant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -109,34 +119,39 @@
             android:drawablePadding="6dp"
             android:text="@string/cambiar_rol"
             android:textSize="13sp"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
-            android:gravity="center"
             android:fontFamily="@font/roboto_medium" />
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <View
-        android:layout_width="140dp"
-        android:layout_height="1dp"
-        android:padding="5dp"
-        android:layout_gravity="center"
-        android:background="?color" />
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        app:dividerColor="?color"/>
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_ayuda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:clickable="true"
+        app:strokeWidth="0dp"
+        android:backgroundTint="?colorBG1"
         android:focusable="true"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/svg_question"
-            app:tint="?colorPrimary" />
+            app:tint="?colorOnSurfaceVariant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -144,35 +159,40 @@
             android:drawablePadding="6dp"
             android:text="@string/item_ayuda"
             android:textSize="13sp"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
-            android:gravity="center"
             android:fontFamily="@font/roboto_medium" />
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider2"
-        android:layout_width="140dp"
-        android:layout_height="1dp"
-        android:padding="5dp"
-        android:layout_gravity="center"
-        android:background="?color" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        app:dividerColor="?color"/>
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/item_cerarSesion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:clickable="true"
+        app:strokeWidth="0dp"
+        android:backgroundTint="?colorBG1"
         android:focusable="true"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/svg_logout"
-            app:tint="?colorPrimary" />
+            app:tint="?colorOnSurfaceVariant" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -180,13 +200,9 @@
             android:drawablePadding="6dp"
             android:text="@string/lbl_cerrarSesionBotton"
             android:textSize="13sp"
-            android:padding="5dp"
+            android:padding="10dp"
+            android:layout_marginStart="30dp"
             android:textColor="?colorOnSurfaceVariant"
-            android:gravity="center"
-            android:fontFamily="@font/roboto_medium"
-            />
-    </LinearLayout>
-
-
-
+            android:fontFamily="@font/roboto_medium" />
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

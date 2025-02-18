@@ -12,14 +12,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -29,7 +27,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -50,8 +47,6 @@ import com.example.plantea.presentacion.fragmentos.CategoriasFragment
 import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,24 +57,12 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
 
     override val pictograma: Pictograma = Pictograma()
     override var idUsuario: String = ""
-    override var _listaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
     override lateinit var adaptadorRandomPictos: AdaptadorNuevoPicto
-    override var _listaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
-    override var _imageSelected = SingleLiveEvent<Bitmap>()
     override lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-    override var _nuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
     override var saltar = false
     override var isEditImage = false
     override var isCalendarioMensual = false
-
-
     var identificadorCategoria : Int = -1
-    var _closeFragment = SingleLiveEvent<Boolean>()
-    var _clearBusqueda = SingleLiveEvent<Boolean>()
-    val _pictogramaSeleccionado = SingleLiveEvent<Pictograma>()
-    var _onEntretenimientoClicked = SingleLiveEvent<Int>()
-    var _idPictoEntretenimiento = SingleLiveEvent<Int>()
-    val _image = MutableLiveData<Uri?>()
     var image : ImageView? = null
     lateinit var pickMediaTraductor: ActivityResultLauncher<PickVisualMediaRequest>
 
@@ -87,16 +70,26 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     lateinit var adaptador: AdaptadorNuevoPicto //Adaptador del recyclerview del dia
     lateinit var adaptadorCategoriaPictograma : AdaptadorPictogramas
 
-    //var subcategoriaOpen = false
-    var busquedaOpen = false
+    private var busquedaOpen = false
     var categoriaPicto = 0
     lateinit var tituloPicto: String
     var isEdited = false
     var categoria = Categoria()
     val planificacion = Planificacion()
-    var _createdCategoria = SingleLiveEvent<Boolean>()
-    var _deletedCategoria = SingleLiveEvent<Int>()
     var listaCategorias = ArrayList<Categoria>()
+
+    val mdImage = MutableLiveData<Uri?>()
+    var seCreatedCategoria = SingleLiveEvent<Boolean>()
+    var seDeletedCategoria = SingleLiveEvent<Int>()
+    var seCloseFragment = SingleLiveEvent<Boolean>()
+    var seClearBusqueda = SingleLiveEvent<Boolean>()
+    val sePictogramaSeleccionado = SingleLiveEvent<Pictograma>()
+    var seOnEntretenimientoClicked = SingleLiveEvent<Int>()
+    var seIdPictoEntretenimiento = SingleLiveEvent<Int>()
+    override var selistaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var seimageSelected = SingleLiveEvent<Bitmap>()
+    override var seNuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
 
     @SuppressLint("StaticFieldLeak")
     var activity: Activity = Activity()
@@ -111,9 +104,9 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     }
 
     fun pictogramaSeleccionado(posicion: Int) {
-        _listaPictogramas.value?.let { listaPlanificacion.add(it[posicion].copy()) }
+        selistaPictogramas.value?.let { listaPlanificacion.add(it[posicion].copy()) }
         isEdited = true
-        _pictogramaSeleccionado.value = _listaPictogramas.value?.get(posicion)?.copy()
+        sePictogramaSeleccionado.value = selistaPictogramas.value?.get(posicion)?.copy()
     }
 
     fun nuevoPictogramaDialogo(activity: Activity){
@@ -146,21 +139,21 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
                 transaction.commit()
             //}
         }
-        _clearBusqueda.value = true
+        seClearBusqueda.value = true
     }
 
     override fun onItemSeleccionado(categoria: Int, context: Context) {
         if(categoria == 5){
-            _listaPictogramas.value = pictograma.obtenerFavoritos(context, idUsuario, Locale.getDefault().language)
+            selistaPictogramas.value = pictograma.obtenerFavoritos(context, idUsuario, Locale.getDefault().language)
             CoroutineScope(Dispatchers.Main).launch {
-                _listaPictogramas.value!!.forEach { pictogram ->
+                selistaPictogramas.value!!.forEach { pictogram ->
                     if (pictogram.idAPI != 0) {
                         pictogram.imagen = BitmapFactory.decodeResource(context.resources, R.drawable.loading_placeholder)
                         pictogram.imagen = withContext(Dispatchers.IO) {
                             CommonUtils.getImagenAPI(pictogram.idAPI)
                         }
                     }
-                    adaptadorCategoriaPictograma.notifyItemChanged(_listaPictogramas.value!!.indexOf(pictogram))
+                    adaptadorCategoriaPictograma.notifyItemChanged(selistaPictogramas.value!!.indexOf(pictogram))
 
                 }
             }
@@ -176,7 +169,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
                         }
                     }
                 }
-                _listaPictogramas.value = listaPictogramas
+                selistaPictogramas.value = listaPictogramas
             }
 
         }
@@ -199,7 +192,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
         btnBorrar.setOnClickListener{
             this.categoria.eliminarCategoria(view.context as Activity, idUsuario, categoria)
             listaCategorias.removeAt(posicion)
-            _deletedCategoria.value = posicion
+            seDeletedCategoria.value = posicion
             dialogo.dismiss()
         }
 
@@ -258,7 +251,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     //Metodos de la interfaz de AniadirPictoUtils
     override val onItemSelectedListener = object : AdaptadorNuevoPicto.OnItemSelectedListener {
         override fun onNuevoPicto(pictogram: Pictograma?) {
-            _nuevoPicto.value = pictogram
+            seNuevoPicto.value = pictogram
         }
     }
 
@@ -283,7 +276,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
         view.removeAllViews()
         view.addView(activity.layoutInflater.inflate(R.layout.dialogo_crear_categoria_plan, null))
         val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-        imagenPicto.setImageBitmap(_nuevoPicto.value?.imagen)
+        imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
 
         imagenPicto.setOnClickListener {
             buttons.visibility = View.VISIBLE
@@ -356,7 +349,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
 
                 val newCategoria = Categoria(idCategoria, nombrePictograma.editText?.text.toString().uppercase(), (imagenPicto.drawable as BitmapDrawable).bitmap, colorSelected)
                 listaCategorias.add(listaCategorias.size - 1, newCategoria)
-                _createdCategoria.value = true
+                seCreatedCategoria.value = true
 
                 dialogo.dismiss() //Cerrar dialogo
             }
@@ -368,7 +361,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
         view.removeAllViews()
         view.addView(activity.layoutInflater.inflate(R.layout.fragment_nuevo_picto_nombre, null))
         val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-        imagenPicto.setImageBitmap(_nuevoPicto.value?.imagen)
+        imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
 
         imagenPicto.setOnClickListener {
             buttons.visibility = View.VISIBLE
@@ -407,8 +400,8 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
                 if(idCategoria in 1..4){
                     idCategoria = categoria.duplicateCategoria(activity.applicationContext, idUsuario, idCategoria)
                 }
-                val id = if(_nuevoPicto.value?.idAPI != 0){
-                    pictograma.nuevoPictogramaAPI(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), _nuevoPicto.value?.idAPI.toString(), idCategoria.toString())
+                val id = if(seNuevoPicto.value?.idAPI != 0){
+                    pictograma.nuevoPictogramaAPI(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), seNuevoPicto.value?.idAPI.toString(), idCategoria.toString())
                 }else{
                     pictograma.nuevoPictogramaLocal(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), imageBlob, idCategoria.toString(), idUsuario)
                 }
@@ -418,13 +411,13 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
                 pictograma.categoria = idCategoria
                 pictograma.id = id
                 pictograma.imagen = (imagenPicto.drawable as BitmapDrawable).bitmap
-                _listaPictogramas.value?.add(pictograma)
+                selistaPictogramas.value?.add(pictograma)
 
                 //find current fragment and update the recycler
                 val categoriasPictoFragment =
                     (activity as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.contenedor_fragments) as CategoriasPictogramasFragment
                 categoriasPictoFragment.recyclerPictogramas.adapter?.notifyItemInserted(
-                    _listaPictogramas.value!!.size - 1
+                    selistaPictogramas.value!!.size - 1
                 )
                 categoriasPictoFragment.textoVacio.visibility = View.GONE
             }

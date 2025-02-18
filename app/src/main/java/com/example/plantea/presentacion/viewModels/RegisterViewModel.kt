@@ -1,19 +1,14 @@
 package com.example.plantea.presentacion.viewModels
 
 import android.app.Activity
-import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.drawable.Drawable
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
-import com.example.plantea.dominio.Categoria
 import com.example.plantea.dominio.Usuario
 import com.example.plantea.presentacion.actividades.EncryptionUtils
 
 class RegisterViewModel: ViewModel() {
-    var isClicked = true
     var name = ""
     var email = ""
     var username = ""
@@ -22,13 +17,7 @@ class RegisterViewModel: ViewModel() {
     var objeto = ""
     var namePlanificado = ""
 
-    val _accountCreated = SingleLiveEvent<Boolean>()
-
-    fun updateButtonIcon(context: Context): Drawable?{
-        // Actualizar el icono del botón segun el estado
-        val iconResource = if (isClicked) R.drawable.svg_question else R.drawable.svg_close
-        return ContextCompat.getDrawable(context, iconResource)
-    }
+    val seAccountCreated = SingleLiveEvent<Boolean>()
 
     //Comprobar si el email es valido
     fun accountCreated(activity: Activity, prefs: SharedPreferences, isCheckedUsuarioPlan: Boolean, isCheckedObjeto: Boolean){
@@ -52,23 +41,10 @@ class RegisterViewModel: ViewModel() {
             editor.putString("nombreUsuarioTEA", namePlanificado)
             editor.putString("nombreObjeto", objeto)
             editor.apply()
-            _accountCreated.value = true
+            seAccountCreated.value = true
         }else{
             val error = activity.getString(R.string.error_crear_cuenta)
             Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
         }
     }
-
-   /* fun registerUser(chekedObjeto: Boolean, checkedUserTEA: Boolean, prefs: SharedPreferences, activity: Activity) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(activity) { task ->
-                if (task.isSuccessful) {
-                    accountCreated(activity, prefs, checkedUserTEA, chekedObjeto)
-                }else{
-                   _accountCreated.value = false
-                }
-            }
-    }*/
-
-
 }

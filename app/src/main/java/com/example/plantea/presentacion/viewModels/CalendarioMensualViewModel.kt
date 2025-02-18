@@ -5,11 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
-import android.media.Image
-import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -18,7 +14,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,7 +27,6 @@ import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.DiaMes
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils
-import com.example.plantea.presentacion.actividades.AniadirPictoUtils.Companion
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils.Companion.clearButtonsSelected
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensual
@@ -43,37 +37,37 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Locale
 
 class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItemSelectedListener, AdaptadorCalendarioMensualFechas.OnItemSelectedListener,  AniadirPictoUtils.Companion.CustomViewModel  {
 
     override val pictograma: Pictograma = Pictograma()
     override var idUsuario: String = ""
-    override var _nuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
-    override var _listaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
     override lateinit var adaptadorRandomPictos: AdaptadorNuevoPicto
-    override var _listaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
-    override var _imageSelected = SingleLiveEvent<Bitmap>()
+
     override lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     override var saltar = false
     override var isEditImage = false
     override var isCalendarioMensual = false
 
-    val _fechaActual = MutableLiveData<String>()
-    val _fechaSeleccionada = MutableLiveData<DiaMes>()
-    var _dias = MutableLiveData<ArrayList<LocalDate?>>()
     var fechas = ArrayList<DiaMes>()
     lateinit var adaptador: AdaptadorNuevoPicto
-    var _addedFecha = SingleLiveEvent<DiaMes>()
     var colorSelected = "default"
-    var _newImage = SingleLiveEvent<Boolean>()
+
+    val mdFechaActual = MutableLiveData<String>()
+    val mdFechaSeleccionada = MutableLiveData<DiaMes>()
+    var mdDias = MutableLiveData<ArrayList<LocalDate?>>()
+    var seNuevaFecha = SingleLiveEvent<Boolean>()
+    var seNewImage = SingleLiveEvent<Boolean>()
+    var seAddedFecha = SingleLiveEvent<DiaMes>()
+    override var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var seimageSelected = SingleLiveEvent<Bitmap>()
+    override var seNuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
+    override var selistaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
 
     fun configureUser(prefs : android.content.SharedPreferences){
         val userId = if(prefs.getString("idUsuarioTEA", "") == null || prefs.getString("idUsuarioTEA", "") == ""){
@@ -85,21 +79,27 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
     }
 
     fun obtenerVistaMes() {
-        _fechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
-        _dias.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+        mdFechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
+        mdDias.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
     }
 
     override fun diaSeleccionado(context: Context?, position: Int) {
-        _fechaSeleccionada.value = fechas[position]
+        mdFechaSeleccionada.value = fechas[position]
+    }
+
+    override fun nuevaFecha(fecha: LocalDate){
+        seNuevaFecha.value = true
+        CalendarioUtilidades.fechaSeleccionada = fecha
     }
 
     override fun diaSeleccionadoFecha(context: Context?, position: Int) {
-        _fechaSeleccionada.value = fechas[position]
+        mdFechaSeleccionada.value = fechas[position]
     }
 
     fun createCalendar(context: Context): MaterialDatePicker<Long> {
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("")
+            .setSelection(CalendarioUtilidades.fechaSeleccionada.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
             .setTheme(R.style.CalendarPicker)
             .build()
 
@@ -115,7 +115,7 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
 
     override val onItemSelectedListener = object : AdaptadorNuevoPicto.OnItemSelectedListener {
         override fun onNuevoPicto(pictogram: Pictograma?) {
-            _nuevoPicto.value = pictogram
+            seNuevoPicto.value = pictogram
             Log.i("Pictograma", pictogram?.titulo.toString())
         }
     }
@@ -130,14 +130,14 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
 
     override fun dialogoAniadirPicto(dialogo: Dialog, view: ViewGroup, activity: Activity, buttons: LinearLayout, btnSiguiente: MaterialButton, btnSaltar: MaterialButton) {
         if(isEditImage){
-            _newImage.value = true
+            seNewImage.value = true
         }else{
             val lastView = view.getChildAt(view.childCount - 1)
             view.removeAllViews()
             view.addView(activity.layoutInflater.inflate(R.layout.dialogo_nueva_fecha, null))
             val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-            if(_nuevoPicto.value?.imagen != null && !saltar){
-                imagenPicto.setImageBitmap(_nuevoPicto.value?.imagen)
+            if(seNuevoPicto.value?.imagen != null && !saltar){
+                imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
             }
 
             imagenPicto.setOnClickListener {
@@ -186,7 +186,7 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
                             (imagenPicto.drawable as BitmapDrawable).bitmap
                         }
                         val diaMes = DiaMes(CalendarioUtilidades.fechaSeleccionada, nombreFecha.editText?.text.toString().uppercase(), colorSelected, imagenDia)
-                        _addedFecha.value = diaMes
+                        seAddedFecha.value = diaMes
                         dialogo.dismiss()
                     }
             }
@@ -257,7 +257,20 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
     private fun selectColor(color: String, buttonColor: MaterialButton, activity: Activity, dialogo: Dialog, isEdit: Boolean){
         buttonColor.icon = ContextCompat.getDrawable(activity,R.drawable.svg_check)
         colorSelected = color
-        if(isEdit) dialogo.findViewById<MaterialCardView>(R.id.card).setCardBackgroundColor(CommonUtils.getColor(activity, colorSelected))
+        if(isEdit) dialogo.findViewById<MaterialCardView>(R.id.card).setCardBackgroundColor(activity.resources.getColor(getColorID(colorSelected, activity), null))
+    }
+
+    fun getColorID(color: String?, activity: Activity): Int {
+        val isDark = CommonUtils.isDarkMode(activity)
+        val colorMap = mapOf(
+            "yellow" to if (isDark) R.color.DarkyellowCategoria else R.color.yellowCategoria,
+            "green" to if (isDark) R.color.DarkgreenCategoria else R.color.greenCategoria,
+            "blue" to if (isDark) R.color.DarkblueCategoria else R.color.blueCategoria,
+            "purple" to if (isDark) R.color.DarkpurpleCategoria else R.color.purpleCategoria,
+            "pink" to if (isDark) R.color.DarkpinkCategoria else R.color.pinkCategoria,
+            "default" to if (isDark) R.color.md_theme_dark_surfaceVariant else R.color.white,
+        )
+        return colorMap[color] ?: R.color.white
     }
 
 }

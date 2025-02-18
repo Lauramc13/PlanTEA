@@ -37,7 +37,7 @@ class GestionUsuarios {
     fun obtenerUsuario(email: String, actividad: Activity?): Usuario {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        var usuario = Usuario()
+        val usuario = Usuario()
         val c = conectorBD!!.obtenerUsuarioExistente(email)
         if (c.moveToFirst()) {
             do {

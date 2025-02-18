@@ -25,6 +25,9 @@
     <dimen name="snackBarText">15sp</dimen>
     <dimen name="titleNavigation">17sp</dimen>
     <dimen name="paddingDialog">20dp</dimen>
+    <dimen name="paddingTopDialog">0dp</dimen>
+    <dimen name="widthDialog">550dp</dimen>
+    <dimen name="widthDialogFecha">350dp</dimen>
     <dimen name="widthTextInput">270dp</dimen>
     <dimen name="width_button_saltar">160dp</dimen>
     <dimen name="popup_y">120dp</dimen>

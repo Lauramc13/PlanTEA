@@ -38,7 +38,7 @@
                     app:shapeAppearance="@style/cornerRadius"
                     app:srcCompat="@drawable/categoria_consultas" />
 
-                <TextView
+                <EditText
                     android:id="@+id/id_Texto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,8 +48,11 @@
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:maxLines="1"
+                    android:background="@null"
+                    android:enabled="false"
                     android:paddingTop="10dp"
                     android:text="@string/lbl_Consultas"
+                    android:backgroundTint="?colorOnSurface"
                     android:textColor="?colorOnSurface"
                     android:textSize="13sp" />
 

@@ -1,6 +1,8 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Button
 import android.widget.RadioButton
@@ -17,9 +19,14 @@ class ConfiguracionPictogramasActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<ConfiguracionPictogramasViewModel>()
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion_pictogramas)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         val buttonSiguiente = findViewById<MaterialButton>(R.id.btn_siguiente)
 

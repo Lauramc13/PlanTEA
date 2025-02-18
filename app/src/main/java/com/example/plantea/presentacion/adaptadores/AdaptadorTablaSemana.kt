@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.adaptadores
 
 import android.animation.ObjectAnimator
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.DiaSemana
 import com.example.plantea.presentacion.actividades.CommonUtils
+import com.example.plantea.presentacion.actividades.SemanaActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,11 +34,10 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
     lateinit var context: Context
     private lateinit var popupWindowMenu: PopupWindow
 
-
     interface OnItemSelectedListener {
         fun onItemSeleccionado(posicion: Int, activity: Activity?)
         fun onBorrarItemSeleccionado(posicion: Int)
-        fun onColorSelected(posicion: Int, color: String?, activity: Activity)
+        fun onColorSelected(posicion: Int, colorHeader: String?, colorBody: String?, activity: Activity)
         fun onDiaClicked(posicion: Int, activity: Activity)
         fun onAsociarEvento(posicion: Int, activity: Activity)
     }
@@ -109,8 +110,6 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
         notifyItemChanged(posicion)
     }
 
-
-
     inner class ViewHolderItemSemana(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imagen: ImageView
         var menu: MaterialButton
@@ -174,56 +173,49 @@ class AdaptadorTablaSemana(var listaDiaSemana: ArrayList<DiaSemana>?, var isEdit
             }
 
             colors.setOnClickListener {
+                val dialog = Dialog(context)
+                dialog.setContentView(R.layout.menu_horizontal_colors)
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
 
-                val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                val layout = inflater.inflate(R.layout.menu_horizontal_colors, null)
-                val popupWindow = PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
-                //show at the center of colors button
-                layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-                val popupWidth = layout.measuredWidth-colors.width
-                popupWindow.showAsDropDown(colors, -(popupWidth/2), 0)
+                val cardHeader = dialog.findViewById<MaterialCardView>(R.id.card_header)
+                val cardBody = dialog.findViewById<MaterialCardView>(R.id.card_body)
+                val btnCancelar = dialog.findViewById<MaterialButton>(R.id.btn_cancelar)
+                val btnGuardar = dialog.findViewById<MaterialButton>(R.id.btn_guardar)
+                val cerrar = dialog.findViewById<FloatingActionButton>(R.id.icono_CerrarDialogo)
 
-                layout.findViewById<FloatingActionButton>(R.id.fab1).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "red", context as Activity)
-                    popupWindow.dismiss()
+                val linearLayoutHeader = dialog.findViewById<LinearLayout>(R.id.layout_colors_header)
+                val linearLayoutBody = dialog.findViewById<LinearLayout>(R.id.layout_colors_body)
+
+                val colors = arrayOf("red", "orange", "yellow", "green", "blue", "pink", "purple", "")
+
+                var colorHeader = (context as SemanaActivity).viewModel.colorsHeader?.get(bindingAdapterPosition) ?: ""
+                var colorBody = listaDiaSemana?.get(bindingAdapterPosition)?.color ?: ""
+
+                cardHeader.setCardBackgroundColor(CommonUtils.getColor(context, colorHeader))
+                cardBody.setCardBackgroundColor(CommonUtils.getColor(context, colorBody))
+
+                for (i in 0 until linearLayoutHeader.childCount) {
+                    linearLayoutHeader.getChildAt(i).setOnClickListener {
+                        colorHeader = colors[i]
+                        cardHeader.setCardBackgroundColor(CommonUtils.getColor(context, colors[i]))
+                    }
                 }
 
-                layout.findViewById<FloatingActionButton>(R.id.fab2).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "orange", context as Activity)
-                    popupWindow.dismiss()
+                for (i in 0 until linearLayoutBody.childCount) {
+                    linearLayoutBody.getChildAt(i).setOnClickListener {
+                        colorBody = colors[i]
+                        cardBody.setCardBackgroundColor(CommonUtils.getColor(context, colors[i]))
+                    }
                 }
 
-                layout.findViewById<FloatingActionButton>(R.id.fab3).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "yellow", context as Activity)
-                    popupWindow.dismiss()
+                btnGuardar.setOnClickListener {
+                    listener?.onColorSelected(bindingAdapterPosition, colorHeader, colorBody, context as Activity)
+                    dialog.dismiss()
                 }
 
-                layout.findViewById<FloatingActionButton>(R.id.fab4).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "green", context as Activity)
-                    popupWindow.dismiss()
-                }
-
-                layout.findViewById<FloatingActionButton>(R.id.fab5).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "blue", context as Activity)
-                    popupWindow.dismiss()
-                }
-
-                layout.findViewById<FloatingActionButton>(R.id.fab6).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "pink", context as Activity)
-                    popupWindow.dismiss()
-                }
-
-                layout.findViewById<FloatingActionButton>(R.id.fab7).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, "purple", context as Activity)
-                    popupWindow.dismiss()
-                }
-
-
-                layout.findViewById<FloatingActionButton>(R.id.fab8).setOnClickListener {
-                    listener?.onColorSelected(bindingAdapterPosition, null, context as Activity)
-                    popupWindow.dismiss()
-                }
-
+                btnCancelar.setOnClickListener { dialog.dismiss() }
+                cerrar.setOnClickListener { dialog.dismiss() }
             }
 
         }

@@ -2,7 +2,6 @@ package com.example.plantea.presentacion.fragmentos
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,19 +12,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.view.isEmpty
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.CalendarioUtilidades
-import com.example.plantea.dominio.Evento
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
@@ -94,11 +89,11 @@ class CalendarioFragment : DialogFragment(){
     @SuppressLint("NotifyDataSetChanged")
     private fun observer(){
         if(isAdded && isResumed){
-            viewModel._fechaActual.observe(viewLifecycleOwner) {
+            viewModel.mdFechaActual.observe(viewLifecycleOwner) {
                 fechaActual.text = it
             }
 
-            viewModel._dias.observe(viewLifecycleOwner) {
+            viewModel.mdDias.observe(viewLifecycleOwner) {
                 calendario.layoutManager = GridLayoutManager(requireActivity(), 7)
 
                 val listaDays =
@@ -120,7 +115,7 @@ class CalendarioFragment : DialogFragment(){
                 calendario.requestLayout()
             }
 
-            viewModel._changedEvent.observe(viewLifecycleOwner) {
+            viewModel.seChangedEvent.observe(viewLifecycleOwner) {
                 if (it) {
                     if (viewModel.isEditing) {
                         calendario.adapter?.notifyDataSetChanged()

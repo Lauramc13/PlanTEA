@@ -7,6 +7,4 @@ class ConfiguracionPictogramasViewModel : ViewModel(){
     var lastSelectedCardId: Int? = null
     var lastSelectedRadioButtonId: Int? = null
 
-
-
 }

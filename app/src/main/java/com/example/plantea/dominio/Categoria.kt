@@ -49,5 +49,4 @@ class Categoria {
     fun checkCategoriaExiste(context: Context?, toString: String, idUsuario: String, language: String): Boolean {
         return gestorCategorias.checkCategoriaExiste(context, toString, idUsuario, language)
     }
-
 }

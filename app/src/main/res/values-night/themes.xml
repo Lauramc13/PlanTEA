@@ -37,6 +37,7 @@
         <item name="android:popupBackground">@color/transparent</item>
 
         <!-- CUSTOM ITEMS -->
+        <item name="whitish">@color/md_theme_dark_surfaceVariant2</item>
         <item name="customBgColor">@color/md_theme_dark_surface</item>
         <item name="customBgTermometro">@color/md_theme_dark_background2</item>
         <item name="customBgColorCuaderno">@color/md_theme_dark_surfaceVariant4</item>
@@ -291,7 +292,7 @@
     </style>
 
     <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/no_anim</item>
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/no_anim</item>
         <item name="android:activityCloseEnterAnimation">@anim/no_anim</item>
         <item name="android:activityCloseExitAnimation">@anim/no_anim</item>

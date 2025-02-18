@@ -34,8 +34,6 @@ class NavigationSideFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_navigation_side, container, false)
-        val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-        val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
         val rol : LinearLayout = vista.findViewById(R.id.accountButton)
 
         val navigationView = vista.findViewById<NavigationView>(R.id.navigationView)

@@ -3,7 +3,6 @@ package com.example.plantea.presentacion.viewModels
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.drawable.BitmapDrawable
 import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
@@ -23,8 +22,8 @@ class PreLoginViewModel: ViewModel() {
     var email =""
     var password = ""
 
-    val _errorEmail = SingleLiveEvent<String>()
-    val _errorPassword = SingleLiveEvent<String>()
+    val seErrorEmail = SingleLiveEvent<String>()
+    val seErrorPassword = SingleLiveEvent<String>()
 
     fun initGoogleSignInClient(context: Context) {
         //auth = Firebase.auth
@@ -42,12 +41,12 @@ class PreLoginViewModel: ViewModel() {
     fun comprobarTextViewsVacios(emailText: String, passwordText: String): Boolean {
         var textViewsFilled = true
         if (emailText.isEmpty()) {
-            _errorEmail.value = "No puedes dejar el campo vacío"
+            seErrorEmail.value = "No puedes dejar el campo vacío"
             textViewsFilled = false
         }
 
         if (passwordText.isEmpty()) {
-            _errorPassword.value = "No puedes dejar el campo vacío"
+            seErrorPassword.value = "No puedes dejar el campo vacío"
             textViewsFilled = false
         }
         return textViewsFilled

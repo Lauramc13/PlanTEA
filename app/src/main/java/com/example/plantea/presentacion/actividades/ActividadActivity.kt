@@ -1,15 +1,15 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
@@ -19,8 +19,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +37,11 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 
+/***
+ * Logica de la pantalla de actividades
+ *
+ * @property resultLauncher Cuando se añade una nueva actividad, lo que devuelve la clase MenuObjetosActivity
+ */
 
 class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnItemSelectedListenerActividad, AdaptadorListaCategoriasActividad.OnItemSelectedListener {
 
@@ -62,9 +65,14 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
         }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_actividades)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         val webView: WebView = findViewById(R.id.webView)
         viewModel.configureWebView(webView)
@@ -119,34 +127,17 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
             finish()
         }
 
-        val categoriaActividad = CategoriaActividad()
-
-        viewModel.arrayCategorias = categoriaActividad.getCategorias(viewModel.idUsuario, this)
-        viewModel.arrayCategorias!!.add(0, CategoriaActividad("0", getString(R.string.todas), viewModel.idUsuario))
-        //generate dynamically the buttons for the toggle group
-        for (i in viewModel.arrayCategorias!!.indices) {
-            addtoggleButton(viewModel.arrayCategorias!![i])
-        }
-
-        //check the first button
-        toggleButtons?.check(0)
+        botonesCategorias()
 
         btnAddCategoria.setOnClickListener {
             addCategoria()
         }
 
         observers()
-
     }
 
     fun observers(){
-        viewModel._timerEnded.observe(this) {
-            if (it) {
-                stopVideo()
-            }
-        }
-
-        viewModel._editActividad.observe(this) {
+        viewModel.mdEditActividad.observe(this) {
             editActividad(this, it, true)
         }
     }
@@ -184,9 +175,7 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
             viewModel.adaptadorCategorias.notifyItemInserted(viewModel.arrayCategorias!!.size-1)
 
             text.editText?.setText("")
-            //hide keyboard
             CommonUtils.hideKeyboard(this, text.editText!!)
-            //dialog.dismiss()
         }
 
         dialog.show()
@@ -315,12 +304,25 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
         dialog.show()
     }
 
+    private fun botonesCategorias(){
+        val categoriaActividad = CategoriaActividad()
+        viewModel.arrayCategorias = categoriaActividad.getCategorias(viewModel.idUsuario, this)
+        viewModel.arrayCategorias!!.add(0, CategoriaActividad("0", getString(R.string.todas), viewModel.idUsuario))
+
+        //Genera dinamicamente los botones de las categorias
+        for (i in viewModel.arrayCategorias!!.indices) {
+            addtoggleButton(viewModel.arrayCategorias!![i])
+        }
+        toggleButtons?.check(0)
+    }
+
     fun stopVideo(){
         cardVideo.visibility = View.VISIBLE
         frameVideo.visibility = View.INVISIBLE
         cardVideo.isEnabled = false
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateActividadesList(actividades: List<Actividad>) {
         viewModel.listaActividades?.clear()
         //if its the same id
@@ -394,7 +396,7 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
 
     override fun borrarCategoria(idCategoria: String?, position: Int) {
         val categoria = CategoriaActividad()
-        categoria.borrarCategoria(idCategoria, viewModel.idUsuario, this)
+        categoria.borrarCategoria(idCategoria, this)
         viewModel.arrayCategorias?.removeAt(position)
         viewModel.adaptadorCategorias.notifyItemRemoved(position)
         toggleButtons?.removeView(toggleButtons?.findViewById(idCategoria!!.toInt()))
@@ -405,7 +407,6 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
         categoria.editarCategoria(idCategoria, nombre, this)
         viewModel.arrayCategorias?.get(position)?.name = nombre
         toggleButtons?.findViewById<MaterialButton>(idCategoria!!.toInt())?.text = nombre
-
     }
 
 }

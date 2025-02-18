@@ -264,40 +264,64 @@
     <string name="titulo_manual">Manual de usuario</string>
     <string name="subtitulo_manual">En esta sección podrás encontrar información sobre el uso de la aplicación, así como las funcionalidades que ofrece.</string>
     <string name="titulo_crearEvento">Creación de un evento</string>
+    <string name="titulo_editarEvento">Editar un evento</string>
     <string name="titulo_crearPlanificacion">Crear una planificación</string>
-    <string name="titulo_cuaderno">Cuaderno de comunicación</string>
+    <string name="titulo_calendarioSemanal">Calendario semanal</string>
+    <string name="titulo_calendarioMensual">Calendario mensual</string>
     <string name="titulo_traductor">Traductor</string>
-    <string name="titulo_configuracion">Configuración</string>
+    <string name="titulo_actividades">Actividades tranquilizadoras</string>
     <string name="repetir_tutorial">Volver a ver el tutorial</string>
 
-
     <string-array name="str_crearEvento">
-      <item>Ve a &lt;b>&lt;u>"Calendario"&lt;/u>&lt;/b> y haz clic en el botón &lt;b>&lt;u>+&lt;/u>&lt;/b> situado en la esquina inferior derecha.</item>
-        <item>Selecciona una &lt;b>&lt;u>"hora"&lt;/u>&lt;/b> y, opcionalmente, &lt;b>&lt;u>"recordatorio"&lt;/u>&lt;/b> para el evento. </item>
+      <item>Haz clic en el botón &lt;b>&lt;u>+ Nuevo evento&lt;/u>&lt;/b>.</item>
+        <item>Selecciona una &lt;b>&lt;u>"hora"&lt;/u>&lt;/b> y, opcionalmente, &lt;b>&lt;u>recordatorio&lt;/u>&lt;/b> para el evento y opción de hacer el  &lt;b>&lt;u>evento visible&lt;/u>&lt;/b> 5 minutos antes. </item>
       <item>Si no hay ninguna planificación disponible, puedes hacer clic en &lt;b>&lt;u>"+ Nueva planificación"&lt;/u>&lt;/b> para crear una nueva.</item>
         <item>Si ya tienes una planificación creada, selecciona la planificación deseada para utlizar en el evento.</item>
         <item>Por último, haz clic en &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para crear el evento.</item>
-        <item>Para visualizar el evento, cambia la visibilidad de este haciendo clic en el icono de &lt;b>&lt;u>"ojo"&lt;/u>&lt;/b></item>
+        <item>Para visualizar el evento, cambia la visibilidad de este haciendo clic en el icono de &lt;b>&lt;u>"ojo"&lt;/u>&lt;/b>.</item>
+    </string-array>
+
+    <string-array name="str_editarEvento">
+        <item>Haz clic en el icono del &lt;b>&lt;u>"lápiz"&lt;/u>&lt;/b>  sobre el evento que quieres editar.</item>
+        <item>Si desea borrar un pictograma, haz clic sobre la &lt;b>&lt;u>"papelera"&lt;/u>&lt;/b> del pictograma que se desea borrar</item>
+        <item>Para mover un pictograma de posición, mantén pulsado sobre el pictograma a mover y desliza a la posición deseada.</item>
+        <item>Para añadir información adicional a un pictograma, haz clic en la &lt;b>&lt;u>"primera"&lt;/u>&lt;/b> opción del despegable que aparece al hacer clic en &lt;b>&lt;u>"+"&lt;/u>&lt;/b></item>
+        <item>Para añadir duración a un pictograma, haz clic en la &lt;b>&lt;u>"segunda"&lt;/u>&lt;/b> opción del despegable que aparece al hacer clic en &lt;b>&lt;u>"+"&lt;/u>&lt;/b></item>
+        <item>Para añadir una actividad de entretenimiento, haz clic en la &lt;b>&lt;u>"tercera"&lt;/u>&lt;/b> opción del despegable que aparece al hacer clic en &lt;b>&lt;u>"+"&lt;/u>&lt;/b></item>
     </string-array>
 
     <string-array name="str_crearPlanificacion">
-        <item>Ve a &lt;b>&lt;u>"Calendario"&lt;/u>&lt;/b> y haz clic en el botón &lt;b>&lt;u>"+"&lt;/u>&lt;/b> situado en la esquina inferior derecha.</item>
-        <item>Haz clic en el botón &lt;b>&lt;u>+ Nueva planificación&lt;/u>&lt;/b>.</item>
-        <item>Introduce un &lt;b>&lt;u>título&lt;/u>&lt;/b> para la planificación.</item>
+        <item>Ve a la pantalla &lt;b>&lt;u>"Planificaciones"&lt;/u>&lt;/b> y haz clic en el botón &lt;b>&lt;u>"+ Nueva planificación"&lt;/u>&lt;/b>.</item>
         <item>Para añadir un pictograma a la planificación, haz clic en una &lt;b>&lt;u>"categoría"&lt;/u>&lt;/b> y después en el pictograma deseado.</item>
         <item>Para buscar un pictograma, haz clic en la &lt;b>&lt;u>"barra de búsqueda"&lt;/u>&lt;/b> y escribe el nombre del pictograma que se desea buscar. </item>
+        <item>Para traducir una frase, haz clic en la &lt;b>&lt;u>"barra de búsqueda"&lt;/u>&lt;/b> y escribe la frase que se desea traducir. </item>
         <item>Si desea guardar un pictograma como favorito, haz clic en el &lt;b>&lt;u>icono de "corazón&lt;/u>&lt;/b> situado en la esquina superior derecha del pictograma. Estos pictogramas se guardarán en la categoría de &lt;b>&lt;u>"Favoritos"&lt;/u>&lt;/b>.</item>
-        <item>Para añadir texto adicional al pictograma o añadir una duración al pictograma, haz clic en los &lt;b>&lt;u>3 puntos&lt;/u>&lt;/b> situados en la esquina superior derecha de los pictogramas de la lista y selecciona la opción deseada.</item>
-        <item>Por último, haz clic en el botón &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para guardar la planificación.</item>
+        <item>Por último, haz clic en el botón &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para guardar la planificación e introduce un nombre para la planificación.</item>
     </string-array>
 
-    <string-array name="str_cuaderno">
-        <item>Ve a &lt;b>&lt;u>"Cuadernos de comunicación"&lt;/u>&lt;/b> y selecciona el cuaderno que desea editar.</item>
-        <item>Para añadir un cuaderno nuevo, haz clic en &lt;b>&lt;u>"Añadir cuaderno"&lt;/u>&lt;/b>. Si se desea que el cuaderno tenga la posibilidad de poder expresar la intensidad de un pictograma, haz clic en interruptor de &lt;b>&lt;u>"Termómetro"&lt;/u>&lt;/b>.</item>
-        <item>Para añadir un pictograma nuevo, haz clic en &lt;b>&lt;u>"Añadir pictograma"&lt;/u>&lt;/b> situado al final del cuaderno.</item>
-        <item>Para añadir un pictograma de la colección de ARASAAC, escribe en la barra de búsqueda el pictograma que se desea añadir  y haz clic en el botón &lt;b>&lt;u>+&lt;/u>&lt;/b> situado en la esquina superior derecha.</item>
-        <item>Para eliminar un pictograma, haz clic en el icono de la &lt;b>&lt;u>papelera&lt;/u>&lt;/b> situado en la esquina superior izquierda.</item>
+    <string-array name="str_calendarioSemanal">
+        <item>Para editar el calendario semanal, haz clic en el botón &lt;b>&lt;u>"Editar"&lt;/u>&lt;/b>.</item>
+        <item>Para cambiar el pictograma de un día de la semana, haz clic en la imagen central del día y selecciona el pictograma o la imagen de la galería deseada.</item>
+        <item>Para cambiar el color de fondo de un día de la semana, haz clic en el boón inferior del día y selecciona el color deseado.</item>
+        <item>Para vincular un evento con un día de la semana, haz clic en el botón &lt;b>&lt;u>"+"&lt;/u>&lt;/b> situado abajo del pictograma del día.</item>
+        <item>Por último, haz clic en el botón &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para guardar los cambios realizados en el calendario semanal.</item>
     </string-array>
+
+    <string-array name="str_calendarioMensual">
+        <item>Para añadir un día importante en el calendario, haz clic en &lt;b>&lt;u>"+ Nuevo día importante"&lt;/u>&lt;/b>.</item>
+        <item>Elige un pictograma de la colección de ARASAAC o una foto de la galería. Introduce la fecha y el título del día importante y, opcionalmente, un color de fondo.</item>
+        <item>Para editar un día importante, haz clic en el día y selecciona la opción &lt;b>&lt;u>"Editar"&lt;/u>&lt;/b>.</item>
+        <item>Para eliminar un día importante, haz clic en el día y selecciona la opción &lt;b>&lt;u>"Eliminar"&lt;/u>&lt;/b>.</item>
+        <item>Para exportar el calendario como PDF, haz clic en el botón &lt;b>&lt;u>"Exportar como PDF"&lt;/u>&lt;/b>.</item>
+    </string-array>
+
+    <string-array name="str_actividades">
+        <item>Las actividades pueden estar divididas en categorías. Para añadir una categoría, haz clic en el botón &lt;b>&lt;u>"+"&lt;/u>&lt;/b>.</item>
+        <item>Para añadir una actividad, haz clic en el botón &lt;b>&lt;u>"Añadir actividad"&lt;/u>&lt;/b>.</item>
+        <item>Para visualizar un video de YouTube, haz clic en el botón &lt;b>&lt;u>"YouTube"&lt;/u>&lt;/b>.</item>
+        <item>Para cerrar el reproductor de YouTube, haz clic en el botón &lt;b>&lt;u>"X"&lt;/u>&lt;/b>.</item>
+        <item>Para controlar el tiempo que un usuario puede dedicar a una actividad, haz clic en el botón &lt;b>&lt;u>"Temporizador"&lt;/u>&lt;/b> y selecciona el tiempo deseado.</item>
+      </string-array>
 
     <string-array name="str_traductor">
         <item>Ve a &lt;b>&lt;u>"Traductor"&lt;/u>&lt;/b> y escribe la frase que se desee traducir en campo de texto superior.</item>
@@ -305,7 +329,7 @@
         <item>En la parte inferior, cada palabra se mostrará como un pictograma.</item>
         <item>Si necesitas eliminar un pictograma de la traducción, haz clic en el icono de la &lt;b>&lt;u>papelera&lt;/u>&lt;/b> que se encuentra en la esquina superior derecha del pictograma.</item>
         <item>Para cambiar la imagen de un pictograma, selecciona otro de los disponibles con un clic simple, o bien, mantén pulsado para elegir una imagen de la galería.</item>
-        <item>Si deseas guardar la traducción, haz clic en el botón &lt;b>&lt;u>Guardar&lt;/u>&lt;/b> ubicado debajo de la traducción.</item>
+        <item>Si deseas guardar la traducción, haz clic en el botón &lt;b>&lt;u>Guardar como&lt;/u>&lt;/b> ubicado debajo de la traducción y selecciona &lt;b>&lt;u>Planificación&lt;/u>&lt;/b> o &lt;b>&lt;u>PDF&lt;/u>&lt;/b> en el despegable.</item>
     </string-array>
 
     <!-- Strings utilizados para la politica de privacidad -->
@@ -474,5 +498,7 @@
     <string name="texto">Texto</string>
     <string name="toast_pdf_exportado">PDF exportado en la carpeta de descargas</string>
     <string name="categor_a">Categoría:</string>
+    <string name="toast_queda_un_minuto">En un mintuo se terminará la actividad</string>
+    <string name="colores_fondo_dia">Selecciona los colores para el fondo del día</string>
 
 </resources>

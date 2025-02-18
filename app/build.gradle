@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id("de.mannodermaus.android-junit5") version "1.10.0.0"
-
 }
 
 android {
@@ -21,6 +20,7 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE.md'
         exclude 'META-INF/LICENSE-notice.md'
+        exclude 'META-INF/NOTICE.md'
     }
 
     buildTypes {
@@ -80,7 +80,6 @@ dependencies {
 
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.28'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-
 
 
     //HTTPS CALLS - RETROFIT

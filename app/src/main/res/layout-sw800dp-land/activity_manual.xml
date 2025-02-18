@@ -45,9 +45,11 @@
         android:id="@+id/subtitulo_manual"
         android:layout_width="900dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:text="@string/subtitulo_manual"
         android:fontFamily="@font/poppins_regular"
         android:textColor="?colorOnSurface"
+
         app:layout_constraintBottom_toTopOf="@+id/linearLayout15"
         app:layout_constraintStart_toStartOf="@+id/linearLayout15"
         android:textSize="20sp"/>
@@ -136,6 +138,60 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_evento_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_close_button"
+                        android:clickable="true"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
+                                android:fontFamily="@font/poppins_regular"
+                                android:text="@string/titulo_editarEvento"
+                                android:textSize="@dimen/modalText" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:id="@+id/icon_evento_edit"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_evento_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:clickable="false"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:scrollbars="none" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card_planificacion"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
@@ -190,7 +246,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/card_cuaderno"
+                        android:id="@+id/card_calendarioSemanal"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:layout_marginTop="15dp"
@@ -214,7 +270,7 @@
                                 android:layout_gravity="center"
                                 android:textColor="?colorOnSurface"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="@string/titulo_cuaderno"
+                                android:text="@string/titulo_calendarioSemanal"
                                 android:textSize="@dimen/modalText" />
 
                             <View
@@ -223,7 +279,7 @@
                                 android:layout_weight="1" />
 
                             <ImageView
-                                android:id="@+id/icon_cuaderno"
+                                android:id="@+id/icon_calendarioSemanal"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:src="@drawable/svg_chevron_right"
@@ -232,7 +288,7 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/text_cuaderno"
+                            android:id="@+id/text_calendarioSemanal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="70dp"
@@ -240,6 +296,113 @@
                             android:paddingStart="20dp"
                             android:paddingEnd="20dp"
                             android:scrollbars="none" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_calendarioMensual"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_close_button"
+                        android:clickable="true"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
+                                android:fontFamily="@font/poppins_regular"
+                                android:text="@string/titulo_calendarioMensual"
+                                android:textSize="@dimen/modalText" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:id="@+id/icon_calendarioMensual"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_calendarioMensual"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:clickable="false"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:scrollbars="none" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_actividades"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_close_button"
+                        android:clickable="true"
+                        app:cardBackgroundColor="?configuracionCardBg"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?color"
+                        app:strokeWidth="1.5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="?colorOnSurface"
+                                android:fontFamily="@font/poppins_regular"
+                                android:text="@string/titulo_actividades"
+                                android:textSize="@dimen/modalText" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:id="@+id/icon_actividades"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/svg_chevron_right"
+                                app:tint="?colorOnSurface" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/text_actividades"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="70dp"
+                            android:clickable="false"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:scrollbars="none" />
+
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
@@ -358,7 +521,6 @@
                         android:fontFamily="@font/poppins_medium"
                         android:text="@string/repetir_tutorial"
                         android:textAllCaps="false"
-                        android:textColor="?colorOnSurface"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -380,11 +542,13 @@
 
             <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/fragment_imagen"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/paleta_colores" />
+                android:padding="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/svg_manual" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

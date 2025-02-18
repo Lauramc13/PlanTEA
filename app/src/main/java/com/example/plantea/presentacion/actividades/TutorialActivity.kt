@@ -1,6 +1,8 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
@@ -22,9 +24,14 @@ class TutorialActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<TutorialViewModel>()
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         isFromManual = intent.getBooleanExtra("isFromManual", false)
 

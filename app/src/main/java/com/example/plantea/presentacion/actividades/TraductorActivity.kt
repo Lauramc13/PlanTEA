@@ -1,5 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -25,11 +27,7 @@ import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
 
 class TraductorActivity : AppCompatActivity() {
-   // private lateinit var escucharButtonPalabra : Button
-   // private lateinit var escucharButtonFrase : Button
     private var guardarButton : Button? = null
-    private var guardarPDFButton : Button? = null
-    private var guardarButtonPlan : Button? = null
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
     private var atras : Button? = null
@@ -51,14 +49,17 @@ class TraductorActivity : AppCompatActivity() {
         CommonUtils.loadLemmatizer(Locale.getDefault().language.lowercase(), this)
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         val traducirButton: MaterialButton = findViewById(R.id.traducirButton)
         guardarButton = findViewById(R.id.guardarButton)
-        guardarPDFButton = findViewById(R.id.guardarButtonPDF)
-        guardarButtonPlan = findViewById(R.id.guardarButtonPlan)
 
         textoATraducir = findViewById(R.id.textoTraducir)
         textoATraducir.editText?.setText(viewModel.textInputContent)
@@ -89,7 +90,7 @@ class TraductorActivity : AppCompatActivity() {
             }else{
                 if(viewModel.traducirFrase(textoATraducir.editText?.text?.trim())) {
                     traducirButton.isEnabled = false
-                    viewModel._visibilityButtons.value = true
+                    viewModel.mdVisibilityButtons.value = true
                     CommonUtils.hideKeyboard(this@TraductorActivity, textoATraducir)
                 }else{
                     Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
@@ -98,7 +99,7 @@ class TraductorActivity : AppCompatActivity() {
             }
         }
 
-        atras?.setOnClickListener {
+        atras?.setOnClickListener{
             finish()
         }
 
@@ -139,53 +140,33 @@ class TraductorActivity : AppCompatActivity() {
             popupWindow.showAsDropDown(guardarButton, 0, -10)
         }
 
-        guardarButtonPlan?.setOnClickListener {
-            if(viewModel.listaPictogramas.isNotEmpty()){
-                viewModel.dialogGuardar(this)
-            }else{
-                Toast.makeText(this, R.string.toast_error_guardar_traduccion_vacia, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        guardarPDFButton?.setOnClickListener {
-            if(viewModel.listaPictogramas.isNotEmpty()){
-                viewModel.dialogoTraduccion(this)
-            }else{
-                Toast.makeText(this, R.string.toast_error_guardar_traduccion_vacia, Toast.LENGTH_SHORT).show()
-            }
-        }
-
         /////////////  Observers  //////////////
 
         //Cuando se actualiza la lista de pictogramas, actualizamos el adaptador
-        viewModel._listaPictogramasTraduccion.observe(this) { listaPictogramas ->
+        viewModel.mdListaPictogramasTraduccion.observe(this) { listaPictogramas ->
             viewModel.adaptador = AdaptadorPictogramasTraductor(listaPictogramas, viewModel)
             recyclerView.adapter = viewModel.adaptador
         }
 
         //Si hay un mensaje de error o de éxito, lo mostramos a traves de un Snackbar
-        viewModel._dialogMessage.observe(this){ message ->
+        viewModel.seDialogMessage.observe(this){ message ->
             Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show()
         }
 
         //Si hay pictogramas, mostramos los botones
-        viewModel._visibilityButtons.observe(this) { visibility ->
+        viewModel.mdVisibilityButtons.observe(this) { visibility ->
             if(visibility){
                 if(isPlanificador){
                     findViewById<MaterialDivider>(R.id.divider).visibility = View.VISIBLE
                     guardarButton?.visibility = View.VISIBLE
-                    guardarPDFButton?.visibility = View.VISIBLE
-                    guardarButtonPlan?.visibility = View.VISIBLE
                 }
             }else{
                 findViewById<MaterialDivider>(R.id.divider).visibility = View.GONE
                 guardarButton?.visibility = View.GONE
-                guardarPDFButton?.visibility = View.GONE
-                guardarButtonPlan?.visibility = View.GONE
             }
         }
 
-        viewModel._traduccionEnded.observe(this) {
+        viewModel.seTraduccionEnded.observe(this) {
             traducirButton.isEnabled = true
         }
     }

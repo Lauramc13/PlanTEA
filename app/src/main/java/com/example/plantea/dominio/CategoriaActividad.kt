@@ -21,8 +21,8 @@ class CategoriaActividad {
         return gestorCategoriaActividad.crearCategoria(name, idUsuario, actividad)
     }
 
-    fun borrarCategoria(id: String?, idUsuario: String?, actividad: Activity?): Boolean {
-        return gestorCategoriaActividad.borrarCategoria(id, idUsuario, actividad)
+    fun borrarCategoria(id: String?, actividad: Activity?): Boolean {
+        return gestorCategoriaActividad.borrarCategoria(id, actividad)
     }
 
     fun editarCategoria(id: String?, name: String?, actividad: Activity?): Boolean {

@@ -10,14 +10,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import com.example.plantea.R
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.MainActivity
 import com.example.plantea.presentacion.actividades.RegisterActivity
 import com.example.plantea.presentacion.viewModels.PreLoginViewModel
@@ -77,8 +75,8 @@ class LoginFragment: BottomSheetDialogFragment() {
                     startActivity(Intent(actividad.applicationContext, MainActivity::class.java))
                     actividad.finish()
                 }else{
-                    viewModel._errorEmail.value = "El usuario o la contraseña son incorrectos"
-                    viewModel._errorPassword.value = "El usuario o la contraseña son incorrectos"
+                    viewModel.seErrorEmail.value = "El usuario o la contraseña son incorrectos"
+                    viewModel.seErrorPassword.value = "El usuario o la contraseña son incorrectos"
                 }
             }
         }
@@ -88,11 +86,11 @@ class LoginFragment: BottomSheetDialogFragment() {
     }
 
     fun observers(){
-        viewModel._errorEmail.observe(this) {
+        viewModel.seErrorEmail.observe(this) {
             email?.error = it
         }
 
-        viewModel._errorPassword.observe(this) {
+        viewModel.seErrorPassword.observe(this) {
             password?.error = it
         }
     }

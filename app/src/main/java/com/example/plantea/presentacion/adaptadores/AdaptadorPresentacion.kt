@@ -15,6 +15,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -52,7 +53,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         context = holder.itemView.context
-        holder.titulo.text = listaPictogramas!![position].titulo
+        holder.titulo.setText(listaPictogramas!![position].titulo)
         holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
 
         typePictogram(position, holder)
@@ -80,7 +81,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             Log.i("pruebas", "onBindViewHolder con payloads - marcarDuracion")
         } else{
             context = holder.itemView.context
-            holder.titulo.text = listaPictogramas!![position].titulo
+            holder.titulo.setText(listaPictogramas!![position].titulo)
             holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
 
             typePictogram(position, holder)
@@ -278,27 +279,17 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
-        var titulo: TextView
-        var imagen: ImageView
-        var card: View
-        var historia: ImageView
-        var duracion: CircularProgressIndicator
-        var tiempo: TextView
-        var entretenimiento: ImageView
-        var iconCambio: ImageView
-        var arrow : ImageView
+        var titulo: EditText = itemView.findViewById(R.id.id_Texto)
+        var imagen: ImageView = itemView.findViewById(R.id.id_Imagen)
+        var card: View = itemView.findViewById(R.id.id_card)
+        var historia: ImageView = itemView.findViewById(R.id.btn_historiaPicto)
+        var duracion: CircularProgressIndicator = itemView.findViewById(R.id.duracionPicto)
+        var tiempo: TextView = itemView.findViewById(R.id.duracionPictoTiempo)
+        var entretenimiento: ImageView = itemView.findViewById(R.id.entretenimiento)
+        var iconCambio: ImageView = itemView.findViewById(R.id.iconCambio)
+        var arrow : ImageView = itemView.findViewById(R.id.arrow)
 
         init {
-            titulo = itemView.findViewById<View>(R.id.id_Texto) as TextView
-            imagen = itemView.findViewById<View>(R.id.id_Imagen) as ImageView
-            card = itemView.findViewById(R.id.id_card) as View
-            historia = itemView.findViewById(R.id.btn_historiaPicto)
-            duracion = itemView.findViewById(R.id.duracionPicto)
-            entretenimiento = itemView.findViewById(R.id.entretenimiento)
-            tiempo = itemView.findViewById(R.id.duracionPictoTiempo)
-            iconCambio = itemView.findViewById(R.id.iconCambio)
-            arrow = itemView.findViewById(R.id.arrow)
-
             itemView.setOnClickListener(this)
             itemView.setOnLongClickListener(this)
 

@@ -12,6 +12,12 @@ import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPres
 import com.example.plantea.presentacion.actividades.NavegacionUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+/**
+ * Fragmento que contiene la barra de navegación inferior
+ * @property vista Vista del fragmento
+ * @property navigationHandler Manejador de la navegación
+ */
+
 class NavigationBottomFragment: Fragment() {
     lateinit var vista: View
     private var navigationHandler = NavegacionUtils()
@@ -34,19 +40,15 @@ class NavigationBottomFragment: Fragment() {
         bottomNavigation.menu.clear()
         bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom)
 
-        if (!infoUsuario) {
+        // Si el usuario no es planificador o no es un dispositivo móvil, se elimina la opción de usuario
+        if (!infoUsuario || !CommonUtils.isMobile(this.requireContext())) {
             bottomNavigation.menu.removeItem(R.id.user)
         }else{
-           //change icon of user
-            bottomNavigation.itemIconTintList = null
-
             val image = prefs.getString("imagenUsuarioTEA", "")
             if (image == "") {
                 bottomNavigation.menu.findItem(R.id.user).setIcon(CommonUtils.byteArrayToDrawableWithCorner(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray, this.requireContext()))
             }else{
-                //bottomNavigation.menu.findItem(R.id.user).setIcon(R.drawable.svg_star)
                 bottomNavigation.menu.findItem(R.id.user).setIcon(CommonUtils.byteArrayToDrawableWithCorner(image!!.toPreservedByteArray, this.requireContext()))
-
             }
         }
 

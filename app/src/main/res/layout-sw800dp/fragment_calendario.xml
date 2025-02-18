@@ -58,7 +58,6 @@
             android:layout_weight="1"
             android:contentDescription="Mes"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Noviembre 2021"
             android:textAlignment="center"
             android:textColor="?colorOnSurface"
             android:textSize="20sp" />

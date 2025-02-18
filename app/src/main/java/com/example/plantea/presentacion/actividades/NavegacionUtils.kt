@@ -38,6 +38,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.divider.MaterialDivider
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
@@ -156,7 +157,7 @@ class NavegacionUtils {
             val editor = prefs.edit()
 
             for (key in prefs.all.keys) {
-                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key"))) {
+                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key") || key.endsWith("FirstTime"))) {
                     editor.remove(key)
                 }
             }
@@ -407,19 +408,19 @@ class NavegacionUtils {
 
         //Si estamos en el usuarioTEA
         if(!infoUsuario) {
-            customView.findViewById<LinearLayout>(R.id.item_user).visibility = View.GONE
-            customView.findViewById<LinearLayout>(R.id.item_cerarSesion).visibility = View.GONE
-            customView.findViewById<View>(R.id.divider).visibility = View.GONE
-            customView.findViewById<View>(R.id.divider2).visibility = View.GONE
+            customView.findViewById<MaterialCardView>(R.id.item_user).visibility = View.GONE
+            customView.findViewById<MaterialCardView>(R.id.item_cerarSesion).visibility = View.GONE
+            customView.findViewById<MaterialDivider>(R.id.divider).visibility = View.GONE
+            customView.findViewById<MaterialDivider>(R.id.divider2).visibility = View.GONE
         }
 
         //Si no existe usuario TEA
         if(!isUsuarioTEA && infoUsuario) {
-            customView.findViewById<LinearLayout>(R.id.item_cuenta).visibility = View.GONE
+            customView.findViewById<MaterialCardView>(R.id.item_cuenta).visibility = View.GONE
             customView.findViewById<View>(R.id.divider).visibility = View.GONE
         }
 
-        customView.findViewById<LinearLayout>(R.id.item_cuenta).setOnClickListener {
+        customView.findViewById<MaterialCardView>(R.id.item_cuenta).setOnClickListener {
             if(isUsuarioTEA && infoUsuario){
                 val editor = prefs.edit()
                 editor.putBoolean("PlanificadorLogged", false)
@@ -440,7 +441,7 @@ class NavegacionUtils {
             customView.findViewById<TextView>(R.id.languageText).text = "English"
         }
 
-        customView.findViewById<LinearLayout>(R.id.item_idioma).setOnClickListener {
+        customView.findViewById<MaterialCardView>(R.id.item_idioma).setOnClickListener {
             //change language
             if(Locale.getDefault().language == "es"){
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
@@ -449,15 +450,15 @@ class NavegacionUtils {
             }
         }
 
-        customView.findViewById<LinearLayout>(R.id.item_cerarSesion).setOnClickListener {
+        customView.findViewById<MaterialCardView>(R.id.item_cerarSesion).setOnClickListener {
             cerrarSesion(fragment)
         }
 
-        customView.findViewById<LinearLayout>(R.id.item_user).setOnClickListener {
+        customView.findViewById<MaterialCardView>(R.id.item_user).setOnClickListener {
             fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, ConfiguracionActivity::class.java))
         }
 
-        customView.findViewById<LinearLayout>(R.id.item_ayuda).setOnClickListener {
+        customView.findViewById<MaterialCardView>(R.id.item_ayuda).setOnClickListener {
             fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, ManualActivity::class.java))
         }
 

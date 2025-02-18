@@ -97,11 +97,18 @@ class CountDownActividadFragment: Fragment() {
             ?: (viewModel.selectedHour.toLong() * 3600000 + viewModel.selectedMin.toLong() * 60000)
 
         countDownTimer = object : CountDownTimer(time, 1000) {
+            var isShownToast = false // para solo mostrar una vez el toast
 
             override fun onTick(millisUntilFinished: Long) {
                 viewModel.timeLeftInMillis = millisUntilFinished
                 timerTextView.text = viewModel.tick(millisUntilFinished)
                 progressBar.progress = ((millisUntilFinished / 1000).toFloat() / (time / 1000).toFloat() * 100).toInt()
+
+                //if there is 1 minute left toast
+                if(millisUntilFinished < 61000L && !isShownToast){
+                    Toast.makeText(requireContext(), getString(R.string.toast_queda_un_minuto), Toast.LENGTH_LONG).show()
+                    isShownToast = true
+                }
             }
 
             override fun onFinish() {

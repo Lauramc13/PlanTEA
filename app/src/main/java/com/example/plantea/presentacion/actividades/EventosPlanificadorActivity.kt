@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -25,9 +26,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -49,6 +49,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.Collections
 import java.util.Locale
 
 class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.OnItemSelectedListener, AdaptadorPictogramasEventos.OnItemSelectedListener {
@@ -65,6 +66,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
     private lateinit var btnNuevaPlanificacion: MaterialButton
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_eventos_planificador)
@@ -78,6 +80,10 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
         val callback = viewModel.backCallBack(this)
         onBackPressedDispatcher.addCallback(this, callback)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs)
@@ -116,7 +122,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                     }
 
                     viewModelCalendario.planSeleccionado = idPlan
-                    viewModelCalendario._planSeleccionado.value = posicionPlan
+                    viewModelCalendario.sePlanSeleccionado.value = posicionPlan
                 }
             }
         }
@@ -155,10 +161,12 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         }
 
         observer()
+
     }
 
+
     private fun observer() {
-        viewModel._idPictoEntretenimiento.observe(this){
+        viewModel.seIdPictoEntretenimiento.observe(this){
             viewModel.pictosEvento[entretenimientoPosition].pictoEntretenimiento = it
             val picto = Pictograma()
             picto.guardarPictoEntretenimiento(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[entretenimientoPosition].id!!, it.toString())
@@ -166,7 +174,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             dialogEntretenimiento.dismiss()
         }
 
-        viewModelCalendario._fechaSeleccionada.observe(this){
+        viewModelCalendario.mdFechaSeleccionada.observe(this){
             Toast.makeText(this, "FILTRAR LA LISTA DE EVENTOS POR EL DIA SELECCIONADO", Toast.LENGTH_SHORT).show()
         }
     }
@@ -194,55 +202,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         listaEventos.adapter = adaptador
     }
 
-//    private fun crearDialogo(){
-//        viewModel.dialog = Dialog(this)
-//        viewModel.dialog!!.setContentView(R.layout.dialogo_calendario)
-//        viewModel.dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
-//        val fechaActual = viewModel.dialog!!.findViewById<TextView>(R.id.lbl_mes2)
-//        val btnSiguienteMes = viewModel.dialog!!.findViewById<ImageView>(R.id.image_calendar_siguiente2)
-//        val btnAnteriorMes = viewModel.dialog!!.findViewById<ImageView>(R.id.image_calendar_anterior2)
-//        val calendario = viewModel.dialog!!.findViewById<RecyclerView>(R.id.recycler_calendario)
-//        val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
-//        CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
-//
-//        viewModel.obtenerVistaMes()
-//        viewModel._fechaActual.observe(this) { fechaActual.text = it }
-//        viewModel._diasMes.observe(this) {
-//            calendario.layoutManager = GridLayoutManager(this, 7)
-//            val listaDays = if(CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
-//                arrayOf("L", "M", "X", "J", "V", "S", "D")
-//            }else if (CommonUtils.isMobile(this) && Locale.getDefault().language == "en"){
-//                arrayOf("M", "T", "W", "T", "F", "S", "S")
-//            }else if (!CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
-//                arrayOf("LUN", "MAR", "MIE", "JUE", "VIE", "SAB", "DOM")
-//            }else{
-//                arrayOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
-//            }
-//
-//            val adaptadorCalendario = AdaptadorCalendario(it,listaDays, viewModel.eventos, null)
-//            calendario.adapter = adaptadorCalendario
-//        }
-//
-//        btnAnteriorMes.setOnClickListener {
-//            val firstDayOfPreviousMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1)
-//            if (CalendarioUtilidades.fechaSeleccionada.minusMonths(1).isBefore(firstDayOfPreviousMonth)){
-//                return@setOnClickListener
-//            }else{
-//                CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.minusMonths(1)
-//                viewModel.obtenerVistaMes()
-//            }
-//        }
-//        btnSiguienteMes.setOnClickListener {
-//            CalendarioUtilidades.fechaSeleccionada = CalendarioUtilidades.fechaSeleccionada.plusMonths(1)
-//            viewModel.obtenerVistaMes()
-//        }
-//
-//        cerrarDialog.setOnClickListener { viewModel.dialog!!.dismiss() }
-//        viewModel.dialog!!.show()
-//    }
-
-    override fun eventoSeleccionado(posicion: Int, recyclerPictogramas: RecyclerView, context: Context) {
+    override fun eventoSeleccionado(posicion: Int, recyclerPictogramas: RecyclerView, isEdit:Boolean, context: Context) {
         viewModel.posicionEvento = posicion
         val plan = Planificacion()
         viewModel.pictosEvento = plan.obtenerPictogramasPlanificacionEvento(this, viewModel.eventos[posicion].idPlan, viewModel.eventos[posicion].id,Locale.getDefault().language, viewModel.idUsuario)
@@ -252,9 +212,33 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                 pictogram.imagen = BitmapFactory.decodeResource(resources, R.drawable.loading_placeholder)
         }
 
-        val adaptadorPictogramas = AdaptadorPictogramasEventos(viewModel.pictosEvento, this)
+        val adaptadorPictogramas = AdaptadorPictogramasEventos(viewModel.pictosEvento, this, isEdit)
         recyclerPictogramas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerPictogramas.adapter = adaptadorPictogramas
+
+        viewModelCalendario.listaPictosOriginal = viewModel.pictosEvento.map { it.copy() } as ArrayList<Pictograma>
+
+        viewModelCalendario.seEventoEditSaved.observe(this){
+            if(it){
+                //save in the database the pictograms
+            }else{
+                // is edit is false and update the pictograms
+                viewModel.pictosEvento.clear()
+                viewModel.pictosEvento.addAll(viewModelCalendario.listaPictosOriginal)
+                adaptadorPictogramas.setEditMode(false)
+            }
+
+            //save alternative title if its exist, delete if there has been one deleted, and update the order of the pictograms
+//            viewModel.pictosEvento.forEachIndexed { index, pictogram ->
+//                val adapter = recyclerPictogramas.adapter as AdaptadorPictogramasEventos
+//
+//                val altTitle = adapter.getTitleAt(index)
+//                if(pictogram.titulo != altTitle){
+//                   val evento = Evento()
+//                    evento.editPictogramTitle(index, altTitle, viewModel.eventos[viewModel.posicionEvento].id.toString(), pictogram.id.toString(), this)
+//                }
+//            }
+        }
 
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.pictosEvento.forEach { pictogram ->
@@ -267,6 +251,26 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                 adaptadorPictogramas.notifyItemChanged(viewModel.pictosEvento.indexOf(pictogram))
             }
         }
+
+
+        val simpleCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.START or ItemTouchHelper.END, ItemTouchHelper.UP) {
+
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                val fromPosition = viewHolder.absoluteAdapterPosition
+                val toPosition = target.absoluteAdapterPosition
+                Collections.swap(viewModel.pictosEvento, fromPosition, toPosition)
+                recyclerPictogramas.adapter!!.notifyItemMoved(fromPosition, toPosition)
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // do nothing
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerPictogramas)
     }
 
     override fun verEvento(posicion: Int, context: Context) {
@@ -280,13 +284,10 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
         }
         intent.putExtra("fecha", viewModel.eventos[posicion].fecha)
-
-
         startActivity(intent)
-
     }
 
-    override fun eventoEditado(posicion: Int, context: Context) {
+    override fun eventoEditado(posicion: Int, recyclerPictograms: RecyclerView, context: Context) {
         btnNuevaPlanificacion.visibility = View.VISIBLE
         CalendarioUtilidades.fechaSeleccionada = viewModel.eventos[posicion].fecha?: LocalDate.now()
         if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)) {
@@ -331,6 +332,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             Toast.makeText(this, R.string.toast_error_exportar_evento, Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun bottomSheetDialog(context: Context, evento: Evento?){
         val fragment = if (evento == null){
@@ -444,7 +446,9 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             } else {
                 viewModel.pictosEvento[posicion].historia = historiaText.editText?.text.toString()
                 val picto = Pictograma()
-                picto.guardarHistoria(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, historiaText.editText?.text.toString())
+                // last parameter is the position of the pictogram in the list
+                val posicionPicto = viewModel.pictosEvento.indexOf(viewModel.pictosEvento[posicion])
+                picto.guardarHistoria(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, historiaText.editText?.text.toString(), posicionPicto)
                 dialog.dismiss()
             }
         }
@@ -453,7 +457,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             historiaText.editText?.text = null
             viewModel.pictosEvento[posicion].historia = null
             val picto = Pictograma()
-            picto.guardarHistoria(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, null)
+            picto.guardarHistoria(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, null, null)
             dialog.dismiss()
         }
 
@@ -510,9 +514,13 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
 
     private fun recyclerActividad(recyclerActividad : RecyclerView, dialog: Dialog, listaPictogramas: ArrayList<Pictograma>, idPicto: Int){
         val constraintLayout = dialog.findViewById<ConstraintLayout>(R.id.frameLayout)
-        CommonUtils.getGridValueCuaderno(findViewById(android.R.id.content), this, recyclerActividad, constraintLayout, 150, 200)
+        CommonUtils.getGridValueContainer(findViewById(android.R.id.content), this, recyclerActividad, constraintLayout, 150, 200)
         val adaptador = AdaptadorPictogramaEntretenimiento(listaPictogramas, idPicto, viewModel)
         recyclerActividad.adapter = adaptador
+    }
+
+    override fun borrarPicto(posicion: Int, idPictograma: String){
+        viewModelCalendario.listaPictosEliminados.add(Pair(posicion, idPictograma))
     }
 
     override fun duracionSeleecionado(posicion: Int, context: Context) {

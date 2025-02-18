@@ -26,6 +26,7 @@ class AdaptadorCalendarioMensual(private val diasMes: ArrayList<LocalDate?>, day
 
     interface OnItemSelectedListener {
         fun diaSeleccionado(context: Context?,position: Int)
+        fun nuevaFecha(fecha: LocalDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderCalendarioMensual {
@@ -46,6 +47,14 @@ class AdaptadorCalendarioMensual(private val diasMes: ArrayList<LocalDate?>, day
         if(forPDF){
             isPDF(holder, position, context)
         }else{
+            isApp(holder, position, context)
+        }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolderCalendarioMensual, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        val context = holder.itemView.context
+        if(payloads.contains("update")){
             isApp(holder, position, context)
         }
     }
@@ -142,6 +151,7 @@ class AdaptadorCalendarioMensual(private val diasMes: ArrayList<LocalDate?>, day
             val fecha = diasMes[position - daysOfWeek.size]
             if (fecha != null) {
                 holder.diaMes.text = fecha.dayOfMonth.toString()
+                holder.imagenDia.visibility = View.GONE
 
                 // Default background color
                 val defaultColor = if (isNight) {
@@ -187,6 +197,9 @@ class AdaptadorCalendarioMensual(private val diasMes: ArrayList<LocalDate?>, day
                     val position = fechas.indexOfFirst { it.fecha == selectedFecha }
                     if (position != -1) {
                         listener?.diaSeleccionado(itemView.context, position)
+                    }else{
+                        listener?.nuevaFecha(fecha)
+
                     }
                 }
             }

@@ -65,20 +65,6 @@ class GestionPlanificaciones : Serializable {
         return true
     }
 
-
-
-    /*fun insertarPictogramaPlan(idPlan: Int, actividad: Activity?, idPicto: Int, idPictoAPI: Int): Boolean {
-        conectorBD = ConectorBD(actividad)
-        conectorBD.abrir()
-        for (i in pictogramas.indices) {
-            resultado = conectorBD.insertarPictogramaPlan(idPicto, idPictoAPI, historia, idPlan)
-        }
-        conectorBD.cerrar()
-        return resultado
-    }*/
-
-
-
     fun listarPlanificaciones(idUsuario: String, actividad: Activity?): ArrayList<*> {
         listaPlanes = ArrayList()
         conectorBD = ConectorBD(actividad)
@@ -188,6 +174,7 @@ class GestionPlanificaciones : Serializable {
                 pictograma.historia = c.getString(5)
                 pictograma.duracion = c.getString(6)
                 pictograma.pictoEntretenimiento = c.getInt(7)
+                pictograma.posicion = c.getInt(8)
                 listaPictogramas.add(pictograma)
             } while (c.moveToNext())
         }
@@ -213,7 +200,7 @@ class GestionPlanificaciones : Serializable {
         conectorBD.cerrar()
     }
 
-    fun obtenerPictogramas(idUsuario: String, idEvento: String, context: Context?, language: String): ArrayList<*> {
+    fun obtenerPictogramas(idUsuario: String, idEvento: String, context: Context?, language: String): ArrayList<Pictograma> {
         conectorBD = ConectorBD(context)
         listaPictogramas = ArrayList()
         conectorBD.abrir()

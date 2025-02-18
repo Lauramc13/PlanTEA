@@ -32,9 +32,13 @@ class EventosPlanificadorViewModel: ViewModel(), AdaptadorPictogramaEntretenimie
     var dialog: Dialog? = null
     lateinit var eventos : ArrayList<Evento>
     lateinit var pictosEvento: ArrayList<Pictograma>
-    var _idPictoEntretenimiento = SingleLiveEvent<Int>()
-    val _fechaActual = MutableLiveData<String>()
-    val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
+    var seIdPictoEntretenimiento = SingleLiveEvent<Int>()
+    private val mdFechaActual = MutableLiveData<String>()
+    private val mdDiasMes = MutableLiveData<ArrayList<LocalDate?>>()
+
+    fun checkInitializedVariable(): Boolean {
+        return ::pictosEvento.isInitialized
+    }
 
     fun backCallBack(context: Context): OnBackPressedCallback {
         val callback = object : OnBackPressedCallback(true){
@@ -107,13 +111,13 @@ class EventosPlanificadorViewModel: ViewModel(), AdaptadorPictogramaEntretenimie
     }
 
     override fun onItemSeleccionadoEntre(idPicto: Int) {
-        _idPictoEntretenimiento.value = idPicto
+        seIdPictoEntretenimiento.value = idPicto
     }
 
     fun obtenerVistaMes() {
-        _fechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(
+        mdFechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(
             Locale.getDefault())
-        _diasMes.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+        mdDiasMes.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
     }
 
 

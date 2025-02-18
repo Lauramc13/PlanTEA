@@ -63,8 +63,8 @@ class EventosActivity : AppCompatActivity() {
         viewModel.isRunning = false
         CommonUtils.handler.removeCallbacksAndMessages(null)
 
-        viewModel._fechaActual.removeObservers(this)
-        viewModel._diasMes.removeObservers(this)
+        viewModel.mdFechaActual.removeObservers(this)
+        viewModel.mdDiasMes.removeObservers(this)
         //CommonUtils.textToSpeech.stop()
 
         var tachadosCopy = ArrayList<Int>()
@@ -94,26 +94,35 @@ class EventosActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Método que se ejecuta al reanudar la actividad. Se comprueba la configuracion del orden
+     * de los pictogramas y se ajusta el layout en consecuencia.
+     */
     override fun onResume() {
         super.onResume()
-
         val layoutManagerLinear: LinearLayoutManager
 
-        if(prefs.getBoolean("isVerticalPictogramas", false)){
+        // and if its vertical the requestedOrienteation
+        if (prefs.getBoolean("isVerticalPictogramas", false) && CommonUtils.isMobile(this) && requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             viewModel.recyclerView.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
             viewModel.recyclerView.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-            if(viewModel.listaPictogramas.size > 4){
+            if (viewModel.listaPictogramas.size > 4) {
                 val params = viewModel.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
-                params.setMargins(0, 350, 0, 300)
+                val marginTop = CommonUtils.dpToPx(90, resources)
+                val marginBottom = CommonUtils.dpToPx(75, resources)
+                params.setMargins(0, marginTop, 0, marginBottom)
                 viewModel.recyclerView.layoutParams = params
             }
-        }else{
+        } else {
             layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
             viewModel.recyclerView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             viewModel.recyclerView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            val params = viewModel.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+            val margins = if (CommonUtils.isMobile(this)) CommonUtils.dpToPx(10, resources) else CommonUtils.dpToPx(25, resources)
+            params.setMargins(margins, margins, margins, margins)
+            viewModel.recyclerView.layoutParams = params
         }
-
         viewModel.recyclerView.layoutManager = layoutManagerLinear
     }
 
@@ -122,12 +131,8 @@ class EventosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_eventos)
 
         // Si se va hacia atras y no hay nada en la cola, se redirige a MainActivity
-//        val callback = viewModel.backCallBack(this)
-//        onBackPressedDispatcher.addCallback(this, callback)
-
-//        if(CommonUtils.isMobile(this)){
-//            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-//        }
+        val callback = viewModel.backCallBack(this)
+        onBackPressedDispatcher.addCallback(this, callback)
 
         iconoDeshacer = findViewById(R.id.icon_deshacer)
         iconoDeshacerTodas = findViewById(R.id.icon_deshacerTodas)
@@ -152,6 +157,7 @@ class EventosActivity : AppCompatActivity() {
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)
 
+        //get string based on the language of the device
         dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
 
         viewModel.initializeAnimations(applicationContext)
@@ -185,32 +191,32 @@ class EventosActivity : AppCompatActivity() {
 
         //Este método se ejecutará al seleccionar el icono deshacer para volver un paso atrás en el seguimiento
         iconoDeshacer.setOnClickListener {
-            if (!viewModel._pasosCompletados.value?.isEmpty()!!) {
+            if (!viewModel.mdPasosCompletados.value?.isEmpty()!!) {
                 //if the next pictogram has timer, cancel it
-                if(viewModel.adaptador.listaPictogramas?.get(viewModel._pasosCompletados.value?.last() as Int)?.duracion != "null"){
+                if(viewModel.adaptador.listaPictogramas?.get(viewModel.mdPasosCompletados.value?.last() as Int)?.duracion != "null"){
                     viewModel.adaptador.countDownTimer?.cancel()
                     viewModel.adaptador.timeLeft = 0
-                    viewModel.adaptador.notifyItemChanged(viewModel._pasosCompletados.value?.last()!!.toInt(), "null")
+                    viewModel.adaptador.notifyItemChanged(viewModel.mdPasosCompletados.value?.last()!!.toInt(), "null")
                 }
-                viewModel.adaptador.notifyItemChanged(viewModel._pasosCompletados.value?.removeLast() as Int)
-                viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
+                viewModel.adaptador.notifyItemChanged(viewModel.mdPasosCompletados.value?.removeLast() as Int)
+                viewModel.mdPasosCompletados.postValue(viewModel.mdPasosCompletados.value)
             }
         }
 
         //Este método se ejecutará al seleccionar el icono deshacer para marcar todos los pictogramas como no realizados
         iconoDeshacerTodas.setOnClickListener {
-            if (!viewModel._pasosCompletados.value?.isEmpty()!!) {
+            if (!viewModel.mdPasosCompletados.value?.isEmpty()!!) {
                 viewModel.adaptador.countDownTimer?.cancel() //Cancelar si existe un temporizador activo
                 viewModel.adaptador.timeLeft = 0
-                val posicionPicto = viewModel._pasosCompletados.value?.last()!!.toInt()
+                val posicionPicto = viewModel.mdPasosCompletados.value?.last()!!.toInt()
                 if(viewModel.adaptador.listaPictogramas?.get(posicionPicto)?.duracion != "null"){
                     viewModel.adaptador.notifyItemChanged(posicionPicto, "desmarcarDuracion")
                 }
 
-                for(i in 0 until viewModel._pasosCompletados.value?.size!!){
+                for(i in 0 until viewModel.mdPasosCompletados.value?.size!!){
                     viewModel.adaptador.notifyItemChanged(i, "null")
-                    viewModel._pasosCompletados.value?.removeLast()
-                    viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
+                    viewModel.mdPasosCompletados.value?.removeLast()
+                    viewModel.mdPasosCompletados.postValue(viewModel.mdPasosCompletados.value)
                 }
 
             }
@@ -218,24 +224,24 @@ class EventosActivity : AppCompatActivity() {
 
         //Este método se ejecutará al seleccionar el icono marcar para marcar el pictograma actual como realizado
         iconoMarcar.setOnClickListener {
-            if (!viewModel._pasosCompletados.value?.isEmpty()!!) {
+            if (!viewModel.mdPasosCompletados.value?.isEmpty()!!) {
                 //val posicion = viewModel._pasosCompletados.value?.peek() as Int
-                val posicion = viewModel._pasosCompletados.value?.last() as Int
+                val posicion = viewModel.mdPasosCompletados.value?.last() as Int
                 viewModel.adaptador.notifyItemChanged(posicion+1)
-                viewModel._pasosCompletados.value?.add(posicion+1)
+                viewModel.mdPasosCompletados.value?.add(posicion+1)
             }else{
                 viewModel.adaptador.notifyItemChanged(0)
-                viewModel._pasosCompletados.value?.add(0)
+                viewModel.mdPasosCompletados.value?.add(0)
             }
-            viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
+            viewModel.mdPasosCompletados.postValue(viewModel.mdPasosCompletados.value)
         }
 
         // Este método se ejecutará al seleccionar el icono marcar para marcar todos los pictogramas como realizados
         iconoMarcarTodas.setOnClickListener {
             for (i in 0 until viewModel.listaPictogramas.size){
                 viewModel.adaptador.notifyItemChanged(i)
-                viewModel._pasosCompletados.value?.add(i)
-                viewModel._pasosCompletados.postValue(viewModel._pasosCompletados.value)
+                viewModel.mdPasosCompletados.value?.add(i)
+                viewModel.mdPasosCompletados.postValue(viewModel.mdPasosCompletados.value)
             }
         }
 
@@ -306,9 +312,9 @@ class EventosActivity : AppCompatActivity() {
          viewModel.eventos = viewModel.evento.obtenerTodosEventos(idUsuario!!, this)
          viewModel.obtenerVistaMes()
 
-         viewModel._fechaActual.observe(this) { fechaActual.text = it }
+         viewModel.mdFechaActual.observe(this) { fechaActual.text = it }
 
-         viewModel._diasMes.observe(this) {
+         viewModel.mdDiasMes.observe(this) {
              val ratio = if(it.size < 42) "7:6" else "1:1"
              val params = calendario.layoutParams as ConstraintLayout.LayoutParams
              params.dimensionRatio = ratio
@@ -350,10 +356,10 @@ class EventosActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observe(){
-        viewModel._diaText.observe(this) { dia.text = it }
+        viewModel.mdDiaText.observe(this) { dia.text = it }
         //viewModel._tituloLiveData.observe(this) { titulo.text = it }
 
-        viewModel._planLiveData.observe(this){
+        viewModel.mdPlanLiveData.observe(this){
             if (it != null) {
                     titulo.text = viewModel.tituloPlan
                     lblMensaje.visibility = View.GONE
@@ -371,14 +377,14 @@ class EventosActivity : AppCompatActivity() {
             }
 
             viewModel.adaptador = AdaptadorPresentacion(it, viewModel)
-            viewModel.adaptador.listMarcados = viewModel._pasosCompletados.value
+            viewModel.adaptador.listMarcados = viewModel.mdPasosCompletados.value
             viewModel.adaptador.tachados = viewModel.tachados
             viewModel.adaptador.imprevistos = viewModel.imprevistos
             viewModel.recyclerView.adapter = viewModel.adaptador
             viewModel.adaptador.notifyDataSetChanged()
         }
 
-        viewModel._noEvents.observe(this){
+        viewModel.seNoEvents.observe(this){
             val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
             if(it){
                 titulo.text = ""
@@ -402,7 +408,7 @@ class EventosActivity : AppCompatActivity() {
             }
         }
 
-        viewModel._pasosCompletados.observe(this){
+        viewModel.mdPasosCompletados.observe(this){
             if (it != null) {
                 if(it.isEmpty()){
                     iconoDeshacer.isEnabled = false
@@ -422,11 +428,11 @@ class EventosActivity : AppCompatActivity() {
             }
         }
 
-        viewModel._pictoChanged.observe(this){
+        viewModel.mdPictoChanged.observe(this){
             viewModel.adaptador.tachados.add(viewModel.posicionSelectedCambio)
             viewModel.adaptador.imprevistos.add(viewModel.posicionSelectedCambio+1)
 
-            val pictoNuevo = viewModel._nuevoPicto.value!!
+            val pictoNuevo = viewModel.seNuevoPicto.value!!
             pictoNuevo.historia = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].historia
             pictoNuevo.duracion = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].duracion
             pictoNuevo.pictoEntretenimiento = viewModel.listaPictogramas[viewModel.posicionSelectedCambio].pictoEntretenimiento
@@ -453,7 +459,7 @@ class EventosActivity : AppCompatActivity() {
         if(intent.getBooleanExtra("isFromSemana", false)){
             viewModel.diaSeleccionado(this, intent.getSerializableExtra("dia") as LocalDate)
         }else{
-            if(savedInstanceState == null) viewModel._pasosCompletados.value = ArrayList()
+            if(savedInstanceState == null) viewModel.mdPasosCompletados.value = ArrayList()
             viewModel.tituloPlan = intent.getStringExtra("titulo")!! //PETA AQUI CUANDO SE INTENTA COMPARTIR UN EVENTO
             viewModel.listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
 
@@ -482,13 +488,13 @@ class EventosActivity : AppCompatActivity() {
                 }
             }
 
+            //         dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
             val fecha = intent.getSerializableExtra("fecha") as LocalDate
             CalendarioUtilidades.fechaSeleccionada = fecha
-            val diaSemana = fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale("es")).replaceFirstChar { it.uppercase() }
-            val mes = fecha.month.getDisplayName(TextStyle.FULL, Locale("es"))
-            val diaText = "$diaSemana, ${fecha.dayOfMonth} de $mes"
-            dia.text = diaText
-            viewModel._planLiveData.value = viewModel.listaPictogramas
+            // <string name="formatted_date">%1$s, %2$s of %3$s</string>
+            dia.text = getString(R.string.formatted_date, fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, fecha.dayOfMonth, fecha.month.getDisplayName(TextStyle.FULL, Locale.getDefault()))
+
+            viewModel.mdPlanLiveData.value = viewModel.listaPictogramas
         }
     }
 
@@ -527,7 +533,7 @@ class EventosActivity : AppCompatActivity() {
         viewModel.adaptador.animatedPositions.clear()
         iconoReproducir.setIconResource(R.drawable.svg_play)
         viewModel.adaptador.listMarcados?.clear()
-        viewModel._pasosCompletados.value?.clear()
+        viewModel.mdPasosCompletados.value?.clear()
         viewModel.adaptador.notifyDataSetChanged()
         viewModel.stopReproductor()
     }
@@ -537,7 +543,7 @@ class EventosActivity : AppCompatActivity() {
         iconoReproducir.setIconResource(R.drawable.svg_stop)
        // viewModel.adaptador.optionMarcar = false
         viewModel.adaptador.listMarcados?.clear()
-        viewModel._pasosCompletados.value?.clear()
+        viewModel.mdPasosCompletados.value?.clear()
         viewModel.adaptador.notifyDataSetChanged()
 
         iconoMarcar.isEnabled = false

@@ -24,6 +24,23 @@ class GestionSemana {
         return resultado
     }
 
+    fun obtenerColoresHeader(idUsuario: String, activity: Activity?): ArrayList<String>? {
+        conectorBD = ConectorBD(activity)
+        conectorBD!!.abrir()
+        val cursor = conectorBD!!.obtenerColoresHeader(idUsuario)
+        val colors = arrayOf("", "", "", "", "", "", "").toCollection(ArrayList())
+        if (cursor.moveToFirst()) {
+            val colorsString = cursor.getString(0) ?: return colors
+            val colorsArray = colorsString.split(", ")
+            for (color in colorsArray) {
+                colors.add(color)
+            }
+        }
+
+        conectorBD!!.cerrar()
+        return colors
+    }
+
     fun obtenerConfigDias(idUsuario: String, days: MutableList<String>, activity: Activity?): ArrayList<DiaSemana> {
         conectorBD = ConectorBD(activity)
         conectorBD!!.abrir()
@@ -71,6 +88,13 @@ class GestionSemana {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         conectorBD!!.guardarConfiguracionWeek(idUsuario, configurationWeek)
+        conectorBD!!.cerrar()
+    }
+
+    fun guardarColorsHeader(idUsuario: String, colorsHeader: ArrayList<String>, actividad: Activity?){
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.guardarColorsHeader(idUsuario, colorsHeader)
         conectorBD!!.cerrar()
     }
 

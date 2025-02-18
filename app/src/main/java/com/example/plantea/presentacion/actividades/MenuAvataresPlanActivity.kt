@@ -1,7 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -26,9 +28,15 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     private val viewModel by viewModels<MenuAvataresViewModel>()
     private var isConfiguration = false
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_avatares)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         setAvatarOnClickListeners(listOf("avatar1chica", "avatar2chica", "avatar3chica","avatar4chica", "avatar5chica", "avatar1chico", "avatar2chico", "avatar3chico", "avatar4chico", "avatar5chico"))
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         createPickMedia()
@@ -60,7 +68,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
         viewModel.pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 viewModel.bitmap = CommonUtils.uriToBitmap(this, uri)
-                viewModel._imageSelected.value = true
+                viewModel.mdImageSelected.value = true
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
@@ -68,7 +76,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
     }
 
     fun observers(){
-        viewModel._imageSelected.observe(this){
+        viewModel.mdImageSelected.observe(this){
             val editor = prefs.edit()
             if(isConfiguration){
                 editor.putString("imagenPlanificadorConfig",CommonUtils.bitmapToByteArray(viewModel.bitmap).toPreservedString)

@@ -3,10 +3,8 @@ package com.example.plantea.presentacion.actividades
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.provider.MediaStore
@@ -16,46 +14,26 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.TranslateAnimation
-import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SearchView
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.text.toUpperCase
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
-import com.example.plantea.dominio.CalendarioUtilidades
-import com.example.plantea.dominio.Categoria
-import com.example.plantea.dominio.DiaMes
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
-import com.example.plantea.presentacion.fragmentos.CategoriasPictogramasFragment
-import com.example.plantea.presentacion.viewModels.CalendarioMensualViewModel
-import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
-import com.example.plantea.presentacion.viewModels.EventosViewModel
-import com.example.plantea.presentacion.viewModels.SemanaViewModel
 import com.example.plantea.presentacion.viewModels.SingleLiveEvent
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.Instant
-import java.time.ZoneId
 import java.util.Locale
 
 class AniadirPictoUtils  {
@@ -68,15 +46,16 @@ class AniadirPictoUtils  {
         interface CustomViewModel {
             val pictograma: Pictograma
             val idUsuario: String
-            var _nuevoPicto: SingleLiveEvent<Pictograma?>
-            var _listaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>>
-            var _listaPictogramas: SingleLiveEvent<ArrayList<Pictograma>>
             var adaptadorRandomPictos: AdaptadorNuevoPicto
-            var _imageSelected: SingleLiveEvent<Bitmap>
             var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
             var saltar: Boolean
             var isEditImage: Boolean
             var isCalendarioMensual: Boolean
+
+            var seNuevoPicto: SingleLiveEvent<Pictograma?>
+            var selistaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>>
+            var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>>
+            var seimageSelected: SingleLiveEvent<Bitmap>
 
             val onItemSelectedListener: AdaptadorNuevoPicto.OnItemSelectedListener
 
@@ -86,7 +65,7 @@ class AniadirPictoUtils  {
 
             @SuppressLint("NotifyDataSetChanged")
              fun initializeAniadirPicto(viewModel: CustomViewModel, activity: Activity, recyclerViewBusqueda: RecyclerView) {
-                viewModel._nuevoPicto.observe(activity as AppCompatActivity) {
+                viewModel.seNuevoPicto.observe(activity as AppCompatActivity) {
                     buttonSiguiente.isEnabled = true
                 }
 
@@ -104,7 +83,7 @@ class AniadirPictoUtils  {
                     recyclerViewBusqueda.adapter = viewModel.adaptadorRandomPictos
                 }
 
-                viewModel._listaPictoRandom.observe(activity) {
+                viewModel.selistaPictoRandom.observe(activity) {
                     viewModel.adaptadorRandomPictos.listaPictogramas = it
                     viewModel.adaptadorRandomPictos.notifyDataSetChanged()
                 }
@@ -125,9 +104,9 @@ class AniadirPictoUtils  {
 
                     if (pictogramasBusqueda.isNotEmpty()) {
                         if(isNuevoPictoBusqueda){
-                            _listaPictoRandom.postValue(pictogramasBusqueda)
+                            selistaPictoRandom.postValue(pictogramasBusqueda)
                         } else{
-                            _listaPictogramas.postValue(pictogramasBusqueda)
+                            selistaPictogramas.postValue(pictogramasBusqueda)
                         }
 
                     }
@@ -147,7 +126,7 @@ class AniadirPictoUtils  {
                         imgPicto.setImageURI(uri)
                         val picto = Pictograma()
                         picto.imagen = MediaStore.Images.Media.getBitmap(activity.contentResolver, uri)
-                        viewModel._nuevoPicto.value = picto
+                        viewModel.seNuevoPicto.value = picto
 
                         if (CommonUtils.isDarkMode(activity)) {
                             imgPicto.background = ColorDrawable(Color.parseColor("#323F4B"))
@@ -302,6 +281,5 @@ class AniadirPictoUtils  {
             buttonDefault.icon = null
             buttonAmarillo.icon = null
         }
-
     }
 }

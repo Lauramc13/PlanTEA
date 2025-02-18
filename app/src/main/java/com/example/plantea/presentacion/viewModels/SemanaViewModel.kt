@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -30,8 +28,6 @@ import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.DiaSemana
 import com.example.plantea.dominio.Evento
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils
-import com.example.plantea.presentacion.actividades.AniadirPictoUtils.Companion
-import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorNuevoPicto
 import com.example.plantea.presentacion.adaptadores.AdaptadorTablaSemana
 import com.google.android.material.button.MaterialButton
@@ -46,15 +42,14 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
 
     override val pictograma: Pictograma = Pictograma()
     override var idUsuario: String = ""
-    override var _nuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
-    override var _listaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var seNuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
+    override var selistaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
     override lateinit var adaptadorRandomPictos: AdaptadorNuevoPicto
-    override var _listaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
-    override var _imageSelected = SingleLiveEvent<Bitmap>()
+    override var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var seimageSelected = SingleLiveEvent<Bitmap>()
     override var saltar = false
     override var isEditImage = false
     override var isCalendarioMensual = false
-
 
     override lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var daySelected = ""
@@ -62,11 +57,11 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
     lateinit var week: ArrayList<DiaSemana>
     var isEdit = false
     var configuration = 0
+    var colorsHeader: ArrayList<String>? = null
 
-    var _itemBorrado = MutableLiveData<Int>()
-    var _itemColor = MutableLiveData<Int>()
-    var _diaClicked = MutableLiveData<String?>()
-
+    var mdItemBorrado = MutableLiveData<Int>()
+    var mdItemColor = MutableLiveData<Int>()
+    var mdDiaClicked = MutableLiveData<String?>()
 
     fun configureUser(prefs : SharedPreferences){
         val userId = prefs.getString("idUsuario", "")
@@ -117,17 +112,18 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
     }
 
     override fun onBorrarItemSeleccionado(posicion: Int) {
-        _itemBorrado.value = posicion
+        mdItemBorrado.value = posicion
     }
 
-    override fun onColorSelected(posicion: Int, color: String?, activity: Activity) {
-        colorSelected = color
-        _itemColor.value = posicion
+    override fun onColorSelected(posicion: Int, colorHeader: String?, colorBody:String?, activity: Activity) {
+        colorSelected = colorBody
+        colorsHeader?.set(posicion, colorHeader.toString())
+        mdItemColor.value = posicion
     }
 
     override fun onDiaClicked(posicion: Int, activity: Activity) {
         if(week[posicion].idEvento != null){
-            _diaClicked.value = posicion.toString()
+            mdDiaClicked.value = posicion.toString()
         }
     }
 
@@ -184,7 +180,7 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
     //Metodos de la interfaz de AniadirPictoUtils
     override val onItemSelectedListener = object : AdaptadorNuevoPicto.OnItemSelectedListener {
         override fun onNuevoPicto(pictogram: Pictograma?) {
-            _nuevoPicto.value = pictogram
+            seNuevoPicto.value = pictogram
         }
     }
 
@@ -197,7 +193,7 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
         view.removeAllViews()
         view.addView(activity.layoutInflater.inflate(R.layout.fragment_nuevo_picto_semana, null))
         val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-        imagenPicto.setImageBitmap(_nuevoPicto.value?.imagen)
+        imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
 
         imagenPicto.setOnClickListener {
             buttons.visibility = View.VISIBLE
@@ -214,7 +210,7 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
             if (imagenPicto.drawable == null) {
                 Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
             } else {
-                _imageSelected.value = (imagenPicto.drawable as BitmapDrawable).bitmap
+                seimageSelected.value = (imagenPicto.drawable as BitmapDrawable).bitmap
                 dialogo.dismiss()
             }
         }

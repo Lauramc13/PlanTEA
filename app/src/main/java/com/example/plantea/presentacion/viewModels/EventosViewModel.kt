@@ -68,26 +68,26 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
     override val pictograma: Pictograma = Pictograma()
     override var idUsuario: String = ""
-    override var _nuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
-    override var _listaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var seNuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()
+    override var selistaPictoRandom: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
     override lateinit var adaptadorRandomPictos: AdaptadorNuevoPicto
-    override var _listaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
-    override var _imageSelected = SingleLiveEvent<Bitmap>()
+    override var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
+    override var seimageSelected = SingleLiveEvent<Bitmap>()
     override lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     override var saltar = false
     override var isEditImage = false
     override var isCalendarioMensual = false
 
     var fechaSeleccionada : LocalDate = LocalDate.now()
-    var _diaText = MutableLiveData<String>()
     var tituloPlan = String()
-    val _fechaActual = MutableLiveData<String>()
-    val _diasMes = MutableLiveData<ArrayList<LocalDate?>>()
-    val _planLiveData: MutableLiveData<ArrayList<Pictograma>?> = MutableLiveData()
-    val _noEvents = SingleLiveEvent<Boolean>()
-    var _pasosCompletados = MutableLiveData<ArrayList<Int>?>()
+    var mdDiaText = MutableLiveData<String>()
+    val mdFechaActual = MutableLiveData<String>()
+    val mdDiasMes = MutableLiveData<ArrayList<LocalDate?>>()
+    val mdPlanLiveData: MutableLiveData<ArrayList<Pictograma>?> = MutableLiveData()
+    val seNoEvents = SingleLiveEvent<Boolean>()
+    var mdPasosCompletados = MutableLiveData<ArrayList<Int>?>()
 
-    var _pictoChanged = SingleLiveEvent<Boolean>()
+    var mdPictoChanged = SingleLiveEvent<Boolean>()
     var posicionSelectedCambio = -1
 
     var countDownTimer: CountDownTimer? = null
@@ -149,7 +149,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         val month = monthFormatter.format(fecha)
 
         if (context != null) {
-            _diaText.value =  context.getString(R.string.formatted_date, dayOfWeek, dayOfMonth, month)
+            mdDiaText.value =  context.getString(R.string.formatted_date, dayOfWeek, dayOfMonth, month)
         }
 
         //_dismissDialog.value = true
@@ -158,7 +158,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     }
 
     fun mostrarPlan(context: Context?) {
-        _pasosCompletados.value = ArrayList()
+        mdPasosCompletados.value = ArrayList()
         val idUsuarioEvento = if(idUsuarioTEA != ""){ //TODO: Tecnicamente no es necesario hacer esto ya que siempre va a ser idUsuarioTEA o se va a proporcionar los pictogramas si es idUsuario
             idUsuarioTEA
         }else{
@@ -170,7 +170,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         if(check > -1){
             //existe un evento visible para este dia
             evento = evento.obtenerEventoPlan(idUsuarioEvento, selectedDate, context)
-            listaPictogramas = idUsuarioEvento.let { plan.mostrarPlanificacion(it, evento.id.toString(), context, Locale.getDefault().language) } as ArrayList<Pictograma>
+            listaPictogramas = plan.mostrarPlanificacion(idUsuarioEvento, evento.id.toString(), context, Locale.getDefault().language)
             tituloPlan = evento.nombre.toString()
 
             for (pictogram in listaPictogramas) {
@@ -178,7 +178,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
                     pictogram.imagen = BitmapFactory.decodeResource(context?.resources, R.drawable.loading_placeholder)
             }
 
-            _planLiveData.value = listaPictogramas
+            mdPlanLiveData.value = listaPictogramas
 
             CoroutineScope(Dispatchers.Main).launch {
                 listaPictogramas.forEach { pictogram ->
@@ -191,7 +191,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
                 }
             }
         }else{
-            _noEvents.value = true
+            seNoEvents.value = true
         }
     }
 
@@ -199,10 +199,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         val check = evento.checkEventosDia(idUsuario, selectedDate, context as Activity)
 
         if(check > -1){
-            _planLiveData.value = _planLiveData.value
-            _pasosCompletados.value = _pasosCompletados.value
+            mdPlanLiveData.value = mdPlanLiveData.value
+            mdPasosCompletados.value = mdPasosCompletados.value
         }else{
-            _noEvents.value = true
+            seNoEvents.value = true
 
         }
     }
@@ -232,8 +232,8 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     }
 
     fun obtenerVistaMes() {
-        _fechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
-        _diasMes.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+        mdFechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
+        mdDiasMes.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
     }
 
     fun configureUser(prefs : SharedPreferences, context: Context){
@@ -319,10 +319,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
         btnAnterior?.setOnClickListener {
             // Quitamos el actual y el anterior ya que en el siguente onItemSeleccionado se va a añadir de nuevo
-            _pasosCompletados.value?.removeLast()
-            _pasosCompletados.value?.removeLast()
+            mdPasosCompletados.value?.removeLast()
+            mdPasosCompletados.value?.removeLast()
 
-            adaptador.listMarcados = _pasosCompletados.value!!
+            adaptador.listMarcados = mdPasosCompletados.value!!
             adaptador.notifyItemChanged(posicion)
 
             onItemSeleccionado(context, posicion - 1)
@@ -356,15 +356,15 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
 
         if(adaptador.imprevistos.contains(posicion)){
-            _pasosCompletados.value?.add(posicion-1)
-            _pasosCompletados.value?.add(posicion)
+            mdPasosCompletados.value?.add(posicion-1)
+            mdPasosCompletados.value?.add(posicion)
             }
         else{
-            _pasosCompletados.value?.add(posicion)
+            mdPasosCompletados.value?.add(posicion)
         }
 
 
-        _pasosCompletados.postValue(_pasosCompletados.value)
+        mdPasosCompletados.postValue(mdPasosCompletados.value)
         adaptador.notifyItemChanged(posicion, "marcar")
 
         if(posicion != 0 && listaPictogramas[posicion-1].duracion.toString() != "null"){
@@ -386,10 +386,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     }
 
     override fun checkPosition(posicion: Int): Boolean {
-        return if(_pasosCompletados.value?.isEmpty()!!){
+        return if(mdPasosCompletados.value?.isEmpty()!!){
             posicion == 0 || imprevistos.contains(posicion)
         }else{
-            _pasosCompletados.value?.last()!! + 1 == posicion || (_pasosCompletados.value?.last()!!+2  == posicion && imprevistos.contains(posicion))
+            mdPasosCompletados.value?.last()!! + 1 == posicion || (mdPasosCompletados.value?.last()!!+2  == posicion && imprevistos.contains(posicion))
         }
     }
 
@@ -545,7 +545,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     //Metodos de la interfaz de AniadirPictoUtils
     override val onItemSelectedListener = object : AdaptadorNuevoPicto.OnItemSelectedListener {
         override fun onNuevoPicto(pictogram: Pictograma?) {
-            _nuevoPicto.value = pictogram
+            seNuevoPicto.value = pictogram
         }
     }
 
@@ -563,7 +563,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
 
         val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-        imagenPicto.setImageBitmap(_nuevoPicto.value?.imagen)
+        imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
 
         imagenPicto.setOnClickListener {
             buttons.visibility = View.VISIBLE
@@ -582,7 +582,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             if (imagenPicto.drawable == null) {
                 Toast.makeText(activity, R.string.toast_necesita_imagen, Toast.LENGTH_SHORT).show()
             } else {
-                _pictoChanged.value = true
+                mdPictoChanged.value = true
                 dialogo.dismiss() //Cerrar dialogo
             }
         }

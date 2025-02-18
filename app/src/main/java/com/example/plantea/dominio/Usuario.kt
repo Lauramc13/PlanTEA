@@ -55,7 +55,6 @@ class Usuario {
     }
 
     fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, rutaImagen: ByteArray?, idUsuario:String?, actividad: Activity?) {
-        //return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, nombreUsuarioTEA, nombreObjeto, rutaPlanificador, rutaUsuarioTEA, rutaObjeto, idUsuario, actividad)
         return gestorUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, rutaImagen, idUsuario, actividad)
     }
 

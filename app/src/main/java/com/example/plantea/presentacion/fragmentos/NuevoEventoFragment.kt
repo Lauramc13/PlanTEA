@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,21 +13,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +32,7 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorPlanesEventos
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
+import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -71,6 +63,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
    // private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
+    private val viewModelEventosPlanificador by activityViewModels<EventosPlanificadorViewModel>()
 
     private var permisosGranted = false
 
@@ -114,12 +107,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         btnHora = vista.findViewById(R.id.btn_horaEvento)
         btnGuardar = vista.findViewById(R.id.btn_guardarEvento)
         btnBorrar = vista.findViewById(R.id.btn_borrarEvento)
-        //btn_planificar = vista.findViewById(R.id.btn_planificar)
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
-//        mensajePlanes = vista.findViewById(R.id.lbl_mensajePlanes)
         listaPlanificaciones = vista.findViewById(R.id.recycler_planificaciones)
         layoutPlanificaciones = vista.findViewById(R.id.layout)
-        //tituloEvento = vista.findViewById(R.id.txt_tituloEvento)
         switchReminder = vista.findViewById(R.id.switch_recordatorio)
         radioButtonVista = vista.findViewById(R.id.switch_hacer_visible)
 
@@ -144,7 +134,16 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
             val evento = Evento(viewModel.eventoIdEdited, idUserTEA, viewModel.planes[viewModel.posicionPlan].getTitulo(), CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado, radioButtonVista.isChecked, null)
             val parentActivity: EventosPlanificadorActivity? = activity as EventosPlanificadorActivity?
-            context?.let { it1 -> viewModel.nuevoEventoEdit(it1, evento, parentActivity)}
+
+            val pictosEvento = if(viewModelEventosPlanificador.checkInitializedVariable()){
+                viewModelEventosPlanificador.pictosEvento
+            }else{
+                null
+            }
+            viewModel.nuevoEventoEdit(requireContext(), evento, pictosEvento, parentActivity)
+
+
+
             dismiss()
         }
 
@@ -154,14 +153,10 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
         configurarEvento()
 
-        /**/
-
-      /*  btnPlanificar.setOnClickListener {
-            val intent = Intent(context, CrearPlanActivity::class.java)
-            startForResult.launch(intent)
-        }*/
-
         cancelarEvento.setOnClickListener {
+            if(viewModel.isEditing){
+                viewModel.cancelarEventoEdit()
+            }
             if(CommonUtils.isMobile(requireContext())) {
                 switchReminder.isChecked = false
                 dismiss()
@@ -197,7 +192,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
         dialog?.setOnCancelListener { switchReminder.isChecked = false }
 
-        viewModel._planSeleccionado.observe(viewLifecycleOwner) {
+        viewModel.sePlanSeleccionado.observe(viewLifecycleOwner) {
             viewModel.isPlanSeleccionado = true
             viewModel.posicionPlan = it
             btnGuardar.isEnabled = true
@@ -230,8 +225,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }
             viewModel.eventoIdEdited = idEventoEdit!!
             btnGuardar.isEnabled = true
-            btnGuardar.text = getString(R.string.editar)
-            btnGuardar.icon = ContextCompat.getDrawable(actividad, R.drawable.svg_edit_outline)
             btnBorrar.visibility = View.VISIBLE
             viewModel.isPlanSeleccionado = true
             viewModel.planSeleccionado = idPlanEdit
@@ -241,8 +234,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }else{
             viewModel.eventoIdEdited = 0
             viewModel.isEditing = false
-            btnGuardar.text = getString(R.string.btn_Guardar)
-            btnGuardar.icon = ContextCompat.getDrawable(actividad, R.drawable.svg_save)
             viewModel.isPlanSeleccionado = false
             adaptador.setItemSelected(-1)
             btnGuardar.isEnabled = false
@@ -297,7 +288,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             if(!checkBoxPersonalizar.isChecked && !checkboxMin.isChecked && !checkboxHora.isChecked && !checkboxDia.isChecked){
                 switchReminder.isChecked = false
             }
-            //delete dialog
             dialogReminder.dismiss()
         }
 
@@ -327,10 +317,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }
 
         iconCerrar.setOnClickListener {
-            if(!checkBoxPersonalizar.isChecked && !checkboxMin.isChecked && !checkboxHora.isChecked && !checkboxDia.isChecked){
-                switchReminder.isChecked = false
-            }
+            checkReminderChecked(checkBoxPersonalizar, checkboxMin, checkboxHora, checkboxDia)
             dialogReminder.dismiss()
+        }
+
+        dialogReminder.setOnCancelListener {
+            checkReminderChecked(checkBoxPersonalizar, checkboxMin, checkboxHora, checkboxDia)
         }
         dialogReminder.show()
     }
@@ -374,7 +366,8 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     }
 
     override fun planSeleccionado(posicion: Int, context: Context) {
-        viewModel.configureDataPlanSeleccionado(posicion)
+        val parent = activity as EventosPlanificadorActivity
+        viewModel.configureDataPlanSeleccionado(posicion, parent)
         btnGuardar.isEnabled = true
     }
 
@@ -411,19 +404,22 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             parentActivity?.viewModel?.deleteEvento(actividad, requireContext(), posicion!!)
             parentActivity?.adaptador?.notifyItemRemoved(posicion!!)
 
-            if(viewModel.eventos.isEmpty()){
-                parentActivity?.findViewById<LinearLayout>(R.id.layout_no_eventos)?.visibility = View.VISIBLE
-            }
-
+            viewModel.closeFragment(parentActivity)
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
+    private fun checkReminderChecked(cb1: MaterialSwitch, cb2: MaterialSwitch, cb3: MaterialSwitch, cb4: MaterialSwitch){
+        if(!cb1.isChecked && !cb2.isChecked && !cb3.isChecked && !cb4.isChecked){
+            switchReminder.isChecked = false
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         configurarEvento()
-     }
+    }
 }

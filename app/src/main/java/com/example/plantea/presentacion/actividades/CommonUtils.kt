@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -30,12 +31,10 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
@@ -46,8 +45,6 @@ import com.example.plantea.R
 import com.example.plantea.dominio.JsonPictogramaItem
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.presentacion.ApiInterface
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,27 +58,18 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
-import java.text.Normalizer
 import java.util.Locale
-import java.util.UUID
 
 class CommonUtils{
-
-
     companion object {
-        //lateinit var textToSpeech: TextToSpeech
-        //var listener: TextToSpeechListener? = null
-
         val handler = Handler(Looper.getMainLooper())
         lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
-
         private val wordToLemmaEs = mutableMapOf<String, MutableList<String>>()
         private val wordToLemmaEn = mutableMapOf<String, MutableList<String>>()
 
         val String.toPreservedByteArray: ByteArray
             get() {
-                return this.toByteArray(Charsets.ISO_8859_1)
+                return this.toByteArray(Charsets.ISO_8859_1) // TODO: mirar si se puede cambiar por UTF_8
             }
 
         val ByteArray.toPreservedString: String
@@ -103,31 +91,9 @@ class CommonUtils{
             }
         }
 
-        // to call the listener when the speech is done
-       /* private val textToSpeechOnInitListener = TextToSpeech.OnInitListener { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                textToSpeech.language = Locale(Locale.getDefault().language)
-                textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    override fun onStart(utteranceId: String) {
-                        Log.d("prueba", "onStart: $utteranceId")
-                    }
-
-                    override fun onDone(utteranceId: String) {
-                        Log.d("prueba", "onDone: $utteranceId")
-                        listener?.onSpeechDone()
-                    }
-
-                    override fun onError(utteranceId: String) {
-                        Log.e("prueba", "onError: $utteranceId")
-                    }
-                })
-            } else {
-                Log.e("prueba", "TextToSpeech initialization failed")
-
-            }
-        }*/
-
-        // check if the device is a mobile or a tablet
+        /**
+         * Función que comprueba si el dispositivo es un móvil o una tablet
+         */
         fun isMobile(context: Context): Boolean {
             val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val display = windowManager.defaultDisplay
@@ -136,13 +102,15 @@ class CommonUtils{
             val density = displayMetrics.density
             val widthPixels = displayMetrics.widthPixels
             val heightPixels = displayMetrics.heightPixels
-            val shortestDimensionInPixels = (Math.min(widthPixels, heightPixels) /density).toInt()
+            val shortestDimensionInPixels = (widthPixels.coerceAtMost(heightPixels) /density).toInt()
 
             return shortestDimensionInPixels < 700
         }
 
-
-        fun getGridValueCuaderno(vista: View, context: Context?, recyclerView: RecyclerView, constraintLayout: ConstraintLayout, widthItem: Int, widthItemTablet: Int){
+        /**
+         * Función que calcula el número de columnas que se mostrarán en el RecyclerView del cuaderno
+         */
+        fun getGridValueContainer(vista: View, context: Context?, recyclerView: RecyclerView, constraintLayout: ConstraintLayout, widthItem: Int, widthItemTablet: Int){
             vista.viewTreeObserver.addOnGlobalLayoutListener(object :
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -178,6 +146,9 @@ class CommonUtils{
             constraintLayout.viewTreeObserver.addOnGlobalLayoutListener(globalLayoutListener)
         }
 
+        /**
+         * Función que realiza la llamada a la API para obtener los pictogramas
+         */
         private fun getRetrofitBuilder(): ApiInterface {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -186,6 +157,9 @@ class CommonUtils{
                 .create(ApiInterface::class.java)
         }
 
+        /**
+         * Función que realiza la llamada a la API para obtener las imágenes de los pictogramas
+         */
         private fun getRetrofitBuilderImg(): ApiInterface {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
@@ -194,6 +168,9 @@ class CommonUtils{
                 .create(ApiInterface::class.java)
         }
 
+        /**
+         * Función que realiza la lógica para obtener los datos de la API
+         */
         fun getDataApi(query: String): MutableMap<Bitmap, Pair<String, Int>> {
             val retrofitBuilderImg = getRetrofitBuilderImg()
 
@@ -201,9 +178,7 @@ class CommonUtils{
             val listaIds = mutableListOf<Int>()
             val listaTitulos = mutableListOf<String>()
 
-             val cleanQuery  = query.lowercase().replace(",", "")
-
-            //val encodedQuery = encodeQuery(query)
+             val cleanQuery  = query.lowercase().replace(",", "").replace(".", "%2E")
             pedirDatosAPI(cleanQuery, listaIds, listaTitulos)
 
             if(listaIds.isEmpty()){
@@ -230,12 +205,13 @@ class CommonUtils{
                 }
             }
 
-            val image = textAsBitmap(query, 100f)
+            val image = textAsBitmap(query)
             val idImageCreated = wordToInt(query)
             dict[image] = Pair(query, idImageCreated)
 
             return dict
         }
+
 
         private fun wordToInt(word: String): Int {
             var id= 0
@@ -247,7 +223,6 @@ class CommonUtils{
             return id
         }
 
-        // Converts an integer back into the original word
         private fun intToWord(id: Int): String {
             var currentId = id
             val base = 128
@@ -265,6 +240,9 @@ class CommonUtils{
             return wordBuilder.reverse().toString()
         }
 
+        /**
+         * Función que realiza la lematización del verbo en español o en inglés
+         */
         private fun lemmatizar(query: String): MutableList<String> {
             return if (Locale.getDefault().language == "es") {
                 wordToLemmaEs[query] ?: mutableListOf(query)
@@ -301,6 +279,7 @@ class CommonUtils{
             }
         }
 
+
         private fun encodeQuery(query: String): String {
             val queryEncoded = URLEncoder.encode(query, "utf-8")
             if(queryEncoded.contains(".")){
@@ -330,9 +309,9 @@ class CommonUtils{
             }
         }
 
-        private fun textAsBitmap(text: String?, textSize: Float): Bitmap {
+        private fun textAsBitmap(text: String?): Bitmap {
             val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-            paint.textSize = textSize
+            paint.textSize = 100f
             paint.color = Color.BLACK
             paint.textAlign = Paint.Align.LEFT
             val textBounds = Rect()
@@ -340,8 +319,8 @@ class CommonUtils{
             var width = (paint.measureText(text) + 0.5f).toInt()
 
             if (width > 300) {
-                val textSize = 300f / width * 100
-                paint.textSize = textSize
+                val textSizePaint = 300f / width * 100
+                paint.textSize = textSizePaint
                 width = 300
             }
             val image = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888)
@@ -355,61 +334,10 @@ class CommonUtils{
             return image
         }
 
-      /*  fun crearImagen(bitmap: Bitmap, titulo: String?, context: Context): Uri {
-            val tituloEncoded = URLEncoder.encode(titulo, StandardCharsets.UTF_8.toString())
-            val width = bitmap.width
-            val height = bitmap.height
-            val outputBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(outputBitmap)
-            canvas.drawColor(Color.WHITE)
-            canvas.drawBitmap(bitmap, 0f, 0f, null)
-            val numero = UUID.randomUUID()
-
-            val filename = "$tituloEncoded$numero.jpg"
-            val outputStream: FileOutputStream
-            try {
-                outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
-                outputBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            return Uri.fromFile(File(context.filesDir, filename))
-        }
-
-        fun initializeTextToSpeech(context: Context) {
-            textToSpeech = TextToSpeech(context, textToSpeechOnInitListener)
-        }
-
-        fun textToSpeechOn(listaPictogramas: ArrayList<Pictograma>){
-
-            listaPictogramas.forEachIndexed { index, pictograma ->
-                    if (index == listaPictogramas.lastIndex) {
-                        textToSpeech.speak(pictograma.titulo!!.lowercase(), TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
-                    }else{
-                        textToSpeech.speak(pictograma.titulo!!.lowercase(), TextToSpeech.QUEUE_ADD, null, null)
-                    }
-            }
-        }
-
-         fun textToSpeechWord(word: String?){
-           textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID)
-        }*/
-
         fun hideKeyboard(context: Context, view: View){
             val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
-
-       /* fun crearRuta(context: Context, image: Bitmap, nombreImagen: String): String {
-            //Escalar imagen
-            val proporcion = 2000 / image.width.toFloat()
-            val imagenFinal = Bitmap.createScaledBitmap(image, 2000, (image.height * proporcion).toInt(), false)
-
-            //Guardar imagen
-            return guardarImagen(context, nombreImagen, imagenFinal)
-        }*/
 
         fun guardarImagen(context: Context, nombre: String, imagen: Bitmap): String {
             val cw = ContextWrapper(context)
@@ -453,45 +381,6 @@ class CommonUtils{
             return pronombres.any { it.equals(query.lowercase(Locale.getDefault()), ignoreCase = true) }
         }
 
-     /*   private fun Snackbar.setIcon(drawable: Drawable, @ColorInt colorTint: Int): Snackbar {
-            return this.apply {
-                setAction(" ") {dismiss()}
-                val textView = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_action)
-                textView.text = ""
-
-                drawable.setTint(colorTint)
-                drawable.setTintMode(PorterDuff.Mode.SRC_ATOP)
-                textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-            }
-        }*/
-
-       /* fun showSnackbar(view: View, context: Context, message: String){
-            val snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
-            var color = ContextCompat.getColor(context, R.color.md_theme_light_primary)
-
-            if(Configuration.UI_MODE_NIGHT_YES == context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                color = ContextCompat.getColor(context, R.color.md_theme_dark_onTertiary)
-            }
-
-            val drawable = ContextCompat.getDrawable(context, R.drawable.svg_close)
-            if (drawable != null) {
-                snackbar.setIcon(drawable, color)
-            }
-            snackbar.show()
-        }*/
-
-       /* fun drawableToBitmap(image:Drawable): Bitmap {
-            if (image is BitmapDrawable) {
-                return image.bitmap
-            }
-
-            val bitmap = Bitmap.createBitmap(image.intrinsicWidth, image.intrinsicHeight, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            image.setBounds(0, 0, canvas.width, canvas.height)
-            image.draw(canvas)
-            return bitmap
-        }*/
-
         fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
@@ -505,6 +394,7 @@ class CommonUtils{
         fun isDarkMode(activity: Activity): Boolean {
             return Configuration.UI_MODE_NIGHT_YES == activity.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         }
+
 
         fun loadLemmatizer(language: String, context: Context) {
             if(wordToLemmaEn.isNotEmpty() && language == "en" || wordToLemmaEs.isNotEmpty() && language == "es"){
@@ -615,7 +505,7 @@ class CommonUtils{
                     bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
                 } else if(response.code() == 404){
                     val titulo = intToWord(id!!)
-                    bitmap = textAsBitmap(titulo, 100f)
+                    bitmap = textAsBitmap(titulo)
                 }else {
                     Log.d("ERROR", "Error de la llamada a las imagenes")
                 }
@@ -631,7 +521,7 @@ class CommonUtils{
             val minutes = parts[1].toInt()
 
             return if (hours > 0) {
-                "$hours:${String.format("%02d", minutes)}h"
+                "$hours:${String.format(Locale.getDefault(), "%02d", minutes)}h"
             } else {
                 "$minutes" + "m"
             }
@@ -812,5 +702,12 @@ class CommonUtils{
             return bitmap
         }
 
+        fun dpToPx(dp: Int, resources: Resources): Int {
+            return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp.toFloat(),
+                resources.displayMetrics
+            ).toInt()
+        }
     }
 }

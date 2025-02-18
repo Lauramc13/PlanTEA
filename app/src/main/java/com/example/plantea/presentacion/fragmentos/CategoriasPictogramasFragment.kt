@@ -36,21 +36,21 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         recyclerPictogramas = vista.findViewById(R.id.recycler_Pictogramas)
         constraintLayout = vista.findViewById(R.id.frameLayout)
 
-        context?.let { CommonUtils.getGridValueCuaderno(vista, context, recyclerPictogramas, constraintLayout, 150, 210) }
+        context?.let { CommonUtils.getGridValueContainer(vista, context, recyclerPictogramas, constraintLayout, 150, 210) }
 
         imageCerrar = vista.findViewById(R.id.image_CerrarContenedor)
         imageAdd = vista.findViewById(R.id.image_add)
         textoVacio = vista.findViewById(R.id.textoNoPictogramas)
-        viewModel.adaptadorCategoriaPictograma = AdaptadorPictogramas(viewModel._listaPictogramas.value, this, this)
+        viewModel.adaptadorCategoriaPictograma = AdaptadorPictogramas(viewModel.selistaPictogramas.value, this, this)
         recyclerPictogramas.adapter = viewModel.adaptadorCategoriaPictograma
 
-        if(viewModel._listaPictogramas.value?.size == 0){
+        if(viewModel.selistaPictogramas.value?.size == 0){
             textoVacio.visibility = View.VISIBLE
         }
 
         //Este método se ejecutará al pinchar sobre la imagen de cerrar
         imageCerrar.setOnClickListener {
-            viewModel._closeFragment.value = true
+            viewModel.seCloseFragment.value = true
         }
 
         if(viewModel.identificadorCategoria == 10){

@@ -11,9 +11,6 @@ import android.provider.CalendarContract
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.DialogFragment
@@ -25,9 +22,7 @@ import com.example.plantea.dominio.Evento
 import com.example.plantea.dominio.OnAlarmReceiver
 import com.example.plantea.dominio.Pictograma
 import com.example.plantea.dominio.Planificacion
-import com.example.plantea.presentacion.actividades.CalendarioActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
-import com.example.plantea.presentacion.actividades.CrearPlanActivity
 import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
@@ -39,25 +34,28 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.Calendar
 import java.util.Locale
 
 class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener {
     private var isNuevoEventoSelected = false
     var evento = Evento()
-    var _dias = MutableLiveData<ArrayList<LocalDate?>>()
     lateinit var eventos: ArrayList<Evento>
     var eventosDia = ArrayList<Evento>()
 
     var idUsuario = "0"
     var idUsuarioPlanner = "0"
-    val _fechaActual = MutableLiveData<String>()
-    val _fechaSeleccionada = MutableLiveData<LocalDate>()
-    val _changedEvent = SingleLiveEvent<Boolean>()
+
+   var listaPictosOriginal = ArrayList<Pictograma>() // sin los cambios de pictogramas borrados o cambiados de posicion
+    var listaPictosEliminados = mutableListOf<Pair<Int, String>>()
 
     var isDiaSeleccionado = false
-    var _planSeleccionado = SingleLiveEvent<Int>()
+    var sePlanSeleccionado = SingleLiveEvent<Int>()
+    val seChangedEvent = SingleLiveEvent<Boolean>()
+    val seEventoEditSaved = SingleLiveEvent<Boolean>()
+    val mdFechaActual = MutableLiveData<String>()
+    val mdFechaSeleccionada = MutableLiveData<LocalDate>()
+    var mdDias = MutableLiveData<ArrayList<LocalDate?>>()
 
     //Variables de Eventos Fragment
     lateinit var pictogramas: ArrayList<Pictograma>
@@ -168,7 +166,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
     }
 
-    fun nuevoEventoEdit(context: Context, cita: Evento, parent: EventosPlanificadorActivity?) {
+    fun nuevoEventoEdit(context: Context, cita: Evento, pictogramasEvento: ArrayList<Pictograma>?, parent: EventosPlanificadorActivity?) {
         if(checkBoxDia || checkBoxHora || checkBoxMin || checkBoxPer){
             cita.reminder = notificationTime(cita.fecha, LocalTime.parse(cita.hora))
         }
@@ -182,13 +180,23 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
                     break
                 }
             }
+
+            eliminarPictosEvento(cita.id, parent)
+            if(pictogramasEvento != null){
+                for (i in pictogramasEvento.indices) {
+                    evento.actualizarPosicionPictoEvento(i, pictogramasEvento[i].posicion!!, cita.id.toString(), pictogramasEvento[i].id!!, parent)
+                }
+            }
+
+            // if the pictograms from the plan have changed, update the pictograms of the event
+            //_eventoEditSaved.value = true
+
             parent.listaEventos.adapter?.notifyItemChanged(parent.viewModel.posicionEvento)
         }else{
             cita.id = evento.crearEvento(context as Activity, cita)
             parent?.viewModel?.eventos?.add(cita)
             parent?.listaEventos?.adapter?.notifyItemInserted(parent.viewModel.eventos.size - 1)
             parent?.findViewById<LinearLayout>(R.id.layout_no_eventos)?.visibility = View.GONE
-
         }
 
         crearNotificacion(context, planes[posicionPlan].getTitulo(), cita.id, cita.reminder?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli())
@@ -197,6 +205,13 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             programarVisibilidad(cita, context, cita.id)
         }
 
+        parent?.expand(false, CommonUtils.isPortrait(parent), false)
+    }
+
+    fun closeFragment(parent: EventosPlanificadorActivity?){
+        if(parent?.viewModel?.eventos?.isEmpty() == true){
+            parent.findViewById<LinearLayout>(R.id.layout_no_eventos)?.visibility = View.VISIBLE
+        }
         parent?.expand(false, CommonUtils.isPortrait(parent), false)
 
     }
@@ -247,9 +262,8 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             }
         }
         eventosDia.removeAt(posicion)
-        _changedEvent.value = true
+        seChangedEvent.value = true
     }
-
 
     fun cancelarEvento(context: Context) {
         isNuevoEventoSelected = false
@@ -263,22 +277,26 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         ft.commit()
     }
 
-     fun crearCanalNotificacion(context: Context) {
+    fun cancelarEventoEdit(){
+        seEventoEditSaved.value = false
+    }
+
+    fun crearCanalNotificacion(context: Context) {
         val notificationChannel = NotificationChannel("PlanTEA", "Eventos", NotificationManager.IMPORTANCE_DEFAULT)
         val notificationManager = context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(notificationChannel)
     }
 
     fun obtenerVistaMes() {
-        _fechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
-        _dias.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+        mdFechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(Locale.getDefault())
+        mdDias.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
     }
 
     override fun diaSeleccionado(context: Context?, fecha: LocalDate, posicion: Int, selectedDay: Int) {
         lastPositionCalendario = selectedDay
         posicionCalendario = posicion
         CalendarioUtilidades.fechaSeleccionada = fecha
-        _fechaSeleccionada.value = fecha
+        mdFechaSeleccionada.value = fecha
         isDiaSeleccionado = true
     }
 
@@ -296,11 +314,10 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
         val currentMinute = currentTime[Calendar.MINUTE]
-        // get string from strings.xml
         val title = getString(context, R.string.selecciona_hora)
 
         return MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setTimeFormat(TimeFormat.CLOCK_24H)
             .setHour(currentHour)
             .setMinute(currentMinute)
             .setTheme(R.style.TimePicker)
@@ -318,23 +335,11 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         return datePicker
     }
 
-    fun configureDataPlanSeleccionado(posicion: Int){
+    fun configureDataPlanSeleccionado(posicion: Int, parent: EventosPlanificadorActivity?){
         isPlanSeleccionado = true
         posicionPlan = posicion
         planSeleccionado = planes[posicion].getId()
     }
-
-   /* fun editarClick(actividad: Activity, posicion: Int, startForResult: ActivityResultLauncher<Intent>){
-        val pictogramas = plan.obtenerPictogramasPlanificacion(actividad, planes[posicion].getId(), Locale.getDefault().language, idUsuario) as java.util.ArrayList<Pictograma>
-        val intent = Intent(actividad, CrearPlanActivity::class.java)
-        intent.putExtra("identificador", planes[posicion].getId())
-        intent.putExtra("titulo", planes[posicion].getTitulo())
-        intent.putExtra("pictogramas", pictogramas)
-        pictogramas.forEachIndexed { index, pictogram ->
-            intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
-        }
-        startForResult.launch(intent)
-    }*/
 
     fun exportEventCalendar(posicion: Int): Intent {
         val date = CalendarioUtilidades.fechaSeleccionada
@@ -349,6 +354,15 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             .putExtra(CalendarContract.Events.TITLE, eventos[posicion].nombre)
             .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
             .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis + (60 * 60 * 1000))
-
     }
+
+    private fun eliminarPictosEvento(idEvento : Int, actividad: Activity){
+        if (listaPictosEliminados.isNotEmpty()) {
+            for (i in listaPictosEliminados) {
+                evento.eliminarPictoEvento(i.first, idEvento.toString(), i.second, actividad)
+            }
+            listaPictosEliminados.clear()
+        }
+    }
+
 }

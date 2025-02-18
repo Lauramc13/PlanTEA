@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -43,11 +44,18 @@ class PlanificacionesActivity : AppCompatActivity(), AdaptadorListaPlanes.OnItem
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_planificaciones)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         val atras = findViewById<Button>(R.id.atras)
         val nuevoPlan = findViewById<Button>(R.id.btn_planificar)
+
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)

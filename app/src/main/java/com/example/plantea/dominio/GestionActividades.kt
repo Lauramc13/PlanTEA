@@ -7,7 +7,6 @@ class GestionActividades {
 
     private var conectorBD: ConectorBD? = null
 
-
     fun crearActividad(name: String?, imagen: ByteArray?, idUsuario: String?, actividad: Activity?): String? {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()

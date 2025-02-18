@@ -29,20 +29,12 @@ class DiaMes {
         gestorMes.guardarDia(idUsuario, titulo,  imagen, color, fecha, actividad)
     }
 
-    fun borrarImagen(idUsuario: String, fecha: String, actividad: Activity?) {
-        gestorMes.borrarImagen(idUsuario, fecha, actividad)
-    }
-
-    fun borrarColor(idUsuario: String, fecha: String, actividad: Activity?) {
-        gestorMes.borrarColor(idUsuario, fecha, actividad)
-    }
-
     fun borrarDia(idUsuario: String, fecha: String, actividad: Activity?) {
         gestorMes.borrarDia(idUsuario, fecha, actividad)
     }
 
-    fun editarDia(idUsuario: String, titulo: String?, imagen: ByteArray?, color: String?, fecha: String?, actividad: Activity?) {
-        gestorMes.editarDia(idUsuario, titulo, imagen, color, fecha, actividad)
+    fun editarDia(idUsuario: String, titulo: String?, imagen: ByteArray?, color: String?, fechaNueva:String?, fecha: String?, actividad: Activity?) {
+        gestorMes.editarDia(idUsuario, titulo, imagen, color, fechaNueva, fecha, actividad)
     }
 
 }

@@ -70,7 +70,6 @@ class Evento {
         gestorEventos.invisibiliarEvento(actividad, idEvento, idUsuario!!)
     }
 
-    //Comprobar el numero de eventos visibles
     fun comprobarEventoVisible(userId: String, fecha: String, actividad: Activity?): Int {
         return gestorEventos.comprobarEventoVisible(userId, fecha, actividad)
     }
@@ -81,6 +80,18 @@ class Evento {
 
     fun checkEventosDia(idUsuario: String, fecha: String, context: Context?): Int {
         return gestorEventos.checkEventosDia(idUsuario, fecha, context)
+    }
+
+    fun editPictogramTitle(posicion: Int?, titulo: String?, idEvento: String?, idPictograma: String?, actividad: Activity?) {
+        gestorEventos.editPictogramTitle(posicion, titulo, idEvento, idPictograma, actividad)
+    }
+
+    fun eliminarPictoEvento(posicion: Int?, idEvento: String?, idPictograma: String?, actividad: Activity?) {
+        gestorEventos.eliminarPictoEvento(posicion, idEvento, idPictograma, actividad)
+    }
+
+    fun actualizarPosicionPictoEvento(posicionNew: Int?, posicionOld: Int?, idEvento: String?, idPictograma: String?, actividad: Activity?) {
+        gestorEventos.actualizarPosicionPictoEvento(posicionNew, posicionOld, idEvento, idPictograma, actividad)
     }
 
 }

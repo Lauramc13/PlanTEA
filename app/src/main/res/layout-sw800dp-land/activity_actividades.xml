@@ -18,15 +18,16 @@
         app:srcCompat="@drawable/svg_blob" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="80dp"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
+        app:layout_constraintWidth_percent="0.8">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -37,9 +38,9 @@
             android:background="@drawable/bg_calendario"
             android:orientation="vertical"
             android:padding="15dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/card_video"
             app:layout_constraintEnd_toStartOf="@+id/frameLayout"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.65">
 
@@ -105,19 +106,19 @@
             android:id="@+id/card_video"
             android:layout_width="0dp"
             android:layout_height="100dp"
+            app:cardBackgroundColor="?colorPrimary"
             app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="?colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout">
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="40dp"
@@ -129,11 +130,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@color/md_theme_light_onSurface"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:textSize="@dimen/modalTitle"
-                    android:text="@string/lbl_actividades_youtube" />
+                    android:text="@string/lbl_actividades_youtube"
+                    android:textColor="@color/md_theme_light_onSurface"
+                    android:textSize="@dimen/modalTitle" />
 
             </LinearLayout>
 
@@ -150,10 +151,11 @@
         android:paddingLeft="1dip"
         android:paddingRight="1dip"
         android:visibility="gone"
+        android:layout_marginEnd="420dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
-        app:layout_constraintHeight_percent="0.80"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+        app:layout_constraintHeight_percent="0.75"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
         app:layout_constraintWidth_percent="0.55">
 
@@ -162,21 +164,21 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:gravity="center"
             android:fontFamily="@font/poppins_regular"
-            android:text="@string/navegador"/>
+            android:gravity="center"
+            android:text="@string/navegador" />
 
         <ImageView
             android:id="@+id/closeYoutube"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/bg_close_button"
-            android:src="@drawable/svg_close"
-            android:padding="12dp"
-            android:alpha="0.9"
             android:layout_gravity="start"
+            android:layout_margin="10dp"
+            android:alpha="0.9"
+            android:background="@drawable/bg_close_button"
             android:importantForAccessibility="no"
+            android:padding="12dp"
+            android:src="@drawable/svg_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

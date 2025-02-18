@@ -1,5 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
@@ -21,9 +23,14 @@ class PasswordActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         viejaPass = findViewById(R.id.txt_PassActual)
         nuevaPass = findViewById(R.id.txt_NuevaPass)

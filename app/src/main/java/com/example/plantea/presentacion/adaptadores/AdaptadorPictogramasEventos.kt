@@ -7,10 +7,13 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.Pictograma
@@ -19,16 +22,17 @@ import com.google.android.material.button.MaterialButton
 import java.util.Locale
 
 
-class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasEventos.ViewHolderPictogramas>() {
+class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?, private var isEdit: Boolean) : RecyclerView.Adapter<AdaptadorPictogramasEventos.ViewHolderPictogramas>() {
 
     lateinit var context: Context
-    private var listaPictos = listaPictogramas
+    //private var listaPictos = listaPictogramas?.map { it.copy() } as ArrayList<Pictograma>
     private lateinit var popupWindow: PopupWindow
 
     interface OnItemSelectedListener {
         fun duracionSeleecionado(posicion: Int, context: Context)
         fun historiaSeleccionado(posicion: Int, context: Context)
         fun entretenimientoSeleccionado(posicion: Int, context: Context)
+        fun borrarPicto(posicion: Int, idPictograma: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPictogramas {
@@ -39,14 +43,31 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
     override fun onBindViewHolder(holder: ViewHolderPictogramas, position: Int) {
         context = holder.itemView.context
 
-        holder.titulo.text = listaPictos!![position].titulo
-        holder.imagen.setImageBitmap(listaPictos!![position].imagen)
+        holder.titulo.setText(listaPictogramas!![position].titulo)
+        holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
+
+        if(isEdit){
+            holder.trash.visibility = View.VISIBLE
+//            holder.titulo.background = ResourcesCompat.getDrawable(context.resources, R.drawable.edittext_underline, null)
+//            holder.titulo.isEnabled = true
+        }else {
+            holder.trash.visibility = View.GONE
+        }
 
         configPicto(holder)
     }
 
     override fun getItemCount(): Int {
-        return listaPictos!!.size
+        return listaPictogramas!!.size
+    }
+
+//    fun getTitleAt(position: Int): String? {
+//        return listaPictos[position].titulo
+//    }
+
+    fun setEditMode(editMode: Boolean) {
+        isEdit = editMode
+        notifyDataSetChanged()
     }
 
 
@@ -69,8 +90,9 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
     }
 
     inner class ViewHolderPictogramas(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var titulo: TextView = itemView.findViewById(R.id.id_Texto)
+        var titulo: EditText = itemView.findViewById(R.id.id_Texto)
         var imagen: ImageView = itemView.findViewById(R.id.id_Imagen)
+        var trash = itemView.findViewById<ImageView>(R.id.btn_borrarPicto)
         var card: View = itemView.findViewById(R.id.id_card)
         private val fab: MaterialButton = itemView.findViewById(R.id.btn_addInfo)
 
@@ -106,12 +128,12 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
                 duracion =  popupView.findViewById(R.id.item_duracion)
                 entretenimiento = popupView.findViewById(R.id.item_entretenimiento)
 
-                if(listaPictos!![bindingAdapterPosition].historia.toString() != "null"){
+                if(listaPictogramas!![bindingAdapterPosition].historia.toString() != "null"){
                     historia.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.md_theme_light_primaryContainer))
                     historia.iconTint = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.md_theme_dark_onPrimary))
                 }
 
-                if(listaPictos!![bindingAdapterPosition].duracion.toString() != "null"){
+                if(listaPictogramas!![bindingAdapterPosition].duracion.toString() != "null"){
                     duracion.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.md_theme_light_primaryContainer))
                     duracion.iconTint = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.md_theme_dark_onPrimary))
                 }
@@ -135,6 +157,13 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
                     listener?.entretenimientoSeleccionado(bindingAdapterPosition, context)
                     popupWindow.dismiss()
                 }
+            }
+
+            trash.setOnClickListener {
+                listener?.borrarPicto(listaPictogramas!![bindingAdapterPosition].posicion!!, listaPictogramas!![bindingAdapterPosition].id!!)
+                listaPictogramas!!.removeAt(bindingAdapterPosition)
+                notifyItemRemoved(bindingAdapterPosition)
+                notifyItemRangeChanged(bindingAdapterPosition, listaPictogramas!!.size)
             }
         }
     }

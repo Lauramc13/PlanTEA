@@ -1,8 +1,11 @@
 package com.example.plantea.presentacion.adaptadores
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +15,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
+import com.example.plantea.presentacion.actividades.CommonUtils
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
 
-class AdaptadorTablaSemanaHeader(private var listaDiaSemana: Array<String>, private var configuracion: Int) : RecyclerView.Adapter<AdaptadorTablaSemanaHeader.ViewHolderItemSemanaHeader>() {
+class AdaptadorTablaSemanaHeader(private var listaDiaSemana: Array<String>, private var configuracion: Int, private var colors: ArrayList<String>) : RecyclerView.Adapter<AdaptadorTablaSemanaHeader.ViewHolderItemSemanaHeader>() {
 
     lateinit var context: Context
 
@@ -46,8 +50,16 @@ class AdaptadorTablaSemanaHeader(private var listaDiaSemana: Array<String>, priv
             holder.itemView.setBackgroundResource(R.drawable.border_week)
        }
 
-    }
+        val color = if(context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES){
+            CommonUtils.getColorDark(context, colors[position])
+        }else{
+            CommonUtils.getColor(context, colors[position])
+        }
 
+        val drawable = holder.itemView.background as LayerDrawable
+        val shape = drawable.findDrawableByLayerId(R.id.background) as GradientDrawable
+        shape.setColor(color)
+    }
 
     fun updateList(newList: Array<String>, newConfig: Int) {
         listaDiaSemana = newList
@@ -55,7 +67,12 @@ class AdaptadorTablaSemanaHeader(private var listaDiaSemana: Array<String>, priv
         notifyDataSetChanged()
     }
 
-    fun getImagesWeek(position: Int): Drawable {
+    fun changeColor(posicion: Int, color: String?){
+        colors[posicion] = color!!
+        notifyItemChanged(posicion)
+    }
+
+    private fun getImagesWeek(position: Int): Drawable {
         //for each day of the week, get the image semana_lunes, semana_martes, etc
 
         val drawableId = when (position) {
@@ -79,13 +96,8 @@ class AdaptadorTablaSemanaHeader(private var listaDiaSemana: Array<String>, priv
     }
 
     inner class ViewHolderItemSemanaHeader(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var imagen: ImageView
-        var text : TextView
-
-        init {
-            imagen = itemView.findViewById<View>(R.id.TextImage) as ImageView
-            text = itemView.findViewById<View>(R.id.Text) as TextView
-        }
+        var imagen: ImageView = itemView.findViewById<View>(R.id.TextImage) as ImageView
+        var text : TextView = itemView.findViewById<View>(R.id.Text) as TextView
 
     }
 }

@@ -28,7 +28,6 @@ import com.example.plantea.presentacion.actividades.EventosActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorEvento
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.MaterialSharedAxis
 import java.time.LocalDate
 import java.util.Locale
@@ -63,8 +62,8 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         listaEventos = vista.findViewById(R.id.recycler_eventos)
 
         if(savedInstanceState != null){
-            if(viewModel._fechaSeleccionada.value != null){
-                CalendarioUtilidades.fechaSeleccionada = viewModel._fechaSeleccionada.value!! // NULLPOINTEREXCEPTION
+            if(viewModel.mdFechaSeleccionada.value != null){
+                CalendarioUtilidades.fechaSeleccionada = viewModel.mdFechaSeleccionada.value!! // NULLPOINTEREXCEPTION
             }else{
                 CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
             }

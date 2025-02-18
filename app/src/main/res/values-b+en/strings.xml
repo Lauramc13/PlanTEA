@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="btn_Acceder">Access</string>
     <string name="btn_CambiarPass">Change Password</string>
     <string name="lbl_Pass">Current password</string>
@@ -255,49 +255,75 @@
     <string name="titulo_manual">User manual</string>
     <string name="subtitulo_manual">In this section you can find information about the use of the application, as well as the functionalities it offers.</string>
     <string name="titulo_crearEvento">Creation of an event</string>
+    <string name="titulo_editarEvento">Edit an event</string>
     <string name="titulo_crearPlanificacion">Create a plan</string>
-    <string name="titulo_cuaderno">Communication notebook</string>
+    <string name="titulo_calendarioSemanal">Weekly calendar</string>
+    <string name="titulo_calendarioMensual">Monthly calendar</string>
     <string name="titulo_traductor">Translator</string>
-    <string name="titulo_configuracion">Configuration</string>
+    <string name="titulo_actividades">Soothing activities</string>
     <string name="repetir_tutorial">Watch the tutorial again</string>
 
-
     <string-array name="str_crearEvento">
-        <item>Go to &lt;b>&lt;u>"Calendar"&lt;/u>&lt;/b> and click the button &lt;b>&lt;u>+&lt;/u>&lt;/b > located in the lower right corner.</item>
-        <item>Selects a &lt;b>&lt;u>"time"&lt;/u>&lt;/b> and optionally &lt;b>&lt;u>"reminder"&lt;/u>&lt;/b > for the event. </item>
-        <item>If no plan is available, you can click &lt;b>&lt;u>"+ New plan"&lt;/u>&lt;/b> to create a new one.</item>
-        <item>If you already have a plan created, select the desired plan to use in the event.</item>
-        <item>Finally, click &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> to create the event.</item>
-        <item>To view the event, change its visibility by clicking on the &lt;b>&lt;u>"eye" icon&lt;/u>&lt;/b></item>
+        <item>Click on the &lt;b>&lt;u>+ New Event&lt;/u>&lt;/b> button.</item>
+        <item>Select a &lt;b>&lt;u>"time"&lt;/u>&lt;/b> and, optionally, a &lt;b>&lt;u>reminder&lt;/u>&lt;/b> for the event, along with the option to make the &lt;b>&lt;u>event visible&lt;/u>&lt;/b> 5 minutes before.</item>
+        <item>If no schedule is available, you can click on &lt;b>&lt;u>"+ New Schedule"&lt;/u>&lt;/b> to create a new one.</item>
+        <item>If you already have a schedule created, select the desired schedule to use for the event.</item>
+        <item>Finally, click on &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> to create the event.</item>
+        <item>To view the event, change its visibility by clicking on the &lt;b>&lt;u>"eye"&lt;/u>&lt;/b> icon.</item>
+    </string-array>
+
+    <string-array name="str_editarEvento">
+        <item>Click on the &lt;b>&lt;u>"pencil"&lt;/u>&lt;/b> icon on the event you want to edit.</item>
+        <item>If you want to delete a pictogram, click on the &lt;b>&lt;u>"trash bin"&lt;/u>&lt;/b> icon of the pictogram you wish to remove.</item>
+        <item>To move a pictogram, press and hold the pictogram you want to move and drag it to the desired position.</item>
+        <item>To add additional information to a pictogram, click on the &lt;b>&lt;u>"first"&lt;/u>&lt;/b> option in the dropdown menu that appears when you click on &lt;b>&lt;u>"+"&lt;/u>&lt;/b>.</item>
+        <item>To add a duration to a pictogram, click on the &lt;b>&lt;u>"second"&lt;/u>&lt;/b> option in the dropdown menu that appears when you click on &lt;b>&lt;u>"+"&lt;/u>&lt;/b>.</item>
+        <item>To add an entertainment activity, click on the &lt;b>&lt;u>"third"&lt;/u>&lt;/b> option in the dropdown menu that appears when you click on &lt;b>&lt;u>"+"&lt;/u>&lt;/b>.</item>
     </string-array>
 
     <string-array name="str_crearPlanificacion">
-        <item>Go to &lt;b>&lt;u>"Calendar"&lt;/u>&lt;/b> and click the button &lt;b>&lt;u>"+"&lt;/u>&lt; /b> located in the lower right corner.</item>
-        <item>Click the &lt;b>&lt;u>+ New plan&lt;/u>&lt;/b> button.</item>
-        <item>Enter a &lt;b>&lt;u>title&lt;/u>&lt;/b> for the plan.</item>
-        <item>To add a pictogram to the plan, click on a &lt;b>&lt;u>"category"&lt;/u>&lt;/b> and then on the desired pictogram.</item>
-        <item>To search for a pictogram, click the &lt;b>&lt;u>"search bar"&lt;/u>&lt;/b> and type the name of the pictogram you want to search for. </item>
-        <item>If you want to save a pictogram as a favorite, click on the &lt;b>&lt;u>"heart&lt;/u>&lt;/b> icon located in the upper right corner of the pictogram. These pictograms will be saved to the category of &lt;b>&lt;u>"Favorites"&lt;/u>&lt;/b>.</item>
-        <item>To add additional text to the pictogram or add a duration to the pictogram, click the &lt;b>&lt;u>3 dots&lt;/u>&lt;/b> located in the upper right corner of the pictograms on the list and select the desired option.</item>
-        <item>Finally, click the &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> button to save the plan.</item>
+        <item>Go to the &lt;b>&lt;u>"Schedules"&lt;/u>&lt;/b> screen and click on the &lt;b>&lt;u>"+ New Schedule"&lt;/u>&lt;/b> button.</item>
+        <item>To add a pictogram to the schedule, click on a &lt;b>&lt;u>"category"&lt;/u>&lt;/b> and then select the desired pictogram.</item>
+        <item>To search for a pictogram, click on the &lt;b>&lt;u>"search bar"&lt;/u>&lt;/b> and type the name of the pictogram you want to find.</item>
+        <item>To translate a phrase, click on the &lt;b>&lt;u>"search bar"&lt;/u>&lt;/b> and type the phrase you want to translate.</item>
+        <item>If you want to save a pictogram as a favorite, click on the &lt;b>&lt;u>"heart"&lt;/u>&lt;/b> icon located in the upper right corner of the pictogram. These pictograms will be saved in the &lt;b>&lt;u>"Favorites"&lt;/u>&lt;/b> category.</item>
+        <item>Finally, click on the &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> button to save the schedule and enter a name for it.</item>
     </string-array>
 
-    <string-array name="str_cuaderno">
-        <item>Go to &lt;b>&lt;u>"Communication notebooks"&lt;/u>&lt;/b> and select the notebook you want to edit.</item>
-        <item>To add a new notebook, click &lt;b>&lt;u>"Add Notebook"&lt;/u>&lt;/b>. If you want the notebook to be able to express the intensity of a pictogram, click on the &lt;b>&lt;u>"Thermometer" switch&lt;/u>&lt;/b>.</item>
-        <item>To add a new pictogram, click &lt;b>&lt;u>"Add pictogram"&lt;/u>&lt;/b> located at the end of the notebook.</item>
-        <item>To add a pictogram from the ARASAAC collection, type the pictogram you want to add in the search bar and click on the button &lt;b>&lt;u>+&lt;/u>&lt;/b> located in the upper right corner.</item>
-        <item>To delete a pictogram, click the &lt;b>&lt;u>trashcan&lt;/u>&lt;/b> icon in the upper left corner.</item>
+    <string-array name="str_calendarioSemanal">
+        <item>To edit the weekly calendar, click on the &lt;b>&lt;u>"Edit"&lt;/u>&lt;/b> button.</item>
+        <item>To change the pictogram for a day of the week, click on the central image of the day and select the desired pictogram or an image from the gallery.</item>
+        <item>To change the background color of a day of the week, click on the bottom button of the day and select the desired color.</item>
+        <item>To link an event to a day of the week, click on the &lt;b>&lt;u>"+"&lt;/u>&lt;/b> button located below the day\'s pictogram.</item>
+        <item>Finally, click on the &lt;b>&lt;u>"Save"&lt;/u>&lt;/b> button to save the changes made to the weekly calendar.</item>
+    </string-array>
+
+
+    <string-array name="str_calendarioMensual">
+        <item>To add an important day to the calendar, click on &lt;b>&lt;u>"+ New Important Day"&lt;/u>&lt;/b>.</item>
+        <item>Choose a pictogram from the ARASAAC collection or a photo from the gallery. Enter the date and title of the important day, and optionally, select a background color.</item>
+        <item>To edit an important day, click on the day and select the &lt;b>&lt;u>"Edit"&lt;/u>&lt;/b> option.</item>
+        <item>To delete an important day, click on the day and select the &lt;b>&lt;u>"Delete"&lt;/u>&lt;/b> option.</item>
+        <item>To export the calendar as a PDF, click on the &lt;b>&lt;u>"Export as PDF"&lt;/u>&lt;/b> button.</item>
+    </string-array>
+
+    <string-array name="str_actividades">
+        <item>Activities can be divided into categories. To add a category, click on the &lt;b>&lt;u>"+"&lt;/u>&lt;/b> button.</item>
+        <item>To add an activity, click on the &lt;b>&lt;u>"Add Activity"&lt;/u>&lt;/b> button.</item>
+        <item>To watch a YouTube video, click on the &lt;b>&lt;u>"YouTube"&lt;/u>&lt;/b> button.</item>
+        <item>To close the YouTube player, click on the &lt;b>&lt;u>"X"&lt;/u>&lt;/b> button.</item>
+        <item>To control the time a user can spend on an activity, click on the &lt;b>&lt;u>"Timer"&lt;/u>&lt;/b> button and select the desired time.</item>
     </string-array>
 
     <string-array name="str_traductor">
-        <item>Go to &lt;b>&lt;u>"Translator"&lt;/u>&lt;/b> and write the phrase you want to translate in the upper text field.</item>
-        <item>Once you have written the phrase, click the &lt;b>&lt;u>"Translate"&lt;/u>&lt;/b> button located at the end of the text field.</item>
+        <item>Go to &lt;b>&lt;u>"Translator"&lt;/u>&lt;/b> and type the phrase you want to translate in the upper text field.</item>
+        <item>Once the phrase is written, click on the &lt;b>&lt;u>"Translate"&lt;/u>&lt;/b> button located at the end of the text field.</item>
         <item>At the bottom, each word will be displayed as a pictogram.</item>
-        <item>If you need to remove a pictogram from the translation, click the &lt;b>&lt;u>trashcan&lt;/u>&lt;/b> icon in the upper right corner of the pictogram.</item>
-        <item>To change the image of a pictogram, select another one from those available with a simple click, or press and hold to choose an image from the gallery.</item>
-        <item>If you want to save the translation, click the &lt;b>&lt;u>Save&lt;/u>&lt;/b> button located below the translation.</item>
+        <item>If you need to delete a pictogram from the translation, click on the &lt;b>&lt;u>trash bin&lt;/u>&lt;/b> icon located in the upper right corner of the pictogram.</item>
+        <item>To change the image of a pictogram, select another available one with a single click, or press and hold to choose an image from the gallery.</item>
+        <item>If you want to save the translation, click on the &lt;b>&lt;u>Save as&lt;/u>&lt;/b> button located below the translation and select &lt;b>&lt;u>Schedule&lt;/u>&lt;/b> or &lt;b>&lt;u>PDF&lt;/u>&lt;/b> from the dropdown menu.</item>
     </string-array>
+
     <!-- Strings utilizados para la politica de privacidad -->
 
     <string name="lbl_politica_privacidad">Privacy policy</string>
@@ -459,4 +485,6 @@
     <string name="texto">Text</string>
     <string name="toast_pdf_exportado">PDF exported in the download folder</string>
     <string name="categor_a">Category:</string>
+    <string name="toast_queda_un_minuto">In a minute the activity will end</string>
+    <string name="colores_fondo_dia">Select the colors for the background of the day</string>
 </resources>

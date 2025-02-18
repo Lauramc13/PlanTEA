@@ -1,7 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -46,9 +48,14 @@ class RegisterActivity : AppCompatActivity(){
         viewModel.namePlanificado = txtNameplanificado.editText?.text.toString()*/
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         btnRegister = findViewById(R.id.btn_register)
@@ -137,7 +144,7 @@ class RegisterActivity : AppCompatActivity(){
 
 
     fun observers(){
-        viewModel._accountCreated.observe(this) {
+        viewModel.seAccountCreated.observe(this) {
             if(it){
                 val intent = Intent(applicationContext, MenuAvataresPlanActivity::class.java)
                 startActivity(intent)

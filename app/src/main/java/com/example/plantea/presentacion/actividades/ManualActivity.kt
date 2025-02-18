@@ -1,7 +1,9 @@
 package com.example.plantea.presentacion.actividades
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.TypedValue
@@ -24,30 +26,38 @@ import pl.droidsonroids.gif.GifImageView
 class ManualActivity : AppCompatActivity() {
 
     private lateinit var cardEvento: MaterialCardView
+    private lateinit var cardEventoEdit: MaterialCardView
     private lateinit var cardPlanficacion : MaterialCardView
-    private lateinit var cardCuaderno : MaterialCardView
+    private lateinit var cardCalendarioSemanal : MaterialCardView
+    private lateinit var cardCalendarioMensual : MaterialCardView
+    private lateinit var cardActividades : MaterialCardView
     private lateinit var cardTraductor : MaterialCardView
-    //private lateinit var cardConfiguracion : MaterialCardView
 
     private lateinit var iconEvento : ImageView
+    private lateinit var iconEventoEdit : ImageView
     private lateinit var iconPlanificacion : ImageView
-    private lateinit var iconCuaderno : ImageView
+    private lateinit var iconCalendarioSemanal : ImageView
+    private lateinit var iconCalendarioMensual : ImageView
+    private lateinit var iconActividades : ImageView
     private lateinit var iconTraductor : ImageView
-   // private lateinit var iconConfiguracion : ImageView
 
     private lateinit var textEvento : RecyclerView
+    private lateinit var textEventoEdit : RecyclerView
     private lateinit var textPlanificacion : RecyclerView
-    private lateinit var textCuaderno : RecyclerView
+    private lateinit var textCalendarioSemanal : RecyclerView
+    private lateinit var textCalendarioMensual : RecyclerView
+    private lateinit var textActividades : RecyclerView
     private lateinit var textTraductor : RecyclerView
-    //private lateinit var textConfiguracion : RecyclerView
 
     private lateinit var scrollView : ScrollView
 
     private var fragmentImgenEvento : GifImageView? = null
+    private var fragmentImgenEventoEdit : GifImageView? = null
     private var fragmentImgenPlanificacion : GifImageView? = null
-    private var fragmentImgenCuaderno : GifImageView? = null
+    private var fragmentImgenCalendarioSemanal : GifImageView? = null
+    private var fragmentImgenCalendarioMensual : GifImageView? = null
+    private var fragmentImgenActividades : GifImageView? = null
     private var fragmentImgenTraductor : GifImageView? = null
-    //private var fragmentImgenConfiguracion : GifImageView? = null
     private var fragmentImagen: GifImageView? = null
 
     var isOpen  = false
@@ -55,33 +65,46 @@ class ManualActivity : AppCompatActivity() {
     var iconOpened : ImageView? = null
     private lateinit var btnTutorial : Button
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manual)
 
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         cardEvento = findViewById(R.id.card_evento)
+        cardEventoEdit = findViewById(R.id.card_evento_edit)
         cardPlanficacion = findViewById(R.id.card_planificacion)
-        cardCuaderno = findViewById(R.id.card_cuaderno)
+        cardCalendarioSemanal = findViewById(R.id.card_calendarioSemanal)
+        cardCalendarioMensual = findViewById(R.id.card_calendarioMensual)
+        cardActividades = findViewById(R.id.card_actividades)
         cardTraductor = findViewById(R.id.card_traductor)
-      //  cardConfiguracion = findViewById(R.id.card_configuracion)
 
         iconEvento = findViewById(R.id.icon_evento)
+        iconEventoEdit = findViewById(R.id.icon_evento_edit)
         iconPlanificacion = findViewById(R.id.icon_planificacion)
-        iconCuaderno = findViewById(R.id.icon_cuaderno)
+        iconCalendarioSemanal = findViewById(R.id.icon_calendarioSemanal)
+        iconCalendarioMensual = findViewById(R.id.icon_calendarioMensual)
+        iconActividades = findViewById(R.id.icon_actividades)
         iconTraductor = findViewById(R.id.icon_traductor)
-       // iconConfiguracion = findViewById(R.id.icon_configuracion)
 
         textEvento = findViewById(R.id.text_evento)
+        textEventoEdit = findViewById(R.id.text_evento_edit)
         textPlanificacion = findViewById(R.id.text_planificacion)
-        textCuaderno = findViewById(R.id.text_cuaderno)
+        textCalendarioSemanal = findViewById(R.id.text_calendarioSemanal)
+        textCalendarioMensual = findViewById(R.id.text_calendarioMensual)
+        textActividades = findViewById(R.id.text_actividades)
         textTraductor = findViewById(R.id.text_traductor)
-        //textConfiguracion = findViewById(R.id.text_configuracion)
 
         fragmentImgenEvento = findViewById(R.id.fragment_imagen_evento)
+        fragmentImgenEventoEdit = findViewById(R.id.fragment_imagen_evento_edit)
         fragmentImgenPlanificacion = findViewById(R.id.fragment_imagen_planificacion)
-        fragmentImgenCuaderno = findViewById(R.id.fragment_imagen_cuaderno)
+        fragmentImgenCalendarioSemanal = findViewById(R.id.fragment_imagen_calendario_semanal)
+        fragmentImgenCalendarioMensual = findViewById(R.id.fragment_imagen_calendario_mensual)
+        fragmentImgenActividades = findViewById(R.id.fragment_imagen_actividades)
         fragmentImgenTraductor = findViewById(R.id.fragment_imagen_traductor)
-        //fragmentImgenConfiguracion = findViewById(R.id.fragment_imagen_configuracion)
         fragmentImagen = findViewById(R.id.fragment_imagen)
 
         scrollView = findViewById(R.id.scrollView)
@@ -103,10 +126,25 @@ class ManualActivity : AppCompatActivity() {
             textEvento.adapter = adapter
 
 
-            val gif = GifDrawable(resources, R.drawable.manual_evento)
+            val gif = GifDrawable(resources, R.drawable.crear_evento_manual)
             fragmentImgenEvento?.setImageDrawable(gif)
             fragmentImagen?.setImageDrawable(gif)
             toggleCardHeight(cardEvento, iconEvento, textEvento, fragmentImgenEvento)
+        }
+
+        cardEventoEdit.setOnClickListener {
+            val pasos = resources.getStringArray(R.array.str_editarEvento).toList()
+
+            val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            textEventoEdit.layoutManager = layoutManagerLinear
+            val adapter = AdaptadorListaManual(pasos)
+            textEventoEdit.adapter = adapter
+
+
+            val gif = GifDrawable(resources, R.drawable.editar_evento_manual)
+            fragmentImgenEventoEdit?.setImageDrawable(gif)
+            fragmentImagen?.setImageDrawable(gif)
+            toggleCardHeight(cardEventoEdit, iconEventoEdit, textEventoEdit, fragmentImgenEventoEdit)
         }
 
         cardPlanficacion.setOnClickListener {
@@ -117,24 +155,52 @@ class ManualActivity : AppCompatActivity() {
             val adapter = AdaptadorListaManual(pasos)
             textPlanificacion.adapter = adapter
 
-            val gif = GifDrawable(resources, R.drawable.manual_planificacion)
+            val gif = GifDrawable(resources, R.drawable.planificacion_manual)
             fragmentImgenPlanificacion?.setImageDrawable(gif)
             fragmentImagen?.setImageDrawable(gif)
             toggleCardHeight(cardPlanficacion, iconPlanificacion, textPlanificacion, fragmentImgenPlanificacion)
         }
 
-        cardCuaderno.setOnClickListener {
-            val pasos = resources.getStringArray(R.array.str_cuaderno).toList()
+        cardCalendarioSemanal.setOnClickListener {
+            val pasos = resources.getStringArray(R.array.str_calendarioSemanal).toList()
 
             val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            textCuaderno.layoutManager = layoutManagerLinear
+            textCalendarioSemanal.layoutManager = layoutManagerLinear
             val adapter = AdaptadorListaManual(pasos)
-            textCuaderno.adapter = adapter
+            textCalendarioSemanal.adapter = adapter
 
-            val gif = GifDrawable(resources, R.drawable.manual_cuaderno)
-            fragmentImgenCuaderno?.setImageDrawable(gif)
+            val gif = GifDrawable(resources, R.drawable.calendario_semanal_manual)
+            fragmentImgenCalendarioSemanal?.setImageDrawable(gif)
             fragmentImagen?.setImageDrawable(gif)
-            toggleCardHeight(cardCuaderno, iconCuaderno, textCuaderno, fragmentImgenCuaderno)
+            toggleCardHeight(cardCalendarioSemanal, iconCalendarioSemanal, textCalendarioSemanal, fragmentImgenCalendarioSemanal)
+        }
+
+        cardCalendarioMensual.setOnClickListener {
+            val pasos = resources.getStringArray(R.array.str_calendarioMensual).toList()
+
+            val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            textCalendarioMensual.layoutManager = layoutManagerLinear
+            val adapter = AdaptadorListaManual(pasos)
+            textCalendarioMensual.adapter = adapter
+
+            val gif = GifDrawable(resources, R.drawable.calendario_mensual_manual)
+            fragmentImgenCalendarioMensual?.setImageDrawable(gif)
+            fragmentImagen?.setImageDrawable(gif)
+            toggleCardHeight(cardCalendarioMensual, iconCalendarioMensual, textCalendarioMensual, fragmentImgenCalendarioMensual)
+        }
+
+        cardActividades.setOnClickListener {
+            val pasos = resources.getStringArray(R.array.str_actividades).toList()
+
+            val layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            textActividades.layoutManager = layoutManagerLinear
+            val adapter = AdaptadorListaManual(pasos)
+            textActividades.adapter = adapter
+
+            val gif = GifDrawable(resources, R.drawable.actividades_manual)
+            fragmentImgenActividades?.setImageDrawable(gif)
+            fragmentImagen?.setImageDrawable(gif)
+            toggleCardHeight(cardActividades, iconActividades, textActividades, fragmentImgenActividades)
         }
 
         cardTraductor.setOnClickListener {
@@ -145,7 +211,7 @@ class ManualActivity : AppCompatActivity() {
             val adapter = AdaptadorListaManual(pasos)
             textTraductor.adapter = adapter
 
-            val gif = GifDrawable(resources, R.drawable.manual_traductor)
+            val gif = GifDrawable(resources, R.drawable.traductor_manual)
             fragmentImgenTraductor?.setImageDrawable(gif)
             fragmentImagen?.setImageDrawable(gif)
 
@@ -159,25 +225,25 @@ class ManualActivity : AppCompatActivity() {
             cardOpened = null
             iconOpened = null
             isOpen = false
-            animateCard(cardView, icon, dpToPx(70), 0f)
+            animateCard(cardView, icon, CommonUtils.dpToPx(70, resources), 0f)
         } else {
             // Cierra la tarjeta previamente abierta si existe
-            cardOpened?.let { iconOpened?.let { it1 -> animateCard(it, it1, dpToPx(70), 0f) } }
+            cardOpened?.let { iconOpened?.let { it1 -> animateCard(it, it1, CommonUtils.dpToPx(70, resources), 0f) } }
 
             textView.measure(View.MeasureSpec.makeMeasureSpec(textView.width, View.MeasureSpec.EXACTLY), View.MeasureSpec.UNSPECIFIED)
             val height = textView.measuredHeight
 
             if (CommonUtils.isMobile(this)) {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    animateCard(cardView, icon, height + dpToPx(70) + dpToPx(210), 90f) // 210 por la altura del gif
+                    animateCard(cardView, icon, height + CommonUtils.dpToPx(70, resources) + CommonUtils.dpToPx(210, resources), 90f) // 210 por la altura del gif
                 } else {
-                    animateCard(cardView, icon, height + dpToPx(70) + dpToPx(20), 90f) // 20dp como margen inferior
+                    animateCard(cardView, icon, height + CommonUtils.dpToPx(70, resources) + CommonUtils.dpToPx(20, resources), 90f) // 20dp como margen inferior
                 }
             } else {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    animateCard(cardView, icon, height + dpToPx(90) + dpToPx(400), 90f) // 400 por la altura del gif
+                    animateCard(cardView, icon, height + CommonUtils.dpToPx(90, resources) + CommonUtils.dpToPx(400, resources), 90f) // 400 por la altura del gif
                 } else {
-                    animateCard(cardView, icon,  height + dpToPx(90), 90f)
+                    animateCard(cardView, icon,  height + CommonUtils.dpToPx(90, resources), 90f)
                 }
             }
 
@@ -213,12 +279,5 @@ class ManualActivity : AppCompatActivity() {
         animator.start()
     }
 
-    private fun dpToPx(dp: Int): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            resources.displayMetrics
-        ).toInt()
-    }
 
 }

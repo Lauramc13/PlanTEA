@@ -40,16 +40,11 @@ class Planificacion : Serializable {
     }
 
     fun mostrarPlanificacionesDisponibles(idUsuario: String, actividad: Activity?): ArrayList<*> {
-       // return gestionPlan.listarPlanificaciones(idUsuario, actividad) as ArrayList<Planificacion>
         return gestionPlan.listarPlanificaciones(idUsuario, actividad)
     }
 
     fun eliminarPlanificacion(actividad: Activity?, idPlan: Int) {
         gestionPlan.eliminarPlanificacion(actividad, idPlan)
-    }
-
-    fun obtenerPictogramasPlanificacion(actividad: Activity?, idPlan: Int, language: String, idUsuario: String): ArrayList<Pictograma> {
-        return gestionPlan.obtenerPictogramasPlanificacion(actividad, idPlan, language, idUsuario)
     }
 
     fun obtenerPictogramasPlanificacionNEW(actividad: Activity?, idPlan: Int, language: String, idUsuario: String): ArrayList<Pictograma> { // QUITAR ESTO
@@ -66,8 +61,8 @@ class Planificacion : Serializable {
     }
 
     //Mostrar la planificacion a seguir
-    fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?, language: String): ArrayList<*> {
-        return gestionPlan.obtenerPictogramas(idUsuario, id, context, language) as ArrayList<Planificacion>
+    fun mostrarPlanificacion(idUsuario: String, id: String, context: Context?, language: String): ArrayList<Pictograma> {
+        return gestionPlan.obtenerPictogramas(idUsuario, id, context, language)
     }
 
     fun obtenerTitulosPlanificaciones(idUsuario: String, actividad: Activity?): ArrayList<String> {

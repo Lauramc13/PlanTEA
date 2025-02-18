@@ -120,10 +120,10 @@
                         style="@style/addPhotoBackground"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="1dp"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginEnd="1dp"
-                        android:layout_marginBottom="1dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginBottom="6dp"
                         android:background="@drawable/svg_add_image"
                         android:contentDescription="Añadir imagen del planificador"
                         app:shapeAppearance="@style/cornerRadius" />
@@ -439,242 +439,310 @@
                 android:nestedScrollingEnabled="false"
                 android:elevation="0dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="Titulo, información del planificador"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/item_perfil"
-                android:textColor="?colorOnSurface"
-                android:textSize="@dimen/titleSmall" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_cards_configuracion"
-                android:paddingBottom="15dp"
-                android:paddingStart="25dp"
-                android:paddingEnd="25dp"
-                android:paddingTop="15dp">
+                <TextView
+                    android:id="@+id/preferencias"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="Titulo, información del planificador"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/item_perfil"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="@dimen/titleSmall"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/linearLayout6"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_cards_configuracion"
+                    android:orientation="vertical"
+                    android:paddingStart="25dp"
+                    android:paddingTop="15dp"
+                    android:paddingEnd="25dp"
+                    android:paddingBottom="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout7"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/preferencias">
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/svg_bell" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/notificaciones"
-                        android:textColor="?colorOnSurface"
-                        android:textSize="16sp" />
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/svg_bell" />
 
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switch_notificaciones"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:theme="@style/Switches" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/notificaciones"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_notificaciones"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:theme="@style/Switches" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/svg_moon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/modo_oscuro"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_oscuro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:theme="@style/Switches" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/svg_logout" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/lbl_cerrarSesionBotton"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCerrarSesion"
+                            style="@style/Widget.Material3.Button.IconButton.Outlined"
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:alpha="0.5"
+                            app:icon="@drawable/svg_chevron_right"
+                            app:iconGravity="textStart"
+                            app:iconSize="30dp"
+                            app:iconTint="?colorOnSurface"
+                            app:strokeWidth="0dp" />
+
+                    </LinearLayout>
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/planTEA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="Titulo, información del planificador"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/app_name"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="@dimen/titleSmall"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout7"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/linearLayout7"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_cards_configuracion"
+                    android:paddingBottom="15dp"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:paddingTop="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/linearLayout6"
+                    app:layout_constraintTop_toBottomOf="@+id/planTEA">
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/svg_moon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/modo_oscuro"
-                        android:textColor="?colorOnSurface"
-                        android:textSize="16sp" />
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/svg_question_circle"
+                            app:tint="?colorOnSurface" />
 
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switch_oscuro"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:theme="@style/Switches" />
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/lbl_manual"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="16sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
 
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/svg_logout" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_ayuda"
+                            style="@style/Widget.Material3.Button.IconButton.Outlined"
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:alpha="0.5"
+                            app:icon="@drawable/svg_chevron_right"
+                            app:iconGravity="textStart"
+                            app:iconSize="30dp"
+                            app:iconTint="?colorOnSurface"
+                            app:strokeWidth="0dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/lbl_cerrarSesionBotton"
-                        android:textColor="?colorOnSurface"
-                        android:textSize="16sp" />
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/svg_info"
+                            app:tint="?colorOnSurface" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCerrarSesion"
-                        style="@style/Widget.Material3.Button.IconButton.Outlined"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp"
-                        android:alpha="0.5"
-                        app:icon="@drawable/svg_chevron_right"
-                        app:iconGravity="textStart"
-                        app:iconSize="30dp"
-                        app:iconTint="?colorOnSurface"
-                        app:strokeWidth="0dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/pantalla_acercade"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="16sp" />
 
-                </LinearLayout>
-            </LinearLayout>
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="Titulo, información del planificador"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/app_name"
-                android:textColor="?colorOnSurface"
-                android:textSize="@dimen/titleSmall" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_credits"
+                            style="@style/Widget.Material3.Button.IconButton.Outlined"
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:alpha="0.5"
+                            app:icon="@drawable/svg_chevron_right"
+                            app:iconGravity="textStart"
+                            app:iconSize="30dp"
+                            app:iconTint="?colorOnSurface"
+                            app:strokeWidth="0dp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_cards_configuracion"
-                android:paddingBottom="15dp"
-                android:paddingStart="25dp"
-                android:paddingEnd="25dp"
-                android:paddingTop="15dp">
+                    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/svg_info"
-                        app:tint="?colorOnSurface" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/pantalla_acercade"
-                        android:textColor="?colorOnSurface"
-                        android:textSize="16sp" />
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/svg_policy" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_credits"
-                        style="@style/Widget.Material3.Button.IconButton.Outlined"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp"
-                        android:alpha="0.5"
-                        app:icon="@drawable/svg_chevron_right"
-                        app:iconGravity="textStart"
-                        app:iconSize="30dp"
-                        app:iconTint="?colorOnSurface"
-                        app:strokeWidth="0dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/pantalla_politica"
+                            android:textColor="?colorOnSurface"
+                            android:textSize="16sp" />
 
-                </LinearLayout>
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPolitica"
+                            style="@style/Widget.Material3.Button.IconButton.Outlined"
+                            android:layout_width="40dp"
+                            android:layout_height="35dp"
+                            android:alpha="0.5"
+                            app:icon="@drawable/svg_chevron_right"
+                            app:iconGravity="textStart"
+                            app:iconSize="30dp"
+                            app:iconTint="?colorOnSurface"
+                            app:strokeWidth="0dp" />
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/svg_policy" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/pantalla_politica"
-                        android:textColor="?colorOnSurface"
-                        android:textSize="16sp" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnPolitica"
-                        style="@style/Widget.Material3.Button.IconButton.Outlined"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp"
-                        android:alpha="0.5"
-                        app:icon="@drawable/svg_chevron_right"
-                        app:iconGravity="textStart"
-                        app:iconSize="30dp"
-                        app:iconTint="?colorOnSurface"
-                        app:strokeWidth="0dp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
            <!-- <LinearLayout
                 android:layout_width="match_parent"

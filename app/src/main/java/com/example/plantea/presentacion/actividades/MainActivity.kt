@@ -7,9 +7,11 @@ import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
@@ -49,7 +51,11 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import java.util.Locale
 
-
+/**
+ * Clase que representa la actividad principal de la aplicación, donde se muestran los usuarios TEA
+ *
+ * @property imagePlanificador ImageView
+ */
 class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedListener {
     private lateinit var imagePlanificador: ImageView
     private lateinit var nombrePlanificador: TextView
@@ -115,6 +121,10 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
        val accesoConfiguracion = prefs.getBoolean("userAccount", false)
@@ -155,6 +165,7 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
                 editor.apply()
                 val intent = Intent(applicationContext, EventosPlanificadorActivity::class.java)
                 startActivity(intent)
+
             }else{
                  navigationHandler.crearDialogoLoginMain(this, this, usersTEA)
             }
@@ -163,7 +174,6 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         preferencias.setOnClickListener{
             val intent = Intent(applicationContext, ConfiguracionActivity::class.java)
             startActivity(intent)
-
         }
 
         buttonLogout?.setOnClickListener{
@@ -318,7 +328,7 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
             val editor = prefs.edit()
 
             for (key in prefs.all.keys) {
-                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key"))) {
+                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key") || key.endsWith("FirstTime"))) {
                     editor.remove(key)
                 }
             }

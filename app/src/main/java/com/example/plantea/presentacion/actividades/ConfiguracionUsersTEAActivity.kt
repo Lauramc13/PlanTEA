@@ -1,12 +1,15 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,6 +29,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.Actividad
 import com.example.plantea.dominio.CategoriaActividad
 import com.example.plantea.dominio.Usuario
+import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.adaptadores.ActividadAdapter
 import com.example.plantea.presentacion.adaptadores.UserAdapter
 import com.example.plantea.presentacion.viewModels.ConfiguracionViewModel
@@ -89,12 +93,23 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE){
+            overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, R.anim.slide_in_left, R.anim.slide_out_right)
+        }else{
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion_users_tea)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
+        val btnGuardar = findViewById<MaterialButton>(R.id.buttonGuardar)
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.idUsuario = prefs.getString("idUsuario", "").toString()
@@ -107,9 +122,28 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
             viewModel.adapterUsers = UserAdapter(viewModel.usersTEA, this, this)
         }
 
+        btnGuardar?.setOnClickListener {
+            guardarConfiguracion()
+        }
+
         recyclerViewUsers = findViewById(R.id.recycler)
         recyclerViewUsers?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerViewUsers?.adapter = viewModel.adapterUsers
+    }
+
+
+    private fun guardarConfiguracion(){
+        recyclerViewUsers?.clearFocus()
+        try {
+            val usuario = Usuario()
+            if(viewModel.usersTEA!!.isNotEmpty()){
+                viewModel.usersTEA!!.removeLast()
+                usuario.guardarConfiguracionUsersTEA(viewModel.usersTEA!!, viewModel.idUsuario, this)
+            }
+        }catch (e: Exception){
+            Toast.makeText(this, getString(R.string.toast_error_guardar_configuracion), Toast.LENGTH_SHORT).show()
+        }
+        finish()
     }
 
     override fun onEditName(position: Int, name: String) {

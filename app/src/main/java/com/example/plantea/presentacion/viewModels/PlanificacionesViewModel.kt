@@ -38,7 +38,6 @@ class PlanificacionesViewModel : ViewModel(){
         idUsuario = userId.toString()
     }
 
-
     @OptIn(DelicateCoroutinesApi::class)
     fun dialogoTraduccion(activity: Activity, idPlan : Int){
         val dialog = Dialog(activity)

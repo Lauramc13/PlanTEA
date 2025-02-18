@@ -3,30 +3,10 @@ package com.example.plantea.dominio
 import android.app.Activity
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.os.Environment
 import com.example.plantea.persistencia.ConectorBD
-import com.example.plantea.presentacion.actividades.CommonUtils
-import java.io.FileOutputStream
 
 class GestionCategorias {
-    private var listaCategorias: ArrayList<String>? = null
     private var conectorBD: ConectorBD? = null
-
-   /* fun listarCategorias(actividad: Activity?, language: String, idUsuario: String?): ArrayList<String> {
-        conectorBD = ConectorBD(actividad)
-        listaCategorias = ArrayList()
-        conectorBD!!.abrir()
-        val c = conectorBD!!.listarCategoriasPrincipales(idUsuario, language)
-        if (c.moveToFirst()) {
-            do {
-                listaCategorias!!.add(c.getString(1))
-
-            } while (c.moveToNext())
-        }
-        c.close()
-        conectorBD!!.cerrar()
-        return listaCategorias!!
-    }*/
 
     fun obtenerIdCategoria(context: Context, nombre: String?, language: String): Int {
         conectorBD = ConectorBD(context)

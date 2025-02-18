@@ -1,10 +1,11 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
+import android.content.pm.ActivityInfo
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -20,8 +21,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.DialogFragment
 import com.example.plantea.R
@@ -55,10 +54,15 @@ class PreLoginActivity : AppCompatActivity(){
         viewModel.password = password?.editText?.text.toString()
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_prelogin)
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         signin = findViewById(R.id.Signin)
         email = findViewById(R.id.txt_Email)
@@ -104,8 +108,8 @@ class PreLoginActivity : AppCompatActivity(){
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }else{
-                    viewModel._errorEmail.value = "El usuario o la contraseña son incorrectos"
-                    viewModel._errorPassword.value = "El usuario o la contraseña son incorrectos"
+                    viewModel.seErrorEmail.value = "El usuario o la contraseña son incorrectos"
+                    viewModel.seErrorPassword.value = "El usuario o la contraseña son incorrectos"
                 }
             }
         }
@@ -122,11 +126,11 @@ class PreLoginActivity : AppCompatActivity(){
     }
 
     fun observers(){
-        viewModel._errorEmail.observe(this) {
+        viewModel.seErrorEmail.observe(this) {
             email?.error = it
         }
 
-        viewModel._errorPassword.observe(this) {
+        viewModel.seErrorPassword.observe(this) {
             password?.error = it
         }
     }

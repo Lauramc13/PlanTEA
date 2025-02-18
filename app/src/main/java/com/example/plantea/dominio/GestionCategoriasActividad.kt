@@ -15,10 +15,10 @@ class GestionCategoriasActividad {
         return idCategoria
     }
 
-    fun borrarCategoria(idCategoria: String?, idUsuario: String?, actividad: Activity?): Boolean {
+    fun borrarCategoria(idCategoria: String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val resultado = conectorBD!!.borrarCategoriaActividad(idCategoria, idUsuario)
+        val resultado = conectorBD!!.borrarCategoriaActividad(idCategoria)
         conectorBD!!.cerrar()
         return resultado
     }

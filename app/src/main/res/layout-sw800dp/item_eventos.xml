@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/icon_eye"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:iconSize="22dp"
+        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+        app:icon="@drawable/svg_open"/>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:id="@+id/card_plan"
@@ -16,6 +26,9 @@
         app:strokeWidth="1.5dp"
         app:cardCornerRadius="20dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginStart="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -69,6 +82,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
+
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_visibility"
                     android:layout_width="42dp"
@@ -80,18 +95,6 @@
                     app:strokeWidth="0dp"
                     app:iconGravity="textStart"
                     app:icon="@drawable/svg_eye_on" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_eye"
-                    android:layout_width="42dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="wrap_content"
-                    app:iconSize="30dp"
-                    app:iconTint="?colorOnSurface"
-                    android:padding="0dp"
-                    app:strokeWidth="0dp"
-                    app:iconGravity="textStart"
-                    app:icon="@drawable/svg_open" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_edit"

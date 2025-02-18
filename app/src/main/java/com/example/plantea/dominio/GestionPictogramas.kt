@@ -11,38 +11,11 @@ class GestionPictogramas : Serializable {
     private var listaPictogramas: ArrayList<Pictograma>? = null
     private var conectorBD: ConectorBD? = null
 
-    // fun listarPictogramas(actividad: Activity?, idcategoria: Int): ArrayList<Pictograma> {
-    //     conectorBD = ConectorBD(actividad)
-    //     listaPictogramas = ArrayList()
-    //     conectorBD!!.abrir()
-    //     val c = conectorBD!!.listarPictogramas(idcategoria)
-    //     if (c.moveToFirst()) {
-    //         do {
-    //             val pictograma = Pictograma()
-    //             pictograma.titulo = c.getString(0)
-    //             pictograma.imagen = c.getString(1)
-    //             pictograma.categoria = c.getInt(2)
-    //             listaPictogramas!!.add(pictograma)
-    //         } while (c.moveToNext())
-    //     }
-    //     c.close()
-    //     conectorBD!!.cerrar()
-    //     return listaPictogramas!!
-    // }
-
-
     fun obtenerPictogramas(context: Context, idcategoria: Int, userId: String?, language: String): ArrayList<Pictograma> {
         conectorBD = ConectorBD(context)
         listaPictogramas = ArrayList()
         conectorBD!!.abrir()
 
-        /*val c = if(idcategoria <= 5){
-            conectorBD!!.listarPictogramasCategoria(idcategoria, userId, language)
-        }else{
-            conectorBD!!.listarPictogramasCategoriaUsuario(idcategoria, userId, language)
-
-        }
-*/
         val c = conectorBD!!.listarPictogramasCategoria(idcategoria, userId, language)
 
         if (c.moveToFirst()) {
@@ -75,10 +48,10 @@ class GestionPictogramas : Serializable {
         return id
     }
 
-    fun insertarPictogramaAPI(actividad: Activity?, nombre: String?, id: String?, categoria: String?): String {
+    fun insertarPictogramaAPI(actividad: Activity?, nombre: String?, idPicto: String?, categoria: String?): String {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val id = conectorBD!!.insertarPictogramaAPI(nombre, id, categoria)
+        val id = conectorBD!!.insertarPictogramaAPI(nombre, idPicto, categoria)
         conectorBD!!.cerrar()
         return id
     }
@@ -129,27 +102,6 @@ class GestionPictogramas : Serializable {
         return exists
     }
 
-    /*fun guardarPictoCuaderno(actividad: Activity?, id: String?, titulo: String?, imagen: String?, idCuaderno: Int) {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        conectorBD!!.insertarPictogramaCuadernoBusqueda(id, titulo, imagen, idCuaderno)
-        conectorBD!!.cerrar()
-    }
-
-    fun borrarPictoCuadernoBusqueda(actividad: Activity?, id: String?, idCuaderno: Int) {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        conectorBD!!.borrarPictogramaCuadernoBusqueda(id, idCuaderno)
-        conectorBD!!.cerrar()
-    }
-
-    fun borrarPictoCuaderno(actividad: Activity?, id: String?, idCuaderno: Int) {
-        conectorBD = ConectorBD(actividad)
-        conectorBD!!.abrir()
-        conectorBD!!.borrarPictogramaCuaderno(id, idCuaderno)
-        conectorBD!!.cerrar()
-    }*/
-
     fun obtenerPicto(context: Context?, id: String?, language: String): Pictograma {
         val pictograma = Pictograma()
         conectorBD = ConectorBD(context)
@@ -160,7 +112,6 @@ class GestionPictogramas : Serializable {
                 pictograma.id = c.getString(0)
                 if(c.getBlob(1) == null){
                     pictograma.idAPI = c.getInt(2)
-                    // pictograma.imagen = CommonUtils.getImagenAPI(pictograma.idAPI)
                 }else{
                     pictograma.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(1))
                 }
@@ -197,10 +148,10 @@ class GestionPictogramas : Serializable {
 
     }
 
-    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?) {
+    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?, posicion: Int?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarHistoria(id, idPicto, historia)
+        conectorBD!!.insertarHistoria(id, idPicto, historia, posicion)
         conectorBD!!.cerrar()
     }
 

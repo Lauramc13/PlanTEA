@@ -3,35 +3,25 @@ package com.example.plantea.presentacion.viewModels
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.Actividad
 import com.example.plantea.dominio.CategoriaActividad
-import com.example.plantea.presentacion.actividades.MenuObjetosActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorActividadesPantalla
 import com.example.plantea.presentacion.adaptadores.AdaptadorListaCategoriasActividad
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.textfield.TextInputLayout
 
 import java.util.Locale
 
@@ -46,9 +36,8 @@ class ActividadViewModel: ViewModel() {
     val selectedCategories = mutableSetOf<Int>()
 
     var isPlanificadorLogged = false
-    var _editActividad = MutableLiveData<Int>()
+    var mdEditActividad = MutableLiveData<Int>()
 
-    val _timerEnded = MutableLiveData<Boolean>()
     @SuppressLint("SetJavaScriptEnabled")
 
     // Function to configure the WebView
@@ -70,7 +59,7 @@ class ActividadViewModel: ViewModel() {
     // Function to show the dialog with the object information
     fun dialogoActividad(context: Context, position: Int){
         if(isPlanificadorLogged){
-            _editActividad.value = position
+            mdEditActividad.value = position
         }else{
             dialogoActividadTEA(context, position)
         }

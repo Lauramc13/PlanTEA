@@ -16,6 +16,7 @@ class GestionEventos {
         conectorBD!!.abrir()
         val identificador = conectorBD!!.insertarEvento(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.reminder.toString(), evento.cambiarVisibilidad)
         conectorBD!!.insertarCitaEvento(identificador, evento.idPlan)
+        conectorBD!!.insertarPictosEvento(identificador, evento.idPlan)
         conectorBD!!.cerrar()
         return identificador
     }
@@ -134,5 +135,26 @@ class GestionEventos {
         }
         conectorBD!!.cerrar()
         return -1
+    }
+
+    fun editPictogramTitle(posicion: Int?, titulo: String?, idEvento: String?, idPictograma: String?, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.modificarTituloPictogramaEvento(posicion, titulo, idEvento, idPictograma)
+        conectorBD!!.cerrar()
+    }
+
+    fun eliminarPictoEvento(posicion: Int?, idEvento: String?, idPictograma: String?, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.eliminarPictoEvento(posicion, idEvento, idPictograma)
+        conectorBD!!.cerrar()
+    }
+
+    fun actualizarPosicionPictoEvento(posicionNew: Int?, posicionOld: Int?, idEvento: String?, idPictograma: String?, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.actualizarPosicionPictoEvento(posicionNew, posicionOld, idEvento, idPictograma)
+        conectorBD!!.cerrar()
     }
 }

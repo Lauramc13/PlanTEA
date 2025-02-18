@@ -1,6 +1,8 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -57,9 +59,14 @@ class CrearPlanActivity : AppCompatActivity(){
         super.onDestroy()
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_plan)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         btnGuardarPlanificacion = findViewById(R.id.btn_guardarPlan)
         searchBar = findViewById(R.id.searchViewPicto)
@@ -89,7 +96,7 @@ class CrearPlanActivity : AppCompatActivity(){
                 searchBar.setQuery("", false)
                 searchBar.clearFocus()
             } else {
-                if(searchBar.query.trim().isEmpty()){
+                if(searchBar.query.trim().isEmpty() || searchBar.query == "."){
                     return@setOnClickListener
                 }else{
                     viewModel.getPictogramas(searchBar.query.trim().toString(), false, this)
@@ -142,7 +149,7 @@ class CrearPlanActivity : AppCompatActivity(){
             clickGuardarPicto()
         }
 
-        viewModel._image.observe(this){
+        viewModel.mdImage.observe(this){
             viewModel.image?.setImageURI(it)
             viewModel.image?.background = null
         }
@@ -188,28 +195,28 @@ class CrearPlanActivity : AppCompatActivity(){
     }
 
     fun observers() {
-        viewModel._closeFragment.observe(this) {
+        viewModel.seCloseFragment.observe(this) {
             if(it){
                 transaction = supportFragmentManager.beginTransaction()
                 viewModel.closeFragment(transaction, this)
             }
         }
 
-        viewModel._listaPictogramas.observe(this) {
+        viewModel.selistaPictogramas.observe(this) {
             transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.contenedor_fragments, CategoriasPictogramasFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }
 
-        viewModel._clearBusqueda.observe(this) {
+        viewModel.seClearBusqueda.observe(this) {
             if(it){
                 searchBar.setQuery("", false)
                 searchBar.clearFocus()
             }
         }
 
-        viewModel._pictogramaSeleccionado.observe(this) {
+        viewModel.sePictogramaSeleccionado.observe(this) {
             //initRecyclerViewPlan()
             viewModel.tituloPicto = it.titulo!!
           //  viewModel.imagenPicto = it.imagen!! TODO uncomment
@@ -218,11 +225,10 @@ class CrearPlanActivity : AppCompatActivity(){
             recyclerView.scrollToPosition(viewModel.adaptadorPlanificacion.itemCount -2)
         }
 
-        viewModel._idPictoEntretenimiento.observe(this){
-            viewModel.listaPlanificacion[viewModel._onEntretenimientoClicked.value!!].pictoEntretenimiento = it
+        viewModel.seIdPictoEntretenimiento.observe(this){
+            viewModel.listaPlanificacion[viewModel.seOnEntretenimientoClicked.value!!].pictoEntretenimiento = it
             Thread.sleep(150)
         }
-
     }
 
 
@@ -289,7 +295,7 @@ class CrearPlanActivity : AppCompatActivity(){
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 val ruta =  CommonUtils.getPathFromUri(this, uri) // TODO: CAMBIAR
                 CommonUtils.guardarImagen(this, ruta, bitmap)
-                viewModel._image.value = uri
+                viewModel.mdImage.value = uri
             } else {
                 Toast.makeText(this, R.string.toast_no_imagen_seleccionada, Toast.LENGTH_SHORT).show()
             }
@@ -308,40 +314,44 @@ class CrearPlanActivity : AppCompatActivity(){
     }
 
     private fun inializeSearch() {
-        searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                if (!CommonUtils.isNetworkAvailable(this@CrearPlanActivity)) {
-                    Toast.makeText(this@CrearPlanActivity, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
-                    searchBar.setQuery("", false)
-                    searchBar.clearFocus()
-                } else {
-                    //if there are two or more words, search pictograms
-                    if (query.trim().contains(" ")) {
+        try {
+            searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    if (!CommonUtils.isNetworkAvailable(this@CrearPlanActivity)) {
+                        Toast.makeText(this@CrearPlanActivity, R.string.toast_sin_conexion, Toast.LENGTH_SHORT).show()
+                        searchBar.setQuery("", false)
                         searchBar.clearFocus()
-                        viewModelTraductor.traducirFrase(searchBar.query.trim().toString())
-                        transaction = supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.contenedor_fragments, TraduccionPlanFragment())
-                        transaction.addToBackStack(null)
-                        transaction.commit()
-                    } else{
-                        viewModel.getPictogramas(query.trim(), false, this@CrearPlanActivity)
+                    } else {
+                        //if there are two or more words, search pictograms
+                        if (query.trim().contains(" ")) {
+                            searchBar.clearFocus()
+                            viewModelTraductor.traducirFrase(searchBar.query.trim().toString())
+                            transaction = supportFragmentManager.beginTransaction()
+                            transaction.replace(R.id.contenedor_fragments, TraduccionPlanFragment())
+                            transaction.addToBackStack(null)
+                            transaction.commit()
+                        } else{
+                            viewModel.getPictogramas(query.trim(), false, this@CrearPlanActivity)
+                        }
                     }
+                    searchBar.clearFocus()
+                    CommonUtils.hideKeyboard(this@CrearPlanActivity, searchBar)
+                    return true
                 }
-                searchBar.clearFocus()
-                CommonUtils.hideKeyboard(this@CrearPlanActivity, searchBar)
-                return true
-            }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                //after a space and a letter, disable the search button
-                if (newText.trim().contains(" ") && newText.trim().length > 1) {
-                    findViewById<MaterialButton>(R.id.btn_search).isEnabled = false
-                } else {
-                    findViewById<MaterialButton>(R.id.btn_search).isEnabled = true
+                override fun onQueryTextChange(newText: String): Boolean {
+                    //after a space and a letter, disable the search button
+                    if (newText.trim().contains(" ") && newText.trim().length > 1) {
+                        findViewById<MaterialButton>(R.id.btn_search).isEnabled = false
+                    } else {
+                        findViewById<MaterialButton>(R.id.btn_search).isEnabled = true
+                    }
+                    return true
                 }
-                return true
-            }
-        })
+            })
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
 
     }
 }

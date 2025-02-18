@@ -15,7 +15,7 @@
         android:layout_width="48dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:background="@drawable/bg_close_button"
         android:contentDescription="Cerrar configuración nuevo evento"
         android:padding="12dp"
@@ -58,7 +58,6 @@
             android:layout_weight="1"
             android:contentDescription="Mes"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Noviembre 2021"
             android:textAlignment="center"
             android:textColor="?colorOnSurface"
             android:textSize="20sp" />

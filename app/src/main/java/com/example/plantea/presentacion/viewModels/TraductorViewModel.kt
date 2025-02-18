@@ -6,13 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.graphics.pdf.PdfDocument
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
@@ -37,8 +33,6 @@ import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.Locale
 import com.example.plantea.R
-import java.io.File
-import java.io.FileOutputStream
 
 
 class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSelectedListener{
@@ -47,21 +41,20 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
     private var listaTraducir : ArrayList<String> = ArrayList()
     private var listaPictoBuscador: MutableList<MutableMap<Bitmap, Pair<String, Int>>> = mutableListOf()
     lateinit var adaptador: AdaptadorPictogramasTraductor
-    var _visibilityButtons = MutableLiveData<Boolean>()
+    var mdVisibilityButtons = MutableLiveData<Boolean>()
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     var bitmap : Bitmap? = null
-    var ruta : String? = null
-    var posicionSelected = -1
+    private var posicionSelected = -1
 
-    val _dialogMessage = SingleLiveEvent<Int>()
-    val _traduccionEnded = SingleLiveEvent<Boolean>()
+    val seDialogMessage = SingleLiveEvent<Int>()
+    val seTraduccionEnded = SingleLiveEvent<Boolean>()
 
-    val _listaPictogramasTraduccion = MutableLiveData<ArrayList<Pictograma>>()
+    val mdListaPictogramasTraduccion = MutableLiveData<ArrayList<Pictograma>>()
     var textInputContent = ""
 
     init {
-        _listaPictogramasTraduccion.value = listaPictogramas
-        _visibilityButtons.value = false
+        mdListaPictogramasTraduccion.value = listaPictogramas
+        mdVisibilityButtons.value = false
     }
 
     fun traducirFrase(texto: CharSequence?): Boolean {
@@ -86,7 +79,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                         dict.keys.first().let{ key ->
                             dict[key]?.let {
                                 crearPictoTraduccion(key, word, 0, null)
-                                _listaPictogramasTraduccion.value = listaPictogramas
+                                mdListaPictogramasTraduccion.value = listaPictogramas
                             }
                         }
                     }
@@ -95,7 +88,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
                         dict.keys.first().let{ key ->
                             dict[key]?.let { (_, id) ->
                                 crearPictoTraduccion(key, word, id, null)
-                                _listaPictogramasTraduccion.value = listaPictogramas
+                                mdListaPictogramasTraduccion.value = listaPictogramas
                             }
                         }
                     }
@@ -107,7 +100,7 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
 
        job.invokeOnCompletion {
             CoroutineScope(Dispatchers.Main).launch {
-                _traduccionEnded.value = true
+                seTraduccionEnded.value = true
             }
        }
     }
@@ -145,9 +138,9 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         val creada = plan.addPictogramasPlanTraductor(idPlan, context as TraductorActivity, listaPictogramas, idUsuario)
 
         if (creada == true) {
-            _dialogMessage.value = R.string.toast_planificacion_creada
+            seDialogMessage.value = R.string.toast_planificacion_creada
         } else {
-            _dialogMessage.value = R.string.toast_error_crear_planificacion
+            seDialogMessage.value = R.string.toast_error_crear_planificacion
         }
     }
 

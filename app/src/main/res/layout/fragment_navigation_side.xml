@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="start"
-        android:background="?colorBG1"
+        android:background="@color/transparent"
         android:backgroundTint="?colorBG1"
         android:fontFamily="@font/poppins_light"
         app:elevation="3dp"

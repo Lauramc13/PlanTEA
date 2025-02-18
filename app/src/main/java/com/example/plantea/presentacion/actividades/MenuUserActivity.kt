@@ -1,6 +1,8 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +19,14 @@ class MenuUserActivity : AppCompatActivity(), AdaptadorMenuUser.OnItemSelectedLi
         private var usersTEA: ArrayList<Usuario>? = null
         private lateinit var adapterUsers: AdaptadorMenuUser
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_usertea)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         getUsers(recyclerView)

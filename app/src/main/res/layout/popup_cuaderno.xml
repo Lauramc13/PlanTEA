@@ -25,7 +25,7 @@
         android:clickable="true"
         android:textColor="?colorOnSurface"
         app:drawableStartCompat="@drawable/svg_edit_outline"
-        app:drawableTint="?colorPrimary" />
+        app:drawableTint="?colorOnSurfaceVariant" />
 
     <!-- Divider-->
        <View
@@ -49,5 +49,5 @@
         android:fontFamily="@font/poppins_medium"
         android:clickable="true"
         app:drawableStartCompat="@drawable/svg_trash"
-        app:drawableTint="?colorPrimary" />
+        app:drawableTint="?colorOnSurfaceVariant" />
 </LinearLayout>

@@ -2,15 +2,15 @@ package com.example.plantea.presentacion.actividades
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ActivityOptions
 import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
@@ -136,9 +136,14 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         viewModel.username = txtUsernamePlanificador?.editText?.text.toString()
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion)
+
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
 
@@ -158,6 +163,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         switchNoti = findViewById(R.id.switch_notificaciones)
         switchOscuro = findViewById(R.id.switch_oscuro)
 
+        val ayuda : TextView = findViewById(R.id.btn_ayuda)
         val credits : TextView = findViewById(R.id.btn_credits)
         val btnLogout : MaterialButton? = findViewById(R.id.btnCerrarSesion)
         val btnUsersTEA : MaterialButton? = findViewById(R.id.btn_users_tea)
@@ -193,7 +199,12 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
 
         txtCorreoPlanificador?.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
 
-        credits.paintFlags = credits.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        ayuda.setOnClickListener{
+            val intent = Intent(applicationContext, ManualActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
         credits.setOnClickListener{
             val intent = Intent(applicationContext, CreditsActivity::class.java)
             startActivity(intent)
@@ -273,7 +284,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     }
 
     fun observers(){
-        viewModel._toast.observe(this) {
+        viewModel.seToast.observe(this) {
             Toast.makeText(this, getString(it), Toast.LENGTH_SHORT).show()
         }
     }
@@ -429,7 +440,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
             val editor = prefs.edit()
 
             for (key in prefs.all.keys) {
-                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key"))) {
+                if (!(key.startsWith("initialization_vector") || key.startsWith("secret_key") || key.endsWith("FirstTime"))) {
                     editor.remove(key)
                 }
             }

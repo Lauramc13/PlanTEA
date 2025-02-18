@@ -5,17 +5,19 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import com.example.plantea.presentacion.actividades.CommonUtils
 
-class DiaSemana {
+class DiaSemana() {
     var dia: String? = null
     var imagen: Bitmap? = null
     var color: String? = null
     var idEvento: String? = null
     private val gestorSemana = GestionSemana()
 
-    constructor()
-
     fun obtenerconfig(idUsuario: String, actividad: Activity?): Int {
         return gestorSemana.obtenerconfig(idUsuario, actividad)
+    }
+
+    fun obtenerColoresHeader(idUsuario: String, actividad: Activity?): ArrayList<String>? {
+        return gestorSemana.obtenerColoresHeader(idUsuario, actividad)
     }
 
     fun obtenerDias(idUsuario: String, days: MutableList<String>, actividad: Activity?): ArrayList<DiaSemana> {
@@ -38,4 +40,7 @@ class DiaSemana {
         gestorSemana.guardarConfiguracionWeek(idUsuario, configurationWeek, actividad)
     }
 
+    fun guardarColorsHeader(idUsuario: String, colorsHeader: ArrayList<String>, actividad: Activity?){
+        gestorSemana.guardarColorsHeader(idUsuario, colorsHeader, actividad)
+    }
 }

@@ -19,6 +19,7 @@ class Pictograma: Serializable {
     var pictoEntretenimiento = 0
     var favorito: Boolean = false
     var listaPictogramas: ArrayList<Pictograma>? = null
+    var posicion: Int? = null
     private var gestorPictogramas = GestionPictogramas()
 
     constructor()
@@ -80,9 +81,8 @@ class Pictograma: Serializable {
         return Pictograma(this.id, this.titulo, this.imagen, this.idAPI, this.categoria, this.favorito)
     }
 
-    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?) {
-        gestorPictogramas.guardarHistoria(actividad, id, idPicto, historia)
-
+    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?, posicion: Int?) {
+        gestorPictogramas.guardarHistoria(actividad, id, idPicto, historia, posicion)
     }
 
     fun guardarDuracion(actividad: Activity?, toString: String, id: String, s: String?) {

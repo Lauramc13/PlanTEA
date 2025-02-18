@@ -1,21 +1,16 @@
 package com.example.plantea.presentacion.actividades
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.app.DownloadManager
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfDocument.PageInfo
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.storage.StorageManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -28,9 +23,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.NotificationCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.set
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -64,13 +57,19 @@ class CalendarioMensualActivity: AppCompatActivity() {
 
     private var isPlanificadorLogged = false
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendario_mensual)
 
+        if(CommonUtils.isMobile(this)){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
+
         //Seccion de fechas
         val btnNuevaFecha = findViewById<MaterialButton>(R.id.nuevaFecha)
         val btnExportPdf = findViewById<MaterialButton>(R.id.exportPdf)
+        val atras : Button? = findViewById(R.id.atras)
 
         //Calendario
         val btnSiguienteMes = findViewById<Button>(R.id.image_calendar_siguiente)
@@ -100,9 +99,11 @@ class CalendarioMensualActivity: AppCompatActivity() {
         }
 
         btnNuevaFecha.setOnClickListener {
-            viewModel.isCalendarioMensual = true
-            viewModel.isEditImage = false
-            AniadirPictoUtils.initializeDialog(viewModel, this)
+           nuevaFecha()
+        }
+
+        atras?.setOnClickListener {
+            finish()
         }
 
         observer()
@@ -116,11 +117,11 @@ class CalendarioMensualActivity: AppCompatActivity() {
     }
 
     private fun observer() {
-        viewModel._fechaActual.observe(this) {
+        viewModel.mdFechaActual.observe(this) {
             fechaActual.text = it
         }
 
-        viewModel._dias.observe(this) {
+        viewModel.mdDias.observe(this) {
 
             listaDays = if(CommonUtils.isMobile(this) && Locale.getDefault().language == "es"){
                 arrayOf("L", "M", "X", "J", "V", "S", "D")
@@ -162,62 +163,115 @@ class CalendarioMensualActivity: AppCompatActivity() {
             fechas.requestLayout()
         }
 
-        viewModel._fechaSeleccionada.observe(this) { dia ->
-            val dialog = Dialog(this)
-            dialog.setContentView(R.layout.dialogo_fecha)
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-            val titulo = dialog.findViewById<EditText>(R.id.titulo)
-            val fecha = dialog.findViewById<TextView>(R.id.fecha)
-            val imagen = dialog.findViewById<ShapeableImageView>(R.id.imagen)
-            val cardView = dialog.findViewById<MaterialCardView>(R.id.cardView)
-            val btnEditar = dialog.findViewById<Button>(R.id.btn_editar)
-            val btnBorrar = dialog.findViewById<Button>(R.id.btn_borrar)
-            val btnCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-            val borrarIcono = dialog.findViewById<ImageView>(R.id.borrarIcon)
-            val card = dialog.findViewById<MaterialCardView>(R.id.card)
-
-            card.setCardBackgroundColor(CommonUtils.getColor(this, dia.color))
-            borrarIcono.visibility = ImageView.GONE
-
-            titulo.setText(dia.titulo)
-            fecha.text = CalendarioUtilidades.formatoFecha(dia.fecha!!)
-
-            if(dia.imagen != null){
-                imagen.setImageBitmap(dia.imagen)
+        viewModel.mdFechaSeleccionada.observe(this) { dia ->
+            if(isPlanificadorLogged){
+                dialogoMostrarDia(dia)
             }else{
-                cardView.visibility = ImageView.GONE
+                dialogoMostrarDiaTEA(dia)
             }
-
-            if(!isPlanificadorLogged){
-                btnEditar.visibility = View.GONE
-                btnBorrar.visibility = View.GONE
-            }
-
-            btnBorrar.setOnClickListener {
-                borrarDia(dia, dialog)
-            }
-
-            btnEditar.setOnClickListener {
-                editarDia(dia, dialog, titulo, fecha, imagen, cardView, borrarIcono, btnEditar)
-            }
-
-            btnCerrar.setOnClickListener {
-                dialog.dismiss()
-            }
-
-            dialog.show()
         }
 
-        viewModel._addedFecha.observe(this) {
+        viewModel.seAddedFecha.observe(this) { dia ->
             val diaMes = DiaMes()
-            val imagenBlob = CommonUtils.bitmapToByteArray((it.imagen))
-            diaMes.guardarDia(viewModel.idUsuario, it.titulo, imagenBlob, it.color, it.fecha.toString(), this)
-            viewModel.fechas.add(it)
-            adaptadorFechas.notifyItemInserted(viewModel.fechas.size - 1)
-            adaptadorCalendario.notifyDataSetChanged()
+            val imagenBlob = CommonUtils.bitmapToByteArray((dia.imagen))
+            diaMes.guardarDia(viewModel.idUsuario, dia.titulo, imagenBlob, dia.color, dia.fecha.toString(), this)
+            viewModel.fechas.add(dia)
+            viewModel.fechas.sortBy { it.fecha }
+            adaptadorFechas.notifyItemInserted(viewModel.fechas.indexOf(dia))
+
+            val positionDiaMes = viewModel.mdDias.value!!.binarySearch(dia.fecha) + 7
+            adaptadorCalendario.notifyItemChanged(positionDiaMes, "update")
+
             findViewById<TextView>(R.id.noHayFechas).visibility = View.GONE
         }
+
+        viewModel.seNuevaFecha.observe(this){
+            nuevaFecha()
+        }
+    }
+
+    private fun nuevaFecha(){
+        viewModel.isCalendarioMensual = true
+        viewModel.isEditImage = false
+        AniadirPictoUtils.initializeDialog(viewModel, this)
+    }
+
+    private fun dialogoMostrarDia(dia : DiaMes){
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialogo_fecha)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val titulo = dialog.findViewById<EditText>(R.id.titulo)
+        val fecha = dialog.findViewById<TextView>(R.id.fecha)
+        val imagen = dialog.findViewById<ShapeableImageView>(R.id.imagen)
+        val cardView = dialog.findViewById<MaterialCardView>(R.id.cardView)
+        val btnEditar = dialog.findViewById<Button>(R.id.btn_editar)
+        val btnBorrar = dialog.findViewById<Button>(R.id.btn_borrar)
+        val btnCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        val borrarIcono = dialog.findViewById<ImageView>(R.id.borrarIcon)
+        val card = dialog.findViewById<MaterialCardView>(R.id.card)
+
+        card.setCardBackgroundColor(resources.getColor(viewModel.getColorID(dia.color, this), null))
+        borrarIcono.visibility = ImageView.GONE
+
+        titulo.setText(dia.titulo)
+        fecha.text = CalendarioUtilidades.formatoFecha(dia.fecha!!)
+
+        if(dia.imagen != null){
+            imagen.setImageBitmap(dia.imagen)
+        }else{
+            cardView.visibility = ImageView.GONE
+        }
+
+        if(!isPlanificadorLogged){
+            btnEditar.visibility = View.INVISIBLE
+            btnBorrar.visibility = View.GONE
+        }
+
+        btnBorrar.setOnClickListener {
+            borrarDia(dia, dialog)
+        }
+
+        btnEditar.setOnClickListener {
+            editarDia(dia, dialog, titulo, fecha, imagen, cardView, borrarIcono, btnEditar)
+        }
+
+        btnCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun dialogoMostrarDiaTEA(dia : DiaMes){
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialogo_fecha_tea)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val titulo = dialog.findViewById<TextView>(R.id.titulo)
+        val fecha = dialog.findViewById<TextView>(R.id.fecha)
+        val imagen = dialog.findViewById<ShapeableImageView>(R.id.imagen)
+        val cardView = dialog.findViewById<MaterialCardView>(R.id.cardView)
+
+        //chage background color of dialog
+        val card = dialog.findViewById<ConstraintLayout>(R.id.dialogo_fecha_tea)
+        card.backgroundTintList = resources.getColorStateList(viewModel.getColorID(dia.color, this), null)
+
+        titulo.text = dia.titulo
+        fecha.text = CalendarioUtilidades.formatoFecha(dia.fecha!!)
+
+        if(dia.imagen != null){
+            imagen.setImageBitmap(dia.imagen)
+        }else{
+            cardView.visibility = ImageView.GONE
+            titulo.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            val params = titulo.layoutParams as LinearLayout.LayoutParams
+            params.setMargins(0, CommonUtils.dpToPx(30, resources), 0, 0)
+            titulo.layoutParams = params
+            fecha.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        }
+
+        dialog.show()
     }
 
     private fun borrarDia(dia: DiaMes, dialog: Dialog) {
@@ -238,15 +292,12 @@ class CalendarioMensualActivity: AppCompatActivity() {
             val positionDia = viewModel.fechas.indexOf(dia)
             viewModel.fechas.remove(dia)
             adaptadorFechas.notifyItemRemoved(positionDia)
-            adaptadorCalendario.notifyDataSetChanged()
+            val positionDiaMes = viewModel.mdDias.value!!.binarySearch(dia.fecha) + 7
+            adaptadorCalendario.notifyItemChanged(positionDiaMes, "update")
 
             if(viewModel.fechas.isEmpty()){
                 findViewById<TextView>(R.id.noHayFechas).visibility = View.VISIBLE
             }
-
-//            val positionDiaMes = viewModel._dias.value!!.binarySearch(dia.fecha) + 7
-//            adaptadorCalendario.notifyItemChanged(positionDiaMes, dia)
-
         }
 
         dialogBorrar.findViewById<ImageView>(R.id.icono_CerrarDialogo).setOnClickListener {
@@ -287,11 +338,11 @@ class CalendarioMensualActivity: AppCompatActivity() {
             viewModel.isCalendarioMensual = false
             AniadirPictoUtils.initializeDialog(viewModel, this)
 
-            viewModel._newImage.observe(this) { //TODO: Solo se actualiza bien la primera vez
+            viewModel.seNewImage.observe(this) { //TODO: Solo se actualiza bien la primera vez
                 //volver a inicializar la imagen
                 val imagen2 = dialog.findViewById<ShapeableImageView>(R.id.imagen)
                 imagen2.background = null
-                imagen2.setImageBitmap(viewModel._nuevoPicto.value?.imagen)
+                imagen2.setImageBitmap(viewModel.seNuevoPicto.value?.imagen)
                 borrarIcono.visibility = ImageView.VISIBLE
             }
         }
@@ -312,27 +363,38 @@ class CalendarioMensualActivity: AppCompatActivity() {
 
         buttonEditar.setOnClickListener {
             val diaMes = DiaMes()
-            val imagenByteArray = if(imagen.drawable != null){
-                 CommonUtils.drawableToByteArray(imagen.drawable)
+            val imagenByteArray = if(imagen.drawable == null){
+                null
             }else{
-                 null
+                CommonUtils.drawableToByteArray(imagen.drawable)
             }
 
             val positionDia = viewModel.fechas.indexOf(dia)
             if (positionDia != -1) {
-                val imageBitmap = if(imagenByteArray != null)
-                     CommonUtils.byteArrayToBitmap(imagenByteArray)
-                else
+                val imageBitmap = if(imagenByteArray == null)
                     null
+                else
+                    CommonUtils.byteArrayToBitmap(imagenByteArray)
 
-                diaMes.editarDia(viewModel.idUsuario, titulo.text.toString(), imagenByteArray, viewModel.colorSelected, CalendarioUtilidades.fechaSeleccionada.toString(), this)
-                val updatedDia = DiaMes(dia.fecha, titulo.text.toString(), viewModel.colorSelected, imageBitmap)
+                val fechaNueva = if(dia.fecha != CalendarioUtilidades.fechaSeleccionada){
+                     CalendarioUtilidades.fechaSeleccionada
+                }else{
+                    dia.fecha
+                }
+
+                diaMes.editarDia(viewModel.idUsuario, titulo.text.toString(), imagenByteArray, viewModel.colorSelected, fechaNueva.toString(), dia.fecha.toString(),this)
+
+                val updatedDia = DiaMes(fechaNueva, titulo.text.toString(), viewModel.colorSelected, imageBitmap)
                 viewModel.fechas[positionDia] = updatedDia
+                viewModel.fechas.sortBy { it.fecha }
 
-                adaptadorFechas.notifyItemChanged(positionDia)
-                /*val positionDiaMes = viewModel._dias.value!!.binarySearch(dia.fecha) + 7
-                adaptadorCalendario.notifyItemChanged(positionDiaMes)*/
-                adaptadorCalendario.notifyDataSetChanged()
+                adaptadorFechas.notifyDataSetChanged()
+
+                val positionDiaMes = viewModel.mdDias.value!!.binarySearch(dia.fecha) + 7
+                adaptadorCalendario.notifyItemChanged(positionDiaMes, "update")
+
+                val positionDiaMes2 = viewModel.mdDias.value!!.binarySearch(fechaNueva) + 7
+                adaptadorCalendario.notifyItemChanged(positionDiaMes2, "update")
                 dialog.dismiss()
             }
 
@@ -361,10 +423,10 @@ class CalendarioMensualActivity: AppCompatActivity() {
 
             //Calendario
             val calendarioPDF = RecyclerView(this)
-            val adaptador = AdaptadorCalendarioMensual(viewModel._dias.value!!, listaDays, viewModel.fechas, viewModel, true)
+            val adaptador = AdaptadorCalendarioMensual(viewModel.mdDias.value!!, listaDays, viewModel.fechas, viewModel, true)
             calendarioPDF.layoutManager = GridLayoutManager(this, 7)
             calendarioPDF.adapter = adaptador
-            var widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            val widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             calendarioPDF.measure(widthSpec, heightSpec)
             calendarioPDF.requestLayout()
