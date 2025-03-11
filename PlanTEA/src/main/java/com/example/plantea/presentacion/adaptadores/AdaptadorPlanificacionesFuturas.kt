@@ -1,0 +1,52 @@
+package com.example.plantea.presentacion.adaptadores
+
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.plantea.R
+import com.example.plantea.dominio.objetos.Planificacion
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+class AdaptadorPlanificacionesFuturas(var list : ArrayList<Planificacion>, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPlanificacionesFuturas.ViewHolderPlanFuturos>() {
+
+    interface OnItemSelectedListener {
+        fun diaSeleccionado(context: Context?, fecha:LocalDate)
+    }
+
+    inner class ViewHolderPlanFuturos(itemView : View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        val title: TextView = itemView.findViewById(R.id.titleNotification)
+        val date: TextView = itemView.findViewById(R.id.dateNotification)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(view:View){
+            val position = bindingAdapterPosition
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val fecha = LocalDate.parse(list[position].fecha, formatter)
+            //listener?.diaSeleccionado(view.context, fecha)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlanFuturos {
+        val items = LayoutInflater.from(parent.context).inflate(R.layout.fragment_list_planificaciones, parent, false)
+        return ViewHolderPlanFuturos(items)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolderPlanFuturos, position: Int) {
+        holder.title.text = list[position].titulo
+        holder.date.text = list[position].fecha
+    }
+
+    override fun getItemCount(): Int {
+        return list.size
+    }
+}
+
+

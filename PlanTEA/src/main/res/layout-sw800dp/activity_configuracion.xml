@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?customBgColor"
+    tools:context=".presentacion.actividades.ConfiguracionActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.plantea.presentacion.fragmentos.NavigationTopFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_guardarConfiguracion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
+        tools:context=".presentacion.actividades.ConfiguracionActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:contentDescription="Contenedor con la configuración del usuario"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_cards_configuracion"
+                android:contentDescription="Contenedor del planificador"
+                android:elevation="0dp">
+
+                <TextView
+                    android:id="@+id/lbl_infoPlanificador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="Titulo, información del planificador"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/lbl_infoPlanificador"
+                    android:textColor="?colorOnSurface"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/lbl_infoplaificador_texto"
+                    android:textColor="?colorOutline"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_infoPlanificador" />
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/id_card_Planificador"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="36dp"
+                    android:background="@drawable/card_personalizado"
+                    android:elevation="0dp"
+                    android:layout_marginEnd="20dp"
+                    app:strokeColor="?color"
+                    app:cardCornerRadius="20dp"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_FotoPlanificador"
+                        style="@style/addPhotoBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/svg_add_image"
+                        android:contentDescription="Añadir imagen del planificador"
+                        app:shapeAppearance="@style/cornerRadius" />
+
+                    <ImageView
+                        android:id="@+id/id_editIcon"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_gravity="end"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:contentDescription="@string/lbl_Consultas"
+                        android:elevation="4dp"
+                        app:srcCompat="@drawable/edit_image_svg" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="35dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.65"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_nombrePlanificador"
+                        style="@style/cornertextInput"
+                        android:layout_width="340dp"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo de texto con nombre del planificador"
+                        android:ems="10"
+                        android:hint="@string/lbl_datosNombre"
+                        android:inputType="textPersonName"
+                        android:maxLength="14"
+                        android:layout_marginBottom="5dp"
+                        android:textCursorDrawable="@null">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cursorVisible="true"
+                            android:inputType="text"
+                            style="@style/textInput"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_nombreUsuarioPlanificador"
+                        style="@style/cornertextInput"
+                        android:layout_width="340dp"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo de texto con nombre de usuario del planificador"
+                        android:ems="10"
+                        android:hint="@string/lbl_nombreUsuario"
+                        android:inputType="textPersonName"
+                        android:maxLength="14"
+                        android:layout_marginBottom="5dp"
+                        android:textCursorDrawable="@null">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cursorVisible="true"
+                            android:inputType="text"
+                            style="@style/textInput" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_correoPlanificador"
+                        style="@style/cornertextInput"
+                        android:layout_width="340dp"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="Campo de texto con correo del planificador"
+                        android:ems="10"
+                        android:hint="@string/lbl_email"
+                        android:inputType="textPersonName"
+                        android:maxLength="14"
+                        android:enabled="false"
+                        android:textCursorDrawable="@null">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:cursorVisible="true"
+                            android:inputType="text"
+                            style="@style/textInput"
+                            android:alpha="0.6"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <Button
+                        android:id="@+id/buttonContrasenia"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:contentDescription="Boton para cambiar contraseña del usuario"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/btn_CambiarPass"
+                        android:textColor="@color/darkGreen"
+                        android:textSize="@dimen/button"
+                        android:textAllCaps="false"
+                        app:cornerRadius="25dp"
+                        android:layout_marginTop="20dp" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:contentDescription="Titulo, información del planificador"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/usuarios_tea"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/titleSmall" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_viewUsers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="15dp"
+                android:nestedScrollingEnabled="false"
+                android:elevation="0dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="Titulo, información del planificador"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/item_perfil"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/titleSmall" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_cards_configuracion"
+                android:paddingBottom="15dp"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:paddingTop="15dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/svg_bell" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/notificaciones"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_notificaciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:theme="@style/Switches" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/svg_moon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/modo_oscuro"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_oscuro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:theme="@style/Switches" />
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnCerrarSesion"
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:strokeWidth="0dp"
+                    android:backgroundTint="@color/transparent"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/svg_logout"
+                        app:tint="?colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/lbl_cerrarSesionBotton"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        android:layout_gravity="end|center_vertical"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        android:clickable="false"
+                        app:strokeWidth="0dp" />
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="Titulo, información del planificador"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/app_name"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/titleSmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_cards_configuracion"
+                android:paddingBottom="15dp"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:paddingTop="15dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_ayuda"
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:strokeWidth="0dp"
+                    android:backgroundTint="@color/transparent"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/svg_question_circle"
+                        app:tint="?colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/lbl_manual"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        android:layout_gravity="end|center_vertical"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        android:clickable="false"
+                        app:strokeWidth="0dp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_credits"
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:strokeWidth="0dp"
+                    android:backgroundTint="@color/transparent"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/svg_info"
+                        app:tint="?colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/pantalla_acercade"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        android:layout_gravity="end|center_vertical"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        android:clickable="false"
+                        app:strokeWidth="0dp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnPolitica"
+                    android:layout_width="match_parent"
+                    android:layout_height="41dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:strokeWidth="0dp"
+                    android:backgroundTint="@color/transparent"
+                    android:padding="3dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/svg_policy"
+                        app:tint="?colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/pantalla_politica"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="40dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        android:layout_gravity="end|center_vertical"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        android:clickable="false"
+                        app:strokeWidth="0dp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <!--
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.2"
+            android:elevation="4dp"
+            android:contentDescription="Contenedor de la configuración de las notificaciones"
+            android:background="@drawable/bg_calendario"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="10dp">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_notificacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                app:theme="@style/Switches"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/lbl_configuracion_notificaciones"
+                android:contentDescription="Notificaciones de las citas médicas"
+                android:textSize="24sp" />
+
+            <CheckBox
+                android:id="@+id/checkBox_hora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:enabled="false"
+                app:buttonTint="?colorPrimary"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_medium"
+                android:contentDescription="Casilla de 1 hora antes"
+                android:text="@string/lbl_configuracion_notificaciones_1" />
+
+            <CheckBox
+                android:id="@+id/checkBox_dia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:enabled="false"
+                app:buttonTint="?colorPrimary"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_medium"
+                android:contentDescription="Casilla de 1 día antes"
+                android:text="@string/lbl_configuracion_notificaciones_2" />
+
+            <CheckBox
+                android:id="@+id/checkBox_semana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="?colorOnSurface"
+                app:buttonTint="?colorPrimary"
+                android:checked="false"
+                android:enabled="false"
+                android:contentDescription="Casilla de 1 sesmana antes"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/lbl_configuracion_notificaciones_3" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <Button
+            android:id="@+id/btn_guardarConfiguracion"
+            android:layout_width="186dp"
+            android:layout_height="50dp"
+            android:contentDescription="Boton guardar configuración"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/btn_Guardar"
+            android:textColor="@color/darkGreen"
+            app:cornerRadius="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+-->
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_guardarConfiguracion"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:contentDescription="Boton guardar configuración"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/btn_Guardar"
+        android:textColor="@color/darkGreen"
+        app:cornerRadius="25dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

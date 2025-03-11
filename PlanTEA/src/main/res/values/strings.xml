@@ -1,0 +1,512 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="open_drawer" translatable="false">pen navigation drawer</string>
+    <string name="close_drawer" translatable="false">Close navigation drawer</string>
+    <string name="app_name" translatable="false">PlanTEA</string>
+    <string name="btn_Acceder">Acceder</string>
+    <string name="btn_CambiarPass">Cambiar Contraseña</string>
+    <string name="lbl_Pass">Contraseña actual</string>
+    <string name="lbl_NewPass">Contraseña nueva</string>
+    <string name="lbl_RepPass">Volver a introducir la contraseña</string>
+    <string name="lbl_NuevaPass">Nueva contraseña</string>
+    <string name="btn_Guardar">Guardar</string>
+    <string name="btn_tutorial">Volver a ver el tutorial</string>
+    <string name="lbl_profesionales">Profesionales</string>
+    <string name="lbl_Consultas">Consultas</string>
+    <string name="lbl_Lugares">Lugares</string>
+    <string name="lbl_Favoritos">Favoritos</string>
+    <string name="lbl_IrColegio">Ir al colegio</string>
+    <string name="lbl_IrMedico">Ir al médico</string>
+    <string name="lbl_Comprar">Hacer la compra</string>
+    <string name="lbl_CortarsePelo">Cortarse el pelo</string>
+    <string name="lbl_Desplazamiento">Desplazamiento</string>
+    <string name="lbl_Accion">Acción</string>
+    <string name="lbl_Entretenimiento">Entretenimiento</string>
+    <string name="lbl_Recompensa">Recompensa</string>
+    <string name="lbl_Aniadir">Añadir</string>
+    <string name="lbl_NuevoPicto">Añadir pictograma</string>
+    <string name="lbl_imprevistoPicto">Cambiar pictograma</string>
+    <string name="lbl_NuevoPictoSemana">Añadir pictograma a la semana</string>
+    <string name="lbl_NuevaCategoria">Añadir categoría</string>
+    <string name="lbl_Planes">Planificaciones Disponibles</string>
+    <string name="lbl_CrearPlanActividad">Título:</string>
+    <string name="lbl_login">Introduce la contraseña</string>
+    <string name="lbl_RepitePass">Repite la contraseña</string>
+    <string name="lbl_CrearPass">Crear contraseña</string>
+    <string name="item_ayuda">Ayuda</string>
+    <string name="lbl_hora">Horas</string>
+    <string name="lbl_dia">Días</string>
+    <string name="lbl_semana">Semanas</string>
+    <string name="lbl_mes">Meses</string>
+    <string name="lbl_anio">Años</string>
+    <string name="lbl_izquierda">Izquierda</string>
+    <string name="lbl_derecha">Derecha</string>
+    <string name="lbl_si">Si</string>
+    <string name="lbl_mal">No</string>
+    <string name="lbl_sintomas">¿Qué te pasa?</string>
+    <string name="lbl_dolores">¿Dónde te duele?</string>
+    <string name="lbl_sentimientos">¿Cómo te sientes?</string>
+    <string name="lbl_configuracion">Configuración</string>
+    <string name="lbl_infoPlanificador">Datos del planificador/a</string>
+    <string name="lbl_infoplaificador_texto">Usuario responsable de crear y gestionar planificaciones</string>
+    <string name="lbl_infoUsuarioTEA">Datos de la persona supervisada </string>
+    <string name="lbl_infoUsuarioTEA_texto">Usuario capaz de ver y seguir las planificaciones</string>
+    <string name="lbl_infoactividad">Datos de la actividad tranquilizadora </string>
+    <string name="lbl_infoactividad_texto">Representa el objeto que calma a la persona con TEA</string>
+    <string name="btn_add">Planificación</string>
+    <string name="lbl_mensaje">No hay planificaciones disponibles</string>
+    <string name="lbl_lunes">Lunes</string>
+    <string name="lbl_martes">Martes</string>
+    <string name="lbl_miercoles">Miércoles</string>
+    <string name="lbl_jueves">Jueves</string>
+    <string name="lbl_viernes">Viernes</string>
+    <string name="lbl_sabado">Sábado</string>
+    <string name="lbl_domingo">Domingo</string>
+    <string name="btn_nuevo_evento">Evento</string>
+    <string name="lbl_nuevoEvento">Nuevo Evento</string>
+    <string name="lbl_mensaje_evento">No hay eventos para este día. Pulsa en \"+\" para crear un evento.</string>
+    <string name="btn_horaEvento">Hora</string>
+    <string name="item_perfil">Preferencias</string>
+    <string name="lbl_mensajeNinio">No hay eventos para seguir este dia</string>
+    <string name="lbl_indice1">1. Descripción de la aplicación PlanTEA</string>
+    <string name="lbl_indice2">2. Ajuste de las preferencias</string>
+    <string name="lbl_indice2_1">- Información de los usuarios</string>
+    <string name="lbl_indice2_2">- Actividad Tranquilizadora</string>
+    <string name="lbl_indice2_3">- Notificaciones</string>
+    <string name="lbl_indice3">2. Descripción de la pantalla inicial</string>
+    <string name="lbl_indice4">3. Usuario Planificador</string>
+    <string name="lbl_indice4_1">3.1 Inicio de la aplicación por primera vez: Creación de contraseña</string>
+    <string name="lbl_indice4_2">3.1 Uso seguro de la aplicación: Autenticación</string>
+    <string name="lbl_indice4_3">3.2 Cambio de contraseña</string>
+    <string name="lbl_indice4_4">3.3 Descripción de la pantalla inicial</string>
+    <string name="lbl_indice4_5">3.4 Creación de un evento</string>
+    <string name="lbl_indice4_6">- Opciones de los eventos</string>
+    <string name="lbl_indice4_7">3.5 Creación de una planificación</string>
+    <string name="lbl_indice4_8">- Pictogramas</string>
+    <string name="lbl_indice4_9">- Creación de un nuevo pictograma</string>
+    <string name="lbl_indice4_10">- Pasos para crear planificación</string>
+    <string name="lbl_indice4_11">- Opciones de las planificaciones</string>
+    <string name="lbl_indice5">4. Usuario supervisado</string>
+    <string name="lbl_indice5_1">4.1 Descripción de la Pantalla inicial</string>
+    <string name="lbl_indice5_2">4.2 Seguimiento de una planificación</string>
+    <string name="lbl_indice5_3">4.3 Cuaderno de comunicación</string>
+    <string name="lbl_indice5_4">- Categorías del cuaderno de comunicación</string>
+    <string name="lbl_indice6">5. Ajuste de las preferencias</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="lbl_actividades">Actividades</string>
+    <string name="lbl_actividades_objeto">Actividad tranquilizadora</string>
+    <string name="lbl_actividades_youtube" translatable="false">YouTube</string>
+    <string name="lbl_configuracion_objeto2">Actividad tranquilizadora:</string>
+
+    <string name="lbl_configuracion_notificaciones">Notificaciones de los eventos</string>
+    <string name="lbl_configuracion_notificaciones_1">1 hora antes</string>
+    <string name="lbl_configuracion_notificaciones_2">1 día antes</string>
+    <string name="lbl_configuracion_notificaciones_3">1 semana antes</string>
+    <string name="lbl_nombre">Nombre</string>
+
+    <string name="lbl_seleccionaAvatar">Selecciona el avatar del planificador</string>
+    <string name="lbl_seleccionaAvatarTEA">Selecciona el avatar de la persona supervisada</string>
+    <string name="lbl_seleccionaActividad">Selecciona la actividad tranquilizadora</string>
+    <string name="lbl_seleccionarFoto">Seleccionar foto de la galería</string>
+    <string name="lbl_saltar">Saltar</string>
+    <string name="lbl_deshacer">Deshacer</string>
+    <string name="lbl_reproducir">Reproducir</string>
+    <string name="lbl_seleccionaPictograma">Selecciona la opción de visualización de los pictogramas</string>
+    <string name="lbl_seleccionaPictograma2">Los pictogramas se visualizarán según su preferencia</string>
+
+    <string name="lbl_cuaderno">Cuaderno de comunicación</string>
+    <string name="lbl_iniciarSesion">Iniciar sesión</string>
+    <string name="lbl_noCuenta">¿No tienes cuenta? Regístrate aquí</string>
+    <string name="lbl_nombreUsuario">Nombre de usuario</string>
+    <string name="lbl_email">Correo electrónico</string>
+    <string name="lbl_contrasena">Contraseña</string>
+    <string name="lbl_registrarse">Registrarse</string>
+    <string name="lbl_datosPlanificador">Datos del planificador </string>
+    <string name="lbl_datosPlanificado">Datos de la persona supervisada</string>
+    <string name="lbl_datosNombre">Nombre</string>
+    <string name="lbl_datosContraseña">Volver a introducir la contraseña</string>
+    <string name="lbl_crearCuenta">Crear cuenta</string>
+
+    <string name="lbl_eliminarEvento">Eliminar evento</string>
+    <string name="lbl_eliminarEventoMensaje">¿Seguro que deseas eliminar el evento seleccionado?</string>
+    <string name="lbl_cancelar">Cancelar</string>
+    <string name="lbl_eliminar">Eliminar</string>
+    <string name="lbl_eliminarPlanificacion">Eliminar planificación</string>
+    <string name="lbl_eliminarPlanificacionMensaje">¿Seguro que deseas eliminar la planificación seleccionada?</string>
+    <string name="lbl_eliminarPlanificacionMensaje2">Si desea eliminar la planificación, se eliminarán también todos los eventos asociados</string>
+    <string name="lbl_eliminarPlanificacionMensaje3">Eliminar planificación</string>
+    <string name="lbl_historialSocial">Texto adicional para:</string>
+    <string name="lbl_cerrarSesion">¿Estás seguro/a que quieres cerrar la sesión?</string>
+    <string name="lbl_cerrarSesionBotton">Cerrar sesión</string>
+    <string name="lbl_nuevaPlanificacion">Nueva planificación</string>
+    <string name="lbl_salirPlanificacion">Salir de la planificación</string>
+    <string name="lbl_salirPlanificacion2">¿Estás seguro/a que quieres salir de la planificación?</string>
+    <string name="lbl_salirPlanificacion3">Si se sale ahora, se perderá todo el progreso realizado</string>
+    <string name="lbl_salirPlanificacionBotton">Salir</string>
+    <string name="lbl_contraseniaOlvidada">¿Has olvidado la contraseña?</string>
+    <string name="lbl_manual">Manual de usuario</string>
+    <string name="temporizador">Temporizador</string>
+    <string name="navegador">Navegador de YouTube</string>
+    <string name="selecciona_hora">Selecciona una hora</string>
+    <string name="selecciona_imagen">Selecciona una imagen de la galería</string>
+    <string name="fecha">Fecha:</string>
+    <string name="hora">Hora:</string>
+    <string name="recordatorio">Recordatorio:</string>
+    <string name="planificaciones_disponibles">Planificaciones disponibles:</string>
+    <string name="eventos_disponibles">Eventos disponibles:</string>
+    <string name="recordar">Recordar…</string>
+    <string name="recordar_5min">5 minutos antes</string>
+    <string name="recordar_1hora">1 hora antes</string>
+    <string name="recordar_1dia">1 día antes</string>
+    <string name="recordar_personalizado">A las…</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="bienvenido">¡Bienvenido a PlanTEA!</string>
+    <string name="bienvenido_texto">En PlanTEA podrás planificar tus eventos y actividades de manera sencilla y rápida.</string>
+    <string name="explicacion_actividad">La actividad tranquilizadora representa el objeto que calma a la persona con TEA</string>
+
+    <string name="sesion_google">Iniciar sesión con Google</string>
+    <string name="licencias">Licencias de código abierto</string>
+    <string name="ilustraciones">Ilustraciones</string>
+    <string name="arasaac">Centro Aragonés para la Comunicación Aumentativa y Alternativa</string>
+    <string name="arasaac_terms">Condiciones de uso, Noviembre 2023</string>
+    <string name="pixelsmarket" translatable="false">pixelsmarket (Toonville II)</string>
+    <string name="pixelsmarket_terms">Condiciones de uso, 04 de Marzo, 2025</string>
+    <string name="iconos">Iconos</string>
+    <string name="heroicons" translatable="false">Heroicons</string>
+    <string name="heroicons_terms">Licencia de Heroicons, 04 de Marzo, 2025</string>
+    <string name="introduce_titulo" tools:ignore="TypographyEllipsis">Introduce un titulo...</string>
+    <string name="buscar_pictos">Buscar pictograma</string>
+    <string name="desde_galeria">Desde la galería</string>
+    <string name="texto_adicional">Texto adicional</string>
+    <string name="duracion">Duración</string>
+    <string name="actividad_entre">Actividad de entretenimiento</string>
+    <string name="cambiar_rol">Cambiar rol</string>
+    <string name="cambiar">Cambiar</string>
+    <string name="aniadir_picto_entre">Añadir pictograma de entretenimiento</string>
+    <string name="item_entretenimiento">Entretenimiento</string>
+    <string name="item_recompensa">Recompensa</string>
+    <string name="crear_nueva_categoria">Crear nueva categoría</string>
+    <string name="crear_categoria">Crear categoría</string>
+    <string name="crear_nuevo_cuaderno">Crear nuevo cuaderno</string>
+    <string name="crear_nuevo_pictograma">Crear nuevo pictograma</string>
+    <!-- Title pages -->
+    <string name="pantalla_eventos">Eventos</string>
+    <string name="pantalla_traductor">Traductor</string>
+    <string name="pantalla_calendario">Calendario</string>
+    <string name="pantalla_planificaciones">Planificaciones</string>
+    <string name="pantalla_cuaderno">Cuadernos de comunicación</string>
+    <string name="pantalla_acercade">Acerca de la aplicación</string>
+    <string name="pantalla_configuracion">Configuración</string>
+    <string name="pantalla_manual">Manual de usuario</string>
+    <string name="pantalla_politica">Política de privacidad</string>
+    <string name="pantalla_planificacion">Planificación</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+    <string name="lbl_mientras_esperamos">¡Mientras esperamos!</string>
+
+    <string name="client_id_google" translatable="false">554770088401-6kcbele1k48l73bh22ins82iqrd3ejpk.apps.googleusercontent.com</string>
+
+    <string name="noConfigurationActivity">No hay una actividad configurada</string>
+    <string name="formatted_date">%1$s, %2$s de %3$s</string>
+    <string name="str_parar">PARAR</string>
+    <string name="str_escuchar">ESCUCHAR POR PALABRA</string>
+    <string name="str_escucharFrase">ESCUCHAR FRASE</string>
+    <string name="str_cancelar">Cancelar</string>
+    <string name="str_saltar">Saltar</string>
+    <string name="str_escuchar2">ESCUCHAR</string>
+    <string name="str_traducir">Traducir</string>
+    <string name="str_escribe_frase">Escribe tu frase aqui…</string>
+    <string name="str_guardar_como">Guardar como</string>
+
+    <string name="str_finalizar">Finalizar</string>
+    <string name="str_siguiente">Siguiente</string>
+    <string name="str_anterior">Anterior</string>
+    <string name="str_editarCategoria">EDITAR CATEGORÍA</string>
+    <string name="str_editarCuaderno">Editar cuaderno</string>
+
+    <!-- Credits-->
+    <string name="str_titulo1">Sobre la organización</string>
+    <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el grupo CHICO. CHICO es un grupo de investigación de la Universidad de Castilla-La Mancha con sede en la Escuela Superior de Informática del Campus de Ciudad Real que cuenta también con investigadores en la Facultad de Educación de Ciudad Real, en la Escuela de Ingeniería Minera e Industrial de Almadén, y en la Facultad de Ciencias Sociales de Talavera de la Reina.</string>
+    <string name="contribucion">Contribuyeron a este proyecto:</string>
+    <string name="laura_morales" translatable="false">Laura Morales Caro</string>
+    <string name="ana_molina" translatable="false">Ana Isabel Molina Díaz</string>
+    <string name="carmen_lacave" translatable="false">María del Carmen Lacave Rodero</string>
+    <string name="jose_lara" translatable="false">José Lara Navarro</string>
+    <string name="autrade">AUTRADE (Asociación Regional de Afectado de Autismo y Otros Trastornos del Desarrollo)</string>
+    <string name="fespau">FESPAU (Federación Española de Autismo)</string>
+    <string name="str_parrafo3">Financiación</string>
+    <string name="str_parrafo4">Este trabajo ha sido desarrollado en el contexto del Proyecto APTEA (Ref. TED2021–131956B-I00), financiado por el MICIN/AEI/10.13039/501100000033 y los fondos de la Unión Europea "NextGenerationEU"/PRTR; del Proyecto PlanTEAAF (Ref. 2022-GRIN-34175) en el marco del Plan Propio de Investigación de la Universidad de Castilla - La Mancha, cofinanciadas por el Fondo Europeo de Desarrollo Regional (FEDER); y de los convenios de colaboración con AUTRADE (Ref. 220413CONV) y FACLM (Ref. 230405CONV).</string>
+
+    <string name="cuaderno_de_com">Cuaderno de comunicación</string>
+    <string name="lbl_tulo">Título</string>
+    <string name="lbl_borrarCuaderno">¿Estás seguro/a que quiere borrar el cuaderno seleccionado?</string>
+    <string name="lbl_borrarCuadernoBotton">Borrar cuaderno</string>
+    <string name="tarjeta_de_actividad_tranquilizadora">Tarjeta de actividad tranquilizadora</string>
+    <string name="tarjeta_de_youtube">Tarjeta de youtube</string>
+    <string name="cerrar_reproductor">Cerrar reproductor</string>
+    <string name="actividades">Actividades</string>
+    <string name="semana">Calendario semanal</string>
+    <string name="bienvenido_de_nuevo">¡Bienvenido de nuevo!</string>
+    <string name="tarjeta_del_planificador_para_iniciar_sesi_n">Tarjeta del planificador para iniciar sesión</string>
+    <string name="la_actividad_es">La actividad es:</string>
+    <string name="crear_cuaderno">Crear cuaderno</string>
+    <string name="aniadir_cuaderno">Añadir cuaderno</string>
+    <string name="cerrar_dialogo">Cerrar dialogo</string>
+    <string name="elige_un_avatar_para_la_actividad_objeto_que_calma_a_la_persona_con_tea">Elige una imagen para la actividad/objeto que calma a la persona con TEA</string>
+    <string name="elige_un_avatar_para_la_persona_que_va_a_crear_y_gestionar_las_planificaciones">Elige un avatar para la persona que va a crear y gestionar las planificaciones</string>
+    <string name="elige_un_avatar_para_la_persona_que_va_a_seguir_las_planificaciones">Elige un avatar para la persona que va a seguir las planificaciones (usuario/a con TEA)</string>
+    <string name="planificaciones">Ver planificaciones</string>
+    <string name="planificaciones_futuras">Eventos futuros</string>
+
+    <!-- Strings utilizados para el manual -->
+
+    <string name="titulo_manual">Manual de usuario</string>
+    <string name="subtitulo_manual">En esta sección podrás encontrar información sobre el uso de la aplicación, así como las funcionalidades que ofrece.</string>
+    <string name="titulo_crearEvento">Creación de un evento</string>
+    <string name="titulo_editarEvento">Editar un evento</string>
+    <string name="titulo_crearPlanificacion">Crear una planificación</string>
+    <string name="titulo_calendarioSemanal">Calendario semanal</string>
+    <string name="titulo_calendarioMensual">Calendario mensual</string>
+    <string name="titulo_traductor">Traductor</string>
+    <string name="titulo_actividades">Actividades tranquilizadoras</string>
+    <string name="repetir_tutorial">Volver a ver el tutorial</string>
+
+    <string-array name="str_crearEvento">
+      <item>Haz clic en el botón &lt;b>&lt;u>+ Nuevo evento&lt;/u>&lt;/b>.</item>
+        <item>Selecciona una &lt;b>&lt;u>"hora"&lt;/u>&lt;/b> y, opcionalmente, &lt;b>&lt;u>recordatorio&lt;/u>&lt;/b> para el evento y opción de hacer el  &lt;b>&lt;u>evento visible&lt;/u>&lt;/b> 5 minutos antes. </item>
+      <item>Si no hay ninguna planificación disponible, puedes hacer clic en &lt;b>&lt;u>"+ Nueva planificación"&lt;/u>&lt;/b> para crear una nueva.</item>
+        <item>Si ya tienes una planificación creada, selecciona la planificación deseada para utlizar en el evento.</item>
+        <item>Por último, haz clic en &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para crear el evento.</item>
+        <item>Para visualizar el evento, cambia la visibilidad de este haciendo clic en el icono de &lt;b>&lt;u>"ojo"&lt;/u>&lt;/b>.</item>
+    </string-array>
+
+    <string-array name="str_editarEvento">
+        <item>Haz clic en el icono del &lt;b>&lt;u>"lápiz"&lt;/u>&lt;/b>  sobre el evento que quieres editar.</item>
+        <item>Si desea borrar un pictograma, haz clic sobre la &lt;b>&lt;u>"papelera"&lt;/u>&lt;/b> del pictograma que se desea borrar</item>
+        <item>Para mover un pictograma de posición, mantén pulsado sobre el pictograma a mover y desliza a la posición deseada.</item>
+        <item>Para añadir información adicional a un pictograma, haz clic en la &lt;b>&lt;u>"primera"&lt;/u>&lt;/b> opción del despegable que aparece al hacer clic en &lt;b>&lt;u>"+"&lt;/u>&lt;/b></item>
+        <item>Para añadir duración a un pictograma, haz clic en la &lt;b>&lt;u>"segunda"&lt;/u>&lt;/b> opción del despegable que aparece al hacer clic en &lt;b>&lt;u>"+"&lt;/u>&lt;/b></item>
+        <item>Para añadir una actividad de entretenimiento, haz clic en la &lt;b>&lt;u>"tercera"&lt;/u>&lt;/b> opción del despegable que aparece al hacer clic en &lt;b>&lt;u>"+"&lt;/u>&lt;/b></item>
+    </string-array>
+
+    <string-array name="str_crearPlanificacion">
+        <item>Ve a la pantalla &lt;b>&lt;u>"Planificaciones"&lt;/u>&lt;/b> y haz clic en el botón &lt;b>&lt;u>"+ Nueva planificación"&lt;/u>&lt;/b>.</item>
+        <item>Para añadir un pictograma a la planificación, haz clic en una &lt;b>&lt;u>"categoría"&lt;/u>&lt;/b> y después en el pictograma deseado.</item>
+        <item>Para buscar un pictograma, haz clic en la &lt;b>&lt;u>"barra de búsqueda"&lt;/u>&lt;/b> y escribe el nombre del pictograma que se desea buscar. </item>
+        <item>Para traducir una frase, haz clic en la &lt;b>&lt;u>"barra de búsqueda"&lt;/u>&lt;/b> y escribe la frase que se desea traducir. </item>
+        <item>Si desea guardar un pictograma como favorito, haz clic en el &lt;b>&lt;u>icono de "corazón&lt;/u>&lt;/b> situado en la esquina superior derecha del pictograma. Estos pictogramas se guardarán en la categoría de &lt;b>&lt;u>"Favoritos"&lt;/u>&lt;/b>.</item>
+        <item>Por último, haz clic en el botón &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para guardar la planificación e introduce un nombre para la planificación.</item>
+    </string-array>
+
+    <string-array name="str_calendarioSemanal">
+        <item>Para editar el calendario semanal, haz clic en el botón &lt;b>&lt;u>"Editar"&lt;/u>&lt;/b>.</item>
+        <item>Para cambiar el pictograma de un día de la semana, haz clic en la imagen central del día y selecciona el pictograma o la imagen de la galería deseada.</item>
+        <item>Para cambiar el color de fondo de un día de la semana, haz clic en el boón inferior del día y selecciona el color deseado.</item>
+        <item>Para vincular un evento con un día de la semana, haz clic en el botón &lt;b>&lt;u>"+"&lt;/u>&lt;/b> situado abajo del pictograma del día.</item>
+        <item>Por último, haz clic en el botón &lt;b>&lt;u>"Guardar"&lt;/u>&lt;/b> para guardar los cambios realizados en el calendario semanal.</item>
+    </string-array>
+
+    <string-array name="str_calendarioMensual">
+        <item>Para añadir un día importante en el calendario, haz clic en &lt;b>&lt;u>"+ Nuevo día importante"&lt;/u>&lt;/b>.</item>
+        <item>Elige un pictograma de la colección de ARASAAC o una foto de la galería. Introduce la fecha y el título del día importante y, opcionalmente, un color de fondo.</item>
+        <item>Para editar un día importante, haz clic en el día y selecciona la opción &lt;b>&lt;u>"Editar"&lt;/u>&lt;/b>.</item>
+        <item>Para eliminar un día importante, haz clic en el día y selecciona la opción &lt;b>&lt;u>"Eliminar"&lt;/u>&lt;/b>.</item>
+        <item>Para exportar el calendario como PDF, haz clic en el botón &lt;b>&lt;u>"Exportar como PDF"&lt;/u>&lt;/b>.</item>
+    </string-array>
+
+    <string-array name="str_actividades">
+        <item>Las actividades pueden estar divididas en categorías. Para añadir una categoría, haz clic en el botón &lt;b>&lt;u>"+"&lt;/u>&lt;/b>.</item>
+        <item>Para añadir una actividad, haz clic en el botón &lt;b>&lt;u>"Añadir actividad"&lt;/u>&lt;/b>.</item>
+        <item>Para visualizar un video de YouTube, haz clic en el botón &lt;b>&lt;u>"YouTube"&lt;/u>&lt;/b>.</item>
+        <item>Para cerrar el reproductor de YouTube, haz clic en el botón &lt;b>&lt;u>"X"&lt;/u>&lt;/b>.</item>
+        <item>Para controlar el tiempo que un usuario puede dedicar a una actividad, haz clic en el botón &lt;b>&lt;u>"Temporizador"&lt;/u>&lt;/b> y selecciona el tiempo deseado.</item>
+      </string-array>
+
+    <string-array name="str_traductor">
+        <item>Ve a &lt;b>&lt;u>"Traductor"&lt;/u>&lt;/b> y escribe la frase que se desee traducir en campo de texto superior.</item>
+        <item>Una vez escrita la frase, haz clic en el botón &lt;b>&lt;u>"Traducir"&lt;/u>&lt;/b> ubicado al final del campo de texto.</item>
+        <item>En la parte inferior, cada palabra se mostrará como un pictograma.</item>
+        <item>Si necesitas eliminar un pictograma de la traducción, haz clic en el icono de la &lt;b>&lt;u>papelera&lt;/u>&lt;/b> que se encuentra en la esquina superior derecha del pictograma.</item>
+        <item>Para cambiar la imagen de un pictograma, selecciona otro de los disponibles con un clic simple, o bien, mantén pulsado para elegir una imagen de la galería.</item>
+        <item>Si deseas guardar la traducción, haz clic en el botón &lt;b>&lt;u>Guardar como&lt;/u>&lt;/b> ubicado debajo de la traducción y selecciona &lt;b>&lt;u>Planificación&lt;/u>&lt;/b> o &lt;b>&lt;u>PDF&lt;/u>&lt;/b> en el despegable.</item>
+    </string-array>
+
+    <!-- Strings utilizados para la politica de privacidad -->
+
+    <string name="lbl_politica_privacidad">Política de privacidad</string>
+    <string name="lbl_ultima_actualizacion">Última actualización: 8 de marzo, 2024</string>
+    <string name="lbl_politica_parrafo1">Esta política de privacidad describe las políticas y procedimientos de PlanTEA sobre la recopilación, uso y divulgación de su información en la aplicación móvil PlanTEA y los servicios, características, contenido o aplicaciones relacionadas con ello (colectivamente, "PlanTEA"). En relación con su uso de PlanTEA, recibimos información sobre usted de diversas fuentes, que incluyen a través de su cuenta de usuario de PlanTEA y el uso de nuestra aplicación móvil, o cualquier otra aplicación nuestra que este vinculada a este aviso de privacidad.</string>
+    <string name="lbl_politica_parrafo2">Al utilizar PlanTEA usted está dando su consentimiento para la recopilación, transferencia, manipulación, almacenamiento, transmisión, divulgación y otros usos de su información según se describe en esta Política de privacidad.</string>
+    <string name="lbl_politica_titulo_parrafo3">1. ¿Preguntas o dudas?</string>
+    <string name="lbl_politica_parrafo3">Leer este aviso de privacidad le ayudará a comprender sus derechos y opciones de privacidad. Si no está de acuerdo con nuestras políticas y prácticas, por favor, no utilice nuestros servicios. Si aún tiene alguna pregunta o inquietud, por favor contáctenos en plantea.asistencia@gmail.com</string>
+    <string name="lbl_politica_titulo_parrafo4">2. ¿Qué cubre esta política de privacidad?</string>
+    <string name="lbl_politica_parrafo4">Esta Política de privacidad abarca el tratamiento de la información personal identificable ("Información personal") que recopilamos cuando está utilizando o accediendo a PlanTEA. Esta Política de privacidad no se aplica a las prácticas de terceros que no poseemos o controlamos, incluyendo, pero no limitándose a, cualquier sitio web de terceros, fuentes de contenido, servicios y aplicaciones ("Servicios de terceros") a los que elija acceder a través de PlanTEA, o a individuos que no administramos ni empleamos. Aunque intentamos facilitar el acceso solo a aquellos servicios de terceros que comparten nuestro respeto por su privacidad, no podemos asumir la responsabilidad por el contenido o las políticas de privacidad de esos servicios de terceros. Le animamos a revisar cuidadosamente las políticas de privacidad de cualquier servicio de terceros al que acceda.</string>
+    <string name="lbl_politica_titulo_parrafo5">3. ¿Qué información recopila PlanTEA?</string>
+    <string name="lbl_politica_parrafo5">Recopilamos información personal que usted nos proporciona voluntariamente cuando se registra en los servicios, muestra interés en obtener información sobre nosotros o nuestros productos y servicios, participa en actividades en los servicios o de otra manera cuando se pone en contacto con nosotros.</string>
+    <string name="lbl_politica_subtitulo_parrafo6">Información personal proporcionada por usted</string>
+    <string name="lbl_politica_parrafo6">La información personal que recopilamos depende del contexto de sus interacciones con nosotros y los servicios, las elecciones que realice y los productos y funciones que utilice. La información personal que recopilamos puede incluir lo siguiente: Nombres, direcciones de correo electrónico, nombres de usuario, contraseñas, datos de contacto o autenticación.</string>
+    <string name="lbl_politica_subtitulo_parrafo7">Información delicada</string>
+    <string name="lbl_politica_parrafo7">No procesamos información delicada.</string>
+    <string name="lbl_politica_subtitulo_parrafo8">Datos de la aplicación</string>
+    <string name="lbl_politica_parrafo8">Si utiliza nuestra(s) aplicación(es), también podemos recopilar la siguiente información si elige proporcionarnos acceso o permisos:</string>
+    <string name="lbl_politica_parrafo9"><u>Acceso al dispositivo móvil</u>. Podemos solicitar acceso o permisos a ciertas funciones de su dispositivo móvil, incluido el calendario, recordatorios, almacenamiento y otras funciones. Si desea cambiar nuestro acceso o permisos, puede hacerlo en la configuración de su dispositivo.</string>
+    <string name="lbl_politica_parrafo10"><u>Datos del dispositivo móvil</u>. Recopilamos automáticamente información del dispositivo (como su ID de dispositivo móvil, modelo y fabricante), sistema operativo, información de versión y configuración del sistema, números de identificación del dispositivo y la aplicación, tipo y versión del navegador, modelo de hardware, proveedor de servicios de Internet y/o operador móvil, y dirección de Protocolo de Internet (IP) (o servidor proxy). Si está utilizando nuestra(s) aplicación(es), también podemos recopilar información sobre la red telefónica asociada con su dispositivo móvil, el sistema operativo o plataforma de su dispositivo móvil, el tipo de dispositivo móvil que utiliza, el ID único de su dispositivo móvil y la información sobre las funciones de nuestra(s) aplicación(es) a las que accedió.</string>
+    <string name="lbl_politica_parrafo11"><u>Notificaciones push</u>. Podemos solicitar enviarle notificaciones push sobre su cuenta o ciertas funciones de la(s) aplicación(es). Si desea optar por no recibir este tipo de comunicaciones, puede desactivarlas en la configuración de su dispositivo.</string>
+    <string name="lbl_politica_parrafo12">Esta información se necesita principalmente para mantener la seguridad y operación de nuestra(s) aplicación(es), para la solución de problemas y para nuestros fines internos de análisis e informes.</string>
+
+    <string name="lbl_politica_parrafo13">Toda la información personal que nos proporcione debe ser verdadera, completa y precisa, y debe notificarnos cualquier cambio en dicha información personal.</string>
+    <string name="lbl_politica_subtitulo_parrafo14">Información recopilada automáticamente</string>
+    <string name="lbl_politica_parrafo14">Recopilamos automáticamente cierta información cuando visita, utiliza o navega por los servicios. Esta información no revela su identidad específica (como su nombre o información de contacto), pero puede incluir información sobre el dispositivo y el uso, como su dirección de Protocolo de Internet (IP), características del navegador y del dispositivo, sistema operativo, preferencias de idioma, URL de referencia, nombre del dispositivo, país, ubicación, información sobre cómo y cuándo utiliza nuestros servicios, y otra información técnica. Esta información se necesita principalmente para mantener la seguridad y operación de nuestros servicios, así como para nuestros fines internos de análisis e informes.</string>
+    <string name="lbl_politica_titulo_parrafo15">4. ¿Está segura la información sobre mí?</string>
+    <string name="lbl_politica_parrafo15">La información sensible se almacena exclusivamente en el dispositivo de manera loca, garantizando así un nivel adicional de seguridad y privacidad. Además, la información es cifrada mediante algoritmos de encriptación seguros.</string>
+    <string name="lbl_politica_titulo_parrafo16">5. ¿En qué bases legales nos basamos para procesar su información?</string>
+
+    <string name="lbl_politica_parrafo16">El Reglamento General de Protección de Datos (RGPD) y el GDPR del Reino Unido nos exigen explicar las bases legales válidas en las que confiamos para procesar su información personal. Por lo tanto, podemos depender de las siguientes bases legales para procesar su información personal:</string>
+    <string name="lbl_politica_parrafo17"><u>Consentimiento</u>: Podemos procesar su información si nos ha dado permiso (es decir, consentimiento) para utilizar su información personal para un propósito específico. Puede retirar su consentimiento en cualquier momento.</string>
+    <string name="lbl_politica_parrafo18"><u>Intereses legítimos</u>: Podemos procesar su información cuando creemos que es razonablemente necesario para alcanzar nuestros legítimos intereses comerciales, y esos intereses no superan sus intereses, derechos fundamentales y libertades. Por ejemplo, podemos procesar su información personal para algunos de los propósitos mencionados a continuación:</string>
+    <string name="lbl_politica_parrafo181">&#8226; Analizar cómo se utilizan nuestros servicios para mejorarlos y atraer y retener a los usuarios.</string>
+    <string name="lbl_politica_parrafo182">&#8226; Apoyar nuestras actividades de marketing.</string>
+    <string name="lbl_politica_parrafo183">&#8226; Diagnosticar problemas y/o prevenir actividades fraudulentas.</string>
+    <string name="lbl_politica_parrafo184">&#8226; Comprender cómo nuestros usuarios utilizan nuestros productos y servicios para mejorar la experiencia del usuario.</string>
+    <string name="lbl_politica_parrafo19"><u>Obligaciones legales</u>: Podemos procesar su información cuando consideramos que es necesario cumplir con nuestras obligaciones legales, como cooperar con un cuerpo policial o una agencia reguladora, ejercer o defender nuestros derechos legales, o divulgar su información como evidencia en litigios en los que estemos involucrados.</string>
+    <string name="lbl_politica_parrafo20"><u>Intereses vitales</u>: Podemos procesar su información cuando consideramos que es necesario para proteger sus intereses vitales o los intereses vitales de un tercero, como situaciones que involucren posibles amenazas a la seguridad de cualquier persona.</string>
+    <string name="lbl_politica_titulo_parrafo21">6. Cambios en la política de privacidad</string>
+    <string name="lbl_politica_parrafo21">Podemos actualizar nuestra política de privacidad cuando sea necesario. Le notificaremos sobre cualquier cambio publicando la nueva política de privacidad en esta página.</string>
+    <string name="lbl_politica_parrafo22">Le informaremos por correo electrónico y/o mediante un aviso destacado en nuestro servicio, antes de que el cambio entre en vigor, y actualizaremos la fecha "Última actualización" en la parte superior de esta política de privacidad.</string>
+    <string name="lbl_politica_parrafo23">Se le recomienda revisar periódicamente esta política de privacidad para conocer cualquier cambio. Los cambios en esta política de privacidad son efectivos cuando se publican en esta página.</string>
+    <string name="lbl_politica_titulo_parrafo24">7. Métodos de contacto</string>
+    <string name="lbl_politica_parrafo24">Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos por correo electrónico: plantea.asistencia@gmail.com</string>
+
+    <!-- Strings utilizados para los toast-->
+    <string name="toast_permisos">Plantea necesita permisos para mostrar notificaciones</string>
+    <string name="toast_no_imagen_seleccionada">No se ha seleccionado ninguna imagen</string>
+    <string name="toast_rellenar_campos">Por favor, rellene todos los campos</string>
+    <string name="toast_obligatorio">Obligatorio</string>
+    <string name="toast_necesita_titulo">Se necesita un título para el nuevo pictograma</string>
+    <string name="toast_necesita_imagen">Se necesita una imagen para el nuevo pictograma</string>
+    <string name="toast_pictograma_creado">Nuevo pictograma creado</string>
+    <string name="toast_sin_conexion">No hay conexión a internet</string>
+    <string name="toast_error_crear_planificacion">Error al crear la planificación</string>
+    <string name="toast_titulo_vacio">No puedes dejar el campo de título vacío</string>
+    <string name="toast_planificacion_vacio">No puedes dejar la planificación vacía</string>
+    <string name="toast_plan_actualizado">Planificación actualizada</string>
+    <string name="toast_evento_eliminado">Evento eliminado</string>
+    <string name="toast_exportar_evento">Exportar evento a:</string>
+    <string name="toast_error_exportar_evento">No hay aplicaciones a las que exportar el evento</string>
+    <string name="toast_necesita_nombre">Se necesita un nombre para cada usuario</string>
+    <string name="toast_necesita_imagen_usuario">Se necesita una imagen para cada usuario</string>
+    <string name="toast_necesita_objeto">Se necesita una imagen y nombre del objeto tranquilizador</string>
+    <string name="toast_se_termino_tiempo">Se ha acabado el tiempo!</string>
+    <string name="toast_planificacion_eliminada">Planificación eliminada</string>
+    <string name="toast_planificacion_creada">Planificación creada</string>
+    <string name="toast_planificacion_duplicada">Planificación duplicada</string>
+    <string name="toast_error_planificacion_duplicada">Error al duplicar la planificación</string>
+    <string name="toast_error_guardar_configuracion">Error al guardar la configuración</string>
+    <string name="toast_campo_vacio">No puedes dejar el campo vacío</string>
+    <string name="toast_campos_vacios">No puedes dejar campos vacíoso</string>
+    <string name="toast_contrasenia_actualizada">Contraseña actualizada</string>
+    <string name="toast_error_actualizar_contrasenia">Error al actualizar. Introduce de nuevo los datos</string>
+    <string name="toast_cotrasenias_diferentes">Las contraseñas no coinciden</string>
+    <string name="toast_cotrasenias_6">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="toast_error_correo_valido">La dirección de correo electrónico no es válida</string>
+    <string name="toast_error_username_valido">El nombre de usuario solo puede contener números, mayusculas y minusculas</string>
+    <string name="toast_error_guardar_traduccion_vacia">No se puede guardar una traducción sin pictogramas</string>
+    <string name="toast_pdf_creado">PDF creado en /Download/</string>
+    <string name="toast_no_paso_anterior">No se ha realizado el paso anterior</string>
+    <string name="toast_categoria_existente">La categoría ya existe</string>
+    <string name="termometro">Termometro</string>
+    <string name="color">Color:</string>
+    <string name="planificaci_n">Planificación</string>
+    <string name="crear_pictograma">Crear pictograma</string>
+    <string name="editar">Editar</string>
+    <string name="borrar">Borrar</string>
+    <string name="no_pictogramas_categoria">No hay pictogramas para esta categoría</string>
+    <string name="comenzar">Comenzar</string>
+    <string name="ayer">Ayer</string>
+    <string name="hoy">Hoy</string>
+    <string name="ma_ana">Mañana</string>
+    <string name="titulo_requirement">Introduce un nombre para la planificación</string>
+    <string name="str_notitle">Sin título</string>
+    <string name="guardar_pdf">Guardar PDF</string>
+    <string name="guardar_planificacion">Guardar planificación</string>
+    <string name="crear_nueva_planificaci_n">Crear nueva planificación</string>
+    <string name="crear_planificacion">Crear planificación</string>
+    <string name="guardar_traducci_n_como_pdf">Guardar como pdf</string>
+    <string name="titulo_para_la_traducci_n">Titulo para el documento</string>
+    <string name="mensaje_eventos_pasados">No se pueden crear eventos en fechas pasadas</string>
+    <string name="toast_queda_poco_tiempo">Queda menos de 1 minuto</string>
+    <string name="importante">¡IMPORTANTE!</string>
+    <string name="no_eventos_disponibles">No existen eventos disponibles</string>
+    <string name="no_planificaciones_disponibles">No existen planificaciones disponibles</string>
+    <string name="error_crear_cuenta">Error al crear la cuenta. El correo ya está en uso</string>
+    <string name="nuevo_user">Nuevo user</string>
+    <string name="user">Usuario planificado</string>
+    <string name="configuracion_picto">Configuracion de los pictogramas:</string>
+    <string name="selecciona_fecha">Selecciona la fecha del evento</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="toast_nombre_vacio">No puedes dejar el nombre vacío</string>
+    <string name="error_usuario_tea">Error al crear el usuario TEA</string>
+    <string name="selecciona_tiempo_retraso">Selecciona el tiempo de retraso</string>
+    <string name="selecciona_el_evento_para_el_dia">Selecciona el evento para el día</string>
+    <string name="sin_evento">Ninguno</string>
+    <string name="text">Texto</string>
+    <string name="min">Minutos</string>
+    <string name="seg">Segundos</string>
+    <string name="pantalla_calendario_semanal">Calendario semanal</string>
+    <string name="pantalla_calendario_mensual">Calendario mensual</string>
+    <string name="fechas_importantes">Días importantes</string>
+    <string name="agregar_fecha">Nuevo día importante</string>
+    <string name="exportar_como_pdf">Exportar como PDF</string>
+    <string name="dia2">Día</string>
+    <string name="lbl_eliminarFecha">Eliminar día</string>
+    <string name="lbl_eliminarFechaMensaje">¿Seguro que deseas eliminar el día importante?</string>
+    <string name="eliminar_categor_a">Eliminar categoría</string>
+    <string name="seguro_que_desesas_eliminar_esta_categor_a">¿Seguro que desesas eliminar esta categoría?</string>
+    <string name="toast_fecha_existente">Ya se ha configurado un día importante para esta fecha</string>
+    <string name="fecha2">Fecha</string>
+    <string name="titulo">Título</string>
+    <string name="no_existen_fechas_importantes">No existen fechas importantes</string>
+    <string name="editar_imagen">Editar imagen</string>
+    <string name="todas">Todas</string>
+    <string name="aniadir_actividad">Añadir actividad</string>
+    <string name="categoria_actividades">Categorías para las actividades</string>
+    <string name="bienvenid_a_plantea">Bienvenido/a a PlanTEA</string>
+    <string name="subtitulo_bienvenida">Antes de empezar, vamos a configurar un usuario TEA</string>
+    <string name="continuar">Continuar</string>
+    <string name="hacer_visible_5_min_antes">Hacer visible 5 min antes</string>
+    <string name="notificaciones">Notificaciones</string>
+    <string name="modo_oscuro">Modo oscuro</string>
+    <string name="arasaac2" translatable="false">ARASAAC</string>
+    <string name="pdf" translatable="false">PDF</string>
+    <string name="editar_perfil">Editar perfil</string>
+    <string name="usuarios_tea">Usuarios TEA</string>
+    <string name="toast_notificaciones_activadas">Para desactivar las notificaciones, ve a los ajustes de su dispositivo</string>
+    <string name="configuracion_users_tea">Configuración de los usuarios TEA</string>
+    <string name="orden_pictos">Orden pictogramas</string>
+    <string name="conseguido">¡Conseguido!</string>
+    <string name="calendario_mensual">Calendario mensual</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="eventos_y_planificaciones">Eventos y planificaciones</string>
+    <string name="cuenta">Cuenta</string>
+    <string name="inicio">Inicio</string>
+    <string name="horizontal" translatable="false">Horizontal</string>
+    <string name="vertical" translatable="false">Vertical</string>
+    <string name="editar_evento">Editar evento</string>
+    <string name="imagen_y_texto">Imagen y texto</string>
+    <string name="imagen">Imagen</string>
+    <string name="texto">Texto</string>
+    <string name="toast_pdf_exportado">PDF exportado en la carpeta de descargas</string>
+    <string name="categor_a">Categoría:</string>
+    <string name="toast_queda_un_minuto">En un mintuo se terminará la actividad</string>
+    <string name="colores_fondo_dia">Selecciona los colores para el fondo del día</string>
+    <string name="borrar_imprevistos">Borrar imprevistos</string>
+    <string name="imprevistos">Imprevistos</string>
+    <string name="toast_imprevistos">Se han eliminado los pictogramas imprevistos</string>
+    <string name="toast_error_eliminar_imprevistos">Error al eliminar los pictogramas imprevistos</string>
+
+
+
+</resources>
