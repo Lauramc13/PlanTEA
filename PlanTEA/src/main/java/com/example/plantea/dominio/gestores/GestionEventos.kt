@@ -16,7 +16,7 @@ class GestionEventos {
         conectorBD!!.abrir()
         var id = 0
 
-        val cursor = conectorBD!!.insertarEvento(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.hora, evento.recordatorio.toString(), evento.cambiarVisibilidad)
+        val cursor = conectorBD!!.insertarEvento(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.recordatorio.toString(), evento.cambiarVisibilidad)
         if (cursor.moveToFirst()) {
             id = cursor.getInt(0)
         }
@@ -31,11 +31,11 @@ class GestionEventos {
     fun editarEvento(actividad: Activity?, evento: Evento) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.modificarEvento(evento.id, evento.nombre, evento.fecha.toString(), evento.hora, evento.cambiarVisibilidad, evento.recordatorio.toString(), evento.idPlan)
+        conectorBD!!.modificarEvento(evento.id, evento.nombre, evento.fecha.toString(), evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.cambiarVisibilidad, evento.recordatorio.toString(), evento.idPlan)
         conectorBD!!.cerrar()
     }
 
-    fun obtenerEventos(idUsuario: String, actividad: Activity?, fechaSeleccionada: LocalDate?): ArrayList<Evento> {
+    fun obtenerEventos(idUsuario: String?, actividad: Activity?, fechaSeleccionada: LocalDate?): ArrayList<Evento> {
         val eventos = ArrayList<Evento>()
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
@@ -46,12 +46,15 @@ class GestionEventos {
                 evento.id = c.getInt(0)
                 evento.nombre = c.getString(2)
                 evento.fecha = LocalDate.parse(c.getString(3))
-                evento.hora = c.getString(4)
-                evento.idPlan = c.getInt(5)
-                evento.visible = c.getInt(6)
-                if(c.getString(7) != null && c.getString(7) != "null")
-                    evento.recordatorio = LocalDateTime.parse(c.getString(7))
-                evento.cambiarVisibilidad = c.getInt(8) == 1
+                evento.horaInicio = c.getString(4)
+                evento.horaFin = c.getString(5)
+                evento.localizacion = c.getString(6)
+                evento.notas = c.getString(7)
+                evento.idPlan = c.getInt(8)
+                evento.visible = c.getInt(9)
+                if(c.getString(10) != null && c.getString(10) != "null")
+                    evento.recordatorio = LocalDateTime.parse(c.getString(10))
+                evento.cambiarVisibilidad = c.getInt(11) == 1
 
                 eventos.add(evento)
             } while (c.moveToNext())
@@ -62,7 +65,8 @@ class GestionEventos {
         val listaEventos = ArrayList<Evento>()
         for (evento in eventos) {
             if (evento.fecha == fechaSeleccionada) {
-                eventos.add(evento)
+                listaEventos.add(evento)
+                //before it was eventos.add(evento)
             }
         }
 
@@ -80,12 +84,15 @@ class GestionEventos {
                 evento.id = c.getInt(0)
                 evento.nombre = c.getString(2)
                 evento.fecha = LocalDate.parse(c.getString(3))
-                evento.hora = c.getString(4)
-                evento.idPlan = c.getInt(5)
-                evento.visible = c.getInt(6)
-                if(c.getString(7) != null && c.getString(7) != "null")
-                    evento.recordatorio = LocalDateTime.parse(c.getString(7))
-                evento.cambiarVisibilidad = c.getInt(8) == 1
+                evento.horaInicio = c.getString(4)
+                evento.horaFin = c.getString(5)
+                evento.localizacion = c.getString(6)
+                evento.notas = c.getString(7)
+                evento.idPlan = c.getInt(8)
+                evento.visible = c.getInt(9)
+                if(c.getString(10) != null && c.getString(10) != "null")
+                    evento.recordatorio = LocalDateTime.parse(c.getString(10))
+                evento.cambiarVisibilidad = c.getInt(11) == 1
 
                 eventos.add(evento)
             } while (c.moveToNext())
@@ -106,12 +113,13 @@ class GestionEventos {
             evento.idUsuario = c.getString(1)
             evento.nombre = c.getString(2)
             evento.fecha = LocalDate.parse(c.getString(3))
-            evento.hora = c.getString(4)
-            evento.visible = c.getInt(5)
-            if(c.getString(6) != null && c.getString(6) != "null")
-                evento.recordatorio = LocalDateTime.parse(c.getString(6))
-            evento.cambiarVisibilidad = c.getString(7) == "true"
-            evento.idPlan = c.getInt(8)
+            evento.horaInicio = c.getString(4)
+            evento.horaFin = c.getString(5)
+            evento.visible = c.getInt(6)
+            if(c.getString(7) != null && c.getString(7) != "null")
+                evento.recordatorio = LocalDateTime.parse(c.getString(7))
+            evento.cambiarVisibilidad = c.getString(8) == "true"
+            evento.idPlan = c.getInt(9)
         }
 
         conectorBD!!.cerrar()
@@ -155,12 +163,17 @@ class GestionEventos {
     fun obtenerEventoPlan(idUsuario: String, fecha: String, context: Context?): Evento {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarTituloEvento(idUsuario, fecha)
+        val c = conectorBD!!.listarEvento(idUsuario, fecha)
         val evento = Evento()
 
         if (c.moveToFirst()) {
             evento.id = c.getInt(0)
             evento.nombre = c.getString(1)
+            evento.fecha = LocalDate.parse(c.getString(2))
+            evento.horaInicio = c.getString(3)
+            evento.horaFin = c.getString(4)
+            evento.localizacion = c.getString(5)
+            evento.notas = c.getString(6)
         }
         conectorBD!!.cerrar()
         return evento
@@ -203,6 +216,13 @@ class GestionEventos {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         conectorBD!!.borrarTodosImprevistos(idEvento)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarImprevisto(actividad: Activity?, idEvento: String?, idPictograma: String?, posicion: Int?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarImprevisto(idEvento, idPictograma, posicion)
         conectorBD!!.cerrar()
     }
 

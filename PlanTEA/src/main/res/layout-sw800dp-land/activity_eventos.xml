@@ -84,19 +84,7 @@
         app:layout_constraintVertical_bias="0.6"
         app:layout_constraintWidth_percent="0.85">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/borrar_importantes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/borrar_imprevistos"
-            android:layout_margin="10dp"
-            android:fontFamily="@font/poppins_medium"
-            android:textColor="?colorRedImportante"
-            android:textSize="@dimen/button"
-            android:visibility="gone"
-            android:backgroundTint="?colorTertiaryContainer"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+
         <!-- <Button
                  android:id="@+id/icon_deshacer"
                  style="@style/Widget.Material3.Button.IconButton.Filled"
@@ -281,19 +269,66 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/guion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:contentDescription="Mes"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="-"
+            android:textColor="?colorTertiary"
+            android:textFontWeight="900"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/lbl_dia"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lbl_hora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:contentDescription="Mes"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="00:00"
+            android:textColor="?colorTertiary"
+            android:textFontWeight="900"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/guion"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Button
             android:id="@+id/CalendarDate"
             style="@style/Widget.Material3.Button.IconButton.Outlined"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="18dp"
             android:contentDescription="Botón calendario"
             android:gravity="center"
             app:icon="@drawable/svg_calendar"
-            app:iconSize="31dp"
+            app:iconSize="28dp"
             app:iconTint="?colorOnSurface"
-            app:layout_constraintStart_toEndOf="@+id/lbl_dia"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toStartOf="@+id/btnInfo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnInfo"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            app:icon="@drawable/svg_info_simple"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="18dp"
+            app:iconGravity="textStart"
+            app:iconSize="28dp"
+            app:iconTint="?colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -345,19 +380,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lbl_titulo"/>
-
-        <TextView
-            android:id="@+id/lbl_importante"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/importante"
-            android:textColor="?colorRedImportante"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
-            tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -17,6 +17,13 @@
         android:importantForAccessibility="no"
         app:srcCompat="@drawable/svg_blob" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/blob_v2" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
@@ -96,7 +103,7 @@
             android:id="@+id/frameLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_temporizador"
+            android:background="@drawable/bg_calendario"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.3">
 
@@ -107,7 +114,7 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             app:cardBackgroundColor="?colorPrimary"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="30dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -157,7 +164,7 @@
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
         app:layout_constraintHeight_percent="0.75"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout15"
-        app:layout_constraintWidth_percent="0.55">
+        app:layout_constraintWidth_percent="0.54">
 
         <TextView
             android:layout_width="wrap_content"
@@ -172,7 +179,7 @@
             android:id="@+id/closeYoutube"
             android:layout_width="48dp"
             android:layout_height="40dp"
-            android:layout_gravity="start"
+            android:layout_gravity="end"
             android:layout_margin="10dp"
             android:alpha="0.9"
             android:background="@drawable/bg_close_button"

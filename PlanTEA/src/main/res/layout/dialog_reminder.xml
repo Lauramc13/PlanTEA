@@ -24,7 +24,7 @@
             android:textSize="16sp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/checkBox_min"
+            android:id="@+id/checkBox_5min"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -37,7 +37,31 @@
             android:theme="@style/Switches" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/checkBox_hora"
+            android:id="@+id/checkBox_15min"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/recordar_15min"
+            android:textColor="?colorOnSurface"
+            android:textSize="14sp"
+            android:theme="@style/Switches" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/checkBox_30min"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/recordar_30min"
+            android:textColor="?colorOnSurface"
+            android:textSize="14sp"
+            android:theme="@style/Switches" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/checkBox_1hora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"

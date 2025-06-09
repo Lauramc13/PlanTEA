@@ -38,18 +38,18 @@ class NavigationBottomFragment: Fragment() {
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
         val infoUsuario = prefs.getBoolean("PlanificadorLogged", false)
         bottomNavigation.menu.clear()
-        bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom)
 
-        // Si el usuario no es planificador o no es un dispositivo móvil, se elimina la opción de usuario
-        if (!infoUsuario || !CommonUtils.isMobile(this.requireContext())) {
-            bottomNavigation.menu.removeItem(R.id.user)
-        }else{
+        if (CommonUtils.isMobile(this.requireContext())) {
+            bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom_mobile)
+
             val image = prefs.getString("imagenUsuarioTEA", "")
             if (image == "") {
                 bottomNavigation.menu.findItem(R.id.user).setIcon(CommonUtils.byteArrayToDrawableWithCorner(prefs.getString("imagenPlanificador", "")!!.toPreservedByteArray, this.requireContext()))
             }else{
                 bottomNavigation.menu.findItem(R.id.user).setIcon(CommonUtils.byteArrayToDrawableWithCorner(image!!.toPreservedByteArray, this.requireContext()))
             }
+        }else{
+            bottomNavigation.inflateMenu(R.menu.navigation_rail_bottom)
         }
 
         val hostingActivityClass = activity?.javaClass

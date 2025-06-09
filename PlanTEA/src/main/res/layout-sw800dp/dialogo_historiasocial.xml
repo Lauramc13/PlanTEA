@@ -49,7 +49,6 @@
             android:background="@drawable/fondo_texto_login"
             android:ems="10"
             android:inputType="text"
-            android:paddingStart="15dp"
             android:textColor="?colorOnSurface"
             android:textColorHint="?colorOnSurface"
             app:shapeAppearance="@style/cornerRadiusLogin">

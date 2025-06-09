@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
@@ -173,6 +174,8 @@ class TraductorViewModel : ViewModel(), AdaptadorPictogramasTraductor.OnItemSele
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialogo_historia_traduccion)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val tituloDialog = dialog.findViewById<TextView>(R.id.titulo)
+        tituloDialog.text = context.getString(R.string.titulo_para_la_traducci_n)
         val titulo : TextInputLayout = dialog.findViewById(R.id.txt_title)
         val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
         val btnCrear : Button = dialog.findViewById(R.id.btn_create)

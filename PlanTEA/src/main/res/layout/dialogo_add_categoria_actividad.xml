@@ -74,6 +74,8 @@
                     android:inputType="text"
                     android:padding="11dp"
                     android:layout_marginBottom="5dp"
+                    android:maxLength="12"
+
                     style="@style/textInput"/>
             </com.google.android.material.textfield.TextInputLayout>
 

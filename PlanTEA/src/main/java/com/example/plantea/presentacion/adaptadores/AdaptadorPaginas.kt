@@ -9,6 +9,7 @@ import com.example.plantea.R
 class AdaptadorPaginas(private val context: Context) : PagerAdapter() {
 
     private val slideLayouts = arrayOf(
+        R.layout.fragment_imagen0,
         R.layout.fragment_imagen1,
         R.layout.fragment_imagen2,
         R.layout.fragment_imagen3,

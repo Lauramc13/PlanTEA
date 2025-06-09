@@ -35,6 +35,7 @@ import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionCategorias
 import com.example.plantea.dominio.gestores.GestionPictogramas
 import com.example.plantea.dominio.gestores.GestionPlanificaciones
+import com.example.plantea.dominio.gestores.GestionUsuarios
 import com.example.plantea.dominio.objetos.Categoria
 import com.example.plantea.dominio.objetos.Pictograma
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils
@@ -68,7 +69,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     var identificadorCategoria : Int = -1
     var image : ImageView? = null
     lateinit var pickMediaTraductor: ActivityResultLauncher<PickVisualMediaRequest>
-
+    var idUsuarioTEA: String = ""
 
     lateinit var adaptadorPlanificacion :  AdaptadorPlanificacion
     lateinit var adaptador: AdaptadorNuevoPicto //Adaptador del recyclerview del dia
@@ -105,6 +106,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
 
     fun setIdUsuario(prefs: android.content.SharedPreferences) {
         idUsuario = prefs.getString("idUsuario", "").toString()
+        idUsuarioTEA = prefs.getString("idUsuarioTEA", "").toString()
     }
 
     fun pictogramaSeleccionado(posicion: Int) {
@@ -189,7 +191,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
         val dialogo = Dialog(view!!.context)
         dialogo.setContentView(R.layout.dialogo_borrar_categoria)
         dialogo.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val btnBorrar : Button = dialogo.findViewById(R.id.btn_eliminarCategoria)
+        val btnBorrar : Button = dialogo.findViewById(R.id.btn_eliminar)
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
 
         btnBorrar.setOnClickListener{
@@ -279,8 +281,12 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
         view.removeAllViews()
         view.addView(activity.layoutInflater.inflate(R.layout.dialogo_crear_categoria_plan, null))
         val imagenPicto = view.findViewById<ImageView>(R.id.img_NuevoPicto)
-        imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
+        val spinner = view.findViewById<Spinner>(R.id.spinner_Usuarios)
+        val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
+        var colorSelected = "default"
+        val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
 
+        imagenPicto.setImageBitmap(seNuevoPicto.value?.imagen)
         imagenPicto.setOnClickListener {
             buttons.visibility = View.VISIBLE
             btnSiguiente.visibility = View.VISIBLE
@@ -291,10 +297,20 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
             view.addView(lastView)
         }
 
-        val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
-        var colorSelected = "default"
+        val gUsuarios = GestionUsuarios()
+        val usuarios = gUsuarios.obtenerUsuariosTEA(idUsuario, activity)
+        val nombresUsuarios = ArrayList<Pair<String, String>>()
+        for (usuario in usuarios) {
+            nombresUsuarios.add(Pair(usuario.id!!, usuario.name!!))
+        }
 
-        val buttonGuardar = view.findViewById<Button>(R.id.btn_GuardarPicto)
+        nombresUsuarios.add(Pair(idUsuario, activity.getString(R.string.todos)))
+
+        val adaptador = ArrayAdapter(activity.applicationContext, android.R.layout.simple_spinner_dropdown_item, nombresUsuarios.map { it.second })
+        spinner.adapter = adaptador
+        val prefs = activity.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        val idUsuarioTEA = prefs.getString("idUsuarioTEA", "")
+        spinner.setSelection(nombresUsuarios.indexOfFirst { it.first == idUsuarioTEA })
 
         //Colores buttons
         val buttonMorado = dialogo.findViewById<MaterialButton>(R.id.fab1)
@@ -342,19 +358,21 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
 
         val gCategoria = GestionCategorias()
         buttonGuardar.setOnClickListener {
+            val idUser = nombresUsuarios[spinner.selectedItemPosition].first
+
             if (nombrePictograma.editText?.text.toString().isEmpty()) {
                 nombrePictograma.error = activity.getString(R.string.toast_obligatorio)
-            } else if (gCategoria.checkCategoriaExiste(view.context, nombrePictograma.editText?.text.toString(), idUsuario, Locale.getDefault().language)) {
+            } else if (gCategoria.checkCategoriaExiste(view.context, nombrePictograma.editText?.text.toString().uppercase(), idUser, Locale.getDefault().language)) {
                 Toast.makeText(view.context, R.string.toast_categoria_existente, Toast.LENGTH_SHORT).show()
             } else {
                 val imagenBlob = CommonUtils.bitmapToByteArray((imagenPicto.drawable as BitmapDrawable).bitmap)
-                val idCategoria = gCategoria.insertarCategoria(activity, nombrePictograma.editText?.text.toString().uppercase(), imagenBlob, colorSelected, idUsuario)
+                val idCategoria = gCategoria.insertarCategoria(activity, nombrePictograma.editText?.text.toString().uppercase(), imagenBlob, colorSelected, idUser)
 
                 val newCategoria = Categoria(idCategoria, nombrePictograma.editText?.text.toString().uppercase(), (imagenPicto.drawable as BitmapDrawable).bitmap, colorSelected)
                 listaCategorias.add(listaCategorias.size - 1, newCategoria)
                 seCreatedCategoria.value = true
 
-                dialogo.dismiss() //Cerrar dialogo
+                dialogo.dismiss()
             }
         }
     }
@@ -375,7 +393,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
             view.addView(lastView)
         }
 
-        val categorias = gCategoria.obtenerCategoriasPrincipales(activity, idUsuario, Locale.getDefault().language)
+        val categorias = gCategoria.obtenerCategoriasPrincipales(activity, idUsuarioTEA, idUsuario, Locale.getDefault().language)
         val spinnerDialogo = view.findViewById<Spinner>(R.id.spinner_Categorias)
         val nombrePictograma = view.findViewById<TextInputLayout>(R.id.txt_Titulo)
 
@@ -398,13 +416,13 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
                 dialogo.dismiss()
 
                 //Añadir pictograma
-                var idCategoria = gCategoria.obtenerIdCategoria(activity, spinnerDialogo.selectedItem.toString(), Locale.getDefault().language)
+                var idCategoria = gCategoria.obtenerIdCategoria(activity, spinnerDialogo.selectedItem.toString(), idUsuario, Locale.getDefault().language)
                 //if categoria is between 0 and 3
                 if(idCategoria in 1..4){
                     idCategoria = gCategoria.duplicateCategoria(activity.applicationContext, idUsuario, idCategoria)
                 }
                 val id = if(seNuevoPicto.value?.idAPI != 0){
-                    gPicto.nuevoPictogramaAPI(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), seNuevoPicto.value?.idAPI.toString(), idCategoria.toString())
+                    gPicto.nuevoPictogramaAPI(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), seNuevoPicto.value?.idAPI.toString(), idCategoria.toString(), idUsuario)
                 }else{
                     gPicto.insertarPictogramaLocal(activity, nombrePictograma.editText?.text.toString().uppercase(Locale.getDefault()), imageBlob, idCategoria.toString(), idUsuario)
                 }

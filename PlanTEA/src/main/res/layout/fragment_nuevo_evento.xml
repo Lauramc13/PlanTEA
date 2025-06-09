@@ -28,7 +28,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         android:padding="15dp">
 
         <LinearLayout
@@ -53,10 +53,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:padding="3dp"
-
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -74,22 +73,25 @@
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="?colorOnSurface"
                     android:textSize="@dimen/formText" />
-
-                <TextView
-                    android:id="@+id/lbl_fechaEvento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="29 noviembre 2021"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textAlignment="viewEnd"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="15sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/lbl_fechaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="29 noviembre 2021"
+                android:fontFamily="@font/poppins_regular"
+                android:textAlignment="center"
+                android:padding="10dp"
+                android:background="@drawable/bg_text_form_evento"
+                android:textColor="?colorOnSurface"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="3dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -100,34 +102,123 @@
                     android:src="@drawable/svg_clock"/>
 
                 <TextView
-                    android:id="@+id/lbl_hora"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="10dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hora"
+                    android:text="Todo el dia"
+                    android:layout_marginStart="10dp"
                     android:textColor="?colorOnSurface"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="@dimen/formText" />
 
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_allDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:enabled="true"
+                    android:theme="@style/Switches" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_hora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
                 <TextView
                     android:id="@+id/btn_horaEvento"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@string/selecciona_hora"
-                    android:gravity="end"
+                    android:hint="@string/hora_inicio"
+                    android:gravity="center"
                     android:contentDescription="Boton seleccionar hora"
                     android:textSize="15sp"
+                    android:padding="10dp"
+                    android:textColorHint="?colorOnSurface"
+                    android:background="@drawable/bg_text_form_evento"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="-"
+                    android:contentDescription="Boton seleccionar hora"
+                    android:textSize="15sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/poppins_regular"/>
+
+                <TextView
+                    android:id="@+id/btn_horaFinEvento"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hora_fin"
+                    android:gravity="center"
+                    android:contentDescription="Boton seleccionar hora"
+                    android:textSize="15sp"
+                    android:padding="10dp"
+                    android:textColorHint="?colorOnSurface"
+                    android:background="@drawable/bg_text_form_evento"
                     android:fontFamily="@font/poppins_regular"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:padding="3dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:padding="2dp"
+                    android:src="@drawable/svg_map"/>
 
+                <TextView
+                    android:id="@+id/lbl_localizacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/localizacion"
+                    android:layout_marginStart="10dp"
+                    android:textColor="?colorOnSurface"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/formText" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/localizacionText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fondo_texto_login"
+                android:inputType="text"
+                android:textColor="?colorOnSurface"
+                android:textColorHint="?colorOnSurface"
+                app:shapeAppearance="@style/cornerRadiusLogin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLength="150"
+                    android:background="@drawable/bg_text_form_evento"
+                    android:textColor="?colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="3dp"
+                android:layout_marginTop="10dp"
+
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -192,6 +283,52 @@
                     android:theme="@style/Switches" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:padding="3dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:padding="2dp"
+                    android:src="@drawable/svg_notes"/>
+
+                <TextView
+                    android:id="@+id/lbl_notas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notas"
+                    android:layout_marginStart="10dp"
+                    android:textColor="?colorOnSurface"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/formText" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/notasText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fondo_texto_login"
+                android:ems="10"
+                android:inputType="text"
+                android:textColor="?colorOnSurface"
+                android:textColorHint="?colorOnSurface"
+                app:shapeAppearance="@style/cornerRadiusLogin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:inputType="textMultiLine"
+                    android:maxLength="400"
+                    android:background="@drawable/bg_text_form_evento"
+                    android:textColor="?colorOnSurface" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <androidx.fragment.app.FragmentContainerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,18 +356,17 @@
                     android:id="@+id/lbl_mensajePlanes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
-                    android:paddingTop="30dp"
-                    android:paddingBottom="30dp"
                     android:text="@string/lbl_mensaje"
                     android:textColor="?colorOnSurface"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_planificacionesDisponibles" />
 
                 <TextView
@@ -268,27 +404,6 @@
                             android:layout_marginTop="10dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--<Button
-                    android:id="@+id/btn_planificar"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:contentDescription="Boton nueva planificación"
-                    android:drawableLeft="@drawable/svg_add"
-                    android:drawableTint="?colorOnSurface"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:text="@string/lbl_nuevaPlanificacion"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="13sp"
-                    app:cornerRadius="25dp"
-                    app:iconGravity="textStart"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>-->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout

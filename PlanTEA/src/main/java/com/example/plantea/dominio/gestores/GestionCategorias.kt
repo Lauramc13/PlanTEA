@@ -9,11 +9,11 @@ import com.example.plantea.persistencia.ConectorBD
 class GestionCategorias {
     private var conectorBD: ConectorBD? = null
 
-    fun obtenerIdCategoria(context: Context, nombre: String?, language: String): Int {
+    fun obtenerIdCategoria(context: Context, nombre: String?, idUsuario: String?, language: String): Int {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
         var categoria = 0
-        val c = conectorBD!!.obtenerIdCategoria(nombre, language)
+        val c = conectorBD!!.obtenerIdCategoria(nombre, idUsuario, language)
         if (c.moveToFirst()) {
             categoria = c.getInt(0)
         }
@@ -35,11 +35,11 @@ class GestionCategorias {
         return id
     }
 
-    fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuario:String, language: String): ArrayList<Categoria> {
+    fun obtenerCategoriasPrincipales(actividad: Activity?, idUsuarioTEA:String, idUsuario: String, language: String): ArrayList<Categoria> {
         conectorBD = ConectorBD(actividad)
         val listCategorias = ArrayList<Categoria>()
         conectorBD!!.abrir()
-        val c = conectorBD!!.listarCategoriasPrincipales(idUsuario, language)
+        val c = conectorBD!!.listarCategoriasPrincipales(idUsuarioTEA, idUsuario, language)
         if (c.moveToFirst()) {
             do {
                 val img = c.getBlob(2)
@@ -73,12 +73,10 @@ class GestionCategorias {
         conectorBD = ConectorBD(context)
         conectorBD!!.abrir()
         val c = conectorBD!!.checkCategoriaExiste(toString, idUsuario, language)
-        var existe = true
+        var existe = false
         if (c.moveToFirst()) {
-            //if count is 1, then the entry was found
-            if(c.getInt(0) == 0){
-                existe = false
-            }
+            val count = c.getInt(0)
+            existe = count > 0
         }
         c.close()
         conectorBD!!.cerrar()

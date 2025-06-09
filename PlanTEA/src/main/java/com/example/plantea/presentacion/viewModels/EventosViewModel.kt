@@ -36,6 +36,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -79,20 +80,22 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     override lateinit var adaptadorRandomPictos: AdaptadorNuevoPicto
     override var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
     override var seimageSelected = SingleLiveEvent<Bitmap>()
-    var seNewImprevisto = SingleLiveEvent<Int>()
+    var seNewImprevisto = SingleLiveEvent<Pair<Int, String>>()
     override lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     override var saltar = false
     override var isEditImage = false
     override var isCalendarioMensual = false
 
     var fechaSeleccionada : LocalDate = LocalDate.now()
-    var tituloPlan = String()
+    var horaEventoInicio : String? = null
+    var horaEventoFin: String? = null
     var mdDiaText = MutableLiveData<String>()
     val mdFechaActual = MutableLiveData<String>()
     val mdDiasMes = MutableLiveData<ArrayList<LocalDate?>>()
     val mdPlanLiveData: MutableLiveData<ArrayList<Pictograma>?> = MutableLiveData()
     val seNoEvents = SingleLiveEvent<Boolean>()
     var mdPasosCompletados = MutableLiveData<ArrayList<Int>?>()
+    var lblImportantes = ArrayList<Pair<String, TextView>>()
 
     var posicionSelectedCambio = -1
 
@@ -167,7 +170,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
 
     fun mostrarPlan(context: Context?) {
         mdPasosCompletados.value = ArrayList()
-        val idUsuarioEvento = if(idUsuarioTEA != ""){ //TODO: Tecnicamente no es necesario hacer esto ya que siempre va a ser idUsuarioTEA o se va a proporcionar los pictogramas si es idUsuario
+        val idUsuarioEvento = if(idUsuarioTEA != ""){
             idUsuarioTEA
         }else{
             idUsuario
@@ -179,7 +182,8 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
             //existe un evento visible para este dia
             evento = gEvento.obtenerEventoPlan(idUsuarioEvento, selectedDate, context)
             listaPictogramas = gPlan.obtenerPictogramasPlanificacionEvento(context, null, evento.id, Locale.getDefault().language, idUsuarioEvento)
-            tituloPlan = evento.nombre.toString()
+            horaEventoInicio = evento.horaInicio
+            horaEventoFin = evento.horaFin
 
             for (pictogram in listaPictogramas) {
                 if(pictogram.idAPI != 0)
@@ -442,8 +446,16 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     }
 
     override fun onItemLongClick(activity: Activity, posicion: Int) {
-        posicionSelectedCambio = posicion
-        AniadirPictoUtils.initializeDialog(this, activity)
+        if(imprevistos.contains(posicion)){
+            return // No se puede añadir un imprevisto a un imprevisto
+        }
+        if(tachados.contains(posicion)) {
+            showDialogBorrar(activity, posicion)
+        }else{
+            posicionSelectedCambio = posicion
+            AniadirPictoUtils.initializeDialog(this, activity)
+        }
+
     }
 
     fun checkInitializedAdapter(): Boolean {
@@ -591,7 +603,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
                         // si existe en la base de datos recuperar el id, si no insertar
                         val idPictoAPI = gPicto.checkPictoAPI(activity, pictoNuevo.idAPI)
                         if(gPicto.checkPictoAPI(activity, pictoNuevo.idAPI) == ""){
-                            pictoNuevo.id = gPicto.nuevoPictogramaAPI(activity, pictoNuevo.titulo!!.uppercase(), pictoNuevo.idAPI.toString(), "0")
+                            pictoNuevo.id = gPicto.nuevoPictogramaAPI(activity, pictoNuevo.titulo!!.uppercase(), pictoNuevo.idAPI.toString(), "0", idUsuario)
                         }else{
                             pictoNuevo.id = idPictoAPI
                         }
@@ -605,7 +617,8 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
                 }else{
                     changeDataPicto()
                     gEvento.aniadirImprevisto(activity, pictoNuevo, evento.id.toString(), posicionSelectedCambio +1)
-                    seNewImprevisto.value = posicionSelectedCambio
+                    //seNewImprevisto.value = posicionSelectedCambio
+                    seNewImprevisto.value = Pair(posicionSelectedCambio, listaPictogramas[posicionSelectedCambio].id!!)
                 }
 
                 dialogo.dismiss() //Cerrar dialogo
@@ -646,6 +659,41 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    private fun showDialogBorrar(activity: Activity, posicion: Int) {
+        val dialog = Dialog(activity)
+        dialog.setContentView(R.layout.dialogo_borrar_imprevisto)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val buttonBorrar = dialog.findViewById<Button>(R.id.btn_eliminar)
+        val buttonCancelar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
+        buttonBorrar.setOnClickListener {
+            try{
+                val toRemove = lblImportantes.find { it.first == listaPictogramas[posicion].id!! }
+                if (toRemove != null) {
+                    (toRemove.second.parent as? ViewGroup)?.removeView(toRemove.second)
+                    lblImportantes.remove(toRemove)
+                }
+                gEvento.borrarImprevisto(activity, evento.id.toString(), listaPictogramas[posicion+1].id.toString(), posicion+1)
+                adaptador.tachados!!.remove(posicion)
+                adaptador.imprevistos!!.remove(posicion+1)
+                adaptador.listaPictogramas!!.removeAt(posicion+1)
+                adaptador.notifyItemChanged(posicion)
+                adaptador.notifyItemRemoved(posicion+1)
+
+                dialog.dismiss()
+            }catch (e: Exception){
+                Toast.makeText(activity, activity.getString(R.string.toast_error_eliminar_imprevistos), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 }

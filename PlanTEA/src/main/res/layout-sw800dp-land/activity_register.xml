@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".presentacion.actividades.RegisterActivity">
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.6"
+        app:srcCompat="@drawable/background_login_land_svg" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -67,6 +79,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:inputType="text"
+                            android:maxLength="50"
                             style="@style/textInput" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,23 +91,6 @@
                         android:layout_marginTop="17dp"
                         android:ems="10"
                         android:hint="@string/lbl_email"
-                        android:inputType="text">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inputType="text"
-                            style="@style/textInput" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txt_UserName"
-                        style="@style/cornertextInput"
-                        android:layout_width="350dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="17dp"
-                        android:ems="10"
-                        android:hint="@string/lbl_nombreUsuario"
                         android:inputType="text">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -166,7 +162,6 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_weight="0.6"
-            android:background="@drawable/background_register"
             android:layout_margin="10dp">
 
             <ImageView

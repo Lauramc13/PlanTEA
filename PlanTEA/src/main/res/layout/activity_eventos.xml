@@ -93,9 +93,19 @@
                     app:cornerRadius="25dp"
                     app:icon="@drawable/svg_calendar"
                     app:iconSize="20dp"
-                    app:iconTint="?colorOnSurface">
+                    app:iconTint="?colorOnSurface"/>
 
-                </Button>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    app:icon="@drawable/svg_info_simple"
+                    app:iconGravity="textStart"
+                    app:iconSize="20dp"
+                    app:iconTint="?colorOnSurface"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </LinearLayout>
@@ -107,8 +117,8 @@
                 android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/borrar_importantes"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <Button
@@ -197,23 +207,6 @@
                     app:iconTint="@color/darkGreen" />
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/borrar_importantes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:backgroundTint="?colorTertiaryContainer"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/imprevistos"
-                android:textColor="?colorRedImportante"
-                android:textSize="@dimen/button"
-                app:icon="@drawable/svg_trash"
-                app:iconTint="?colorRedImportante"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <TextView
                 android:id="@+id/lbl_titulo"
                 android:layout_width="wrap_content"
@@ -264,19 +257,6 @@
                     android:textSize="@dimen/modalText" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/lbl_importante"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/importante"
-                android:textColor="@color/red"
-                android:visibility="gone"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="@dimen/title"
-                android:layout_marginBottom="-10dp"
-                app:layout_constraintBottom_toTopOf="@+id/recycler_plan"
-                tools:ignore="MissingConstraints" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_plan"

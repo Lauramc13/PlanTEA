@@ -58,10 +58,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:gravity="center"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/lbl_datosNombre"
             android:textSize="@dimen/buttonBig" />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEdit"
@@ -117,50 +119,62 @@
                 android:textColor="?colorOnSurface"
                 android:textSize="@dimen/titleSmall" />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
+                android:padding="5dp"
                 android:background="@drawable/bg_cards_configuracion_v2">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/svg_user"
-                    app:tint="?colorOnSurface" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/usuarios_tea"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="@dimen/body" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btn_users_tea"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_width="40dp"
-                    android:layout_height="35dp"
-                    android:alpha="0.5"
-                    app:icon="@drawable/svg_chevron_right"
-                    app:iconGravity="textStart"
-                    app:iconSize="30dp"
-                    app:iconTint="?colorOnSurface"
-                    app:strokeWidth="0dp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:paddingBottom="7dp"
+                    android:paddingTop="7dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:backgroundTint="@color/transparent"
+                    app:strokeWidth="0dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/svg_user"
+                        app:tint="?colorOnSurface" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="38dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/usuarios_tea"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="@dimen/body" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.Material3.Button.IconButton.Outlined"
+                        android:layout_width="30dp"
+                        android:layout_height="35dp"
+                        android:alpha="0.5"
+                        android:layout_gravity="end|center_vertical"
+                        app:icon="@drawable/svg_chevron_right"
+                        app:iconGravity="textStart"
+                        app:iconSize="30dp"
+                        app:iconTint="?colorOnSurface"
+                        android:clickable="false"
+                        app:strokeWidth="0dp" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 

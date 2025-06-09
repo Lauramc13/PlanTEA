@@ -20,14 +20,14 @@
         tools:layout_editor_absoluteX="10dp">
 
         <TextView
-            android:id="@+id/lbl_Acceder"
+            android:id="@+id/titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:autoSizeTextType="uniform"
             android:fontFamily="@font/poppins_bold"
             android:maxLines="1"
-            android:text="Titulo para la traducción"
+            android:text="@string/titulo"
             android:textColor="?colorOnSurface"
             android:textSize="@dimen/modalTitle" />
 
@@ -60,7 +60,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="@string/guardar_pdf"
+            android:text="@string/btn_Guardar"
             android:textAllCaps="false"
             android:textColor="@color/darkGreen"
             android:textSize="@dimen/button"

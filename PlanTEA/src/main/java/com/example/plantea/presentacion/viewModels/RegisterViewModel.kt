@@ -12,7 +12,6 @@ import com.example.plantea.presentacion.actividades.EncryptionUtils
 class RegisterViewModel: ViewModel() {
     var name = ""
     var email = ""
-    var username = ""
     var password = ""
     var password2 = ""
     var objeto = ""
@@ -23,7 +22,7 @@ class RegisterViewModel: ViewModel() {
     //Comprobar si el email es valido
     fun accountCreated(activity: Activity, prefs: SharedPreferences, isCheckedUsuarioPlan: Boolean, isCheckedObjeto: Boolean){
         val gUsuario = GestionUsuarios()
-        val validUser = gUsuario.crearUsuario(name, email, username, activity)
+        val validUser = gUsuario.crearUsuario(name, email, activity)
 
         if(validUser){
             val id = gUsuario.consultarId(email, activity).toString()
@@ -34,7 +33,6 @@ class RegisterViewModel: ViewModel() {
             val editor = prefs.edit()
             editor.putString("idUsuario", id)
             editor.putBoolean("userAccount", true)
-            editor.putString("nombreUsuarioPlanificador", username)
             editor.putBoolean("info_usuario", isCheckedUsuarioPlan)
             editor.putBoolean("info_objeto", isCheckedObjeto)
             editor.putString("email", email)

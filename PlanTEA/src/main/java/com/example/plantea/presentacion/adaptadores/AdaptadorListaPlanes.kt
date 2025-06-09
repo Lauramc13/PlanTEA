@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -72,26 +73,58 @@ class AdaptadorListaPlanes(private var planes: ArrayList<Planificacion>?, privat
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView = itemView.findViewById(R.id.lbl_Planificacion)
-        private var eliminar: MaterialButton = itemView.findViewById(R.id.icon_delete)
-        private var editar: MaterialButton = itemView.findViewById(R.id.icon_edit)
-        private var duplicar: MaterialButton = itemView.findViewById(R.id.icon_copy)
-        private var downloadPDF: MaterialButton = itemView.findViewById(R.id.icon_downloadPDF)
+        private var eliminar: MaterialButton? = itemView.findViewById(R.id.icon_delete)
+        private var editar: MaterialButton? = itemView.findViewById(R.id.icon_edit)
+        private var duplicar: MaterialButton? = itemView.findViewById(R.id.icon_copy)
+        private var downloadPDF: MaterialButton? = itemView.findViewById(R.id.icon_downloadPDF)
+        private var options: MaterialButton? = itemView.findViewById(R.id.icon_options)
         var card: CardView = itemView.findViewById(R.id.card_plan)
         var recyclerView: RecyclerView = itemView.findViewById(R.id.items_planificacion)
 
         init {
-            editar.setOnClickListener {
+            editar?.setOnClickListener {
                 listener?.editClick(bindingAdapterPosition, itemView.context)
                 notifyItemChanged(bindingAdapterPosition)
             }
-            eliminar.setOnClickListener {
+            eliminar?.setOnClickListener {
                 listener?.deleteClick(bindingAdapterPosition, itemView.context)
             }
-            duplicar.setOnClickListener {
+            duplicar?.setOnClickListener {
                 listener?.duplicateClick(bindingAdapterPosition, itemView.context)
             }
-            downloadPDF.setOnClickListener {
+            downloadPDF?.setOnClickListener {
                 listener?.downloadPDFClick(bindingAdapterPosition, itemView.context)
+            }
+
+            options?.setOnClickListener {
+                // show menu with export and visibility options
+                val inflater = itemView.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val popupView = inflater.inflate(R.layout.popup_menu_planificacion, null)
+                val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+                popupWindow.showAsDropDown(options, -20, 0)
+
+                downloadPDF = popupView.findViewById(R.id.icon_downloadPDF)
+                duplicar = popupView.findViewById(R.id.icon_copy)
+                editar = popupView.findViewById(R.id.icon_edit)
+                eliminar = popupView.findViewById(R.id.icon_delete)
+
+                editar?.setOnClickListener {
+                    listener?.editClick(bindingAdapterPosition, itemView.context)
+                    notifyItemChanged(bindingAdapterPosition)
+                    popupWindow.dismiss()
+                }
+                eliminar?.setOnClickListener {
+                    listener?.deleteClick(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
+                duplicar?.setOnClickListener {
+                    listener?.duplicateClick(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
+                downloadPDF?.setOnClickListener {
+                    listener?.downloadPDFClick(bindingAdapterPosition, itemView.context)
+                    popupWindow.dismiss()
+                }
             }
 
             card.setOnClickListener{

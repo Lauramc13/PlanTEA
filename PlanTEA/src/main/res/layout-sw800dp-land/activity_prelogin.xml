@@ -17,8 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.6"
         app:srcCompat="@drawable/background_login_land_svg" />
-
-
+    
     <LinearLayout
         android:id="@+id/linearLayout8"
         android:layout_width="0dp"

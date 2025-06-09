@@ -2,6 +2,7 @@ package com.example.plantea.presentacion.adaptadores
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -136,7 +137,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         holder.card.alpha = 0.7f
         holder.entretenimiento.alpha = 0.8f
         holder.titulo.setTextColor(ContextCompat.getColor(context, color))
-        holder.arrow.visibility = if (showIcons) View.VISIBLE else View.GONE
+        arrows(holder, showIcons)
         holder.iconCambio.visibility = if (showIcons) View.VISIBLE else View.GONE
     }
 
@@ -145,8 +146,17 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         holder.card.alpha = 1f
         holder.entretenimiento.alpha = 1f
         holder.titulo.setTextColor(ContextCompat.getColor(context, color))
-        holder.arrow.visibility = if (showIcons) View.VISIBLE else View.GONE
+        arrows(holder, showIcons)
         holder.iconCambio.visibility = if (showIcons) View.VISIBLE else View.GONE
+    }
+
+    private fun arrows(holder: ViewHolderPictogramas, showIcons: Boolean){
+        val prefs = context.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+        if (prefs.getBoolean("isVerticalPictogramas", false) && CommonUtils.isMobile(context) && context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            holder.arrowVertical?.visibility = if (showIcons) View.VISIBLE else View.GONE
+        }else{
+            holder.arrow.visibility = if (showIcons) View.VISIBLE else View.GONE
+        }
     }
 
     private fun entretenimiento(idEntretenimiento: Int, holder: ViewHolderPictogramas){
@@ -284,6 +294,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         var entretenimiento: ImageView = itemView.findViewById(R.id.entretenimiento)
         var iconCambio: ImageView = itemView.findViewById(R.id.iconCambio)
         var arrow : ImageView = itemView.findViewById(R.id.arrow)
+        var arrowVertical : ImageView? = itemView.findViewById(R.id.arrow_vertical)
 
         init {
             itemView.setOnClickListener(this)
@@ -340,6 +351,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         }
 
         override fun onLongClick(view: View): Boolean {
+
             listener?.onItemLongClick(view.context as Activity, bindingAdapterPosition)
             return true
         }

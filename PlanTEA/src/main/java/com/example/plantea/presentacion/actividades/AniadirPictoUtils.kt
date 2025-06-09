@@ -155,6 +155,7 @@ class AniadirPictoUtils  {
             val buttonGaleria = dialog.findViewById<TextView>(R.id.btn_galeria)
             buttonSiguiente = dialog.findViewById(R.id.btn_siguiente)
             buttonSaltarPDF = dialog.findViewById(R.id.btn_saltar_pdf)
+            viewModel.saltar = false
 
             if(viewModel.isCalendarioMensual){
                 buttonSaltarPDF.visibility = View.VISIBLE

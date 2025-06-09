@@ -22,6 +22,18 @@
         app:srcCompat="@drawable/svg_blob"
         android:visibility="visible" />
 
+    <Button
+        android:id="@+id/atras"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/svg_chevron_left"
+        app:iconTint="?colorOnSurface"
+        app:iconSize="30dp"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"

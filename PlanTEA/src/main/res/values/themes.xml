@@ -84,6 +84,14 @@
 
     </style>
 
+    <style name="Circular">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Circular2">
+        <item name="cornerSize">10%</item>
+    </style>
+
     <style name="colorsCalendar" parent="">
         <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
     </style>
@@ -282,8 +290,8 @@
     </style>
 
     <style name="ShapeableImageViewStyle">
-        <item name="cornerFamily">rounded</item> <!-- Use 'rounded' for rounded corners -->
-        <item name="cornerSize">25dp</item> <!-- Adjust the corner radius value as needed -->
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">25dp</item>
     </style>
 
     <style name="cardCuaderno">
@@ -429,6 +437,7 @@
     <style name="numberPicker" parent="AppTheme">
         <item name="colorControlNormal">@color/transparent</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/darkGreen</item>
     </style>
 
     <style name="Animation">

@@ -34,6 +34,7 @@ import com.example.plantea.dominio.objetos.DiaMes
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensual
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensualFechas
 import com.example.plantea.presentacion.viewModels.CalendarioMensualViewModel
+import com.example.plantea.presentacion.viewModels.SingleLiveEvent
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
@@ -55,6 +56,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
 
     private lateinit var adaptadorCalendario: AdaptadorCalendarioMensual
     private lateinit var adaptadorFechas: AdaptadorCalendarioMensualFechas
+    private lateinit var dialog: Dialog
 
     private var isPlanificadorLogged = false
 
@@ -172,6 +174,14 @@ class CalendarioMensualActivity: AppCompatActivity() {
             }
         }
 
+        viewModel.seNewImage.observe(this) { //TODO: Solo se actualiza bien la primera vez
+            //volver a inicializar la imagen
+            val imagen2 = dialog.findViewById<ShapeableImageView>(R.id.imagen)
+            imagen2.background = null
+            imagen2.setImageBitmap(viewModel.seNuevoPicto.value?.imagen)
+            //borrarIcono.visibility = ImageView.VISIBLE
+        }
+
         viewModel.seAddedFecha.observe(this) { dia ->
             val gDiaMes = GestionMes()
             val imagenBlob = CommonUtils.bitmapToByteArray((dia.imagen))
@@ -198,7 +208,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
     }
 
     private fun dialogoMostrarDia(dia : DiaMes){
-        val dialog = Dialog(this)
+        dialog = Dialog(this)
         dialog.setContentView(R.layout.dialogo_fecha)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
@@ -234,7 +244,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
         }
 
         btnEditar.setOnClickListener {
-            editarDia(dia, dialog, titulo, fecha, imagen, cardView, borrarIcono, btnEditar)
+            editarDia(dia, titulo, fecha, imagen, cardView, borrarIcono, btnEditar)
         }
 
         btnCerrar.setOnClickListener {
@@ -308,7 +318,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
         dialogBorrar.show()
     }
 
-    private fun editarDia(dia: DiaMes, dialog: Dialog, titulo: TextView, fecha: TextView, imagen: ShapeableImageView, cardView: MaterialCardView, borrarIcono:ImageView, buttonEditar: Button) {
+    private fun editarDia(dia: DiaMes, titulo: TextView, fecha: TextView, imagen: ShapeableImageView, cardView: MaterialCardView, borrarIcono:ImageView, buttonEditar: Button) {
         buttonEditar.text = getString(R.string.btn_Guardar)
 
         titulo.isEnabled = true
@@ -402,7 +412,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
         }
     }
 
-    private fun exportarPdf(){
+    private fun exportarPdfOLD(){
         try {
             val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             var filename = "Calendario_PlanTEA.pdf"
@@ -500,4 +510,114 @@ class CalendarioMensualActivity: AppCompatActivity() {
         }
     }
 
+    private fun exportarPdf(){
+        try {
+            val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            var filename = "Calendario_PlanTEA.pdf"
+            var counter = 1
+            var pageNumber = 1
+
+            while (File(downloadsDirectory, filename).exists()) {
+                filename = "Calendario_PlanTEA_$counter.pdf"
+                counter++
+            }
+
+            val outputPath = File(downloadsDirectory, filename).absolutePath
+
+            val metrics = resources.displayMetrics
+            val scaledX = metrics.xdpi/ 100
+            val scaledY = metrics.ydpi / 100
+
+            val pdfDocument = PdfDocument()
+            val pageWidth = (675 * scaledX).toInt()
+            val pageHeight = (525 * scaledY).toInt()
+            val pageInfo = PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
+            var page = pdfDocument.startPage(pageInfo)
+            var canvas = page.canvas
+
+            if(viewModel.fechas.isNotEmpty()){
+                //chucks of arrayList
+                val chunks = viewModel.fechas.chunked(5).map { ArrayList(it) }
+                for(bloque in chunks){
+                    //Calendario
+                    val calendarioPDF = RecyclerView(this)
+                    val adaptador = AdaptadorCalendarioMensual(viewModel.mdDias.value!!, listaDays, viewModel.fechas, viewModel, true)
+                    calendarioPDF.layoutManager = GridLayoutManager(this, 7)
+                    calendarioPDF.adapter = adaptador
+                    val widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    calendarioPDF.measure(widthSpec, heightSpec)
+                    calendarioPDF.requestLayout()
+
+                    //Mover el canvas para el calendario
+                    if(viewModel.fechas.isEmpty()){
+                        //canvas in the middle
+                        canvas.save()
+                        val x = (pageWidth - calendarioPDF.measuredWidth) / 2
+                        canvas.translate(x.toFloat(), 68*scaledY)
+                        calendarioPDF.draw(canvas)
+                        canvas.restore()
+                    }else{
+                        canvas.save()
+                        canvas.translate(45*scaledX, 68*scaledY)
+                        calendarioPDF.draw(canvas)
+                        canvas.restore()
+                    }
+
+                    //Fecha
+                    val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+                    paint.color = Color.BLACK
+                    paint.textSize = 30*scaledX
+                    paint.typeface = ResourcesCompat.getFont(this, R.font.poppins_semibold)
+                    val mes = CalendarioUtilidades.fechaSeleccionada.month.getDisplayName(java.time.format.TextStyle.FULL, Locale.getDefault()).uppercase()
+                    val anio = CalendarioUtilidades.fechaSeleccionada.year
+                    val x = (pageWidth - paint.measureText("$mes $anio")) / 2
+                    canvas.drawText("$mes $anio", x, 55*scaledY, paint)
+
+                    //Logo
+                    val logo = CommonUtils.drawableToBitmap(ResourcesCompat.getDrawable(resources, R.drawable.logo_plantea2, null)!!)
+                    val scaledLogo = Bitmap.createScaledBitmap(logo, (38*scaledX).toInt(), (30*scaledY).toInt(), false)
+                    canvas.drawBitmap(scaledLogo, 9*scaledX, 9*scaledX, null)
+                    paint.textSize = 18*scaledX
+                    paint.typeface = ResourcesCompat.getFont(this, R.font.tiltneon)
+                    canvas.drawText(" PlanTEA", 50*scaledX, 30*scaledY, paint)
+
+                    //Dias importantes
+                    val fechasPDF = RecyclerView(this)
+                    val adaptadorFechas = AdaptadorCalendarioMensualFechas(bloque, viewModel, true)
+
+                    fechasPDF.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+                    fechasPDF.adapter = adaptadorFechas
+
+                    val widthSpec2 = View.MeasureSpec.makeMeasureSpec((160*scaledX).toInt(), View.MeasureSpec.EXACTLY)
+                    val heightSpec2 = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    fechasPDF.measure(widthSpec2, heightSpec2)
+                    fechasPDF.layout(0, 0, fechasPDF.measuredWidth, fechasPDF.measuredHeight)
+
+                    canvas.translate(calendarioPDF.measuredWidth + 70*scaledX, 113*scaledY)
+
+                    //if its not the last page draw the first five, create a new page
+                    fechasPDF.draw(canvas)
+                    pdfDocument.finishPage(page)
+
+                    if(pageNumber < chunks.size){
+                        pageNumber++
+                        page = pdfDocument.startPage(pageInfo)
+                        canvas = page.canvas
+                        canvas.translate(0f, 0f)
+                    }
+                }
+            }
+
+            val file = FileOutputStream(outputPath)
+            pdfDocument.writeTo(file)
+            pdfDocument.close()
+            file.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }finally {
+            val message = getString(R.string.toast_pdf_exportado)
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 }

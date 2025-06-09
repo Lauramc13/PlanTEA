@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/widthDialogMedium"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fondo_dialogo_login"
+    android:layout_margin="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/paddingTopDialog"
+        android:paddingBottom="35dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo">
+
+        <TextView
+            android:id="@+id/lbl_tituloEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:text="@string/titulo"
+            android:textColor="?colorOnSurface"
+            android:textSize="@dimen/modalTitle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/svg_calendar"/>
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fecha"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/listItems" />
+
+            <TextView
+                android:id="@+id/lbl_fechaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="29 noviembre 2021"
+                android:fontFamily="@font/poppins_regular"
+                android:textAlignment="viewEnd"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/listItems" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_hora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/svg_clock"/>
+
+            <TextView
+                android:id="@+id/lbl_hora"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hora"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_regular"
+                android:textSize="@dimen/listItems" />
+
+            <TextView
+                android:id="@+id/lbl_horaEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:contentDescription="Boton seleccionar hora"
+                android:textSize="@dimen/listItems"
+                android:textColor="?colorOnSurface"
+                android:text="00:00 a 00:00"
+                android:fontFamily="@font/poppins_regular"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_localizacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="3dp"
+
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/svg_map"/>
+
+            <TextView
+                android:id="@+id/localizacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/localizacion"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/listItems" />
+
+            <TextView
+                android:id="@+id/lbl_localizacionEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Calle tal tal, número 5, Ciudad Real"
+                android:textAlignment="viewEnd"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/listItems" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_notas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="3dp"
+
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/svg_notes"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notas"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="?colorOnSurface"
+                android:textSize="@dimen/listItems" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/notasText"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fondo_texto_login"
+            android:ems="10"
+            android:layout_marginTop="5dp"
+            android:inputType="text"
+            android:enabled="false"
+            android:textColor="?colorOnSurface"
+            android:textColorHint="?colorOnSurface"
+            app:shapeAppearance="@style/cornerRadiusLogin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:textSize="@dimen/listItems"
+                android:inputType="textMultiLine"
+                android:textColor="?colorOnSurface" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icono_CerrarDialogo"
+        android:layout_width="48dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_close_button"
+        android:src="@drawable/svg_close"
+        android:padding="12dp"
+        android:alpha="0.9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

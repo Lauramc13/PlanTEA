@@ -104,7 +104,7 @@ class CountDownFragment: Fragment() {
         return vista
     }
 
-    private fun startTimer() {
+    private fun startTimer(){
         val time = viewModel.selectedHour.toLong() * 3600000 + viewModel.selectedMin.toLong() * 60000
 
         countDownTimer = object : CountDownTimer(time, 1000) {

@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.adaptadores
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.text.Editable
@@ -23,7 +24,6 @@ import com.google.android.material.button.MaterialButton
 class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, private val listener: OnItemSelectedListener?) : RecyclerView.Adapter<AdaptadorPictogramasEventos.ViewHolderPictogramas>() {
 
     lateinit var context: Context
-    private var listaPictos = listaPictogramas?.map { it.copy() } as ArrayList<Pictograma>
     private lateinit var popupWindow: PopupWindow
     var isEdit = false
 
@@ -68,9 +68,10 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
     }
 
     fun getTitleAt(position: Int): String? {
-        return listaPictos[position].titulo
+        return listaPictogramas?.get(position)?.titulo
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setEditMode(editMode: Boolean) {
         isEdit = editMode
         notifyDataSetChanged()
@@ -113,12 +114,11 @@ class AdaptadorPictogramasEventos(var listaPictogramas: ArrayList<Pictograma>?, 
             titulo.setText(picto.titulo)
 
             titulo.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    listaPictos[position].titulo = s.toString() // Update the list
-                }
-
+                override fun afterTextChanged(s: Editable?) {}
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    listaPictogramas?.get(position)?.titulo = s.toString()
+                }
             })
         }
 

@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.webkit.WebView
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -21,6 +22,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -103,11 +105,24 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
 
         // Instanciar el RecyclerView
         recyclerActividades = findViewById(R.id.recycler_actividades)
-        val numberActivities = if (CommonUtils.isMobile(this)) 2 else 3
-        recyclerActividades.layoutManager = GridLayoutManager(this, numberActivities, GridLayoutManager.VERTICAL, false)
-        viewModel.adapter = AdaptadorActividadesPantalla(viewModel.listaActividades, this)
-        recyclerActividades.adapter = viewModel.adapter
+        recyclerActividades.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                recyclerActividades.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
+                val displayMetrics = resources.displayMetrics
+                val recyclerActividadesParent = recyclerActividades.parent as View
+                val recyclerActividadesWidth = recyclerActividadesParent.width / displayMetrics.density
+
+                val numberActivities = if (CommonUtils.isMobile(this@ActividadActivity)) {
+                    2
+                } else {
+                    (recyclerActividadesWidth / 180).toInt()
+                }
+                recyclerActividades.layoutManager = GridLayoutManager(this@ActividadActivity, numberActivities, GridLayoutManager.VERTICAL, false)
+                viewModel.adapter = AdaptadorActividadesPantalla(viewModel.listaActividades, this@ActividadActivity)
+                recyclerActividades.adapter = viewModel.adapter
+            }
+        })
         //frame
         val countDownTimer = CountDownActividadFragment()
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, countDownTimer).commit()
@@ -115,16 +130,12 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
         closeButton.setOnClickListener {
             //stop the webview from playing
             webView.loadUrl("about:blank")
-
-            cardVideo.visibility = View.VISIBLE
             frameVideo.visibility = View.INVISIBLE
         }
 
         cardVideo.setOnClickListener{
             //load the video
             webView.loadUrl("https://www.youtube.com")
-
-            cardVideo.visibility = View.INVISIBLE
             frameVideo.visibility = View.VISIBLE
         }
 
@@ -181,7 +192,7 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
             viewModel.adaptadorCategorias.notifyItemInserted(viewModel.arrayCategorias!!.size-1)
 
             text.editText?.setText("")
-            CommonUtils.hideKeyboard(this, text.editText!!)
+           // CommonUtils.hideKeyboard(this, text.editText!!)
         }
 
         dialog.show()
@@ -331,9 +342,7 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
 
     // Se ejecuta cuando se acaba el temporizador
     fun stopVideo(){
-        cardVideo.visibility = View.VISIBLE
         frameVideo.visibility = View.INVISIBLE
-        cardVideo.isEnabled = false
     }
 
     @SuppressLint("NotifyDataSetChanged")

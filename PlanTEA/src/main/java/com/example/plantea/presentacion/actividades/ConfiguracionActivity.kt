@@ -51,14 +51,15 @@ import java.util.*
 
 class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedListener, ActividadAdapter.OnItemSelectedListenerActividad {
     lateinit var prefs: SharedPreferences
+
     private lateinit var imgUsuarioPlanificador: ImageView
     private var nombreTextView: TextView? = null
     private var txtPlanificador : TextInputLayout? = null
-    private var txtUsernamePlanificador : TextInputLayout? = null
     private var txtCorreoPlanificador : TextInputLayout? = null
     private var dialogLogout : Dialog? = null
     private var switchNoti : MaterialSwitch? = null
     private var switchOscuro : MaterialSwitch? = null
+    private var adapterUsers: RecyclerView.Adapter<*>? = null
 
     private var restart = false
     var image : ShapeableImageView? = null
@@ -67,41 +68,40 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     private var recyclerViewUsers: RecyclerView? = null
 
     // Para cuando se crea un usuario TEA nuevo
-    private var resultLauncher :  ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        try {
-            if (result.resultCode == Activity.RESULT_OK) {
-                if(result.data?.extras?.getByteArray("selectedImageUsuario") != null){
-                    val imagenUriUsuario = result.data?.extras?.getByteArray("selectedImageUsuario") as ByteArray
-                    image?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriUsuario))
-                    image?.background = null
-                }else {
-                    val imagenUriActividad = result.data?.extras?.getByteArray("selectedImageActividad") as ByteArray
-                    imageActividad?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriActividad))
-                    imageActividad?.background = null
-                }
+    private var resultLauncher : ActivityResultLauncher<Intent>? = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            if(result.data?.extras?.getByteArray("selectedImageUsuario") != null){
+                val imagenUriUsuario = result.data?.extras?.getByteArray("selectedImageUsuario") as ByteArray
+                image?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriUsuario))
+                image?.background = null
+            }else {
+                val imagenUriActividad = result.data?.extras?.getByteArray("selectedImageActividad") as ByteArray
+                imageActividad?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriActividad))
+                imageActividad?.background = null
             }
-        }catch (e: Exception){
-            Log.e("Error", e.message.toString())
         }
     }
 
     //Cambiar la configuracion de pictogramas de un usuario TEA
-    private var resultLauncherConfigPicto : ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncherConfigPicto :  ActivityResultLauncher<Intent>? = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val config = result.data?.extras?.getString("configPicto") as String
             val gUsuario = GestionUsuarios()
             gUsuario.cambiarConfiguracionPictogramas(config, viewModel.usersTEA!![viewModel.userSelectPicto].id, this) // TODO: NO GUARDAR AQUI, GUARDAR CUANDO SE GUARDE LA CONFIGURACION
             viewModel.usersTEA!![viewModel.userSelectPicto].configPictograma = config
-            viewModel.adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
+            adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
         }
     }
 
     //Editar la imagen de un usuario TEA
-    private var resultLauncherImagen : ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncherImagen :  ActivityResultLauncher<Intent>? = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val imagen = result.data?.extras?.getByteArray("selectedImageUsuario") as ByteArray
             viewModel.usersTEA!![viewModel.userSelectPicto].imagen = CommonUtils.byteArrayToBitmap(imagen)
-            viewModel.adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
+            adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
         }
     }
 
@@ -126,7 +126,6 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
 
     override fun onDestroy() {
         super.onDestroy()
-        resultLauncher = null
         if (dialogLogout?.isShowing == true) {
             dialogLogout?.dismiss()
         }
@@ -135,12 +134,12 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     override fun onStop() {
         super.onStop()
         viewModel.name = txtPlanificador?.editText?.text.toString()
-        viewModel.username = txtUsernamePlanificador?.editText?.text.toString()
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_configuracion)
 
         if(CommonUtils.isMobile(this)){
@@ -154,7 +153,6 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
 
         //Version tablet
         txtPlanificador = findViewById(R.id.txt_nombrePlanificador)
-        txtUsernamePlanificador = findViewById(R.id.txt_nombreUsuarioPlanificador)
         txtCorreoPlanificador = findViewById(R.id.txt_correoPlanificador)
         val btnGuardar : Button? = findViewById(R.id.btn_guardarConfiguracion)
         val btnPassword : Button? = findViewById(R.id.buttonContrasenia)
@@ -169,23 +167,22 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         val btnPolitica : MaterialCardView = findViewById(R.id.btnPolitica)
 
         val btnLogout : MaterialCardView = findViewById(R.id.btnCerrarSesion)
-        val btnUsersTEA : MaterialButton? = findViewById(R.id.btn_users_tea)
+        val btnUsersTEA : MaterialCardView? = findViewById(R.id.btn_users_tea)
 
         if(savedInstanceState != null){
             txtPlanificador?.editText?.setText(viewModel.name)
             nombreTextView?.text = viewModel.name
-            txtUsernamePlanificador?.editText?.setText(viewModel.username)
         }else {
             txtPlanificador?.editText?.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
             nombreTextView?.text = prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault())
-            txtUsernamePlanificador?.editText?.setText(prefs.getString("nombreUsuarioPlanificador", "")!!.uppercase(Locale.getDefault()))
 
             val gUsuario = GestionUsuarios()
             viewModel.usersTEA = gUsuario.obtenerUsuariosTEA(viewModel.idUsuario, this)
             if(viewModel.usersTEA!!.size <3)
                 viewModel.usersTEA!!.add(Usuario())
-            viewModel.adapterUsers = UserAdapter(viewModel.usersTEA, this, this)
         }
+
+        adapterUsers = UserAdapter(viewModel.usersTEA, this, this)  
 
         if(!CommonUtils.isMobile(this)){
             initRecyclerViewUsers()
@@ -283,7 +280,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
             GridLayoutManager(this, 3)
         }
 
-        recyclerViewUsers?.adapter = viewModel.adapterUsers
+        recyclerViewUsers?.adapter = adapterUsers
     }
 
     fun observers(){
@@ -304,13 +301,12 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     private fun guardarConfiguracion(){
         //Obtain values from the fields
         val nombreUsuarioPlanificador = txtPlanificador?.editText?.text.toString()
-        val username = txtUsernamePlanificador?.editText?.text.toString()
 
         //remove focus from textview in recyclerview
         recyclerViewUsers?.clearFocus()
 
         //if drawable doesnt exists, set it to null
-        val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador, username, imgUsuarioPlanificador.drawable)
+        val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador)
 
         if(isValid){
             val imagenBlob = CommonUtils.bitmapToByteArray((imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap)
@@ -319,14 +315,13 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
             val editor = prefs.edit()
             editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
             editor.putString("imagenPlanificador", imagenBlob.toPreservedString)
-            editor.putString("nombreUsuarioPlanificador", username)
             editor.putString("imagenPlanificadorConfig", null)
 
             editor.apply()
 
             try {
                 val gUsuario = GestionUsuarios()
-                gUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, imagenBlob, viewModel.idUsuario, this)
+                gUsuario.guardarConfiguracion(nombreUsuarioPlanificador, imagenBlob, viewModel.idUsuario, this)
                 if(viewModel.usersTEA!!.isNotEmpty()){
                     viewModel.usersTEA!!.removeLast()
                     gUsuario.guardarConfiguracionUsersTEA(viewModel.usersTEA!!, viewModel.idUsuario, this)
@@ -389,12 +384,12 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
                 prefs.edit().putString("idUsuarioTEA", idUsuarioTEA).apply()
                 if(viewModel.usersTEA!!.size >=3){
                     viewModel.usersTEA!!.removeLast()
-                    viewModel.usersTEA!!.add(Usuario(null, name, null, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
-                    viewModel.adapterUsers?.notifyItemChanged(viewModel.usersTEA!!.size-1)
+                    viewModel.usersTEA!!.add(Usuario(null, name, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
+                    adapterUsers?.notifyItemChanged(viewModel.usersTEA!!.size-1)
                 }else{
                     val penultimatePosition = viewModel.getPenultimatePosition(viewModel.usersTEA!!.size)
-                    viewModel.usersTEA!!.add(penultimatePosition, Usuario(idUsuarioTEA, name, null, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
-                    viewModel.adapterUsers?.notifyItemInserted(penultimatePosition)
+                    viewModel.usersTEA!!.add(penultimatePosition, Usuario(idUsuarioTEA, name, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
+                    adapterUsers?.notifyItemInserted(penultimatePosition)
                 }
 
                 dialog.dismiss()
@@ -402,15 +397,26 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         }
 
         buttonImagenUsuario.setOnClickListener {
-            val intent = Intent(this, MenuAvataresTEActivity::class.java)
-            intent.putExtra("editPreferences", true)
-            resultLauncher!!.launch(intent)
+            try{
+                val intent = Intent(applicationContext, MenuAvataresTEActivity::class.java)
+                intent.putExtra("editPreferences", true)
+                resultLauncher!!.launch(intent)
+            }catch (e: Exception){
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                Log.e("ConfiguracionActivity", "Error al abrir el intent para seleccionar la imagen del usuario TEA", e)
+            }
+
         }
 
         buttonImagenActividad.setOnClickListener {
-            val intent = Intent(this, MenuObjetosActivity::class.java)
-            intent.putExtra("editPreferences", true)
-            resultLauncher!!.launch(intent)
+            try {
+                val intent = Intent(applicationContext, MenuObjetosActivity::class.java)
+                intent.putExtra("editPreferences", true)
+                resultLauncher!!.launch(intent)
+            }catch (e: Exception){
+                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+                Log.e("ConfiguracionActivity", "Error al abrir el intent para seleccionar la imagen del usuario TEA", e)
+            }
         }
 
         cerrar.setOnClickListener {
@@ -457,37 +463,64 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
 
 
     override fun changeConfigPicto(position: Int) {
-        val intent = Intent(this, ConfiguracionPictogramasActivity::class.java)
-        intent.putExtra("editPreferences", true)
-        viewModel.userSelectPicto = position
-        resultLauncherConfigPicto!!.launch(intent)
+        try{
+            val intent = Intent(this, ConfiguracionPictogramasActivity::class.java)
+            intent.putExtra("editPreferences", true)
+            viewModel.userSelectPicto = position
+            resultLauncherConfigPicto?.launch(intent)
+        }catch (e: Exception){
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun onBorrarUser(position: Int) {
-        val gUsuario = GestionUsuarios()
-        val idUsuarioTEA = viewModel.usersTEA!![position].id
-        if(idUsuarioTEA != ""){
-            gUsuario.borrarUsuarioTEA(viewModel.idUsuario,  idUsuarioTEA, this)
-            viewModel.usersTEA!!.removeAt(position)
-            viewModel.adapterUsers?.notifyItemRemoved(position)
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialogo_eliminar_evento)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.findViewById<TextView>(R.id.lbl_title).text = getString(R.string.eliminar_usuarioTEA)
+        dialog.findViewById<TextView>(R.id.lbl_subtitle).text = getString(R.string.eliminar_usuarioTEA_mensaje)
+
+        val buttonBorrar = dialog.findViewById<MaterialButton>(R.id.btn_eliminar)
+        val buttonCancelar = dialog.findViewById<MaterialButton>(R.id.btn_cancelar)
+        val iconoCerrar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+        buttonBorrar.setOnClickListener {
+            val gUsuario = GestionUsuarios()
+            val idUsuarioTEA = viewModel.usersTEA!![position].id
+            if(idUsuarioTEA != ""){
+                gUsuario.borrarUsuarioTEA(viewModel.idUsuario,  idUsuarioTEA, this)
+                viewModel.usersTEA!!.removeAt(position)
+                adapterUsers?.notifyItemRemoved(position)
+            }
+
+            if(viewModel.usersTEA!!.size <3 && viewModel.usersTEA!![viewModel.usersTEA!!.size - 1].name != null){
+                viewModel.usersTEA!!.add(Usuario())
+                adapterUsers?.notifyItemInserted(viewModel.usersTEA!!.size - 1)
+            }
+            dialog.dismiss()
         }
 
-        if(viewModel.usersTEA!!.size <3 && viewModel.usersTEA!![viewModel.usersTEA!!.size - 1].name != null){
-            viewModel.usersTEA!!.add(Usuario())
-            viewModel.adapterUsers?.notifyItemInserted(viewModel.usersTEA!!.size - 1)
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
         }
+
+        iconoCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onEditName(position: Int, name: String) {
         viewModel.usersTEA!![position].name = name
-     // viewModel.adapterUsers?.notifyItemChanged(position)
     }
 
     override fun onEditImage(position: Int) {
         val intent = Intent(this, MenuAvataresTEActivity::class.java)
         intent.putExtra("editPreferences", true)
         viewModel.userSelectPicto = position
-        resultLauncherImagen!!.launch(intent)
+        resultLauncherImagen?.launch(intent)
     }
 
     override fun onClick(isEdit: Boolean, positionUser: Int, position: Int){
@@ -515,7 +548,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         card.setOnClickListener {
             val intent = Intent(this, MenuObjetosActivity::class.java)
             intent.putExtra("editPreferences", true)
-            resultLauncher!!.launch(intent)
+            resultLauncher?.launch(intent)
         }
 
         viewModel.arrayCategorias = gCategoriaActividad.getCategorias(viewModel.usersTEA!![positionUser].id, this)
@@ -573,7 +606,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
 
                 viewModel.usersTEA!![positionUser].actividades!![position].nombre = nombre.editText?.text.toString()
                 viewModel.usersTEA!![positionUser].actividades!![position].imagen = (imageActividad!!.drawable as BitmapDrawable).bitmap ?: viewModel.usersTEA!![positionUser].actividades!![position].imagen
-                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                adapterUsers?.notifyItemChanged(positionUser)
 
                 dialog.dismiss()
             }
@@ -581,7 +614,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
             borrar.setOnClickListener {
                 gActividad.borrarActividad(viewModel.usersTEA!![positionUser].actividades!![position].id, this)
                 viewModel.usersTEA!![positionUser].actividades!!.removeAt(position)
-                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                adapterUsers?.notifyItemChanged(positionUser)
                 dialog.dismiss()
             }
 
@@ -601,7 +634,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
                 val nuevaActividad = Actividad(idActividad, nombre.editText?.text.toString(), (imageActividad!!.drawable as BitmapDrawable).bitmap, viewModel.selectedCategoriasNueva, viewModel.usersTEA!![positionUser].id)
                 listaActividades?.add(listaActividades.size -1, nuevaActividad)
                 viewModel.usersTEA!![positionUser].actividades = listaActividades
-                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                adapterUsers?.notifyItemChanged(positionUser)
 
                 dialog.dismiss()
             }

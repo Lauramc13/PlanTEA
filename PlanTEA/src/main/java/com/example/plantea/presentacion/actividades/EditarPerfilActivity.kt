@@ -29,7 +29,6 @@ class EditarPerfilActivity: AppCompatActivity() {
     lateinit var cardImage : MaterialCardView
     lateinit var prefs: SharedPreferences
     private lateinit var txtPlanificador : TextInputLayout
-    private lateinit var txtUsernamePlanificador : TextInputLayout
     private lateinit var txtCorreoPlanificador : TextInputLayout
 
     private val viewModel by viewModels<ConfiguracionViewModel>()
@@ -37,7 +36,6 @@ class EditarPerfilActivity: AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         viewModel.name = txtPlanificador.editText?.text.toString()
-        viewModel.username = txtUsernamePlanificador.editText?.text.toString()
     }
 
     override fun onPause() {
@@ -72,7 +70,6 @@ class EditarPerfilActivity: AppCompatActivity() {
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         txtCorreoPlanificador = findViewById(R.id.txt_correoPlanificador)
         txtPlanificador = findViewById(R.id.txt_nombrePlanificador)
-        txtUsernamePlanificador = findViewById(R.id.txt_nombreUsuarioPlanificador)
         txtCorreoPlanificador.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))
         image = findViewById(R.id.imagenUsuario)
         cardImage = findViewById(R.id.cardUsuario)
@@ -81,10 +78,8 @@ class EditarPerfilActivity: AppCompatActivity() {
 
         if(savedInstanceState != null){
             txtPlanificador.editText?.setText(viewModel.name)
-            txtUsernamePlanificador.editText?.setText(viewModel.username)
         }else {
             txtPlanificador.editText?.setText(prefs.getString("nombrePlanificador", "")!!.uppercase(Locale.getDefault()))
-            txtUsernamePlanificador.editText?.setText(prefs.getString("nombreUsuarioPlanificador", "")!!.uppercase(Locale.getDefault()))
         }
 
         val btnPassword : Button? = findViewById(R.id.buttonContrasenia)
@@ -109,10 +104,9 @@ class EditarPerfilActivity: AppCompatActivity() {
     private fun guardarConfiguracion(){
         //Obtain values from the fields
         val nombreUsuarioPlanificador = txtPlanificador.editText?.text.toString()
-        val username = txtUsernamePlanificador.editText?.text.toString()
 
         //if drawable doesnt exists, set it to null
-        val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador, username, image.drawable)
+        val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador)
 
         if(isValid){
             val imagenBlob = CommonUtils.bitmapToByteArray((image.drawable as BitmapDrawable).bitmap)
@@ -121,13 +115,12 @@ class EditarPerfilActivity: AppCompatActivity() {
             val editor = prefs.edit()
             editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
             editor.putString("imagenPlanificador", imagenBlob.toPreservedString)
-            editor.putString("nombreUsuarioPlanificador", username)
             editor.putString("imagenPlanificadorConfig", null)
             editor.apply()
 
             try {
                 val gUsuario = GestionUsuarios()
-                gUsuario.guardarConfiguracion(nombreUsuarioPlanificador, username, imagenBlob, viewModel.idUsuario, this)
+                gUsuario.guardarConfiguracion(nombreUsuarioPlanificador, imagenBlob, viewModel.idUsuario, this)
             }catch (e: Exception){
                 Toast.makeText(this, getString(R.string.toast_error_guardar_configuracion), Toast.LENGTH_SHORT).show()
             }

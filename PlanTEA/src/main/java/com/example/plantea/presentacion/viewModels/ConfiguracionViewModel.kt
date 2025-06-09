@@ -1,9 +1,7 @@
 package com.example.plantea.presentacion.viewModels
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.objetos.CategoriaActividad
 import com.example.plantea.dominio.objetos.Usuario
@@ -15,18 +13,15 @@ class ConfiguracionViewModel: ViewModel() {
     val seToast = SingleLiveEvent<Int>()
 
     var name = ""
-    var username = ""
     var selectedCategoriasNueva = ArrayList<String>()
     var arrayCategorias: ArrayList<CategoriaActividad>? = null
     var idUsuario = ""
     var userSelectPicto = -1
 
-    //it can be UserAdapterMobile or UserAdapter
-    var adapterUsers: RecyclerView.Adapter<*>? = null
     var usersTEA : ArrayList<Usuario>? = null
 
-    fun comprobarCampos(txtPlanificadorText: String, txtUsernameText: String, imgPlanificador: Drawable?): Boolean {
-        if (txtPlanificadorText.isEmpty() || txtUsernameText.isEmpty()) {
+    fun comprobarCampos(txtPlanificadorText: String): Boolean {
+        if (txtPlanificadorText.isEmpty()) {
             seToast.value = R.string.toast_necesita_nombre
             return false
         }

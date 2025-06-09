@@ -122,9 +122,9 @@ class EventosFragment : Fragment(), AdaptadorEvento.OnItemSelectedListener {
         val dialogEvento = Dialog(actividad)
         dialogEvento.setContentView(R.layout.dialogo_eliminar_evento)
         dialogEvento.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        btnEliminar = dialogEvento.findViewById(R.id.btn_eliminarEvento)
+        btnEliminar = dialogEvento.findViewById(R.id.btn_eliminar)
         iconoCerrar = dialogEvento.findViewById(R.id.icono_CerrarDialogo)
-        btnCancelar = dialogEvento.findViewById(R.id.btn_cancelarEvento)
+        btnCancelar = dialogEvento.findViewById(R.id.btn_cancelar)
 
         btnEliminar.setOnClickListener {
             Toast.makeText(actividad, R.string.toast_evento_eliminado, Toast.LENGTH_SHORT).show()

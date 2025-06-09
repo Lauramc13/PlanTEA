@@ -33,7 +33,7 @@ class CategoriasFragment : Fragment() {
         }
 
         val gCategoria = GestionCategorias()
-        viewModel.listaCategorias = gCategoria.obtenerCategoriasPrincipales(actividad, viewModel.idUsuario, Locale.getDefault().language)
+        viewModel.listaCategorias = gCategoria.obtenerCategoriasPrincipales(actividad, viewModel.idUsuarioTEA, viewModel.idUsuario, Locale.getDefault().language)
         val categoriaNueva = Categoria(viewModel.listaCategorias.size - 1, getString(R.string.lbl_NuevaCategoria).uppercase(), null, "default")
         viewModel.listaCategorias.add(viewModel.listaCategorias.size, categoriaNueva)
 

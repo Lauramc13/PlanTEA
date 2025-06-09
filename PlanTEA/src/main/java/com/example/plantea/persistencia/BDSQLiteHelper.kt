@@ -23,7 +23,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var context = contexto
     private val sqlGlobalIdTable = "CREATE TABLE IF NOT EXISTS GlobalID (id INTEGER PRIMARY KEY AUTOINCREMENT)"
     private val sqlInsertInitialId = "INSERT INTO GlobalID (id) VALUES (1)"
-    private var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY DEFAULT (nextval('global_id_seq')), email TEXT UNIQUE, password TEXT, username TEXT, name TEXT, imagen TEXT)"
+    private var sqlUsuario = "CREATE TABLE Usuario(id INTEGER PRIMARY KEY DEFAULT (nextval('global_id_seq')), email TEXT UNIQUE, password TEXT, name TEXT, imagen TEXT)"
     private var sqlUsuarioTEA = "CREATE TABLE UsuarioTEA(id INTEGER PRIMARY KEY DEFAULT (nextval('global_id_seq')), name TEXT, imagen TEXT, configPictogramas TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlActividad = "CREATE TABLE Actividad(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, imagen TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES UsuarioTEA(id))"
     private var sqlCategoriaActividad = "CREATE TABLE CategoriaActividad(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES UsuarioTEA(id))"
@@ -35,9 +35,10 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
     private var sqlPictogramaAPI = "CREATE TABLE PictogramaAPI(id INTEGER PRIMARY KEY, id_API INTEGER, FOREIGN KEY (id) REFERENCES Pictograma(id))"
     private var sqlPictogramaLocal = "CREATE TABLE PictogramaLocal(id INTEGER PRIMARY KEY, imagen BLOB, id_usuario INTEGER, FOREIGN KEY (id) REFERENCES Pictograma(id), FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     //private var sqlRelacionPictoAPI = "CREATE TABLE RelacionPictoAPI (id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, id_pictogramaAPI INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_pictogramaAPI) REFERENCES PictogramaAPI(id))"
+    private var sqlUsuarioPictograma = "CREATE TABLE UsuarioPictograma(id INTEGER PRIMARY KEY, id_usuario INTEGER, id_pictograma INTEGER, visible INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id))"
     private var sqlFavorito = "CREATE TABLE Favorito(id_pictograma INTEGER, id_usuario INTEGER, PRIMARY KEY (id_pictograma, id_usuario), FOREIGN KEY (id_usuario) REFERENCES Usuario(id), FOREIGN KEY (id_pictograma) REFERENCES PictogramaAPI(id))"
     private var sqpPlanificacion = "CREATE TABLE Planificacion(id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, es_actual INTEGER, id_usuario INTEGER, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
-    private var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora TEXT, visible INTEGER, reminder TEXT, change_visibility BOOLEAN, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
+    private var sqlEvento = "CREATE TABLE Evento(id INTEGER PRIMARY KEY AUTOINCREMENT, id_usuario INTEGER, nombre TEXT, fecha TEXT, hora_inicio TEXT, hora_fin TEXT, localizacion TEXT, notas TEXT, visible INTEGER, reminder TEXT, change_visibility BOOLEAN, FOREIGN KEY (id_usuario) REFERENCES Usuario(id))"
     private var sqlRelacionPictogramaPlan = "CREATE TABLE RelacionPictogramaPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_plan INTEGER, id_pictograma INTEGER, FOREIGN KEY (id_plan) REFERENCES Planificacion(id), FOREIGN KEY (id_pictograma) REFERENCES Pictograma(id))"
     private var sqlRelacionEventoPlan = "CREATE TABLE RelacionEventoPlan (id INTEGER PRIMARY KEY AUTOINCREMENT, id_evento INTEGER, id_plan INTEGER, FOREIGN KEY (id_evento) REFERENCES Evento(id), FOREIGN KEY (id_plan) REFERENCES Planificacion(id))"
     private var sqlTraduccion = "CREATE TABLE Traduccion (id INTEGER PRIMARY KEY AUTOINCREMENT, language TEXT, translation TEXT)"
@@ -64,6 +65,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL(sqlPictogramaAPI)
             db.execSQL(sqlPictogramaLocal)
          //  db.execSQL(sqlRelacionPictoAPI)
+            db.execSQL(sqlUsuarioPictograma)
             db.execSQL(sqlFavorito)
             db.execSQL(sqpPlanificacion)
             db.execSQL(sqlRelacionPictogramaPlan)
@@ -100,6 +102,7 @@ class BDSQLiteHelper(contexto: Context?, nombreBD: String?, factory: CursorFacto
             db.execSQL("DROP TABLE IF EXISTS Pictograma")
             db.execSQL("DROP TABLE IF EXISTS PictogramaAPI")
             db.execSQL("DROP TABLE IF EXISTS PictogramaLocal")
+            db.execSQL("DROP TABLE IF EXISTS UsuarioPictograma")
            // db.execSQL("DROP TABLE IF EXISTS RelacionPictoAPI")
             db.execSQL("DROP TABLE IF EXISTS Favorito")
             db.execSQL("DROP TABLE IF EXISTS Planificacion")

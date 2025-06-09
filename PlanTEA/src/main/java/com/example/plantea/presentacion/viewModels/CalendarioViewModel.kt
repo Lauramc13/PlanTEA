@@ -78,8 +78,10 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var eventoIdEdited = 0
 
     //Notificaciones
-    var checkBoxMin = false
-    var checkBoxHora = false
+    var checkBox5Min = false
+    var checkBox15Min = false
+    var checkBox30Min = false
+    var checkBox1Hora = false
     var checkBoxDia = false
     var checkBoxPer = false
     var selectedHour = 0
@@ -110,17 +112,20 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             aviso.add(Calendar.DAY_OF_MONTH, -1)
         }
 
-        if (checkBoxHora) {
+        if (checkBox1Hora) {
             aviso.add(Calendar.HOUR_OF_DAY, -1)
         }
 
-        if(checkBoxMin) {
-            if (aviso.get(Calendar.MINUTE) < 5) {
-                aviso.add(Calendar.HOUR_OF_DAY, -1)
-                aviso.add(Calendar.MINUTE, 55)
-            } else {
-                aviso.add(Calendar.MINUTE, -5)
-            }
+        if(checkBox5Min) {
+            adjustCalendar(aviso, 5)
+        }
+
+        if(checkBox15Min) {
+            adjustCalendar(aviso, 15)
+        }
+
+        if(checkBox30Min) {
+            adjustCalendar(aviso, 30)
         }
 
         if(checkBoxPer){
@@ -146,6 +151,15 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     }
 
+    private fun adjustCalendar(aviso: Calendar, minutes: Int){
+        if (aviso.get(Calendar.MINUTE) < minutes) {
+            aviso.add(Calendar.HOUR_OF_DAY, -1)
+            aviso.add(Calendar.MINUTE, 60 - minutes + aviso.get(Calendar.MINUTE))
+        } else {
+            aviso.add(Calendar.MINUTE, -minutes)
+        }
+    }
+
     private fun cancelarVisibilidad(actividad: Activity, identificador: Int?){
         try {
             val intent = Intent(actividad, OnAlarmReceiver::class.java)
@@ -164,7 +178,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val fragment = if (evento == null){
             NuevoEventoFragment()
         }else{
-            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.hora, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
         }
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, fragment)
@@ -176,15 +190,15 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val fragment = if (evento == null){
            NuevoEventoFragment()
         }else{
-            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.hora, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
         }
         fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
     }
 
     fun nuevoEventoEdit(context: Context, cita: Evento, pictogramasEvento: ArrayList<Pictograma>?, parent: EventosPlanificadorActivity?) {
-        if(checkBoxDia || checkBoxHora || checkBoxMin || checkBoxPer){
-            cita.recordatorio = notificationTime(cita.fecha, LocalTime.parse(cita.hora))
+        if(checkBoxDia || checkBox1Hora || checkBox5Min || checkBox15Min || checkBox30Min || checkBoxPer){
+            cita.recordatorio = notificationTime(cita.fecha, LocalTime.parse(cita.horaInicio))
         }
 
         if(isEditing){
@@ -197,6 +211,9 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
                 }
             }
 
+            if (parent.currentFocus != null) {
+                CommonUtils.hideKeyboard(context, parent.currentFocus!!)
+            }
             seEventoEditSaved.value = true
             eliminarPictosEvento(cita.id, parent)
 //            if(pictogramasEvento != null){
@@ -242,7 +259,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             set(Calendar.YEAR, cita.fecha!!.year)
             set(Calendar.MONTH, cita.fecha!!.monthValue - 1) // Calendar months are 0-based
             set(Calendar.DAY_OF_MONTH, cita.fecha!!.dayOfMonth)
-            val (hour, minute) = cita.hora!!.split(":").map { it.toInt() }
+            val (hour, minute) = cita.horaInicio!!.split(":").map { it.toInt() }
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
@@ -356,17 +373,18 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
 
     fun exportEventCalendar(posicion: Int): Intent {
         val date = CalendarioUtilidades.fechaSeleccionada
-        val time = CalendarioUtilidades.formatoHoraAviso(eventos[posicion].hora)
+        val timeStart = CalendarioUtilidades.formatoHoraAviso(eventos[posicion].horaInicio)
+        val timeEnd = CalendarioUtilidades.formatoHoraAviso(eventos[posicion].horaFin)
 
         //convert date and time to Date object
         val calendar = Calendar.getInstance()
-        calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, time.hour, time.minute, time.second)
+        calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, timeStart.hour, timeStart.minute, timeStart.second)
 
         return Intent(Intent.ACTION_INSERT)
             .setData(CalendarContract.Events.CONTENT_URI)
             .putExtra(CalendarContract.Events.TITLE, eventos[posicion].nombre)
             .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
-            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis + (60 * 60 * 1000))
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, timeEnd.hour * 60 * 60 * 1000 + timeEnd.minute * 60 * 1000 + timeEnd.second * 1000)
     }
 
     private fun eliminarPictosEvento(idEvento : Int?, actividad: Activity){

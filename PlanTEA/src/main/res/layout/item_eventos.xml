@@ -8,7 +8,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:id="@+id/card_plan"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         style="@style/items"
         app:strokeColor="?color"
         app:strokeWidth="1.5dp"
@@ -24,102 +24,41 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/lbl_Planificacion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/titleSmall"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textColor="?colorOnSurface"
-                    android:text="Ejemplo plan"/>
-
-                <TextView
-                    android:id="@+id/separator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:gravity="center"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="-"
-                    android:textColor="?colorOnSurface"
-                    android:visibility="gone"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/lbl_Fecha"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/titleSmall"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:textColor="?colorOnSurface"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Ejemplo plan"/>
-
-
-                <View
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_visibility"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="40dp"
-                    app:iconSize="22dp"
-                    app:iconTint="?colorOnSurface"
-                    android:padding="8dp"
-                    app:strokeWidth="0dp"
-                    app:iconGravity="textStart"
-                    android:visibility="gone"
-                    app:icon="@drawable/svg_eye_on" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_eye"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="40dp"
-                    app:iconSize="18dp"
-                    android:padding="8dp"
-                    app:iconTint="?colorOnSurface"
-                    app:strokeWidth="0dp"
-                    app:iconGravity="textStart"
-                    android:visibility="gone"
-                    app:icon="@drawable/svg_open" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_edit"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    app:iconSize="24dp"
-                    app:iconTint="?colorOnSurface"
-                    android:padding="8dp"
-                    app:strokeWidth="0dp"
-                    app:iconGravity="textStart"
-                    android:visibility="gone"
-                    app:icon="@drawable/svg_edit_outline" />
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp"
+                    android:padding="10dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_export"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="wrap_content"
-                    app:iconSize="24dp"
-                    app:iconTint="?colorOnSurface"
-                    android:padding="8dp"
-                    app:strokeWidth="0dp"
-                    android:layout_marginEnd="10dp"
-                    app:iconGravity="textStart"
-                    android:visibility="gone"
-                    app:icon="@drawable/svg_export" />
+                    <TextView
+                        android:id="@+id/lbl_Planificacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="13sp"
+                        app:autoSizeMaxTextSize="17sp"
+                        android:maxLines="1"
+                        android:gravity="start"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textColor="?colorOnSurface"
+                        android:text="Ejemplo plan"/>
+
+                    <TextView
+                        android:id="@+id/lbl_Fecha"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:visibility="visible"
+                        android:textColor="?colorOnSurface"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Ejemplo plan"/>
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/icon_options"
@@ -132,7 +71,8 @@
                     app:strokeWidth="0dp"
                     android:alpha="0.5"
                     app:iconGravity="textStart"
-                    app:icon="@drawable/svg_options" />
+                    app:icon="@drawable/svg_options"
+                    android:layout_gravity="center_vertical" />
 
             </LinearLayout>
 
@@ -140,7 +80,6 @@
                 android:id="@+id/items_planificacion"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:layout_marginTop="-10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:visibility="visible"/>

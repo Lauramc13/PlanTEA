@@ -46,6 +46,8 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
     private var imageActividad : ShapeableImageView? = null
     var image : ShapeableImageView? = null
     private var recyclerViewUsers: RecyclerView? = null
+    private var adapterUsers: RecyclerView.Adapter<*>? = null
+
 
     // Para cuando se crea un usuario TEA nuevo
     private var resultLauncher :  ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -76,7 +78,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
             val gUsuario = GestionUsuarios()
             gUsuario.cambiarConfiguracionPictogramas(config, viewModel.usersTEA!![viewModel.userSelectPicto].id, this)
             viewModel.usersTEA!![viewModel.userSelectPicto].configPictograma = config
-            viewModel.adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
+            adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
         }
     }
 
@@ -86,7 +88,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
         if (result.resultCode == Activity.RESULT_OK) {
             val imagen = result.data?.extras?.getByteArray("selectedImageUsuario") as ByteArray
             viewModel.usersTEA!![viewModel.userSelectPicto].imagen = CommonUtils.byteArrayToBitmap(imagen)
-            viewModel.adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
+            adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
         }
     }
 
@@ -118,7 +120,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
             viewModel.usersTEA = gUsuario.obtenerUsuariosTEA(viewModel.idUsuario, this)
             if(viewModel.usersTEA!!.size <3)
                 viewModel.usersTEA!!.add(Usuario())
-            viewModel.adapterUsers = UserAdapter(viewModel.usersTEA, this, this)
+            adapterUsers = UserAdapter(viewModel.usersTEA, this, this)
         }
 
         btnGuardar?.setOnClickListener {
@@ -127,7 +129,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
 
         recyclerViewUsers = findViewById(R.id.recycler)
         recyclerViewUsers?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recyclerViewUsers?.adapter = viewModel.adapterUsers
+        recyclerViewUsers?.adapter = adapterUsers
     }
 
 
@@ -242,7 +244,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
 
                 viewModel.usersTEA!![positionUser].actividades!![position].nombre = nombre.editText?.text.toString()
                 viewModel.usersTEA!![positionUser].actividades!![position].imagen = (imageActividad!!.drawable as BitmapDrawable).bitmap ?: viewModel.usersTEA!![positionUser].actividades!![position].imagen
-                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                adapterUsers?.notifyItemChanged(positionUser)
 
                 dialog.dismiss()
             }
@@ -250,7 +252,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
             borrar.setOnClickListener {
                 gActividad.borrarActividad(viewModel.usersTEA!![positionUser].actividades!![position].id, this)
                 viewModel.usersTEA!![positionUser].actividades!!.removeAt(position)
-                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                adapterUsers?.notifyItemChanged(positionUser)
                 dialog.dismiss()
             }
 
@@ -270,7 +272,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
                 val nuevaActividad = Actividad(idActividad, nombre.editText?.text.toString(), (imageActividad!!.drawable as BitmapDrawable).bitmap, viewModel.selectedCategoriasNueva, viewModel.usersTEA!![positionUser].id)
                 listaActividades?.add(listaActividades.size -1, nuevaActividad)
                 viewModel.usersTEA!![positionUser].actividades = listaActividades
-                viewModel.adapterUsers?.notifyItemChanged(positionUser)
+                adapterUsers?.notifyItemChanged(positionUser)
 
                 dialog.dismiss()
             }
@@ -285,12 +287,12 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
         if(idUsuarioTEA != ""){
             gUsuario.borrarUsuarioTEA(viewModel.idUsuario,  idUsuarioTEA, this)
             viewModel.usersTEA!!.removeAt(position)
-            viewModel.adapterUsers?.notifyItemRemoved(position)
+            adapterUsers?.notifyItemRemoved(position)
         }
 
         if(viewModel.usersTEA!!.size <3 && viewModel.usersTEA!![viewModel.usersTEA!!.size - 1].name != null){
             viewModel.usersTEA!!.add(Usuario())
-            viewModel.adapterUsers?.notifyItemInserted(viewModel.usersTEA!!.size - 1)
+            adapterUsers?.notifyItemInserted(viewModel.usersTEA!!.size - 1)
         }
     }
 
@@ -349,12 +351,12 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
                 prefs.edit().putString("idUsuarioTEA", idUsuarioTEA).apply()
                 if(viewModel.usersTEA!!.size >=3){
                     viewModel.usersTEA!!.removeLast()
-                    viewModel.usersTEA!!.add(Usuario(null, name, null, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
-                    viewModel.adapterUsers?.notifyItemChanged(viewModel.usersTEA!!.size-1)
+                    viewModel.usersTEA!!.add(Usuario(null, name, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
+                    adapterUsers?.notifyItemChanged(viewModel.usersTEA!!.size-1)
                 }else{
                     val penultimatePosition = viewModel.getPenultimatePosition(viewModel.usersTEA!!.size)
-                    viewModel.usersTEA!!.add(penultimatePosition, Usuario(null, name, null, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
-                    viewModel.adapterUsers?.notifyItemInserted(penultimatePosition)
+                    viewModel.usersTEA!!.add(penultimatePosition, Usuario(null, name, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
+                    adapterUsers?.notifyItemInserted(penultimatePosition)
                 }
 
                 dialog.dismiss()

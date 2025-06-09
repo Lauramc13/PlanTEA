@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.getString
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -113,13 +114,8 @@ class UserAdapter(private val users: ArrayList<Usuario>?, private val listener: 
             }
 
             //when nombre is changed the user is updated
-            nombre.editText?.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    val nombreUser = nombre.editText?.text.toString()
-                    if (nombreUser.isNotEmpty()) {
-                        listener?.onEditName(bindingAdapterPosition, nombreUser)
-                    }
-                }
+            nombre.editText?.doOnTextChanged { text, _, _, _ ->
+                listener?.onEditName(bindingAdapterPosition, text.toString())
             }
         }
     }

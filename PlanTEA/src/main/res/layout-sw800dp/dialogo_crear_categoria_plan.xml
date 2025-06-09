@@ -47,6 +47,46 @@
                 style="@style/textInput"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/categoria_para"
+        android:textColor="?colorOnSurface"
+        android:textSize="@dimen/button"
+        app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
+        app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
+
+    <FrameLayout
+        android:id="@+id/frame_usuarios"
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <Spinner
+            android:id="@+id/spinner_Usuarios"
+            style="@style/dropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_spinner"
+            android:fontFamily="@font/poppins_regular"
+            android:popupBackground="@drawable/custom_popup_background_main"
+            android:spinnerMode="dropdown"
+            android:textColor="?colorOnSurface" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/svg_arrow_down" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textView3"
@@ -56,9 +96,9 @@
         android:fontFamily="@font/poppins_regular"
         android:text="@string/color"
         android:textColor="?colorOnSurface"
-        android:textSize="@dimen/modalText"
-        app:layout_constraintStart_toStartOf="@+id/txt_Titulo"
-        app:layout_constraintTop_toBottomOf="@+id/txt_Titulo" />
+        android:textSize="@dimen/button"
+        app:layout_constraintStart_toStartOf="@+id/frame_usuarios"
+        app:layout_constraintTop_toBottomOf="@+id/frame_usuarios" />
 
     <LinearLayout
         android:id="@+id/colors"

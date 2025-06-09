@@ -148,7 +148,7 @@ class PreLoginActivity : AppCompatActivity(){
                 val account = task.getResult(ApiException::class.java)
                 val id = viewModel.gUsuario.consultarId(account?.email.toString(), this@PreLoginActivity)
                 if (id != null){
-                    viewModel.configurarDatos(account?.email.toString(), prefs, this@PreLoginActivity)
+                    viewModel.configurarDatos(account?.email.toString(), prefs, this)
                     startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }else{
@@ -156,7 +156,6 @@ class PreLoginActivity : AppCompatActivity(){
                     val intent = Intent(applicationContext, RegisterActivity::class.java)
                     intent.putExtra("EMAIL", account?.email.toString())
                     intent.putExtra("NAME", account?.givenName.toString())
-                    intent.putExtra("PASSWORD","123456")
                     startActivity(intent)
                     finish()
                 }

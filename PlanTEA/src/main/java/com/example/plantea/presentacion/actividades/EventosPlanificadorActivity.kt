@@ -169,7 +169,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         viewModel.seIdPictoEntretenimiento.observe(this){
             viewModel.pictosEvento[entretenimientoPosition].pictoEntretenimiento = it
             val gPicto = GestionPictogramas()
-            gPicto.guardarPictoEntretenimiento(this, entretenimientoPosition, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[entretenimientoPosition].id!!, it.toString())
+            gPicto.guardarPictoEntretenimiento(this, entretenimientoPosition, viewModel.eventos[viewModel.posicionEvento].id.toString(), it.toString())
             Thread.sleep(150)
             dialogEntretenimiento.dismiss()
         }
@@ -205,14 +205,14 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
     override fun eventoSeleccionado(posicion: Int, recyclerPictogramas: RecyclerView, isEdit:Boolean, context: Context) {
         viewModel.posicionEvento = posicion
         val gPlan = GestionPlanificaciones()
-        viewModel.pictosEvento = gPlan.obtenerPictogramasPlanificacionEvento(this, viewModel.eventos[posicion].idPlan, viewModel.eventos[posicion].id,Locale.getDefault().language, viewModel.idUsuario)
+        viewModel.pictosEvento = gPlan.obtenerPictogramasEvento(this, viewModel.eventos[posicion].idPlan, viewModel.eventos[posicion].id,Locale.getDefault().language, viewModel.idUsuario)
 
         for (pictogram in viewModel.pictosEvento) {
             if (pictogram.idAPI != 0)
                 pictogram.imagen = BitmapFactory.decodeResource(resources, R.drawable.loading_placeholder)
         }
 
-        val adaptadorPictogramas = AdaptadorPictogramasEventos(viewModel.pictosEvento, this)
+        var adaptadorPictogramas = AdaptadorPictogramasEventos(viewModel.pictosEvento, this)
         adaptadorPictogramas.isEdit = isEdit
         recyclerPictogramas.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerPictogramas.adapter = adaptadorPictogramas
@@ -220,24 +220,21 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         viewModelCalendario.listaPictosOriginal = viewModel.pictosEvento.map { it.copy() } as ArrayList<Pictograma>
 
         viewModelCalendario.seEventoEditSaved.observe(this){
-            val adapter = recyclerPictogramas.adapter as AdaptadorPictogramasEventos
+            adaptador.isEdit = false
+            adaptadorPictogramas.setEditMode(false)
 
             if(it){
                 viewModel.pictosEvento.forEachIndexed { index, pictogram ->
-                    val altTitle = adapter.getTitleAt(index)
-                    if(pictogram.titulo != altTitle){
+                    val altTitle = pictogram.titulo
+                    if(altTitle != viewModelCalendario.listaPictosOriginal[index].titulo){
                         val gPicto = GestionPictogramas()
                         gPicto.editPictogramTitle(index, altTitle, viewModel.eventos[viewModel.posicionEvento].id.toString(), pictogram.id.toString(), this)
-                        viewModel.pictosEvento[index].titulo = altTitle
+                        viewModel.pictosEvento[index] = pictogram.copy(titulo = altTitle)
                     }
                 }
             }else{
-                viewModel.pictosEvento.clear()
-                viewModel.pictosEvento.addAll(viewModelCalendario.listaPictosOriginal)
+                adaptador.notifyItemChanged(posicion)
             }
-
-            adaptador.isEdit = false
-            adaptadorPictogramas.setEditMode(false)
         }
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -278,6 +275,11 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
 
         val intent = Intent(applicationContext, EventosActivity::class.java)
         intent.putExtra("titulo", viewModel.eventos[posicion].nombre)
+        intent.putExtra("horaInicio", viewModel.eventos[posicion].horaInicio)
+        intent.putExtra("horaFin", viewModel.eventos[posicion].horaFin)
+        intent.putExtra("localizacion", viewModel.eventos[posicion].localizacion)
+        intent.putExtra("notas", viewModel.eventos[posicion].notas)
+
         intent.putExtra("pictogramas", pictogramas)
         intent.putExtra("idEvento", viewModel.eventos[posicion].id)
         pictogramas.forEachIndexed { index, pictogram ->
@@ -294,7 +296,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             bottomSheetDialog(context, viewModel.eventos[posicion])
         }else{
             val evento = viewModel.eventos[posicion]
-            viewModel.fragment = NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.hora, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            viewModel.fragment = NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
             CalendarioUtilidades.fechaSeleccionada = evento.fecha!!
             val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
             ft.replace(R.id.linearLayout16, viewModel.fragment)
@@ -333,12 +335,11 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         }
     }
 
-
     private fun bottomSheetDialog(context: Context, evento: Evento?){
         val fragment = if (evento == null){
             NuevoEventoFragment()
         }else{
-            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.hora, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
         }
         fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
@@ -351,7 +352,11 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
 
             fragmentLayout.visibility = View.VISIBLE
             if(isVertical){
-                val targetHeigt = ((fragmentLayout.parent as View).height * 0.55).toInt()
+                val targetHeigt =  if(CommonUtils.isSw1000dp(this)){
+                     ((fragmentLayout.parent as View).height * 0.45).toInt()
+                }else{
+                    ((fragmentLayout.parent as View).height * 0.55).toInt()
+                }
                 fragmentLayout.layoutParams.height = 0
                 valueAnimator = ValueAnimator.ofInt(0, targetHeigt)
                 valueAnimator.addUpdateListener { animation ->
@@ -445,7 +450,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                 Toast.makeText(this, R.string.toast_campo_vacio, Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.pictosEvento[posicion].historia = historiaText.editText?.text.toString()
-                viewModel.gPicto.guardarHistoria(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, historiaText.editText?.text.toString(), posicion)
+                viewModel.gPicto.guardarHistoria(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), historiaText.editText?.text.toString())
                 dialog.dismiss()
             }
         }
@@ -453,7 +458,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         btnBorrar.setOnClickListener {
             historiaText.editText?.text = null
             viewModel.pictosEvento[posicion].historia = null
-            viewModel.gPicto.guardarHistoria(this, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, null, posicion)
+            viewModel.gPicto.guardarHistoria(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), null)
             dialog.dismiss()
         }
 
@@ -485,7 +490,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
 
         btnBorrar.setOnClickListener {
             viewModel.pictosEvento[posicion].pictoEntretenimiento = 0
-            viewModel.gPicto.guardarPictoEntretenimiento(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, null)
+            viewModel.gPicto.guardarPictoEntretenimiento(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), null)
             dialogEntretenimiento.dismiss()
         }
 
@@ -538,13 +543,13 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             }
 
             viewModel.pictosEvento[posicion].duracion = "${pickerMin.value}:${pickerSec.value}"
-            viewModel.gPicto.guardarDuracion(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, "${pickerMin.value}:${pickerSec.value}")
+            viewModel.gPicto.guardarDuracion(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), "${pickerMin.value}:${pickerSec.value}")
             dialog.dismiss()
         }
 
         btnBorrar.setOnClickListener {
             viewModel.pictosEvento[posicion].duracion = null
-            viewModel.gPicto.guardarDuracion(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), viewModel.pictosEvento[posicion].id!!, null)
+            viewModel.gPicto.guardarDuracion(this, posicion, viewModel.eventos[viewModel.posicionEvento].id.toString(), null)
             dialog.dismiss()
         }
 

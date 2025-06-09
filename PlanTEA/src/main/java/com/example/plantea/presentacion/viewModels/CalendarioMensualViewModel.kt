@@ -29,6 +29,7 @@ import com.example.plantea.dominio.objetos.DiaMes
 import com.example.plantea.dominio.objetos.Pictograma
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils
 import com.example.plantea.presentacion.actividades.AniadirPictoUtils.Companion.clearButtonsSelected
+import com.example.plantea.presentacion.actividades.CalendarioMensualActivity
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensual
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendarioMensualFechas
@@ -64,8 +65,8 @@ class CalendarioMensualViewModel: ViewModel(), AdaptadorCalendarioMensual.OnItem
     val mdFechaSeleccionada = MutableLiveData<DiaMes>()
     var mdDias = MutableLiveData<ArrayList<LocalDate?>>()
     var seNuevaFecha = SingleLiveEvent<Boolean>()
-    var seNewImage = SingleLiveEvent<Boolean>()
     var seAddedFecha = SingleLiveEvent<DiaMes>()
+    var seNewImage = SingleLiveEvent<Boolean>()
     override var selistaPictogramas: SingleLiveEvent<ArrayList<Pictograma>> = SingleLiveEvent()
     override var seimageSelected = SingleLiveEvent<Bitmap>()
     override var seNuevoPicto: SingleLiveEvent<Pictograma?> = SingleLiveEvent()

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo">
 
         <TextView
-            android:id="@+id/lbl_Logout2"
+            android:id="@+id/lbl_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -27,7 +27,7 @@
             android:textSize="@dimen/modalTitle" />
 
         <TextView
-            android:id="@+id/lbl_Logout3"
+            android:id="@+id/lbl_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -40,7 +40,7 @@
             android:textSize="@dimen/modalText" />
 
         <Button
-            android:id="@+id/btn_eliminarCategoria"
+            android:id="@+id/btn_eliminar"
             style="@style/Widget.Material3.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

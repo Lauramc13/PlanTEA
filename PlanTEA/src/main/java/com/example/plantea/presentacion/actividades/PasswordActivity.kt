@@ -57,12 +57,17 @@ class PasswordActivity : AppCompatActivity() {
 
                     if (idUsuario != null && email != null) {
                         if (viewModel.currentPasswordCorrect(this, applicationContext, email, viejaPass.editText?.text.toString(), idUsuario)){
-                            viewModel.actualizarPassword(idUsuario, nuevaPass.editText?.text.toString(), this)
-                            Toast.makeText(this, R.string.toast_contrasenia_actualizada, Toast.LENGTH_SHORT).show()
-                            finish()
+                            try{
+                                viewModel.actualizarPassword(idUsuario, nuevaPass.editText?.text.toString(), this)
+                                Toast.makeText(this, R.string.toast_contrasenia_actualizada, Toast.LENGTH_SHORT).show()
+                                finish()
+                            }catch (e: Exception){
+                                Toast.makeText(this, R.string.toast_error_actualizar_contrasenia, Toast.LENGTH_SHORT).show()
+                            }
+
                         } else {
                             viejaPass.error = "Contraseña incorrecta"
-                            Toast.makeText(this, R.string.toast_error_actualizar_contrasenia, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, R.string.toast_error_contrasenia_incorrecta, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

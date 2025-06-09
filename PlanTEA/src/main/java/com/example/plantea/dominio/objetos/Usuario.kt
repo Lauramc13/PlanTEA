@@ -6,7 +6,6 @@ data class Usuario (
      var id : String? = null,
      var name: String? = null,
      var email: String? = null,
-     var username:String? = null,
      var imagen: Bitmap? = null,
      var actividades: ArrayList<Actividad>? = ArrayList(),
      var configPictograma : String? = null

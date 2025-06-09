@@ -1,6 +1,7 @@
 package com.example.plantea.presentacion.actividades
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -30,6 +31,7 @@ class TraductorActivity : AppCompatActivity() {
     private var guardarButton : Button? = null
     private lateinit var textoATraducir : TextInputLayout
     private lateinit var recyclerView: RecyclerView
+    private var textInputContent: String = ""
     private var atras : Button? = null
 
     private val viewModel by viewModels<TraductorViewModel>()
@@ -54,11 +56,27 @@ class TraductorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
+        val resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data?.data
+                data?.let {
+                    val inputStream = contentResolver.openInputStream(it)
+                    val text = inputStream?.bufferedReader().use { it?.readText() }
+                    textInputContent = text ?: ""
+                    textoATraducir.editText?.setText(textInputContent)
+                    textoATraducir.editText?.setSelection(textInputContent.length)
+                }
+            }
+        }
+
         if(CommonUtils.isMobile(this)){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
         val traducirButton: MaterialButton = findViewById(R.id.traducirButton)
+        val subir : MaterialButton = findViewById(R.id.subir)
         guardarButton = findViewById(R.id.guardarButton)
 
         textoATraducir = findViewById(R.id.textoTraducir)
@@ -97,6 +115,14 @@ class TraductorActivity : AppCompatActivity() {
 
                 }
             }
+        }
+
+        subir.setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "text/plain"
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+
+            resultLauncher.launch(intent)
         }
 
         atras?.setOnClickListener{
@@ -183,5 +209,7 @@ class TraductorActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
 }

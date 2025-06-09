@@ -27,7 +27,7 @@ class AdaptadorEvento(private val eventos: ArrayList<Evento>, private val listen
 
     override fun onBindViewHolder(holder: ViewHolderEvento, position: Int) {
         holder.nombre.text = eventos[position].nombre
-        holder.hora.text = eventos[position].hora.toString()
+        holder.hora.text = eventos[position].horaInicio.toString()
         when (eventos[position].visible) {
             0 -> holder.visibilidad.setImageResource(R.drawable.svg_eye_off)
             1 -> holder.visibilidad.setImageResource(R.drawable.svg_eye_on)

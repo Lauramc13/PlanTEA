@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
 import androidx.core.os.LocaleListCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionActividades
@@ -96,13 +97,13 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         if(usersTEA!!.isNotEmpty()){
             recyclerView.visibility = View.VISIBLE
             adapterUsers = AdaptadorUserMainClass(usersTEA, this)
-            val layoutManager = FlexboxLayoutManager(this).apply {
-                justifyContent = JustifyContent.CENTER
-                alignItems = AlignItems.CENTER
-                flexDirection = FlexDirection.ROW
-                flexWrap = FlexWrap.WRAP
+
+            if(CommonUtils.isPortrait(this)){
+                recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            } else {
+                recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
             }
-            recyclerView.layoutManager = layoutManager
             recyclerView.adapter = adapterUsers
         }else{
             recyclerView.visibility = View.GONE

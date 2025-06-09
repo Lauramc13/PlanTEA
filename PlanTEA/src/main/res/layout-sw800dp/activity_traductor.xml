@@ -38,6 +38,7 @@
             android:id="@+id/linearLayout12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@drawable/bg_calendario"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,18 +62,54 @@
                     style="@style/textInput" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/traducirButton"
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                app:dividerColor="?color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_plan" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/str_traducir"
-                android:textAllCaps="false"
-                android:textColor="@color/darkGreen"
-                android:textSize="@dimen/button"
-                />
+                android:orientation="horizontal"
+                android:layout_margin="10dp"
+                android:layout_gravity="center">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/traducirButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/str_traducir"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkGreen"
+                    android:textSize="@dimen/button"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/subir"
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/subir_documento"
+                    android:textColor="?colorOnSurface"
+                    app:icon="@drawable/svg_upload"
+                    app:iconTint="?colorOnSurface"
+                    app:iconPadding="5dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textSize="@dimen/button" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

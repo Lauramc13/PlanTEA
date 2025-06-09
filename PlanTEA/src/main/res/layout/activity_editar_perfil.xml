@@ -85,27 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:cursorVisible="true"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_nombreUsuarioPlanificador"
-            style="@style/cornertextInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="Campo de texto con nombre de usuario del planificador"
-            android:ems="10"
-            android:hint="@string/lbl_nombreUsuario"
-            android:inputType="textPersonName"
-            android:maxLength="14"
-            android:textCursorDrawable="@null">
-
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/textInput"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:cursorVisible="true"
+                android:maxLength="50"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,6 +19,7 @@ import com.example.plantea.dominio.objetos.Pictograma
 import com.example.plantea.presentacion.actividades.CommonUtils
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramas
 import com.example.plantea.presentacion.viewModels.CrearPlanViewModel
+import com.google.firebase.auth.TotpMultiFactorAssertion
 
 class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSelectedListener {
     lateinit var actividad: Activity
@@ -77,6 +79,11 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
         } else {*/
             viewModel.pictogramaSeleccionado(posicion)
        // }
+    }
+
+    override fun onItemBorrar(pictogram: Pictograma) {
+        Toast.makeText(this.requireContext(), "Borrar pictograma", Toast.LENGTH_SHORT).show()
+        viewModel.gPicto.borrarPictograma(pictogram.id, viewModel.idUsuario, actividad)
     }
 
     fun markAsFavorite(pictogram: Pictograma) {

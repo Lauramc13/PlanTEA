@@ -170,28 +170,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:cursorVisible="true"
+                            android:maxLength="50"
                             style="@style/textInput"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txt_nombreUsuarioPlanificador"
-                        android:layout_width="340dp"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="Campo de texto con nombre de usuario del planificador"
-                        android:ems="10"
-                        android:hint="@string/lbl_nombreUsuario"
-                        android:inputType="textPersonName"
-                        android:maxLength="14"
-                        style="@style/cornertextInput"
-                        android:textColor="?colorOnSurface"
-                        android:textCursorDrawable="@null"
-                        android:layout_marginBottom="5dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:cursorVisible="true"
-                            style="@style/textInput" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -434,6 +414,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_marginStart="-10dp"
+                android:layout_marginEnd="-10dp"
                 android:layout_marginBottom="15dp"
                 android:nestedScrollingEnabled="false"
                 android:elevation="0dp"/>

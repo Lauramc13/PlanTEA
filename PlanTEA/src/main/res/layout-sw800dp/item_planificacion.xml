@@ -22,12 +22,16 @@
 
             <TextView
                 android:id="@+id/lbl_Planificacion"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="17sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:padding="10dp"
                 android:gravity="center"
-                android:layout_marginLeft="10dp"
+                android:maxLines="1"
+                android:textColor="?colorOnSurface"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="17sp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Ejemplo plan"/>
         </RelativeLayout>

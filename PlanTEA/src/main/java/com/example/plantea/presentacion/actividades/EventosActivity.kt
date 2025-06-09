@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -32,6 +33,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.adaptadores.AdaptadorPresentacion
 import com.example.plantea.presentacion.viewModels.EventosViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,16 +46,15 @@ class EventosActivity : AppCompatActivity() {
     lateinit var prefs: SharedPreferences
     lateinit var titulo: TextView
     private lateinit var lblMensaje: LinearLayout
-    //private lateinit var iconoEscuchar: Button
     private lateinit var iconoReproducir: MaterialButton
     private lateinit var iconoDeshacer: Button
     private lateinit var iconoDeshacerTodas: Button
     private lateinit var iconoMarcar: Button
     private lateinit var iconoMarcarTodas: Button
-    private lateinit var btnBorrarImportantes : MaterialButton
+    private lateinit var btnInfo: Button
     private lateinit var dia: TextView
+    private var hora: TextView? = null
     private var atras : Button? = null
-    private var lblImportantes = ArrayList<TextView>()
 
     // private lateinit var planificacionesFuturas: RecyclerView
     private lateinit var calendarButton: Button
@@ -101,12 +102,12 @@ class EventosActivity : AppCompatActivity() {
      * Método que se ejecuta al reanudar la actividad. Se comprueba la configuracion del orden
      * de los pictogramas y se ajusta el layout en consecuencia.
      */
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onResume() {
         super.onResume()
         val layoutManagerLinear: LinearLayoutManager
 
-        // and if its vertical the requestedOrienteation
-        if (prefs.getBoolean("isVerticalPictogramas", false) && CommonUtils.isMobile(this) && requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (prefs.getBoolean("isVerticalPictogramas", false) && CommonUtils.isMobile(this) && resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             layoutManagerLinear = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             viewModel.recyclerView.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
             viewModel.recyclerView.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -143,12 +144,13 @@ class EventosActivity : AppCompatActivity() {
         iconoMarcarTodas = findViewById(R.id.icon_marcarTodas)
         iconoReproducir = findViewById(R.id.icon_reproducir)
         calendarButton = findViewById(R.id.CalendarDate)
-        btnBorrarImportantes = findViewById(R.id.borrar_importantes)
         titulo = findViewById(R.id.lbl_titulo)
         lblMensaje = findViewById(R.id.layout_no_eventos)
         viewModel.recyclerView = findViewById(R.id.recycler_plan)
         dia = findViewById(R.id.lbl_dia)
+        hora = findViewById(R.id.lbl_hora)
         atras = findViewById(R.id.atras)
+        btnInfo = findViewById(R.id.btnInfo)
 
         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
 
@@ -159,9 +161,6 @@ class EventosActivity : AppCompatActivity() {
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs, this)
-
-        //get string based on the language of the device
-        dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
 
         viewModel.initializeAnimations(applicationContext)
         viewModel.createPickMedia(viewModel, this)
@@ -175,6 +174,15 @@ class EventosActivity : AppCompatActivity() {
             }else{
                 viewModel.configureDataEvento(this)
             }
+        }
+
+        //get string based on the language of the device
+        dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
+
+        when(viewModel.horaEventoInicio) {
+            null -> hora?.text = getString(R.string.str_todo_dia)
+            "null" -> hora?.text = getString(R.string.str_todo_dia)
+            else -> hora?.text = """${viewModel.horaEventoInicio} a ${viewModel.horaEventoFin}"""
         }
 
         //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------//
@@ -246,44 +254,45 @@ class EventosActivity : AppCompatActivity() {
             }
         }
 
-       /* iconoEscuchar.setOnClickListener {
-            if (!viewModel.speechInProgress) {
-                iconoEscuchar.text = getString(R.string.str_parar)
-                CommonUtils.textToSpeechOn(viewModel.listaPictogramas)
-                viewModel.speechInProgress = true
-            } else {
-                iconoEscuchar.text = getString(R.string.str_escuchar)
-                CommonUtils.textToSpeech.stop()
-                viewModel.speechInProgress = false
-            }
-        }*/
-
         iconoReproducir.setOnClickListener {
             reproducirEvento()
         }
 
-        btnBorrarImportantes.setOnClickListener {
-            try{
-                val idEvento = viewModel.evento.id
-                viewModel.gEvento.borrarTodosImprevistos(this, idEvento.toString())
-                Toast.makeText(this, getString(R.string.toast_imprevistos), Toast.LENGTH_SHORT).show()
-                btnBorrarImportantes.visibility = View.GONE
-                for (i in viewModel.imprevistos) {
-                    viewModel.listaPictogramas.removeAt(i)
-                }
-                for (textView in lblImportantes) {
-                    (textView.parent as? ViewGroup)?.removeView(textView)
-                }
-                lblImportantes.clear()
-                viewModel.imprevistos.clear()
-                viewModel.tachados.clear()
-                viewModel.adaptador.notifyDataSetChanged()
-            }catch (e: Exception){
-                Toast.makeText(this, getString(R.string.toast_error_eliminar_imprevistos), Toast.LENGTH_SHORT).show()
+
+        btnInfo.setOnClickListener {
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialogo_info_eventos)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val tituloEvento = dialog.findViewById<TextView>(R.id.lbl_tituloEvento)
+            val fechaEvento = dialog.findViewById<TextView>(R.id.lbl_fechaEvento)
+            val horaEvento = dialog.findViewById<TextView>(R.id.lbl_horaEvento)
+            val localizacion = dialog.findViewById<TextView>(R.id.lbl_localizacionEvento)
+            val layoutLocalizacion = dialog.findViewById<LinearLayout>(R.id.layout_localizacion)
+            val notas = dialog.findViewById<TextInputLayout>(R.id.notasText)
+            val layoutNotas = dialog.findViewById<LinearLayout>(R.id.layout_notas)
+            val cerrarDialog = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
+
+            tituloEvento.text = viewModel.evento.nombre
+            fechaEvento.text =  CalendarioUtilidades.formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
+            localizacion.text = viewModel.evento.localizacion
+            notas.editText?.setText(viewModel.evento.notas)
+            if(viewModel.horaEventoInicio != "null"){
+                horaEvento.text = """${viewModel.horaEventoInicio} a ${viewModel.horaEventoFin}"""
+            }else{
+                horaEvento.text = getString(R.string.str_todo_dia)
             }
+
+            if (viewModel.evento.localizacion == "") {
+                layoutLocalizacion.visibility = View.GONE
+            }
+
+            if(viewModel.evento.notas == "") {
+                layoutNotas.visibility = View.GONE
+                notas.visibility = View.GONE
+            }
+            cerrarDialog.setOnClickListener { dialog.dismiss() }
+            dialog.show()
         }
-
-
 
         showPlanificacionesFuturas()
         observe()
@@ -291,13 +300,13 @@ class EventosActivity : AppCompatActivity() {
         viewModel.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                for (i in 0 until lblImportantes.size){
-                    val view = recyclerView.layoutManager!!.findViewByPosition(viewModel.tachados[i])
+                for (i in 0 until viewModel.lblImportantes.size) {
+                    val view = recyclerView.layoutManager!!.findViewByPosition(viewModel.lblImportantes[i].first.toInt())
                     if(view != null){
-                        lblImportantes[i].visibility = View.VISIBLE
-                        lblImportantes[i].x = view.x + view.width - lblImportantes[i].width/3
+                        viewModel.lblImportantes[i].second.visibility = View.VISIBLE
+                        viewModel.lblImportantes[i].second.x = view.x + view.width - viewModel.lblImportantes[i].second.width/3
                     }else{
-                        lblImportantes[i].visibility = View.GONE
+                        viewModel.lblImportantes[i].second.visibility = View.GONE
                     }
                 }
             }
@@ -377,13 +386,13 @@ class EventosActivity : AppCompatActivity() {
 
         viewModel.mdPlanLiveData.observe(this){
             if (it != null) {
-                    titulo.text = viewModel.tituloPlan
+                    titulo.text = viewModel.evento.nombre
                     lblMensaje.visibility = View.GONE
+                    btnInfo.visibility = View.VISIBLE
                     iconoDeshacer.visibility = View.VISIBLE
                     iconoDeshacerTodas.visibility = View.VISIBLE
                     iconoMarcar.visibility = View.VISIBLE
                     iconoMarcarTodas.visibility = View.VISIBLE
-                    //iconoEscuchar.visibility = View.VISIBLE
                     iconoReproducir.visibility = View.VISIBLE
                     iconoMarcar.isEnabled = true
                     iconoMarcarTodas.isEnabled = true
@@ -396,6 +405,9 @@ class EventosActivity : AppCompatActivity() {
                 if (pictograma.isImprevisto && !viewModel.imprevistos.contains(index)) {
                     viewModel.imprevistos.add(index)
                     viewModel.tachados.add(index - 1)
+                    if (!prefs.getBoolean("isVerticalPictogramas", false)) {
+                        createImporantText(index -1, pictograma.id)
+                    }
                 }
             }
 
@@ -405,35 +417,21 @@ class EventosActivity : AppCompatActivity() {
             viewModel.recyclerView.adapter = viewModel.adaptador
             viewModel.adaptador.notifyDataSetChanged()
 
-            for (i in viewModel.tachados){
-                createImporantText(i)
-            }
-
-            val isPlanificador = getSharedPreferences("Preferencias", MODE_PRIVATE).getBoolean("PlanificadorLogged", false)
-            if(lblImportantes.isNotEmpty() && isPlanificador){
-                btnBorrarImportantes.visibility = View.VISIBLE
-            }
+//            for (i in viewModel.tachados){
+//                createImporantText(i)
+//            }
         }
 
         viewModel.seNoEvents.observe(this){
-           // val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
             if(it){
                 titulo.text = ""
                 lblMensaje.visibility = View.VISIBLE
+                btnInfo.visibility = View.GONE
                 iconoDeshacer.visibility = View.INVISIBLE
                 iconoDeshacerTodas.visibility = View.INVISIBLE
                 iconoMarcar.visibility = View.INVISIBLE
                 iconoMarcarTodas.visibility = View.INVISIBLE
-               // iconoEscuchar.visibility = View.INVISIBLE
                 iconoReproducir.visibility = View.INVISIBLE
-
-                /*if(isPlanificador && (CommonUtils.isPortrait(this) && CommonUtils.isMobile(this) || !CommonUtils.isMobile(this))){
-                    val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
-                    layoutPlanificaciones.visibility = View.VISIBLE
-                }else{
-                    val layoutPlanificaciones = findViewById<LinearLayout>(R.id.layoutPlanificacionesFuturas)
-                    layoutPlanificaciones.visibility = View.GONE
-                }*/
 
                 viewModel.recyclerView.visibility = View.INVISIBLE
             }
@@ -460,12 +458,13 @@ class EventosActivity : AppCompatActivity() {
         }
 
         viewModel.seNewImprevisto.observe(this){
-            createImporantText(it)
-            btnBorrarImportantes.visibility = View.VISIBLE
+            if (!prefs.getBoolean("isVerticalPictogramas", false)) {
+                createImporantText(it.first, it.second)
+            }
         }
     }
 
-    private fun createImporantText(i: Int) {
+    private fun createImporantText(i: Int, id:String?) {
         val lblTachado = TextView(this)
         lblTachado.layoutParams= ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         lblTachado.text = getString(R.string.importante)
@@ -487,7 +486,9 @@ class EventosActivity : AppCompatActivity() {
 
         val layout: ConstraintLayout = findViewById(R.id.constraintLayout)
         layout.addView(lblTachado)
-        lblImportantes.add(lblTachado)
+
+        //add id, textview
+        viewModel.lblImportantes.add(Pair(id!!, lblTachado))
     }
 
     private fun configureParameters(savedInstanceState: Bundle?){
@@ -495,7 +496,11 @@ class EventosActivity : AppCompatActivity() {
             viewModel.diaSeleccionado(this, intent.getSerializableExtra("dia") as LocalDate)
         }else{
             if(savedInstanceState == null) viewModel.mdPasosCompletados.value = ArrayList()
-            viewModel.tituloPlan = intent.getStringExtra("titulo")!!
+            viewModel.evento.nombre = intent.getStringExtra("titulo")!!
+            viewModel.horaEventoInicio = intent.getStringExtra("horaInicio")
+            viewModel.horaEventoFin = intent.getStringExtra("horaFin")
+            viewModel.evento.localizacion = intent.getStringExtra("localizacion")!!
+            viewModel.evento.notas = intent.getStringExtra("notas")!!
             viewModel.listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
             viewModel.evento.id = intent.getIntExtra("idEvento", 0)
 
@@ -586,8 +591,4 @@ class EventosActivity : AppCompatActivity() {
         viewModel.currentPosition = 0
         viewModel.isRunning = true
     }
-
-   /* override fun onSpeechDone() {
-        iconoEscuchar.text = getString(R.string.str_escuchar)
-    }*/
 }

@@ -8,10 +8,10 @@ import com.example.plantea.presentacion.actividades.CommonUtils
 class GestionUsuarios {
     private var conectorBD: ConectorBD? = null
 
-    fun crearUsuario( name: String?, email: String?, username: String?, actividad: Activity?): Boolean {
+    fun crearUsuario( name: String?, email: String?, actividad: Activity?): Boolean {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val resultado = conectorBD!!.insertarUsuario(email, username, name)
+        val resultado = conectorBD!!.insertarUsuario(email, name)
         conectorBD!!.cerrar()
         return resultado
     }
@@ -40,9 +40,8 @@ class GestionUsuarios {
             do {
                 usuario.id = c.getString(0)
                 usuario.email = c.getString(1)
-                usuario.username =c.getString(3)
-                usuario.name = c.getString(4)
-                usuario.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(5))
+                usuario.name = c.getString(3)
+                usuario.imagen = CommonUtils.byteArrayToBitmap(c.getBlob(4))
             } while (c.moveToNext())
         }
         c.close()
@@ -67,10 +66,10 @@ class GestionUsuarios {
         return usuarioId
     }
 
-    fun guardarConfiguracion(nombreUsuarioPlanificador: String, username: String, ruta: ByteArray?, idUsuario: String?, actividad: Activity?) {
+    fun guardarConfiguracion(nombreUsuarioPlanificador: String, ruta: ByteArray?, idUsuario: String?, actividad: Activity?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, username, ruta, idUsuario)
+        conectorBD!!.guardarConfiguracion(nombreUsuarioPlanificador, ruta, idUsuario)
         conectorBD!!.cerrar()
     }
 

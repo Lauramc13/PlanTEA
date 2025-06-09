@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionPlanificaciones
@@ -40,7 +41,9 @@ class PlanificacionesViewModel : ViewModel(){
         val dialog = Dialog(activity)
         dialog.setContentView(R.layout.dialogo_historia_traduccion)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val titulo : TextInputLayout = dialog.findViewById(R.id.txt_title)
+        val tituloDialog = dialog.findViewById<TextView>(R.id.titulo)
+        tituloDialog.text = activity.getString(R.string.titulo_para_planificacion)
+        val tituloText : TextInputLayout = dialog.findViewById(R.id.txt_title)
         val iconoCerrar : ImageView = dialog.findViewById(R.id.icono_CerrarDialogo)
         val btnCrear : Button = dialog.findViewById(R.id.btn_create)
 
@@ -57,7 +60,7 @@ class PlanificacionesViewModel : ViewModel(){
         }
 
         btnCrear.setOnClickListener{
-            var tituloString = titulo.editText?.text.toString()
+            var tituloString = tituloText.editText?.text.toString()
 
             //if tituloString is empty -> error
             if(tituloString.isEmpty()){
@@ -69,7 +72,7 @@ class PlanificacionesViewModel : ViewModel(){
                 CommonUtils.guardarPDF(activity.applicationContext, tituloString.uppercase(), listaPictogramas)
             }
 
-            CommonUtils.hideKeyboard(activity.applicationContext, titulo)
+            CommonUtils.hideKeyboard(activity.applicationContext, tituloText)
             dialog.dismiss()
         }
 

@@ -191,5 +191,20 @@
             android:visibility="gone"
             app:srcCompat="@drawable/svg_arrow_round"/>
 
+        <ImageView
+            android:id="@+id/arrow_vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/id_card"
+            android:layout_alignStart="@+id/id_card"
+            android:layout_alignEnd="@+id/id_card"
+            android:layout_marginTop="-30dp"
+            android:contentDescription="@string/lbl_Consultas"
+            android:elevation="0dp"
+            android:padding="5dp"
+            android:rotation="90"
+            android:visibility="gone"
+            app:srcCompat="@drawable/svg_arrow_round" />
+
     </RelativeLayout>
 </LinearLayout>

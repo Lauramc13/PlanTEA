@@ -38,7 +38,6 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
         holder.titulo.text = planes!![position].nombre
         holder.fecha.text = CalendarioUtilidades.formatoFechaEvento(planes!![position].fecha!!)
         holder.fecha.visibility = View.VISIBLE
-        holder.separator.visibility = View.VISIBLE
 
         if(planes!![position].visible == 1){
             holder.visibility?.setIconResource(R.drawable.svg_eye_on)
@@ -71,10 +70,10 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
     private fun calculateHeight(posicion: Int, context: Context): Int {
         return when (posicion) {
             selectedPosition -> {
-                if (CommonUtils.isMobile(context)) dpToPx(170, context) else dpToPx(220, context)
+                if (CommonUtils.isMobile(context)) dpToPx(188, context) else dpToPx(250, context)
             }
             else -> {
-                if (CommonUtils.isMobile(context)) dpToPx(45, context) else dpToPx(50, context)
+                if (CommonUtils.isMobile(context)) dpToPx(63, context) else dpToPx(70, context)
             }
         }
     }
@@ -86,7 +85,6 @@ class AdaptadorListaEventos(private var planes: ArrayList<Evento>?, private val 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var titulo: TextView = itemView.findViewById(R.id.lbl_Planificacion)
         val fecha: TextView = itemView.findViewById(R.id.lbl_Fecha)
-        val separator : TextView = itemView.findViewById(R.id.separator)
         var card: CardView = itemView.findViewById(R.id.card_plan)
         var edit : MaterialButton? = itemView.findViewById(R.id.icon_edit)
         private var ver : MaterialButton? = itemView.findViewById(R.id.icon_eye)

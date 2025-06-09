@@ -66,10 +66,8 @@ class PreLoginViewModel: ViewModel() {
         editor.putString("idUsuario", id)
         editor.putBoolean("userAccount", true)
         editor.putString("nombrePlanificador", user.name)
-        editor.putString("nombreUsuarioPlanificador", user.username)
         editor.putString("email", user.email)
         editor.putString("configPictogramas", user.configPictograma)
-
         val rutaPlanificador = CommonUtils.bitmapToByteArray(user.imagen)
         editor.putString("imagenPlanificador", rutaPlanificador.toPreservedString)
         editor.apply()

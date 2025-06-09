@@ -5,10 +5,12 @@
     <color name="darkGreen">#203130</color>
     <color name="seed">#238382</color>
     <color name="seedLight">#72C7C4</color>
+    <color name="lightGrayBlue">#66DCE0E5</color>
     <color name="white">#FFFFFF</color>
     <color name="whitish">#FEFFFF</color>
     <color name="red">#C10000</color>
     <color name="redLight">#CC3535</color>
+    <color name="redLighter">#DA6C6C</color>
     <color name="lightGray">#FAFAFA</color>
     <color name="semiGray">#4DE9ECEF</color>
     <color name="darkerGray">#e9ecef</color>

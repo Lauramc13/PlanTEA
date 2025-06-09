@@ -104,16 +104,16 @@ class ActividadViewModel: ViewModel() {
 
         val imgObjeto : ImageView = dialogo.findViewById(R.id.imageObjeto)
         val txtObjeto : TextView = dialogo.findViewById(R.id.lbl_nombreObjeto)
-        val chipGroup : ChipGroup = dialogo.findViewById(R.id.chipGroup)
+        dialogo.findViewById<TextView?>(R.id.lbl_categoria).visibility = View.GONE
 
-        if(arrayCategorias!!.size == 1){
+       /* if(arrayCategorias!!.size == 1){
             dialogo.findViewById<TextView>(R.id.lbl_categoria).visibility = View.GONE
             chipGroup.visibility = View.GONE
         }else{
             for (i in arrayCategorias!!.indices) {
                 chipGroup.addView(createTagChip(context, arrayCategorias!![i].nombre!!, arrayCategorias!![i].id!!.toInt()))
             }
-        }
+        }*/
 
         imgObjeto.background = null
         imgObjeto.setImageBitmap(listaActividades?.get(position)?.imagen)

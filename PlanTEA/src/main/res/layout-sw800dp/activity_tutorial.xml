@@ -93,7 +93,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout5"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
@@ -107,7 +107,6 @@
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 app:backgroundTint="@color/transparent"
                 app:cornerRadius="60dp"
                 app:iconSize="25dp"
@@ -117,17 +116,17 @@
                 android:textColor="?colorOnSurface"
                 app:iconTint="?colorOnSurface" />
 
-            <View
-                android:layout_width="100dp"
-                android:layout_height="match_parent"/>
 
+            <View
+                android:layout_width="300dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
 
             <Button
                 android:id="@+id/btn_next"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 app:backgroundTint="@color/transparent"
                 app:cornerRadius="60dp"
                 app:iconSize="25dp"

@@ -146,14 +146,19 @@
     <string name="selecciona_hora">Select a time</string>
     <string name="selecciona_imagen">Select an image from the gallery</string>
 
-    <string name="fecha">Date:</string>
-    <string name="hora">Time:</string>
-    <string name="recordatorio">Reminder:</string>
+    <string name="fecha">Date</string>
+    <string name="hora">Time</string>
+    <string name="recordatorio">Reminder</string>
+    <string name="localizacion">Location</string>
+    <string name="notas">Notes</string>
     <string name="planificaciones_disponibles">Available plans:</string>
     <string name="eventos_disponibles">Available events:</string>
     <string name="recordar">Remind me…</string>
     <string name="recordar_5min">5 minutes before</string>
+    <string name="recordar_15min">15 minutes before</string>
+    <string name="recordar_30min">30 minutes before</string>
     <string name="recordar_1hora">1 hour before</string>
+    <string name="recordar_2hora">2 hours before</string>
     <string name="recordar_1dia">1 day before</string>
     <string name="recordar_personalizado">Custom reminder</string>
     <string name="aceptar">Accept</string>
@@ -223,10 +228,7 @@
 
     <!-- Credits-->
     <string name="str_titulo1">About the organization</string>
-    <string name="str_parrafo1">This application has been developed by the CHICO group. CHICO is a research group of the University of Castilla-La Mancha based at the Higher School of Informatics of the Ciudad Real Campus that also has researchers at the Faculty of Education of Ciudad Real, at the School of Mining and Industrial Engineering of Almadén, and at the Faculty of Social Sciences of Talavera de la Reina.</string>
-    <string name="contribucion">Contributors to this project:</string>
-    <string name="autrade">AUTRADE (Regional Association of People Affected by Autism and Other Developmental Disorder)</string>
-    <string name="fespau">FESPAU (Spanish Federation of Autism)</string>
+    <string name="str_parrafo1">This application was developed by Laura Morales Caro, under the direction of professors Ana Isabel Molina Díaz and Carmen Lacave Rodero, members of the CHICO research group at the University of Castilla-La Mancha, based at the School of Computer Science on the Ciudad Real Campus. Other contributors were José Lara Navarro (Computer Science, UCLM), Patricia Hernández del Mazo (Technical Director of AUTRADE), María Garrido (Psychologist, FESPAU), Helena Gandía (Technical Director, FESPAU), Laura Morón Llanos (Program Coordinator, FACLM), and Elena Alguacil Ramírez (Communications Manager, FACLM).</string>
     <string name="str_parrafo3">Financiation</string>
     <string name="str_parrafo4">This work has been developed in the context of the APTEA Project (Ref. TED2021–131956B-I00), funded by the MICIN/AEI/10.13039/501100000033 and the European Union funds "NextGenerationEU"/ PRTR; of the PlanTEAAF Project (Ref. 2022-GRIN-34175) within the framework of the Own Research Plan of the University of Castilla - La Mancha, co-financed by the European Regional Development Fund (ERDF); and the collaboration agreements with AUTRADE (Ref. 220413CONV) and FACLM (Ref. 230405CONV).</string>
 
@@ -253,7 +255,10 @@
 
     <!-- Strings used for the manual -->
     <string name="titulo_manual">User manual</string>
-    <string name="subtitulo_manual">In this section you can find information about the use of the application, as well as the functionalities it offers.</string>
+    <string name="subtitulo_manual">PlanTEA is an application that helps people with ASD plan daily activities, using pictograms to specify and visualize the steps involved. Thus, a sequence of pictograms representing a situation or activity is called a schedule. A schedule that is intended to be carried out on a specific day and time is called an event.</string>
+    <string name="subtitulo_manual2">PlanTEA supports two types of users or roles: the planner and the ASD user. The planner will be responsible for creating and managing schedules. ASD users will be able to consult the schedules and thus anticipate different situations by following the schedules created by the planner.</string>
+
+
     <string name="titulo_crearEvento">Creation of an event</string>
     <string name="titulo_editarEvento">Edit an event</string>
     <string name="titulo_crearPlanificacion">Create a plan</string>
@@ -327,7 +332,7 @@
     <!-- Strings utilizados para la politica de privacidad -->
 
     <string name="lbl_politica_privacidad">Privacy policy</string>
-    <string name="lbl_ultima_actualizacion">Last update: March 8, 2024</string>
+    <string name="lbl_ultima_actualizacion">Last update: May 15, 2025</string>
     <string name="lbl_politica_parrafo1">This privacy policy describes PlanTEAs policies and procedures regarding the collection, use and disclosure of your information in the PlanTEA mobile application and the services, features, content or applications related thereto (collectively, " PlanTEA"). In connection with your use of PlanTEA, we receive information about you from various sources, including through your PlanTEA user account and your use of our mobile application, or any other application of ours that is linked to this privacy notice.</string>
     <string name="lbl_politica_parrafo2">By using PlanTEA you are consenting to the collection, transfer, manipulation, storage, transmission, disclosure and other uses of your information as described in this Privacy Policy.</string>
     <string name="lbl_politica_titulo_parrafo3">1. Questions or doubts?</string>
@@ -343,11 +348,9 @@
     <string name="lbl_politica_subtitulo_parrafo8">Application data</string>
     <string name="lbl_politica_parrafo8">If you use our application(s), we may also collect the following information if you choose to provide us with access or permissions:</string>
     <string name="lbl_politica_parrafo9"><u>Access to the mobile device</u>. We may request access or permissions to certain features of your mobile device, including calendar, reminders, storage, and other features. If you would like to change our access or permissions, you can do so in your device settings.</string>
-    <string name="lbl_politica_parrafo10"><u>Mobile device data</u>. We automatically collect device information (such as your mobile device ID, model and manufacturer), operating system, system version and configuration information, device and application identification numbers, browser type and version, hardware model, carrier Internet services and/or mobile operator, and Internet Protocol (IP) address (or proxy server). If you are using our application(s), we may also collect information about the telephone network associated with your mobile device, the operating system or platform of your mobile device, the type of mobile device you use, your devices unique ID mobile phone and information about the features of our application(s) that you accessed.</string>
     <string name="lbl_politica_parrafo11"><u>Push notifications</u>. We may request to send you push notifications about your account or certain features of the application(s). If you wish to opt out of receiving these types of communications, you can disable them in your device settings.</string>
     <string name="lbl_politica_parrafo12">This information is primarily needed to maintain the security and operation of our application(s), for troubleshooting, and for our internal analysis and reporting purposes.</string>
 
-    <string name="lbl_politica_parrafo13">All personal information you provide to us must be true, complete and accurate, and you must notify us of any changes to such personal information.</string>
     <string name="lbl_politica_subtitulo_parrafo14">Information collected automatically</string>
     <string name="lbl_politica_parrafo14">We automatically collect certain information when you visit, use or browse the services. This information does not reveal your specific identity (like your name or contact information), but may include device and usage information, such as your Internet Protocol (IP) address, browser and device characteristics, operating system, preferences. language, referring URL, device name, country, location, information about how and when you use our services, and other technical information. This information is primarily needed to maintain the security and operation of our services, as well as for our internal analysis and reporting purposes.</string>
     <string name="lbl_politica_titulo_parrafo15">4. Is the information about me secure?</string>
@@ -483,7 +486,7 @@
     <string name="imagen_y_texto">Image and text</string>
     <string name="imagen">Image</string>
     <string name="texto">Text</string>
-    <string name="toast_pdf_exportado">PDF exported in the download folder</string>
+    <string name="toast_pdf_exportado">PDF exported in the folder /Download/Calendario_PlanTEA</string>
     <string name="categor_a">Category:</string>
     <string name="toast_queda_un_minuto">In a minute the activity will end</string>
     <string name="colores_fondo_dia">Select the colors for the background of the day</string>
@@ -491,5 +494,19 @@
     <string name="imprevistos">Important</string>
     <string name="toast_imprevistos">Important pictograms have been deleted</string>
     <string name="toast_error_eliminar_imprevistos">Error deleting important pictograms</string>
-
+    <string name="hora_inicio">Start time</string>
+    <string name="hora_fin">End time</string>
+    <string name="titulo_para_planificacion">Title for the exported planning</string>
+    <string name="str_todo_dia">All day</string>
+    <string name="eliminar_imprevisto">Delete important</string>
+    <string name="seguro_que_desesas_eliminar_este_imprevisto">Are you sure you want to delete this important?</string>
+    <string name="eliminar_usuarioTEA">Delete user</string>
+    <string name="eliminar_usuarioTEA_mensaje">Are you sure you want to delete the selected user?</string>
+    <string name="dialog_borrar_pictograma_subtitulo">Are you sure you want to delete the pictogram %1$s?</string>
+    <string name="dialog_borrar_pictograma">Delete pictogram</string>
+    <string name="todos">All</string>
+    <string name="categoria_para">Category for:</string>
+    <string name="subir_documento">Upload document</string>
+    <string name="toast_error_subir_documento">Error uploading document</string>
+    <string name="toast_error_contrasenia_incorrecta">The password is incorrect. Please enter the correct password</string>
 </resources>

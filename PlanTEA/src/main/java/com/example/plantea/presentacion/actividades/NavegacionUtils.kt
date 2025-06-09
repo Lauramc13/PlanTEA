@@ -79,7 +79,6 @@ class NavegacionUtils {
                         editor.putBoolean("PlanificadorLogged", true)
                         editor.putString("configPictogramas", "default")
                         editor.apply()
-                        //context.startActivity(Intent((context as? Activity)?.baseContext, EventosPlanificadorActivity::class.java))
                         context.startActivity(Intent((context as? Activity)?.baseContext, MenuUserActivity::class.java))
                         (context as? Activity)?.finish()
                         (context as? Activity)?.finishAffinity()
@@ -232,8 +231,10 @@ class NavegacionUtils {
             activePopupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
 
             if (fragment.requireContext().resources.configuration.orientation == 1) {
+                //width of the screen
+                val width = fragment.requireContext().resources.displayMetrics.widthPixels/5
                 val dimen = fragment.requireContext().resources.getDimensionPixelSize(R.dimen.popup_y)
-                activePopupWindow?.showAtLocation(fragment.requireView(),  Gravity.START or Gravity.BOTTOM , 30, dpToPx(dimen, fragment.requireContext()))
+                activePopupWindow?.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width-20, dpToPx(dimen, fragment.requireContext()))
             } else {
                 activePopupWindow?.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
             }
@@ -263,7 +264,7 @@ class NavegacionUtils {
                 //width of the screen
                 val width = fragment.requireContext().resources.displayMetrics.widthPixels/5
                 val dimen = fragment.requireContext().resources.getDimensionPixelSize(R.dimen.popup_y)
-                activePopupWindow?.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width-30, dpToPx(dimen, fragment.requireContext()))
+                activePopupWindow?.showAtLocation(fragment.requireView(), Gravity.START or Gravity.BOTTOM , width*2-30, dpToPx(dimen, fragment.requireContext()))
             } else {
                 activePopupWindow?.showAsDropDown(fragment.requireView().findViewById(itemId), 50, 0)
             }

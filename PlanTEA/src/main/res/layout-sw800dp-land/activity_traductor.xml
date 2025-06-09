@@ -37,6 +37,23 @@
         android:layout_marginStart="80dp"
         app:layout_constraintWidth_percent="0.85">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/subir"
+            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/subir_documento"
+            android:textColor="?colorOnSurface"
+            app:icon="@drawable/svg_upload"
+            app:iconTint="?colorOnSurface"
+            app:iconPadding="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textSize="@dimen/button" />
+
         <LinearLayout
             android:id="@+id/linearLayout12"
             android:layout_width="match_parent"

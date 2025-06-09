@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionUsuarios
@@ -84,10 +85,10 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
                 editor.apply()
               //  next()
             }else{
-                val rutaPlanificador = CommonUtils.guardarImagen(this, "Planificador", viewModel.bitmap!!)
+                val idUsuario = prefs.getString("idUsuario", "")
+                val rutaPlanificador = CommonUtils.guardarImagen(this, "Planificador-$idUsuario", viewModel.bitmap!!)
                 editor.putString("imagenPlanificador", rutaPlanificador)
                 editor.apply()
-                val idUsuario = prefs.getString("idUsuario", "")
                 if (idUsuario != null) {
                     val imagenBlob = CommonUtils.bitmapToByteArray(viewModel.bitmap!!)
                     gUsuario.addImagen(imagenBlob, idUsuario, this@MenuAvataresPlanActivity)

@@ -140,7 +140,7 @@ class SemanaViewModel: ViewModel(), AdaptadorTablaSemana.OnItemSelectedListener,
         val eventos = gEvento.obtenerEventos(idUsuario, activity, fecha)
 
         if (eventos.isEmpty()) {
-            Toast.makeText(activity, "No hay eventos para este día", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, activity.getString(R.string.lbl_mensajeNinio), Toast.LENGTH_SHORT).show()
             return
         }
         else{

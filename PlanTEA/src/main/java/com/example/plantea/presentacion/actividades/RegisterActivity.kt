@@ -20,7 +20,6 @@ class RegisterActivity : AppCompatActivity(){
     private lateinit var btnRegister: Button
     private lateinit var txtName : TextInputLayout
     private lateinit var txtEmail: TextInputLayout
-    private lateinit var txtUsername : TextInputLayout
     private lateinit var txtPassword : TextInputLayout
     private lateinit var txtPassword2 : TextInputLayout
   /*  private lateinit var txtNameplanificado : TextInputLayout
@@ -41,7 +40,6 @@ class RegisterActivity : AppCompatActivity(){
     private fun textInput(){
         viewModel.name = txtName.editText?.text.toString()
         viewModel.email = txtEmail.editText?.text.toString()
-        viewModel.username = txtUsername.editText?.text.toString()
         viewModel.password = txtPassword.editText?.text.toString()
         viewModel.password2 = txtPassword2.editText?.text.toString()
         /*viewModel.objeto = txtObjeto.editText?.text.toString()
@@ -61,7 +59,6 @@ class RegisterActivity : AppCompatActivity(){
         btnRegister = findViewById(R.id.btn_register)
         txtName = findViewById(R.id.txt_Name)
         txtEmail = findViewById(R.id.txt_Email)
-        txtUsername = findViewById(R.id.txt_UserName)
         txtPassword = findViewById(R.id.txt_password)
         txtPassword2 = findViewById(R.id.txt_password2)
         /*txtObjeto = findViewById(R.id.txt_objeto)
@@ -81,14 +78,12 @@ class RegisterActivity : AppCompatActivity(){
 
         txtEmail.editText?.setText(intent.getStringExtra("EMAIL"))
         txtName.editText?.setText(intent.getStringExtra("NAME"))
-        txtUsername.editText?.setText(intent.getStringExtra("NAME"))
         txtPassword.editText?.setText(intent.getStringExtra("PASSWORD"))
         txtPassword2.editText?.setText(intent.getStringExtra("PASSWORD"))
 
         if(savedInstanceState != null){
             txtName.editText?.setText(viewModel.name)
             txtEmail.editText?.setText(viewModel.email)
-            txtUsername.editText?.setText(viewModel.username)
             txtPassword.editText?.setText(viewModel.password)
             txtPassword2.editText?.setText(viewModel.password2)
            /* txtObjeto.editText?.setText(viewModel.objeto)
@@ -126,7 +121,6 @@ class RegisterActivity : AppCompatActivity(){
             // Clear previous errors
             txtName.error = null
             txtEmail.error = null
-            txtUsername.error = null
             txtPassword.error = null
             txtPassword2.error = null
            /* txtObjeto.error = null
@@ -151,7 +145,6 @@ class RegisterActivity : AppCompatActivity(){
                 finish()
             }else{
                 Log.w("Registration", "createUserWithEmail:failure")
-                txtUsername.error = "El nombre de usuario o correo introducido ya existe"
                 txtEmail.error = "El nombre de usuario o correo introducido ya existe"
             }
         }
@@ -159,7 +152,7 @@ class RegisterActivity : AppCompatActivity(){
 
     data class ValidationResult(val isValid: Boolean, var errorMessage: Int? = null)
 
-    fun isAccountValid(email: String, username: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
+    fun isAccountValid(email: String, password: String, password2: String, notextViewsVacios: Boolean): ValidationResult{
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             runOnUiThread { txtEmail.error = "ESTO ES UN ERROR" }
             return  ValidationResult(false, R.string.toast_error_correo_valido)
@@ -171,11 +164,6 @@ class RegisterActivity : AppCompatActivity(){
                 txtPassword2.error = "ESTO ES UN ERROR"
             }
             return ValidationResult(false, R.string.toast_cotrasenias_diferentes)
-        }
-
-        if (!username.matches(Regex("^[a-zA-Z0-9]*$"))) {
-            runOnUiThread { txtUsername.error = "ESTO ES UN ERROR" }
-            return  ValidationResult(false, R.string.toast_error_username_valido)
         }
 
         //la contraseña tiene que tener minimo 6 caracteres
@@ -195,8 +183,8 @@ class RegisterActivity : AppCompatActivity(){
         textInput()
 
        // val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, checkObjeto.isChecked, checkUserPlanificado.isChecked)
-        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.username, viewModel.password, viewModel.password2, viewModel.name, viewModel.email, viewModel.objeto, viewModel.namePlanificado, false, false)
-        val isAccountValid = isAccountValid(viewModel.email, viewModel.username, viewModel.password, viewModel.password2, notextViewsVacios)
+        val notextViewsVacios =  comprobarTextViewsVacios(viewModel.password, viewModel.password2, viewModel.name, viewModel.email)
+        val isAccountValid = isAccountValid(viewModel.email, viewModel.password, viewModel.password2, notextViewsVacios)
 
         if (isAccountValid.isValid) {
             val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
@@ -208,7 +196,7 @@ class RegisterActivity : AppCompatActivity(){
         return isAccountValid.errorMessage ?: 0
     }
 
-    fun comprobarTextViewsVacios(username: String, password: String, password2: String, name: String, email: String, objeto: String, namePlanificado: String, checkedObjeto: Boolean, checkedUserTea: Boolean): Boolean {
+    fun comprobarTextViewsVacios(password: String, password2: String, name: String, email: String): Boolean {
         if (name.isEmpty()) {
             txtName.error = "ESTO ES UN ERROR"
             return false
@@ -216,11 +204,6 @@ class RegisterActivity : AppCompatActivity(){
 
         if (email.isEmpty()) {
             txtEmail.error = "ESTO ES UN ERROR"
-            return false
-        }
-
-        if (username.isEmpty()) {
-            txtUsername.error = "ESTO ES UN ERROR"
             return false
         }
 

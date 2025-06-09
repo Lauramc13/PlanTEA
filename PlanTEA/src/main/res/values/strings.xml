@@ -148,14 +148,19 @@
     <string name="navegador">Navegador de YouTube</string>
     <string name="selecciona_hora">Selecciona una hora</string>
     <string name="selecciona_imagen">Selecciona una imagen de la galería</string>
-    <string name="fecha">Fecha:</string>
-    <string name="hora">Hora:</string>
-    <string name="recordatorio">Recordatorio:</string>
+    <string name="fecha">Fecha</string>
+    <string name="hora">Hora</string>
+    <string name="recordatorio">Recordatorio</string>
+    <string name="localizacion">Localización</string>
+    <string name="notas">Notas</string>
     <string name="planificaciones_disponibles">Planificaciones disponibles:</string>
     <string name="eventos_disponibles">Eventos disponibles:</string>
     <string name="recordar">Recordar…</string>
     <string name="recordar_5min">5 minutos antes</string>
+    <string name="recordar_15min">15 minutos antes</string>
+    <string name="recordar_30min">30 minutos antes</string>
     <string name="recordar_1hora">1 hora antes</string>
+    <string name="recordar_2hora">2 hora antes</string>
     <string name="recordar_1dia">1 día antes</string>
     <string name="recordar_personalizado">A las…</string>
     <string name="aceptar">Aceptar</string>
@@ -229,14 +234,7 @@
 
     <!-- Credits-->
     <string name="str_titulo1">Sobre la organización</string>
-    <string name="str_parrafo1">Esta aplicación ha sido desarrollada por el grupo CHICO. CHICO es un grupo de investigación de la Universidad de Castilla-La Mancha con sede en la Escuela Superior de Informática del Campus de Ciudad Real que cuenta también con investigadores en la Facultad de Educación de Ciudad Real, en la Escuela de Ingeniería Minera e Industrial de Almadén, y en la Facultad de Ciencias Sociales de Talavera de la Reina.</string>
-    <string name="contribucion">Contribuyeron a este proyecto:</string>
-    <string name="laura_morales" translatable="false">Laura Morales Caro</string>
-    <string name="ana_molina" translatable="false">Ana Isabel Molina Díaz</string>
-    <string name="carmen_lacave" translatable="false">María del Carmen Lacave Rodero</string>
-    <string name="jose_lara" translatable="false">José Lara Navarro</string>
-    <string name="autrade">AUTRADE (Asociación Regional de Afectado de Autismo y Otros Trastornos del Desarrollo)</string>
-    <string name="fespau">FESPAU (Federación Española de Autismo)</string>
+    <string name="str_parrafo1">Esta aplicación ha sido desarrollada por Laura Morales Caro, bajo la dirección de las profesoras Ana Isabel Molina Díaz y Carmen Lacave Rodero, pertenecientes al grupo de investigación CHICO de la Universidad de Castilla-La Mancha, con sede en la Escuela Superior de Informática del Campus de Ciudad Real. Además, han colaborado José Lara Navarro (Ingeniero Informático UCLM), Patricia Hernández del Mazo (Directora técnica de AUTRADE), María Garrido (Psicóloga de FESPAU), Helena Gandía (Directora técnica de FESPAU), Laura Morón Llanos (Coordinadora de programas de FACLM) y Elena Alguacil Ramírez (Responsable de comunicación de FACLM).</string>
     <string name="str_parrafo3">Financiación</string>
     <string name="str_parrafo4">Este trabajo ha sido desarrollado en el contexto del Proyecto APTEA (Ref. TED2021–131956B-I00), financiado por el MICIN/AEI/10.13039/501100000033 y los fondos de la Unión Europea "NextGenerationEU"/PRTR; del Proyecto PlanTEAAF (Ref. 2022-GRIN-34175) en el marco del Plan Propio de Investigación de la Universidad de Castilla - La Mancha, cofinanciadas por el Fondo Europeo de Desarrollo Regional (FEDER); y de los convenios de colaboración con AUTRADE (Ref. 220413CONV) y FACLM (Ref. 230405CONV).</string>
 
@@ -264,7 +262,9 @@
     <!-- Strings utilizados para el manual -->
 
     <string name="titulo_manual">Manual de usuario</string>
-    <string name="subtitulo_manual">En esta sección podrás encontrar información sobre el uso de la aplicación, así como las funcionalidades que ofrece.</string>
+    <string name="subtitulo_manual">PlanTEA es una aplicación que ayuda a las personas con TEA a planificar actividades de su vida diaria, mediante el uso de pictogramas, para especificar y visualizar los pasos de los que consta. Así, una secuencia de pictogramas que representa una situación o actividad se denomina planificación. Una planificación que se desea llevar a cabo en un día y hora concretos se denomina evento. </string>
+    <string name="subtitulo_manual2">En PlanTEA, se da soporte a dos tipos de usuario o roles: el planificador y el usuario TEA. El planificador será el encargado de crear y gestionar las planificaciones. Los usuarios TEA podrán consultar las planificaciones y anticipar así disitntas situaciones mediante el seguimiento de las planificaciones creadas por el planificador.</string>
+
     <string name="titulo_crearEvento">Creación de un evento</string>
     <string name="titulo_editarEvento">Editar un evento</string>
     <string name="titulo_crearPlanificacion">Crear una planificación</string>
@@ -337,7 +337,7 @@
     <!-- Strings utilizados para la politica de privacidad -->
 
     <string name="lbl_politica_privacidad">Política de privacidad</string>
-    <string name="lbl_ultima_actualizacion">Última actualización: 8 de marzo, 2024</string>
+    <string name="lbl_ultima_actualizacion">Última actualización: 15 de mayo, 2025</string>
     <string name="lbl_politica_parrafo1">Esta política de privacidad describe las políticas y procedimientos de PlanTEA sobre la recopilación, uso y divulgación de su información en la aplicación móvil PlanTEA y los servicios, características, contenido o aplicaciones relacionadas con ello (colectivamente, "PlanTEA"). En relación con su uso de PlanTEA, recibimos información sobre usted de diversas fuentes, que incluyen a través de su cuenta de usuario de PlanTEA y el uso de nuestra aplicación móvil, o cualquier otra aplicación nuestra que este vinculada a este aviso de privacidad.</string>
     <string name="lbl_politica_parrafo2">Al utilizar PlanTEA usted está dando su consentimiento para la recopilación, transferencia, manipulación, almacenamiento, transmisión, divulgación y otros usos de su información según se describe en esta Política de privacidad.</string>
     <string name="lbl_politica_titulo_parrafo3">1. ¿Preguntas o dudas?</string>
@@ -353,15 +353,13 @@
     <string name="lbl_politica_subtitulo_parrafo8">Datos de la aplicación</string>
     <string name="lbl_politica_parrafo8">Si utiliza nuestra(s) aplicación(es), también podemos recopilar la siguiente información si elige proporcionarnos acceso o permisos:</string>
     <string name="lbl_politica_parrafo9"><u>Acceso al dispositivo móvil</u>. Podemos solicitar acceso o permisos a ciertas funciones de su dispositivo móvil, incluido el calendario, recordatorios, almacenamiento y otras funciones. Si desea cambiar nuestro acceso o permisos, puede hacerlo en la configuración de su dispositivo.</string>
-    <string name="lbl_politica_parrafo10"><u>Datos del dispositivo móvil</u>. Recopilamos automáticamente información del dispositivo (como su ID de dispositivo móvil, modelo y fabricante), sistema operativo, información de versión y configuración del sistema, números de identificación del dispositivo y la aplicación, tipo y versión del navegador, modelo de hardware, proveedor de servicios de Internet y/o operador móvil, y dirección de Protocolo de Internet (IP) (o servidor proxy). Si está utilizando nuestra(s) aplicación(es), también podemos recopilar información sobre la red telefónica asociada con su dispositivo móvil, el sistema operativo o plataforma de su dispositivo móvil, el tipo de dispositivo móvil que utiliza, el ID único de su dispositivo móvil y la información sobre las funciones de nuestra(s) aplicación(es) a las que accedió.</string>
     <string name="lbl_politica_parrafo11"><u>Notificaciones push</u>. Podemos solicitar enviarle notificaciones push sobre su cuenta o ciertas funciones de la(s) aplicación(es). Si desea optar por no recibir este tipo de comunicaciones, puede desactivarlas en la configuración de su dispositivo.</string>
     <string name="lbl_politica_parrafo12">Esta información se necesita principalmente para mantener la seguridad y operación de nuestra(s) aplicación(es), para la solución de problemas y para nuestros fines internos de análisis e informes.</string>
 
-    <string name="lbl_politica_parrafo13">Toda la información personal que nos proporcione debe ser verdadera, completa y precisa, y debe notificarnos cualquier cambio en dicha información personal.</string>
     <string name="lbl_politica_subtitulo_parrafo14">Información recopilada automáticamente</string>
     <string name="lbl_politica_parrafo14">Recopilamos automáticamente cierta información cuando visita, utiliza o navega por los servicios. Esta información no revela su identidad específica (como su nombre o información de contacto), pero puede incluir información sobre el dispositivo y el uso, como su dirección de Protocolo de Internet (IP), características del navegador y del dispositivo, sistema operativo, preferencias de idioma, URL de referencia, nombre del dispositivo, país, ubicación, información sobre cómo y cuándo utiliza nuestros servicios, y otra información técnica. Esta información se necesita principalmente para mantener la seguridad y operación de nuestros servicios, así como para nuestros fines internos de análisis e informes.</string>
     <string name="lbl_politica_titulo_parrafo15">4. ¿Está segura la información sobre mí?</string>
-    <string name="lbl_politica_parrafo15">La información sensible se almacena exclusivamente en el dispositivo de manera loca, garantizando así un nivel adicional de seguridad y privacidad. Además, la información es cifrada mediante algoritmos de encriptación seguros.</string>
+    <string name="lbl_politica_parrafo15">La información sensible se almacena exclusivamente en el dispositivo de manera local, garantizando así un nivel adicional de seguridad y privacidad. Además, la información es cifrada mediante algoritmos de encriptación seguros.</string>
     <string name="lbl_politica_titulo_parrafo16">5. ¿En qué bases legales nos basamos para procesar su información?</string>
 
     <string name="lbl_politica_parrafo16">El Reglamento General de Protección de Datos (RGPD) y el GDPR del Reino Unido nos exigen explicar las bases legales válidas en las que confiamos para procesar su información personal. Por lo tanto, podemos depender de las siguientes bases legales para procesar su información personal:</string>
@@ -483,7 +481,7 @@
     <string name="pdf" translatable="false">PDF</string>
     <string name="editar_perfil">Editar perfil</string>
     <string name="usuarios_tea">Usuarios TEA</string>
-    <string name="toast_notificaciones_activadas">Para desactivar las notificaciones, ve a los ajustes de su dispositivo</string>
+    <string name="toast_notificaciones_activadas">Para desactivar las notificaciones, vaya a los ajustes de su dispositivo</string>
     <string name="configuracion_users_tea">Configuración de los usuarios TEA</string>
     <string name="orden_pictos">Orden pictogramas</string>
     <string name="conseguido">¡Conseguido!</string>
@@ -498,7 +496,7 @@
     <string name="imagen_y_texto">Imagen y texto</string>
     <string name="imagen">Imagen</string>
     <string name="texto">Texto</string>
-    <string name="toast_pdf_exportado">PDF exportado en la carpeta de descargas</string>
+    <string name="toast_pdf_exportado">PDF exportado en la carpeta /Download/Calendario_PlanTEA</string>
     <string name="categor_a">Categoría:</string>
     <string name="toast_queda_un_minuto">En un mintuo se terminará la actividad</string>
     <string name="colores_fondo_dia">Selecciona los colores para el fondo del día</string>
@@ -506,7 +504,21 @@
     <string name="imprevistos">Imprevistos</string>
     <string name="toast_imprevistos">Se han eliminado los pictogramas imprevistos</string>
     <string name="toast_error_eliminar_imprevistos">Error al eliminar los pictogramas imprevistos</string>
-
+    <string name="hora_inicio">Hora inicio</string>
+    <string name="hora_fin">Hora fin</string>
+    <string name="titulo_para_planificacion">Título para la planificación a exportar</string>
+    <string name="str_todo_dia">Todo el día</string>
+    <string name="eliminar_imprevisto">Eliminar imprevisto</string>
+    <string name="seguro_que_desesas_eliminar_este_imprevisto">¿Seguro que deseas eliminar este imprevisto?</string>
+    <string name="eliminar_usuarioTEA">Eliminar usuario TEA</string>
+    <string name="eliminar_usuarioTEA_mensaje">¿Seguro que deseas eliminar el usuario?</string>
+    <string name="dialog_borrar_pictograma_subtitulo">¿Seguro que deseas eliminar el pictograma %1$s?</string>
+    <string name="dialog_borrar_pictograma">Eliminar pictograma</string>
+    <string name="todos">Todos</string>
+    <string name="categoria_para">Categoría para:</string>
+    <string name="subir_documento">Subir documento</string>
+    <string name="toast_error_subir_documento">Error al subir el documento</string>
+    <string name="toast_error_contrasenia_incorrecta">La contraseña es incorrecta. Por favor, introduce la contraseña correcta</string>
 
 
 </resources>

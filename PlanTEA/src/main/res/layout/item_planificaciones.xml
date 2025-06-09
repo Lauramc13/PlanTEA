@@ -25,65 +25,32 @@
 
                 <TextView
                     android:id="@+id/lbl_Planificacion"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
                     android:padding="10dp"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:textColor="?colorOnSurface"
                     android:layout_marginLeft="10dp"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMaxTextSize="15sp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Ejemplo plan"/>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_downloadPDF"
+                    android:id="@+id/icon_options"
                     android:layout_width="40dp"
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_height="wrap_content"
-                    app:iconSize="24dp"
+                    app:iconSize="20dp"
                     app:iconTint="?colorOnSecondaryContainer"
                     app:strokeWidth="0dp"
+                    android:layout_marginEnd="3dp"
                     app:iconGravity="textStart"
-                    app:icon="@drawable/svg_download" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_copy"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="wrap_content"
-                    app:iconSize="25dp"
-                    app:iconTint="?colorOnSecondaryContainer"
-                    app:strokeWidth="0dp"
-                    app:iconGravity="textStart"
-                    app:icon="@drawable/svg_files" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_edit"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="wrap_content"
-                    app:iconSize="26dp"
-                    app:iconTint="?colorOnSecondaryContainer"
-                    app:strokeWidth="0dp"
-                    app:iconGravity="textStart"
-                    app:icon="@drawable/svg_edit_outline" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/icon_delete"
-                    android:layout_width="40dp"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
-                    android:layout_height="wrap_content"
-                    app:iconSize="25dp"
-                    app:iconTint="?colorOnSecondaryContainer"
-                    app:strokeWidth="0dp"
-                    android:layout_marginEnd="10dp"
-                    app:iconGravity="textStart"
-                    app:icon="@drawable/svg_trash" />
+                    android:padding="8dp"
+                    android:alpha="0.8"
+                    app:icon="@drawable/svg_options" />
 
             </LinearLayout>
 

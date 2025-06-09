@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/planificacion"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_plan"
+        android:title="@string/eventos_y_planificaciones"/>
+
+    <item
+        android:id="@+id/calendario"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_calendar"
+        android:title="@string/pantalla_calendario"/>
+
+    <item
+        android:id="@+id/actividades"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_actividadesdado"
+        android:title="@string/actividades"/>
+    <item
+        android:id="@+id/traductor"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_translation"
+        android:title="@string/titulo_traductor"/>
+
+    <item
+        android:id="@+id/user"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/svg_user"
+        android:title="@string/cuenta"/>
+</menu>

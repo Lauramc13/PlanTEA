@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import java.time.Instant
 import java.time.LocalDate
@@ -48,7 +50,10 @@ import java.util.Locale
 class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.OnItemSelectedListener {
     lateinit var actividad: Activity
     lateinit var vista: View
-    private lateinit var btnHora: TextView
+    private lateinit var btnHoraInicio: TextView
+    private lateinit var btnHoraFin: TextView
+    private lateinit var localizacion: TextInputLayout
+    private lateinit var notas: TextInputLayout
     private lateinit var btnGuardar: MaterialButton
     private lateinit var btnBorrar: Button
 //    private lateinit var btnPlanificar: Button
@@ -59,8 +64,9 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     private lateinit var adaptador: AdaptadorPlanesEventos
     private lateinit var layoutPlanificaciones: ConstraintLayout
     private lateinit var switchReminder : MaterialSwitch
+    private lateinit var switchAllDay: MaterialSwitch
+    private lateinit var layoutHora : LinearLayout
     private lateinit var radioButtonVista : MaterialSwitch
-   // private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     private val viewModel by activityViewModels<CalendarioViewModel>()
     private val viewModelEventosPlanificador by activityViewModels<EventosPlanificadorViewModel>()
@@ -72,14 +78,17 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     }
 
     companion object {
-        fun newInstance(idEvento: Int?, date: LocalDate?, hora: String?, idPlan: Int?, reminder: LocalDateTime?, changeVisibility: Boolean?): NuevoEventoFragment {
+        fun newInstance(idEvento: Int?, date: LocalDate?, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, idPlan: Int?, reminder: LocalDateTime?, changeVisibility: Boolean?): NuevoEventoFragment {
             val fragment = NuevoEventoFragment()
             val args = Bundle()
             if (idEvento != null) {
                 args.putInt("arg_idEvento", idEvento)
             }
             args.putString("arg_date", date.toString())
-            args.putString("arg_hour", hora.toString())
+            args.putString("arg_hour_start", horaInicio.toString())
+            args.putString("arg_hour_end", horaFin.toString())
+            args.putString("arg_localizacion", localizacion)
+            args.putString("arg_notas", notas)
             if (idPlan != null) {
                 args.putInt("arg_idPlan" , idPlan)
             }
@@ -97,20 +106,24 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
-        // view background transparent
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.Y, /* forward= */ false)
 
         cancelarEvento = vista.findViewById(R.id.img_cancelarEvento)
-        btnHora = vista.findViewById(R.id.btn_horaEvento)
+        btnHoraInicio = vista.findViewById(R.id.btn_horaEvento)
+        btnHoraFin = vista.findViewById(R.id.btn_horaFinEvento)
+        localizacion = vista.findViewById(R.id.localizacionText)
+        notas = vista.findViewById(R.id.notasText)
         btnGuardar = vista.findViewById(R.id.btn_guardarEvento)
         btnBorrar = vista.findViewById(R.id.btn_borrarEvento)
         fechaEvento = vista.findViewById(R.id.lbl_fechaEvento)
         listaPlanificaciones = vista.findViewById(R.id.recycler_planificaciones)
         layoutPlanificaciones = vista.findViewById(R.id.layout)
         switchReminder = vista.findViewById(R.id.switch_recordatorio)
+        layoutHora = vista.findViewById(R.id.layout_hora)
+        switchAllDay = vista.findViewById(R.id.switch_allDay)
         radioButtonVista = vista.findViewById(R.id.switch_hacer_visible)
 
         val prefs = this.requireActivity().getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
@@ -119,12 +132,22 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         fechaEvento.setOnClickListener { mostrarCalendario() }
 
-        btnHora.setOnClickListener { mostrarReloj() }
+        btnHoraInicio.setOnClickListener { mostrarReloj(true) }
+        btnHoraFin.setOnClickListener { mostrarReloj(false) }
 
         btnGuardar.setOnClickListener {
-            if(btnHora.text.toString().isEmpty()){
-                btnHora.setHintTextColor(Color.RED)
-                return@setOnClickListener
+            var horaInicio : String? = null
+            var horaFin : String? = null
+
+            if(!switchAllDay.isChecked){
+                if(btnHoraInicio.text.toString().isEmpty()){
+                    btnHoraInicio.setHintTextColor(Color.RED)
+                    btnHoraFin.setHintTextColor(Color.RED)
+                    return@setOnClickListener
+                }
+
+                horaInicio = btnHoraInicio.text.toString()
+                horaFin = btnHoraFin.text.toString()
             }
 
             var idUserTEA = prefs.getString("idUsuarioTEA", null)
@@ -132,7 +155,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
                 idUserTEA = viewModel.idUsuario
             }
 
-            val evento = Evento(viewModel.eventoIdEdited, idUserTEA, viewModel.planes[viewModel.posicionPlan].titulo, CalendarioUtilidades.fechaSeleccionada, btnHora.text.toString(),viewModel.planSeleccionado, radioButtonVista.isChecked, null)
+            val evento = Evento(viewModel.eventoIdEdited, idUserTEA, viewModel.planes[viewModel.posicionPlan].titulo, CalendarioUtilidades.fechaSeleccionada, horaInicio, horaFin, localizacion.editText?.text.toString(), notas.editText?.text.toString(), viewModel.planSeleccionado, radioButtonVista.isChecked, null)
             val parentActivity: EventosPlanificadorActivity? = activity as EventosPlanificadorActivity?
 
             val pictosEvento = if(viewModelEventosPlanificador.checkInitializedVariable()){
@@ -174,11 +197,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         switchReminder.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
                 if(permisosGranted){
-                  /*  if(CommonUtils.isMobile(requireContext())) {
-                        showReminderFragment(isChecked)
-                    } else{*/
-                        createDialogReminder()
-                //}
+                    createDialogReminder()
                 }else{
                     switchReminder.isChecked = false
                     Toast.makeText(requireContext(), R.string.toast_permisos, Toast.LENGTH_SHORT).show()
@@ -186,6 +205,18 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }/*else{
                 showReminderFragment(isChecked)*/
             //}
+        }
+
+        switchAllDay.setOnCheckedChangeListener{_, isChecked ->
+            if(isChecked){
+                btnHoraInicio.isEnabled = false
+                btnHoraFin.isEnabled = false
+                layoutHora.visibility = View.GONE
+            }else{
+                btnHoraInicio.isEnabled = true
+                btnHoraFin.isEnabled = true
+                layoutHora.visibility = View.VISIBLE
+            }
         }
 
         dialog?.setOnCancelListener { switchReminder.isChecked = false }
@@ -204,17 +235,31 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         val idEventoEdit = arguments?.getInt("arg_idEvento")
         val idPlanEdit = arguments?.getInt("arg_idPlan")
         val dateEdit = arguments?.getString("arg_date")
-        val hourEdit = arguments?.getString("arg_hour")
+        val hourStartEdit = arguments?.getString("arg_hour_start")
+        val hourFinEdit = arguments?.getString("arg_hour_end")
+        val localizacionEdit = arguments?.getString("arg_localizacion")
+        val notasEdit = arguments?.getString("arg_notas")
+
         val reminder = arguments?.getString("arg_reminder")
         val change_visibility = arguments?.getBoolean("arg_change_visibility")
         val label = vista.findViewById<TextView>(R.id.lbl_nuevoEvento)
 
 
         //set the date and hour if the fragment is called to be edited
-        if (idPlanEdit != null && dateEdit != null && hourEdit != null) {
+        if (idPlanEdit != null && dateEdit != null) {
             viewModel.isEditing = true
-            fechaEvento.text = dateEdit
-            btnHora.text = hourEdit.toString()
+            val localDate = LocalDate.parse(dateEdit)
+            fechaEvento.text = formatoFechaEvento(localDate)
+            if(hourStartEdit != "null"){
+                btnHoraInicio.text = hourStartEdit
+                btnHoraFin.text = hourFinEdit
+            }else{
+                switchAllDay.isChecked = true
+                layoutHora.visibility = View.GONE
+            }
+
+            localizacionEdit?.let { localizacion.editText?.setText(it) }
+            notasEdit?.let { notas.editText?.setText(it) }
             for (i in viewModel.planes.indices) {
                 if (viewModel.planes[i].id!!.toInt() == idPlanEdit) {
                     viewModel.posicionPlan = i
@@ -243,23 +288,33 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
 
     private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                permisosGranted = true
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                val rootView = activity?.window?.decorView?.findViewById<View>(android.R.id.content)
+        try {
+            // This is only necessary for API level >= 33 (TIRAMISU)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                    permisosGranted = true
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                    val rootView =if(CommonUtils.isMobile(requireContext())) {
+                        view
+                    }else{
+                        activity?.window?.decorView?.findViewById(android.R.id.content)
+                    }
 
-                val snackbar = rootView?.let { Snackbar.make(it, R.string.toast_permisos, Snackbar.LENGTH_INDEFINITE) }
-                snackbar?.setAction("OK") {
+                    val snackbar = rootView?.let { Snackbar.make(it, R.string.toast_permisos, Snackbar.LENGTH_INDEFINITE) }
+                    snackbar?.setAction("OK") {
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                    snackbar?.show()
+                } else {
+                    // Directly ask for the permission
                     requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
-                snackbar?.show()
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+        }catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(requireContext(), "Error al solicitar permisos", Toast.LENGTH_SHORT).show()
         }
+
     }
 
     override fun onAttach(context: Context) {
@@ -276,16 +331,16 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
 
         val btnAceptar = dialogReminder.findViewById<Button>(R.id.btn_aceptarRecordatorio)
         val iconCerrar = dialogReminder.findViewById<ImageView>(R.id.icono_CerrarDialogo)
-        val checkboxMin = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_min)
-        val checkboxHora = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_hora)
+        val checkbox5Min = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_5min)
+        val checkbox15Min = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_15min)
+        val checkbox30Min = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_30min)
+        val checkbox1Hora = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_1hora)
         val checkboxDia = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_dia)
         val checkBoxPersonalizar = dialogReminder.findViewById<MaterialSwitch>(R.id.checkBox_personalizar)
 
         btnAceptar.setOnClickListener {
             //si no se ha seleccionado ningun checkbox poner el switch a false
-            if(!checkBoxPersonalizar.isChecked && !checkboxMin.isChecked && !checkboxHora.isChecked && !checkboxDia.isChecked){
-                switchReminder.isChecked = false
-            }
+            checkReminderChecked(checkBoxPersonalizar, checkbox5Min, checkbox15Min, checkbox30Min, checkbox1Hora, checkboxDia)
             dialogReminder.dismiss()
         }
 
@@ -302,12 +357,20 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }
         }
 
-        checkboxMin.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.checkBoxMin = isChecked
+        checkbox5Min.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBox5Min = isChecked
         }
 
-        checkboxHora.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.checkBoxHora = isChecked
+        checkbox15Min.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBox15Min = isChecked
+        }
+
+        checkbox30Min.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBox30Min = isChecked
+        }
+
+        checkbox1Hora.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.checkBox1Hora = isChecked
         }
 
         checkboxDia.setOnCheckedChangeListener { _, isChecked ->
@@ -315,12 +378,12 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }
 
         iconCerrar.setOnClickListener {
-            checkReminderChecked(checkBoxPersonalizar, checkboxMin, checkboxHora, checkboxDia)
+            checkReminderChecked(checkBoxPersonalizar, checkbox5Min, checkbox15Min, checkbox30Min, checkbox1Hora, checkboxDia)
             dialogReminder.dismiss()
         }
 
         dialogReminder.setOnCancelListener {
-            checkReminderChecked(checkBoxPersonalizar, checkboxMin, checkboxHora, checkboxDia)
+            checkReminderChecked(checkBoxPersonalizar, checkbox5Min, checkbox15Min, checkbox30Min, checkbox1Hora, checkboxDia)
         }
         dialogReminder.show()
     }
@@ -337,17 +400,34 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         listaPlanificaciones.adapter = adaptador
     }
 
-    private fun mostrarReloj() {
+    private fun mostrarReloj(isStart: Boolean) {
         val picker = viewModel.createReloj(requireContext())
 
         picker.addOnPositiveButtonClickListener {
+            if(btnHoraInicio.text.toString().isNotEmpty() && !isStart){
+                //si la hora que se ha elegido es menor que btnHoraInicio
+                if(checkHoraFin(picker.hour, picker.minute)){
+                    Toast.makeText(requireContext(), "La hora de fin no puede ser menor a la de inicio", Toast.LENGTH_SHORT).show()
+                    return@addOnPositiveButtonClickListener
+                }
+            }
+
+            if(btnHoraFin.text.toString().isNotEmpty() && isStart){
+                if(checkHoraInicio(picker.hour, picker.minute)){
+                    Toast.makeText(requireContext(), "La hora de inicio no puede ser mayor a la de fin", Toast.LENGTH_SHORT).show()
+                    return@addOnPositiveButtonClickListener
+                }
+            }
+
             viewModel.isClickedReloj = true
             viewModel.hora = picker.hour
             viewModel.minuto = picker.minute
 
-            //mostrarPlanificaciones()
-            btnHora.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
-
+            if(isStart) {
+                btnHoraInicio.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
+            } else {
+                btnHoraFin.text = String.format(Locale.getDefault(), "%02d:%02d", viewModel.hora, viewModel.minuto)
+            }
         }
 
         picker.show(requireFragmentManager(), "TimePicker")
@@ -384,8 +464,8 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         val dialog = Dialog(actividad)
         dialog.setContentView(R.layout.dialogo_eliminar_evento)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val btnEliminar = dialog.findViewById<Button>(R.id.btn_eliminarEvento)
-        val atras = dialog.findViewById<Button>(R.id.btn_cancelarEvento)
+        val btnEliminar = dialog.findViewById<Button>(R.id.btn_eliminar)
+        val atras = dialog.findViewById<Button>(R.id.btn_cancelar)
         val btnCancelar = dialog.findViewById<ImageView>(R.id.icono_CerrarDialogo)
 
         atras.setOnClickListener {
@@ -403,14 +483,18 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             parentActivity?.adaptador?.notifyItemRemoved(posicion!!)
 
             viewModel.closeFragment(parentActivity)
+            viewModel.isEditing = false
+            viewModel.cancelarEventoEdit()
+
+
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
-    private fun checkReminderChecked(cb1: MaterialSwitch, cb2: MaterialSwitch, cb3: MaterialSwitch, cb4: MaterialSwitch){
-        if(!cb1.isChecked && !cb2.isChecked && !cb3.isChecked && !cb4.isChecked){
+    private fun checkReminderChecked(cb1: MaterialSwitch, cb2: MaterialSwitch, cb3: MaterialSwitch, cb4: MaterialSwitch, cb5: MaterialSwitch, cb6: MaterialSwitch){
+        if(!cb1.isChecked && !cb2.isChecked && !cb3.isChecked && !cb4.isChecked && !cb5.isChecked && !cb6.isChecked ){
             switchReminder.isChecked = false
         }
     }
@@ -419,5 +503,21 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     override fun onResume() {
         super.onResume()
         configurarEvento()
+    }
+
+    private fun checkHoraFin(horaFin: Int, minutoFin: Int): Boolean{
+        val inicio = btnHoraInicio.text.toString().split(":")
+        val horaInicio = inicio[0].toInt()
+        val minutoInicio = inicio[1].toInt()
+
+        return horaFin < horaInicio || (horaFin == horaInicio && minutoFin < minutoInicio)
+    }
+
+    private fun checkHoraInicio(horaInicio: Int, minutoInicio: Int): Boolean{
+        val fin = btnHoraFin.text.toString().split(":")
+        val horaFin = fin[0].toInt()
+        val minutoFin = fin[1].toInt()
+
+        return horaInicio > horaFin || (horaInicio == horaFin && minutoInicio > minutoFin)
     }
 }

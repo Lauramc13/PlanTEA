@@ -69,17 +69,23 @@ class EventosPlanificadorViewModel: ViewModel(), AdaptadorPictogramaEntretenimie
 
     fun exportEventCalendar(posicion: Int): Intent {
         val date = CalendarioUtilidades.fechaSeleccionada
-        val time = CalendarioUtilidades.formatoHoraAviso(eventos[posicion].hora)
+
+         if (eventos[posicion].horaInicio == "null" || eventos[posicion].horaInicio == null) {
+             eventos[posicion].horaInicio = "00:00"
+             eventos[posicion].horaFin = "00:00"
+        }
+
+        val timeStart = CalendarioUtilidades.formatoHoraAviso(eventos[posicion].horaInicio)
 
         //convert date and time to Date object
         val calendar = Calendar.getInstance()
-        calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, time.hour, time.minute, time.second)
+        calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, timeStart.hour, timeStart.minute, timeStart.second)
 
         return Intent(Intent.ACTION_INSERT)
             .setData(CalendarContract.Events.CONTENT_URI)
             .putExtra(CalendarContract.Events.TITLE, eventos[posicion].nombre)
-            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
-            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis + (60 * 60 * 1000))
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, timeToMillis(eventos[posicion].horaInicio!!, date))
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, timeToMillis(eventos[posicion].horaFin ?: eventos[posicion].horaInicio!!, date))
     }
 
     fun deleteEvento(actividad: Activity, context: Context, posicion: Int){
@@ -121,6 +127,17 @@ class EventosPlanificadorViewModel: ViewModel(), AdaptadorPictogramaEntretenimie
         mdFechaActual.value = CalendarioUtilidades.formatoMesAnio(CalendarioUtilidades.fechaSeleccionada).uppercase(
             Locale.getDefault())
         mdDiasMes.value = CalendarioUtilidades.obtenerDiasMes(CalendarioUtilidades.fechaSeleccionada)
+    }
+
+    private fun timeToMillis(time: String, date: LocalDate): Long {
+        // se pasa una fecha y hora
+            val parts = time.split(":")
+            val hour = parts[0].toInt()
+            val minute = parts[1].toInt()
+
+            val calendar = Calendar.getInstance()
+            calendar.set(date.year, date.monthValue - 1, date.dayOfMonth, hour, minute)
+            return calendar.timeInMillis
     }
 
 

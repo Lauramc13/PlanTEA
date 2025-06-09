@@ -47,10 +47,10 @@ class GestionPictogramas : Serializable {
         return id
     }
 
-    fun nuevoPictogramaAPI(actividad: Activity?, nombre: String?, idPicto: String?, categoria: String?): String {
+    fun nuevoPictogramaAPI(actividad: Activity?, nombre: String?, idPicto: String?, categoria: String?, idUsuario: String?): String {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        val id = conectorBD!!.insertarPictogramaAPI(nombre, idPicto, categoria)
+        val id = conectorBD!!.insertarPictogramaAPI(nombre, idPicto, categoria, idUsuario)
         conectorBD!!.cerrar()
         return id
     }
@@ -160,24 +160,24 @@ class GestionPictogramas : Serializable {
         return id
     }
 
-    fun guardarHistoria(actividad: Activity?, id: String, idPicto: String?, historia: String?, posicion: Int?) {
+    fun guardarHistoria(actividad: Activity?, posicion: Int?, idEvento: String, historia: String?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarHistoria(id, idPicto, historia, posicion)
+        conectorBD!!.insertarHistoria(posicion, idEvento, historia)
         conectorBD!!.cerrar()
     }
 
-    fun guardarDuracion(actividad: Activity?, posicion: Int?, toString: String, id: String, s: String?) {
+    fun guardarDuracion(actividad: Activity?, posicion: Int?, idEvento: String, tiempo: String?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarDuracion(posicion, toString, id, s)
+        conectorBD!!.insertarDuracion(posicion, idEvento, tiempo)
         conectorBD!!.cerrar()
     }
 
-    fun guardarPictoEntretenimiento(actividad: Activity?, posicion: Int?, id: String, idPicto: String?, idEntretenimiento: String?) {
+    fun guardarPictoEntretenimiento(actividad: Activity?, posicion: Int?, idEvento: String, idEntretenimiento: String?) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.insertarPictoEntretenimiento(id, posicion, idPicto, idEntretenimiento)
+        conectorBD!!.insertarPictoEntretenimiento(posicion, idEvento, idEntretenimiento)
         conectorBD!!.cerrar()
     }
 
@@ -185,6 +185,13 @@ class GestionPictogramas : Serializable {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
         conectorBD!!.modificarTituloPictogramaEvento(posicion, titulo, idEvento, idPictograma)
+        conectorBD!!.cerrar()
+    }
+
+    fun borrarPictograma(idPictograma: String?, idUsuario: String?, actividad: Activity?) {
+        conectorBD = ConectorBD(actividad)
+        conectorBD!!.abrir()
+        conectorBD!!.borrarPictograma(idPictograma, idUsuario)
         conectorBD!!.cerrar()
     }
 }

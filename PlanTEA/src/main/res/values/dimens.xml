@@ -29,7 +29,8 @@
     <dimen name="paddingDialog">0dp</dimen>
     <dimen name="paddingTopDialog">15dp</dimen>
     <dimen name="widthDialog">350dp</dimen>
-    <dimen name="widthDialogFecha">250dp</dimen>
+    <dimen name="widthDialogMedium">300dp</dimen>
+    <dimen name="widthDialogSmall">250dp</dimen>
     <dimen name="widthTextInput">220dp</dimen>
     <dimen name="width_button_saltar">130dp</dimen>
     <dimen name="popup_y">20dp</dimen>

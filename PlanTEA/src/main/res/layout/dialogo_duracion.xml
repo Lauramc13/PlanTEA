@@ -30,6 +30,7 @@
         android:textAllCaps="false"
         android:fontFamily="@font/poppins_semibold"
         android:textSize="@dimen/titleSmall"
+        android:textColor="@color/darkGreen"
         android:layout_marginBottom="15dp"
         android:layout_gravity="center"
         android:text="@string/duracion"/>
@@ -61,6 +62,7 @@
             app:layout_constraintStart_toStartOf="@+id/numberPickerMin"
             app:layout_constraintEnd_toEndOf="@+id/numberPickerMin"
             android:textAllCaps="false"
+            android:textColor="@color/darkGreen"
             android:fontFamily="@font/poppins_medium"
             android:layout_marginTop="5dp"
             android:text="@string/min"/>
@@ -70,6 +72,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:text=":"
+            android:textColor="@color/darkGreen"
             android:textSize="@dimen/display"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="@+id/numberPickerSec"
@@ -93,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:textColor="@color/darkGreen"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/seg"
             android:textAllCaps="false"
@@ -108,9 +112,9 @@
         android:layout_height="wrap_content"
         android:text="@string/aceptar"
         android:textSize="@dimen/button"
+        android:textColor="@color/darkGreen"
         android:textAllCaps="false"
         android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/darkGreen"
         app:strokeColor="@color/darkGreen"
         app:backgroundTint="@color/colorHalfWhite"
         android:layout_gravity="center"/>
@@ -126,7 +130,7 @@
         android:visibility="visible"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/darkGreen"
+        android:textColor="?colorOnSurface"
         android:textSize="@dimen/button"
         />
 

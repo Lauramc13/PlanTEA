@@ -16,7 +16,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         app:layout_constraintTop_toBottomOf="@+id/icono_CerrarDialogo">
 
         <TextView
-            android:id="@+id/lbl_Logout2"
+            android:id="@+id/lbl_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -27,7 +27,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:textSize="@dimen/modalTitle" />
 
         <TextView
-            android:id="@+id/lbl_Logout3"
+            android:id="@+id/lbl_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -49,7 +49,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:gravity="center">
 
             <Button
-                android:id="@+id/btn_cancelarEvento"
+                android:id="@+id/btn_cancelar"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:cornerRadius="25dp" />
 
             <Button
-                android:id="@+id/btn_eliminarEvento"
+                android:id="@+id/btn_eliminar"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

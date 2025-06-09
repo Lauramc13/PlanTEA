@@ -28,7 +28,7 @@
         android:id="@+id/scroll"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
-        android:layout_marginBottom="10dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_eliminar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

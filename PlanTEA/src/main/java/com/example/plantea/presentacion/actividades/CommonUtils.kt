@@ -545,7 +545,6 @@ class CommonUtils{
             var filename = if( title != "") "$title.pdf" else baseFilename
 
             while (File(downloadsDirectory, filename).exists()) {
-                // "${baseFilename.substringBeforeLast(".pdf")}_$counter.pdf"
                 filename = if (title != "") "${title}_$counter.pdf" else "Traduccion_$counter.pdf"
                 counter++
             }
@@ -555,7 +554,8 @@ class CommonUtils{
             // Create a new page and
             var columna = 0
             var fila = 0
-
+            val maxFilasPorPagina = 6
+            var pageNumber = 1
 
             // join pictograma.titulo for each pictograma in listaPictogramas and when there is a . add a new line
             val frases = ArrayList<String>()
@@ -574,8 +574,8 @@ class CommonUtils{
 
             try {
                 val pageInfo = PdfDocument.PageInfo.Builder(2480, 3508, 1).create()
-                val page = pdfDocument.startPage(pageInfo)
-                val canvas = page.canvas
+                var page = pdfDocument.startPage(pageInfo)
+                var canvas = page.canvas
 
                 val paint = Paint()
                 paint.color = Color.BLACK
@@ -629,6 +629,17 @@ class CommonUtils{
                     if (columna == 5 || pictograma.titulo!!.endsWith(".") ) {
                         columna = 0
                         fila++
+                        if (fila >= maxFilasPorPagina) {
+                            pdfDocument.finishPage(page)
+                            pageNumber++
+                            val newPageInfo = PdfDocument.PageInfo.Builder(2480, 3508, pageNumber).create()
+                            page = pdfDocument.startPage(newPageInfo)
+                            canvas = page.canvas
+                            fila = 0
+                            columna = 0
+                            top = 200f
+                        }
+
                     }else{
                         columna++
                     }
@@ -647,21 +658,6 @@ class CommonUtils{
 
             } catch (e: Exception) {
                 Log.e("ERROR", "Error creating PDF: ${e.message}", e)
-            }
-        }
-
-        fun resizeBitmap(image: Bitmap?): Bitmap? {
-            //resize bitmap to 300 x 300
-            return if (image != null) {
-                val width = image.width
-                val height = image.height
-                val scaleWidth = 300f / width
-                val scaleHeight = 300f / height
-                val matrix = android.graphics.Matrix()
-                matrix.postScale(scaleWidth, scaleHeight)
-                Bitmap.createBitmap(image, 0, 0, width, height, matrix, false)
-            } else {
-                null
             }
         }
 
@@ -709,5 +705,13 @@ class CommonUtils{
                 resources.displayMetrics
             ).toInt()
         }
+
+        fun isSw1000dp(activity: Activity): Boolean {
+            val displayMetrics = DisplayMetrics()
+            activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+            val widthInDp = displayMetrics.widthPixels / activity.resources.displayMetrics.density
+            return widthInDp >= 1000
+        }
+
     }
 }

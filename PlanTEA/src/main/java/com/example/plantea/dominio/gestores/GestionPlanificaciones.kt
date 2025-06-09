@@ -27,7 +27,7 @@ class GestionPlanificaciones : Serializable {
             for(pictogram in listaPlanificacion){
                 var idPicto = pictogram.id
                 if(pictogram.idAPI != 0 && pictogram.idAPI != -1) {
-                    idPicto = conectorBD.insertarPictogramaAPI(pictogram.titulo, pictogram.idAPI.toString(), null)
+                    idPicto = conectorBD.insertarPictogramaAPI(pictogram.titulo, pictogram.idAPI.toString(), null, idUsuario)
                 }else if(pictogram.idAPI == -1){
                     val imagen = CommonUtils.bitmapToByteArray(pictogram.imagen)
                     idPicto = conectorBD.insertarPictogramaLocal(pictogram.titulo, imagen, null, idUsuario)
@@ -49,7 +49,7 @@ class GestionPlanificaciones : Serializable {
         try{
             for(pictogram in listaPlanificacion){
                 var idPicto = if(pictogram.idAPI != 0) {
-                    conectorBD.insertarPictogramaAPI(pictogram.titulo, pictogram.idAPI.toString(), null)
+                    conectorBD.insertarPictogramaAPI(pictogram.titulo, pictogram.idAPI.toString(), null, idUsuario)
                 }else{
                     conectorBD.insertarPictogramaLocal(pictogram.titulo, CommonUtils.bitmapToByteArray(pictogram.imagen), null, idUsuario)
                 }
@@ -125,6 +125,17 @@ class GestionPlanificaciones : Serializable {
         c.close()
         conectorBD.cerrar()
         return listaPictogramas
+    }
+
+    fun obtenerPictogramasEvento(context: Context?, idPlan: Int?, idEvento: Int?, language: String?, idUsuario: String?): ArrayList<Pictograma> {
+        val pictos = obtenerPictogramasPlanificacionEvento(context, idPlan, idEvento, language, idUsuario)
+
+        val indicesABorrar = pictos.mapIndexedNotNull { index, picto ->
+            if (index > 0 && picto.isImprevisto) index - 1 else null
+        }.toSet()
+
+        val pictosFiltrados = pictos.filterIndexed { index, _ -> index !in indicesABorrar }
+        return pictosFiltrados as ArrayList<Pictograma>
     }
 
     fun obtenerPictogramasPlanificacionEvento(context: Context?, idPlan: Int?, idEvento: Int?, language: String?, idUsuario: String?): ArrayList<Pictograma> {

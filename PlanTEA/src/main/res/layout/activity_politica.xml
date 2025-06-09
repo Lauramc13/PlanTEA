@@ -196,16 +196,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:layout_marginTop="10dp"
-                android:text="@string/lbl_politica_parrafo10"
-                android:textColor="?colorOnSurface"
-                android:justificationMode="inter_word"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:layout_marginTop="10dp"
                 android:text="@string/lbl_politica_parrafo11"
                 android:textColor="?colorOnSurface"
                 android:justificationMode="inter_word"
@@ -217,16 +207,6 @@
                 android:fontFamily="@font/poppins_regular"
                 android:layout_marginTop="10dp"
                 android:text="@string/lbl_politica_parrafo12"
-                android:textColor="?colorOnSurface"
-                android:justificationMode="inter_word"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:layout_marginTop="10dp"
-                android:text="@string/lbl_politica_parrafo13"
                 android:textColor="?colorOnSurface"
                 android:justificationMode="inter_word"
                 android:textSize="13sp" />
