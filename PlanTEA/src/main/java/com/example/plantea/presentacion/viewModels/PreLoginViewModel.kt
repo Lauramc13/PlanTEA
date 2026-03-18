@@ -27,9 +27,7 @@ class PreLoginViewModel: ViewModel() {
     val seErrorPassword = SingleLiveEvent<String>()
 
     fun initGoogleSignInClient(context: Context) {
-        //auth = Firebase.auth
 
-      //  FirebaseApp.initializeApp(context)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(context, R.string.client_id_google))
             .requestEmail()

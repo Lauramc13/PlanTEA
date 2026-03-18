@@ -40,6 +40,7 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorListaEventos
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntretenimiento
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasEventos
 import com.example.plantea.presentacion.fragmentos.CalendarioFragment
+import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
@@ -175,7 +176,9 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         }
 
         viewModelCalendario.mdFechaSeleccionada.observe(this){
-            Toast.makeText(this, "FILTRAR LA LISTA DE EVENTOS POR EL DIA SELECCIONADO", Toast.LENGTH_SHORT).show()
+            CalendarioUtilidades.fechaSeleccionada = it
+           // esto no funciona TODO HACERLO BIEN
+            adaptador.notifyDataSetChanged()
         }
     }
 
