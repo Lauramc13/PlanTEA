@@ -3,13 +3,17 @@ package com.example.plantea.presentacion.fragmentos
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlarmManager
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +49,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Locale
+import kotlin.time.ExperimentalTime
 
 
 class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.OnItemSelectedListener {
@@ -78,7 +83,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
     }
 
     companion object {
-        fun newInstance(idEvento: Int?, date: LocalDate?, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, idPlan: Int?, reminder: LocalDateTime?, changeVisibility: Boolean?): NuevoEventoFragment {
+        fun newInstance(idEvento: Int?, date: LocalDate?, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, idPlan: Int?, changeVisibility: Boolean?): NuevoEventoFragment {
             val fragment = NuevoEventoFragment()
             val args = Bundle()
             if (idEvento != null) {
@@ -92,9 +97,6 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             if (idPlan != null) {
                 args.putInt("arg_idPlan" , idPlan)
             }
-            if(reminder != null){
-                args.putString("arg_reminder", reminder.toString())
-            }
             if (changeVisibility != null) {
                 args.putBoolean("arg_change_visibility", changeVisibility)
             }
@@ -104,6 +106,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         }
     }
 
+    @androidx.annotation.RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         vista = inflater.inflate(R.layout.fragment_nuevo_evento, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -143,6 +146,14 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
                 if(btnHoraInicio.text.toString().isEmpty()){
                     btnHoraInicio.setHintTextColor(Color.RED)
                     btnHoraFin.setHintTextColor(Color.RED)
+                    Toast.makeText(requireContext(), R.string.toast_no_se_ha_seleccionado_hora, Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (btnHoraFin.text.toString().isEmpty()){
+                    btnHoraInicio.setHintTextColor(Color.RED)
+                    btnHoraFin.setHintTextColor(Color.RED)
+                    Toast.makeText(requireContext(), R.string.toast_no_se_ha_seleccionado_hora, Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -163,6 +174,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }else{
                 null
             }
+
             viewModel.nuevoEventoEdit(requireContext(), evento, pictosEvento, parentActivity)
 
             dismiss()
@@ -191,6 +203,7 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
             }
         }
 
+        askExactAlarmPermission()
         askNotificationPermission()
         configurarEventoEdit()
 
@@ -286,6 +299,18 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         switchReminder.isChecked = reminder != null
     }
 
+
+    private fun askExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = requireContext().getSystemService(AlarmManager::class.java)
+            if (!alarmManager.canScheduleExactAlarms()) {
+
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+
+            }
+        }
+    }
 
     private fun askNotificationPermission() {
         try {
@@ -433,13 +458,22 @@ class NuevoEventoFragment : BottomSheetDialogFragment(), AdaptadorPlanesEventos.
         picker.show(requireFragmentManager(), "TimePicker")
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun mostrarCalendario(){
-        val picker = viewModel.createCalendar(requireContext())
+
+        val picker = viewModel.mostrarCalendario()
 
         picker.addOnPositiveButtonClickListener {
             CalendarioUtilidades.fechaSeleccionada = Instant.ofEpochMilli(picker.selection!!).atZone(ZoneId.systemDefault()).toLocalDate()
-            fechaEvento.text = CalendarioUtilidades.fechaSeleccionada.toString()
+            fechaEvento.text = formatoFechaEvento(CalendarioUtilidades.fechaSeleccionada)
         }
+
+        // Forzar locale antes de mostrar
+        val config = resources.configuration
+        config.setLocale(Locale.getDefault())
+        context?.createConfigurationContext(config)
+
+        picker.show(requireFragmentManager(), "CalendarPicker")
 
     }
 

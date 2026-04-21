@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionEventos
@@ -28,6 +29,9 @@ class SemanaActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_semana)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         val buttonGuardar = findViewById<Button>(R.id.btnGuardar)
         val buttonEditar = findViewById<Button>(R.id.btnEditar)

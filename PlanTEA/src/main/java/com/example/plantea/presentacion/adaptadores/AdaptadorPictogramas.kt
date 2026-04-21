@@ -98,7 +98,6 @@ class AdaptadorPictogramas(var listaPictogramas: ArrayList<Pictograma>?, private
             }
 
             borrar.setOnClickListener {
-                //TODO: create dialog to make sure the user wants to delete the pictogram
                 val dialog = Dialog(context)
                 dialog.setContentView(R.layout.dialogo_eliminar_evento)
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

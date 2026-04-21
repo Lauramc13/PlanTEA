@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -25,6 +26,9 @@ class MenuUserActivity : AppCompatActivity(), AdaptadorMenuUser.OnItemSelectedLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu_usertea)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         val atras = findViewById<Button>(R.id.atras)
         atras.setOnClickListener {

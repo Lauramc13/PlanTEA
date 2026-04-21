@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.example.plantea.R
 import com.example.plantea.presentacion.viewModels.PasswordViewModel
 import com.google.android.material.textfield.TextInputLayout
@@ -27,6 +28,9 @@ class PasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         if(CommonUtils.isMobile(this)){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -51,7 +55,6 @@ class PasswordActivity : AppCompatActivity() {
                 Toast.makeText(this, R.string.toast_campos_vacios, Toast.LENGTH_SHORT).show()
             } else {
                 if(isValid()) {
-                    val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
                     val idUsuario = prefs.getString("idUsuario", "")
                     val email = prefs.getString("email", "")
 

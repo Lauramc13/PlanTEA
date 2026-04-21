@@ -8,7 +8,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     app:layout_gravity="center"
-    android:maxWidth="60dp"
+    android:maxWidth="80dp"
     android:layout_gravity="center">
 
     <com.google.android.material.card.MaterialCardView
@@ -45,7 +45,7 @@
             android:elevation="0dp"
             android:textColor="?colorOnSurface"
             android:fontFamily="@font/poppins_regular"
-            android:textSize="@dimen/listItems" />
+            android:textSize="18sp" />
 
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class CalendarioActivity : AppCompatActivity() {
         }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         viewModel.configureUser(prefs)
 
         viewModel.crearCanalNotificacion(this)

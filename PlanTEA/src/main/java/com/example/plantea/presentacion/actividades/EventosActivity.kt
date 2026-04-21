@@ -9,6 +9,7 @@ import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -20,8 +21,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowCompat
 import androidx.core.view.get
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -76,8 +79,8 @@ class EventosActivity : AppCompatActivity() {
 
         // if adaptador has not been initialized, we don't want to copy the lists
         if(viewModel.checkInitializedAdapter()){
-            tachadosCopy = ArrayList(viewModel.adaptador.tachados)
-            imprevistosCopy = ArrayList(viewModel.adaptador.imprevistos)
+            tachadosCopy = ArrayList(viewModel.adaptador.tachados ?: emptyList())
+            imprevistosCopy = ArrayList(viewModel.adaptador.imprevistos ?: emptyList())
             viewModel.adaptador.countDownTimer?.cancel()
             viewModel.adaptador.countDownTimer = null
         }
@@ -130,6 +133,7 @@ class EventosActivity : AppCompatActivity() {
         viewModel.recyclerView.layoutManager = layoutManagerLinear
     }
 
+    @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_eventos)
@@ -154,12 +158,8 @@ class EventosActivity : AppCompatActivity() {
 
         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
 
-        val question = findViewById<MaterialButton>(R.id.question)
-        question.setOnClickListener {
-            Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
-        }
-
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         viewModel.configureUser(prefs, this)
 
         viewModel.initializeAnimations(applicationContext)
@@ -177,12 +177,20 @@ class EventosActivity : AppCompatActivity() {
         }
 
         //get string based on the language of the device
-        dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
 
-        when(viewModel.horaEventoInicio) {
-            null -> hora?.text = getString(R.string.str_todo_dia)
-            "null" -> hora?.text = getString(R.string.str_todo_dia)
-            else -> hora?.text = """${viewModel.horaEventoInicio} a ${viewModel.horaEventoFin}"""
+        dia.text = getString(
+            R.string.formatted_date,
+            viewModel.dayOfWeek.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase() else it.toString()
+            },
+            viewModel.dayOfMonth,
+            viewModel.month
+        )
+
+        if (viewModel.horaEventoInicio.isNullOrEmpty() || viewModel.horaEventoInicio == "null") {
+            hora?.text = getString(R.string.str_todo_dia)
+        } else {
+            hora?.text = """${viewModel.horaEventoInicio} a ${viewModel.horaEventoFin}"""
         }
 
         //--------------- FUNCIONALIDADES DE LOS BOTONES ---------------//
@@ -333,8 +341,12 @@ class EventosActivity : AppCompatActivity() {
          val calendario = viewModel.dialog!!.findViewById<RecyclerView>(R.id.recycler_calendario)
          val cerrarDialog = viewModel.dialog!!.findViewById<Button>(R.id.icono_CerrarDialogoEvento)
 
-         val idUsuario = if(prefs.getBoolean("PlanificadorLogged", false)) viewModel.idUsuario else viewModel.idUsuarioTEA
-         viewModel.eventos = viewModel.gEvento.obtenerTodosEventos(idUsuario, this)
+        val idUsuario = if (viewModel.idUsuarioTEA != "") {
+            viewModel.idUsuarioTEA
+        } else {
+            viewModel.idUsuario
+        }
+         viewModel.eventos = viewModel.gEvento.obtenerTodosEventos(idUsuario, this).filter { it.visible == 1 } as ArrayList
          viewModel.obtenerVistaMes()
 
          viewModel.mdFechaActual.observe(this) { fechaActual.text = it }
@@ -375,7 +387,7 @@ class EventosActivity : AppCompatActivity() {
              viewModel.obtenerVistaMes()
          }
 
-         cerrarDialog.setOnClickListener { viewModel.dialog!!.dismiss() }
+         cerrarDialog.setOnClickListener { viewModel.dialog?.dismiss() }
          viewModel.dialog!!.show()
     }
 
@@ -499,6 +511,8 @@ class EventosActivity : AppCompatActivity() {
             viewModel.evento.nombre = intent.getStringExtra("titulo")!!
             viewModel.horaEventoInicio = intent.getStringExtra("horaInicio")
             viewModel.horaEventoFin = intent.getStringExtra("horaFin")
+            val fechaString = intent.getStringExtra("fecha")
+            viewModel.fechaEvento = fechaString?.let { LocalDate.parse(it) }
             viewModel.evento.localizacion = intent.getStringExtra("localizacion")!!
             viewModel.evento.notas = intent.getStringExtra("notas")!!
             viewModel.listaPictogramas = (intent.getSerializableExtra("pictogramas") as ArrayList<Pictograma>?)!!
@@ -525,11 +539,18 @@ class EventosActivity : AppCompatActivity() {
                 }
             }
 
-            //         dia.text = getString(R.string.formatted_date, viewModel.dayOfWeek.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, viewModel.dayOfMonth, viewModel.month)
-            val fecha = intent.getSerializableExtra("fecha") as LocalDate
-            CalendarioUtilidades.fechaSeleccionada = fecha
-            // <string name="formatted_date">%1$s, %2$s of %3$s</string>
-            dia.text = getString(R.string.formatted_date, fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, fecha.dayOfMonth, fecha.month.getDisplayName(TextStyle.FULL, Locale.getDefault()))
+            val fecha = viewModel.fechaEvento
+            if (fecha != null) {
+                CalendarioUtilidades.fechaSeleccionada = fecha
+
+                dia.text = getString(
+                    R.string.formatted_date,
+                    fecha.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
+                    fecha.dayOfMonth.toString(),
+                    fecha.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
+                )
+            }
 
             viewModel.mdPlanLiveData.value = viewModel.listaPictogramas
         }

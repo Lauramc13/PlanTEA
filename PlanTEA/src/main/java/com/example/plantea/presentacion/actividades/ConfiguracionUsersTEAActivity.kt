@@ -21,6 +21,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -52,17 +53,15 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
     // Para cuando se crea un usuario TEA nuevo
     private var resultLauncher :  ActivityResultLauncher<Intent>? = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         try {
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 if(result.data?.extras?.getByteArray("selectedImageUsuario") != null){
                     val imagenUriUsuario = result.data?.extras?.getByteArray("selectedImageUsuario") as ByteArray
                     image?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriUsuario))
                     image?.background = null
-                    //TODO: GUARDAR EN LA BASE DE DATOS LA FOTO
                 }else {
                     val imagenUriActividad = result.data?.extras?.getByteArray("selectedImageActividad") as ByteArray
                     imageActividad?.setImageBitmap(CommonUtils.byteArrayToBitmap(imagenUriActividad))
                     imageActividad?.background = null
-                    //TODO: GUARDAR EN LA BASE DE DATOS LA FOTO
                 }
             }
         }catch (e: Exception){
@@ -113,6 +112,7 @@ class ConfiguracionUsersTEAActivity: AppCompatActivity(), UserAdapter.OnItemSele
         val btnGuardar = findViewById<MaterialButton>(R.id.buttonGuardar)
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         viewModel.idUsuario = prefs.getString("idUsuario", "").toString()
 
         if(savedInstanceState == null){

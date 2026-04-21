@@ -58,6 +58,7 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
         holder.titulo.setText(listaPictogramas!![position].titulo)
         holder.imagen.setImageBitmap(listaPictogramas!![position].imagen)
 
+
         typePictogram(position, holder)
 
         if(listaPictogramas!![position].historia.toString() == "null"){
@@ -80,6 +81,15 @@ class AdaptadorPresentacion(var listaPictogramas: ArrayList<Pictograma>?, privat
             onBindViewHolder(holder, position)
         }else if(payloads.contains("marcarDuracion")){
             duracionPictograma(position, holder)
+            val time = CommonUtils.formatTimeSeconds(
+                listaPictogramas!![position].duracion.toString()
+            )
+
+            startTimer(
+                time.toLong() * 1000,
+                holder.duracion,
+                holder.tiempo
+            )
             Log.i("pruebas", "onBindViewHolder con payloads - marcarDuracion")
         } else{
             context = holder.itemView.context

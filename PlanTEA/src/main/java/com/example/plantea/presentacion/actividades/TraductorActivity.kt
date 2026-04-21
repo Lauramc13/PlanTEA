@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -56,6 +57,9 @@ class TraductorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_traductor)
 
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
+
         val resultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -87,7 +91,6 @@ class TraductorActivity : AppCompatActivity() {
             textoATraducir.requestFocus()
         }
 
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         val isPlanificador = prefs.getBoolean("PlanificadorLogged", false)
 
         createPickMedia()

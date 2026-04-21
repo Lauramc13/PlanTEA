@@ -15,7 +15,7 @@
         android:layout_width="48dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:background="@drawable/bg_close_button"
         android:contentDescription="Cerrar configuración nuevo evento"
         android:padding="12dp"
@@ -80,19 +80,18 @@
 
     </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_calendario"
-            android:layout_width="460dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="Contenedor con los días del mes"
-            android:overScrollMode="never"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout17" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_calendario"
+        android:layout_width="600dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="Contenedor con los días del mes"
+        android:overScrollMode="never"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout17" />
+</androidx.constraintlayout.widget.ConstraintLayout>

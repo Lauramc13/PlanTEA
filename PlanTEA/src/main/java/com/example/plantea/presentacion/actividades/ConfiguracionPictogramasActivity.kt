@@ -8,6 +8,7 @@ import android.widget.RadioButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionUsuarios
 import com.example.plantea.dominio.objetos.Usuario
@@ -55,6 +56,7 @@ class ConfiguracionPictogramasActivity : AppCompatActivity() {
         }
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         var isFromConfig = false
         if(intent.extras != null){

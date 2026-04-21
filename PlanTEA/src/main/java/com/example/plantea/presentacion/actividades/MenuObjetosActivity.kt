@@ -14,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.objetos.Usuario
 import com.example.plantea.presentacion.viewModels.MenuAvataresViewModel
@@ -38,6 +39,7 @@ class MenuObjetosActivity : AppCompatActivity() {
 
         setAvatarOnClickListeners(listOf("bici", "comida", "futbol","juegos", "libros", "movil", "musica", "recompensa"))
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         createPickMedia()
 
         btnGaleria = findViewById(R.id.btn_galeria)

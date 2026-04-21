@@ -22,6 +22,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.DialogFragment
 import com.example.plantea.R
 import com.example.plantea.presentacion.fragmentos.LoginFragment
@@ -58,7 +59,9 @@ class PreLoginActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_prelogin)
+
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         if(CommonUtils.isMobile(this)){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -186,11 +189,13 @@ class PreLoginActivity : AppCompatActivity(){
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(idiomas[position] == "English"){
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
-                }else{
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("es")))
+                val newLocale = if (idiomas[position] == "English") "en" else "es"
+                val currentLocale = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+
+                if (!currentLocale.startsWith(newLocale)) {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newLocale))
                 }
+
                 imageSpinner(idiomas[position])
             }
 

@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.example.plantea.R
 import com.example.plantea.presentacion.viewModels.RegisterViewModel
 import com.google.android.material.textfield.TextInputLayout
@@ -56,6 +57,7 @@ class RegisterActivity : AppCompatActivity(){
         }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         btnRegister = findViewById(R.id.btn_register)
         txtName = findViewById(R.id.txt_Name)
         txtEmail = findViewById(R.id.txt_Email)

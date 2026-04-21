@@ -3,177 +3,186 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="?colorBG0"
-    tools:layout_editor_absoluteX="6dp"
-    tools:layout_editor_absoluteY="0dp"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".presentacion.actividades.RegisterActivity">
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/imageView6"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.3"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.2"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/blob_v2"
         android:scaleType="centerCrop"
-        app:tint="?colorPrimary" />
+        android:alpha="0.8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.6"
+        app:srcCompat="@drawable/background_login_land_svg" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.2"
         app:srcCompat="@drawable/svg_blob"
-        />
+        app:tint="?colorPrimary" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp">
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp"
+        android:baselineAligned="false">
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="77dp"
-            android:layout_height="75dp"
-            android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/svg_register" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/lbl_registrarse"
-            android:textColor="?colorOnSurface"
-            android:textSize="30sp"
-            android:layout_marginBottom="15dp" />
-
-        <ScrollView
-            android:id="@+id/scrollRegister"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:layout_weight="0.4">
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="77dp"
+                android:layout_height="75dp"
+                android:layout_marginBottom="10dp"
+                app:srcCompat="@drawable/svg_register" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/lbl_registrarse"
+                android:textColor="?colorOnSurface"
+                android:textSize="26sp"
+                android:layout_marginBottom="15dp" />
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
+            <ScrollView
+                android:id="@+id/scrollRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/lbl_datosPlanificador"
-                    android:textColor="?colorOnSurface"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.21" />
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_Name"
-                    style="@style/cornertextInput"
-                    android:layout_width="350dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="17dp"
-                    android:ems="10"
-                    android:hint="@string/lbl_datosNombre"
-                    android:inputType="text">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_Name"
+                        style="@style/cornertextInput"
+                        android:layout_width="350dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="17dp"
+                        android:ems="10"
+                        android:hint="@string/lbl_datosNombre"
+                        android:inputType="text">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="text"
-                        android:maxLength="50"
-                        style="@style/textInput" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="text"
+                            android:maxLength="50"
+                            style="@style/textInput" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_Email"
-                    style="@style/cornertextInput"
-                    android:layout_width="350dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="17dp"
-                    android:ems="10"
-                    android:hint="@string/lbl_email"
-                    android:inputType="text">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_Email"
+                        style="@style/cornertextInput"
+                        android:layout_width="350dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="17dp"
+                        android:ems="10"
+                        android:hint="@string/lbl_email"
+                        android:inputType="text">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="text"
-                        style="@style/textInput" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="text"
+                            style="@style/textInput" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_password"
-                    style="@style/cornertextInput"
-                    android:layout_width="350dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="17dp"
-                    android:ems="10"
-                    android:hint="@string/lbl_contrasena"
-                    android:inputType="textPassword"
-                    android:textColor="?colorOnSurface"
-                    app:endIconMode="password_toggle"
-                    >
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_password"
+                        style="@style/cornertextInput"
+                        android:layout_width="350dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="17dp"
+                        android:ems="10"
+                        android:hint="@string/lbl_contrasena"
                         android:inputType="textPassword"
-                        style="@style/textInput" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColor="?colorOnSurface"
+                        app:endIconMode="password_toggle"
+                        >
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_password2"
-                    style="@style/cornertextInput"
-                    android:layout_width="350dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="17dp"
-                    android:ems="10"
-                    android:hint="@string/lbl_datosContraseña"
-                    android:inputType="textPassword"
-                    app:endIconMode="password_toggle"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textPassword"
+                            style="@style/textInput" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_password2"
+                        style="@style/cornertextInput"
+                        android:layout_width="350dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="17dp"
+                        android:ems="10"
+                        android:hint="@string/lbl_datosContraseña"
                         android:inputType="textPassword"
-                        style="@style/textInput" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        app:endIconMode="password_toggle"
 
-                <Button
-                    android:id="@+id/btn_register"
-                    android:layout_width="350dp"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="35dp"
-                    android:layout_marginBottom="20dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/lbl_crearCuenta"
-                    style="@style/Widget.Material3.Button"
-                    android:textSize="@dimen/button"
-                    android:textColor="@color/darkGreen" />
-            </LinearLayout>
-        </ScrollView>
+                        app:layout_constraintEnd_toEndOf="parent">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textPassword"
+                            style="@style/textInput" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btn_register"
+                        android:layout_width="350dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginBottom="40dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="@string/lbl_crearCuenta"
+                        style="@style/Widget.Material3.Button"
+                        android:textSize="@dimen/button"
+                        android:textColor="@color/darkGreen" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="0.7"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="30dp"
+                app:srcCompat="@drawable/svg_innovation" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -188,4 +197,5 @@
         app:iconSize="35dp"
         app:iconTint="?colorOnSurface"
         app:backgroundTint="@color/transparent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

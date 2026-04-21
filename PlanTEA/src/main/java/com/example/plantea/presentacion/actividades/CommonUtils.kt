@@ -1,9 +1,11 @@
 package com.example.plantea.presentacion.actividades
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.ContentResolver
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -36,7 +38,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.GridLayoutManager
@@ -59,6 +63,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.net.URLEncoder
 import java.util.Locale
+import android.app.NotificationChannel
+import android.app.NotificationManager
 
 class CommonUtils{
     companion object {
@@ -69,7 +75,7 @@ class CommonUtils{
 
         val String.toPreservedByteArray: ByteArray
             get() {
-                return this.toByteArray(Charsets.ISO_8859_1) // TODO: mirar si se puede cambiar por UTF_8
+                return this.toByteArray(Charsets.ISO_8859_1)
             }
 
         val ByteArray.toPreservedString: String
@@ -656,10 +662,60 @@ class CommonUtils{
                 val message = ContextCompat.getString(context, R.string.toast_pdf_creado)
                 Toast.makeText(context, message + filename, Toast.LENGTH_SHORT).show()
 
+                mostrarNotificacionPDF(context, outputPath, filename)
+
             } catch (e: Exception) {
                 Log.e("ERROR", "Error creating PDF: ${e.message}", e)
             }
         }
+
+        fun mostrarNotificacionPDF(context: Context, path: String, filename: String) {
+
+            val channelId = "pdf_channel"
+
+            val file = File(path)
+
+            val uri: Uri = FileProvider.getUriForFile(
+                context,
+                context.packageName + ".provider",
+                file
+            )
+
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            // 🔔 Canal (Android 8+)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "PDFs generados",
+                    NotificationManager.IMPORTANCE_HIGH
+                )
+                notificationManager.createNotificationChannel(channel)
+            }
+
+            val notification = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.logo_plantea2) // ⚠️ pon un icono válido
+                .setContentTitle("PDF listo")
+                .setContentText("Toca para abrir $filename")
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build()
+
+            notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+        }
+
 
         fun getColor(context: Context, color: String?): Int {
             return when(color) {

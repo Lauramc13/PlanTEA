@@ -14,6 +14,5 @@ data class Evento(
     var notas : String? = null,
     var idPlan : Int? = 0,
     var cambiarVisibilidad : Boolean? = false,
-    var recordatorio : LocalDateTime? = null,
     var visible : Int? = 0
 )

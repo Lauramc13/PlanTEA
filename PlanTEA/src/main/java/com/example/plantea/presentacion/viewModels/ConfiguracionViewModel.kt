@@ -20,6 +20,8 @@ class ConfiguracionViewModel: ViewModel() {
 
     var usersTEA : ArrayList<Usuario>? = null
 
+    var saved = false
+
     fun comprobarCampos(txtPlanificadorText: String): Boolean {
         if (txtPlanificadorText.isEmpty()) {
             seToast.value = R.string.toast_necesita_nombre

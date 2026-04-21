@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -439,20 +441,57 @@ class NavegacionUtils {
             }
         }
 
-        if(Locale.getDefault().language == "es"){
-            customView.findViewById<ImageView>(R.id.languageImage).setImageResource(R.drawable.ic_es)
-            customView.findViewById<TextView>(R.id.languageText).text = "Español"
-        }else if (Locale.getDefault().language == "en"){
-            customView.findViewById<ImageView>(R.id.languageImage).setImageResource(R.drawable.ic_en)
-            customView.findViewById<TextView>(R.id.languageText).text = "English"
+        val imageView = customView.findViewById<ImageView>(R.id.languageImage)
+        val textView = customView.findViewById<TextView>(R.id.languageText)
+
+        val locales = AppCompatDelegate.getApplicationLocales()
+        val currentLang = if (!locales.isEmpty && locales[0] != null) {
+            locales[0]!!.language
+        } else {
+            Locale.getDefault().language
+        }
+
+        if (currentLang == "es") {
+            imageView.setImageResource(R.drawable.ic_es)
+            textView.text = "Español"
+        } else {
+            imageView.setImageResource(R.drawable.ic_en)
+            textView.text = "English"
         }
 
         customView.findViewById<MaterialCardView>(R.id.item_idioma).setOnClickListener {
-            //change language
-            if(Locale.getDefault().language == "es"){
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
-            }else{
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("es")))
+            try {
+                popupWindow.dismiss()
+
+                val currentLocales = AppCompatDelegate.getApplicationLocales()
+                val currentLangNow = if (!currentLocales.isEmpty && currentLocales[0] != null) {
+                    currentLocales[0]!!.language
+                } else {
+                    Locale.getDefault().language
+                }
+
+                val newLocaleTag = if (currentLangNow == "es") {
+                    "en-US"
+                } else {
+                    "es-ES"
+                }
+
+                if (currentLocales.isEmpty) {
+                    AppCompatDelegate.setApplicationLocales(
+                        LocaleListCompat.forLanguageTags(Locale.getDefault().toLanguageTag())
+                    )
+                }
+
+                Handler(Looper.getMainLooper()).post {
+                    AppCompatDelegate.setApplicationLocales(
+                        LocaleListCompat.forLanguageTags(newLocaleTag)
+                    )
+
+                    fragment.requireActivity().recreate()
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
@@ -467,8 +506,6 @@ class NavegacionUtils {
         customView.findViewById<MaterialCardView>(R.id.item_ayuda).setOnClickListener {
             fragment.requireContext().startActivity(Intent(fragment.requireContext().applicationContext, ManualActivity::class.java))
         }
-
-        popupWindow.showAsDropDown(anchorView)
     }
 
     fun inicializarVariablesBottom(view: View, fragment: Fragment, currentActivity: Class<*>, id: Int, isPlanificador: Boolean){

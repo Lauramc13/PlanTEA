@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_main"
+    android:fitsSystemWindows="true"
+    tools:context=".presentacion.actividades.MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:rotationY="180"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/svg_blobl3" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/svg_blob"
+        android:rotationX="180"
+        app:tint="@color/white" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/custom_popup_background_main">
+
+        <FrameLayout
+            android:id="@+id/frameLayout_idiomas"
+            android:layout_width="60dp"
+            android:layout_height="56dp"
+            android:padding="3dp">
+
+            <Spinner
+                android:id="@+id/spinner_idiomas"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/poppins_regular"
+                android:dropDownVerticalOffset="54dp"
+                android:popupElevation="1dp"
+                android:popupBackground="@drawable/custom_popup_background_main"
+                android:spinnerMode="dropdown" />
+
+            <ImageView
+                android:id="@+id/image_idioma"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|bottom"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:background="@color/transparent"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_es" />
+        </FrameLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/image_RolPlanificador2"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:contentDescription="Preferencias"
+            app:icon="@drawable/svg_user"
+            app:iconSize="33dp"
+            app:cornerRadius="15dp"
+            app:iconTint="?colorOnSurface"
+            app:iconGravity="textStart"
+            android:backgroundTint="@color/transparent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_logout"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:contentDescription="Preferencias"
+            android:padding="8dp"
+            app:icon="@drawable/svg_logout"
+            app:iconSize="30dp"
+            app:iconGravity="textStart"
+            app:cornerRadius="15dp"
+            app:iconTint="#181F25"
+            android:visibility="gone"
+            android:backgroundTint="@color/white" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:fontFamily="@font/tiltneon"
+        android:text="@string/app_name"
+        android:contentDescription="Título de la aplicación"
+        android:textColor="@color/white"
+        android:textSize="90sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewPlanificador"
+        android:clickable="true"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="Tarjeta del planificador para iniciar sesión"
+        app:cardCornerRadius="20dp"
+        android:gravity="center"
+        app:strokeWidth="0dp"
+        app:layout_constraintVertical_bias="0.4"
+        app:cardBackgroundColor="?colorOnSurfaceInverse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_RolPlanificador"
+                style="@style/editText"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="Imagen del planificador"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_cardview"
+                app:srcCompat="@drawable/svg_user" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lbl_nombrePlanificador"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/lbl_nombre"
+                android:contentDescription="Nombre del planificador"
+                android:textColor="?colorOnSurface"
+                android:fontFamily="@font/poppins_semibold"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="wrap_content"
+        android:maxWidth="500dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardViewPlanificador"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.4">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

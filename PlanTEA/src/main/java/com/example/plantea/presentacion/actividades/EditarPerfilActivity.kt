@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionUsuarios
 import com.example.plantea.dominio.objetos.Usuario
@@ -63,11 +64,14 @@ class EditarPerfilActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editar_perfil)
 
+
         if(CommonUtils.isMobile(this)){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         txtCorreoPlanificador = findViewById(R.id.txt_correoPlanificador)
         txtPlanificador = findViewById(R.id.txt_nombrePlanificador)
         txtCorreoPlanificador.editText?.setText(prefs.getString("email", "")!!.lowercase(Locale.getDefault()))

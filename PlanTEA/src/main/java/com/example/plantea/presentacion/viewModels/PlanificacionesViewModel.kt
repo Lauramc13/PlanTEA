@@ -5,10 +5,14 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionPlanificaciones
 import com.example.plantea.dominio.objetos.Planificacion
@@ -59,6 +63,7 @@ class PlanificacionesViewModel : ViewModel(){
             }
         }
 
+
         btnCrear.setOnClickListener{
             var tituloString = tituloText.editText?.text.toString()
 
@@ -79,5 +84,4 @@ class PlanificacionesViewModel : ViewModel(){
         iconoCerrar.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
-
 }

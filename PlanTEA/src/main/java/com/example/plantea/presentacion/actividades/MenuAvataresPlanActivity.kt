@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowCompat
 import com.example.plantea.R
 import com.example.plantea.dominio.gestores.GestionUsuarios
 import com.example.plantea.dominio.objetos.Usuario
@@ -41,6 +42,7 @@ class MenuAvataresPlanActivity : AppCompatActivity() {
 
         setAvatarOnClickListeners(listOf("avatar1chica", "avatar2chica", "avatar3chica","avatar4chica", "avatar5chica", "avatar1chico", "avatar2chico", "avatar3chico", "avatar4chico", "avatar5chico"))
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         createPickMedia()
 
         viewModel.idUsuario = prefs.getString("idUsuario", "").toString()

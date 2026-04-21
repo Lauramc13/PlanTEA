@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -82,6 +83,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
         fechaActual = findViewById(R.id.lbl_mes)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         viewModel.configureUser(prefs)
 
         CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
@@ -174,12 +176,11 @@ class CalendarioMensualActivity: AppCompatActivity() {
             }
         }
 
-        viewModel.seNewImage.observe(this) { //TODO: Solo se actualiza bien la primera vez
+        viewModel.seNewImage.observe(this) {
             //volver a inicializar la imagen
             val imagen2 = dialog.findViewById<ShapeableImageView>(R.id.imagen)
             imagen2.background = null
             imagen2.setImageBitmap(viewModel.seNuevoPicto.value?.imagen)
-            //borrarIcono.visibility = ImageView.VISIBLE
         }
 
         viewModel.seAddedFecha.observe(this) { dia ->
@@ -349,7 +350,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
             viewModel.isCalendarioMensual = false
             AniadirPictoUtils.initializeDialog(viewModel, this)
 
-            viewModel.seNewImage.observe(this) { //TODO: Solo se actualiza bien la primera vez
+            viewModel.seNewImage.observe(this) {
                 //volver a inicializar la imagen
                 val imagen2 = dialog.findViewById<ShapeableImageView>(R.id.imagen)
                 imagen2.background = null
@@ -511,9 +512,10 @@ class CalendarioMensualActivity: AppCompatActivity() {
     }
 
     private fun exportarPdf(){
+        var outputPath = ""
+        var filename = "Calendario_PlanTEA.pdf"
         try {
             val downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            var filename = "Calendario_PlanTEA.pdf"
             var counter = 1
             var pageNumber = 1
 
@@ -522,7 +524,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
                 counter++
             }
 
-            val outputPath = File(downloadsDirectory, filename).absolutePath
+            outputPath = File(downloadsDirectory, filename).absolutePath
 
             val metrics = resources.displayMetrics
             val scaledX = metrics.xdpi/ 100
@@ -618,6 +620,7 @@ class CalendarioMensualActivity: AppCompatActivity() {
         }finally {
             val message = getString(R.string.toast_pdf_exportado)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            CommonUtils.mostrarNotificacionPDF(this, outputPath, filename)
         }
     }
 }

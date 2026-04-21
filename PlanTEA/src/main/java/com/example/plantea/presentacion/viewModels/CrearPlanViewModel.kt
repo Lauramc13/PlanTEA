@@ -78,6 +78,7 @@ class CrearPlanViewModel : ViewModel(), AdaptadorCategorias.OnItemSelectedListen
     private var busquedaOpen = false
     var categoriaPicto = 0
     lateinit var tituloPicto: String
+    lateinit var imagenPicto: Bitmap
     var isEdited = false
     var gCategoria = GestionCategorias()
     val gPlanificacion = GestionPlanificaciones()

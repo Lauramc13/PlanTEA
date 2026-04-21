@@ -377,6 +377,11 @@
     <string name="lbl_politica_parrafo23">Se le recomienda revisar periódicamente esta política de privacidad para conocer cualquier cambio. Los cambios en esta política de privacidad son efectivos cuando se publican en esta página.</string>
     <string name="lbl_politica_titulo_parrafo24">7. Métodos de contacto</string>
     <string name="lbl_politica_parrafo24">Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos por correo electrónico: plantea.asistencia@gmail.com</string>
+    <string name="lbl_imagen_y_texto">Imagen y texto</string>
+    <string name="lbl_solo_imagen">Solo imagen</string>
+    <string name="lbl_solo_texto">Solo texto</string>
+
+
 
     <!-- Strings utilizados para los toast-->
     <string name="toast_permisos">Plantea necesita permisos para mostrar notificaciones</string>
@@ -519,6 +524,7 @@
     <string name="subir_documento">Subir documento</string>
     <string name="toast_error_subir_documento">Error al subir el documento</string>
     <string name="toast_error_contrasenia_incorrecta">La contraseña es incorrecta. Por favor, introduce la contraseña correcta</string>
+    <string name="toast_no_se_ha_seleccionado_hora">No se ha seleccionado ninguna hora para el evento</string>
 
 
 </resources>

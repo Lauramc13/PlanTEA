@@ -117,7 +117,7 @@ class ActividadViewModel: ViewModel() {
 
         imgObjeto.background = null
         imgObjeto.setImageBitmap(listaActividades?.get(position)?.imagen)
-        txtObjeto.text = listaActividades?.get(position)?.nombre?.toUpperCase(Locale.ROOT)
+        txtObjeto.text = listaActividades?.get(position)?.nombre?.uppercase(Locale.ROOT)
 
         val iconoCerrarLogin : ImageView = dialogo.findViewById(R.id.icono_CerrarDialogo)
         iconoCerrarLogin.setOnClickListener { dialogo.dismiss() }

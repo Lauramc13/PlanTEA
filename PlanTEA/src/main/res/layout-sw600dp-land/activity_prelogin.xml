@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorBG0"
+    tools:context=".presentacion.actividades.PreLoginActivity">
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.6"
+        app:srcCompat="@drawable/background_login_land_svg" />
+    
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintWidth_max="360dp">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="@string/bienvenido_de_nuevo"
+            android:textColor="?colorOnSurface"
+            android:textSize="30sp" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Email"
+            style="@style/cornertextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:contentDescription="Campo de texto nombre de usuario"
+            android:hint="@string/lbl_email"
+            android:inputType="text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/textInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txt_Password"
+            style="@style/cornertextInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:contentDescription="Campo de texto contraseña"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="@string/lbl_contrasena"
+            android:inputType="textPassword"
+            app:endIconMode="password_toggle"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/textInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="Boton iniciar sesion"
+            android:elevation="0dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:maxWidth="10dp"
+            android:text="@string/lbl_iniciarSesion"
+            android:textColor="@color/darkGreen"
+            android:textSize="@dimen/button" />
+
+        <!-- <TextView
+            android:id="@+id/btn_olvidar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="@string/lbl_contraseniaOlvidada"
+            android:textColor="?colorOnSurface" /> -->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:src="@drawable/svg_separador" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Signin"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:contentDescription="Boton iniciar sesion"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/sesion_google"
+            android:textColor="?colorOnSurface"
+            android:textSize="@dimen/button"
+            app:icon="@drawable/svg_google_icon"
+            app:iconGravity="textStart"
+            app:iconPadding="15dp"
+            app:iconSize="25dp"
+            app:iconTint="@null" />
+
+        <TextView
+            android:id="@+id/btn_registrar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="30dp"
+            android:contentDescription="Boton registrarse"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:paddingEnd="5dp"
+            android:text="@string/lbl_noCuenta"
+            android:textColor="?colorOnSurface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/my_image"
+            android:layout_width="63dp"
+            android:layout_height="63dp"
+            android:src="@drawable/svg_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/tiltneon"
+            android:text="PlanTEA"
+            android:textColor="?colorOnSurface"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/my_image"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4"
+        app:srcCompat="@drawable/svg_problemsolving" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout_idiomas"
+        android:layout_width="55dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner_idiomas"
+            style="@style/dropdownMenuIdioma"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="?colorOnSurfaceInverse"
+            android:dropDownVerticalOffset="48dp"
+            android:fontFamily="@font/poppins_regular"
+            android:popupBackground="@drawable/custom_popup_background_idioma"
+            android:popupElevation="1dp"
+            android:spinnerMode="dropdown" />
+
+        <ImageView
+            android:id="@+id/image_idioma"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start|bottom"
+            android:layout_margin="5dp"
+            android:background="?colorOnSurfaceInverse"
+            android:contentDescription="@null"
+            android:padding="5dp"
+            android:src="@drawable/ic_es" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

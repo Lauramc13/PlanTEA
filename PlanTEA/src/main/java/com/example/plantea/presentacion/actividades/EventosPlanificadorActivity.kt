@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -25,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,11 +42,11 @@ import com.example.plantea.presentacion.adaptadores.AdaptadorListaEventos
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramaEntretenimiento
 import com.example.plantea.presentacion.adaptadores.AdaptadorPictogramasEventos
 import com.example.plantea.presentacion.fragmentos.CalendarioFragment
-import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
 import com.example.plantea.presentacion.viewModels.CalendarioViewModel
 import com.example.plantea.presentacion.viewModels.EventosPlanificadorViewModel
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,6 +54,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Locale
+import androidx.core.view.isVisible
+import com.example.plantea.dominio.CalendarioUtilidades.fechaSeleccionada
 
 class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.OnItemSelectedListener, AdaptadorPictogramasEventos.OnItemSelectedListener {
 
@@ -71,6 +75,11 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_eventos_planificador)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
+
         val atras = findViewById<Button>(R.id.atras)
         val nuevoEvento = findViewById<Button>(R.id.btn_eventos)
         val calendarButton = findViewById<MaterialButton>(R.id.btn_calendario)
@@ -86,7 +95,6 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
-        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
         viewModel.configureUser(prefs)
 
         listaEventos = findViewById(R.id.recycler_eventos)
@@ -95,7 +103,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             finish()
         }
 
-        nuevoEvento.setOnClickListener {
+        nuevoEvento.setOnClickListener{
             btnNuevaPlanificacion.visibility = View.VISIBLE
             CalendarioUtilidades.fechaSeleccionada = LocalDate.now()
             if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)) {
@@ -174,12 +182,6 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
             Thread.sleep(150)
             dialogEntretenimiento.dismiss()
         }
-
-        viewModelCalendario.mdFechaSeleccionada.observe(this){
-            CalendarioUtilidades.fechaSeleccionada = it
-           // esto no funciona TODO HACERLO BIEN
-            adaptador.notifyDataSetChanged()
-        }
     }
 
     private fun calendarSection(){
@@ -251,25 +253,6 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
                 adaptadorPictogramas.notifyItemChanged(viewModel.pictosEvento.indexOf(pictogram))
             }
         }
-
-//        val simpleCallback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(
-//            ItemTouchHelper.START or ItemTouchHelper.END, ItemTouchHelper.UP) {
-//
-//            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-//                val fromPosition = viewHolder.absoluteAdapterPosition
-//                val toPosition = target.absoluteAdapterPosition
-//                Collections.swap(viewModel.pictosEvento, fromPosition, toPosition)
-//                recyclerPictogramas.adapter!!.notifyItemMoved(fromPosition, toPosition)
-//                return false
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                // do nothing
-//            }
-//        }
-//
-//        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-//        itemTouchHelper.attachToRecyclerView(recyclerPictogramas)
     }
 
     override fun verEvento(posicion: Int, context: Context) {
@@ -279,6 +262,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         val intent = Intent(applicationContext, EventosActivity::class.java)
         intent.putExtra("titulo", viewModel.eventos[posicion].nombre)
         intent.putExtra("horaInicio", viewModel.eventos[posicion].horaInicio)
+        intent.putExtra("fecha", viewModel.eventos[posicion].fecha.toString())
         intent.putExtra("horaFin", viewModel.eventos[posicion].horaFin)
         intent.putExtra("localizacion", viewModel.eventos[posicion].localizacion)
         intent.putExtra("notas", viewModel.eventos[posicion].notas)
@@ -288,19 +272,18 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         pictogramas.forEachIndexed { index, pictogram ->
             intent.putExtra("imagen_$index", CommonUtils.bitmapToByteArray(pictogram.imagen))
         }
-        intent.putExtra("fecha", viewModel.eventos[posicion].fecha)
         startActivity(intent)
     }
 
     override fun eventoEditado(posicion: Int, recyclerPictograms: RecyclerView, context: Context) {
         btnNuevaPlanificacion.visibility = View.VISIBLE
-        CalendarioUtilidades.fechaSeleccionada = viewModel.eventos[posicion].fecha?: LocalDate.now()
+        fechaSeleccionada = viewModel.eventos[posicion].fecha?: LocalDate.now()
         if(CommonUtils.isMobile(this) && CommonUtils.isPortrait(this)) {
             bottomSheetDialog(context, viewModel.eventos[posicion])
         }else{
             val evento = viewModel.eventos[posicion]
-            viewModel.fragment = NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
-            CalendarioUtilidades.fechaSeleccionada = evento.fecha!!
+            viewModel.fragment = NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.cambiarVisibilidad)
+            fechaSeleccionada = evento.fecha!!
             val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
             ft.replace(R.id.linearLayout16, viewModel.fragment)
             ft.addToBackStack(null)
@@ -342,7 +325,7 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
         val fragment = if (evento == null){
             NuevoEventoFragment()
         }else{
-            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.cambiarVisibilidad)
         }
         fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
@@ -351,7 +334,11 @@ class EventosPlanificadorActivity : AppCompatActivity(), AdaptadorListaEventos.O
     fun expand(isExpand: Boolean, isVertical: Boolean, isCalendar: Boolean) {
         val valueAnimator: ValueAnimator
         if(isExpand) {
-            if(fragmentLayout.visibility == View.VISIBLE) return
+            if (isVertical) {
+                if (fragmentLayout.isVisible && fragmentLayout.height > 0) return
+            } else {
+                if (fragmentLayout.isVisible && fragmentLayout.width > 0) return
+            }
 
             fragmentLayout.visibility = View.VISIBLE
             if(isVertical){

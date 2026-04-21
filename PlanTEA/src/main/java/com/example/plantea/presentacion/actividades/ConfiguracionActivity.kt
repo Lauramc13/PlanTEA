@@ -24,6 +24,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -89,7 +90,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         if (result.resultCode == Activity.RESULT_OK) {
             val config = result.data?.extras?.getString("configPicto") as String
             val gUsuario = GestionUsuarios()
-            gUsuario.cambiarConfiguracionPictogramas(config, viewModel.usersTEA!![viewModel.userSelectPicto].id, this) // TODO: NO GUARDAR AQUI, GUARDAR CUANDO SE GUARDE LA CONFIGURACION
+            gUsuario.cambiarConfiguracionPictogramas(config, viewModel.usersTEA!![viewModel.userSelectPicto].id, this)
             viewModel.usersTEA!![viewModel.userSelectPicto].configPictograma = config
             adapterUsers?.notifyItemChanged(viewModel.userSelectPicto)
         }
@@ -129,6 +130,10 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         if (dialogLogout?.isShowing == true) {
             dialogLogout?.dismiss()
         }
+
+        if (!isFinishing || !viewModel.saved) {
+            prefs.edit().remove("imagenPlanificadorConfig").apply()
+        }
     }
 
     override fun onStop() {
@@ -147,6 +152,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
         }
 
         prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         imgUsuarioPlanificador = findViewById(R.id.img_FotoPlanificador)
         viewModel.idUsuario = prefs.getString("idUsuario", "").toString()
@@ -299,41 +305,49 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
     }
 
     private fun guardarConfiguracion(){
-        //Obtain values from the fields
         val nombreUsuarioPlanificador = txtPlanificador?.editText?.text.toString()
 
-        //remove focus from textview in recyclerview
         recyclerViewUsers?.clearFocus()
 
-        //if drawable doesnt exists, set it to null
         val isValid = viewModel.comprobarCampos(nombreUsuarioPlanificador)
 
         if(isValid){
-            val imagenBlob = CommonUtils.bitmapToByteArray((imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap)
 
-            //Cambiamos el valor en preferencias para no acceder a configuracion en el siguiente inicio y guardamos datos de los usuarios
             val editor = prefs.edit()
+            val imagenConfig = prefs.getString("imagenPlanificadorConfig", "")
+            val imagenFinal: String = if(!imagenConfig.isNullOrEmpty() && imagenConfig != "null"){
+                imagenConfig
+            } else {
+                val bitmap = (imgUsuarioPlanificador.drawable as BitmapDrawable).bitmap
+                CommonUtils.bitmapToByteArray(bitmap).toPreservedString
+            }
+
             editor.putString("nombrePlanificador", nombreUsuarioPlanificador)
-            editor.putString("imagenPlanificador", imagenBlob.toPreservedString)
-            editor.putString("imagenPlanificadorConfig", null)
+            editor.putString("imagenPlanificador", imagenFinal)
+
+            editor.remove("imagenPlanificadorConfig")
 
             editor.apply()
 
             try {
                 val gUsuario = GestionUsuarios()
-                gUsuario.guardarConfiguracion(nombreUsuarioPlanificador, imagenBlob, viewModel.idUsuario, this)
+                gUsuario.guardarConfiguracion(nombreUsuarioPlanificador, imagenFinal.toPreservedByteArray, viewModel.idUsuario, this)
+
                 if(viewModel.usersTEA!!.isNotEmpty()){
-                    viewModel.usersTEA!!.removeLast()
+                    viewModel.usersTEA!!.removeAt(viewModel.usersTEA!!.size - 1)
                     gUsuario.guardarConfiguracionUsersTEA(viewModel.usersTEA!!, viewModel.idUsuario, this)
                 }
             }catch (e: Exception){
                 Toast.makeText(this, getString(R.string.toast_error_guardar_configuracion), Toast.LENGTH_SHORT).show()
             }
+
             finish()
         }
     }
 
     private fun getImages(){
+        if (!restart) return
+
         val value = prefs.getString("imagenPlanificadorConfig", "")
         if (value != "" && value != "null") {
             imgUsuarioPlanificador.background = null
@@ -383,7 +397,7 @@ class ConfiguracionActivity : AppCompatActivity(), UserAdapter.OnItemSelectedLis
                 listaActividades.add(newActividad)
                 prefs.edit().putString("idUsuarioTEA", idUsuarioTEA).apply()
                 if(viewModel.usersTEA!!.size >=3){
-                    viewModel.usersTEA!!.removeLast()
+                    viewModel.usersTEA!!.removeAt(viewModel.usersTEA!!.size - 1)
                     viewModel.usersTEA!!.add(Usuario(null, name, null, (image!!.drawable as BitmapDrawable).bitmap, listaActividades,  "default"))
                     adapterUsers?.notifyItemChanged(viewModel.usersTEA!!.size-1)
                 }else{

@@ -55,7 +55,7 @@ class CategoriasPictogramasFragment : Fragment(), AdaptadorPictogramas.OnItemSel
             viewModel.seCloseFragment.value = true
         }
 
-        if(viewModel.identificadorCategoria == 10){
+        if(viewModel.identificadorCategoria == 5){
             imageAdd.visibility = View.GONE
         }
 

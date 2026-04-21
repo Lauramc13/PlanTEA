@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?customBgColor"
+    android:fitsSystemWindows="true"
     tools:context=".presentacion.actividades.ActividadActivity">
 
     <ImageView
@@ -101,7 +102,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_actividades"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="15dp"
             android:layout_gravity="center"

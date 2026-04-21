@@ -725,13 +725,13 @@ class ConectorBD(ctx: Context?) {
 
 
     /*Insertar nueva cita en la tabla eventos*/
-    fun insertarEvento(idUsuario: String?, nombre: String?, fecha: String, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, reminder: String?, changeVisibility: Boolean?): Cursor {
-        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre, fecha, hora_inicio, hora_fin, localizacion, notas, visible, reminder, change_visibility) VALUES ('$idUsuario', '$nombre','$fecha','$horaInicio', '$horaFin', '$localizacion', '$notas', 0, '$reminder', '$changeVisibility')")
+    fun insertarEvento(idUsuario: String?, nombre: String?, fecha: String, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, changeVisibility: Boolean?): Cursor {
+        db!!.execSQL("INSERT INTO Evento (id_usuario, nombre, fecha, hora_inicio, hora_fin, localizacion, notas, visible, change_visibility) VALUES ('$idUsuario', '$nombre','$fecha','$horaInicio', '$horaFin', '$localizacion', '$notas', 0, '$changeVisibility')")
         return  db!!.rawQuery("SELECT last_insert_rowid()", null)
     }
 
-    fun modificarEvento(id: Int?, nombre: String?, fecha: String, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, changeVisibility: Boolean?, reminder: String?, idPlan: Int?) {
-        db!!.execSQL("UPDATE Evento SET nombre = '$nombre', fecha = '$fecha', hora_inicio = '$horaInicio', hora_fin = '$horaFin', localizacion = '$localizacion', notas = '$notas', change_visibility = '$changeVisibility', reminder = '$reminder' WHERE id = '$id'")
+    fun modificarEvento(id: Int?, nombre: String?, fecha: String, horaInicio: String?, horaFin:String?, localizacion: String?, notas:String?, changeVisibility: Boolean?, idPlan: Int?) {
+        db!!.execSQL("UPDATE Evento SET nombre = '$nombre', fecha = '$fecha', hora_inicio = '$horaInicio', hora_fin = '$horaFin', localizacion = '$localizacion', notas = '$notas', change_visibility = '$changeVisibility' WHERE id = '$id'")
         db!!.execSQL("UPDATE RelacionEventoPlan SET id_plan = '$idPlan' WHERE id_evento = '$id'")
     }
 
@@ -830,7 +830,7 @@ class ConectorBD(ctx: Context?) {
     fun listarEventosPorUsuario(idUsuario: String?): Cursor {
         val selectionArgs = arrayOf(idUsuario)
         return db!!.rawQuery(
-            "SELECT Evento.id, Evento.id_usuario, Evento.nombre, Evento.fecha, Evento.hora_inicio, Evento.hora_fin, Evento.localizacion, Evento.notas, RelacionEventoPlan.id_plan, Evento.visible, Evento.reminder, Evento.change_visibility " +
+            "SELECT Evento.id, Evento.id_usuario, Evento.nombre, Evento.fecha, Evento.hora_inicio, Evento.hora_fin, Evento.localizacion, Evento.notas, RelacionEventoPlan.id_plan, Evento.visible, Evento.change_visibility " +
                     "FROM Evento " +
                     "INNER JOIN RelacionEventoPlan ON Evento.id = RelacionEventoPlan.id_evento " +
                     "WHERE Evento.id_usuario = ?",

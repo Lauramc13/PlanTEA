@@ -30,13 +30,13 @@ object CalendarioUtilidades {
         }
     }
 
-    // "2025-02-14" -> "14 de febrero de 2025"
+    // "2025-02-14" -> "14 de febrero de 2025" o "February 14, 2025"
     fun formatoFechaEvento(fecha: LocalDate): String {
-        return if(Locale.getDefault().language == "es") {
-            val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("es", "ES"))
+        return if (Locale.getDefault().language == "es") {
+            val formato = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", Locale("es", "ES"))
             fecha.format(formato)
         } else {
-            val formato = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("en", "US"))
+            val formato = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale("en", "US"))
             fecha.format(formato)
         }
     }

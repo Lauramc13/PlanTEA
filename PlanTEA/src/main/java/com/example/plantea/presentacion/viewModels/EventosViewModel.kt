@@ -89,6 +89,7 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
     var fechaSeleccionada : LocalDate = LocalDate.now()
     var horaEventoInicio : String? = null
     var horaEventoFin: String? = null
+    var fechaEvento : LocalDate? = null
     var mdDiaText = MutableLiveData<String>()
     val mdFechaActual = MutableLiveData<String>()
     val mdDiasMes = MutableLiveData<ArrayList<LocalDate?>>()
@@ -348,7 +349,10 @@ class EventosViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener,
         }
 
         btnSiguiente?.setOnClickListener {
-            recyclerView.findViewHolderForAdapterPosition(posicion + 1)?.itemView?.performClick()
+            onItemSeleccionado(context, posicion + 1)
+            adaptador.listMarcados = mdPasosCompletados.value!!
+            adaptador.notifyItemChanged(posicion)
+            adaptador.notifyItemChanged(posicion + 1, "marcarDuracion")
             if(listaPictogramas[posicion + 1].duracion.toString() != "null"){
                 startTimerDialog(CommonUtils.formatTimeSeconds(listaPictogramas[posicion + 1].duracion.toString()).toLong() * 1000, progress, duracionText)
             }

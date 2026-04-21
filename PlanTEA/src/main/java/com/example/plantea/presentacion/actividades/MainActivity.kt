@@ -11,6 +11,8 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -27,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
 import androidx.core.os.LocaleListCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantea.R
@@ -36,11 +40,6 @@ import com.example.plantea.dominio.objetos.Usuario
 import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedByteArray
 import com.example.plantea.presentacion.actividades.CommonUtils.Companion.toPreservedString
 import com.example.plantea.presentacion.adaptadores.AdaptadorUserMainClass
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -136,8 +135,10 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
 
         if(prefs.getBoolean("darkMode", false)){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
         }else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
         }
 
         imagePlanificador = findViewById(R.id.image_RolPlanificador)
@@ -183,31 +184,69 @@ class MainActivity : AppCompatActivity(), AdaptadorUserMainClass.OnItemSelectedL
         configurationLanguage()
     }
 
-    private fun configurationLanguage(){
-        val idiomas = ArrayList<String>()
-        idiomas.add("Español")
-        idiomas.add("English")
+    private fun configurationLanguage() {
+        val idiomas = arrayListOf("Español", "English")
         val adapter = ArrayAdapter(applicationContext, R.layout.simple_spinner_item_idioma, idiomas)
         spinner.adapter = adapter
 
-        val currentLanguage = Locale.getDefault().displayLanguage
+        val locales = AppCompatDelegate.getApplicationLocales()
+        val currentLang = if (!locales.isEmpty && locales[0] != null) {
+            locales[0]!!.language
+        } else {
+            Locale.getDefault().language
+        }
+
+        val currentLanguage = if (currentLang == "en") "English" else "Español"
         val position = adapter.getPosition(currentLanguage)
+
+        var spinnerInicializado = false
         spinner.setSelection(position)
+
         imageSpinner(currentLanguage)
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(idiomas[position] == "English"){
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("en")))
-                }else{
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(Locale.forLanguageTag("es")))
+
+                if (!spinnerInicializado) {
+                    spinnerInicializado = true
+                    return
                 }
-                imageSpinner(idiomas[position])
+
+                val selectedLanguage = idiomas[position]
+
+                val newLocaleTag = if (selectedLanguage == "English") {
+                    "en-US"
+                } else {
+                    "es-ES"
+                }
+
+                val currentLocales = AppCompatDelegate.getApplicationLocales()
+                val currentLangNow = if (!currentLocales.isEmpty && currentLocales[0] != null) {
+                    currentLocales[0]!!.language
+                } else {
+                    Locale.getDefault().language
+                }
+
+                if (currentLangNow != newLocaleTag.substring(0, 2)) {
+
+                    // 🛡️ Prevent empty locale crash
+                    if (currentLocales.isEmpty) {
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.forLanguageTags(Locale.getDefault().toLanguageTag())
+                        )
+                    }
+
+                    Handler(Looper.getMainLooper()).post {
+                        AppCompatDelegate.setApplicationLocales(
+                            LocaleListCompat.forLanguageTags(newLocaleTag)
+                        )
+                    }
+                }
+
+                imageSpinner(selectedLanguage)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                //do nothing
-            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 

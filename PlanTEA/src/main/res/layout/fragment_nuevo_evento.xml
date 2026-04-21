@@ -322,8 +322,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="100dp"
                     android:inputType="textMultiLine"
+                    android:gravity="top"
                     android:maxLength="400"
                     android:background="@drawable/bg_text_form_evento"
                     android:textColor="?colorOnSurface" />

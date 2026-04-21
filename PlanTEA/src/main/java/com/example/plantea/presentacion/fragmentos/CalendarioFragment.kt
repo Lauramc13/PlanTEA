@@ -108,8 +108,7 @@ class CalendarioFragment : DialogFragment(){
                     }
 
                 viewModel.eventos = viewModel.gEvento.obtenerTodosEventos(viewModel.idUsuario, context as Activity)
-                val adaptadorCalendario =
-                    AdaptadorCalendario(it, listaDays, viewModel.eventos, viewModel)
+                val adaptadorCalendario = AdaptadorCalendario(it, listaDays, viewModel.eventos, viewModel)
                 calendario.adapter = adaptadorCalendario
                 calendario.requestLayout()
             }

@@ -1,5 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowBackground">@color/md_theme_dark_inverseOnSurface</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/icon_launcher</item>
         <item name="android:statusBarColor">@color/md_theme_dark_scrim</item>

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.viewpager.widget.ViewPager
 import com.example.plantea.R
 import com.google.android.material.tabs.TabLayout
@@ -28,6 +29,9 @@ class TutorialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tutorial)
+
+        val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         if(CommonUtils.isMobile(this)){
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

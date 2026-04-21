@@ -22,6 +22,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.WindowCompat
 import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -90,6 +91,7 @@ class ActividadActivity : AppCompatActivity(), AdaptadorActividadesPantalla.OnIt
         val btnAddCategoria : MaterialButton = findViewById(R.id.addCategoria)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
 
         viewModel.configureUser(prefs)
         val gActividad = GestionActividades()

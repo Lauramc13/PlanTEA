@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.plantea.presentacion.receivers.OnAlarmReceiver
 import com.example.plantea.dominio.CalendarioUtilidades
 import com.example.plantea.dominio.objetos.Evento
 import com.example.plantea.dominio.gestores.GestionEventos

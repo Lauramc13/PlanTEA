@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -80,6 +81,7 @@ class CrearPlanActivity : AppCompatActivity(){
         viewModel.createPickMedia(viewModel, this)
 
         val prefs = getSharedPreferences("Preferencias", MODE_PRIVATE)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = !prefs.getBoolean("darkMode", false)
         viewModel.setIdUsuario(prefs)
 
         val callback = viewModel.callBackActivity(this)
@@ -219,7 +221,7 @@ class CrearPlanActivity : AppCompatActivity(){
         viewModel.sePictogramaSeleccionado.observe(this) {
             //initRecyclerViewPlan()
             viewModel.tituloPicto = it.titulo!!
-          //  viewModel.imagenPicto = it.imagen!! TODO uncomment
+            viewModel.imagenPicto = it.imagen!!
             viewModel.categoriaPicto = it.categoria
             viewModel.adaptadorPlanificacion.notifyItemInserted(viewModel.listaPlanificacion.size - 1)
             recyclerView.scrollToPosition(viewModel.adaptadorPlanificacion.itemCount -2)
@@ -293,7 +295,7 @@ class CrearPlanActivity : AppCompatActivity(){
             if (uri != null) {
                 val inputStream = this.contentResolver?.openInputStream(uri)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
-                val ruta =  CommonUtils.getPathFromUri(this, uri) // TODO: CAMBIAR
+                val ruta =  CommonUtils.getPathFromUri(this, uri)
                 CommonUtils.guardarImagen(this, ruta, bitmap)
                 viewModel.mdImage.value = uri
             } else {

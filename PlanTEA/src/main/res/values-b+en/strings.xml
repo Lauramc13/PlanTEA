@@ -371,6 +371,9 @@
     <string name="lbl_politica_parrafo23">You are recommended to periodically review this privacy policy for any changes. Changes to this privacy policy are effective when posted on this page.</string>
     <string name="lbl_politica_titulo_parrafo24">7. Contact methods</string>
     <string name="lbl_politica_parrafo24">If you have any questions about this Privacy Policy, you can contact us by email: pose.asistencia@gmail.com</string>
+    <string name="lbl_imagen_y_texto">Image and text</string>
+    <string name="lbl_solo_imagen">Only image</string>
+    <string name="lbl_solo_texto">Only text</string>
 
     <!-- Strings used for the toasts -->
     <string name="toast_permisos">PlanTEA needs permissions to show notifications</string>
@@ -509,4 +512,5 @@
     <string name="subir_documento">Upload document</string>
     <string name="toast_error_subir_documento">Error uploading document</string>
     <string name="toast_error_contrasenia_incorrecta">The password is incorrect. Please enter the correct password</string>
+    <string name="toast_no_se_ha_seleccionado_hora">You have to select a time for the event</string>
 </resources>

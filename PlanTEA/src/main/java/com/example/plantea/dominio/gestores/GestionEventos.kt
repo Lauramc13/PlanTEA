@@ -16,7 +16,7 @@ class GestionEventos {
         conectorBD!!.abrir()
         var id = 0
 
-        val cursor = conectorBD!!.insertarEvento(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.recordatorio.toString(), evento.cambiarVisibilidad)
+        val cursor = conectorBD!!.insertarEvento(evento.idUsuario, evento.nombre, evento.fecha.toString(), evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.cambiarVisibilidad)
         if (cursor.moveToFirst()) {
             id = cursor.getInt(0)
         }
@@ -31,7 +31,7 @@ class GestionEventos {
     fun editarEvento(actividad: Activity?, evento: Evento) {
         conectorBD = ConectorBD(actividad)
         conectorBD!!.abrir()
-        conectorBD!!.modificarEvento(evento.id, evento.nombre, evento.fecha.toString(), evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.cambiarVisibilidad, evento.recordatorio.toString(), evento.idPlan)
+        conectorBD!!.modificarEvento(evento.id, evento.nombre, evento.fecha.toString(), evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.cambiarVisibilidad, evento.idPlan)
         conectorBD!!.cerrar()
     }
 
@@ -52,9 +52,7 @@ class GestionEventos {
                 evento.notas = c.getString(7)
                 evento.idPlan = c.getInt(8)
                 evento.visible = c.getInt(9)
-                if(c.getString(10) != null && c.getString(10) != "null")
-                    evento.recordatorio = LocalDateTime.parse(c.getString(10))
-                evento.cambiarVisibilidad = c.getInt(11) == 1
+                evento.cambiarVisibilidad = c.getInt(10) == 1
 
                 eventos.add(evento)
             } while (c.moveToNext())
@@ -90,9 +88,7 @@ class GestionEventos {
                 evento.notas = c.getString(7)
                 evento.idPlan = c.getInt(8)
                 evento.visible = c.getInt(9)
-                if(c.getString(10) != null && c.getString(10) != "null")
-                    evento.recordatorio = LocalDateTime.parse(c.getString(10))
-                evento.cambiarVisibilidad = c.getInt(11) == 1
+                evento.cambiarVisibilidad = c.getInt(10) == 1
 
                 eventos.add(evento)
             } while (c.moveToNext())
@@ -116,8 +112,6 @@ class GestionEventos {
             evento.horaInicio = c.getString(4)
             evento.horaFin = c.getString(5)
             evento.visible = c.getInt(6)
-            if(c.getString(7) != null && c.getString(7) != "null")
-                evento.recordatorio = LocalDateTime.parse(c.getString(7))
             evento.cambiarVisibilidad = c.getString(8) == "true"
             evento.idPlan = c.getInt(9)
         }

@@ -1,5 +1,6 @@
 package com.example.plantea.presentacion.viewModels
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.NotificationChannel
@@ -7,17 +8,21 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.provider.CalendarContract
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantea.R
+import com.example.plantea.presentacion.receivers.OnAlarmReceiver
 import com.example.plantea.dominio.CalendarioUtilidades
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.example.plantea.dominio.objetos.Evento
 import com.example.plantea.dominio.gestores.GestionEventos
 import com.example.plantea.dominio.gestores.GestionPlanificaciones
@@ -28,15 +33,15 @@ import com.example.plantea.presentacion.actividades.EventosPlanificadorActivity
 import com.example.plantea.presentacion.adaptadores.AdaptadorCalendario
 import com.example.plantea.presentacion.fragmentos.EventosFragment
 import com.example.plantea.presentacion.fragmentos.NuevoEventoFragment
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import kotlin.time.ExperimentalTime
 
 class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListener {
     private var isNuevoEventoSelected = false
@@ -87,76 +92,120 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     var selectedHour = 0
     var selectedMin = 0
 
-    //Create the notification based on the checkbox selected
-    private fun crearNotificacion(context: Context?, evento: String?, id: Int?, aviso: Long?) {
-        try{
-            val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val notificationIntent = Intent(context, OnAlarmReceiver::class.java)
-            notificationIntent.putExtra("Evento", evento)
-            notificationIntent.putExtra("Id", id)
-            val pendingIntent = PendingIntent.getBroadcast(context, id!!, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
-            if (aviso != null) {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, aviso, pendingIntent)
+    @OptIn(ExperimentalTime::class)
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
+    private fun crearNotificacion(
+        context: Context,
+        evento: String?,
+        requestCode: Int?,
+        aviso: Long
+    ) {
+        try {
+            val now = System.currentTimeMillis()
+
+            if (aviso <= now) {
+                Log.w("Notificacion", "No se programa (pasado): $aviso")
+                return
             }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-    }
 
-    private fun notificationTime(fecha: LocalDate?, hora: LocalTime,): LocalDateTime {
-        val aviso = Calendar.getInstance()
-        aviso.clear()
-        aviso.set(fecha!!.year, fecha.monthValue - 1, fecha.dayOfMonth, hora.hour, hora.minute)
-
-        if (checkBoxDia) {
-            aviso.add(Calendar.DAY_OF_MONTH, -1)
-        }
-
-        if (checkBox1Hora) {
-            aviso.add(Calendar.HOUR_OF_DAY, -1)
-        }
-
-        if(checkBox5Min) {
-            adjustCalendar(aviso, 5)
-        }
-
-        if(checkBox15Min) {
-            adjustCalendar(aviso, 15)
-        }
-
-        if(checkBox30Min) {
-            adjustCalendar(aviso, 30)
-        }
-
-        if(checkBoxPer){
-            aviso.set(Calendar.HOUR_OF_DAY, selectedHour)
-            aviso.set(Calendar.MINUTE, selectedMin)
-        }
-        return LocalDateTime.of(aviso.get(Calendar.YEAR), aviso.get(Calendar.MONTH) + 1, aviso.get(Calendar.DAY_OF_MONTH), aviso.get(Calendar.HOUR_OF_DAY), aviso.get(Calendar.MINUTE))
-
-    }
-
-    //Cancel the notification
-    private fun cancelarNotificacion(context: Context, identificador: Int?) {
-        try{
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val intent = Intent()
-            intent.setClass(context, OnAlarmReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(context, identificador!!, intent, PendingIntent.FLAG_IMMUTABLE)
-            alarmManager.cancel(pendingIntent)
-            pendingIntent.cancel()
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (!alarmManager.canScheduleExactAlarms()) {
+                    Log.e("Notificacion", "Exact alarms no permitidas")
+                    return
+                }
+            }
+
+            val intent = Intent(context, OnAlarmReceiver::class.java).apply {
+                putExtra("Evento", evento)
+                putExtra("Id", requestCode)
+                action = "NOTIF_${requestCode}_$aviso"
+            }
+
+            val rc = requestCode ?: run {
+                Log.e("CalendarioViewModel", "requestCode null")
+                return
+            }
+
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                rc,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            Log.e("TEST", "ANTES DE SET ALARM")
+
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                aviso,
+                pendingIntent
+            )
+
+            Log.e("TEST", "DESPUÉS DE SET ALARM")
+
+            Log.i("CalendarioViewModel", "Alarma programada para: ${Date(aviso)} (requestCode: $requestCode)")
+
+        } catch (e: Exception) {
+            Log.e("Notificacion", "Error creando alarma", e)
+        }
     }
 
-    private fun adjustCalendar(aviso: Calendar, minutes: Int){
-        if (aviso.get(Calendar.MINUTE) < minutes) {
-            aviso.add(Calendar.HOUR_OF_DAY, -1)
-            aviso.add(Calendar.MINUTE, 60 - minutes + aviso.get(Calendar.MINUTE))
-        } else {
-            aviso.add(Calendar.MINUTE, -minutes)
+    private fun notificationTimesMillis(
+        fecha: LocalDate,
+        hora: LocalTime
+    ): List<Long> {
+
+        val base = Calendar.getInstance().apply {
+            set(fecha.year, fecha.monthValue - 1, fecha.dayOfMonth,
+                hora.hour, hora.minute, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        val result = mutableListOf<Long>()
+
+        fun addOffset(min: Int) {
+            val c = base.clone() as Calendar
+            c.add(Calendar.MINUTE, min)
+            result.add(c.timeInMillis)
+        }
+
+        if (checkBox5Min) addOffset(-5)
+        if (checkBox15Min) addOffset(-15)
+        if (checkBox30Min) addOffset(-30)
+        if (checkBox1Hora) addOffset(-60)
+        if (checkBoxDia) addOffset(-24 * 60)
+
+        if (checkBoxPer) {
+            val c = Calendar.getInstance().apply {
+                set(fecha.year, fecha.monthValue - 1, fecha.dayOfMonth,
+                    selectedHour, selectedMin, 0)
+            }
+            result.add(c.timeInMillis)
+        }
+
+        return result
+    }
+
+    fun cancelarNotificacion(context: Context, citaId: Int) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        for (i in 0..10) {
+            val requestCode = citaId * 100 + i
+
+            val intent = Intent(context, OnAlarmReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
+            )
+
+            pendingIntent?.let {
+                alarmManager.cancel(it)
+                it.cancel()
+            }
         }
     }
 
@@ -178,7 +227,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val fragment = if (evento == null){
             NuevoEventoFragment()
         }else{
-            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.cambiarVisibilidad)
         }
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
         ft.replace(R.id.fragment_calendario, fragment)
@@ -190,20 +239,16 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         val fragment = if (evento == null){
            NuevoEventoFragment()
         }else{
-            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.recordatorio, evento.cambiarVisibilidad)
+            NuevoEventoFragment.newInstance(evento.id, evento.fecha, evento.horaInicio, evento.horaFin, evento.localizacion, evento.notas, evento.idPlan, evento.cambiarVisibilidad)
         }
         fragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme)
         fragment.show((context as AppCompatActivity).supportFragmentManager, fragment.tag)
     }
 
+    @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     fun nuevoEventoEdit(context: Context, cita: Evento, pictogramasEvento: ArrayList<Pictograma>?, parent: EventosPlanificadorActivity?) {
-        if(checkBoxDia || checkBox1Hora || checkBox5Min || checkBox15Min || checkBox30Min || checkBoxPer){
-            cita.recordatorio = notificationTime(cita.fecha, LocalTime.parse(cita.horaInicio))
-        }
-
         if(isEditing){
             gEvento.editarEvento(context as Activity, cita)
-            //change evento where id is the same
             for (i in parent?.viewModel?.eventos?.indices!!) {
                 if (parent.viewModel.eventos[i].id == eventoIdEdited) {
                     parent.viewModel.eventos[i] = cita
@@ -216,11 +261,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             }
             seEventoEditSaved.value = true
             eliminarPictosEvento(cita.id, parent)
-//            if(pictogramasEvento != null){
-//                for (i in pictogramasEvento.indices) {
-//                    gEvento.actualizarPosicionPictoEvento(i, pictogramasEvento[i].posicion!!, cita.id.toString(), pictogramasEvento[i].id!!, parent)
-//                }
-//            }
 
             parent.listaEventos.adapter?.notifyItemChanged(parent.viewModel.posicionEvento)
         }else{
@@ -230,13 +270,29 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             parent?.findViewById<LinearLayout>(R.id.layout_no_eventos)?.visibility = View.GONE
         }
 
-        crearNotificacion(context, planes[posicionPlan].titulo, cita.id, cita.recordatorio?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli())
+        parent?.expand(false, CommonUtils.isPortrait(parent), false)
+
+        if (cita.horaInicio.isNullOrBlank() || cita.horaInicio == "null") {
+            Log.w("Notificacion", "Sin hora de inicio, no se programan avisos")
+            return
+        }
+
+
+        val avisos = notificationTimesMillis(cita.fecha!!, LocalTime.parse(cita.horaInicio!!))
+        val now = System.currentTimeMillis()
+
+        avisos.forEachIndexed { index, time ->
+            val requestCode = cita.id?.times(100)?.plus(index)
+            crearNotificacion(context, planes[posicionPlan].titulo, requestCode, time)
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            Log.i("CalendarioViewModel", "Notificación programada para: ${sdf.format(Date(time))}")
+            Log.e("CalendarioViewModel", "NOW = ${Date(now)}")
+            Log.e("CalendarioViewModel", "AVISO = ${Date(time)}")
+        }
 
         if(cita.cambiarVisibilidad == true){
             programarVisibilidad(cita, context, cita.id)
         }
-
-        parent?.expand(false, CommonUtils.isPortrait(parent), false)
     }
 
     fun closeFragment(parent: EventosPlanificadorActivity?){
@@ -280,7 +336,7 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
     }
 
     fun deleteEvento(actividad: Activity, context: Context, posicion: Int){
-        cancelarNotificacion(context, eventosDia[posicion].id)
+        cancelarNotificacion(context, eventosDia[posicion].id!!)
         cancelarVisibilidad(actividad, eventosDia[posicion].id)
         gEvento.eliminarEvento(actividad, eventosDia[posicion].id)
 
@@ -340,6 +396,16 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
         idUsuarioPlanner = prefs.getString("idUsuario", "").toString()
     }
 
+    internal fun mostrarCalendario(): MaterialDatePicker<Long> {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setTheme(R.style.CalendarPicker)
+            .build()
+
+        return datePicker
+    }
+
     fun createReloj(context: Context): MaterialTimePicker {
         val currentTime = Calendar.getInstance()
         val currentHour = currentTime[Calendar.HOUR_OF_DAY]
@@ -353,16 +419,6 @@ class CalendarioViewModel: ViewModel(), AdaptadorCalendario.OnItemSelectedListen
             .setTheme(R.style.TimePicker)
             .setTitleText(title)
             .build()
-    }
-
-    fun createCalendar(context: Context): MaterialDatePicker<Long> {
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("")
-            .setTheme(R.style.CalendarPicker)
-            .build()
-
-        datePicker.show((context as AppCompatActivity).supportFragmentManager, "DatePicker")
-        return datePicker
     }
 
     fun configureDataPlanSeleccionado(posicion: Int, parent: EventosPlanificadorActivity?){

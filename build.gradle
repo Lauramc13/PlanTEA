@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.9.20'
+        kotlin_version = '2.2.0'
     }
 
 
@@ -12,7 +12,7 @@ buildscript {
 
     dependencies {
 
-        classpath 'com.android.tools.build:gradle:8.6.0'
+        classpath 'com.android.tools.build:gradle:8.9.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.4.2'
 
@@ -22,7 +22,7 @@ buildscript {
 }
 
 plugins{
-    id 'org.jetbrains.dokka' version '2.0.0'
+    id 'org.jetbrains.dokka' version '2.1.0'
 }
 
 
